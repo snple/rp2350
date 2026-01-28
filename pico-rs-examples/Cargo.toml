@@ -1,0 +1,18 @@
+[package]
+name = "pico-rs-examples"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Examples for pico-rs"
+
+[dependencies]
+pico-rs.workspace = true
+cortex-m.workspace = true
+cortex-m-rt.workspace = true
+defmt.workspace = true
+defmt-rtt.workspace = true
+panic-probe.workspace = true
+
+[[bin]]
+name = "blink"
+path = "src/bin/blink.rs"
