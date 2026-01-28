@@ -1,7 +1,7 @@
 //! # Blink Example
 //!
-//! Minimal example that boots the RP2350 and prints a message.
-//! This demonstrates the basic setup required for an RP2350 application.
+//! Blink the on-board LED on a Raspberry Pi Pico 2 (RP2350).
+//! The LED is connected to GPIO 25.
 
 #![no_std]
 #![no_main]
@@ -12,27 +12,52 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
+use pico_rs::regs::{gpio, Gpio};
+use pico_rs::Delay;
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
-#[link_section = ".start_block"]
+#[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+
+/// RP2350 default boot clock frequency
+/// At boot, RP2350 runs from ROSC at approximately 12 MHz
+const CLOCK_FREQ_HZ: u32 = 12_000_000;
+
+/// LED pin on Pico boards
+const LED_PIN: u8 = 25;
 
 #[entry]
 fn main() -> ! {
     info!("RP2350 started!");
-    info!("Blink example running...");
+    info!("Blink example with GPIO LED control...");
 
-    let mut counter: u32 = 0;
+    // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
+    gpio::init();
+
+    // Configure GPIO 25 (LED) as output
+    let led = Gpio::new(LED_PIN);
+    led.init();
+    led.into_output();
+
+    info!("GPIO {} configured as output", LED_PIN);
+
+    // Initialize SysTick-based delay
+    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+
+    let mut led_on = false;
     loop {
-        // Simple delay loop
-        for _ in 0..1_000_000 {
-            cortex_m::asm::nop();
+        // Toggle LED
+        led.toggle();
+        led_on = !led_on;
+
+        if led_on {
+            info!("LED ON");
+        } else {
+            info!("LED OFF");
         }
 
-        counter = counter.wrapping_add(1);
-        info!("Loop iteration: {}", counter);
-
-        cortex_m::asm::wfi();
+        // Delay for 500ms
+        delay.delay_ms(500);
     }
 }

@@ -5,7 +5,7 @@
 #![allow(non_camel_case_types)]
 
 // External interrupt handlers - these are provided by device.x with DefaultHandler
-extern "C" {
+unsafe extern "C" {
     fn TIMER0_IRQ_0();
     fn TIMER0_IRQ_1();
     fn TIMER0_IRQ_2();
@@ -68,8 +68,8 @@ pub union Vector {
 /// RP2350 interrupt vector table (52 interrupts)
 #[cfg(feature = "rt")]
 #[doc(hidden)]
-#[link_section = ".vector_table.interrupts"]
-#[no_mangle]
+#[unsafe(link_section = ".vector_table.interrupts")]
+#[unsafe(no_mangle)]
 pub static __INTERRUPTS: [Vector; 52] = [
     Vector {
         _handler: TIMER0_IRQ_0,

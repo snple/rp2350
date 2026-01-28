@@ -16,10 +16,14 @@
 //! #![no_main]
 //!
 //! use pico_rs::entry;
+//! use pico_rs::systick::Delay;
 //!
 //! #[entry]
 //! fn main() -> ! {
-//!     loop {}
+//!     let mut delay = Delay::new(150_000_000); // 150 MHz
+//!     loop {
+//!         delay.delay_ms(500);
+//!     }
 //! }
 //! ```
 
@@ -27,9 +31,17 @@
 
 pub mod block;
 pub mod interrupt;
+pub mod regs;
+pub mod systick;
+pub mod time;
 
 // Re-export the entry macro
 pub use pico_rs_macro::entry;
+
+// Re-export commonly used types
+pub use regs::{Clock, Gpio, Pll, Resets, Sio, Tick, Watchdog, Xosc};
+pub use systick::{Delay, SysTick};
+pub use time::{Duration, Instant};
 
 // Re-export cortex-m for convenience
 pub use cortex_m;
