@@ -33,6 +33,7 @@ pub mod block;
 pub mod gpio;
 pub mod pio;
 pub mod reset;
+pub mod sio;
 pub mod systick;
 pub mod time;
 

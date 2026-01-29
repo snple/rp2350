@@ -24,3 +24,7 @@ path = "src/bin/reset_demo.rs"
 [[bin]]
 name = "pio_blink"
 path = "src/bin/pio_blink.rs"
+
+[[bin]]
+name = "sio_example"
+path = "src/bin/sio_example.rs"
