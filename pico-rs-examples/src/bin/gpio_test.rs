@@ -10,23 +10,21 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Gpio};
+use pico_rs::gpio::GpioBank;
 
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
-const LED_PIN: u8 = 25;
 
 #[entry]
 fn main() -> ! {
     info!("Direct GPIO Test");
 
-    gpio::init();
+    let gpio = GpioBank::init();
 
-    let led = Gpio::new(LED_PIN);
-    led.init();
+    let led = gpio.pin25();
     led.into_output();
 
     info!("LED configured as output");

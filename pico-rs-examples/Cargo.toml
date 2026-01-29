@@ -28,3 +28,7 @@ path = "src/bin/pio_blink.rs"
 [[bin]]
 name = "sio_example"
 path = "src/bin/sio_example.rs"
+
+[[bin]]
+name = "gpio_example"
+path = "src/bin/gpio_example.rs"

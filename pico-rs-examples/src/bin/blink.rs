@@ -13,7 +13,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Gpio};
+use pico_rs::gpio::GpioBank;
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
@@ -24,23 +24,19 @@ pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 /// At boot, RP2350 runs from ROSC at approximately 12 MHz
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
-/// LED pin on Pico boards
-const LED_PIN: u8 = 25;
-
 #[entry]
 fn main() -> ! {
     info!("RP2350 started!");
     info!("Blink example with GPIO LED control...");
 
     // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
-    gpio::init();
+    let gpio = GpioBank::init();
 
     // Configure GPIO 25 (LED) as output
-    let led = Gpio::new(LED_PIN);
-    led.init();
+    let led = gpio.pin25();
     led.into_output();
 
-    info!("GPIO {} configured as output", LED_PIN);
+    info!("GPIO 25 configured as output");
 
     // Initialize SysTick-based delay
     let mut delay = Delay::new(CLOCK_FREQ_HZ);

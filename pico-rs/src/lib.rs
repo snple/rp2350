@@ -50,7 +50,7 @@ pub use pico_rs_macro::entry;
 pub use pico_rs_macro::pio_asm;
 
 // Re-export commonly used types
-pub use gpio::Gpio;
+pub use gpio::GpioBank;
 pub use systick::{Delay, SysTick};
 pub use time::{Duration, Instant};
 

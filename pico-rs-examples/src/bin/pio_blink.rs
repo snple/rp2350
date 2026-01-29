@@ -13,7 +13,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio;
+use pico_rs::gpio::GpioBank;
 use pico_rs::pio;
 use pico_rs::pio_asm;
 
@@ -30,7 +30,7 @@ fn main() -> ! {
     info!("PIO Blink Example");
 
     // Initialize GPIO subsystem
-    gpio::init();
+    let _gpio = GpioBank::init();
 
     // Configure GPIO 25 for PIO0 control
     configure_gpio_for_pio(LED_PIN);
