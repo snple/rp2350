@@ -10,10 +10,10 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::regs::{gpio, Gpio};
-use pico_rs::Delay;
+use pico_rs::gpio::{self, Gpio};
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]

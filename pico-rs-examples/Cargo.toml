@@ -16,3 +16,7 @@ panic-probe.workspace = true
 [[bin]]
 name = "blink"
 path = "src/bin/blink.rs"
+
+[[bin]]
+name = "reset_demo"
+path = "src/bin/reset_demo.rs"

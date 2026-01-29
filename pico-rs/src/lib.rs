@@ -30,16 +30,22 @@
 #![no_std]
 
 pub mod block;
-pub mod interrupt;
-pub mod regs;
+pub mod gpio;
+pub mod reset;
 pub mod systick;
 pub mod time;
+
+// Re-export pico-rs-pac
+pub use pico_rs_pac as pac;
+#[cfg(feature = "rt")]
+pub use pico_rs_pac::__INTERRUPTS;
+pub use pico_rs_pac::{Interrupt, Peripherals, Vector};
 
 // Re-export the entry macro
 pub use pico_rs_macro::entry;
 
 // Re-export commonly used types
-pub use regs::{Clock, Gpio, Pll, Resets, Sio, Tick, Watchdog, Xosc};
+pub use gpio::Gpio;
 pub use systick::{Delay, SysTick};
 pub use time::{Duration, Instant};
 
