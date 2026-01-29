@@ -1,11 +1,14 @@
 //! Procedural macros for pico-rs
 //!
-//! This crate provides the `#[entry]` macro for RP2350 applications.
+//! This crate provides the `#[entry]` macro for RP2350 applications
+//! and the `pio_asm!` macro for PIO assembly.
 
 use proc_macro::TokenStream;
 use proc_macro2::Span;
 use quote::quote;
 use syn::{Item, ItemFn, Stmt, parse, parse_macro_input};
+
+mod pio_asm;
 
 /// Attribute to declare the entry point of the program
 ///
@@ -93,4 +96,27 @@ fn insert_after_static(stmts: impl IntoIterator<Item = Stmt>, insert: Stmt) -> V
     result.extend(istmts);
 
     result
+}
+
+/// Compile PIO assembly code into machine code
+///
+/// This macro takes PIO assembly source code and compiles it into an array
+/// of 16-bit instruction words that can be loaded into PIO instruction memory.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::pio_asm;
+///
+/// let program = pio_asm!(
+///     "set pindirs, 1",
+///     ".wrap_target",
+///     "set pins, 1 [31]",
+///     "set pins, 0 [31]",
+///     ".wrap"
+/// );
+/// ```
+#[proc_macro]
+pub fn pio_asm(input: TokenStream) -> TokenStream {
+    pio_asm::pio_asm_impl(input)
 }

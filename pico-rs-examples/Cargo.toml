@@ -20,3 +20,7 @@ path = "src/bin/blink.rs"
 [[bin]]
 name = "reset_demo"
 path = "src/bin/reset_demo.rs"
+
+[[bin]]
+name = "pio_blink"
+path = "src/bin/pio_blink.rs"

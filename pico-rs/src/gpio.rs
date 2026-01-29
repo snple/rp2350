@@ -23,8 +23,11 @@
 use crate::reset::{self, Peripheral};
 use pico_rs_pac::{IO_BANK0, PADS_BANK0, SIO};
 
-// Function select value for SIO (GPIO)
-const FUNCSEL_SIO: u32 = 5;
+// Function select values
+const FUNCSEL_SIO: u32 = 5; // GPIO
+const FUNCSEL_PIO0: u32 = 6; // PIO0
+const FUNCSEL_PIO1: u32 = 7; // PIO1
+const FUNCSEL_PIO2: u32 = 8; // PIO2 (RP2350 only)
 
 /// GPIO pin direction
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -70,8 +73,22 @@ impl Gpio {
 
     /// Initialize the GPIO pin for SIO function
     pub fn init(&self) {
-        // Set to SIO function via IO_BANK0 GPIO control register
         let io_bank = unsafe { &*IO_BANK0::PTR };
+        let pads = unsafe { &*PADS_BANK0::PTR };
+
+        unsafe {
+            let pad = pads.gpio(self.pin);
+
+            // Configure pad: enable input, disable output disable
+            pad.set_ie();
+            pad.clr_od();
+
+            // Clear pad isolation (RP2350 specific)
+            // This is critical - the pad is isolated by default after reset
+            pad.clr_iso();
+        }
+
+        // Set to SIO function via IO_BANK0 GPIO control register
         unsafe {
             let ctrl = io_bank.gpio_ctrl(self.pin);
             ctrl.write_funcsel(FUNCSEL_SIO);
@@ -81,13 +98,6 @@ impl Gpio {
     /// Configure the GPIO as output
     pub fn into_output(&self) -> &Self {
         let sio = unsafe { &*SIO::PTR };
-        let pads = unsafe { &*PADS_BANK0::PTR };
-
-        // Make sure pad output is enabled (clear OD bit)
-        unsafe {
-            let pad = pads.gpio(self.pin);
-            pad.clr_od();
-        }
 
         // Enable output in SIO
         if self.pin < 32 {
@@ -102,19 +112,12 @@ impl Gpio {
     /// Configure the GPIO as input
     pub fn into_input(&self) -> &Self {
         let sio = unsafe { &*SIO::PTR };
-        let pads = unsafe { &*PADS_BANK0::PTR };
 
         // Disable output in SIO
         if self.pin < 32 {
             sio.gpio_oe_clr.write_bits(self.mask());
         } else {
             sio.gpio_hi_oe_clr.write_bits(self.mask());
-        }
-
-        // Make sure pad input is enabled (set IE bit)
-        unsafe {
-            let pad = pads.gpio(self.pin);
-            pad.set_ie();
         }
 
         self
@@ -215,6 +218,54 @@ impl Gpio {
             (sio.gpio_out.read_bits() & self.mask()) != 0
         } else {
             (sio.gpio_hi_out.read_bits() & self.mask()) != 0
+        }
+    }
+
+    /// Set the GPIO function to PIO0
+    pub fn set_function_pio0(&self) {
+        let io_bank = unsafe { &*IO_BANK0::PTR };
+        let pads = unsafe { &*PADS_BANK0::PTR };
+
+        unsafe {
+            let pad = pads.gpio(self.pin);
+            pad.set_ie();
+            pad.clr_od();
+            pad.clr_iso();
+
+            let ctrl = io_bank.gpio_ctrl(self.pin);
+            ctrl.write_funcsel(FUNCSEL_PIO0);
+        }
+    }
+
+    /// Set the GPIO function to PIO1
+    pub fn set_function_pio1(&self) {
+        let io_bank = unsafe { &*IO_BANK0::PTR };
+        let pads = unsafe { &*PADS_BANK0::PTR };
+
+        unsafe {
+            let pad = pads.gpio(self.pin);
+            pad.set_ie();
+            pad.clr_od();
+            pad.clr_iso();
+
+            let ctrl = io_bank.gpio_ctrl(self.pin);
+            ctrl.write_funcsel(FUNCSEL_PIO1);
+        }
+    }
+
+    /// Set the GPIO function to PIO2
+    pub fn set_function_pio2(&self) {
+        let io_bank = unsafe { &*IO_BANK0::PTR };
+        let pads = unsafe { &*PADS_BANK0::PTR };
+
+        unsafe {
+            let pad = pads.gpio(self.pin);
+            pad.set_ie();
+            pad.clr_od();
+            pad.clr_iso();
+
+            let ctrl = io_bank.gpio_ctrl(self.pin);
+            ctrl.write_funcsel(FUNCSEL_PIO2);
         }
     }
 }

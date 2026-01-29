@@ -31,6 +31,7 @@
 
 pub mod block;
 pub mod gpio;
+pub mod pio;
 pub mod reset;
 pub mod systick;
 pub mod time;
@@ -43,6 +44,9 @@ pub use pico_rs_pac::{Interrupt, Peripherals, Vector};
 
 // Re-export the entry macro
 pub use pico_rs_macro::entry;
+
+// Re-export the pio_asm macro
+pub use pico_rs_macro::pio_asm;
 
 // Re-export commonly used types
 pub use gpio::Gpio;
