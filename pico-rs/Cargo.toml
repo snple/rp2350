@@ -20,7 +20,9 @@ enumflags2 = "0.7"
 [features]
 default = ["rt", "critical-section", "atomics", "defmt", "rp2350a"]
 rt = ["cortex-m-rt/device", "pico-rs-pac/rt"]
-critical-section = ["dep:critical-section", "cortex-m/critical-section-single-core", "pico-rs-pac/critical-section"]
+# 注意: 不使用 cortex-m/critical-section-single-core，因为 RP2350 是双核 CPU
+# 我们使用硬件 spinlock 实现多核安全的 critical-section
+critical-section = ["dep:critical-section", "critical-section/restore-state-u32", "pico-rs-pac/critical-section"]
 atomics = ["dep:portable-atomic"]
 defmt = ["dep:defmt"]
 # RP2350 chip variant selection (mutually exclusive)

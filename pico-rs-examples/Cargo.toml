@@ -76,3 +76,7 @@ path = "src/bin/watchdog_example.rs"
 [[bin]]
 name = "timer_delay"
 path = "src/bin/timer_delay.rs"
+
+[[bin]]
+name = "bind_example"
+path = "src/bin/bind_example.rs"

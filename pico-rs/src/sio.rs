@@ -425,7 +425,7 @@ impl_spinlock_access!(
     16 => spinlock16, 17 => spinlock17, 18 => spinlock18, 19 => spinlock19,
     20 => spinlock20, 21 => spinlock21, 22 => spinlock22, 23 => spinlock23,
     24 => spinlock24, 25 => spinlock25, 26 => spinlock26, 27 => spinlock27,
-    28 => spinlock28, 29 => spinlock29, 30 => spinlock30, 31 => spinlock31,
+    28 => spinlock28, 29 => spinlock29, 30 => spinlock30,
 );
 
 // ============================================================================

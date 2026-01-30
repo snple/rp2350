@@ -36,6 +36,7 @@ pub mod binary_info;
 pub mod block;
 pub mod busctrl;
 pub mod clocks;
+pub mod cortex_m33;
 pub mod dma;
 pub mod eppb;
 pub mod gpio;
@@ -64,6 +65,16 @@ pub mod xip_aux;
 pub mod xip_ctrl;
 pub mod xosc;
 
+// Critical section implementation for RP2350
+#[cfg(feature = "critical-section")]
+mod critical_section_impl;
+
+// Task system (interrupt-based, requires critical-section)
+// Note: critical-section implementation is provided by cortex-m crate
+// when the "critical-section-single-core" feature is enabled
+#[cfg(feature = "critical-section")]
+pub mod task;
+
 // Re-export pico-rs-pac
 pub use pico_rs_pac as pac;
 #[cfg(feature = "rt")]
@@ -75,6 +86,9 @@ pub use pico_rs_macro::entry;
 
 // Re-export the pio_asm macro
 pub use pico_rs_macro::pio_asm;
+
+// Re-export the bind macro for interrupt handlers
+pub use pico_rs_macro::bind;
 
 // Re-export paste for use in macros
 #[doc(hidden)]

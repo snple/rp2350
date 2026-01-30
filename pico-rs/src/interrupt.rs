@@ -193,7 +193,7 @@ where
     F: FnOnce(CriticalSection) -> R,
 {
     // Disable interrupts
-    let primask = cortex_m::register::primask::read();
+    let restore_state = crate::cortex_m33::register::primask::read_raw();
     cortex_m::interrupt::disable();
 
     // Create critical section token
@@ -203,10 +203,7 @@ where
     let result = f(cs);
 
     // Restore interrupt state
-    if primask.is_active() {
-        // Interrupts were enabled before, re-enable them
-        unsafe { cortex_m::interrupt::enable() };
-    }
+    unsafe { crate::cortex_m33::register::primask::write_raw(restore_state) };
 
     result
 }
@@ -239,16 +236,16 @@ pub mod timer0 {
     use super::Interrupt;
 
     /// Alarm 0 interrupt
-    pub const ALARM_0: Interrupt = Interrupt::TIMER0_IRQ_0;
+    pub const TIMER0_IRQ_0: Interrupt = Interrupt::TIMER0_IRQ_0;
     /// Alarm 1 interrupt
-    pub const ALARM_1: Interrupt = Interrupt::TIMER0_IRQ_1;
+    pub const TIMER0_IRQ_1: Interrupt = Interrupt::TIMER0_IRQ_1;
     /// Alarm 2 interrupt
-    pub const ALARM_2: Interrupt = Interrupt::TIMER0_IRQ_2;
+    pub const TIMER0_IRQ_2: Interrupt = Interrupt::TIMER0_IRQ_2;
     /// Alarm 3 interrupt
-    pub const ALARM_3: Interrupt = Interrupt::TIMER0_IRQ_3;
+    pub const TIMER0_IRQ_3: Interrupt = Interrupt::TIMER0_IRQ_3;
 
     /// All timer0 interrupts
-    pub const ALL: [Interrupt; 4] = [ALARM_0, ALARM_1, ALARM_2, ALARM_3];
+    pub const ALL: [Interrupt; 4] = [TIMER0_IRQ_0, TIMER0_IRQ_1, TIMER0_IRQ_2, TIMER0_IRQ_3];
 }
 
 /// Timer1 interrupt numbers
@@ -256,16 +253,16 @@ pub mod timer1 {
     use super::Interrupt;
 
     /// Alarm 0 interrupt
-    pub const ALARM_0: Interrupt = Interrupt::TIMER1_IRQ_0;
+    pub const TIMER0_IRQ_0: Interrupt = Interrupt::TIMER1_IRQ_0;
     /// Alarm 1 interrupt
-    pub const ALARM_1: Interrupt = Interrupt::TIMER1_IRQ_1;
+    pub const TIMER0_IRQ_1: Interrupt = Interrupt::TIMER1_IRQ_1;
     /// Alarm 2 interrupt
-    pub const ALARM_2: Interrupt = Interrupt::TIMER1_IRQ_2;
+    pub const TIMER0_IRQ_2: Interrupt = Interrupt::TIMER1_IRQ_2;
     /// Alarm 3 interrupt
-    pub const ALARM_3: Interrupt = Interrupt::TIMER1_IRQ_3;
+    pub const TIMER0_IRQ_3: Interrupt = Interrupt::TIMER1_IRQ_3;
 
     /// All timer1 interrupts
-    pub const ALL: [Interrupt; 4] = [ALARM_0, ALARM_1, ALARM_2, ALARM_3];
+    pub const ALL: [Interrupt; 4] = [TIMER0_IRQ_0, TIMER0_IRQ_1, TIMER0_IRQ_2, TIMER0_IRQ_3];
 }
 
 /// PWM interrupt numbers
@@ -273,12 +270,12 @@ pub mod pwm {
     use super::Interrupt;
 
     /// PWM wrap interrupt 0 (slices 0-7)
-    pub const WRAP_0: Interrupt = Interrupt::PWM_IRQ_WRAP_0;
+    pub const PWM_IRQ_WRAP_0: Interrupt = Interrupt::PWM_IRQ_WRAP_0;
     /// PWM wrap interrupt 1 (slices 8-11)
-    pub const WRAP_1: Interrupt = Interrupt::PWM_IRQ_WRAP_1;
+    pub const PWM_IRQ_WRAP_1: Interrupt = Interrupt::PWM_IRQ_WRAP_1;
 
     /// All PWM interrupts
-    pub const ALL: [Interrupt; 2] = [WRAP_0, WRAP_1];
+    pub const ALL: [Interrupt; 2] = [PWM_IRQ_WRAP_0, PWM_IRQ_WRAP_1];
 }
 
 /// DMA interrupt numbers
@@ -286,16 +283,16 @@ pub mod dma {
     use super::Interrupt;
 
     /// DMA interrupt 0
-    pub const IRQ_0: Interrupt = Interrupt::DMA_IRQ_0;
+    pub const DMA_IRQ_0: Interrupt = Interrupt::DMA_IRQ_0;
     /// DMA interrupt 1
-    pub const IRQ_1: Interrupt = Interrupt::DMA_IRQ_1;
+    pub const DMA_IRQ_1: Interrupt = Interrupt::DMA_IRQ_1;
     /// DMA interrupt 2
-    pub const IRQ_2: Interrupt = Interrupt::DMA_IRQ_2;
+    pub const DMA_IRQ_2: Interrupt = Interrupt::DMA_IRQ_2;
     /// DMA interrupt 3
-    pub const IRQ_3: Interrupt = Interrupt::DMA_IRQ_3;
+    pub const DMA_IRQ_3: Interrupt = Interrupt::DMA_IRQ_3;
 
     /// All DMA interrupts
-    pub const ALL: [Interrupt; 4] = [IRQ_0, IRQ_1, IRQ_2, IRQ_3];
+    pub const ALL: [Interrupt; 4] = [DMA_IRQ_0, DMA_IRQ_1, DMA_IRQ_2, DMA_IRQ_3];
 }
 
 /// PIO interrupt numbers
@@ -326,55 +323,16 @@ pub mod gpio {
     use super::Interrupt;
 
     /// IO Bank0 interrupt (secure)
-    pub const BANK0: Interrupt = Interrupt::IO_IRQ_BANK0;
+    pub const IO_IRQ_BANK0: Interrupt = Interrupt::IO_IRQ_BANK0;
     /// IO Bank0 interrupt (non-secure)
-    pub const BANK0_NS: Interrupt = Interrupt::IO_IRQ_BANK0_NS;
+    pub const IO_IRQ_BANK0_NS: Interrupt = Interrupt::IO_IRQ_BANK0_NS;
     /// IO QSPI interrupt (secure)
-    pub const QSPI: Interrupt = Interrupt::IO_IRQ_QSPI;
+    pub const IO_IRQ_QSPI: Interrupt = Interrupt::IO_IRQ_QSPI;
     /// IO QSPI interrupt (non-secure)
-    pub const QSPI_NS: Interrupt = Interrupt::IO_IRQ_QSPI_NS;
+    pub const IO_IRQ_QSPI_NS: Interrupt = Interrupt::IO_IRQ_QSPI_NS;
 
     /// All GPIO interrupts
-    pub const ALL: [Interrupt; 4] = [BANK0, BANK0_NS, QSPI, QSPI_NS];
-}
-
-/// UART interrupt numbers
-pub mod uart {
-    use super::Interrupt;
-
-    /// UART0 interrupt
-    pub const UART0: Interrupt = Interrupt::UART0_IRQ;
-    /// UART1 interrupt
-    pub const UART1: Interrupt = Interrupt::UART1_IRQ;
-
-    /// All UART interrupts
-    pub const ALL: [Interrupt; 2] = [UART0, UART1];
-}
-
-/// I2C interrupt numbers
-pub mod i2c {
-    use super::Interrupt;
-
-    /// I2C0 interrupt
-    pub const I2C0: Interrupt = Interrupt::I2C0_IRQ;
-    /// I2C1 interrupt
-    pub const I2C1: Interrupt = Interrupt::I2C1_IRQ;
-
-    /// All I2C interrupts
-    pub const ALL: [Interrupt; 2] = [I2C0, I2C1];
-}
-
-/// SPI interrupt numbers
-pub mod spi {
-    use super::Interrupt;
-
-    /// SPI0 interrupt
-    pub const SPI0: Interrupt = Interrupt::SPI0_IRQ;
-    /// SPI1 interrupt
-    pub const SPI1: Interrupt = Interrupt::SPI1_IRQ;
-
-    /// All SPI interrupts
-    pub const ALL: [Interrupt; 2] = [SPI0, SPI1];
+    pub const ALL: [Interrupt; 4] = [IO_IRQ_BANK0, IO_IRQ_BANK0_NS, IO_IRQ_QSPI, IO_IRQ_QSPI_NS];
 }
 
 /// SIO (inter-core) interrupt numbers
@@ -394,6 +352,151 @@ pub mod sio {
 
     /// All SIO interrupts
     pub const ALL: [Interrupt; 5] = [FIFO, BELL, FIFO_NS, BELL_NS, MTIMECMP];
+}
+
+/// Clock interrupt numbers
+pub mod clocks {
+    use super::Interrupt;
+
+    /// Clock interrupt
+    pub const CLOCKS_IRQ: Interrupt = Interrupt::CLOCKS_IRQ;
+
+    /// All clock interrupts
+    pub const ALL: [Interrupt; 1] = [CLOCKS_IRQ];
+}
+
+/// SPI interrupt numbers
+pub mod spi {
+    use super::Interrupt;
+
+    /// SPI0 interrupt
+    pub const SPI0_IRQ: Interrupt = Interrupt::SPI0_IRQ;
+    /// SPI1 interrupt
+    pub const SPI1_IRQ: Interrupt = Interrupt::SPI1_IRQ;
+
+    /// All SPI interrupts
+    pub const ALL: [Interrupt; 2] = [SPI0_IRQ, SPI1_IRQ];
+}
+
+/// UART interrupt numbers
+pub mod uart {
+    use super::Interrupt;
+
+    /// UART0 interrupt
+    pub const UART0_IRQ: Interrupt = Interrupt::UART0_IRQ;
+    /// UART1 interrupt
+    pub const UART1_IRQ: Interrupt = Interrupt::UART1_IRQ;
+
+    /// All UART interrupts
+    pub const ALL: [Interrupt; 2] = [UART0_IRQ, UART1_IRQ];
+}
+
+/// ADC interrupt numbers
+pub mod adc {
+    use super::Interrupt;
+
+    /// ADC interrupt
+    pub const ADC_IRQ_FIFO: Interrupt = Interrupt::ADC_IRQ_FIFO;
+
+    /// All ADC interrupts
+    pub const ALL: [Interrupt; 1] = [ADC_IRQ_FIFO];
+}
+
+/// I2C interrupt numbers
+pub mod i2c {
+    use super::Interrupt;
+
+    /// I2C0 interrupt
+    pub const I2C0_IRQ: Interrupt = Interrupt::I2C0_IRQ;
+    /// I2C1 interrupt
+    pub const I2C1_IRQ: Interrupt = Interrupt::I2C1_IRQ;
+
+    /// All I2C interrupts
+    pub const ALL: [Interrupt; 2] = [I2C0_IRQ, I2C1_IRQ];
+}
+
+/// OTP interrupt numbers
+pub mod otp {
+    use super::Interrupt;
+
+    /// OTP interrupt
+    pub const OTP_IRQ: Interrupt = Interrupt::OTP_IRQ;
+
+    /// All OTP interrupts
+    pub const ALL: [Interrupt; 1] = [OTP_IRQ];
+}
+
+/// TRNG interrupt numbers
+pub mod trng {
+    use super::Interrupt;
+
+    /// TRNG interrupt
+    pub const TRNG_IRQ: Interrupt = Interrupt::TRNG_IRQ;
+
+    /// All TRNG interrupts
+    pub const ALL: [Interrupt; 1] = [TRNG_IRQ];
+}
+
+/// PLL interrupt numbers
+pub mod pll {
+    use super::Interrupt;
+
+    /// PLL_SYS interrupt
+    pub const PLL_SYS_IRQ: Interrupt = Interrupt::PLL_SYS_IRQ;
+
+    /// PLL_USB interrupt
+    pub const PLL_USB_IRQ: Interrupt = Interrupt::PLL_USB_IRQ;
+
+    /// All PLL interrupts
+    pub const ALL: [Interrupt; 2] = [PLL_SYS_IRQ, PLL_USB_IRQ];
+}
+
+/// Power management interrupt numbers
+pub mod powman {
+    use super::Interrupt;
+
+    /// Power management power interrupt
+    pub const POWMAN_IRQ_POW: Interrupt = Interrupt::POWMAN_IRQ_POW;
+
+    /// Power management timer interrupt
+    pub const POWMAN_IRQ_TIMER: Interrupt = Interrupt::POWMAN_IRQ_TIMER;
+
+    /// All power management interrupts
+    pub const ALL: [Interrupt; 1] = [POWMAN_IRQ_POW];
+}
+
+/// Spare/User interrupt numbers (for software-triggered tasks)
+///
+/// RP2350 provides 6 spare interrupts that can be used as software interrupts.
+/// These are ideal for implementing deferred task execution.
+pub mod spare {
+    use super::*;
+
+    /// Number of available spare interrupts
+    pub const COUNT: usize = 6;
+
+    /// Spare SPARE_IRQ 0
+    pub const SPARE_IRQ_0: Interrupt = Interrupt::SPARE_IRQ_0;
+    /// Spare SPARE_IRQ 1
+    pub const SPARE_IRQ_1: Interrupt = Interrupt::SPARE_IRQ_1;
+    /// Spare SPARE_IRQ 2
+    pub const SPARE_IRQ_2: Interrupt = Interrupt::SPARE_IRQ_2;
+    /// Spare SPARE_IRQ 3
+    pub const SPARE_IRQ_3: Interrupt = Interrupt::SPARE_IRQ_3;
+    /// Spare SPARE_IRQ 4
+    pub const SPARE_IRQ_4: Interrupt = Interrupt::SPARE_IRQ_4;
+    /// Spare SPARE_IRQ 5
+    pub const SPARE_IRQ_5: Interrupt = Interrupt::SPARE_IRQ_5;
+
+    /// All spare interrupts
+    pub const ALL: [Interrupt; COUNT] = [
+        SPARE_IRQ_0,
+        SPARE_IRQ_1,
+        SPARE_IRQ_2,
+        SPARE_IRQ_3,
+        SPARE_IRQ_4,
+        SPARE_IRQ_5,
+    ];
 }
 
 // ============================================================================
