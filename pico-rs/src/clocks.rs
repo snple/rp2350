@@ -421,8 +421,8 @@ impl Clocks {
         self.clocks.clk_sys_div.write_int((div >> 16) & 0xffff);
         self.clocks.clk_sys_div.write_frac(div & 0xffff);
 
-        // Calculate actual frequency
-        self.frequencies.sys_clk = ((src_freq as u64) << 16) as u32 / div;
+        // Calculate actual frequency: src_freq / (div / 65536) = src_freq * 65536 / div
+        self.frequencies.sys_clk = (((src_freq as u64) << 16) / div as u64) as u32;
     }
 
     /// Set the system clock divisor

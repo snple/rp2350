@@ -223,102 +223,49 @@ impl Sio {
     // ========================================================================
     // Inter-core FIFO
     // ========================================================================
+    //
+    // NOTE: For high-level inter-core FIFO operations, use the `multicore::Fifo`
+    // API which provides a more ergonomic interface. The methods below provide
+    // direct low-level access to the FIFO registers if needed.
+    //
+    // See: `crate::multicore::Fifo`
 
-    /// Check if the RX FIFO has data available (VLD flag)
-    #[inline]
-    pub fn fifo_valid(&self) -> bool {
-        (self.sio.fifo_st.read_bits() & 0x01) != 0
-    }
-
-    /// Check if the TX FIFO is ready to accept data (RDY flag)
-    #[inline]
-    pub fn fifo_ready(&self) -> bool {
-        (self.sio.fifo_st.read_bits() & 0x02) != 0
-    }
-
-    /// Check if RX FIFO was read when empty (ROE flag)
-    #[inline]
-    pub fn fifo_roe(&self) -> bool {
-        (self.sio.fifo_st.read_bits() & 0x08) != 0
-    }
-
-    /// Check if TX FIFO was written when full (WOF flag)
-    #[inline]
-    pub fn fifo_wof(&self) -> bool {
-        (self.sio.fifo_st.read_bits() & 0x04) != 0
-    }
-
-    /// Clear ROE (read-on-empty) error flag
-    #[inline]
-    pub fn fifo_clear_roe(&self) {
-        self.sio.fifo_st.write_bits(0x08);
-    }
-
-    /// Clear WOF (write-on-full) error flag
-    #[inline]
-    pub fn fifo_clear_wof(&self) {
-        self.sio.fifo_st.write_bits(0x04);
-    }
-
-    /// Clear all FIFO error flags
-    #[inline]
-    pub fn fifo_clear_errors(&self) {
-        self.sio.fifo_st.write_bits(0x0C);
-    }
-
-    /// Write to the inter-core FIFO (non-blocking)
+    /// Get raw FIFO status register value
     ///
-    /// Returns `true` if the write succeeded, `false` if FIFO was full.
+    /// Bits:
+    /// - 0: VLD (RX FIFO has data)
+    /// - 1: RDY (TX FIFO has space)
+    /// - 2: WOF (write-on-full error)
+    /// - 3: ROE (read-on-empty error)
+    ///
+    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
     #[inline]
-    pub fn fifo_try_write(&self, value: u32) -> bool {
-        if self.fifo_ready() {
-            self.sio.fifo_wr.write_bits(value);
-            true
-        } else {
-            false
-        }
+    pub fn fifo_status(&self) -> u32 {
+        self.sio.fifo_st.read_bits()
     }
 
-    /// Write to the inter-core FIFO (blocking)
+    /// Write raw FIFO status register (for clearing error flags)
     ///
-    /// Blocks until the FIFO has space and writes the value.
+    /// Write 1 to bits 2-3 to clear WOF/ROE error flags.
     #[inline]
-    pub fn fifo_write(&self, value: u32) {
-        while !self.fifo_ready() {
-            core::hint::spin_loop();
-        }
-        self.sio.fifo_wr.write_bits(value);
+    pub fn fifo_status_write(&self, value: u32) {
+        self.sio.fifo_st.write_bits(value);
     }
 
-    /// Read from the inter-core FIFO (non-blocking)
+    /// Raw read from FIFO RX register
     ///
-    /// Returns `Some(value)` if data was available, `None` if FIFO was empty.
+    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
     #[inline]
-    pub fn fifo_try_read(&self) -> Option<u32> {
-        if self.fifo_valid() {
-            Some(self.sio.fifo_rd.read_bits())
-        } else {
-            None
-        }
-    }
-
-    /// Read from the inter-core FIFO (blocking)
-    ///
-    /// Blocks until the FIFO has data and returns the value.
-    #[inline]
-    pub fn fifo_read(&self) -> u32 {
-        while !self.fifo_valid() {
-            core::hint::spin_loop();
-        }
+    pub fn fifo_rd(&self) -> u32 {
         self.sio.fifo_rd.read_bits()
     }
 
-    /// Drain the RX FIFO, discarding all values
+    /// Raw write to FIFO TX register
+    ///
+    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
     #[inline]
-    pub fn fifo_drain(&self) {
-        while self.fifo_valid() {
-            let _ = self.sio.fifo_rd.read_bits();
-        }
+    pub fn fifo_wr(&self, value: u32) {
+        self.sio.fifo_wr.write_bits(value);
     }
 
     // ========================================================================
@@ -990,38 +937,12 @@ impl<'a> Interp1<'a> {
 // ============================================================================
 // Doorbell Interrupts (RP2350 specific)
 // ============================================================================
-
-/// Doorbell interrupt interface for inter-core signaling
-impl Sio {
-    /// Trigger a doorbell interrupt on the opposite core
-    ///
-    /// Write 1 to a bit to set the corresponding doorbell interrupt on the other core.
-    #[inline]
-    pub fn doorbell_out_set(&self, mask: u8) {
-        self.sio.doorbell_out_set.write_bits(mask as u32);
-    }
-
-    /// Clear doorbells which have been posted to the opposite core
-    #[inline]
-    pub fn doorbell_out_clr(&self, mask: u8) {
-        self.sio.doorbell_out_clr.write_bits(mask as u32);
-    }
-
-    /// Trigger doorbell interrupts on this core
-    #[inline]
-    pub fn doorbell_in_set(&self, mask: u8) {
-        self.sio.doorbell_in_set.write_bits(mask as u32);
-    }
-
-    /// Clear doorbells posted to this core
-    #[inline]
-    pub fn doorbell_in_clr(&self, mask: u8) {
-        self.sio.doorbell_in_clr.write_bits(mask as u32);
-    }
-
-    /// Get the status of doorbell interrupts on this core
-    #[inline]
-    pub fn doorbell_in_status(&self) -> u8 {
-        self.sio.doorbell_in_clr.read_bits() as u8
-    }
-}
+//
+// NOTE: For doorbell interrupt operations, use the `multicore::Doorbell` API
+// which provides a more ergonomic interface with proper safety guarantees.
+//
+// See: `crate::multicore::Doorbell`
+//
+// Raw register access is available through the PAC if needed:
+// - doorbell_out_set / doorbell_out_clr: Signal the other core
+// - doorbell_in_set / doorbell_in_clr: Manage this core's doorbells

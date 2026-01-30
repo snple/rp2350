@@ -4,6 +4,8 @@
 //! to blink an LED at a precise interval.
 //!
 //! The LED will toggle every 500ms using TIMER0 alarm interrupt.
+//!
+//! Run with: cargo run --release --bin timer_interrupt
 
 #![no_std]
 #![no_main]
@@ -12,29 +14,39 @@ use core::cell::RefCell;
 use core::sync::atomic::{AtomicBool, Ordering};
 
 use cortex_m::interrupt::Mutex;
+use defmt::*;
+use defmt_rtt as _;
+use panic_probe as _;
+
+use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::GpioBank;
 use pico_rs::interrupt as irq;
 use pico_rs::pac::Interrupt;
 use pico_rs::timer::Timer0;
 
+/// RP2350 Boot Block
+#[unsafe(link_section = ".start_block")]
+#[used]
+pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+
 // Shared state protected by a mutex
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);
-
-// LED pin (GPIO 25 on Pico)
-const LED_PIN: u8 = 25;
 
 // Interval in microseconds (500ms)
 const BLINK_INTERVAL_US: u32 = 500_000;
 
 #[entry]
 fn main() -> ! {
+    info!("Timer Interrupt Example");
+
     // Initialize GPIO
     let gpio = GpioBank::init();
     let led = gpio.pin25();
     led.into_output();
     led.set_low();
+    info!("LED configured on GPIO25");
 
     // Initialize Timer0
     let timer = Timer0::init();
@@ -53,6 +65,10 @@ fn main() -> ! {
     unsafe {
         irq::enable(Interrupt::TIMER0_IRQ_0);
     }
+    info!(
+        "Timer interrupt enabled, blinking at {}ms interval",
+        BLINK_INTERVAL_US / 1000
+    );
 
     // Main loop - the LED toggling happens in the interrupt
     loop {
@@ -95,11 +111,4 @@ fn TIMER0_IRQ_0() {
             timer.set_alarm(0, now.wrapping_add(BLINK_INTERVAL_US));
         }
     });
-}
-
-#[panic_handler]
-fn panic(_info: &core::panic::PanicInfo) -> ! {
-    loop {
-        cortex_m::asm::bkpt();
-    }
 }

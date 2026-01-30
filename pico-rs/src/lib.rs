@@ -30,6 +30,8 @@
 #![no_std]
 
 pub mod accessctrl;
+pub mod adc;
+pub mod aon_timer;
 pub mod block;
 pub mod busctrl;
 pub mod clocks;
@@ -38,8 +40,10 @@ pub mod eppb;
 pub mod gpio;
 pub mod i2c;
 pub mod interrupt;
+pub mod multicore;
 pub mod pio;
 pub mod pll;
+pub mod powman;
 pub mod pwm;
 pub mod reset;
 pub mod rosc;
@@ -74,13 +78,17 @@ pub use pico_rs_macro::pio_asm;
 
 // Re-export commonly used types
 pub use accessctrl::Accessctrl;
+pub use adc::Adc;
+pub use aon_timer::AonTimer;
 pub use busctrl::Busctrl;
 pub use clocks::Clocks;
 pub use dma::Dma;
 pub use eppb::Eppb;
 pub use gpio::GpioBank;
 pub use i2c::{I2c0, I2c1};
+pub use multicore::{Fifo, Multicore, Stack};
 pub use pll::{PllConfig, PllSys, PllUsb};
+pub use powman::Powman;
 pub use pwm::Pwm;
 pub use rosc::Rosc;
 pub use sha256::Sha256;

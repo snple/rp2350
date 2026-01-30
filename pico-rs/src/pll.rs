@@ -293,18 +293,16 @@ macro_rules! impl_pll {
             /// // Out = 1500 / (5 * 2) = 150 MHz
             /// ```
             pub fn configure(&self, refdiv: u8, fbdiv: u16, postdiv1: u8, postdiv2: u8) {
-                // Power down PLL while configuring
-                self.power_down();
-                self.vco_power_down();
-
-                // Configure dividers
+                // After reset, all power bits should be set (PLL off)
+                // Configure dividers first while PLL is off
                 self.set_refdiv(refdiv);
                 self.set_fbdiv(fbdiv);
 
-                // Power up VCO (but not post dividers yet)
-                self.power_up();
-                self.dsm_power_down(); // DSM not used for integer mode
-                self.vco_power_up();
+                // Clear PD and VCOPD to turn on PLL and VCO
+                // Keep POSTDIVPD set (post dividers still off)
+                // Keep DSMPD set (DSM not used for integer mode)
+                let power_on_mask = (1 << 0) | (1 << 5); // PD | VCOPD
+                self.regs.pwr.clr_bits(power_on_mask);
 
                 // Wait for VCO to lock
                 while !self.is_locked() {

@@ -245,25 +245,22 @@ macro_rules! impl_timer {
             }
 
             /// Clear an alarm interrupt (write 1 to clear)
+            ///
+            /// The INTR register uses write-1-to-clear semantics, so we
+            /// must directly write the bit mask, not use atomic set.
             #[inline]
             pub fn clear_alarm_interrupt(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.regs.intr.set_alarm_0(),
-                    1 => self.regs.intr.set_alarm_1(),
-                    2 => self.regs.intr.set_alarm_2(),
-                    3 => self.regs.intr.set_alarm_3(),
-                    _ => unreachable!(),
-                }
+                // Write 1 to the specific alarm bit to clear the interrupt
+                // This is a W1C register, so we write directly
+                self.regs.intr.write_bits(1 << alarm);
             }
 
             /// Clear all alarm interrupts
             #[inline]
             pub fn clear_all_alarm_interrupts(&self) {
-                self.regs.intr.set_alarm_0();
-                self.regs.intr.set_alarm_1();
-                self.regs.intr.set_alarm_2();
-                self.regs.intr.set_alarm_3();
+                // Write 0xF to clear all 4 alarm bits
+                self.regs.intr.write_bits(0xF);
             }
 
             /// Force an alarm interrupt (for testing)
@@ -327,6 +324,44 @@ macro_rules! impl_timer {
             pub fn is_locked(&self) -> bool {
                 self.regs.locked.locked()
             }
+
+            // ========================================================================
+            // Delay Functions
+            // ========================================================================
+
+            /// Delay for a number of microseconds
+            ///
+            /// This is a busy-wait delay using the hardware timer.
+            /// The timer runs at 1 MHz (1 tick = 1 microsecond).
+            #[inline]
+            pub fn delay_us(&self, us: u64) {
+                let target = self.get_time_us().wrapping_add(us);
+                while self.get_time_us() < target {
+                    cortex_m::asm::nop();
+                }
+            }
+
+            /// Delay for a number of milliseconds
+            #[inline]
+            pub fn delay_ms(&self, ms: u32) {
+                self.delay_us(ms as u64 * 1000);
+            }
+
+            /// Delay for a number of seconds
+            #[inline]
+            pub fn delay_secs(&self, secs: u32) {
+                self.delay_us(secs as u64 * 1_000_000);
+            }
+
+            /// Delay until a specific time (in microseconds)
+            ///
+            /// If the target time has already passed, returns immediately.
+            #[inline]
+            pub fn delay_until(&self, target_us: u64) {
+                while self.get_time_us() < target_us {
+                    cortex_m::asm::nop();
+                }
+            }
         }
 
         impl Default for $TimerName {
@@ -340,33 +375,3 @@ macro_rules! impl_timer {
 // Generate Timer0 and Timer1 types
 impl_timer!(Timer0, timer0, TIMER0, Peripheral::TIMER0);
 impl_timer!(Timer1, timer1, TIMER1, Peripheral::TIMER1);
-
-// ============================================================================
-// Convenience Functions
-// ============================================================================
-
-/// Get current time from TIMER0 in microseconds
-#[inline]
-pub fn get_time_us() -> u64 {
-    Timer0::new().get_time_us()
-}
-
-/// Get current time from TIMER0 (low 32 bits only)
-#[inline]
-pub fn get_time_us_32() -> u32 {
-    Timer0::new().get_time_us_32()
-}
-
-/// Simple busy-wait delay using TIMER0
-pub fn delay_us(us: u32) {
-    let timer = Timer0::new();
-    let start = timer.get_time_us_32();
-    while timer.get_time_us_32().wrapping_sub(start) < us {
-        core::hint::spin_loop();
-    }
-}
-
-/// Simple busy-wait delay in milliseconds using TIMER0
-pub fn delay_ms(ms: u32) {
-    delay_us(ms * 1000);
-}

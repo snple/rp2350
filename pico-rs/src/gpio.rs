@@ -3,10 +3,16 @@
 //! This module provides a type-safe interface for GPIO operations using the
 //! `paste` crate to generate dedicated types for each GPIO pin.
 //!
+//! ## Chip Variants
+//!
+//! - **RP2350A** (default): 30 GPIO pins (0-29) - Use feature `rp2350a`
+//! - **RP2350B**: 48 GPIO pins (0-47) - Use feature `rp2350b`
+//!
 //! ## Example
 //!
 //! ```ignore
 //! use pico_rs::gpio::{GpioBank, Pin25};
+//! use pico_rs::gpio::pins::{Uart0TxPin, I2c0SdaPin};
 //!
 //! // Initialize GPIO subsystem
 //! let gpio = GpioBank::init();
@@ -21,6 +27,20 @@
 //! led.set_high();
 //! led.set_low();
 //! led.toggle();
+//!
+//! // Configure pin 0 as UART0 TX (type-safe, compile-time verified)
+//! let tx = gpio.pin0();
+//! tx.into_uart0_tx();
+//!
+//! // Configure I2C0 on pins 4, 5 (with automatic pull-up)
+//! let sda = gpio.pin4();
+//! let scl = gpio.pin5();
+//! sda.into_i2c0_sda();
+//! scl.into_i2c0_scl();
+//!
+//! // Configure PWM on pin 0
+//! let pwm_pin = gpio.pin0();
+//! pwm_pin.into_pwm_a();  // PWM slice 0 channel A
 //! ```
 
 #![allow(clippy::identity_op)]
@@ -749,9 +769,46 @@ macro_rules! impl_gpio_bank {
 }
 
 // ============================================================================
-// Generate all 48 GPIO pins
+// Generate GPIO pins based on chip variant
 // ============================================================================
 
+// RP2350A: 30 GPIO pins (0-29)
+#[cfg(feature = "rp2350a")]
+impl_gpio_bank!(
+    0 => Pin0 => pin0 => [proc0_inte0, intr0, proc0_ints0],
+    1 => Pin1 => pin1 => [proc0_inte0, intr0, proc0_ints0],
+    2 => Pin2 => pin2 => [proc0_inte0, intr0, proc0_ints0],
+    3 => Pin3 => pin3 => [proc0_inte0, intr0, proc0_ints0],
+    4 => Pin4 => pin4 => [proc0_inte0, intr0, proc0_ints0],
+    5 => Pin5 => pin5 => [proc0_inte0, intr0, proc0_ints0],
+    6 => Pin6 => pin6 => [proc0_inte0, intr0, proc0_ints0],
+    7 => Pin7 => pin7 => [proc0_inte0, intr0, proc0_ints0],
+    8 => Pin8 => pin8 => [proc0_inte1, intr1, proc0_ints1],
+    9 => Pin9 => pin9 => [proc0_inte1, intr1, proc0_ints1],
+    10 => Pin10 => pin10 => [proc0_inte1, intr1, proc0_ints1],
+    11 => Pin11 => pin11 => [proc0_inte1, intr1, proc0_ints1],
+    12 => Pin12 => pin12 => [proc0_inte1, intr1, proc0_ints1],
+    13 => Pin13 => pin13 => [proc0_inte1, intr1, proc0_ints1],
+    14 => Pin14 => pin14 => [proc0_inte1, intr1, proc0_ints1],
+    15 => Pin15 => pin15 => [proc0_inte1, intr1, proc0_ints1],
+    16 => Pin16 => pin16 => [proc0_inte2, intr2, proc0_ints2],
+    17 => Pin17 => pin17 => [proc0_inte2, intr2, proc0_ints2],
+    18 => Pin18 => pin18 => [proc0_inte2, intr2, proc0_ints2],
+    19 => Pin19 => pin19 => [proc0_inte2, intr2, proc0_ints2],
+    20 => Pin20 => pin20 => [proc0_inte2, intr2, proc0_ints2],
+    21 => Pin21 => pin21 => [proc0_inte2, intr2, proc0_ints2],
+    22 => Pin22 => pin22 => [proc0_inte2, intr2, proc0_ints2],
+    23 => Pin23 => pin23 => [proc0_inte2, intr2, proc0_ints2],
+    24 => Pin24 => pin24 => [proc0_inte3, intr3, proc0_ints3],
+    25 => Pin25 => pin25 => [proc0_inte3, intr3, proc0_ints3],
+    26 => Pin26 => pin26 => [proc0_inte3, intr3, proc0_ints3],
+    27 => Pin27 => pin27 => [proc0_inte3, intr3, proc0_ints3],
+    28 => Pin28 => pin28 => [proc0_inte3, intr3, proc0_ints3],
+    29 => Pin29 => pin29 => [proc0_inte3, intr3, proc0_ints3],
+);
+
+// RP2350B: 48 GPIO pins (0-47)
+#[cfg(feature = "rp2350b")]
 impl_gpio_bank!(
     0 => Pin0 => pin0 => [proc0_inte0, intr0, proc0_ints0],
     1 => Pin1 => pin1 => [proc0_inte0, intr0, proc0_ints0],
@@ -802,3 +859,39 @@ impl_gpio_bank!(
     46 => Pin46 => pin46 => [proc0_inte5, intr5, proc0_ints5],
     47 => Pin47 => pin47 => [proc0_inte5, intr5, proc0_ints5],
 );
+
+// ============================================================================
+// Pin function mapping submodule
+// ============================================================================
+
+pub mod pins;
+
+// Re-export pin function traits for convenience
+pub use pins::{
+    // I2C traits
+    I2c0SclPin,
+    I2c0SdaPin,
+    I2c1SclPin,
+    I2c1SdaPin,
+    // PWM traits
+    PwmAPin,
+    PwmBPin,
+    // SPI traits
+    Spi0CsnPin,
+    Spi0RxPin,
+    Spi0SckPin,
+    Spi0TxPin,
+    Spi1CsnPin,
+    Spi1RxPin,
+    Spi1SckPin,
+    Spi1TxPin,
+    // UART traits
+    Uart0CtsPin,
+    Uart0RtsPin,
+    Uart0RxPin,
+    Uart0TxPin,
+    Uart1CtsPin,
+    Uart1RtsPin,
+    Uart1RxPin,
+    Uart1TxPin,
+};

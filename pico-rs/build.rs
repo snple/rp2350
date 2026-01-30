@@ -5,6 +5,9 @@ use std::io::Write;
 use std::path::PathBuf;
 
 fn main() {
+    #[cfg(all(feature = "rp2350a", feature = "rp2350b"))]
+    panic!("Only one of the features 'rp2350a' or 'rp2350b' can be enabled at a time.");
+
     // Put the linker script somewhere the linker can find it
     let out = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
     println!("cargo:rustc-link-search={}", out.display());

@@ -258,21 +258,28 @@ impl SysTick {
         // Clamp to max reload value
         let ticks = ticks.min(SYSTICK_MAX_RELOAD);
 
-        // Read start value
-        let start = SYST::get_current();
+        let reload = SYST::get_reload();
 
-        // Since SysTick counts down, we wait until enough ticks have passed
+        // Read start value and track previous value for wrap detection
+        let mut last = SYST::get_current();
+        let mut elapsed: u32 = 0;
+
+        // Since SysTick counts down, we accumulate elapsed ticks
+        // by detecting when the counter wraps (current > last means wrap occurred)
         loop {
             let current = SYST::get_current();
-            let reload = SYST::get_reload();
 
-            // Handle wrap-around: counter reloads to RVR when it hits 0
-            let elapsed = if current <= start {
-                start - current
+            // Calculate ticks since last read, handling wrap-around
+            let delta = if current <= last {
+                // Normal case: counter decreased
+                last - current
             } else {
-                // Wrapped: start -> 0 -> reload -> current
-                start + (reload - current) + 1
+                // Wrap occurred: last -> 0 -> reload -> current
+                last + (reload - current) + 1
             };
+
+            elapsed = elapsed.saturating_add(delta);
+            last = current;
 
             if elapsed >= ticks {
                 break;
@@ -300,12 +307,42 @@ pub struct Delay {
 }
 
 impl Delay {
-    /// Create a new Delay instance
+    /// Create a new Delay instance with just the clock frequency
+    ///
+    /// This is a convenience constructor that accesses the SysTick peripheral
+    /// directly. In most embedded applications, this is safe because only one
+    /// Delay instance is typically needed.
+    ///
+    /// # Arguments
+    /// * `freq_hz` - The clock frequency in Hz
+    ///
+    /// # Example
+    /// ```ignore
+    /// use pico_rs::Delay;
+    ///
+    /// let mut delay = Delay::new(12_000_000); // 12 MHz
+    /// delay.delay_ms(500);
+    /// ```
+    pub fn new(freq_hz: u32) -> Self {
+        // SAFETY: In typical bare-metal applications, only one Delay instance
+        // is created and SysTick is not used elsewhere. This provides a
+        // convenient API while being safe in common use cases.
+        unsafe {
+            Self {
+                systick: SysTick::new_unchecked(freq_hz),
+            }
+        }
+    }
+
+    /// Create a new Delay instance from an owned SYST peripheral
+    ///
+    /// Use this constructor when you need compile-time ownership tracking
+    /// of the SysTick peripheral.
     ///
     /// # Arguments
     /// * `syst` - The SYST peripheral from cortex-m
     /// * `freq_hz` - The clock frequency in Hz
-    pub fn new(syst: SYST, freq_hz: u32) -> Self {
+    pub fn from_syst(syst: SYST, freq_hz: u32) -> Self {
         Self {
             systick: SysTick::new(syst, freq_hz),
         }

@@ -131,10 +131,13 @@ fn main() -> ! {
     info!("Pin25 mask: {:#010X}", Pin25::<'_>::MASK);
     info!("Pin25 is high bank: {}", Pin25::<'_>::IS_HIGH);
 
-    use pico_rs::gpio::Pin32;
-    info!("Pin32 number: {}", Pin32::<'_>::PIN);
-    info!("Pin32 mask: {:#010X}", Pin32::<'_>::MASK);
-    info!("Pin32 is high bank: {}", Pin32::<'_>::IS_HIGH);
+    #[cfg(feature = "rp2350b")]
+    {
+        use pico_rs::gpio::Pin32;
+        info!("Pin32 number: {}", Pin32::<'_>::PIN);
+        info!("Pin32 mask: {:#010X}", Pin32::<'_>::MASK);
+        info!("Pin32 is high bank: {}", Pin32::<'_>::IS_HIGH);
+    }
 
     // ========================================================================
     // Example 5: PIO Function
