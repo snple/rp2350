@@ -29,13 +29,36 @@
 
 #![no_std]
 
+pub mod accessctrl;
 pub mod block;
+pub mod busctrl;
+pub mod clocks;
+pub mod dma;
+pub mod eppb;
 pub mod gpio;
+pub mod i2c;
+pub mod interrupt;
 pub mod pio;
+pub mod pll;
+pub mod pwm;
 pub mod reset;
+pub mod rosc;
+pub mod sha256;
 pub mod sio;
+pub mod spi;
+pub mod syscfg;
+pub mod sysinfo;
 pub mod systick;
+pub mod tbman;
+pub mod ticks;
 pub mod time;
+pub mod timer;
+pub mod trng;
+pub mod uart;
+pub mod watchdog;
+pub mod xip_aux;
+pub mod xip_ctrl;
+pub mod xosc;
 
 // Re-export pico-rs-pac
 pub use pico_rs_pac as pac;
@@ -50,9 +73,31 @@ pub use pico_rs_macro::entry;
 pub use pico_rs_macro::pio_asm;
 
 // Re-export commonly used types
+pub use accessctrl::Accessctrl;
+pub use busctrl::Busctrl;
+pub use clocks::Clocks;
+pub use dma::Dma;
+pub use eppb::Eppb;
 pub use gpio::GpioBank;
+pub use i2c::{I2c0, I2c1};
+pub use pll::{PllConfig, PllSys, PllUsb};
+pub use pwm::Pwm;
+pub use rosc::Rosc;
+pub use sha256::Sha256;
+pub use spi::{Spi0, Spi1};
+pub use syscfg::Syscfg;
+pub use sysinfo::Sysinfo;
 pub use systick::{Delay, SysTick};
+pub use tbman::Tbman;
+pub use ticks::Ticks;
 pub use time::{Duration, Instant};
+pub use timer::{Timer0, Timer1};
+pub use trng::Trng;
+pub use uart::{Uart0, Uart1};
+pub use watchdog::Watchdog;
+pub use xip_aux::XipAux;
+pub use xip_ctrl::XipCtrl;
+pub use xosc::Xosc;
 
 // Re-export cortex-m for convenience
 pub use cortex_m;

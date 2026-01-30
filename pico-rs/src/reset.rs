@@ -1,6 +1,7 @@
 //! Reset subsystem driver for RP2350
 //!
-//! This module provides a safe interface for managing peripheral resets.
+//! This module provides a safe interface for managing peripheral resets
+//! using the PAC register access methods.
 //!
 //! ## Example
 //!
@@ -19,6 +20,10 @@
 //! if reset::is_in_reset(Peripheral::I2C0) {
 //!     reset::unreset_block_wait(Peripheral::I2C0);
 //! }
+//!
+//! // Use individual peripheral methods
+//! reset::reset_uart0();
+//! reset::unreset_uart0_wait();
 //! ```
 
 use pico_rs_pac::RESETS;
@@ -27,6 +32,7 @@ use pico_rs_pac::RESETS;
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[allow(non_camel_case_types)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Peripheral {
     ADC = 1 << 0,
     BUSCTRL = 1 << 1,
@@ -100,15 +106,14 @@ impl core::ops::BitOr<Peripheral> for u32 {
     }
 }
 
+// ============================================================================
+// Mask-based operations (for multiple peripherals)
+// ============================================================================
+
 /// Put peripheral(s) into reset state
 ///
 /// # Arguments
 /// * `bits` - Bitmask of peripherals to reset
-///
-/// # Example
-/// ```ignore
-/// reset::reset_block_mask(Peripheral::UART0 | Peripheral::UART1);
-/// ```
 #[inline]
 pub fn reset_block_mask(bits: u32) {
     let resets = unsafe { &*RESETS::PTR };
@@ -116,30 +121,12 @@ pub fn reset_block_mask(bits: u32) {
 }
 
 /// Put a single peripheral into reset state
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to reset
-///
-/// # Example
-/// ```ignore
-/// reset::reset_block(Peripheral::UART0);
-/// ```
 #[inline]
 pub fn reset_block(peripheral: Peripheral) {
     reset_block_mask(peripheral.mask());
 }
 
 /// Bring peripheral(s) out of reset (without waiting)
-///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to unreset
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block_mask(Peripheral::UART0 | Peripheral::UART1);
-/// // Must wait for reset_done separately if needed
-/// reset::unreset_wait_mask(Peripheral::UART0 | Peripheral::UART1);
-/// ```
 #[inline]
 pub fn unreset_block_mask(bits: u32) {
     let resets = unsafe { &*RESETS::PTR };
@@ -147,31 +134,12 @@ pub fn unreset_block_mask(bits: u32) {
 }
 
 /// Bring a single peripheral out of reset (without waiting)
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to unreset
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block(Peripheral::UART0);
-/// // Must wait for reset_done separately if needed
-/// reset::unreset_wait(Peripheral::UART0);
-/// ```
 #[inline]
 pub fn unreset_block(peripheral: Peripheral) {
     unreset_block_mask(peripheral.mask());
 }
 
 /// Wait for peripheral(s) to complete reset
-///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to wait for
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block_mask(Peripheral::UART0 | Peripheral::UART1);
-/// reset::unreset_wait_mask(Peripheral::UART0 | Peripheral::UART1);
-/// ```
 #[inline]
 pub fn unreset_wait_mask(bits: u32) {
     let resets = unsafe { &*RESETS::PTR };
@@ -181,31 +149,12 @@ pub fn unreset_wait_mask(bits: u32) {
 }
 
 /// Wait for a single peripheral to complete reset
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to wait for
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block(Peripheral::UART0);
-/// reset::unreset_wait(Peripheral::UART0);
-/// ```
 #[inline]
 pub fn unreset_wait(peripheral: Peripheral) {
     unreset_wait_mask(peripheral.mask());
 }
 
 /// Bring peripheral(s) out of reset and wait for completion
-///
-/// This is the most common operation - it unresets and waits in one call.
-///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to unreset
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block_wait_mask(Peripheral::UART0 | Peripheral::UART1);
-/// ```
 #[inline]
 pub fn unreset_block_wait_mask(bits: u32) {
     unreset_block_mask(bits);
@@ -213,35 +162,12 @@ pub fn unreset_block_wait_mask(bits: u32) {
 }
 
 /// Bring a single peripheral out of reset and wait for completion
-///
-/// This is the most common operation - it unresets and waits in one call.
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to unreset
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_block_wait(Peripheral::UART0);
-/// ```
 #[inline]
 pub fn unreset_block_wait(peripheral: Peripheral) {
     unreset_block_wait_mask(peripheral.mask());
 }
 
 /// Check if peripheral(s) are in reset
-///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to check
-///
-/// # Returns
-/// `true` if all specified peripherals are in reset, `false` otherwise
-///
-/// # Example
-/// ```ignore
-/// if reset::is_in_reset_mask(Peripheral::UART0 | Peripheral::UART1) {
-///     // Both UART0 and UART1 are in reset
-/// }
-/// ```
 #[inline]
 pub fn is_in_reset_mask(bits: u32) -> bool {
     let resets = unsafe { &*RESETS::PTR };
@@ -249,38 +175,12 @@ pub fn is_in_reset_mask(bits: u32) -> bool {
 }
 
 /// Check if a single peripheral is in reset
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to check
-///
-/// # Returns
-/// `true` if the peripheral is in reset, `false` otherwise
-///
-/// # Example
-/// ```ignore
-/// if reset::is_in_reset(Peripheral::UART0) {
-///     reset::unreset_block_wait(Peripheral::UART0);
-/// }
-/// ```
 #[inline]
 pub fn is_in_reset(peripheral: Peripheral) -> bool {
     is_in_reset_mask(peripheral.mask())
 }
 
 /// Check if peripheral(s) have completed reset
-///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to check
-///
-/// # Returns
-/// `true` if all specified peripherals have completed reset, `false` otherwise
-///
-/// # Example
-/// ```ignore
-/// if reset::is_reset_done_mask(Peripheral::UART0 | Peripheral::UART1) {
-///     // Both UART0 and UART1 are ready to use
-/// }
-/// ```
 #[inline]
 pub fn is_reset_done_mask(bits: u32) -> bool {
     let resets = unsafe { &*RESETS::PTR };
@@ -288,47 +188,76 @@ pub fn is_reset_done_mask(bits: u32) -> bool {
 }
 
 /// Check if a single peripheral has completed reset
-///
-/// # Arguments
-/// * `peripheral` - The peripheral to check
-///
-/// # Returns
-/// `true` if the peripheral has completed reset, `false` otherwise
-///
-/// # Example
-/// ```ignore
-/// if reset::is_reset_done(Peripheral::UART0) {
-///     // UART0 is ready to use
-/// }
-/// ```
 #[inline]
 pub fn is_reset_done(peripheral: Peripheral) -> bool {
     is_reset_done_mask(peripheral.mask())
 }
 
 /// Reset all peripherals
-///
-/// This puts all peripherals into reset. Use with caution!
-///
-/// # Example
-/// ```ignore
-/// reset::reset_all();
-/// ```
 #[inline]
 pub fn reset_all() {
     let resets = unsafe { &*RESETS::PTR };
-    resets.reset.write_bits(0x1fffffff); // All 29 peripherals
+    resets.reset.write_bits(0x1fffffff);
 }
 
 /// Unreset all peripherals and wait
-///
-/// This brings all peripherals out of reset. Use with caution!
-///
-/// # Example
-/// ```ignore
-/// reset::unreset_all_wait();
-/// ```
 #[inline]
 pub fn unreset_all_wait() {
-    unreset_block_wait_mask(0x1fffffff); // All 29 peripherals
+    unreset_block_wait_mask(0x1fffffff);
 }
+
+// ============================================================================
+// Individual peripheral reset functions using PAC methods
+// ============================================================================
+
+macro_rules! impl_peripheral_reset {
+    ($($name:ident),+ $(,)?) => {
+        paste::paste! {
+            $(
+                #[doc = "Put " $name " into reset state"]
+                #[inline]
+                pub fn [<reset_ $name:lower>]() {
+                    let resets = unsafe { &*RESETS::PTR };
+                    resets.reset.[<set_ $name:lower>]();
+                }
+
+                #[doc = "Bring " $name " out of reset (without waiting)"]
+                #[inline]
+                pub fn [<unreset_ $name:lower>]() {
+                    let resets = unsafe { &*RESETS::PTR };
+                    resets.reset.[<clr_ $name:lower>]();
+                }
+
+                #[doc = "Wait for " $name " to complete reset"]
+                #[inline]
+                pub fn [<unreset_ $name:lower _wait>]() {
+                    let resets = unsafe { &*RESETS::PTR };
+                    resets.reset.[<clr_ $name:lower>]();
+                    while !resets.reset_done.[<$name:lower>]() {
+                        core::hint::spin_loop();
+                    }
+                }
+
+                #[doc = "Check if " $name " is in reset"]
+                #[inline]
+                pub fn [<is_ $name:lower _in_reset>]() -> bool {
+                    let resets = unsafe { &*RESETS::PTR };
+                    resets.reset.[<$name:lower>]()
+                }
+
+                #[doc = "Check if " $name " has completed reset"]
+                #[inline]
+                pub fn [<is_ $name:lower _reset_done>]() -> bool {
+                    let resets = unsafe { &*RESETS::PTR };
+                    resets.reset_done.[<$name:lower>]()
+                }
+            )+
+        }
+    };
+}
+
+impl_peripheral_reset!(
+    adc, busctrl, dma, hstx, i2c0, i2c1, io_bank0, io_qspi, jtag, pads_bank0, pads_qspi, pio0,
+    pio1, pio2, pll_sys, pll_usb, pwm, sha256, spi0, spi1, syscfg, sysinfo, tbman, timer0, timer1,
+    trng, uart0, uart1, usbctrl,
+);

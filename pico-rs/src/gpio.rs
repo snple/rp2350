@@ -161,12 +161,26 @@ pub enum IrqOverride {
     High = 3,
 }
 
+/// GPIO interrupt trigger edge/level
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum EdgeLevel {
+    /// Trigger on low level
+    LevelLow,
+    /// Trigger on high level
+    LevelHigh,
+    /// Trigger on falling edge
+    EdgeLow,
+    /// Trigger on rising edge
+    EdgeHigh,
+}
+
 // ============================================================================
 // Macro for generating GPIO Pin implementations
 // ============================================================================
 
 macro_rules! impl_gpio_pin {
-    ($PinName:ident, $pin_num:expr) => {
+    ($PinName:ident, $pin_num:expr, $inte_reg:ident, $intr_reg:ident, $ints_reg:ident) => {
         paste! {
             /// GPIO Pin $pin_num
             pub struct $PinName<'a> {
@@ -402,6 +416,98 @@ macro_rules! impl_gpio_pin {
                 }
 
                 // ================================================================
+                // Interrupt Support
+                // ================================================================
+
+                /// Enable interrupt for this pin on the specified edge/level
+                ///
+                /// This enables the interrupt for the current processor (proc0 by default).
+                /// You must also enable IO_IRQ_BANK0 in the NVIC.
+                #[inline]
+                pub fn enable_interrupt(&self, trigger: EdgeLevel) {
+                    match trigger {
+                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<set_gpio $pin_num _level_low>](),
+                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<set_gpio $pin_num _level_high>](),
+                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<set_gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<set_gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Disable interrupt for this pin on the specified edge/level
+                #[inline]
+                pub fn disable_interrupt(&self, trigger: EdgeLevel) {
+                    match trigger {
+                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_low>](),
+                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_high>](),
+                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Disable all interrupts for this pin
+                #[inline]
+                pub fn disable_all_interrupts(&self) {
+                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_low>]();
+                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_high>]();
+                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_low>]();
+                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_high>]();
+                }
+
+                /// Check if interrupt is enabled for this pin
+                #[inline]
+                pub fn is_interrupt_enabled(&self, trigger: EdgeLevel) -> bool {
+                    match trigger {
+                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<gpio $pin_num _level_low>](),
+                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<gpio $pin_num _level_high>](),
+                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Check if interrupt is pending (raw, before masking)
+                #[inline]
+                pub fn interrupt_raw(&self, trigger: EdgeLevel) -> bool {
+                    match trigger {
+                        EdgeLevel::LevelLow => self.io_bank.$intr_reg.[<gpio $pin_num _level_low>](),
+                        EdgeLevel::LevelHigh => self.io_bank.$intr_reg.[<gpio $pin_num _level_high>](),
+                        EdgeLevel::EdgeLow => self.io_bank.$intr_reg.[<gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$intr_reg.[<gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Check if interrupt is pending (after masking)
+                #[inline]
+                pub fn interrupt_status(&self, trigger: EdgeLevel) -> bool {
+                    match trigger {
+                        EdgeLevel::LevelLow => self.io_bank.$ints_reg.[<gpio $pin_num _level_low>](),
+                        EdgeLevel::LevelHigh => self.io_bank.$ints_reg.[<gpio $pin_num _level_high>](),
+                        EdgeLevel::EdgeLow => self.io_bank.$ints_reg.[<gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$ints_reg.[<gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Clear edge-triggered interrupt (write 1 to clear)
+                ///
+                /// Note: Level interrupts cannot be cleared here - they clear
+                /// automatically when the pin level changes.
+                #[inline]
+                pub fn clear_interrupt(&self, trigger: EdgeLevel) {
+                    match trigger {
+                        // Level interrupts auto-clear when pin level changes
+                        EdgeLevel::LevelLow | EdgeLevel::LevelHigh => {},
+                        EdgeLevel::EdgeLow => self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_low>](),
+                        EdgeLevel::EdgeHigh => self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_high>](),
+                    }
+                }
+
+                /// Clear all pending edge interrupts for this pin
+                #[inline]
+                pub fn clear_all_interrupts(&self) {
+                    self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_low>]();
+                    self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_high>]();
+                }
+
+                // ================================================================
                 // SIO Direction Control
                 // ================================================================
 
@@ -578,11 +684,11 @@ macro_rules! impl_gpio_pin {
 // ============================================================================
 
 macro_rules! impl_gpio_bank {
-    ($($pin_num:literal => $PinName:ident => $getter:ident),+ $(,)?) => {
+    ($($pin_num:literal => $PinName:ident => $getter:ident => [$inte_reg:ident, $intr_reg:ident, $ints_reg:ident]),+ $(,)?) => {
         paste! {
             // Generate all pin types
             $(
-                impl_gpio_pin!($PinName, $pin_num);
+                impl_gpio_pin!($PinName, $pin_num, $inte_reg, $intr_reg, $ints_reg);
             )+
 
             /// GPIO Bank - provides access to all GPIO pins
@@ -647,52 +753,52 @@ macro_rules! impl_gpio_bank {
 // ============================================================================
 
 impl_gpio_bank!(
-    0 => Pin0 => pin0,
-    1 => Pin1 => pin1,
-    2 => Pin2 => pin2,
-    3 => Pin3 => pin3,
-    4 => Pin4 => pin4,
-    5 => Pin5 => pin5,
-    6 => Pin6 => pin6,
-    7 => Pin7 => pin7,
-    8 => Pin8 => pin8,
-    9 => Pin9 => pin9,
-    10 => Pin10 => pin10,
-    11 => Pin11 => pin11,
-    12 => Pin12 => pin12,
-    13 => Pin13 => pin13,
-    14 => Pin14 => pin14,
-    15 => Pin15 => pin15,
-    16 => Pin16 => pin16,
-    17 => Pin17 => pin17,
-    18 => Pin18 => pin18,
-    19 => Pin19 => pin19,
-    20 => Pin20 => pin20,
-    21 => Pin21 => pin21,
-    22 => Pin22 => pin22,
-    23 => Pin23 => pin23,
-    24 => Pin24 => pin24,
-    25 => Pin25 => pin25,
-    26 => Pin26 => pin26,
-    27 => Pin27 => pin27,
-    28 => Pin28 => pin28,
-    29 => Pin29 => pin29,
-    30 => Pin30 => pin30,
-    31 => Pin31 => pin31,
-    32 => Pin32 => pin32,
-    33 => Pin33 => pin33,
-    34 => Pin34 => pin34,
-    35 => Pin35 => pin35,
-    36 => Pin36 => pin36,
-    37 => Pin37 => pin37,
-    38 => Pin38 => pin38,
-    39 => Pin39 => pin39,
-    40 => Pin40 => pin40,
-    41 => Pin41 => pin41,
-    42 => Pin42 => pin42,
-    43 => Pin43 => pin43,
-    44 => Pin44 => pin44,
-    45 => Pin45 => pin45,
-    46 => Pin46 => pin46,
-    47 => Pin47 => pin47,
+    0 => Pin0 => pin0 => [proc0_inte0, intr0, proc0_ints0],
+    1 => Pin1 => pin1 => [proc0_inte0, intr0, proc0_ints0],
+    2 => Pin2 => pin2 => [proc0_inte0, intr0, proc0_ints0],
+    3 => Pin3 => pin3 => [proc0_inte0, intr0, proc0_ints0],
+    4 => Pin4 => pin4 => [proc0_inte0, intr0, proc0_ints0],
+    5 => Pin5 => pin5 => [proc0_inte0, intr0, proc0_ints0],
+    6 => Pin6 => pin6 => [proc0_inte0, intr0, proc0_ints0],
+    7 => Pin7 => pin7 => [proc0_inte0, intr0, proc0_ints0],
+    8 => Pin8 => pin8 => [proc0_inte1, intr1, proc0_ints1],
+    9 => Pin9 => pin9 => [proc0_inte1, intr1, proc0_ints1],
+    10 => Pin10 => pin10 => [proc0_inte1, intr1, proc0_ints1],
+    11 => Pin11 => pin11 => [proc0_inte1, intr1, proc0_ints1],
+    12 => Pin12 => pin12 => [proc0_inte1, intr1, proc0_ints1],
+    13 => Pin13 => pin13 => [proc0_inte1, intr1, proc0_ints1],
+    14 => Pin14 => pin14 => [proc0_inte1, intr1, proc0_ints1],
+    15 => Pin15 => pin15 => [proc0_inte1, intr1, proc0_ints1],
+    16 => Pin16 => pin16 => [proc0_inte2, intr2, proc0_ints2],
+    17 => Pin17 => pin17 => [proc0_inte2, intr2, proc0_ints2],
+    18 => Pin18 => pin18 => [proc0_inte2, intr2, proc0_ints2],
+    19 => Pin19 => pin19 => [proc0_inte2, intr2, proc0_ints2],
+    20 => Pin20 => pin20 => [proc0_inte2, intr2, proc0_ints2],
+    21 => Pin21 => pin21 => [proc0_inte2, intr2, proc0_ints2],
+    22 => Pin22 => pin22 => [proc0_inte2, intr2, proc0_ints2],
+    23 => Pin23 => pin23 => [proc0_inte2, intr2, proc0_ints2],
+    24 => Pin24 => pin24 => [proc0_inte3, intr3, proc0_ints3],
+    25 => Pin25 => pin25 => [proc0_inte3, intr3, proc0_ints3],
+    26 => Pin26 => pin26 => [proc0_inte3, intr3, proc0_ints3],
+    27 => Pin27 => pin27 => [proc0_inte3, intr3, proc0_ints3],
+    28 => Pin28 => pin28 => [proc0_inte3, intr3, proc0_ints3],
+    29 => Pin29 => pin29 => [proc0_inte3, intr3, proc0_ints3],
+    30 => Pin30 => pin30 => [proc0_inte3, intr3, proc0_ints3],
+    31 => Pin31 => pin31 => [proc0_inte3, intr3, proc0_ints3],
+    32 => Pin32 => pin32 => [proc0_inte4, intr4, proc0_ints4],
+    33 => Pin33 => pin33 => [proc0_inte4, intr4, proc0_ints4],
+    34 => Pin34 => pin34 => [proc0_inte4, intr4, proc0_ints4],
+    35 => Pin35 => pin35 => [proc0_inte4, intr4, proc0_ints4],
+    36 => Pin36 => pin36 => [proc0_inte4, intr4, proc0_ints4],
+    37 => Pin37 => pin37 => [proc0_inte4, intr4, proc0_ints4],
+    38 => Pin38 => pin38 => [proc0_inte4, intr4, proc0_ints4],
+    39 => Pin39 => pin39 => [proc0_inte4, intr4, proc0_ints4],
+    40 => Pin40 => pin40 => [proc0_inte5, intr5, proc0_ints5],
+    41 => Pin41 => pin41 => [proc0_inte5, intr5, proc0_ints5],
+    42 => Pin42 => pin42 => [proc0_inte5, intr5, proc0_ints5],
+    43 => Pin43 => pin43 => [proc0_inte5, intr5, proc0_ints5],
+    44 => Pin44 => pin44 => [proc0_inte5, intr5, proc0_ints5],
+    45 => Pin45 => pin45 => [proc0_inte5, intr5, proc0_ints5],
+    46 => Pin46 => pin46 => [proc0_inte5, intr5, proc0_ints5],
+    47 => Pin47 => pin47 => [proc0_inte5, intr5, proc0_ints5],
 );
