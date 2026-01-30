@@ -10,6 +10,7 @@
 //! - Software reset trigger
 //! - 8 scratch registers for data persistence
 //! - Reset reason detection
+//! - Full system reboot support
 //!
 //! ## Example
 //!
@@ -27,8 +28,21 @@
 //!     watchdog.feed();
 //! }
 //! ```
+//!
+//! ## Full System Reboot
+//!
+//! ```ignore
+//! use pico_rs::watchdog;
+//!
+//! // Reboot into regular flash path after 1ms
+//! watchdog::reboot(1);
+//!
+//! // Reboot to a specific address
+//! watchdog::reboot_to_address(0x10000000, 0x20001000, 1);
+//! ```
 
-use pico_rs_pac::WATCHDOG;
+use pico_rs_pac::psm::Wdsel;
+use pico_rs_pac::{PSM, WATCHDOG};
 
 /// Reset reason
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -345,4 +359,280 @@ impl Default for Watchdog {
     fn default() -> Self {
         Self::new()
     }
+}
+
+// ============================================================================
+// Module-level Reset Functions
+// ============================================================================
+
+/// Magic value indicating a non-reboot watchdog reset
+const WATCHDOG_NON_REBOOT_MAGIC: u32 = 0x6ab73121;
+
+/// Magic value for reboot with specific PC/SP
+const WATCHDOG_REBOOT_MAGIC: u32 = 0xb007c0d3;
+
+/// All PSM blocks to reset on watchdog (everything except ROSC and XOSC)
+///
+/// This mask includes all power state machine blocks that should be reset
+/// during a full system reboot. ROSC and XOSC are excluded to maintain
+/// clock stability during the reset process.
+const PSM_WDSEL_RESET_BITS: u32 = Wdsel::PROC1
+    | Wdsel::PROC0
+    | Wdsel::ACCESSCTRL
+    | Wdsel::SIO
+    | Wdsel::XIP
+    | Wdsel::SRAM9
+    | Wdsel::SRAM8
+    | Wdsel::SRAM7
+    | Wdsel::SRAM6
+    | Wdsel::SRAM5
+    | Wdsel::SRAM4
+    | Wdsel::SRAM3
+    | Wdsel::SRAM2
+    | Wdsel::SRAM1
+    | Wdsel::SRAM0
+    | Wdsel::BOOTRAM
+    | Wdsel::ROM
+    | Wdsel::BUSFABRIC
+    | Wdsel::PSM_READY
+    | Wdsel::CLOCKS
+    | Wdsel::RESETS
+    | Wdsel::OTP
+    | Wdsel::PROC_COLD;
+// Excluded: ROSC and XOSC to maintain clock stability
+
+/// Maximum watchdog load value (24-bit counter)
+const WATCHDOG_LOAD_MAX: u32 = 0x00ffffff;
+
+/// Configure watchdog for system reset
+///
+/// This is an internal helper that configures PSM wdsel and watchdog settings
+/// for a full system reset.
+///
+/// # Arguments
+/// * `delay_ms` - Delay in milliseconds before reset (0 = immediate trigger)
+/// * `pause_on_debug` - Whether to pause watchdog during debug
+fn configure_watchdog_reset(delay_ms: u32, pause_on_debug: bool) {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    let psm = unsafe { &*PSM::PTR };
+
+    // Disable watchdog before configuration
+    watchdog.ctrl.clr_enable();
+
+    // Configure PSM watchdog select register
+    // Reset everything except ROSC and XOSC to maintain clock stability
+    psm.wdsel.set_bits(PSM_WDSEL_RESET_BITS);
+
+    // Configure debug pause behavior
+    if pause_on_debug {
+        watchdog.ctrl.set_pause_dbg0();
+        watchdog.ctrl.set_pause_dbg1();
+        watchdog.ctrl.set_pause_jtag();
+    } else {
+        watchdog.ctrl.clr_pause_dbg0();
+        watchdog.ctrl.clr_pause_dbg1();
+        watchdog.ctrl.clr_pause_jtag();
+    }
+
+    if delay_ms == 0 {
+        // Immediate trigger
+        watchdog.ctrl.trigger_trigger();
+    } else {
+        // Calculate load value (microseconds, capped at 24-bit max)
+        let load_value = (delay_ms.saturating_mul(1000)).min(WATCHDOG_LOAD_MAX);
+
+        // Load the counter
+        watchdog.load.write_load(load_value);
+
+        // Enable watchdog
+        watchdog.ctrl.set_enable();
+    }
+}
+
+/// Perform a full system reboot
+///
+/// This function initiates a complete system reset using the watchdog timer.
+/// After the specified delay, the system will reset and boot from flash.
+///
+/// The reboot process:
+/// 1. Configures PSM to reset all subsystems (except oscillators)
+/// 2. Sets up watchdog timer with the specified delay
+/// 3. Triggers watchdog which causes a full system reset
+///
+/// # Arguments
+/// * `delay_ms` - Delay in milliseconds before reset (0 = immediate)
+///
+/// # Note
+/// This function does not return. The system will reset after the delay.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::watchdog;
+///
+/// // Reboot after 10ms
+/// watchdog::reboot(10);
+/// ```
+pub fn reboot(delay_ms: u32) -> ! {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+
+    // Clear scratch[4] to indicate regular flash boot path
+    watchdog.scratch4.write_bits(0);
+
+    // Configure and trigger reboot
+    configure_watchdog_reset(delay_ms, false);
+
+    // Wait for watchdog to trigger reset
+    loop {
+        cortex_m::asm::wfi();
+    }
+}
+
+/// Perform a full system reboot to a specific address
+///
+/// This function initiates a complete system reset and configures the
+/// Boot ROM to jump to a specific program counter (PC) and stack pointer (SP)
+/// after the reset.
+///
+/// # Arguments
+/// * `pc` - Program counter (entry point) to jump to after reset
+/// * `sp` - Stack pointer value to set before jumping
+/// * `delay_ms` - Delay in milliseconds before reset (0 = immediate)
+///
+/// # Note
+/// This function does not return. The system will reset and begin
+/// execution at the specified address.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::watchdog;
+///
+/// // Reboot to a specific application at 0x10010000
+/// watchdog::reboot_to_address(0x10010000, 0x20040000, 1);
+/// ```
+pub fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+
+    // Disable watchdog first
+    watchdog.ctrl.clr_enable();
+
+    // Set up scratch registers for Boot ROM
+    // scratch[4] = magic to indicate reboot with address
+    // scratch[5] = PC XOR'd with negative magic (for verification)
+    // scratch[6] = SP
+    // scratch[7] = PC
+    let pc_thumb = pc | 1; // Set thumb mode bit for ARM
+    watchdog.scratch4.write_bits(WATCHDOG_REBOOT_MAGIC);
+    watchdog
+        .scratch5
+        .write_bits(pc_thumb ^ (WATCHDOG_REBOOT_MAGIC.wrapping_neg()));
+    watchdog.scratch6.write_bits(sp);
+    watchdog.scratch7.write_bits(pc_thumb);
+
+    // Configure and trigger reboot (don't pause on debug for reboot)
+    configure_watchdog_reset(delay_ms, false);
+
+    // Wait for watchdog to trigger reset
+    loop {
+        cortex_m::asm::wfi();
+    }
+}
+
+/// Enable watchdog with the specified timeout
+///
+/// This enables the watchdog as a regular watchdog timer (not for reboot).
+/// The `feed()` function must be called periodically to prevent reset.
+///
+/// # Arguments
+/// * `delay_ms` - Timeout in milliseconds (max ~8300ms)
+/// * `pause_on_debug` - Whether to pause the watchdog during debug
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::watchdog;
+///
+/// // Enable watchdog with 1 second timeout, pausing on debug
+/// watchdog::enable(1000, true);
+///
+/// loop {
+///     // Do work...
+///     watchdog::feed();
+/// }
+/// ```
+pub fn enable(delay_ms: u32, pause_on_debug: bool) {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+
+    // Mark as non-reboot watchdog
+    watchdog.scratch4.write_bits(WATCHDOG_NON_REBOOT_MAGIC);
+
+    configure_watchdog_reset(delay_ms, pause_on_debug);
+}
+
+/// Disable the watchdog timer
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::watchdog;
+///
+/// watchdog::disable();
+/// ```
+#[inline]
+pub fn disable() {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    watchdog.ctrl.clr_enable();
+}
+
+/// Feed (reload) the watchdog timer
+///
+/// This reloads the watchdog counter to prevent a reset.
+/// Should be called periodically when the watchdog is enabled.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::watchdog;
+///
+/// // Feed the watchdog to prevent reset
+/// watchdog::feed();
+/// ```
+#[inline]
+pub fn feed() {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    let time = watchdog.ctrl.time();
+    watchdog.load.write_load(time);
+}
+
+/// Get the remaining time before watchdog reset in microseconds
+#[inline]
+pub fn time_remaining_us() -> u32 {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    watchdog.ctrl.time()
+}
+
+/// Get the remaining time before watchdog reset in milliseconds
+#[inline]
+pub fn time_remaining_ms() -> u32 {
+    time_remaining_us() / 1000
+}
+
+/// Check if the last reset was caused by the watchdog
+///
+/// Returns `true` if the watchdog timer triggered the reset.
+#[inline]
+pub fn caused_reboot() -> bool {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    watchdog.reason.read_bits() != 0
+}
+
+/// Check if the last reset was caused by `watchdog::enable()`
+///
+/// Distinguishes between a reset from the regular watchdog timer
+/// versus a reboot initiated by `reboot()` or `reboot_to_address()`.
+#[inline]
+pub fn enable_caused_reboot() -> bool {
+    let watchdog = unsafe { &*WATCHDOG::PTR };
+    watchdog.reason.read_bits() != 0 && watchdog.scratch4.read_bits() == WATCHDOG_NON_REBOOT_MAGIC
 }

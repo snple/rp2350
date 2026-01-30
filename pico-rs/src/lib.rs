@@ -32,6 +32,7 @@
 pub mod accessctrl;
 pub mod adc;
 pub mod aon_timer;
+pub mod binary_info;
 pub mod block;
 pub mod busctrl;
 pub mod clocks;
@@ -75,6 +76,10 @@ pub use pico_rs_macro::entry;
 
 // Re-export the pio_asm macro
 pub use pico_rs_macro::pio_asm;
+
+// Re-export paste for use in macros
+#[doc(hidden)]
+pub use paste;
 
 // Re-export commonly used types
 pub use accessctrl::Accessctrl;

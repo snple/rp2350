@@ -68,3 +68,11 @@ path = "src/bin/clock_advanced.rs"
 [[bin]]
 name = "adc_example"
 path = "src/bin/adc_example.rs"
+
+[[bin]]
+name = "watchdog_example"
+path = "src/bin/watchdog_example.rs"
+
+[[bin]]
+name = "timer_delay"
+path = "src/bin/timer_delay.rs"
