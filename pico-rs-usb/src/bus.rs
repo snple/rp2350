@@ -10,6 +10,7 @@ use pico_rs_pac::{RESETS, USB, USB_DPRAM};
 use crate::CONTROL_MAX_PACKET_SIZE;
 use crate::endpoint::{
     EndpointAddress, EndpointAllocator, EndpointBuffer, EndpointConfig, EndpointDirection,
+    EndpointType,
 };
 use crate::error::{UsbError, UsbResult};
 
@@ -65,6 +66,10 @@ pub struct UsbBus {
     ep0_out_buffer: UnsafeCell<EndpointBuffer>,
     /// Endpoint 0 IN data toggle (true = DATA1, false = DATA0)
     ep0_in_data_toggle: AtomicBool,
+    /// Non-EP0 endpoint buffers (indices: 0-14 for IN ep1-15, 15-29 for OUT ep1-15)
+    ep_buffers: UnsafeCell<[Option<EndpointBuffer>; 30]>,
+    /// Non-EP0 endpoint data toggles
+    ep_data_toggles: [AtomicBool; 30],
 }
 
 // Safety: UsbBus uses atomic operations and is designed for single-threaded embedded use
@@ -76,6 +81,8 @@ impl UsbBus {
     ///
     /// This does not initialize the hardware. Call `init()` to initialize.
     pub const fn new() -> Self {
+        const NONE_BUFFER: Option<EndpointBuffer> = None;
+        const FALSE_TOGGLE: AtomicBool = AtomicBool::new(false);
         Self {
             usb: unsafe { &*(USB::PTR as *const _) },
             dpram: unsafe { &*(USB_DPRAM::PTR as *const _) },
@@ -88,6 +95,8 @@ impl UsbBus {
                 CONTROL_MAX_PACKET_SIZE,
             )),
             ep0_in_data_toggle: AtomicBool::new(true), // Start with DATA1 after SETUP
+            ep_buffers: UnsafeCell::new([NONE_BUFFER; 30]),
+            ep_data_toggles: [FALSE_TOGGLE; 30],
         }
     }
 
@@ -314,6 +323,105 @@ impl UsbBus {
         unsafe { base.add(offset) }
     }
 
+    /// Get the index for endpoint buffer/toggle arrays
+    /// IN ep1-15 -> indices 0-14
+    /// OUT ep1-15 -> indices 15-29
+    fn ep_buffer_index(&self, ep_addr: EndpointAddress) -> usize {
+        let num = (ep_addr.number() - 1) as usize; // ep1 -> 0, ep2 -> 1, etc
+        if ep_addr.direction().is_in() {
+            num
+        } else {
+            num + 15
+        }
+    }
+
+    /// Configure and enable a non-control endpoint
+    ///
+    /// This sets up the endpoint control register and allocates a buffer.
+    pub fn configure_ep(
+        &self,
+        ep_addr: EndpointAddress,
+        ep_type: EndpointType,
+        max_packet_size: u16,
+    ) -> UsbResult<()> {
+        if ep_addr.number() == 0 {
+            return Ok(()); // EP0 is configured separately
+        }
+
+        let allocator = unsafe { &mut *self.allocator.get() };
+        let buffer = allocator.allocate(max_packet_size)?;
+
+        // Store the buffer
+        let idx = self.ep_buffer_index(ep_addr);
+        let buffers = unsafe { &mut *self.ep_buffers.get() };
+        buffers[idx] = Some(buffer);
+
+        // Reset data toggle
+        self.ep_data_toggles[idx].store(false, Ordering::SeqCst);
+
+        // Configure endpoint control register
+        // EP control registers are at offsets 0x08, 0x0c, 0x10, ... in DPRAM
+        // EP1_IN_CONTROL = 0x08, EP1_OUT_CONTROL = 0x0c, EP2_IN_CONTROL = 0x10, etc.
+        let ep_ctrl_base = pico_rs_pac::usb_dpram::BASE as *mut u32;
+        let ctrl_offset = if ep_addr.direction().is_in() {
+            (ep_addr.number() as usize) * 2 // IN: 0x08, 0x10, 0x18, ...
+        } else {
+            (ep_addr.number() as usize) * 2 + 1 // OUT: 0x0c, 0x14, 0x1c, ...
+        };
+
+        // Build endpoint control register value
+        // Bit 31: ENABLE
+        // Bit 29: INTERRUPT_PER_BUFF
+        // Bits 27:26: ENDPOINT_TYPE (0=Control, 1=Iso, 2=Bulk, 3=Interrupt)
+        // Bits 15:0: BUFFER_ADDRESS (64-byte aligned offset in DPRAM)
+        let ep_type_bits = match ep_type {
+            EndpointType::Control => 0,
+            EndpointType::Isochronous => 1,
+            EndpointType::Bulk => 2,
+            EndpointType::Interrupt => 3,
+        };
+
+        let ctrl_val = (1 << 31)                         // ENABLE
+            | (1 << 29)                                   // INTERRUPT_PER_BUFF
+            | ((ep_type_bits as u32) << 26)               // ENDPOINT_TYPE
+            | ((buffer.offset as u32) & 0xFFFF); // BUFFER_ADDRESS
+
+        unsafe {
+            core::ptr::write_volatile(ep_ctrl_base.add(ctrl_offset), ctrl_val);
+        }
+
+        // For OUT endpoints, also arm the buffer control to receive data
+        if ep_addr.direction().is_out() {
+            let buf_ctrl = self.get_ep_buffer_control(ep_addr);
+            let buf_ctrl_val = (max_packet_size as u32) & 0x3FF  // LENGTH
+                | (1 << 10); // AVAILABLE
+            unsafe {
+                core::ptr::write_volatile(buf_ctrl, buf_ctrl_val);
+            }
+        }
+
+        #[cfg(feature = "defmt")]
+        defmt::info!(
+            "USB: Configured {} type={:?} buffer_offset={:#x} size={}",
+            ep_addr,
+            ep_type,
+            buffer.offset,
+            max_packet_size
+        );
+
+        Ok(())
+    }
+
+    /// Reset data toggle for an endpoint (used after CLEAR_FEATURE HALT)
+    pub fn reset_ep_data_toggle(&self, ep_addr: EndpointAddress) {
+        if ep_addr.number() == 0 {
+            self.ep0_in_data_toggle.store(true, Ordering::SeqCst);
+        } else {
+            let idx = self.ep_buffer_index(ep_addr);
+            self.ep_data_toggles[idx].store(false, Ordering::SeqCst);
+        }
+    }
+
     /// Allocate an endpoint
     pub fn alloc_endpoint(
         &self,
@@ -381,12 +489,17 @@ impl UsbBus {
             return Err(UsbError::InvalidEndpoint);
         }
 
-        let buffer = if ep_addr.number() == 0 {
-            unsafe { *self.ep0_in_buffer.get() }
+        let (buffer, data_toggle) = if ep_addr.number() == 0 {
+            let buf = unsafe { *self.ep0_in_buffer.get() };
+            let toggle = self.ep0_in_data_toggle.load(Ordering::SeqCst);
+            (buf, toggle)
         } else {
-            // For non-EP0 endpoints, we'd look up the allocated buffer
-            // This is simplified
-            EndpointBuffer::new(0x180, 64)
+            // For non-EP0 endpoints, look up the allocated buffer
+            let idx = self.ep_buffer_index(ep_addr);
+            let buffers = unsafe { &*self.ep_buffers.get() };
+            let buf = buffers[idx].ok_or(UsbError::InvalidEndpoint)?;
+            let toggle = self.ep_data_toggles[idx].load(Ordering::SeqCst);
+            (buf, toggle)
         };
 
         let len = core::cmp::min(data.len(), buffer.size as usize);
@@ -398,14 +511,34 @@ impl UsbBus {
         }
 
         // Set up buffer control for transmission
-        // Bit 15: FULL_0
-        // Bit 13: PID_0 (DATA1)
-        // Bit 10: AVAILABLE_0
+        // Bit 15: FULL_0 - Buffer is full
+        // Bit 13: PID_0 - DATA toggle (DATA1 if set, DATA0 if clear)
+        // Bit 10: AVAILABLE_0 - Buffer available for hardware
         let ctrl = self.get_ep_buffer_control(ep_addr);
-        let ctrl_val = (len as u32)     // LENGTH_0
-            | (1 << 10)                  // AVAILABLE_0
-            | (1 << 13)                  // PID_0 = DATA1
+        let mut ctrl_val = (len as u32)  // LENGTH_0
+            | (1 << 10)                   // AVAILABLE_0
             | (1 << 15); // FULL_0
+
+        if data_toggle {
+            ctrl_val |= 1 << 13; // PID_0 = DATA1
+        }
+
+        // Toggle for next transfer
+        if ep_addr.number() == 0 {
+            self.ep0_in_data_toggle
+                .store(!data_toggle, Ordering::SeqCst);
+        } else {
+            let idx = self.ep_buffer_index(ep_addr);
+            self.ep_data_toggles[idx].store(!data_toggle, Ordering::SeqCst);
+        }
+
+        #[cfg(feature = "defmt")]
+        defmt::trace!(
+            "USB: write {} bytes to {}, toggle={}",
+            len,
+            ep_addr,
+            data_toggle
+        );
 
         unsafe {
             core::ptr::write_volatile(ctrl, ctrl_val);
@@ -423,12 +556,21 @@ impl UsbBus {
         let buffer = if ep_addr.number() == 0 {
             unsafe { *self.ep0_out_buffer.get() }
         } else {
-            EndpointBuffer::new(0x180 + 64, 64)
+            // For non-EP0 endpoints, look up the allocated buffer
+            let idx = self.ep_buffer_index(ep_addr);
+            let buffers = unsafe { &*self.ep_buffers.get() };
+            buffers[idx].ok_or(UsbError::InvalidEndpoint)?
         };
 
-        // Read buffer control to get received length
+        // Read buffer control to check if data is available
         let ctrl = self.get_ep_buffer_control(ep_addr);
         let ctrl_val = unsafe { core::ptr::read_volatile(ctrl) };
+
+        // Check if buffer has data (FULL bit should be set by hardware when data received)
+        if (ctrl_val & (1 << 15)) == 0 {
+            // No data available
+            return Err(UsbError::WouldBlock);
+        }
 
         let received_len = (ctrl_val & 0x3FF) as usize;
         let len = core::cmp::min(received_len, data.len());
@@ -439,10 +581,33 @@ impl UsbBus {
             core::ptr::copy_nonoverlapping(buf_ptr, data.as_mut_ptr(), len);
         }
 
-        // Clear the buffer control
-        unsafe {
-            core::ptr::write_volatile(ctrl, 0);
+        // Toggle data for next transfer
+        if ep_addr.number() != 0 {
+            let idx = self.ep_buffer_index(ep_addr);
+            let toggle = self.ep_data_toggles[idx].load(Ordering::SeqCst);
+            self.ep_data_toggles[idx].store(!toggle, Ordering::SeqCst);
         }
+
+        // Re-arm the endpoint to receive more data
+        let toggle = if ep_addr.number() == 0 {
+            true // EP0 always uses DATA1 for OUT after setup
+        } else {
+            let idx = self.ep_buffer_index(ep_addr);
+            self.ep_data_toggles[idx].load(Ordering::SeqCst)
+        };
+
+        let mut new_ctrl = (buffer.size as u32) & 0x3FF  // Max length
+            | (1 << 10); // AVAILABLE_0
+        if toggle {
+            new_ctrl |= 1 << 13; // PID_0 = DATA1
+        }
+
+        unsafe {
+            core::ptr::write_volatile(ctrl, new_ctrl);
+        }
+
+        #[cfg(feature = "defmt")]
+        defmt::trace!("USB: read {} bytes from {}", len, ep_addr);
 
         Ok(len)
     }
@@ -584,13 +749,20 @@ impl UsbBus {
         }
     }
 
-    /// Clear stall on an endpoint
+    /// Clear stall on an endpoint and reset data toggle
     pub fn unstall(&self, ep_addr: EndpointAddress) {
+        // Clear STALL bit
         let ctrl = self.get_ep_buffer_control(ep_addr);
         unsafe {
             let val = core::ptr::read_volatile(ctrl);
             core::ptr::write_volatile(ctrl, val & !(1 << 11)); // Clear STALL bit
         }
+
+        // Reset data toggle to DATA0 per USB spec
+        self.reset_ep_data_toggle(ep_addr);
+
+        #[cfg(feature = "defmt")]
+        defmt::debug!("USB: Unstalled {}, reset data toggle", ep_addr);
     }
 
     /// Check if an endpoint is stalled

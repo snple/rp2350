@@ -29,17 +29,17 @@
 //! }
 //! ```
 
+use crate::BULK_MAX_PACKET_SIZE;
 use crate::bus::UsbBus;
 use crate::control::SetupPacket;
 use crate::descriptor::{
-    cdc_descriptor, cdc_protocol, cdc_subclass, class_code, DescriptorWriter,
-    EndpointDescriptor, InterfaceDescriptor,
+    DescriptorWriter, EndpointDescriptor, InterfaceDescriptor, cdc_descriptor, cdc_protocol,
+    cdc_subclass, class_code,
 };
 use crate::device::UsbClass;
 use crate::endpoint::{EndpointAddress, EndpointType};
 use crate::error::{UsbError, UsbResult};
 use crate::types::{Recipient, RequestType};
-use crate::BULK_MAX_PACKET_SIZE;
 
 /// CDC class-specific request codes
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -349,7 +349,10 @@ impl<'a> CdcAcm<'a> {
             return Ok(());
         }
 
-        match self.bus.write(self.bulk_in_ep, &self.write_buf[..self.write_len]) {
+        match self
+            .bus
+            .write(self.bulk_in_ep, &self.write_buf[..self.write_len])
+        {
             Ok(n) => {
                 // Shift remaining data
                 if n < self.write_len {
@@ -459,9 +462,9 @@ impl<'a> UsbClass for CdcAcm<'a> {
 
         // Header Functional Descriptor
         if !writer.write(&[
-            5,                         // bLength
-            0x24,                      // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::HEADER,    // bDescriptorSubtype
+            5,                      // bLength
+            0x24,                   // bDescriptorType (CS_INTERFACE)
+            cdc_descriptor::HEADER, // bDescriptorSubtype
             0x10,
             0x01, // bcdCDC (1.10)
         ]) {
@@ -470,32 +473,32 @@ impl<'a> UsbClass for CdcAcm<'a> {
 
         // Call Management Functional Descriptor
         if !writer.write(&[
-            5,                                // bLength
-            0x24,                             // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::CALL_MANAGEMENT,  // bDescriptorSubtype
-            0x00,                             // bmCapabilities
-            self.data_if,                     // bDataInterface
+            5,                               // bLength
+            0x24,                            // bDescriptorType (CS_INTERFACE)
+            cdc_descriptor::CALL_MANAGEMENT, // bDescriptorSubtype
+            0x00,                            // bmCapabilities
+            self.data_if,                    // bDataInterface
         ]) {
             return false;
         }
 
         // ACM Functional Descriptor
         if !writer.write(&[
-            4,                    // bLength
-            0x24,                 // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::ACM,  // bDescriptorSubtype
-            0x02,                 // bmCapabilities (line coding + break)
+            4,                   // bLength
+            0x24,                // bDescriptorType (CS_INTERFACE)
+            cdc_descriptor::ACM, // bDescriptorSubtype
+            0x02,                // bmCapabilities (line coding + break)
         ]) {
             return false;
         }
 
         // Union Functional Descriptor
         if !writer.write(&[
-            5,                      // bLength
-            0x24,                   // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::UNION,  // bDescriptorSubtype
-            self.comm_if,           // bControlInterface
-            self.data_if,           // bSubordinateInterface0
+            5,                     // bLength
+            0x24,                  // bDescriptorType (CS_INTERFACE)
+            cdc_descriptor::UNION, // bDescriptorSubtype
+            self.comm_if,          // bControlInterface
+            self.data_if,          // bSubordinateInterface0
         ]) {
             return false;
         }
@@ -535,12 +538,8 @@ impl<'a> UsbClass for CdcAcm<'a> {
         }
 
         // Bulk IN endpoint
-        let bulk_in_desc = EndpointDescriptor::new(
-            self.bulk_in_ep,
-            EndpointType::Bulk,
-            BULK_MAX_PACKET_SIZE,
-            0,
-        );
+        let bulk_in_desc =
+            EndpointDescriptor::new(self.bulk_in_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE, 0);
         if !writer.write_endpoint(&bulk_in_desc) {
             return false;
         }
@@ -549,9 +548,40 @@ impl<'a> UsbClass for CdcAcm<'a> {
     }
 
     fn configure(&mut self) {
+        // Configure the CDC endpoints in hardware
+        // Interrupt IN endpoint (EP1 IN)
+        if let Err(e) = self
+            .bus
+            .configure_ep(self.int_ep, EndpointType::Interrupt, 8)
+        {
+            #[cfg(feature = "defmt")]
+            defmt::error!("CDC: Failed to configure interrupt EP: {:?}", e);
+            return;
+        }
+
+        // Bulk IN endpoint (EP2 IN)
+        if let Err(e) =
+            self.bus
+                .configure_ep(self.bulk_in_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE)
+        {
+            #[cfg(feature = "defmt")]
+            defmt::error!("CDC: Failed to configure bulk IN EP: {:?}", e);
+            return;
+        }
+
+        // Bulk OUT endpoint (EP2 OUT)
+        if let Err(e) =
+            self.bus
+                .configure_ep(self.bulk_out_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE)
+        {
+            #[cfg(feature = "defmt")]
+            defmt::error!("CDC: Failed to configure bulk OUT EP: {:?}", e);
+            return;
+        }
+
         self.configured = true;
         #[cfg(feature = "defmt")]
-        defmt::info!("CDC: Configured");
+        defmt::info!("CDC: Configured - endpoints initialized");
     }
 
     fn reset(&mut self) {
