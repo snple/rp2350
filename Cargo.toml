@@ -4,6 +4,7 @@ members = [
     "pico-rs",
     "pico-rs-pac",
     "pico-rs-macro",
+    "pico-rs-usb",
     "pico-rs-examples",
     "xtask",
 ]
@@ -35,3 +36,4 @@ syn = { version = "2.0", features = ["full"] }
 # Local crates
 pico-rs = { path = "pico-rs" }
 pico-rs-macro = { path = "pico-rs-macro" }
+pico-rs-usb = { path = "pico-rs-usb" }

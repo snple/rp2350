@@ -316,6 +316,7 @@ dependencies = [
  "defmt-rtt",
  "panic-probe",
  "pico-rs",
+ "pico-rs-usb",
 ]
 
 [[package]]
@@ -335,6 +336,18 @@ dependencies = [
  "cortex-m-rt",
  "critical-section",
  "enumflags2",
+]
+
+[[package]]
+name = "pico-rs-usb"
+version = "0.1.0"
+dependencies = [
+ "cfg-if",
+ "cortex-m",
+ "critical-section",
+ "defmt",
+ "pico-rs-pac",
+ "portable-atomic",
 ]
 
 [[package]]

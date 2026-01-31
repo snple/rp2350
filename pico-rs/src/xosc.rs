@@ -117,13 +117,17 @@ impl Xosc {
         let startup_delay = ((freq_khz + 128) / 256) * STARTUP_DELAY_MULTIPLIER;
 
         // Set frequency range (this must be done before enabling)
+        // Note: write_freq_range expects the raw value (e.g., 0xaa0), not shifted
         xosc.ctrl.write_freq_range(range.to_bits());
 
         // Set startup delay
         xosc.startup.write_delay(startup_delay);
 
         // Enable the oscillator
-        xosc.ctrl.write_enable(Ctrl::ENABLE_ENABLE);
+        // Note: ENABLE_ENABLE is already shifted (4011 << 12), but write_enable expects unshifted value
+        // So we need to pass 4011 (0xFAB) directly, not the pre-shifted constant
+        const ENABLE_VALUE: u32 = 0xFAB; // "ENABLE" magic value
+        xosc.ctrl.write_enable(ENABLE_VALUE);
 
         // Wait for XOSC to stabilize
         while !Self::is_stable_raw(xosc) {
