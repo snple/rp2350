@@ -14,14 +14,23 @@ pub const BASE: u32 = 0x40070000;
 /// ## Fields
 ///
 /// - **OE** `[11]` (RO)
+///
 ///   Overrun error. This bit is set to 1 if data is received and the receive FIFO is already full. This is cleared to 0 once there is an empty space in the FIFO and a new character can be written to it.
+///
 /// - **BE** `[10]` (RO)
+///
 ///   Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity and stop bits). In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state), and the next valid start bit is received.
+///
 /// - **PE** `[9]` (RO)
+///
 ///   Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. In FIFO mode, this error is associated with the character at the top of the FIFO.
+///
 /// - **FE** `[8]` (RO)
+///
 ///   Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). In FIFO mode, this error is associated with the character at the top of the FIFO.
+///
 /// - **DATA** `[7:0]` (RW)
+///
 ///   Receive (read) data character. Transmit (write) data character.
 #[repr(transparent)]
 pub struct Uartdr {
@@ -40,35 +49,45 @@ impl Uartdr {
     // ======== Field Constants ========
 
     /// **OE**
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the receive FIFO is already full. This is cleared to 0 once there is an empty space in the FIFO and a new character can be written to it.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const OE_OFFSET: u32 = 11;
     pub const OE_MASK: u32 = 0x00000800;
     pub const OE: u32 = 1 << 11;
 
     /// **BE**
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity and stop bits). In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state), and the next valid start bit is received.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const BE_OFFSET: u32 = 10;
     pub const BE_MASK: u32 = 0x00000400;
     pub const BE: u32 = 1 << 10;
 
     /// **PE**
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. In FIFO mode, this error is associated with the character at the top of the FIFO.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const PE_OFFSET: u32 = 9;
     pub const PE_MASK: u32 = 0x00000200;
     pub const PE: u32 = 1 << 9;
 
     /// **FE**
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). In FIFO mode, this error is associated with the character at the top of the FIFO.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const FE_OFFSET: u32 = 8;
     pub const FE_MASK: u32 = 0x00000100;
     pub const FE: u32 = 1 << 8;
 
     /// **DATA**
+    ///
     /// Receive (read) data character. Transmit (write) data character.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const DATA_OFFSET: u32 = 0;
     pub const DATA_MASK: u32 = 0x000000ff;
@@ -76,6 +95,7 @@ impl Uartdr {
     // ======== Field Accessors ========
 
     /// **OE** `[11]` (RO)
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the receive FIFO is already full. This is cleared to 0 once there is an empty space in the FIFO and a new character can be written to it.
     #[inline(always)]
     pub fn oe(&self) -> bool {
@@ -83,6 +103,7 @@ impl Uartdr {
     }
 
     /// **BE** `[10]` (RO)
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity and stop bits). In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state), and the next valid start bit is received.
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -90,6 +111,7 @@ impl Uartdr {
     }
 
     /// **PE** `[9]` (RO)
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub fn pe(&self) -> bool {
@@ -97,6 +119,7 @@ impl Uartdr {
     }
 
     /// **FE** `[8]` (RO)
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub fn fe(&self) -> bool {
@@ -104,6 +127,7 @@ impl Uartdr {
     }
 
     /// **DATA** `[7:0]` (RW)
+    ///
     /// Receive (read) data character. Transmit (write) data character.
     #[inline(always)]
     pub fn data(&self) -> u32 {
@@ -111,6 +135,7 @@ impl Uartdr {
     }
 
     /// Write **DATA** `[7:0]` (RW)
+    ///
     /// Receive (read) data character. Transmit (write) data character.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
@@ -148,6 +173,7 @@ impl UartdrVal {
     }
 
     /// Read **OE** `[11:11]`
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the receive FIFO is already full. This is cleared to 0 once there is an empty space in the FIFO and a new character can be written to it.
     #[inline(always)]
     pub const fn oe(&self) -> bool {
@@ -155,6 +181,7 @@ impl UartdrVal {
     }
 
     /// Read **BE** `[10:10]`
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity and stop bits). In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state), and the next valid start bit is received.
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -162,6 +189,7 @@ impl UartdrVal {
     }
 
     /// Read **PE** `[9:9]`
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn pe(&self) -> bool {
@@ -169,6 +197,7 @@ impl UartdrVal {
     }
 
     /// Read **FE** `[8:8]`
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn fe(&self) -> bool {
@@ -176,6 +205,7 @@ impl UartdrVal {
     }
 
     /// Read **DATA** `[7:0]`
+    ///
     /// Receive (read) data character. Transmit (write) data character.
     #[inline(always)]
     pub const fn data(&self) -> u32 {
@@ -183,6 +213,7 @@ impl UartdrVal {
     }
 
     /// Set **DATA** `[7:0]`
+    ///
     /// Receive (read) data character. Transmit (write) data character.
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
@@ -230,12 +261,19 @@ impl Uartdr {
 /// ## Fields
 ///
 /// - **OE** `[3]` (RW)
+///
 ///   Overrun error. This bit is set to 1 if data is received and the FIFO is already full. This bit is cleared to 0 by a write to UARTECR. The FIFO contents remain valid because no more data is written when the FIFO is full, only the contents of the shift register are overwritten. The CPU must now read the data, to empty the FIFO.
+///
 /// - **BE** `[2]` (RW)
+///
 ///   Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity, and stop bits). This bit is cleared to 0 after a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state) and the next valid start bit is received.
+///
 /// - **PE** `[1]` (RW)
+///
 ///   Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
+///
 /// - **FE** `[0]` (RW)
+///
 ///   Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
 #[repr(transparent)]
 pub struct Uartrsr {
@@ -254,28 +292,36 @@ impl Uartrsr {
     // ======== Field Constants ========
 
     /// **OE**
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the FIFO is already full. This bit is cleared to 0 by a write to UARTECR. The FIFO contents remain valid because no more data is written when the FIFO is full, only the contents of the shift register are overwritten. The CPU must now read the data, to empty the FIFO.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const OE_OFFSET: u32 = 3;
     pub const OE_MASK: u32 = 0x00000008;
     pub const OE: u32 = 1 << 3;
 
     /// **BE**
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity, and stop bits). This bit is cleared to 0 after a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state) and the next valid start bit is received.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const BE_OFFSET: u32 = 2;
     pub const BE_MASK: u32 = 0x00000004;
     pub const BE: u32 = 1 << 2;
 
     /// **PE**
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PE_OFFSET: u32 = 1;
     pub const PE_MASK: u32 = 0x00000002;
     pub const PE: u32 = 1 << 1;
 
     /// **FE**
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const FE_OFFSET: u32 = 0;
     pub const FE_MASK: u32 = 0x00000001;
@@ -284,6 +330,7 @@ impl Uartrsr {
     // ======== Field Accessors ========
 
     /// **OE** `[3]` (RW)
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the FIFO is already full. This bit is cleared to 0 by a write to UARTECR. The FIFO contents remain valid because no more data is written when the FIFO is full, only the contents of the shift register are overwritten. The CPU must now read the data, to empty the FIFO.
     #[inline(always)]
     pub fn oe(&self) -> bool {
@@ -303,6 +350,7 @@ impl Uartrsr {
     }
 
     /// **BE** `[2]` (RW)
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity, and stop bits). This bit is cleared to 0 after a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state) and the next valid start bit is received.
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -322,6 +370,7 @@ impl Uartrsr {
     }
 
     /// **PE** `[1]` (RW)
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub fn pe(&self) -> bool {
@@ -341,6 +390,7 @@ impl Uartrsr {
     }
 
     /// **FE** `[0]` (RW)
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub fn fe(&self) -> bool {
@@ -390,6 +440,7 @@ impl UartrsrVal {
     }
 
     /// Read **OE** `[3:3]`
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the FIFO is already full. This bit is cleared to 0 by a write to UARTECR. The FIFO contents remain valid because no more data is written when the FIFO is full, only the contents of the shift register are overwritten. The CPU must now read the data, to empty the FIFO.
     #[inline(always)]
     pub const fn oe(&self) -> bool {
@@ -397,6 +448,7 @@ impl UartrsrVal {
     }
 
     /// Read **BE** `[2:2]`
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity, and stop bits). This bit is cleared to 0 after a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state) and the next valid start bit is received.
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -404,6 +456,7 @@ impl UartrsrVal {
     }
 
     /// Read **PE** `[1:1]`
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn pe(&self) -> bool {
@@ -411,6 +464,7 @@ impl UartrsrVal {
     }
 
     /// Read **FE** `[0:0]`
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn fe(&self) -> bool {
@@ -418,6 +472,7 @@ impl UartrsrVal {
     }
 
     /// Set **OE** `[3:3]`
+    ///
     /// Overrun error. This bit is set to 1 if data is received and the FIFO is already full. This bit is cleared to 0 by a write to UARTECR. The FIFO contents remain valid because no more data is written when the FIFO is full, only the contents of the shift register are overwritten. The CPU must now read the data, to empty the FIFO.
     #[inline(always)]
     pub const fn with_oe(self, value: bool) -> Self {
@@ -431,6 +486,7 @@ impl UartrsrVal {
     }
 
     /// Set **BE** `[2:2]`
+    ///
     /// Break error. This bit is set to 1 if a break condition was detected, indicating that the received data input was held LOW for longer than a full-word transmission time (defined as start, data, parity, and stop bits). This bit is cleared to 0 after a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO. When a break occurs, only one 0 character is loaded into the FIFO. The next character is only enabled after the receive data input goes to a 1 (marking state) and the next valid start bit is received.
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -444,6 +500,7 @@ impl UartrsrVal {
     }
 
     /// Set **PE** `[1:1]`
+    ///
     /// Parity error. When set to 1, it indicates that the parity of the received data character does not match the parity that the EPS and SPS bits in the Line Control Register, UARTLCR_H. This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn with_pe(self, value: bool) -> Self {
@@ -457,6 +514,7 @@ impl UartrsrVal {
     }
 
     /// Set **FE** `[0:0]`
+    ///
     /// Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
     #[inline(always)]
     pub const fn with_fe(self, value: bool) -> Self {
@@ -508,22 +566,39 @@ impl Uartrsr {
 /// ## Fields
 ///
 /// - **RI** `[8]` (RO)
+///
 ///   Ring indicator. This bit is the complement of the UART ring indicator, nUARTRI, modem status input. That is, the bit is 1 when nUARTRI is LOW.
+///
 /// - **TXFE** `[7]` (RO)
+///
 ///   Transmit FIFO empty. The meaning of this bit depends on the state of the FEN bit in the Line Control Register, UARTLCR_H. If the FIFO is disabled, this bit is set when the transmit holding register is empty. If the FIFO is enabled, the TXFE bit is set when the transmit FIFO is empty. This bit does not indicate if there is data in the transmit shift register.
+///
 /// - **RXFF** `[6]` (RO)
+///
 ///   Receive FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is full. If the FIFO is enabled, the RXFF bit is set when the receive FIFO is full.
+///
 /// - **TXFF** `[5]` (RO)
+///
 ///   Transmit FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the transmit holding register is full. If the FIFO is enabled, the TXFF bit is set when the transmit FIFO is full.
+///
 /// - **RXFE** `[4]` (RO)
+///
 ///   Receive FIFO empty. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is empty. If the FIFO is enabled, the RXFE bit is set when the receive FIFO is empty.
+///
 /// - **BUSY** `[3]` (RO)
+///
 ///   UART busy. If this bit is set to 1, the UART is busy transmitting data. This bit remains set until the complete byte, including all the stop bits, has been sent from the shift register. This bit is set as soon as the transmit FIFO becomes non-empty, regardless of whether the UART is enabled or not.
+///
 /// - **DCD** `[2]` (RO)
+///
 ///   Data carrier detect. This bit is the complement of the UART data carrier detect, nUARTDCD, modem status input. That is, the bit is 1 when nUARTDCD is LOW.
+///
 /// - **DSR** `[1]` (RO)
+///
 ///   Data set ready. This bit is the complement of the UART data set ready, nUARTDSR, modem status input. That is, the bit is 1 when nUARTDSR is LOW.
+///
 /// - **CTS** `[0]` (RO)
+///
 ///   Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
 #[repr(transparent)]
 pub struct Uartfr {
@@ -542,63 +617,81 @@ impl Uartfr {
     // ======== Field Constants ========
 
     /// **RI**
+    ///
     /// Ring indicator. This bit is the complement of the UART ring indicator, nUARTRI, modem status input. That is, the bit is 1 when nUARTRI is LOW.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const RI_OFFSET: u32 = 8;
     pub const RI_MASK: u32 = 0x00000100;
     pub const RI: u32 = 1 << 8;
 
     /// **TXFE**
+    ///
     /// Transmit FIFO empty. The meaning of this bit depends on the state of the FEN bit in the Line Control Register, UARTLCR_H. If the FIFO is disabled, this bit is set when the transmit holding register is empty. If the FIFO is enabled, the TXFE bit is set when the transmit FIFO is empty. This bit does not indicate if there is data in the transmit shift register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const TXFE_OFFSET: u32 = 7;
     pub const TXFE_MASK: u32 = 0x00000080;
     pub const TXFE: u32 = 1 << 7;
 
     /// **RXFF**
+    ///
     /// Receive FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is full. If the FIFO is enabled, the RXFF bit is set when the receive FIFO is full.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RXFF_OFFSET: u32 = 6;
     pub const RXFF_MASK: u32 = 0x00000040;
     pub const RXFF: u32 = 1 << 6;
 
     /// **TXFF**
+    ///
     /// Transmit FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the transmit holding register is full. If the FIFO is enabled, the TXFF bit is set when the transmit FIFO is full.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TXFF_OFFSET: u32 = 5;
     pub const TXFF_MASK: u32 = 0x00000020;
     pub const TXFF: u32 = 1 << 5;
 
     /// **RXFE**
+    ///
     /// Receive FIFO empty. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is empty. If the FIFO is enabled, the RXFE bit is set when the receive FIFO is empty.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RXFE_OFFSET: u32 = 4;
     pub const RXFE_MASK: u32 = 0x00000010;
     pub const RXFE: u32 = 1 << 4;
 
     /// **BUSY**
+    ///
     /// UART busy. If this bit is set to 1, the UART is busy transmitting data. This bit remains set until the complete byte, including all the stop bits, has been sent from the shift register. This bit is set as soon as the transmit FIFO becomes non-empty, regardless of whether the UART is enabled or not.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const BUSY_OFFSET: u32 = 3;
     pub const BUSY_MASK: u32 = 0x00000008;
     pub const BUSY: u32 = 1 << 3;
 
     /// **DCD**
+    ///
     /// Data carrier detect. This bit is the complement of the UART data carrier detect, nUARTDCD, modem status input. That is, the bit is 1 when nUARTDCD is LOW.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DCD_OFFSET: u32 = 2;
     pub const DCD_MASK: u32 = 0x00000004;
     pub const DCD: u32 = 1 << 2;
 
     /// **DSR**
+    ///
     /// Data set ready. This bit is the complement of the UART data set ready, nUARTDSR, modem status input. That is, the bit is 1 when nUARTDSR is LOW.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const DSR_OFFSET: u32 = 1;
     pub const DSR_MASK: u32 = 0x00000002;
     pub const DSR: u32 = 1 << 1;
 
     /// **CTS**
+    ///
     /// Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CTS_OFFSET: u32 = 0;
     pub const CTS_MASK: u32 = 0x00000001;
@@ -607,6 +700,7 @@ impl Uartfr {
     // ======== Field Accessors ========
 
     /// **RI** `[8]` (RO)
+    ///
     /// Ring indicator. This bit is the complement of the UART ring indicator, nUARTRI, modem status input. That is, the bit is 1 when nUARTRI is LOW.
     #[inline(always)]
     pub fn ri(&self) -> bool {
@@ -614,6 +708,7 @@ impl Uartfr {
     }
 
     /// **TXFE** `[7]` (RO)
+    ///
     /// Transmit FIFO empty. The meaning of this bit depends on the state of the FEN bit in the Line Control Register, UARTLCR_H. If the FIFO is disabled, this bit is set when the transmit holding register is empty. If the FIFO is enabled, the TXFE bit is set when the transmit FIFO is empty. This bit does not indicate if there is data in the transmit shift register.
     #[inline(always)]
     pub fn txfe(&self) -> bool {
@@ -621,6 +716,7 @@ impl Uartfr {
     }
 
     /// **RXFF** `[6]` (RO)
+    ///
     /// Receive FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is full. If the FIFO is enabled, the RXFF bit is set when the receive FIFO is full.
     #[inline(always)]
     pub fn rxff(&self) -> bool {
@@ -628,6 +724,7 @@ impl Uartfr {
     }
 
     /// **TXFF** `[5]` (RO)
+    ///
     /// Transmit FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the transmit holding register is full. If the FIFO is enabled, the TXFF bit is set when the transmit FIFO is full.
     #[inline(always)]
     pub fn txff(&self) -> bool {
@@ -635,6 +732,7 @@ impl Uartfr {
     }
 
     /// **RXFE** `[4]` (RO)
+    ///
     /// Receive FIFO empty. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is empty. If the FIFO is enabled, the RXFE bit is set when the receive FIFO is empty.
     #[inline(always)]
     pub fn rxfe(&self) -> bool {
@@ -642,6 +740,7 @@ impl Uartfr {
     }
 
     /// **BUSY** `[3]` (RO)
+    ///
     /// UART busy. If this bit is set to 1, the UART is busy transmitting data. This bit remains set until the complete byte, including all the stop bits, has been sent from the shift register. This bit is set as soon as the transmit FIFO becomes non-empty, regardless of whether the UART is enabled or not.
     #[inline(always)]
     pub fn busy(&self) -> bool {
@@ -649,6 +748,7 @@ impl Uartfr {
     }
 
     /// **DCD** `[2]` (RO)
+    ///
     /// Data carrier detect. This bit is the complement of the UART data carrier detect, nUARTDCD, modem status input. That is, the bit is 1 when nUARTDCD is LOW.
     #[inline(always)]
     pub fn dcd(&self) -> bool {
@@ -656,6 +756,7 @@ impl Uartfr {
     }
 
     /// **DSR** `[1]` (RO)
+    ///
     /// Data set ready. This bit is the complement of the UART data set ready, nUARTDSR, modem status input. That is, the bit is 1 when nUARTDSR is LOW.
     #[inline(always)]
     pub fn dsr(&self) -> bool {
@@ -663,6 +764,7 @@ impl Uartfr {
     }
 
     /// **CTS** `[0]` (RO)
+    ///
     /// Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
     #[inline(always)]
     pub fn cts(&self) -> bool {
@@ -700,6 +802,7 @@ impl UartfrVal {
     }
 
     /// Read **RI** `[8:8]`
+    ///
     /// Ring indicator. This bit is the complement of the UART ring indicator, nUARTRI, modem status input. That is, the bit is 1 when nUARTRI is LOW.
     #[inline(always)]
     pub const fn ri(&self) -> bool {
@@ -707,6 +810,7 @@ impl UartfrVal {
     }
 
     /// Read **TXFE** `[7:7]`
+    ///
     /// Transmit FIFO empty. The meaning of this bit depends on the state of the FEN bit in the Line Control Register, UARTLCR_H. If the FIFO is disabled, this bit is set when the transmit holding register is empty. If the FIFO is enabled, the TXFE bit is set when the transmit FIFO is empty. This bit does not indicate if there is data in the transmit shift register.
     #[inline(always)]
     pub const fn txfe(&self) -> bool {
@@ -714,6 +818,7 @@ impl UartfrVal {
     }
 
     /// Read **RXFF** `[6:6]`
+    ///
     /// Receive FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is full. If the FIFO is enabled, the RXFF bit is set when the receive FIFO is full.
     #[inline(always)]
     pub const fn rxff(&self) -> bool {
@@ -721,6 +826,7 @@ impl UartfrVal {
     }
 
     /// Read **TXFF** `[5:5]`
+    ///
     /// Transmit FIFO full. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the transmit holding register is full. If the FIFO is enabled, the TXFF bit is set when the transmit FIFO is full.
     #[inline(always)]
     pub const fn txff(&self) -> bool {
@@ -728,6 +834,7 @@ impl UartfrVal {
     }
 
     /// Read **RXFE** `[4:4]`
+    ///
     /// Receive FIFO empty. The meaning of this bit depends on the state of the FEN bit in the UARTLCR_H Register. If the FIFO is disabled, this bit is set when the receive holding register is empty. If the FIFO is enabled, the RXFE bit is set when the receive FIFO is empty.
     #[inline(always)]
     pub const fn rxfe(&self) -> bool {
@@ -735,6 +842,7 @@ impl UartfrVal {
     }
 
     /// Read **BUSY** `[3:3]`
+    ///
     /// UART busy. If this bit is set to 1, the UART is busy transmitting data. This bit remains set until the complete byte, including all the stop bits, has been sent from the shift register. This bit is set as soon as the transmit FIFO becomes non-empty, regardless of whether the UART is enabled or not.
     #[inline(always)]
     pub const fn busy(&self) -> bool {
@@ -742,6 +850,7 @@ impl UartfrVal {
     }
 
     /// Read **DCD** `[2:2]`
+    ///
     /// Data carrier detect. This bit is the complement of the UART data carrier detect, nUARTDCD, modem status input. That is, the bit is 1 when nUARTDCD is LOW.
     #[inline(always)]
     pub const fn dcd(&self) -> bool {
@@ -749,6 +858,7 @@ impl UartfrVal {
     }
 
     /// Read **DSR** `[1:1]`
+    ///
     /// Data set ready. This bit is the complement of the UART data set ready, nUARTDSR, modem status input. That is, the bit is 1 when nUARTDSR is LOW.
     #[inline(always)]
     pub const fn dsr(&self) -> bool {
@@ -756,6 +866,7 @@ impl UartfrVal {
     }
 
     /// Read **CTS** `[0:0]`
+    ///
     /// Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
     #[inline(always)]
     pub const fn cts(&self) -> bool {
@@ -801,6 +912,7 @@ impl Uartfr {
 /// ## Fields
 ///
 /// - **ILPDVSR** `[7:0]` (RW)
+///
 ///   8-bit low-power divisor value. These bits are cleared to 0 at reset.
 #[repr(transparent)]
 pub struct Uartilpr {
@@ -819,7 +931,9 @@ impl Uartilpr {
     // ======== Field Constants ========
 
     /// **ILPDVSR**
+    ///
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const ILPDVSR_OFFSET: u32 = 0;
     pub const ILPDVSR_MASK: u32 = 0x000000ff;
@@ -827,6 +941,7 @@ impl Uartilpr {
     // ======== Field Accessors ========
 
     /// **ILPDVSR** `[7:0]` (RW)
+    ///
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
     #[inline(always)]
     pub fn ilpdvsr(&self) -> u32 {
@@ -834,6 +949,7 @@ impl Uartilpr {
     }
 
     /// Write **ILPDVSR** `[7:0]` (RW)
+    ///
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
     #[inline(always)]
     pub fn write_ilpdvsr(&self, value: u32) {
@@ -871,6 +987,7 @@ impl UartilprVal {
     }
 
     /// Read **ILPDVSR** `[7:0]`
+    ///
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
     #[inline(always)]
     pub const fn ilpdvsr(&self) -> u32 {
@@ -878,6 +995,7 @@ impl UartilprVal {
     }
 
     /// Set **ILPDVSR** `[7:0]`
+    ///
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
     #[inline(always)]
     pub const fn with_ilpdvsr(self, value: u32) -> Self {
@@ -925,6 +1043,7 @@ impl Uartilpr {
 /// ## Fields
 ///
 /// - **BAUD_DIVINT** `[15:0]` (RW)
+///
 ///   The integer baud rate divisor. These bits are cleared to 0 on reset.
 #[repr(transparent)]
 pub struct Uartibrd {
@@ -943,7 +1062,9 @@ impl Uartibrd {
     // ======== Field Constants ========
 
     /// **BAUD_DIVINT**
+    ///
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BAUD_DIVINT_OFFSET: u32 = 0;
     pub const BAUD_DIVINT_MASK: u32 = 0x0000ffff;
@@ -951,6 +1072,7 @@ impl Uartibrd {
     // ======== Field Accessors ========
 
     /// **BAUD_DIVINT** `[15:0]` (RW)
+    ///
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn baud_divint(&self) -> u32 {
@@ -958,6 +1080,7 @@ impl Uartibrd {
     }
 
     /// Write **BAUD_DIVINT** `[15:0]` (RW)
+    ///
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn write_baud_divint(&self, value: u32) {
@@ -995,6 +1118,7 @@ impl UartibrdVal {
     }
 
     /// Read **BAUD_DIVINT** `[15:0]`
+    ///
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub const fn baud_divint(&self) -> u32 {
@@ -1002,6 +1126,7 @@ impl UartibrdVal {
     }
 
     /// Set **BAUD_DIVINT** `[15:0]`
+    ///
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub const fn with_baud_divint(self, value: u32) -> Self {
@@ -1049,6 +1174,7 @@ impl Uartibrd {
 /// ## Fields
 ///
 /// - **BAUD_DIVFRAC** `[5:0]` (RW)
+///
 ///   The fractional baud rate divisor. These bits are cleared to 0 on reset.
 #[repr(transparent)]
 pub struct Uartfbrd {
@@ -1067,7 +1193,9 @@ impl Uartfbrd {
     // ======== Field Constants ========
 
     /// **BAUD_DIVFRAC**
+    ///
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const BAUD_DIVFRAC_OFFSET: u32 = 0;
     pub const BAUD_DIVFRAC_MASK: u32 = 0x0000003f;
@@ -1075,6 +1203,7 @@ impl Uartfbrd {
     // ======== Field Accessors ========
 
     /// **BAUD_DIVFRAC** `[5:0]` (RW)
+    ///
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn baud_divfrac(&self) -> u32 {
@@ -1082,6 +1211,7 @@ impl Uartfbrd {
     }
 
     /// Write **BAUD_DIVFRAC** `[5:0]` (RW)
+    ///
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn write_baud_divfrac(&self, value: u32) {
@@ -1119,6 +1249,7 @@ impl UartfbrdVal {
     }
 
     /// Read **BAUD_DIVFRAC** `[5:0]`
+    ///
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub const fn baud_divfrac(&self) -> u32 {
@@ -1126,6 +1257,7 @@ impl UartfbrdVal {
     }
 
     /// Set **BAUD_DIVFRAC** `[5:0]`
+    ///
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub const fn with_baud_divfrac(self, value: u32) -> Self {
@@ -1173,18 +1305,31 @@ impl Uartfbrd {
 /// ## Fields
 ///
 /// - **SPS** `[7]` (RW)
+///
 ///   Stick parity select. 0 = stick parity is disabled 1 = either: * if the EPS bit is 0 then the parity bit is transmitted and checked as a 1 * if the EPS bit is 1 then the parity bit is transmitted and checked as a 0. This bit has no effect when the PEN bit disables parity checking and generation.
+///
 /// - **WLEN** `[6:5]` (RW)
+///
 ///   Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
+///
 /// - **FEN** `[4]` (RW)
+///
 ///   Enable FIFOs: 0 = FIFOs are disabled (character mode) that is, the FIFOs become 1-byte-deep holding registers 1 = transmit and receive FIFO buffers are enabled (FIFO mode).
+///
 /// - **STP2** `[3]` (RW)
+///
 ///   Two stop bits select. If this bit is set to 1, two stop bits are transmitted at the end of the frame. The receive logic does not check for two stop bits being received.
+///
 /// - **EPS** `[2]` (RW)
+///
 ///   Even parity select. Controls the type of parity the UART uses during transmission and reception: 0 = odd parity. The UART generates or checks for an odd number of 1s in the data and parity bits. 1 = even parity. The UART generates or checks for an even number of 1s in the data and parity bits. This bit has no effect when the PEN bit disables parity checking and generation.
+///
 /// - **PEN** `[1]` (RW)
+///
 ///   Parity enable: 0 = parity is disabled and no parity bit added to the data frame 1 = parity checking and generation is enabled.
+///
 /// - **BRK** `[0]` (RW)
+///
 ///   Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
 #[repr(transparent)]
 pub struct UartlcrH {
@@ -1203,48 +1348,62 @@ impl UartlcrH {
     // ======== Field Constants ========
 
     /// **SPS**
+    ///
     /// Stick parity select. 0 = stick parity is disabled 1 = either: * if the EPS bit is 0 then the parity bit is transmitted and checked as a 1 * if the EPS bit is 1 then the parity bit is transmitted and checked as a 0. This bit has no effect when the PEN bit disables parity checking and generation.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const SPS_OFFSET: u32 = 7;
     pub const SPS_MASK: u32 = 0x00000080;
     pub const SPS: u32 = 1 << 7;
 
     /// **WLEN**
+    ///
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const WLEN_OFFSET: u32 = 5;
     pub const WLEN_MASK: u32 = 0x00000060;
 
     /// **FEN**
+    ///
     /// Enable FIFOs: 0 = FIFOs are disabled (character mode) that is, the FIFOs become 1-byte-deep holding registers 1 = transmit and receive FIFO buffers are enabled (FIFO mode).
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const FEN_OFFSET: u32 = 4;
     pub const FEN_MASK: u32 = 0x00000010;
     pub const FEN: u32 = 1 << 4;
 
     /// **STP2**
+    ///
     /// Two stop bits select. If this bit is set to 1, two stop bits are transmitted at the end of the frame. The receive logic does not check for two stop bits being received.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const STP2_OFFSET: u32 = 3;
     pub const STP2_MASK: u32 = 0x00000008;
     pub const STP2: u32 = 1 << 3;
 
     /// **EPS**
+    ///
     /// Even parity select. Controls the type of parity the UART uses during transmission and reception: 0 = odd parity. The UART generates or checks for an odd number of 1s in the data and parity bits. 1 = even parity. The UART generates or checks for an even number of 1s in the data and parity bits. This bit has no effect when the PEN bit disables parity checking and generation.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const EPS_OFFSET: u32 = 2;
     pub const EPS_MASK: u32 = 0x00000004;
     pub const EPS: u32 = 1 << 2;
 
     /// **PEN**
+    ///
     /// Parity enable: 0 = parity is disabled and no parity bit added to the data frame 1 = parity checking and generation is enabled.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PEN_OFFSET: u32 = 1;
     pub const PEN_MASK: u32 = 0x00000002;
     pub const PEN: u32 = 1 << 1;
 
     /// **BRK**
+    ///
     /// Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BRK_OFFSET: u32 = 0;
     pub const BRK_MASK: u32 = 0x00000001;
@@ -1253,6 +1412,7 @@ impl UartlcrH {
     // ======== Field Accessors ========
 
     /// **SPS** `[7]` (RW)
+    ///
     /// Stick parity select. 0 = stick parity is disabled 1 = either: * if the EPS bit is 0 then the parity bit is transmitted and checked as a 1 * if the EPS bit is 1 then the parity bit is transmitted and checked as a 0. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub fn sps(&self) -> bool {
@@ -1272,6 +1432,7 @@ impl UartlcrH {
     }
 
     /// **WLEN** `[6:5]` (RW)
+    ///
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
     #[inline(always)]
     pub fn wlen(&self) -> u32 {
@@ -1279,6 +1440,7 @@ impl UartlcrH {
     }
 
     /// Write **WLEN** `[6:5]` (RW)
+    ///
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
     #[inline(always)]
     pub fn write_wlen(&self, value: u32) {
@@ -1286,6 +1448,7 @@ impl UartlcrH {
     }
 
     /// **FEN** `[4]` (RW)
+    ///
     /// Enable FIFOs: 0 = FIFOs are disabled (character mode) that is, the FIFOs become 1-byte-deep holding registers 1 = transmit and receive FIFO buffers are enabled (FIFO mode).
     #[inline(always)]
     pub fn fen(&self) -> bool {
@@ -1305,6 +1468,7 @@ impl UartlcrH {
     }
 
     /// **STP2** `[3]` (RW)
+    ///
     /// Two stop bits select. If this bit is set to 1, two stop bits are transmitted at the end of the frame. The receive logic does not check for two stop bits being received.
     #[inline(always)]
     pub fn stp2(&self) -> bool {
@@ -1324,6 +1488,7 @@ impl UartlcrH {
     }
 
     /// **EPS** `[2]` (RW)
+    ///
     /// Even parity select. Controls the type of parity the UART uses during transmission and reception: 0 = odd parity. The UART generates or checks for an odd number of 1s in the data and parity bits. 1 = even parity. The UART generates or checks for an even number of 1s in the data and parity bits. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub fn eps(&self) -> bool {
@@ -1343,6 +1508,7 @@ impl UartlcrH {
     }
 
     /// **PEN** `[1]` (RW)
+    ///
     /// Parity enable: 0 = parity is disabled and no parity bit added to the data frame 1 = parity checking and generation is enabled.
     #[inline(always)]
     pub fn pen(&self) -> bool {
@@ -1362,6 +1528,7 @@ impl UartlcrH {
     }
 
     /// **BRK** `[0]` (RW)
+    ///
     /// Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
     #[inline(always)]
     pub fn brk(&self) -> bool {
@@ -1411,6 +1578,7 @@ impl UartlcrHVal {
     }
 
     /// Read **SPS** `[7:7]`
+    ///
     /// Stick parity select. 0 = stick parity is disabled 1 = either: * if the EPS bit is 0 then the parity bit is transmitted and checked as a 1 * if the EPS bit is 1 then the parity bit is transmitted and checked as a 0. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub const fn sps(&self) -> bool {
@@ -1418,6 +1586,7 @@ impl UartlcrHVal {
     }
 
     /// Read **WLEN** `[6:5]`
+    ///
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
     #[inline(always)]
     pub const fn wlen(&self) -> u32 {
@@ -1425,6 +1594,7 @@ impl UartlcrHVal {
     }
 
     /// Read **FEN** `[4:4]`
+    ///
     /// Enable FIFOs: 0 = FIFOs are disabled (character mode) that is, the FIFOs become 1-byte-deep holding registers 1 = transmit and receive FIFO buffers are enabled (FIFO mode).
     #[inline(always)]
     pub const fn fen(&self) -> bool {
@@ -1432,6 +1602,7 @@ impl UartlcrHVal {
     }
 
     /// Read **STP2** `[3:3]`
+    ///
     /// Two stop bits select. If this bit is set to 1, two stop bits are transmitted at the end of the frame. The receive logic does not check for two stop bits being received.
     #[inline(always)]
     pub const fn stp2(&self) -> bool {
@@ -1439,6 +1610,7 @@ impl UartlcrHVal {
     }
 
     /// Read **EPS** `[2:2]`
+    ///
     /// Even parity select. Controls the type of parity the UART uses during transmission and reception: 0 = odd parity. The UART generates or checks for an odd number of 1s in the data and parity bits. 1 = even parity. The UART generates or checks for an even number of 1s in the data and parity bits. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub const fn eps(&self) -> bool {
@@ -1446,6 +1618,7 @@ impl UartlcrHVal {
     }
 
     /// Read **PEN** `[1:1]`
+    ///
     /// Parity enable: 0 = parity is disabled and no parity bit added to the data frame 1 = parity checking and generation is enabled.
     #[inline(always)]
     pub const fn pen(&self) -> bool {
@@ -1453,6 +1626,7 @@ impl UartlcrHVal {
     }
 
     /// Read **BRK** `[0:0]`
+    ///
     /// Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
     #[inline(always)]
     pub const fn brk(&self) -> bool {
@@ -1460,6 +1634,7 @@ impl UartlcrHVal {
     }
 
     /// Set **SPS** `[7:7]`
+    ///
     /// Stick parity select. 0 = stick parity is disabled 1 = either: * if the EPS bit is 0 then the parity bit is transmitted and checked as a 1 * if the EPS bit is 1 then the parity bit is transmitted and checked as a 0. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub const fn with_sps(self, value: bool) -> Self {
@@ -1473,6 +1648,7 @@ impl UartlcrHVal {
     }
 
     /// Set **WLEN** `[6:5]`
+    ///
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
     #[inline(always)]
     pub const fn with_wlen(self, value: u32) -> Self {
@@ -1482,6 +1658,7 @@ impl UartlcrHVal {
     }
 
     /// Set **FEN** `[4:4]`
+    ///
     /// Enable FIFOs: 0 = FIFOs are disabled (character mode) that is, the FIFOs become 1-byte-deep holding registers 1 = transmit and receive FIFO buffers are enabled (FIFO mode).
     #[inline(always)]
     pub const fn with_fen(self, value: bool) -> Self {
@@ -1495,6 +1672,7 @@ impl UartlcrHVal {
     }
 
     /// Set **STP2** `[3:3]`
+    ///
     /// Two stop bits select. If this bit is set to 1, two stop bits are transmitted at the end of the frame. The receive logic does not check for two stop bits being received.
     #[inline(always)]
     pub const fn with_stp2(self, value: bool) -> Self {
@@ -1508,6 +1686,7 @@ impl UartlcrHVal {
     }
 
     /// Set **EPS** `[2:2]`
+    ///
     /// Even parity select. Controls the type of parity the UART uses during transmission and reception: 0 = odd parity. The UART generates or checks for an odd number of 1s in the data and parity bits. 1 = even parity. The UART generates or checks for an even number of 1s in the data and parity bits. This bit has no effect when the PEN bit disables parity checking and generation.
     #[inline(always)]
     pub const fn with_eps(self, value: bool) -> Self {
@@ -1521,6 +1700,7 @@ impl UartlcrHVal {
     }
 
     /// Set **PEN** `[1:1]`
+    ///
     /// Parity enable: 0 = parity is disabled and no parity bit added to the data frame 1 = parity checking and generation is enabled.
     #[inline(always)]
     pub const fn with_pen(self, value: bool) -> Self {
@@ -1534,6 +1714,7 @@ impl UartlcrHVal {
     }
 
     /// Set **BRK** `[0:0]`
+    ///
     /// Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
     #[inline(always)]
     pub const fn with_brk(self, value: bool) -> Self {
@@ -1585,28 +1766,51 @@ impl UartlcrH {
 /// ## Fields
 ///
 /// - **CTSEN** `[15]` (RW)
+///
 ///   CTS hardware flow control enable. If this bit is set to 1, CTS hardware flow control is enabled. Data is only transmitted when the nUARTCTS signal is asserted.
+///
 /// - **RTSEN** `[14]` (RW)
+///
 ///   RTS hardware flow control enable. If this bit is set to 1, RTS hardware flow control is enabled. Data is only requested when there is space in the receive FIFO for it to be received.
+///
 /// - **OUT2** `[13]` (RW)
+///
 ///   This bit is the complement of the UART Out2 (nUARTOut2) modem status output. That is, when the bit is programmed to a 1, the output is 0. For DTE this can be used as Ring Indicator (RI).
+///
 /// - **OUT1** `[12]` (RW)
+///
 ///   This bit is the complement of the UART Out1 (nUARTOut1) modem status output. That is, when the bit is programmed to a 1 the output is 0. For DTE this can be used as Data Carrier Detect (DCD).
+///
 /// - **RTS** `[11]` (RW)
+///
 ///   Request to send. This bit is the complement of the UART request to send, nUARTRTS, modem status output. That is, when the bit is programmed to a 1 then nUARTRTS is LOW.
+///
 /// - **DTR** `[10]` (RW)
+///
 ///   Data transmit ready. This bit is the complement of the UART data transmit ready, nUARTDTR, modem status output. That is, when the bit is programmed to a 1 then nUARTDTR is LOW.
+///
 /// - **RXE** `[9]` (RW)
+///
 ///   Receive enable. If this bit is set to 1, the receive section of the UART is enabled. Data reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of reception, it completes the current character before stopping.
+///
 /// - **TXE** `[8]` (RW)
+///
 ///   Transmit enable. If this bit is set to 1, the transmit section of the UART is enabled. Data transmission occurs for either UART signals, or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of transmission, it completes the current character before stopping.
+///
 /// - **LBE** `[7]` (RW)
+///
 ///   Loopback enable. If this bit is set to 1 and the SIREN bit is set to 1 and the SIRTEST bit in the Test Control Register, UARTTCR is set to 1, then the nSIROUT path is inverted, and fed through to the SIRIN path. The SIRTEST bit in the test register must be set to 1 to override the normal half-duplex SIR operation. This must be the requirement for accessing the test registers during normal operation, and SIRTEST must be cleared to 0 when loopback testing is finished. This feature reduces the amount of external coupling required during system test. If this bit is set to 1, and the SIRTEST bit is set to 0, the UARTTXD path is fed through to the UARTRXD path. In either SIR mode or UART mode, when this bit is set, the modem outputs are also fed through to the modem inputs. This bit is cleared to 0 on reset, to disable loopback.
+///
 /// - **SIRLP** `[2]` (RW)
+///
 ///   SIR low-power IrDA mode. This bit selects the IrDA encoding mode. If this bit is cleared to 0, low-level bits are transmitted as an active high pulse with a width of 3 / 16th of the bit period. If this bit is set to 1, low-level bits are transmitted with a pulse width that is 3 times the period of the IrLPBaud16 input signal, regardless of the selected bit rate. Setting this bit uses less power, but might reduce transmission distances.
+///
 /// - **SIREN** `[1]` (RW)
+///
 ///   SIR enable: 0 = IrDA SIR ENDEC is disabled. nSIROUT remains LOW (no light pulse generated), and signal transitions on SIRIN have no effect. 1 = IrDA SIR ENDEC is enabled. Data is transmitted and received on nSIROUT and SIRIN. UARTTXD remains HIGH, in the marking state. Signal transitions on UARTRXD or modem status inputs have no effect. This bit has no effect if the UARTEN bit disables the UART.
+///
 /// - **UARTEN** `[0]` (RW)
+///
 ///   UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
 #[repr(transparent)]
 pub struct Uartcr {
@@ -1625,84 +1829,108 @@ impl Uartcr {
     // ======== Field Constants ========
 
     /// **CTSEN**
+    ///
     /// CTS hardware flow control enable. If this bit is set to 1, CTS hardware flow control is enabled. Data is only transmitted when the nUARTCTS signal is asserted.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const CTSEN_OFFSET: u32 = 15;
     pub const CTSEN_MASK: u32 = 0x00008000;
     pub const CTSEN: u32 = 1 << 15;
 
     /// **RTSEN**
+    ///
     /// RTS hardware flow control enable. If this bit is set to 1, RTS hardware flow control is enabled. Data is only requested when there is space in the receive FIFO for it to be received.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const RTSEN_OFFSET: u32 = 14;
     pub const RTSEN_MASK: u32 = 0x00004000;
     pub const RTSEN: u32 = 1 << 14;
 
     /// **OUT2**
+    ///
     /// This bit is the complement of the UART Out2 (nUARTOut2) modem status output. That is, when the bit is programmed to a 1, the output is 0. For DTE this can be used as Ring Indicator (RI).
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OUT2_OFFSET: u32 = 13;
     pub const OUT2_MASK: u32 = 0x00002000;
     pub const OUT2: u32 = 1 << 13;
 
     /// **OUT1**
+    ///
     /// This bit is the complement of the UART Out1 (nUARTOut1) modem status output. That is, when the bit is programmed to a 1 the output is 0. For DTE this can be used as Data Carrier Detect (DCD).
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const OUT1_OFFSET: u32 = 12;
     pub const OUT1_MASK: u32 = 0x00001000;
     pub const OUT1: u32 = 1 << 12;
 
     /// **RTS**
+    ///
     /// Request to send. This bit is the complement of the UART request to send, nUARTRTS, modem status output. That is, when the bit is programmed to a 1 then nUARTRTS is LOW.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const RTS_OFFSET: u32 = 11;
     pub const RTS_MASK: u32 = 0x00000800;
     pub const RTS: u32 = 1 << 11;
 
     /// **DTR**
+    ///
     /// Data transmit ready. This bit is the complement of the UART data transmit ready, nUARTDTR, modem status output. That is, when the bit is programmed to a 1 then nUARTDTR is LOW.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const DTR_OFFSET: u32 = 10;
     pub const DTR_MASK: u32 = 0x00000400;
     pub const DTR: u32 = 1 << 10;
 
     /// **RXE**
+    ///
     /// Receive enable. If this bit is set to 1, the receive section of the UART is enabled. Data reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of reception, it completes the current character before stopping.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const RXE_OFFSET: u32 = 9;
     pub const RXE_MASK: u32 = 0x00000200;
     pub const RXE: u32 = 1 << 9;
 
     /// **TXE**
+    ///
     /// Transmit enable. If this bit is set to 1, the transmit section of the UART is enabled. Data transmission occurs for either UART signals, or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of transmission, it completes the current character before stopping.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const TXE_OFFSET: u32 = 8;
     pub const TXE_MASK: u32 = 0x00000100;
     pub const TXE: u32 = 1 << 8;
 
     /// **LBE**
+    ///
     /// Loopback enable. If this bit is set to 1 and the SIREN bit is set to 1 and the SIRTEST bit in the Test Control Register, UARTTCR is set to 1, then the nSIROUT path is inverted, and fed through to the SIRIN path. The SIRTEST bit in the test register must be set to 1 to override the normal half-duplex SIR operation. This must be the requirement for accessing the test registers during normal operation, and SIRTEST must be cleared to 0 when loopback testing is finished. This feature reduces the amount of external coupling required during system test. If this bit is set to 1, and the SIRTEST bit is set to 0, the UARTTXD path is fed through to the UARTRXD path. In either SIR mode or UART mode, when this bit is set, the modem outputs are also fed through to the modem inputs. This bit is cleared to 0 on reset, to disable loopback.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const LBE_OFFSET: u32 = 7;
     pub const LBE_MASK: u32 = 0x00000080;
     pub const LBE: u32 = 1 << 7;
 
     /// **SIRLP**
+    ///
     /// SIR low-power IrDA mode. This bit selects the IrDA encoding mode. If this bit is cleared to 0, low-level bits are transmitted as an active high pulse with a width of 3 / 16th of the bit period. If this bit is set to 1, low-level bits are transmitted with a pulse width that is 3 times the period of the IrLPBaud16 input signal, regardless of the selected bit rate. Setting this bit uses less power, but might reduce transmission distances.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SIRLP_OFFSET: u32 = 2;
     pub const SIRLP_MASK: u32 = 0x00000004;
     pub const SIRLP: u32 = 1 << 2;
 
     /// **SIREN**
+    ///
     /// SIR enable: 0 = IrDA SIR ENDEC is disabled. nSIROUT remains LOW (no light pulse generated), and signal transitions on SIRIN have no effect. 1 = IrDA SIR ENDEC is enabled. Data is transmitted and received on nSIROUT and SIRIN. UARTTXD remains HIGH, in the marking state. Signal transitions on UARTRXD or modem status inputs have no effect. This bit has no effect if the UARTEN bit disables the UART.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SIREN_OFFSET: u32 = 1;
     pub const SIREN_MASK: u32 = 0x00000002;
     pub const SIREN: u32 = 1 << 1;
 
     /// **UARTEN**
+    ///
     /// UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const UARTEN_OFFSET: u32 = 0;
     pub const UARTEN_MASK: u32 = 0x00000001;
@@ -1711,6 +1939,7 @@ impl Uartcr {
     // ======== Field Accessors ========
 
     /// **CTSEN** `[15]` (RW)
+    ///
     /// CTS hardware flow control enable. If this bit is set to 1, CTS hardware flow control is enabled. Data is only transmitted when the nUARTCTS signal is asserted.
     #[inline(always)]
     pub fn ctsen(&self) -> bool {
@@ -1730,6 +1959,7 @@ impl Uartcr {
     }
 
     /// **RTSEN** `[14]` (RW)
+    ///
     /// RTS hardware flow control enable. If this bit is set to 1, RTS hardware flow control is enabled. Data is only requested when there is space in the receive FIFO for it to be received.
     #[inline(always)]
     pub fn rtsen(&self) -> bool {
@@ -1749,6 +1979,7 @@ impl Uartcr {
     }
 
     /// **OUT2** `[13]` (RW)
+    ///
     /// This bit is the complement of the UART Out2 (nUARTOut2) modem status output. That is, when the bit is programmed to a 1, the output is 0. For DTE this can be used as Ring Indicator (RI).
     #[inline(always)]
     pub fn out2(&self) -> bool {
@@ -1768,6 +1999,7 @@ impl Uartcr {
     }
 
     /// **OUT1** `[12]` (RW)
+    ///
     /// This bit is the complement of the UART Out1 (nUARTOut1) modem status output. That is, when the bit is programmed to a 1 the output is 0. For DTE this can be used as Data Carrier Detect (DCD).
     #[inline(always)]
     pub fn out1(&self) -> bool {
@@ -1787,6 +2019,7 @@ impl Uartcr {
     }
 
     /// **RTS** `[11]` (RW)
+    ///
     /// Request to send. This bit is the complement of the UART request to send, nUARTRTS, modem status output. That is, when the bit is programmed to a 1 then nUARTRTS is LOW.
     #[inline(always)]
     pub fn rts(&self) -> bool {
@@ -1806,6 +2039,7 @@ impl Uartcr {
     }
 
     /// **DTR** `[10]` (RW)
+    ///
     /// Data transmit ready. This bit is the complement of the UART data transmit ready, nUARTDTR, modem status output. That is, when the bit is programmed to a 1 then nUARTDTR is LOW.
     #[inline(always)]
     pub fn dtr(&self) -> bool {
@@ -1825,6 +2059,7 @@ impl Uartcr {
     }
 
     /// **RXE** `[9]` (RW)
+    ///
     /// Receive enable. If this bit is set to 1, the receive section of the UART is enabled. Data reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of reception, it completes the current character before stopping.
     #[inline(always)]
     pub fn rxe(&self) -> bool {
@@ -1844,6 +2079,7 @@ impl Uartcr {
     }
 
     /// **TXE** `[8]` (RW)
+    ///
     /// Transmit enable. If this bit is set to 1, the transmit section of the UART is enabled. Data transmission occurs for either UART signals, or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of transmission, it completes the current character before stopping.
     #[inline(always)]
     pub fn txe(&self) -> bool {
@@ -1863,6 +2099,7 @@ impl Uartcr {
     }
 
     /// **LBE** `[7]` (RW)
+    ///
     /// Loopback enable. If this bit is set to 1 and the SIREN bit is set to 1 and the SIRTEST bit in the Test Control Register, UARTTCR is set to 1, then the nSIROUT path is inverted, and fed through to the SIRIN path. The SIRTEST bit in the test register must be set to 1 to override the normal half-duplex SIR operation. This must be the requirement for accessing the test registers during normal operation, and SIRTEST must be cleared to 0 when loopback testing is finished. This feature reduces the amount of external coupling required during system test. If this bit is set to 1, and the SIRTEST bit is set to 0, the UARTTXD path is fed through to the UARTRXD path. In either SIR mode or UART mode, when this bit is set, the modem outputs are also fed through to the modem inputs. This bit is cleared to 0 on reset, to disable loopback.
     #[inline(always)]
     pub fn lbe(&self) -> bool {
@@ -1882,6 +2119,7 @@ impl Uartcr {
     }
 
     /// **SIRLP** `[2]` (RW)
+    ///
     /// SIR low-power IrDA mode. This bit selects the IrDA encoding mode. If this bit is cleared to 0, low-level bits are transmitted as an active high pulse with a width of 3 / 16th of the bit period. If this bit is set to 1, low-level bits are transmitted with a pulse width that is 3 times the period of the IrLPBaud16 input signal, regardless of the selected bit rate. Setting this bit uses less power, but might reduce transmission distances.
     #[inline(always)]
     pub fn sirlp(&self) -> bool {
@@ -1901,6 +2139,7 @@ impl Uartcr {
     }
 
     /// **SIREN** `[1]` (RW)
+    ///
     /// SIR enable: 0 = IrDA SIR ENDEC is disabled. nSIROUT remains LOW (no light pulse generated), and signal transitions on SIRIN have no effect. 1 = IrDA SIR ENDEC is enabled. Data is transmitted and received on nSIROUT and SIRIN. UARTTXD remains HIGH, in the marking state. Signal transitions on UARTRXD or modem status inputs have no effect. This bit has no effect if the UARTEN bit disables the UART.
     #[inline(always)]
     pub fn siren(&self) -> bool {
@@ -1920,6 +2159,7 @@ impl Uartcr {
     }
 
     /// **UARTEN** `[0]` (RW)
+    ///
     /// UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
     #[inline(always)]
     pub fn uarten(&self) -> bool {
@@ -1969,6 +2209,7 @@ impl UartcrVal {
     }
 
     /// Read **CTSEN** `[15:15]`
+    ///
     /// CTS hardware flow control enable. If this bit is set to 1, CTS hardware flow control is enabled. Data is only transmitted when the nUARTCTS signal is asserted.
     #[inline(always)]
     pub const fn ctsen(&self) -> bool {
@@ -1976,6 +2217,7 @@ impl UartcrVal {
     }
 
     /// Read **RTSEN** `[14:14]`
+    ///
     /// RTS hardware flow control enable. If this bit is set to 1, RTS hardware flow control is enabled. Data is only requested when there is space in the receive FIFO for it to be received.
     #[inline(always)]
     pub const fn rtsen(&self) -> bool {
@@ -1983,6 +2225,7 @@ impl UartcrVal {
     }
 
     /// Read **OUT2** `[13:13]`
+    ///
     /// This bit is the complement of the UART Out2 (nUARTOut2) modem status output. That is, when the bit is programmed to a 1, the output is 0. For DTE this can be used as Ring Indicator (RI).
     #[inline(always)]
     pub const fn out2(&self) -> bool {
@@ -1990,6 +2233,7 @@ impl UartcrVal {
     }
 
     /// Read **OUT1** `[12:12]`
+    ///
     /// This bit is the complement of the UART Out1 (nUARTOut1) modem status output. That is, when the bit is programmed to a 1 the output is 0. For DTE this can be used as Data Carrier Detect (DCD).
     #[inline(always)]
     pub const fn out1(&self) -> bool {
@@ -1997,6 +2241,7 @@ impl UartcrVal {
     }
 
     /// Read **RTS** `[11:11]`
+    ///
     /// Request to send. This bit is the complement of the UART request to send, nUARTRTS, modem status output. That is, when the bit is programmed to a 1 then nUARTRTS is LOW.
     #[inline(always)]
     pub const fn rts(&self) -> bool {
@@ -2004,6 +2249,7 @@ impl UartcrVal {
     }
 
     /// Read **DTR** `[10:10]`
+    ///
     /// Data transmit ready. This bit is the complement of the UART data transmit ready, nUARTDTR, modem status output. That is, when the bit is programmed to a 1 then nUARTDTR is LOW.
     #[inline(always)]
     pub const fn dtr(&self) -> bool {
@@ -2011,6 +2257,7 @@ impl UartcrVal {
     }
 
     /// Read **RXE** `[9:9]`
+    ///
     /// Receive enable. If this bit is set to 1, the receive section of the UART is enabled. Data reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of reception, it completes the current character before stopping.
     #[inline(always)]
     pub const fn rxe(&self) -> bool {
@@ -2018,6 +2265,7 @@ impl UartcrVal {
     }
 
     /// Read **TXE** `[8:8]`
+    ///
     /// Transmit enable. If this bit is set to 1, the transmit section of the UART is enabled. Data transmission occurs for either UART signals, or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of transmission, it completes the current character before stopping.
     #[inline(always)]
     pub const fn txe(&self) -> bool {
@@ -2025,6 +2273,7 @@ impl UartcrVal {
     }
 
     /// Read **LBE** `[7:7]`
+    ///
     /// Loopback enable. If this bit is set to 1 and the SIREN bit is set to 1 and the SIRTEST bit in the Test Control Register, UARTTCR is set to 1, then the nSIROUT path is inverted, and fed through to the SIRIN path. The SIRTEST bit in the test register must be set to 1 to override the normal half-duplex SIR operation. This must be the requirement for accessing the test registers during normal operation, and SIRTEST must be cleared to 0 when loopback testing is finished. This feature reduces the amount of external coupling required during system test. If this bit is set to 1, and the SIRTEST bit is set to 0, the UARTTXD path is fed through to the UARTRXD path. In either SIR mode or UART mode, when this bit is set, the modem outputs are also fed through to the modem inputs. This bit is cleared to 0 on reset, to disable loopback.
     #[inline(always)]
     pub const fn lbe(&self) -> bool {
@@ -2032,6 +2281,7 @@ impl UartcrVal {
     }
 
     /// Read **SIRLP** `[2:2]`
+    ///
     /// SIR low-power IrDA mode. This bit selects the IrDA encoding mode. If this bit is cleared to 0, low-level bits are transmitted as an active high pulse with a width of 3 / 16th of the bit period. If this bit is set to 1, low-level bits are transmitted with a pulse width that is 3 times the period of the IrLPBaud16 input signal, regardless of the selected bit rate. Setting this bit uses less power, but might reduce transmission distances.
     #[inline(always)]
     pub const fn sirlp(&self) -> bool {
@@ -2039,6 +2289,7 @@ impl UartcrVal {
     }
 
     /// Read **SIREN** `[1:1]`
+    ///
     /// SIR enable: 0 = IrDA SIR ENDEC is disabled. nSIROUT remains LOW (no light pulse generated), and signal transitions on SIRIN have no effect. 1 = IrDA SIR ENDEC is enabled. Data is transmitted and received on nSIROUT and SIRIN. UARTTXD remains HIGH, in the marking state. Signal transitions on UARTRXD or modem status inputs have no effect. This bit has no effect if the UARTEN bit disables the UART.
     #[inline(always)]
     pub const fn siren(&self) -> bool {
@@ -2046,6 +2297,7 @@ impl UartcrVal {
     }
 
     /// Read **UARTEN** `[0:0]`
+    ///
     /// UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
     #[inline(always)]
     pub const fn uarten(&self) -> bool {
@@ -2053,6 +2305,7 @@ impl UartcrVal {
     }
 
     /// Set **CTSEN** `[15:15]`
+    ///
     /// CTS hardware flow control enable. If this bit is set to 1, CTS hardware flow control is enabled. Data is only transmitted when the nUARTCTS signal is asserted.
     #[inline(always)]
     pub const fn with_ctsen(self, value: bool) -> Self {
@@ -2066,6 +2319,7 @@ impl UartcrVal {
     }
 
     /// Set **RTSEN** `[14:14]`
+    ///
     /// RTS hardware flow control enable. If this bit is set to 1, RTS hardware flow control is enabled. Data is only requested when there is space in the receive FIFO for it to be received.
     #[inline(always)]
     pub const fn with_rtsen(self, value: bool) -> Self {
@@ -2079,6 +2333,7 @@ impl UartcrVal {
     }
 
     /// Set **OUT2** `[13:13]`
+    ///
     /// This bit is the complement of the UART Out2 (nUARTOut2) modem status output. That is, when the bit is programmed to a 1, the output is 0. For DTE this can be used as Ring Indicator (RI).
     #[inline(always)]
     pub const fn with_out2(self, value: bool) -> Self {
@@ -2092,6 +2347,7 @@ impl UartcrVal {
     }
 
     /// Set **OUT1** `[12:12]`
+    ///
     /// This bit is the complement of the UART Out1 (nUARTOut1) modem status output. That is, when the bit is programmed to a 1 the output is 0. For DTE this can be used as Data Carrier Detect (DCD).
     #[inline(always)]
     pub const fn with_out1(self, value: bool) -> Self {
@@ -2105,6 +2361,7 @@ impl UartcrVal {
     }
 
     /// Set **RTS** `[11:11]`
+    ///
     /// Request to send. This bit is the complement of the UART request to send, nUARTRTS, modem status output. That is, when the bit is programmed to a 1 then nUARTRTS is LOW.
     #[inline(always)]
     pub const fn with_rts(self, value: bool) -> Self {
@@ -2118,6 +2375,7 @@ impl UartcrVal {
     }
 
     /// Set **DTR** `[10:10]`
+    ///
     /// Data transmit ready. This bit is the complement of the UART data transmit ready, nUARTDTR, modem status output. That is, when the bit is programmed to a 1 then nUARTDTR is LOW.
     #[inline(always)]
     pub const fn with_dtr(self, value: bool) -> Self {
@@ -2131,6 +2389,7 @@ impl UartcrVal {
     }
 
     /// Set **RXE** `[9:9]`
+    ///
     /// Receive enable. If this bit is set to 1, the receive section of the UART is enabled. Data reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of reception, it completes the current character before stopping.
     #[inline(always)]
     pub const fn with_rxe(self, value: bool) -> Self {
@@ -2144,6 +2403,7 @@ impl UartcrVal {
     }
 
     /// Set **TXE** `[8:8]`
+    ///
     /// Transmit enable. If this bit is set to 1, the transmit section of the UART is enabled. Data transmission occurs for either UART signals, or SIR signals depending on the setting of the SIREN bit. When the UART is disabled in the middle of transmission, it completes the current character before stopping.
     #[inline(always)]
     pub const fn with_txe(self, value: bool) -> Self {
@@ -2157,6 +2417,7 @@ impl UartcrVal {
     }
 
     /// Set **LBE** `[7:7]`
+    ///
     /// Loopback enable. If this bit is set to 1 and the SIREN bit is set to 1 and the SIRTEST bit in the Test Control Register, UARTTCR is set to 1, then the nSIROUT path is inverted, and fed through to the SIRIN path. The SIRTEST bit in the test register must be set to 1 to override the normal half-duplex SIR operation. This must be the requirement for accessing the test registers during normal operation, and SIRTEST must be cleared to 0 when loopback testing is finished. This feature reduces the amount of external coupling required during system test. If this bit is set to 1, and the SIRTEST bit is set to 0, the UARTTXD path is fed through to the UARTRXD path. In either SIR mode or UART mode, when this bit is set, the modem outputs are also fed through to the modem inputs. This bit is cleared to 0 on reset, to disable loopback.
     #[inline(always)]
     pub const fn with_lbe(self, value: bool) -> Self {
@@ -2170,6 +2431,7 @@ impl UartcrVal {
     }
 
     /// Set **SIRLP** `[2:2]`
+    ///
     /// SIR low-power IrDA mode. This bit selects the IrDA encoding mode. If this bit is cleared to 0, low-level bits are transmitted as an active high pulse with a width of 3 / 16th of the bit period. If this bit is set to 1, low-level bits are transmitted with a pulse width that is 3 times the period of the IrLPBaud16 input signal, regardless of the selected bit rate. Setting this bit uses less power, but might reduce transmission distances.
     #[inline(always)]
     pub const fn with_sirlp(self, value: bool) -> Self {
@@ -2183,6 +2445,7 @@ impl UartcrVal {
     }
 
     /// Set **SIREN** `[1:1]`
+    ///
     /// SIR enable: 0 = IrDA SIR ENDEC is disabled. nSIROUT remains LOW (no light pulse generated), and signal transitions on SIRIN have no effect. 1 = IrDA SIR ENDEC is enabled. Data is transmitted and received on nSIROUT and SIRIN. UARTTXD remains HIGH, in the marking state. Signal transitions on UARTRXD or modem status inputs have no effect. This bit has no effect if the UARTEN bit disables the UART.
     #[inline(always)]
     pub const fn with_siren(self, value: bool) -> Self {
@@ -2196,6 +2459,7 @@ impl UartcrVal {
     }
 
     /// Set **UARTEN** `[0:0]`
+    ///
     /// UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
     #[inline(always)]
     pub const fn with_uarten(self, value: bool) -> Self {
@@ -2247,8 +2511,11 @@ impl Uartcr {
 /// ## Fields
 ///
 /// - **RXIFLSEL** `[5:3]` (RW)
+///
 ///   Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
+///
 /// - **TXIFLSEL** `[2:0]` (RW)
+///
 ///   Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
 #[repr(transparent)]
 pub struct Uartifls {
@@ -2267,13 +2534,17 @@ impl Uartifls {
     // ======== Field Constants ========
 
     /// **RXIFLSEL**
+    ///
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const RXIFLSEL_OFFSET: u32 = 3;
     pub const RXIFLSEL_MASK: u32 = 0x00000038;
 
     /// **TXIFLSEL**
+    ///
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const TXIFLSEL_OFFSET: u32 = 0;
     pub const TXIFLSEL_MASK: u32 = 0x00000007;
@@ -2281,6 +2552,7 @@ impl Uartifls {
     // ======== Field Accessors ========
 
     /// **RXIFLSEL** `[5:3]` (RW)
+    ///
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn rxiflsel(&self) -> u32 {
@@ -2288,6 +2560,7 @@ impl Uartifls {
     }
 
     /// Write **RXIFLSEL** `[5:3]` (RW)
+    ///
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn write_rxiflsel(&self, value: u32) {
@@ -2295,6 +2568,7 @@ impl Uartifls {
     }
 
     /// **TXIFLSEL** `[2:0]` (RW)
+    ///
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn txiflsel(&self) -> u32 {
@@ -2302,6 +2576,7 @@ impl Uartifls {
     }
 
     /// Write **TXIFLSEL** `[2:0]` (RW)
+    ///
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn write_txiflsel(&self, value: u32) {
@@ -2339,6 +2614,7 @@ impl UartiflsVal {
     }
 
     /// Read **RXIFLSEL** `[5:3]`
+    ///
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub const fn rxiflsel(&self) -> u32 {
@@ -2346,6 +2622,7 @@ impl UartiflsVal {
     }
 
     /// Read **TXIFLSEL** `[2:0]`
+    ///
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub const fn txiflsel(&self) -> u32 {
@@ -2353,6 +2630,7 @@ impl UartiflsVal {
     }
 
     /// Set **RXIFLSEL** `[5:3]`
+    ///
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub const fn with_rxiflsel(self, value: u32) -> Self {
@@ -2362,6 +2640,7 @@ impl UartiflsVal {
     }
 
     /// Set **TXIFLSEL** `[2:0]`
+    ///
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub const fn with_txiflsel(self, value: u32) -> Self {
@@ -2409,26 +2688,47 @@ impl Uartifls {
 /// ## Fields
 ///
 /// - **OEIM** `[10]` (RW)
+///
 ///   Overrun error interrupt mask. A read returns the current mask for the UARTOEINTR interrupt. On a write of 1, the mask of the UARTOEINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **BEIM** `[9]` (RW)
+///
 ///   Break error interrupt mask. A read returns the current mask for the UARTBEINTR interrupt. On a write of 1, the mask of the UARTBEINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **PEIM** `[8]` (RW)
+///
 ///   Parity error interrupt mask. A read returns the current mask for the UARTPEINTR interrupt. On a write of 1, the mask of the UARTPEINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **FEIM** `[7]` (RW)
+///
 ///   Framing error interrupt mask. A read returns the current mask for the UARTFEINTR interrupt. On a write of 1, the mask of the UARTFEINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **RTIM** `[6]` (RW)
+///
 ///   Receive timeout interrupt mask. A read returns the current mask for the UARTRTINTR interrupt. On a write of 1, the mask of the UARTRTINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **TXIM** `[5]` (RW)
+///
 ///   Transmit interrupt mask. A read returns the current mask for the UARTTXINTR interrupt. On a write of 1, the mask of the UARTTXINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **RXIM** `[4]` (RW)
+///
 ///   Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt. On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **DSRMIM** `[3]` (RW)
+///
 ///   nUARTDSR modem interrupt mask. A read returns the current mask for the UARTDSRINTR interrupt. On a write of 1, the mask of the UARTDSRINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **DCDMIM** `[2]` (RW)
+///
 ///   nUARTDCD modem interrupt mask. A read returns the current mask for the UARTDCDINTR interrupt. On a write of 1, the mask of the UARTDCDINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **CTSMIM** `[1]` (RW)
+///
 ///   nUARTCTS modem interrupt mask. A read returns the current mask for the UARTCTSINTR interrupt. On a write of 1, the mask of the UARTCTSINTR interrupt is set. A write of 0 clears the mask.
+///
 /// - **RIMIM** `[0]` (RW)
+///
 ///   nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
 #[repr(transparent)]
 pub struct Uartimsc {
@@ -2447,77 +2747,99 @@ impl Uartimsc {
     // ======== Field Constants ========
 
     /// **OEIM**
+    ///
     /// Overrun error interrupt mask. A read returns the current mask for the UARTOEINTR interrupt. On a write of 1, the mask of the UARTOEINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const OEIM_OFFSET: u32 = 10;
     pub const OEIM_MASK: u32 = 0x00000400;
     pub const OEIM: u32 = 1 << 10;
 
     /// **BEIM**
+    ///
     /// Break error interrupt mask. A read returns the current mask for the UARTBEINTR interrupt. On a write of 1, the mask of the UARTBEINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const BEIM_OFFSET: u32 = 9;
     pub const BEIM_MASK: u32 = 0x00000200;
     pub const BEIM: u32 = 1 << 9;
 
     /// **PEIM**
+    ///
     /// Parity error interrupt mask. A read returns the current mask for the UARTPEINTR interrupt. On a write of 1, the mask of the UARTPEINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const PEIM_OFFSET: u32 = 8;
     pub const PEIM_MASK: u32 = 0x00000100;
     pub const PEIM: u32 = 1 << 8;
 
     /// **FEIM**
+    ///
     /// Framing error interrupt mask. A read returns the current mask for the UARTFEINTR interrupt. On a write of 1, the mask of the UARTFEINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const FEIM_OFFSET: u32 = 7;
     pub const FEIM_MASK: u32 = 0x00000080;
     pub const FEIM: u32 = 1 << 7;
 
     /// **RTIM**
+    ///
     /// Receive timeout interrupt mask. A read returns the current mask for the UARTRTINTR interrupt. On a write of 1, the mask of the UARTRTINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RTIM_OFFSET: u32 = 6;
     pub const RTIM_MASK: u32 = 0x00000040;
     pub const RTIM: u32 = 1 << 6;
 
     /// **TXIM**
+    ///
     /// Transmit interrupt mask. A read returns the current mask for the UARTTXINTR interrupt. On a write of 1, the mask of the UARTTXINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TXIM_OFFSET: u32 = 5;
     pub const TXIM_MASK: u32 = 0x00000020;
     pub const TXIM: u32 = 1 << 5;
 
     /// **RXIM**
+    ///
     /// Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt. On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RXIM_OFFSET: u32 = 4;
     pub const RXIM_MASK: u32 = 0x00000010;
     pub const RXIM: u32 = 1 << 4;
 
     /// **DSRMIM**
+    ///
     /// nUARTDSR modem interrupt mask. A read returns the current mask for the UARTDSRINTR interrupt. On a write of 1, the mask of the UARTDSRINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DSRMIM_OFFSET: u32 = 3;
     pub const DSRMIM_MASK: u32 = 0x00000008;
     pub const DSRMIM: u32 = 1 << 3;
 
     /// **DCDMIM**
+    ///
     /// nUARTDCD modem interrupt mask. A read returns the current mask for the UARTDCDINTR interrupt. On a write of 1, the mask of the UARTDCDINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DCDMIM_OFFSET: u32 = 2;
     pub const DCDMIM_MASK: u32 = 0x00000004;
     pub const DCDMIM: u32 = 1 << 2;
 
     /// **CTSMIM**
+    ///
     /// nUARTCTS modem interrupt mask. A read returns the current mask for the UARTCTSINTR interrupt. On a write of 1, the mask of the UARTCTSINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CTSMIM_OFFSET: u32 = 1;
     pub const CTSMIM_MASK: u32 = 0x00000002;
     pub const CTSMIM: u32 = 1 << 1;
 
     /// **RIMIM**
+    ///
     /// nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RIMIM_OFFSET: u32 = 0;
     pub const RIMIM_MASK: u32 = 0x00000001;
@@ -2526,6 +2848,7 @@ impl Uartimsc {
     // ======== Field Accessors ========
 
     /// **OEIM** `[10]` (RW)
+    ///
     /// Overrun error interrupt mask. A read returns the current mask for the UARTOEINTR interrupt. On a write of 1, the mask of the UARTOEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn oeim(&self) -> bool {
@@ -2545,6 +2868,7 @@ impl Uartimsc {
     }
 
     /// **BEIM** `[9]` (RW)
+    ///
     /// Break error interrupt mask. A read returns the current mask for the UARTBEINTR interrupt. On a write of 1, the mask of the UARTBEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn beim(&self) -> bool {
@@ -2564,6 +2888,7 @@ impl Uartimsc {
     }
 
     /// **PEIM** `[8]` (RW)
+    ///
     /// Parity error interrupt mask. A read returns the current mask for the UARTPEINTR interrupt. On a write of 1, the mask of the UARTPEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn peim(&self) -> bool {
@@ -2583,6 +2908,7 @@ impl Uartimsc {
     }
 
     /// **FEIM** `[7]` (RW)
+    ///
     /// Framing error interrupt mask. A read returns the current mask for the UARTFEINTR interrupt. On a write of 1, the mask of the UARTFEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn feim(&self) -> bool {
@@ -2602,6 +2928,7 @@ impl Uartimsc {
     }
 
     /// **RTIM** `[6]` (RW)
+    ///
     /// Receive timeout interrupt mask. A read returns the current mask for the UARTRTINTR interrupt. On a write of 1, the mask of the UARTRTINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn rtim(&self) -> bool {
@@ -2621,6 +2948,7 @@ impl Uartimsc {
     }
 
     /// **TXIM** `[5]` (RW)
+    ///
     /// Transmit interrupt mask. A read returns the current mask for the UARTTXINTR interrupt. On a write of 1, the mask of the UARTTXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn txim(&self) -> bool {
@@ -2640,6 +2968,7 @@ impl Uartimsc {
     }
 
     /// **RXIM** `[4]` (RW)
+    ///
     /// Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt. On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn rxim(&self) -> bool {
@@ -2659,6 +2988,7 @@ impl Uartimsc {
     }
 
     /// **DSRMIM** `[3]` (RW)
+    ///
     /// nUARTDSR modem interrupt mask. A read returns the current mask for the UARTDSRINTR interrupt. On a write of 1, the mask of the UARTDSRINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn dsrmim(&self) -> bool {
@@ -2678,6 +3008,7 @@ impl Uartimsc {
     }
 
     /// **DCDMIM** `[2]` (RW)
+    ///
     /// nUARTDCD modem interrupt mask. A read returns the current mask for the UARTDCDINTR interrupt. On a write of 1, the mask of the UARTDCDINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn dcdmim(&self) -> bool {
@@ -2697,6 +3028,7 @@ impl Uartimsc {
     }
 
     /// **CTSMIM** `[1]` (RW)
+    ///
     /// nUARTCTS modem interrupt mask. A read returns the current mask for the UARTCTSINTR interrupt. On a write of 1, the mask of the UARTCTSINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn ctsmim(&self) -> bool {
@@ -2716,6 +3048,7 @@ impl Uartimsc {
     }
 
     /// **RIMIM** `[0]` (RW)
+    ///
     /// nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub fn rimim(&self) -> bool {
@@ -2765,6 +3098,7 @@ impl UartimscVal {
     }
 
     /// Read **OEIM** `[10:10]`
+    ///
     /// Overrun error interrupt mask. A read returns the current mask for the UARTOEINTR interrupt. On a write of 1, the mask of the UARTOEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn oeim(&self) -> bool {
@@ -2772,6 +3106,7 @@ impl UartimscVal {
     }
 
     /// Read **BEIM** `[9:9]`
+    ///
     /// Break error interrupt mask. A read returns the current mask for the UARTBEINTR interrupt. On a write of 1, the mask of the UARTBEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn beim(&self) -> bool {
@@ -2779,6 +3114,7 @@ impl UartimscVal {
     }
 
     /// Read **PEIM** `[8:8]`
+    ///
     /// Parity error interrupt mask. A read returns the current mask for the UARTPEINTR interrupt. On a write of 1, the mask of the UARTPEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn peim(&self) -> bool {
@@ -2786,6 +3122,7 @@ impl UartimscVal {
     }
 
     /// Read **FEIM** `[7:7]`
+    ///
     /// Framing error interrupt mask. A read returns the current mask for the UARTFEINTR interrupt. On a write of 1, the mask of the UARTFEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn feim(&self) -> bool {
@@ -2793,6 +3130,7 @@ impl UartimscVal {
     }
 
     /// Read **RTIM** `[6:6]`
+    ///
     /// Receive timeout interrupt mask. A read returns the current mask for the UARTRTINTR interrupt. On a write of 1, the mask of the UARTRTINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn rtim(&self) -> bool {
@@ -2800,6 +3138,7 @@ impl UartimscVal {
     }
 
     /// Read **TXIM** `[5:5]`
+    ///
     /// Transmit interrupt mask. A read returns the current mask for the UARTTXINTR interrupt. On a write of 1, the mask of the UARTTXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn txim(&self) -> bool {
@@ -2807,6 +3146,7 @@ impl UartimscVal {
     }
 
     /// Read **RXIM** `[4:4]`
+    ///
     /// Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt. On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn rxim(&self) -> bool {
@@ -2814,6 +3154,7 @@ impl UartimscVal {
     }
 
     /// Read **DSRMIM** `[3:3]`
+    ///
     /// nUARTDSR modem interrupt mask. A read returns the current mask for the UARTDSRINTR interrupt. On a write of 1, the mask of the UARTDSRINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn dsrmim(&self) -> bool {
@@ -2821,6 +3162,7 @@ impl UartimscVal {
     }
 
     /// Read **DCDMIM** `[2:2]`
+    ///
     /// nUARTDCD modem interrupt mask. A read returns the current mask for the UARTDCDINTR interrupt. On a write of 1, the mask of the UARTDCDINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn dcdmim(&self) -> bool {
@@ -2828,6 +3170,7 @@ impl UartimscVal {
     }
 
     /// Read **CTSMIM** `[1:1]`
+    ///
     /// nUARTCTS modem interrupt mask. A read returns the current mask for the UARTCTSINTR interrupt. On a write of 1, the mask of the UARTCTSINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn ctsmim(&self) -> bool {
@@ -2835,6 +3178,7 @@ impl UartimscVal {
     }
 
     /// Read **RIMIM** `[0:0]`
+    ///
     /// nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn rimim(&self) -> bool {
@@ -2842,6 +3186,7 @@ impl UartimscVal {
     }
 
     /// Set **OEIM** `[10:10]`
+    ///
     /// Overrun error interrupt mask. A read returns the current mask for the UARTOEINTR interrupt. On a write of 1, the mask of the UARTOEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_oeim(self, value: bool) -> Self {
@@ -2855,6 +3200,7 @@ impl UartimscVal {
     }
 
     /// Set **BEIM** `[9:9]`
+    ///
     /// Break error interrupt mask. A read returns the current mask for the UARTBEINTR interrupt. On a write of 1, the mask of the UARTBEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_beim(self, value: bool) -> Self {
@@ -2868,6 +3214,7 @@ impl UartimscVal {
     }
 
     /// Set **PEIM** `[8:8]`
+    ///
     /// Parity error interrupt mask. A read returns the current mask for the UARTPEINTR interrupt. On a write of 1, the mask of the UARTPEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_peim(self, value: bool) -> Self {
@@ -2881,6 +3228,7 @@ impl UartimscVal {
     }
 
     /// Set **FEIM** `[7:7]`
+    ///
     /// Framing error interrupt mask. A read returns the current mask for the UARTFEINTR interrupt. On a write of 1, the mask of the UARTFEINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_feim(self, value: bool) -> Self {
@@ -2894,6 +3242,7 @@ impl UartimscVal {
     }
 
     /// Set **RTIM** `[6:6]`
+    ///
     /// Receive timeout interrupt mask. A read returns the current mask for the UARTRTINTR interrupt. On a write of 1, the mask of the UARTRTINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_rtim(self, value: bool) -> Self {
@@ -2907,6 +3256,7 @@ impl UartimscVal {
     }
 
     /// Set **TXIM** `[5:5]`
+    ///
     /// Transmit interrupt mask. A read returns the current mask for the UARTTXINTR interrupt. On a write of 1, the mask of the UARTTXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_txim(self, value: bool) -> Self {
@@ -2920,6 +3270,7 @@ impl UartimscVal {
     }
 
     /// Set **RXIM** `[4:4]`
+    ///
     /// Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt. On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_rxim(self, value: bool) -> Self {
@@ -2933,6 +3284,7 @@ impl UartimscVal {
     }
 
     /// Set **DSRMIM** `[3:3]`
+    ///
     /// nUARTDSR modem interrupt mask. A read returns the current mask for the UARTDSRINTR interrupt. On a write of 1, the mask of the UARTDSRINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_dsrmim(self, value: bool) -> Self {
@@ -2946,6 +3298,7 @@ impl UartimscVal {
     }
 
     /// Set **DCDMIM** `[2:2]`
+    ///
     /// nUARTDCD modem interrupt mask. A read returns the current mask for the UARTDCDINTR interrupt. On a write of 1, the mask of the UARTDCDINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_dcdmim(self, value: bool) -> Self {
@@ -2959,6 +3312,7 @@ impl UartimscVal {
     }
 
     /// Set **CTSMIM** `[1:1]`
+    ///
     /// nUARTCTS modem interrupt mask. A read returns the current mask for the UARTCTSINTR interrupt. On a write of 1, the mask of the UARTCTSINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_ctsmim(self, value: bool) -> Self {
@@ -2972,6 +3326,7 @@ impl UartimscVal {
     }
 
     /// Set **RIMIM** `[0:0]`
+    ///
     /// nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
     #[inline(always)]
     pub const fn with_rimim(self, value: bool) -> Self {
@@ -3023,26 +3378,47 @@ impl Uartimsc {
 /// ## Fields
 ///
 /// - **OERIS** `[10]` (RO)
+///
 ///   Overrun error interrupt status. Returns the raw interrupt state of the UARTOEINTR interrupt.
+///
 /// - **BERIS** `[9]` (RO)
+///
 ///   Break error interrupt status. Returns the raw interrupt state of the UARTBEINTR interrupt.
+///
 /// - **PERIS** `[8]` (RO)
+///
 ///   Parity error interrupt status. Returns the raw interrupt state of the UARTPEINTR interrupt.
+///
 /// - **FERIS** `[7]` (RO)
+///
 ///   Framing error interrupt status. Returns the raw interrupt state of the UARTFEINTR interrupt.
+///
 /// - **RTRIS** `[6]` (RO)
+///
 ///   Receive timeout interrupt status. Returns the raw interrupt state of the UARTRTINTR interrupt. a
+///
 /// - **TXRIS** `[5]` (RO)
+///
 ///   Transmit interrupt status. Returns the raw interrupt state of the UARTTXINTR interrupt.
+///
 /// - **RXRIS** `[4]` (RO)
+///
 ///   Receive interrupt status. Returns the raw interrupt state of the UARTRXINTR interrupt.
+///
 /// - **DSRRMIS** `[3]` (RO)
+///
 ///   nUARTDSR modem interrupt status. Returns the raw interrupt state of the UARTDSRINTR interrupt.
+///
 /// - **DCDRMIS** `[2]` (RO)
+///
 ///   nUARTDCD modem interrupt status. Returns the raw interrupt state of the UARTDCDINTR interrupt.
+///
 /// - **CTSRMIS** `[1]` (RO)
+///
 ///   nUARTCTS modem interrupt status. Returns the raw interrupt state of the UARTCTSINTR interrupt.
+///
 /// - **RIRMIS** `[0]` (RO)
+///
 ///   nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartris {
@@ -3061,77 +3437,99 @@ impl Uartris {
     // ======== Field Constants ========
 
     /// **OERIS**
+    ///
     /// Overrun error interrupt status. Returns the raw interrupt state of the UARTOEINTR interrupt.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const OERIS_OFFSET: u32 = 10;
     pub const OERIS_MASK: u32 = 0x00000400;
     pub const OERIS: u32 = 1 << 10;
 
     /// **BERIS**
+    ///
     /// Break error interrupt status. Returns the raw interrupt state of the UARTBEINTR interrupt.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const BERIS_OFFSET: u32 = 9;
     pub const BERIS_MASK: u32 = 0x00000200;
     pub const BERIS: u32 = 1 << 9;
 
     /// **PERIS**
+    ///
     /// Parity error interrupt status. Returns the raw interrupt state of the UARTPEINTR interrupt.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const PERIS_OFFSET: u32 = 8;
     pub const PERIS_MASK: u32 = 0x00000100;
     pub const PERIS: u32 = 1 << 8;
 
     /// **FERIS**
+    ///
     /// Framing error interrupt status. Returns the raw interrupt state of the UARTFEINTR interrupt.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const FERIS_OFFSET: u32 = 7;
     pub const FERIS_MASK: u32 = 0x00000080;
     pub const FERIS: u32 = 1 << 7;
 
     /// **RTRIS**
+    ///
     /// Receive timeout interrupt status. Returns the raw interrupt state of the UARTRTINTR interrupt. a
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RTRIS_OFFSET: u32 = 6;
     pub const RTRIS_MASK: u32 = 0x00000040;
     pub const RTRIS: u32 = 1 << 6;
 
     /// **TXRIS**
+    ///
     /// Transmit interrupt status. Returns the raw interrupt state of the UARTTXINTR interrupt.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TXRIS_OFFSET: u32 = 5;
     pub const TXRIS_MASK: u32 = 0x00000020;
     pub const TXRIS: u32 = 1 << 5;
 
     /// **RXRIS**
+    ///
     /// Receive interrupt status. Returns the raw interrupt state of the UARTRXINTR interrupt.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RXRIS_OFFSET: u32 = 4;
     pub const RXRIS_MASK: u32 = 0x00000010;
     pub const RXRIS: u32 = 1 << 4;
 
     /// **DSRRMIS**
+    ///
     /// nUARTDSR modem interrupt status. Returns the raw interrupt state of the UARTDSRINTR interrupt.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DSRRMIS_OFFSET: u32 = 3;
     pub const DSRRMIS_MASK: u32 = 0x00000008;
     pub const DSRRMIS: u32 = 1 << 3;
 
     /// **DCDRMIS**
+    ///
     /// nUARTDCD modem interrupt status. Returns the raw interrupt state of the UARTDCDINTR interrupt.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DCDRMIS_OFFSET: u32 = 2;
     pub const DCDRMIS_MASK: u32 = 0x00000004;
     pub const DCDRMIS: u32 = 1 << 2;
 
     /// **CTSRMIS**
+    ///
     /// nUARTCTS modem interrupt status. Returns the raw interrupt state of the UARTCTSINTR interrupt.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CTSRMIS_OFFSET: u32 = 1;
     pub const CTSRMIS_MASK: u32 = 0x00000002;
     pub const CTSRMIS: u32 = 1 << 1;
 
     /// **RIRMIS**
+    ///
     /// nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RIRMIS_OFFSET: u32 = 0;
     pub const RIRMIS_MASK: u32 = 0x00000001;
@@ -3140,6 +3538,7 @@ impl Uartris {
     // ======== Field Accessors ========
 
     /// **OERIS** `[10]` (RO)
+    ///
     /// Overrun error interrupt status. Returns the raw interrupt state of the UARTOEINTR interrupt.
     #[inline(always)]
     pub fn oeris(&self) -> bool {
@@ -3147,6 +3546,7 @@ impl Uartris {
     }
 
     /// **BERIS** `[9]` (RO)
+    ///
     /// Break error interrupt status. Returns the raw interrupt state of the UARTBEINTR interrupt.
     #[inline(always)]
     pub fn beris(&self) -> bool {
@@ -3154,6 +3554,7 @@ impl Uartris {
     }
 
     /// **PERIS** `[8]` (RO)
+    ///
     /// Parity error interrupt status. Returns the raw interrupt state of the UARTPEINTR interrupt.
     #[inline(always)]
     pub fn peris(&self) -> bool {
@@ -3161,6 +3562,7 @@ impl Uartris {
     }
 
     /// **FERIS** `[7]` (RO)
+    ///
     /// Framing error interrupt status. Returns the raw interrupt state of the UARTFEINTR interrupt.
     #[inline(always)]
     pub fn feris(&self) -> bool {
@@ -3168,6 +3570,7 @@ impl Uartris {
     }
 
     /// **RTRIS** `[6]` (RO)
+    ///
     /// Receive timeout interrupt status. Returns the raw interrupt state of the UARTRTINTR interrupt. a
     #[inline(always)]
     pub fn rtris(&self) -> bool {
@@ -3175,6 +3578,7 @@ impl Uartris {
     }
 
     /// **TXRIS** `[5]` (RO)
+    ///
     /// Transmit interrupt status. Returns the raw interrupt state of the UARTTXINTR interrupt.
     #[inline(always)]
     pub fn txris(&self) -> bool {
@@ -3182,6 +3586,7 @@ impl Uartris {
     }
 
     /// **RXRIS** `[4]` (RO)
+    ///
     /// Receive interrupt status. Returns the raw interrupt state of the UARTRXINTR interrupt.
     #[inline(always)]
     pub fn rxris(&self) -> bool {
@@ -3189,6 +3594,7 @@ impl Uartris {
     }
 
     /// **DSRRMIS** `[3]` (RO)
+    ///
     /// nUARTDSR modem interrupt status. Returns the raw interrupt state of the UARTDSRINTR interrupt.
     #[inline(always)]
     pub fn dsrrmis(&self) -> bool {
@@ -3196,6 +3602,7 @@ impl Uartris {
     }
 
     /// **DCDRMIS** `[2]` (RO)
+    ///
     /// nUARTDCD modem interrupt status. Returns the raw interrupt state of the UARTDCDINTR interrupt.
     #[inline(always)]
     pub fn dcdrmis(&self) -> bool {
@@ -3203,6 +3610,7 @@ impl Uartris {
     }
 
     /// **CTSRMIS** `[1]` (RO)
+    ///
     /// nUARTCTS modem interrupt status. Returns the raw interrupt state of the UARTCTSINTR interrupt.
     #[inline(always)]
     pub fn ctsrmis(&self) -> bool {
@@ -3210,6 +3618,7 @@ impl Uartris {
     }
 
     /// **RIRMIS** `[0]` (RO)
+    ///
     /// nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
     #[inline(always)]
     pub fn rirmis(&self) -> bool {
@@ -3247,6 +3656,7 @@ impl UartrisVal {
     }
 
     /// Read **OERIS** `[10:10]`
+    ///
     /// Overrun error interrupt status. Returns the raw interrupt state of the UARTOEINTR interrupt.
     #[inline(always)]
     pub const fn oeris(&self) -> bool {
@@ -3254,6 +3664,7 @@ impl UartrisVal {
     }
 
     /// Read **BERIS** `[9:9]`
+    ///
     /// Break error interrupt status. Returns the raw interrupt state of the UARTBEINTR interrupt.
     #[inline(always)]
     pub const fn beris(&self) -> bool {
@@ -3261,6 +3672,7 @@ impl UartrisVal {
     }
 
     /// Read **PERIS** `[8:8]`
+    ///
     /// Parity error interrupt status. Returns the raw interrupt state of the UARTPEINTR interrupt.
     #[inline(always)]
     pub const fn peris(&self) -> bool {
@@ -3268,6 +3680,7 @@ impl UartrisVal {
     }
 
     /// Read **FERIS** `[7:7]`
+    ///
     /// Framing error interrupt status. Returns the raw interrupt state of the UARTFEINTR interrupt.
     #[inline(always)]
     pub const fn feris(&self) -> bool {
@@ -3275,6 +3688,7 @@ impl UartrisVal {
     }
 
     /// Read **RTRIS** `[6:6]`
+    ///
     /// Receive timeout interrupt status. Returns the raw interrupt state of the UARTRTINTR interrupt. a
     #[inline(always)]
     pub const fn rtris(&self) -> bool {
@@ -3282,6 +3696,7 @@ impl UartrisVal {
     }
 
     /// Read **TXRIS** `[5:5]`
+    ///
     /// Transmit interrupt status. Returns the raw interrupt state of the UARTTXINTR interrupt.
     #[inline(always)]
     pub const fn txris(&self) -> bool {
@@ -3289,6 +3704,7 @@ impl UartrisVal {
     }
 
     /// Read **RXRIS** `[4:4]`
+    ///
     /// Receive interrupt status. Returns the raw interrupt state of the UARTRXINTR interrupt.
     #[inline(always)]
     pub const fn rxris(&self) -> bool {
@@ -3296,6 +3712,7 @@ impl UartrisVal {
     }
 
     /// Read **DSRRMIS** `[3:3]`
+    ///
     /// nUARTDSR modem interrupt status. Returns the raw interrupt state of the UARTDSRINTR interrupt.
     #[inline(always)]
     pub const fn dsrrmis(&self) -> bool {
@@ -3303,6 +3720,7 @@ impl UartrisVal {
     }
 
     /// Read **DCDRMIS** `[2:2]`
+    ///
     /// nUARTDCD modem interrupt status. Returns the raw interrupt state of the UARTDCDINTR interrupt.
     #[inline(always)]
     pub const fn dcdrmis(&self) -> bool {
@@ -3310,6 +3728,7 @@ impl UartrisVal {
     }
 
     /// Read **CTSRMIS** `[1:1]`
+    ///
     /// nUARTCTS modem interrupt status. Returns the raw interrupt state of the UARTCTSINTR interrupt.
     #[inline(always)]
     pub const fn ctsrmis(&self) -> bool {
@@ -3317,6 +3736,7 @@ impl UartrisVal {
     }
 
     /// Read **RIRMIS** `[0:0]`
+    ///
     /// nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
     #[inline(always)]
     pub const fn rirmis(&self) -> bool {
@@ -3362,26 +3782,47 @@ impl Uartris {
 /// ## Fields
 ///
 /// - **OEMIS** `[10]` (RO)
+///
 ///   Overrun error masked interrupt status. Returns the masked interrupt state of the UARTOEINTR interrupt.
+///
 /// - **BEMIS** `[9]` (RO)
+///
 ///   Break error masked interrupt status. Returns the masked interrupt state of the UARTBEINTR interrupt.
+///
 /// - **PEMIS** `[8]` (RO)
+///
 ///   Parity error masked interrupt status. Returns the masked interrupt state of the UARTPEINTR interrupt.
+///
 /// - **FEMIS** `[7]` (RO)
+///
 ///   Framing error masked interrupt status. Returns the masked interrupt state of the UARTFEINTR interrupt.
+///
 /// - **RTMIS** `[6]` (RO)
+///
 ///   Receive timeout masked interrupt status. Returns the masked interrupt state of the UARTRTINTR interrupt.
+///
 /// - **TXMIS** `[5]` (RO)
+///
 ///   Transmit masked interrupt status. Returns the masked interrupt state of the UARTTXINTR interrupt.
+///
 /// - **RXMIS** `[4]` (RO)
+///
 ///   Receive masked interrupt status. Returns the masked interrupt state of the UARTRXINTR interrupt.
+///
 /// - **DSRMMIS** `[3]` (RO)
+///
 ///   nUARTDSR modem masked interrupt status. Returns the masked interrupt state of the UARTDSRINTR interrupt.
+///
 /// - **DCDMMIS** `[2]` (RO)
+///
 ///   nUARTDCD modem masked interrupt status. Returns the masked interrupt state of the UARTDCDINTR interrupt.
+///
 /// - **CTSMMIS** `[1]` (RO)
+///
 ///   nUARTCTS modem masked interrupt status. Returns the masked interrupt state of the UARTCTSINTR interrupt.
+///
 /// - **RIMMIS** `[0]` (RO)
+///
 ///   nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartmis {
@@ -3400,77 +3841,99 @@ impl Uartmis {
     // ======== Field Constants ========
 
     /// **OEMIS**
+    ///
     /// Overrun error masked interrupt status. Returns the masked interrupt state of the UARTOEINTR interrupt.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const OEMIS_OFFSET: u32 = 10;
     pub const OEMIS_MASK: u32 = 0x00000400;
     pub const OEMIS: u32 = 1 << 10;
 
     /// **BEMIS**
+    ///
     /// Break error masked interrupt status. Returns the masked interrupt state of the UARTBEINTR interrupt.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const BEMIS_OFFSET: u32 = 9;
     pub const BEMIS_MASK: u32 = 0x00000200;
     pub const BEMIS: u32 = 1 << 9;
 
     /// **PEMIS**
+    ///
     /// Parity error masked interrupt status. Returns the masked interrupt state of the UARTPEINTR interrupt.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const PEMIS_OFFSET: u32 = 8;
     pub const PEMIS_MASK: u32 = 0x00000100;
     pub const PEMIS: u32 = 1 << 8;
 
     /// **FEMIS**
+    ///
     /// Framing error masked interrupt status. Returns the masked interrupt state of the UARTFEINTR interrupt.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const FEMIS_OFFSET: u32 = 7;
     pub const FEMIS_MASK: u32 = 0x00000080;
     pub const FEMIS: u32 = 1 << 7;
 
     /// **RTMIS**
+    ///
     /// Receive timeout masked interrupt status. Returns the masked interrupt state of the UARTRTINTR interrupt.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RTMIS_OFFSET: u32 = 6;
     pub const RTMIS_MASK: u32 = 0x00000040;
     pub const RTMIS: u32 = 1 << 6;
 
     /// **TXMIS**
+    ///
     /// Transmit masked interrupt status. Returns the masked interrupt state of the UARTTXINTR interrupt.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TXMIS_OFFSET: u32 = 5;
     pub const TXMIS_MASK: u32 = 0x00000020;
     pub const TXMIS: u32 = 1 << 5;
 
     /// **RXMIS**
+    ///
     /// Receive masked interrupt status. Returns the masked interrupt state of the UARTRXINTR interrupt.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RXMIS_OFFSET: u32 = 4;
     pub const RXMIS_MASK: u32 = 0x00000010;
     pub const RXMIS: u32 = 1 << 4;
 
     /// **DSRMMIS**
+    ///
     /// nUARTDSR modem masked interrupt status. Returns the masked interrupt state of the UARTDSRINTR interrupt.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DSRMMIS_OFFSET: u32 = 3;
     pub const DSRMMIS_MASK: u32 = 0x00000008;
     pub const DSRMMIS: u32 = 1 << 3;
 
     /// **DCDMMIS**
+    ///
     /// nUARTDCD modem masked interrupt status. Returns the masked interrupt state of the UARTDCDINTR interrupt.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DCDMMIS_OFFSET: u32 = 2;
     pub const DCDMMIS_MASK: u32 = 0x00000004;
     pub const DCDMMIS: u32 = 1 << 2;
 
     /// **CTSMMIS**
+    ///
     /// nUARTCTS modem masked interrupt status. Returns the masked interrupt state of the UARTCTSINTR interrupt.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CTSMMIS_OFFSET: u32 = 1;
     pub const CTSMMIS_MASK: u32 = 0x00000002;
     pub const CTSMMIS: u32 = 1 << 1;
 
     /// **RIMMIS**
+    ///
     /// nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RIMMIS_OFFSET: u32 = 0;
     pub const RIMMIS_MASK: u32 = 0x00000001;
@@ -3479,6 +3942,7 @@ impl Uartmis {
     // ======== Field Accessors ========
 
     /// **OEMIS** `[10]` (RO)
+    ///
     /// Overrun error masked interrupt status. Returns the masked interrupt state of the UARTOEINTR interrupt.
     #[inline(always)]
     pub fn oemis(&self) -> bool {
@@ -3486,6 +3950,7 @@ impl Uartmis {
     }
 
     /// **BEMIS** `[9]` (RO)
+    ///
     /// Break error masked interrupt status. Returns the masked interrupt state of the UARTBEINTR interrupt.
     #[inline(always)]
     pub fn bemis(&self) -> bool {
@@ -3493,6 +3958,7 @@ impl Uartmis {
     }
 
     /// **PEMIS** `[8]` (RO)
+    ///
     /// Parity error masked interrupt status. Returns the masked interrupt state of the UARTPEINTR interrupt.
     #[inline(always)]
     pub fn pemis(&self) -> bool {
@@ -3500,6 +3966,7 @@ impl Uartmis {
     }
 
     /// **FEMIS** `[7]` (RO)
+    ///
     /// Framing error masked interrupt status. Returns the masked interrupt state of the UARTFEINTR interrupt.
     #[inline(always)]
     pub fn femis(&self) -> bool {
@@ -3507,6 +3974,7 @@ impl Uartmis {
     }
 
     /// **RTMIS** `[6]` (RO)
+    ///
     /// Receive timeout masked interrupt status. Returns the masked interrupt state of the UARTRTINTR interrupt.
     #[inline(always)]
     pub fn rtmis(&self) -> bool {
@@ -3514,6 +3982,7 @@ impl Uartmis {
     }
 
     /// **TXMIS** `[5]` (RO)
+    ///
     /// Transmit masked interrupt status. Returns the masked interrupt state of the UARTTXINTR interrupt.
     #[inline(always)]
     pub fn txmis(&self) -> bool {
@@ -3521,6 +3990,7 @@ impl Uartmis {
     }
 
     /// **RXMIS** `[4]` (RO)
+    ///
     /// Receive masked interrupt status. Returns the masked interrupt state of the UARTRXINTR interrupt.
     #[inline(always)]
     pub fn rxmis(&self) -> bool {
@@ -3528,6 +3998,7 @@ impl Uartmis {
     }
 
     /// **DSRMMIS** `[3]` (RO)
+    ///
     /// nUARTDSR modem masked interrupt status. Returns the masked interrupt state of the UARTDSRINTR interrupt.
     #[inline(always)]
     pub fn dsrmmis(&self) -> bool {
@@ -3535,6 +4006,7 @@ impl Uartmis {
     }
 
     /// **DCDMMIS** `[2]` (RO)
+    ///
     /// nUARTDCD modem masked interrupt status. Returns the masked interrupt state of the UARTDCDINTR interrupt.
     #[inline(always)]
     pub fn dcdmmis(&self) -> bool {
@@ -3542,6 +4014,7 @@ impl Uartmis {
     }
 
     /// **CTSMMIS** `[1]` (RO)
+    ///
     /// nUARTCTS modem masked interrupt status. Returns the masked interrupt state of the UARTCTSINTR interrupt.
     #[inline(always)]
     pub fn ctsmmis(&self) -> bool {
@@ -3549,6 +4022,7 @@ impl Uartmis {
     }
 
     /// **RIMMIS** `[0]` (RO)
+    ///
     /// nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
     #[inline(always)]
     pub fn rimmis(&self) -> bool {
@@ -3586,6 +4060,7 @@ impl UartmisVal {
     }
 
     /// Read **OEMIS** `[10:10]`
+    ///
     /// Overrun error masked interrupt status. Returns the masked interrupt state of the UARTOEINTR interrupt.
     #[inline(always)]
     pub const fn oemis(&self) -> bool {
@@ -3593,6 +4068,7 @@ impl UartmisVal {
     }
 
     /// Read **BEMIS** `[9:9]`
+    ///
     /// Break error masked interrupt status. Returns the masked interrupt state of the UARTBEINTR interrupt.
     #[inline(always)]
     pub const fn bemis(&self) -> bool {
@@ -3600,6 +4076,7 @@ impl UartmisVal {
     }
 
     /// Read **PEMIS** `[8:8]`
+    ///
     /// Parity error masked interrupt status. Returns the masked interrupt state of the UARTPEINTR interrupt.
     #[inline(always)]
     pub const fn pemis(&self) -> bool {
@@ -3607,6 +4084,7 @@ impl UartmisVal {
     }
 
     /// Read **FEMIS** `[7:7]`
+    ///
     /// Framing error masked interrupt status. Returns the masked interrupt state of the UARTFEINTR interrupt.
     #[inline(always)]
     pub const fn femis(&self) -> bool {
@@ -3614,6 +4092,7 @@ impl UartmisVal {
     }
 
     /// Read **RTMIS** `[6:6]`
+    ///
     /// Receive timeout masked interrupt status. Returns the masked interrupt state of the UARTRTINTR interrupt.
     #[inline(always)]
     pub const fn rtmis(&self) -> bool {
@@ -3621,6 +4100,7 @@ impl UartmisVal {
     }
 
     /// Read **TXMIS** `[5:5]`
+    ///
     /// Transmit masked interrupt status. Returns the masked interrupt state of the UARTTXINTR interrupt.
     #[inline(always)]
     pub const fn txmis(&self) -> bool {
@@ -3628,6 +4108,7 @@ impl UartmisVal {
     }
 
     /// Read **RXMIS** `[4:4]`
+    ///
     /// Receive masked interrupt status. Returns the masked interrupt state of the UARTRXINTR interrupt.
     #[inline(always)]
     pub const fn rxmis(&self) -> bool {
@@ -3635,6 +4116,7 @@ impl UartmisVal {
     }
 
     /// Read **DSRMMIS** `[3:3]`
+    ///
     /// nUARTDSR modem masked interrupt status. Returns the masked interrupt state of the UARTDSRINTR interrupt.
     #[inline(always)]
     pub const fn dsrmmis(&self) -> bool {
@@ -3642,6 +4124,7 @@ impl UartmisVal {
     }
 
     /// Read **DCDMMIS** `[2:2]`
+    ///
     /// nUARTDCD modem masked interrupt status. Returns the masked interrupt state of the UARTDCDINTR interrupt.
     #[inline(always)]
     pub const fn dcdmmis(&self) -> bool {
@@ -3649,6 +4132,7 @@ impl UartmisVal {
     }
 
     /// Read **CTSMMIS** `[1:1]`
+    ///
     /// nUARTCTS modem masked interrupt status. Returns the masked interrupt state of the UARTCTSINTR interrupt.
     #[inline(always)]
     pub const fn ctsmmis(&self) -> bool {
@@ -3656,6 +4140,7 @@ impl UartmisVal {
     }
 
     /// Read **RIMMIS** `[0:0]`
+    ///
     /// nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
     #[inline(always)]
     pub const fn rimmis(&self) -> bool {
@@ -3701,26 +4186,47 @@ impl Uartmis {
 /// ## Fields
 ///
 /// - **OEIC** `[10]` (RW)
+///
 ///   Overrun error interrupt clear. Clears the UARTOEINTR interrupt.
+///
 /// - **BEIC** `[9]` (RW)
+///
 ///   Break error interrupt clear. Clears the UARTBEINTR interrupt.
+///
 /// - **PEIC** `[8]` (RW)
+///
 ///   Parity error interrupt clear. Clears the UARTPEINTR interrupt.
+///
 /// - **FEIC** `[7]` (RW)
+///
 ///   Framing error interrupt clear. Clears the UARTFEINTR interrupt.
+///
 /// - **RTIC** `[6]` (RW)
+///
 ///   Receive timeout interrupt clear. Clears the UARTRTINTR interrupt.
+///
 /// - **TXIC** `[5]` (RW)
+///
 ///   Transmit interrupt clear. Clears the UARTTXINTR interrupt.
+///
 /// - **RXIC** `[4]` (RW)
+///
 ///   Receive interrupt clear. Clears the UARTRXINTR interrupt.
+///
 /// - **DSRMIC** `[3]` (RW)
+///
 ///   nUARTDSR modem interrupt clear. Clears the UARTDSRINTR interrupt.
+///
 /// - **DCDMIC** `[2]` (RW)
+///
 ///   nUARTDCD modem interrupt clear. Clears the UARTDCDINTR interrupt.
+///
 /// - **CTSMIC** `[1]` (RW)
+///
 ///   nUARTCTS modem interrupt clear. Clears the UARTCTSINTR interrupt.
+///
 /// - **RIMIC** `[0]` (RW)
+///
 ///   nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uarticr {
@@ -3739,77 +4245,99 @@ impl Uarticr {
     // ======== Field Constants ========
 
     /// **OEIC**
+    ///
     /// Overrun error interrupt clear. Clears the UARTOEINTR interrupt.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const OEIC_OFFSET: u32 = 10;
     pub const OEIC_MASK: u32 = 0x00000400;
     pub const OEIC: u32 = 1 << 10;
 
     /// **BEIC**
+    ///
     /// Break error interrupt clear. Clears the UARTBEINTR interrupt.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const BEIC_OFFSET: u32 = 9;
     pub const BEIC_MASK: u32 = 0x00000200;
     pub const BEIC: u32 = 1 << 9;
 
     /// **PEIC**
+    ///
     /// Parity error interrupt clear. Clears the UARTPEINTR interrupt.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const PEIC_OFFSET: u32 = 8;
     pub const PEIC_MASK: u32 = 0x00000100;
     pub const PEIC: u32 = 1 << 8;
 
     /// **FEIC**
+    ///
     /// Framing error interrupt clear. Clears the UARTFEINTR interrupt.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const FEIC_OFFSET: u32 = 7;
     pub const FEIC_MASK: u32 = 0x00000080;
     pub const FEIC: u32 = 1 << 7;
 
     /// **RTIC**
+    ///
     /// Receive timeout interrupt clear. Clears the UARTRTINTR interrupt.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RTIC_OFFSET: u32 = 6;
     pub const RTIC_MASK: u32 = 0x00000040;
     pub const RTIC: u32 = 1 << 6;
 
     /// **TXIC**
+    ///
     /// Transmit interrupt clear. Clears the UARTTXINTR interrupt.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TXIC_OFFSET: u32 = 5;
     pub const TXIC_MASK: u32 = 0x00000020;
     pub const TXIC: u32 = 1 << 5;
 
     /// **RXIC**
+    ///
     /// Receive interrupt clear. Clears the UARTRXINTR interrupt.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RXIC_OFFSET: u32 = 4;
     pub const RXIC_MASK: u32 = 0x00000010;
     pub const RXIC: u32 = 1 << 4;
 
     /// **DSRMIC**
+    ///
     /// nUARTDSR modem interrupt clear. Clears the UARTDSRINTR interrupt.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DSRMIC_OFFSET: u32 = 3;
     pub const DSRMIC_MASK: u32 = 0x00000008;
     pub const DSRMIC: u32 = 1 << 3;
 
     /// **DCDMIC**
+    ///
     /// nUARTDCD modem interrupt clear. Clears the UARTDCDINTR interrupt.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DCDMIC_OFFSET: u32 = 2;
     pub const DCDMIC_MASK: u32 = 0x00000004;
     pub const DCDMIC: u32 = 1 << 2;
 
     /// **CTSMIC**
+    ///
     /// nUARTCTS modem interrupt clear. Clears the UARTCTSINTR interrupt.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CTSMIC_OFFSET: u32 = 1;
     pub const CTSMIC_MASK: u32 = 0x00000002;
     pub const CTSMIC: u32 = 1 << 1;
 
     /// **RIMIC**
+    ///
     /// nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RIMIC_OFFSET: u32 = 0;
     pub const RIMIC_MASK: u32 = 0x00000001;
@@ -3818,6 +4346,7 @@ impl Uarticr {
     // ======== Field Accessors ========
 
     /// **OEIC** `[10]` (RW)
+    ///
     /// Overrun error interrupt clear. Clears the UARTOEINTR interrupt.
     #[inline(always)]
     pub fn oeic(&self) -> bool {
@@ -3837,6 +4366,7 @@ impl Uarticr {
     }
 
     /// **BEIC** `[9]` (RW)
+    ///
     /// Break error interrupt clear. Clears the UARTBEINTR interrupt.
     #[inline(always)]
     pub fn beic(&self) -> bool {
@@ -3856,6 +4386,7 @@ impl Uarticr {
     }
 
     /// **PEIC** `[8]` (RW)
+    ///
     /// Parity error interrupt clear. Clears the UARTPEINTR interrupt.
     #[inline(always)]
     pub fn peic(&self) -> bool {
@@ -3875,6 +4406,7 @@ impl Uarticr {
     }
 
     /// **FEIC** `[7]` (RW)
+    ///
     /// Framing error interrupt clear. Clears the UARTFEINTR interrupt.
     #[inline(always)]
     pub fn feic(&self) -> bool {
@@ -3894,6 +4426,7 @@ impl Uarticr {
     }
 
     /// **RTIC** `[6]` (RW)
+    ///
     /// Receive timeout interrupt clear. Clears the UARTRTINTR interrupt.
     #[inline(always)]
     pub fn rtic(&self) -> bool {
@@ -3913,6 +4446,7 @@ impl Uarticr {
     }
 
     /// **TXIC** `[5]` (RW)
+    ///
     /// Transmit interrupt clear. Clears the UARTTXINTR interrupt.
     #[inline(always)]
     pub fn txic(&self) -> bool {
@@ -3932,6 +4466,7 @@ impl Uarticr {
     }
 
     /// **RXIC** `[4]` (RW)
+    ///
     /// Receive interrupt clear. Clears the UARTRXINTR interrupt.
     #[inline(always)]
     pub fn rxic(&self) -> bool {
@@ -3951,6 +4486,7 @@ impl Uarticr {
     }
 
     /// **DSRMIC** `[3]` (RW)
+    ///
     /// nUARTDSR modem interrupt clear. Clears the UARTDSRINTR interrupt.
     #[inline(always)]
     pub fn dsrmic(&self) -> bool {
@@ -3970,6 +4506,7 @@ impl Uarticr {
     }
 
     /// **DCDMIC** `[2]` (RW)
+    ///
     /// nUARTDCD modem interrupt clear. Clears the UARTDCDINTR interrupt.
     #[inline(always)]
     pub fn dcdmic(&self) -> bool {
@@ -3989,6 +4526,7 @@ impl Uarticr {
     }
 
     /// **CTSMIC** `[1]` (RW)
+    ///
     /// nUARTCTS modem interrupt clear. Clears the UARTCTSINTR interrupt.
     #[inline(always)]
     pub fn ctsmic(&self) -> bool {
@@ -4008,6 +4546,7 @@ impl Uarticr {
     }
 
     /// **RIMIC** `[0]` (RW)
+    ///
     /// nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
     #[inline(always)]
     pub fn rimic(&self) -> bool {
@@ -4057,6 +4596,7 @@ impl UarticrVal {
     }
 
     /// Read **OEIC** `[10:10]`
+    ///
     /// Overrun error interrupt clear. Clears the UARTOEINTR interrupt.
     #[inline(always)]
     pub const fn oeic(&self) -> bool {
@@ -4064,6 +4604,7 @@ impl UarticrVal {
     }
 
     /// Read **BEIC** `[9:9]`
+    ///
     /// Break error interrupt clear. Clears the UARTBEINTR interrupt.
     #[inline(always)]
     pub const fn beic(&self) -> bool {
@@ -4071,6 +4612,7 @@ impl UarticrVal {
     }
 
     /// Read **PEIC** `[8:8]`
+    ///
     /// Parity error interrupt clear. Clears the UARTPEINTR interrupt.
     #[inline(always)]
     pub const fn peic(&self) -> bool {
@@ -4078,6 +4620,7 @@ impl UarticrVal {
     }
 
     /// Read **FEIC** `[7:7]`
+    ///
     /// Framing error interrupt clear. Clears the UARTFEINTR interrupt.
     #[inline(always)]
     pub const fn feic(&self) -> bool {
@@ -4085,6 +4628,7 @@ impl UarticrVal {
     }
 
     /// Read **RTIC** `[6:6]`
+    ///
     /// Receive timeout interrupt clear. Clears the UARTRTINTR interrupt.
     #[inline(always)]
     pub const fn rtic(&self) -> bool {
@@ -4092,6 +4636,7 @@ impl UarticrVal {
     }
 
     /// Read **TXIC** `[5:5]`
+    ///
     /// Transmit interrupt clear. Clears the UARTTXINTR interrupt.
     #[inline(always)]
     pub const fn txic(&self) -> bool {
@@ -4099,6 +4644,7 @@ impl UarticrVal {
     }
 
     /// Read **RXIC** `[4:4]`
+    ///
     /// Receive interrupt clear. Clears the UARTRXINTR interrupt.
     #[inline(always)]
     pub const fn rxic(&self) -> bool {
@@ -4106,6 +4652,7 @@ impl UarticrVal {
     }
 
     /// Read **DSRMIC** `[3:3]`
+    ///
     /// nUARTDSR modem interrupt clear. Clears the UARTDSRINTR interrupt.
     #[inline(always)]
     pub const fn dsrmic(&self) -> bool {
@@ -4113,6 +4660,7 @@ impl UarticrVal {
     }
 
     /// Read **DCDMIC** `[2:2]`
+    ///
     /// nUARTDCD modem interrupt clear. Clears the UARTDCDINTR interrupt.
     #[inline(always)]
     pub const fn dcdmic(&self) -> bool {
@@ -4120,6 +4668,7 @@ impl UarticrVal {
     }
 
     /// Read **CTSMIC** `[1:1]`
+    ///
     /// nUARTCTS modem interrupt clear. Clears the UARTCTSINTR interrupt.
     #[inline(always)]
     pub const fn ctsmic(&self) -> bool {
@@ -4127,6 +4676,7 @@ impl UarticrVal {
     }
 
     /// Read **RIMIC** `[0:0]`
+    ///
     /// nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
     #[inline(always)]
     pub const fn rimic(&self) -> bool {
@@ -4134,6 +4684,7 @@ impl UarticrVal {
     }
 
     /// Set **OEIC** `[10:10]`
+    ///
     /// Overrun error interrupt clear. Clears the UARTOEINTR interrupt.
     #[inline(always)]
     pub const fn with_oeic(self, value: bool) -> Self {
@@ -4147,6 +4698,7 @@ impl UarticrVal {
     }
 
     /// Set **BEIC** `[9:9]`
+    ///
     /// Break error interrupt clear. Clears the UARTBEINTR interrupt.
     #[inline(always)]
     pub const fn with_beic(self, value: bool) -> Self {
@@ -4160,6 +4712,7 @@ impl UarticrVal {
     }
 
     /// Set **PEIC** `[8:8]`
+    ///
     /// Parity error interrupt clear. Clears the UARTPEINTR interrupt.
     #[inline(always)]
     pub const fn with_peic(self, value: bool) -> Self {
@@ -4173,6 +4726,7 @@ impl UarticrVal {
     }
 
     /// Set **FEIC** `[7:7]`
+    ///
     /// Framing error interrupt clear. Clears the UARTFEINTR interrupt.
     #[inline(always)]
     pub const fn with_feic(self, value: bool) -> Self {
@@ -4186,6 +4740,7 @@ impl UarticrVal {
     }
 
     /// Set **RTIC** `[6:6]`
+    ///
     /// Receive timeout interrupt clear. Clears the UARTRTINTR interrupt.
     #[inline(always)]
     pub const fn with_rtic(self, value: bool) -> Self {
@@ -4199,6 +4754,7 @@ impl UarticrVal {
     }
 
     /// Set **TXIC** `[5:5]`
+    ///
     /// Transmit interrupt clear. Clears the UARTTXINTR interrupt.
     #[inline(always)]
     pub const fn with_txic(self, value: bool) -> Self {
@@ -4212,6 +4768,7 @@ impl UarticrVal {
     }
 
     /// Set **RXIC** `[4:4]`
+    ///
     /// Receive interrupt clear. Clears the UARTRXINTR interrupt.
     #[inline(always)]
     pub const fn with_rxic(self, value: bool) -> Self {
@@ -4225,6 +4782,7 @@ impl UarticrVal {
     }
 
     /// Set **DSRMIC** `[3:3]`
+    ///
     /// nUARTDSR modem interrupt clear. Clears the UARTDSRINTR interrupt.
     #[inline(always)]
     pub const fn with_dsrmic(self, value: bool) -> Self {
@@ -4238,6 +4796,7 @@ impl UarticrVal {
     }
 
     /// Set **DCDMIC** `[2:2]`
+    ///
     /// nUARTDCD modem interrupt clear. Clears the UARTDCDINTR interrupt.
     #[inline(always)]
     pub const fn with_dcdmic(self, value: bool) -> Self {
@@ -4251,6 +4810,7 @@ impl UarticrVal {
     }
 
     /// Set **CTSMIC** `[1:1]`
+    ///
     /// nUARTCTS modem interrupt clear. Clears the UARTCTSINTR interrupt.
     #[inline(always)]
     pub const fn with_ctsmic(self, value: bool) -> Self {
@@ -4264,6 +4824,7 @@ impl UarticrVal {
     }
 
     /// Set **RIMIC** `[0:0]`
+    ///
     /// nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
     #[inline(always)]
     pub const fn with_rimic(self, value: bool) -> Self {
@@ -4315,10 +4876,15 @@ impl Uarticr {
 /// ## Fields
 ///
 /// - **DMAONERR** `[2]` (RW)
+///
 ///   DMA on error. If this bit is set to 1, the DMA receive request outputs, UARTRXDMASREQ or UARTRXDMABREQ, are disabled when the UART error interrupt is asserted.
+///
 /// - **TXDMAE** `[1]` (RW)
+///
 ///   Transmit DMA enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
+///
 /// - **RXDMAE** `[0]` (RW)
+///
 ///   Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
 #[repr(transparent)]
 pub struct Uartdmacr {
@@ -4337,21 +4903,27 @@ impl Uartdmacr {
     // ======== Field Constants ========
 
     /// **DMAONERR**
+    ///
     /// DMA on error. If this bit is set to 1, the DMA receive request outputs, UARTRXDMASREQ or UARTRXDMABREQ, are disabled when the UART error interrupt is asserted.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DMAONERR_OFFSET: u32 = 2;
     pub const DMAONERR_MASK: u32 = 0x00000004;
     pub const DMAONERR: u32 = 1 << 2;
 
     /// **TXDMAE**
+    ///
     /// Transmit DMA enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TXDMAE_OFFSET: u32 = 1;
     pub const TXDMAE_MASK: u32 = 0x00000002;
     pub const TXDMAE: u32 = 1 << 1;
 
     /// **RXDMAE**
+    ///
     /// Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RXDMAE_OFFSET: u32 = 0;
     pub const RXDMAE_MASK: u32 = 0x00000001;
@@ -4360,6 +4932,7 @@ impl Uartdmacr {
     // ======== Field Accessors ========
 
     /// **DMAONERR** `[2]` (RW)
+    ///
     /// DMA on error. If this bit is set to 1, the DMA receive request outputs, UARTRXDMASREQ or UARTRXDMABREQ, are disabled when the UART error interrupt is asserted.
     #[inline(always)]
     pub fn dmaonerr(&self) -> bool {
@@ -4379,6 +4952,7 @@ impl Uartdmacr {
     }
 
     /// **TXDMAE** `[1]` (RW)
+    ///
     /// Transmit DMA enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub fn txdmae(&self) -> bool {
@@ -4398,6 +4972,7 @@ impl Uartdmacr {
     }
 
     /// **RXDMAE** `[0]` (RW)
+    ///
     /// Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub fn rxdmae(&self) -> bool {
@@ -4447,6 +5022,7 @@ impl UartdmacrVal {
     }
 
     /// Read **DMAONERR** `[2:2]`
+    ///
     /// DMA on error. If this bit is set to 1, the DMA receive request outputs, UARTRXDMASREQ or UARTRXDMABREQ, are disabled when the UART error interrupt is asserted.
     #[inline(always)]
     pub const fn dmaonerr(&self) -> bool {
@@ -4454,6 +5030,7 @@ impl UartdmacrVal {
     }
 
     /// Read **TXDMAE** `[1:1]`
+    ///
     /// Transmit DMA enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub const fn txdmae(&self) -> bool {
@@ -4461,6 +5038,7 @@ impl UartdmacrVal {
     }
 
     /// Read **RXDMAE** `[0:0]`
+    ///
     /// Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub const fn rxdmae(&self) -> bool {
@@ -4468,6 +5046,7 @@ impl UartdmacrVal {
     }
 
     /// Set **DMAONERR** `[2:2]`
+    ///
     /// DMA on error. If this bit is set to 1, the DMA receive request outputs, UARTRXDMASREQ or UARTRXDMABREQ, are disabled when the UART error interrupt is asserted.
     #[inline(always)]
     pub const fn with_dmaonerr(self, value: bool) -> Self {
@@ -4481,6 +5060,7 @@ impl UartdmacrVal {
     }
 
     /// Set **TXDMAE** `[1:1]`
+    ///
     /// Transmit DMA enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub const fn with_txdmae(self, value: bool) -> Self {
@@ -4494,6 +5074,7 @@ impl UartdmacrVal {
     }
 
     /// Set **RXDMAE** `[0:0]`
+    ///
     /// Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub const fn with_rxdmae(self, value: bool) -> Self {
@@ -4545,6 +5126,7 @@ impl Uartdmacr {
 /// ## Fields
 ///
 /// - **PARTNUMBER0** `[7:0]` (RO)
+///
 ///   These bits read back as 0x11
 #[repr(transparent)]
 pub struct Uartperiphid0 {
@@ -4563,7 +5145,9 @@ impl Uartperiphid0 {
     // ======== Field Constants ========
 
     /// **PARTNUMBER0**
+    ///
     /// These bits read back as 0x11
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PARTNUMBER0_OFFSET: u32 = 0;
     pub const PARTNUMBER0_MASK: u32 = 0x000000ff;
@@ -4571,6 +5155,7 @@ impl Uartperiphid0 {
     // ======== Field Accessors ========
 
     /// **PARTNUMBER0** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x11
     #[inline(always)]
     pub fn partnumber0(&self) -> u32 {
@@ -4608,6 +5193,7 @@ impl Uartperiphid0Val {
     }
 
     /// Read **PARTNUMBER0** `[7:0]`
+    ///
     /// These bits read back as 0x11
     #[inline(always)]
     pub const fn partnumber0(&self) -> u32 {
@@ -4653,8 +5239,11 @@ impl Uartperiphid0 {
 /// ## Fields
 ///
 /// - **DESIGNER0** `[7:4]` (RO)
+///
 ///   These bits read back as 0x1
+///
 /// - **PARTNUMBER1** `[3:0]` (RO)
+///
 ///   These bits read back as 0x0
 #[repr(transparent)]
 pub struct Uartperiphid1 {
@@ -4673,13 +5262,17 @@ impl Uartperiphid1 {
     // ======== Field Constants ========
 
     /// **DESIGNER0**
+    ///
     /// These bits read back as 0x1
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DESIGNER0_OFFSET: u32 = 4;
     pub const DESIGNER0_MASK: u32 = 0x000000f0;
 
     /// **PARTNUMBER1**
+    ///
     /// These bits read back as 0x0
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PARTNUMBER1_OFFSET: u32 = 0;
     pub const PARTNUMBER1_MASK: u32 = 0x0000000f;
@@ -4687,6 +5280,7 @@ impl Uartperiphid1 {
     // ======== Field Accessors ========
 
     /// **DESIGNER0** `[7:4]` (RO)
+    ///
     /// These bits read back as 0x1
     #[inline(always)]
     pub fn designer0(&self) -> u32 {
@@ -4694,6 +5288,7 @@ impl Uartperiphid1 {
     }
 
     /// **PARTNUMBER1** `[3:0]` (RO)
+    ///
     /// These bits read back as 0x0
     #[inline(always)]
     pub fn partnumber1(&self) -> u32 {
@@ -4731,6 +5326,7 @@ impl Uartperiphid1Val {
     }
 
     /// Read **DESIGNER0** `[7:4]`
+    ///
     /// These bits read back as 0x1
     #[inline(always)]
     pub const fn designer0(&self) -> u32 {
@@ -4738,6 +5334,7 @@ impl Uartperiphid1Val {
     }
 
     /// Read **PARTNUMBER1** `[3:0]`
+    ///
     /// These bits read back as 0x0
     #[inline(always)]
     pub const fn partnumber1(&self) -> u32 {
@@ -4783,8 +5380,11 @@ impl Uartperiphid1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   This field depends on the revision of the UART: r1p0 0x0 r1p1 0x1 r1p3 0x2 r1p4 0x2 r1p5 0x3
+///
 /// - **DESIGNER1** `[3:0]` (RO)
+///
 ///   These bits read back as 0x4
 #[repr(transparent)]
 pub struct Uartperiphid2 {
@@ -4803,13 +5403,17 @@ impl Uartperiphid2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// This field depends on the revision of the UART: r1p0 0x0 r1p1 0x1 r1p3 0x2 r1p4 0x2 r1p5 0x3
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **DESIGNER1**
+    ///
     /// These bits read back as 0x4
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DESIGNER1_OFFSET: u32 = 0;
     pub const DESIGNER1_MASK: u32 = 0x0000000f;
@@ -4817,6 +5421,7 @@ impl Uartperiphid2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// This field depends on the revision of the UART: r1p0 0x0 r1p1 0x1 r1p3 0x2 r1p4 0x2 r1p5 0x3
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -4824,6 +5429,7 @@ impl Uartperiphid2 {
     }
 
     /// **DESIGNER1** `[3:0]` (RO)
+    ///
     /// These bits read back as 0x4
     #[inline(always)]
     pub fn designer1(&self) -> u32 {
@@ -4861,6 +5467,7 @@ impl Uartperiphid2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// This field depends on the revision of the UART: r1p0 0x0 r1p1 0x1 r1p3 0x2 r1p4 0x2 r1p5 0x3
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -4868,6 +5475,7 @@ impl Uartperiphid2Val {
     }
 
     /// Read **DESIGNER1** `[3:0]`
+    ///
     /// These bits read back as 0x4
     #[inline(always)]
     pub const fn designer1(&self) -> u32 {
@@ -4913,6 +5521,7 @@ impl Uartperiphid2 {
 /// ## Fields
 ///
 /// - **CONFIGURATION** `[7:0]` (RO)
+///
 ///   These bits read back as 0x00
 #[repr(transparent)]
 pub struct Uartperiphid3 {
@@ -4931,7 +5540,9 @@ impl Uartperiphid3 {
     // ======== Field Constants ========
 
     /// **CONFIGURATION**
+    ///
     /// These bits read back as 0x00
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CONFIGURATION_OFFSET: u32 = 0;
     pub const CONFIGURATION_MASK: u32 = 0x000000ff;
@@ -4939,6 +5550,7 @@ impl Uartperiphid3 {
     // ======== Field Accessors ========
 
     /// **CONFIGURATION** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x00
     #[inline(always)]
     pub fn configuration(&self) -> u32 {
@@ -4976,6 +5588,7 @@ impl Uartperiphid3Val {
     }
 
     /// Read **CONFIGURATION** `[7:0]`
+    ///
     /// These bits read back as 0x00
     #[inline(always)]
     pub const fn configuration(&self) -> u32 {
@@ -5021,6 +5634,7 @@ impl Uartperiphid3 {
 /// ## Fields
 ///
 /// - **UARTPCELLID0** `[7:0]` (RO)
+///
 ///   These bits read back as 0x0D
 #[repr(transparent)]
 pub struct Uartpcellid0 {
@@ -5039,7 +5653,9 @@ impl Uartpcellid0 {
     // ======== Field Constants ========
 
     /// **UARTPCELLID0**
+    ///
     /// These bits read back as 0x0D
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const UARTPCELLID0_OFFSET: u32 = 0;
     pub const UARTPCELLID0_MASK: u32 = 0x000000ff;
@@ -5047,6 +5663,7 @@ impl Uartpcellid0 {
     // ======== Field Accessors ========
 
     /// **UARTPCELLID0** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x0D
     #[inline(always)]
     pub fn uartpcellid0(&self) -> u32 {
@@ -5084,6 +5701,7 @@ impl Uartpcellid0Val {
     }
 
     /// Read **UARTPCELLID0** `[7:0]`
+    ///
     /// These bits read back as 0x0D
     #[inline(always)]
     pub const fn uartpcellid0(&self) -> u32 {
@@ -5129,6 +5747,7 @@ impl Uartpcellid0 {
 /// ## Fields
 ///
 /// - **UARTPCELLID1** `[7:0]` (RO)
+///
 ///   These bits read back as 0xF0
 #[repr(transparent)]
 pub struct Uartpcellid1 {
@@ -5147,7 +5766,9 @@ impl Uartpcellid1 {
     // ======== Field Constants ========
 
     /// **UARTPCELLID1**
+    ///
     /// These bits read back as 0xF0
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const UARTPCELLID1_OFFSET: u32 = 0;
     pub const UARTPCELLID1_MASK: u32 = 0x000000ff;
@@ -5155,6 +5776,7 @@ impl Uartpcellid1 {
     // ======== Field Accessors ========
 
     /// **UARTPCELLID1** `[7:0]` (RO)
+    ///
     /// These bits read back as 0xF0
     #[inline(always)]
     pub fn uartpcellid1(&self) -> u32 {
@@ -5192,6 +5814,7 @@ impl Uartpcellid1Val {
     }
 
     /// Read **UARTPCELLID1** `[7:0]`
+    ///
     /// These bits read back as 0xF0
     #[inline(always)]
     pub const fn uartpcellid1(&self) -> u32 {
@@ -5237,6 +5860,7 @@ impl Uartpcellid1 {
 /// ## Fields
 ///
 /// - **UARTPCELLID2** `[7:0]` (RO)
+///
 ///   These bits read back as 0x05
 #[repr(transparent)]
 pub struct Uartpcellid2 {
@@ -5255,7 +5879,9 @@ impl Uartpcellid2 {
     // ======== Field Constants ========
 
     /// **UARTPCELLID2**
+    ///
     /// These bits read back as 0x05
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const UARTPCELLID2_OFFSET: u32 = 0;
     pub const UARTPCELLID2_MASK: u32 = 0x000000ff;
@@ -5263,6 +5889,7 @@ impl Uartpcellid2 {
     // ======== Field Accessors ========
 
     /// **UARTPCELLID2** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x05
     #[inline(always)]
     pub fn uartpcellid2(&self) -> u32 {
@@ -5300,6 +5927,7 @@ impl Uartpcellid2Val {
     }
 
     /// Read **UARTPCELLID2** `[7:0]`
+    ///
     /// These bits read back as 0x05
     #[inline(always)]
     pub const fn uartpcellid2(&self) -> u32 {
@@ -5345,6 +5973,7 @@ impl Uartpcellid2 {
 /// ## Fields
 ///
 /// - **UARTPCELLID3** `[7:0]` (RO)
+///
 ///   These bits read back as 0xB1
 #[repr(transparent)]
 pub struct Uartpcellid3 {
@@ -5363,7 +5992,9 @@ impl Uartpcellid3 {
     // ======== Field Constants ========
 
     /// **UARTPCELLID3**
+    ///
     /// These bits read back as 0xB1
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const UARTPCELLID3_OFFSET: u32 = 0;
     pub const UARTPCELLID3_MASK: u32 = 0x000000ff;
@@ -5371,6 +6002,7 @@ impl Uartpcellid3 {
     // ======== Field Accessors ========
 
     /// **UARTPCELLID3** `[7:0]` (RO)
+    ///
     /// These bits read back as 0xB1
     #[inline(always)]
     pub fn uartpcellid3(&self) -> u32 {
@@ -5408,6 +6040,7 @@ impl Uartpcellid3Val {
     }
 
     /// Read **UARTPCELLID3** `[7:0]`
+    ///
     /// These bits read back as 0xB1
     #[inline(always)]
     pub const fn uartpcellid3(&self) -> u32 {

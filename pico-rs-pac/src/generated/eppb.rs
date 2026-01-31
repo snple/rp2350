@@ -251,10 +251,15 @@ impl NmiMask1 {
 /// ## Fields
 ///
 /// - **WICENACK** `[2]` (RO)
+///
 ///   Status signal from the processor's interrupt controller. Changes to WICENREQ are eventually reflected in WICENACK.
+///
 /// - **WICENREQ** `[1]` (RW)
+///
 ///   Request that the next processor deep sleep is a WIC sleep. After setting this bit, before sleeping, poll WICENACK to ensure the processor interrupt controller has acknowledged the change.
+///
 /// - **LIGHT_SLEEP** `[0]` (RW)
+///
 ///   By default, any processor sleep will deassert the system-level clock request. Reenabling the clocks incurs 5 cycles of additional latency on wakeup.
 ///   Setting LIGHT_SLEEP to 1 keeps the clock request asserted during a normal sleep (Arm SCR.SLEEPDEEP = 0), for faster wakeup. Processor deep sleep (Arm SCR.SLEEPDEEP = 1) is not affected, and will always deassert the system-level clock request.
 #[repr(transparent)]
@@ -274,22 +279,28 @@ impl Sleepctrl {
     // ======== Field Constants ========
 
     /// **WICENACK**
+    ///
     /// Status signal from the processor's interrupt controller. Changes to WICENREQ are eventually reflected in WICENACK.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const WICENACK_OFFSET: u32 = 2;
     pub const WICENACK_MASK: u32 = 0x00000004;
     pub const WICENACK: u32 = 1 << 2;
 
     /// **WICENREQ**
+    ///
     /// Request that the next processor deep sleep is a WIC sleep. After setting this bit, before sleeping, poll WICENACK to ensure the processor interrupt controller has acknowledged the change.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const WICENREQ_OFFSET: u32 = 1;
     pub const WICENREQ_MASK: u32 = 0x00000002;
     pub const WICENREQ: u32 = 1 << 1;
 
     /// **LIGHT_SLEEP**
+    ///
     /// By default, any processor sleep will deassert the system-level clock request. Reenabling the clocks incurs 5 cycles of additional latency on wakeup.
     /// Setting LIGHT_SLEEP to 1 keeps the clock request asserted during a normal sleep (Arm SCR.SLEEPDEEP = 0), for faster wakeup. Processor deep sleep (Arm SCR.SLEEPDEEP = 1) is not affected, and will always deassert the system-level clock request.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const LIGHT_SLEEP_OFFSET: u32 = 0;
     pub const LIGHT_SLEEP_MASK: u32 = 0x00000001;
@@ -298,6 +309,7 @@ impl Sleepctrl {
     // ======== Field Accessors ========
 
     /// **WICENACK** `[2]` (RO)
+    ///
     /// Status signal from the processor's interrupt controller. Changes to WICENREQ are eventually reflected in WICENACK.
     #[inline(always)]
     pub fn wicenack(&self) -> bool {
@@ -305,6 +317,7 @@ impl Sleepctrl {
     }
 
     /// **WICENREQ** `[1]` (RW)
+    ///
     /// Request that the next processor deep sleep is a WIC sleep. After setting this bit, before sleeping, poll WICENACK to ensure the processor interrupt controller has acknowledged the change.
     #[inline(always)]
     pub fn wicenreq(&self) -> bool {
@@ -324,6 +337,7 @@ impl Sleepctrl {
     }
 
     /// **LIGHT_SLEEP** `[0]` (RW)
+    ///
     /// By default, any processor sleep will deassert the system-level clock request. Reenabling the clocks incurs 5 cycles of additional latency on wakeup.
     /// Setting LIGHT_SLEEP to 1 keeps the clock request asserted during a normal sleep (Arm SCR.SLEEPDEEP = 0), for faster wakeup. Processor deep sleep (Arm SCR.SLEEPDEEP = 1) is not affected, and will always deassert the system-level clock request.
     #[inline(always)]
@@ -374,6 +388,7 @@ impl SleepctrlVal {
     }
 
     /// Read **WICENACK** `[2:2]`
+    ///
     /// Status signal from the processor's interrupt controller. Changes to WICENREQ are eventually reflected in WICENACK.
     #[inline(always)]
     pub const fn wicenack(&self) -> bool {
@@ -381,6 +396,7 @@ impl SleepctrlVal {
     }
 
     /// Read **WICENREQ** `[1:1]`
+    ///
     /// Request that the next processor deep sleep is a WIC sleep. After setting this bit, before sleeping, poll WICENACK to ensure the processor interrupt controller has acknowledged the change.
     #[inline(always)]
     pub const fn wicenreq(&self) -> bool {
@@ -388,6 +404,7 @@ impl SleepctrlVal {
     }
 
     /// Read **LIGHT_SLEEP** `[0:0]`
+    ///
     /// By default, any processor sleep will deassert the system-level clock request. Reenabling the clocks incurs 5 cycles of additional latency on wakeup.
     /// Setting LIGHT_SLEEP to 1 keeps the clock request asserted during a normal sleep (Arm SCR.SLEEPDEEP = 0), for faster wakeup. Processor deep sleep (Arm SCR.SLEEPDEEP = 1) is not affected, and will always deassert the system-level clock request.
     #[inline(always)]
@@ -396,6 +413,7 @@ impl SleepctrlVal {
     }
 
     /// Set **WICENREQ** `[1:1]`
+    ///
     /// Request that the next processor deep sleep is a WIC sleep. After setting this bit, before sleeping, poll WICENACK to ensure the processor interrupt controller has acknowledged the change.
     #[inline(always)]
     pub const fn with_wicenreq(self, value: bool) -> Self {
@@ -409,6 +427,7 @@ impl SleepctrlVal {
     }
 
     /// Set **LIGHT_SLEEP** `[0:0]`
+    ///
     /// By default, any processor sleep will deassert the system-level clock request. Reenabling the clocks incurs 5 cycles of additional latency on wakeup.
     /// Setting LIGHT_SLEEP to 1 keeps the clock request asserted during a normal sleep (Arm SCR.SLEEPDEEP = 0), for faster wakeup. Processor deep sleep (Arm SCR.SLEEPDEEP = 1) is not affected, and will always deassert the system-level clock request.
     #[inline(always)]

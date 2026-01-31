@@ -15,27 +15,44 @@ pub const BASE: u32 = 0x400a0000;
 /// ## Fields
 ///
 /// - **RROBIN** `[24:16]` (RW)
+///
 ///   Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
 ///   Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
 ///   The first channel to be sampled will be the one currently indicated by AINSEL.
 ///   AINSEL will be updated after each conversion with the newly-selected channel.
+///
 /// - **AINSEL** `[15:12]` (RW)
+///
 ///   Select analog mux input. Updated automatically in round-robin mode.
 ///   This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
+///
 /// - **ERR_STICKY** `[10]` (RW)
+///
 ///   Some past ADC conversion encountered an error. Write 1 to clear.
+///
 /// - **ERR** `[9]` (RO)
+///
 ///   The most recent ADC conversion encountered an error; result is undefined or noisy.
+///
 /// - **READY** `[8]` (RO)
+///
 ///   1 if the ADC is ready to start a new conversion. Implies any previous conversion has completed.
 ///   0 whilst conversion in progress.
+///
 /// - **START_MANY** `[3]` (RW)
+///
 ///   Continuously perform conversions whilst this bit is 1. A new conversion will start immediately after the previous finishes.
+///
 /// - **START_ONCE** `[2]` (WO)
+///
 ///   Start a single conversion. Self-clearing. Ignored if start_many is asserted.
+///
 /// - **TS_EN** `[1]` (RW)
+///
 ///   Power on temperature sensor. 1 - enabled. 0 - disabled.
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Power on ADC and enable its clock.
 ///   1 - enabled. 0 - disabled.
 #[repr(transparent)]
@@ -55,67 +72,85 @@ impl Cs {
     // ======== Field Constants ========
 
     /// **RROBIN**
+    ///
     /// Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
     /// Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
     /// The first channel to be sampled will be the one currently indicated by AINSEL.
     /// AINSEL will be updated after each conversion with the newly-selected channel.
+    ///
     /// Bits `[24:16]`, mask `0x01ff0000`
     pub const RROBIN_OFFSET: u32 = 16;
     pub const RROBIN_MASK: u32 = 0x01ff0000;
 
     /// **AINSEL**
+    ///
     /// Select analog mux input. Updated automatically in round-robin mode.
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const AINSEL_OFFSET: u32 = 12;
     pub const AINSEL_MASK: u32 = 0x0000f000;
 
     /// **ERR_STICKY**
+    ///
     /// Some past ADC conversion encountered an error. Write 1 to clear.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const ERR_STICKY_OFFSET: u32 = 10;
     pub const ERR_STICKY_MASK: u32 = 0x00000400;
     pub const ERR_STICKY: u32 = 1 << 10;
 
     /// **ERR**
+    ///
     /// The most recent ADC conversion encountered an error; result is undefined or noisy.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const ERR_OFFSET: u32 = 9;
     pub const ERR_MASK: u32 = 0x00000200;
     pub const ERR: u32 = 1 << 9;
 
     /// **READY**
+    ///
     /// 1 if the ADC is ready to start a new conversion. Implies any previous conversion has completed.
     /// 0 whilst conversion in progress.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const READY_OFFSET: u32 = 8;
     pub const READY_MASK: u32 = 0x00000100;
     pub const READY: u32 = 1 << 8;
 
     /// **START_MANY**
+    ///
     /// Continuously perform conversions whilst this bit is 1. A new conversion will start immediately after the previous finishes.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const START_MANY_OFFSET: u32 = 3;
     pub const START_MANY_MASK: u32 = 0x00000008;
     pub const START_MANY: u32 = 1 << 3;
 
     /// **START_ONCE**
+    ///
     /// Start a single conversion. Self-clearing. Ignored if start_many is asserted.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const START_ONCE_OFFSET: u32 = 2;
     pub const START_ONCE_MASK: u32 = 0x00000004;
     pub const START_ONCE: u32 = 1 << 2;
 
     /// **TS_EN**
+    ///
     /// Power on temperature sensor. 1 - enabled. 0 - disabled.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TS_EN_OFFSET: u32 = 1;
     pub const TS_EN_MASK: u32 = 0x00000002;
     pub const TS_EN: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Power on ADC and enable its clock.
     /// 1 - enabled. 0 - disabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -124,6 +159,7 @@ impl Cs {
     // ======== Field Accessors ========
 
     /// **RROBIN** `[24:16]` (RW)
+    ///
     /// Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
     /// Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
     /// The first channel to be sampled will be the one currently indicated by AINSEL.
@@ -134,6 +170,7 @@ impl Cs {
     }
 
     /// Write **RROBIN** `[24:16]` (RW)
+    ///
     /// Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
     /// Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
     /// The first channel to be sampled will be the one currently indicated by AINSEL.
@@ -144,6 +181,7 @@ impl Cs {
     }
 
     /// **AINSEL** `[15:12]` (RW)
+    ///
     /// Select analog mux input. Updated automatically in round-robin mode.
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
     #[inline(always)]
@@ -152,6 +190,7 @@ impl Cs {
     }
 
     /// Write **AINSEL** `[15:12]` (RW)
+    ///
     /// Select analog mux input. Updated automatically in round-robin mode.
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
     #[inline(always)]
@@ -160,6 +199,7 @@ impl Cs {
     }
 
     /// **ERR_STICKY** `[10]` (RW)
+    ///
     /// Some past ADC conversion encountered an error. Write 1 to clear.
     #[inline(always)]
     pub fn err_sticky(&self) -> bool {
@@ -179,6 +219,7 @@ impl Cs {
     }
 
     /// **ERR** `[9]` (RO)
+    ///
     /// The most recent ADC conversion encountered an error; result is undefined or noisy.
     #[inline(always)]
     pub fn err(&self) -> bool {
@@ -186,6 +227,7 @@ impl Cs {
     }
 
     /// **READY** `[8]` (RO)
+    ///
     /// 1 if the ADC is ready to start a new conversion. Implies any previous conversion has completed.
     /// 0 whilst conversion in progress.
     #[inline(always)]
@@ -194,6 +236,7 @@ impl Cs {
     }
 
     /// **START_MANY** `[3]` (RW)
+    ///
     /// Continuously perform conversions whilst this bit is 1. A new conversion will start immediately after the previous finishes.
     #[inline(always)]
     pub fn start_many(&self) -> bool {
@@ -212,9 +255,8 @@ impl Cs {
         self.value.clr_bits(Self::START_MANY_MASK);
     }
 
-    /// **START_ONCE** `[2]` (WO)
-    /// Start a single conversion. Self-clearing. Ignored if start_many is asserted.
     /// Trigger **START_ONCE** (WO)
+    ///
     /// Start a single conversion. Self-clearing. Ignored if start_many is asserted.
     #[inline(always)]
     pub fn trigger_start_once(&self) {
@@ -222,6 +264,7 @@ impl Cs {
     }
 
     /// **TS_EN** `[1]` (RW)
+    ///
     /// Power on temperature sensor. 1 - enabled. 0 - disabled.
     #[inline(always)]
     pub fn ts_en(&self) -> bool {
@@ -241,6 +284,7 @@ impl Cs {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Power on ADC and enable its clock.
     /// 1 - enabled. 0 - disabled.
     #[inline(always)]
@@ -291,6 +335,7 @@ impl CsVal {
     }
 
     /// Read **RROBIN** `[24:16]`
+    ///
     /// Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
     /// Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
     /// The first channel to be sampled will be the one currently indicated by AINSEL.
@@ -301,6 +346,7 @@ impl CsVal {
     }
 
     /// Read **AINSEL** `[15:12]`
+    ///
     /// Select analog mux input. Updated automatically in round-robin mode.
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
     #[inline(always)]
@@ -309,6 +355,7 @@ impl CsVal {
     }
 
     /// Read **ERR_STICKY** `[10:10]`
+    ///
     /// Some past ADC conversion encountered an error. Write 1 to clear.
     #[inline(always)]
     pub const fn err_sticky(&self) -> bool {
@@ -316,6 +363,7 @@ impl CsVal {
     }
 
     /// Read **ERR** `[9:9]`
+    ///
     /// The most recent ADC conversion encountered an error; result is undefined or noisy.
     #[inline(always)]
     pub const fn err(&self) -> bool {
@@ -323,6 +371,7 @@ impl CsVal {
     }
 
     /// Read **READY** `[8:8]`
+    ///
     /// 1 if the ADC is ready to start a new conversion. Implies any previous conversion has completed.
     /// 0 whilst conversion in progress.
     #[inline(always)]
@@ -331,6 +380,7 @@ impl CsVal {
     }
 
     /// Read **START_MANY** `[3:3]`
+    ///
     /// Continuously perform conversions whilst this bit is 1. A new conversion will start immediately after the previous finishes.
     #[inline(always)]
     pub const fn start_many(&self) -> bool {
@@ -338,6 +388,7 @@ impl CsVal {
     }
 
     /// Read **TS_EN** `[1:1]`
+    ///
     /// Power on temperature sensor. 1 - enabled. 0 - disabled.
     #[inline(always)]
     pub const fn ts_en(&self) -> bool {
@@ -345,6 +396,7 @@ impl CsVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Power on ADC and enable its clock.
     /// 1 - enabled. 0 - disabled.
     #[inline(always)]
@@ -353,6 +405,7 @@ impl CsVal {
     }
 
     /// Set **RROBIN** `[24:16]`
+    ///
     /// Round-robin sampling. 1 bit per channel. Set all bits to 0 to disable.
     /// Otherwise, the ADC will cycle through each enabled channel in a round-robin fashion.
     /// The first channel to be sampled will be the one currently indicated by AINSEL.
@@ -365,6 +418,7 @@ impl CsVal {
     }
 
     /// Set **AINSEL** `[15:12]`
+    ///
     /// Select analog mux input. Updated automatically in round-robin mode.
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
     #[inline(always)]
@@ -375,6 +429,7 @@ impl CsVal {
     }
 
     /// Set **ERR_STICKY** `[10:10]`
+    ///
     /// Some past ADC conversion encountered an error. Write 1 to clear.
     #[inline(always)]
     pub const fn with_err_sticky(self, value: bool) -> Self {
@@ -388,6 +443,7 @@ impl CsVal {
     }
 
     /// Set **START_MANY** `[3:3]`
+    ///
     /// Continuously perform conversions whilst this bit is 1. A new conversion will start immediately after the previous finishes.
     #[inline(always)]
     pub const fn with_start_many(self, value: bool) -> Self {
@@ -401,6 +457,7 @@ impl CsVal {
     }
 
     /// Set **START_ONCE** `[2:2]`
+    ///
     /// Start a single conversion. Self-clearing. Ignored if start_many is asserted.
     #[inline(always)]
     pub const fn with_start_once(self, value: bool) -> Self {
@@ -414,6 +471,7 @@ impl CsVal {
     }
 
     /// Set **TS_EN** `[1:1]`
+    ///
     /// Power on temperature sensor. 1 - enabled. 0 - disabled.
     #[inline(always)]
     pub const fn with_ts_en(self, value: bool) -> Self {
@@ -427,6 +485,7 @@ impl CsVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Power on ADC and enable its clock.
     /// 1 - enabled. 0 - disabled.
     #[inline(always)]
@@ -583,22 +642,39 @@ impl Result {
 /// ## Fields
 ///
 /// - **THRESH** `[27:24]` (RW)
+///
 ///   DREQ/IRQ asserted when level >= threshold
+///
 /// - **LEVEL** `[19:16]` (RO)
+///
 ///   The number of conversion results currently waiting in the FIFO
+///
 /// - **OVER** `[11]` (RW)
+///
 ///   1 if the FIFO has been overflowed. Write 1 to clear.
+///
 /// - **UNDER** `[10]` (RW)
+///
 ///   1 if the FIFO has been underflowed. Write 1 to clear.
+///
 /// - **FULL** `[9]` (RO)
+///
 /// - **EMPTY** `[8]` (RO)
+///
 /// - **DREQ_EN** `[3]` (RW)
+///
 ///   If 1: assert DMA requests when FIFO contains data
+///
 /// - **ERR** `[2]` (RW)
+///
 ///   If 1: conversion error bit appears in the FIFO alongside the result
+///
 /// - **SHIFT** `[1]` (RW)
+///
 ///   If 1: FIFO results are right-shifted to be one byte in size. Enables DMA to byte buffers.
+///
 /// - **EN** `[0]` (RW)
+///
 ///   If 1: write result to the FIFO after each conversion.
 #[repr(transparent)]
 pub struct Fcs {
@@ -617,26 +693,34 @@ impl Fcs {
     // ======== Field Constants ========
 
     /// **THRESH**
+    ///
     /// DREQ/IRQ asserted when level >= threshold
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const THRESH_OFFSET: u32 = 24;
     pub const THRESH_MASK: u32 = 0x0f000000;
 
     /// **LEVEL**
+    ///
     /// The number of conversion results currently waiting in the FIFO
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const LEVEL_OFFSET: u32 = 16;
     pub const LEVEL_MASK: u32 = 0x000f0000;
 
     /// **OVER**
+    ///
     /// 1 if the FIFO has been overflowed. Write 1 to clear.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const OVER_OFFSET: u32 = 11;
     pub const OVER_MASK: u32 = 0x00000800;
     pub const OVER: u32 = 1 << 11;
 
     /// **UNDER**
+    ///
     /// 1 if the FIFO has been underflowed. Write 1 to clear.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const UNDER_OFFSET: u32 = 10;
     pub const UNDER_MASK: u32 = 0x00000400;
@@ -655,28 +739,36 @@ impl Fcs {
     pub const EMPTY: u32 = 1 << 8;
 
     /// **DREQ_EN**
+    ///
     /// If 1: assert DMA requests when FIFO contains data
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DREQ_EN_OFFSET: u32 = 3;
     pub const DREQ_EN_MASK: u32 = 0x00000008;
     pub const DREQ_EN: u32 = 1 << 3;
 
     /// **ERR**
+    ///
     /// If 1: conversion error bit appears in the FIFO alongside the result
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const ERR_OFFSET: u32 = 2;
     pub const ERR_MASK: u32 = 0x00000004;
     pub const ERR: u32 = 1 << 2;
 
     /// **SHIFT**
+    ///
     /// If 1: FIFO results are right-shifted to be one byte in size. Enables DMA to byte buffers.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SHIFT_OFFSET: u32 = 1;
     pub const SHIFT_MASK: u32 = 0x00000002;
     pub const SHIFT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// If 1: write result to the FIFO after each conversion.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -685,6 +777,7 @@ impl Fcs {
     // ======== Field Accessors ========
 
     /// **THRESH** `[27:24]` (RW)
+    ///
     /// DREQ/IRQ asserted when level >= threshold
     #[inline(always)]
     pub fn thresh(&self) -> u32 {
@@ -692,6 +785,7 @@ impl Fcs {
     }
 
     /// Write **THRESH** `[27:24]` (RW)
+    ///
     /// DREQ/IRQ asserted when level >= threshold
     #[inline(always)]
     pub fn write_thresh(&self, value: u32) {
@@ -699,6 +793,7 @@ impl Fcs {
     }
 
     /// **LEVEL** `[19:16]` (RO)
+    ///
     /// The number of conversion results currently waiting in the FIFO
     #[inline(always)]
     pub fn level(&self) -> u32 {
@@ -706,6 +801,7 @@ impl Fcs {
     }
 
     /// **OVER** `[11]` (RW)
+    ///
     /// 1 if the FIFO has been overflowed. Write 1 to clear.
     #[inline(always)]
     pub fn over(&self) -> bool {
@@ -725,6 +821,7 @@ impl Fcs {
     }
 
     /// **UNDER** `[10]` (RW)
+    ///
     /// 1 if the FIFO has been underflowed. Write 1 to clear.
     #[inline(always)]
     pub fn under(&self) -> bool {
@@ -756,6 +853,7 @@ impl Fcs {
     }
 
     /// **DREQ_EN** `[3]` (RW)
+    ///
     /// If 1: assert DMA requests when FIFO contains data
     #[inline(always)]
     pub fn dreq_en(&self) -> bool {
@@ -775,6 +873,7 @@ impl Fcs {
     }
 
     /// **ERR** `[2]` (RW)
+    ///
     /// If 1: conversion error bit appears in the FIFO alongside the result
     #[inline(always)]
     pub fn err(&self) -> bool {
@@ -794,6 +893,7 @@ impl Fcs {
     }
 
     /// **SHIFT** `[1]` (RW)
+    ///
     /// If 1: FIFO results are right-shifted to be one byte in size. Enables DMA to byte buffers.
     #[inline(always)]
     pub fn shift(&self) -> bool {
@@ -813,6 +913,7 @@ impl Fcs {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// If 1: write result to the FIFO after each conversion.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -862,6 +963,7 @@ impl FcsVal {
     }
 
     /// Read **THRESH** `[27:24]`
+    ///
     /// DREQ/IRQ asserted when level >= threshold
     #[inline(always)]
     pub const fn thresh(&self) -> u32 {
@@ -869,6 +971,7 @@ impl FcsVal {
     }
 
     /// Read **LEVEL** `[19:16]`
+    ///
     /// The number of conversion results currently waiting in the FIFO
     #[inline(always)]
     pub const fn level(&self) -> u32 {
@@ -876,6 +979,7 @@ impl FcsVal {
     }
 
     /// Read **OVER** `[11:11]`
+    ///
     /// 1 if the FIFO has been overflowed. Write 1 to clear.
     #[inline(always)]
     pub const fn over(&self) -> bool {
@@ -883,6 +987,7 @@ impl FcsVal {
     }
 
     /// Read **UNDER** `[10:10]`
+    ///
     /// 1 if the FIFO has been underflowed. Write 1 to clear.
     #[inline(always)]
     pub const fn under(&self) -> bool {
@@ -902,6 +1007,7 @@ impl FcsVal {
     }
 
     /// Read **DREQ_EN** `[3:3]`
+    ///
     /// If 1: assert DMA requests when FIFO contains data
     #[inline(always)]
     pub const fn dreq_en(&self) -> bool {
@@ -909,6 +1015,7 @@ impl FcsVal {
     }
 
     /// Read **ERR** `[2:2]`
+    ///
     /// If 1: conversion error bit appears in the FIFO alongside the result
     #[inline(always)]
     pub const fn err(&self) -> bool {
@@ -916,6 +1023,7 @@ impl FcsVal {
     }
 
     /// Read **SHIFT** `[1:1]`
+    ///
     /// If 1: FIFO results are right-shifted to be one byte in size. Enables DMA to byte buffers.
     #[inline(always)]
     pub const fn shift(&self) -> bool {
@@ -923,6 +1031,7 @@ impl FcsVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// If 1: write result to the FIFO after each conversion.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -930,6 +1039,7 @@ impl FcsVal {
     }
 
     /// Set **THRESH** `[27:24]`
+    ///
     /// DREQ/IRQ asserted when level >= threshold
     #[inline(always)]
     pub const fn with_thresh(self, value: u32) -> Self {
@@ -939,6 +1049,7 @@ impl FcsVal {
     }
 
     /// Set **OVER** `[11:11]`
+    ///
     /// 1 if the FIFO has been overflowed. Write 1 to clear.
     #[inline(always)]
     pub const fn with_over(self, value: bool) -> Self {
@@ -952,6 +1063,7 @@ impl FcsVal {
     }
 
     /// Set **UNDER** `[10:10]`
+    ///
     /// 1 if the FIFO has been underflowed. Write 1 to clear.
     #[inline(always)]
     pub const fn with_under(self, value: bool) -> Self {
@@ -965,6 +1077,7 @@ impl FcsVal {
     }
 
     /// Set **DREQ_EN** `[3:3]`
+    ///
     /// If 1: assert DMA requests when FIFO contains data
     #[inline(always)]
     pub const fn with_dreq_en(self, value: bool) -> Self {
@@ -978,6 +1091,7 @@ impl FcsVal {
     }
 
     /// Set **ERR** `[2:2]`
+    ///
     /// If 1: conversion error bit appears in the FIFO alongside the result
     #[inline(always)]
     pub const fn with_err(self, value: bool) -> Self {
@@ -991,6 +1105,7 @@ impl FcsVal {
     }
 
     /// Set **SHIFT** `[1:1]`
+    ///
     /// If 1: FIFO results are right-shifted to be one byte in size. Enables DMA to byte buffers.
     #[inline(always)]
     pub const fn with_shift(self, value: bool) -> Self {
@@ -1004,6 +1119,7 @@ impl FcsVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// If 1: write result to the FIFO after each conversion.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -1055,7 +1171,9 @@ impl Fcs {
 /// ## Fields
 ///
 /// - **ERR** `[15]` (RO)
+///
 ///   1 if this particular sample experienced a conversion error. Remains in the same location if the sample is shifted.
+///
 /// - **VAL** `[11:0]` (RO)
 #[repr(transparent)]
 pub struct Fifo {
@@ -1074,7 +1192,9 @@ impl Fifo {
     // ======== Field Constants ========
 
     /// **ERR**
+    ///
     /// 1 if this particular sample experienced a conversion error. Remains in the same location if the sample is shifted.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const ERR_OFFSET: u32 = 15;
     pub const ERR_MASK: u32 = 0x00008000;
@@ -1088,6 +1208,7 @@ impl Fifo {
     // ======== Field Accessors ========
 
     /// **ERR** `[15]` (RO)
+    ///
     /// 1 if this particular sample experienced a conversion error. Remains in the same location if the sample is shifted.
     #[inline(always)]
     pub fn err(&self) -> bool {
@@ -1131,6 +1252,7 @@ impl FifoVal {
     }
 
     /// Read **ERR** `[15:15]`
+    ///
     /// 1 if this particular sample experienced a conversion error. Remains in the same location if the sample is shifted.
     #[inline(always)]
     pub const fn err(&self) -> bool {
@@ -1185,8 +1307,11 @@ impl Fifo {
 /// ## Fields
 ///
 /// - **INT** `[23:8]` (RW)
+///
 ///   Integer part of clock divisor.
+///
 /// - **FRAC** `[7:0]` (RW)
+///
 ///   Fractional part of clock divisor. First-order delta-sigma.
 #[repr(transparent)]
 pub struct Div {
@@ -1205,13 +1330,17 @@ impl Div {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor.
+    ///
     /// Bits `[23:8]`, mask `0x00ffff00`
     pub const INT_OFFSET: u32 = 8;
     pub const INT_MASK: u32 = 0x00ffff00;
 
     /// **FRAC**
+    ///
     /// Fractional part of clock divisor. First-order delta-sigma.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x000000ff;
@@ -1219,6 +1348,7 @@ impl Div {
     // ======== Field Accessors ========
 
     /// **INT** `[23:8]` (RW)
+    ///
     /// Integer part of clock divisor.
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -1226,6 +1356,7 @@ impl Div {
     }
 
     /// Write **INT** `[23:8]` (RW)
+    ///
     /// Integer part of clock divisor.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -1233,6 +1364,7 @@ impl Div {
     }
 
     /// **FRAC** `[7:0]` (RW)
+    ///
     /// Fractional part of clock divisor. First-order delta-sigma.
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -1240,6 +1372,7 @@ impl Div {
     }
 
     /// Write **FRAC** `[7:0]` (RW)
+    ///
     /// Fractional part of clock divisor. First-order delta-sigma.
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -1277,6 +1410,7 @@ impl DivVal {
     }
 
     /// Read **INT** `[23:8]`
+    ///
     /// Integer part of clock divisor.
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -1284,6 +1418,7 @@ impl DivVal {
     }
 
     /// Read **FRAC** `[7:0]`
+    ///
     /// Fractional part of clock divisor. First-order delta-sigma.
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -1291,6 +1426,7 @@ impl DivVal {
     }
 
     /// Set **INT** `[23:8]`
+    ///
     /// Integer part of clock divisor.
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -1300,6 +1436,7 @@ impl DivVal {
     }
 
     /// Set **FRAC** `[7:0]`
+    ///
     /// Fractional part of clock divisor. First-order delta-sigma.
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -1347,6 +1484,7 @@ impl Div {
 /// ## Fields
 ///
 /// - **FIFO** `[0]` (RO)
+///
 ///   Triggered when the sample FIFO reaches a certain level.
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
@@ -1366,8 +1504,10 @@ impl Intr {
     // ======== Field Constants ========
 
     /// **FIFO**
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const FIFO_OFFSET: u32 = 0;
     pub const FIFO_MASK: u32 = 0x00000001;
@@ -1376,6 +1516,7 @@ impl Intr {
     // ======== Field Accessors ========
 
     /// **FIFO** `[0]` (RO)
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1414,6 +1555,7 @@ impl IntrVal {
     }
 
     /// Read **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1460,6 +1602,7 @@ impl Intr {
 /// ## Fields
 ///
 /// - **FIFO** `[0]` (RW)
+///
 ///   Triggered when the sample FIFO reaches a certain level.
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
@@ -1479,8 +1622,10 @@ impl Inte {
     // ======== Field Constants ========
 
     /// **FIFO**
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const FIFO_OFFSET: u32 = 0;
     pub const FIFO_MASK: u32 = 0x00000001;
@@ -1489,6 +1634,7 @@ impl Inte {
     // ======== Field Accessors ========
 
     /// **FIFO** `[0]` (RW)
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1539,6 +1685,7 @@ impl InteVal {
     }
 
     /// Read **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1547,6 +1694,7 @@ impl InteVal {
     }
 
     /// Set **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1599,6 +1747,7 @@ impl Inte {
 /// ## Fields
 ///
 /// - **FIFO** `[0]` (RW)
+///
 ///   Triggered when the sample FIFO reaches a certain level.
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
@@ -1618,8 +1767,10 @@ impl Intf {
     // ======== Field Constants ========
 
     /// **FIFO**
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const FIFO_OFFSET: u32 = 0;
     pub const FIFO_MASK: u32 = 0x00000001;
@@ -1628,6 +1779,7 @@ impl Intf {
     // ======== Field Accessors ========
 
     /// **FIFO** `[0]` (RW)
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1678,6 +1830,7 @@ impl IntfVal {
     }
 
     /// Read **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1686,6 +1839,7 @@ impl IntfVal {
     }
 
     /// Set **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1738,6 +1892,7 @@ impl Intf {
 /// ## Fields
 ///
 /// - **FIFO** `[0]` (RO)
+///
 ///   Triggered when the sample FIFO reaches a certain level.
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
@@ -1757,8 +1912,10 @@ impl Ints {
     // ======== Field Constants ========
 
     /// **FIFO**
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const FIFO_OFFSET: u32 = 0;
     pub const FIFO_MASK: u32 = 0x00000001;
@@ -1767,6 +1924,7 @@ impl Ints {
     // ======== Field Accessors ========
 
     /// **FIFO** `[0]` (RO)
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]
@@ -1805,6 +1963,7 @@ impl IntsVal {
     }
 
     /// Read **FIFO** `[0:0]`
+    ///
     /// Triggered when the sample FIFO reaches a certain level.
     /// This level can be programmed via the FCS_THRESH field.
     #[inline(always)]

@@ -15,14 +15,23 @@ pub const BASE: u32 = 0x400f0000;
 /// ## Fields
 ///
 /// - **RESERVED** `[31:4]` (RO)
+///
 ///   RESERVED
+///
 /// - **VN_ERR_INT_MASK** `[3]` (RW)
+///
 ///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+///
 /// - **CRNGT_ERR_INT_MASK** `[2]` (RW)
+///
 ///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+///
 /// - **AUTOCORR_ERR_INT_MASK** `[1]` (RW)
+///
 ///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+///
 /// - **EHR_VALID_INT_MASK** `[0]` (RW)
+///
 ///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
 #[repr(transparent)]
 pub struct RngImr {
@@ -41,34 +50,44 @@ impl RngImr {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
     /// **VN_ERR_INT_MASK**
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_INT_MASK_OFFSET: u32 = 3;
     pub const VN_ERR_INT_MASK_MASK: u32 = 0x00000008;
     pub const VN_ERR_INT_MASK: u32 = 1 << 3;
 
     /// **CRNGT_ERR_INT_MASK**
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_INT_MASK_OFFSET: u32 = 2;
     pub const CRNGT_ERR_INT_MASK_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR_INT_MASK: u32 = 1 << 2;
 
     /// **AUTOCORR_ERR_INT_MASK**
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_INT_MASK_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_INT_MASK_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR_INT_MASK: u32 = 1 << 1;
 
     /// **EHR_VALID_INT_MASK**
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_INT_MASK_OFFSET: u32 = 0;
     pub const EHR_VALID_INT_MASK_MASK: u32 = 0x00000001;
@@ -77,6 +96,7 @@ impl RngImr {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:4]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -84,6 +104,7 @@ impl RngImr {
     }
 
     /// **VN_ERR_INT_MASK** `[3]` (RW)
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn vn_err_int_mask(&self) -> bool {
@@ -103,6 +124,7 @@ impl RngImr {
     }
 
     /// **CRNGT_ERR_INT_MASK** `[2]` (RW)
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn crngt_err_int_mask(&self) -> bool {
@@ -122,6 +144,7 @@ impl RngImr {
     }
 
     /// **AUTOCORR_ERR_INT_MASK** `[1]` (RW)
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn autocorr_err_int_mask(&self) -> bool {
@@ -141,6 +164,7 @@ impl RngImr {
     }
 
     /// **EHR_VALID_INT_MASK** `[0]` (RW)
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn ehr_valid_int_mask(&self) -> bool {
@@ -190,6 +214,7 @@ impl RngImrVal {
     }
 
     /// Read **RESERVED** `[31:4]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -197,6 +222,7 @@ impl RngImrVal {
     }
 
     /// Read **VN_ERR_INT_MASK** `[3:3]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn vn_err_int_mask(&self) -> bool {
@@ -204,6 +230,7 @@ impl RngImrVal {
     }
 
     /// Read **CRNGT_ERR_INT_MASK** `[2:2]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn crngt_err_int_mask(&self) -> bool {
@@ -211,6 +238,7 @@ impl RngImrVal {
     }
 
     /// Read **AUTOCORR_ERR_INT_MASK** `[1:1]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn autocorr_err_int_mask(&self) -> bool {
@@ -218,6 +246,7 @@ impl RngImrVal {
     }
 
     /// Read **EHR_VALID_INT_MASK** `[0:0]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn ehr_valid_int_mask(&self) -> bool {
@@ -225,6 +254,7 @@ impl RngImrVal {
     }
 
     /// Set **VN_ERR_INT_MASK** `[3:3]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_vn_err_int_mask(self, value: bool) -> Self {
@@ -238,6 +268,7 @@ impl RngImrVal {
     }
 
     /// Set **CRNGT_ERR_INT_MASK** `[2:2]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_crngt_err_int_mask(self, value: bool) -> Self {
@@ -251,6 +282,7 @@ impl RngImrVal {
     }
 
     /// Set **AUTOCORR_ERR_INT_MASK** `[1:1]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_autocorr_err_int_mask(self, value: bool) -> Self {
@@ -264,6 +296,7 @@ impl RngImrVal {
     }
 
     /// Set **EHR_VALID_INT_MASK** `[0:0]`
+    ///
     /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_ehr_valid_int_mask(self, value: bool) -> Self {
@@ -315,14 +348,23 @@ impl RngImr {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:4]` (RO)
+///
 ///   RESERVED
+///
 /// - **VN_ERR** `[3]` (RO)
+///
 ///   1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
+///
 /// - **CRNGT_ERR** `[2]` (RO)
+///
 ///   1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
+///
 /// - **AUTOCORR_ERR** `[1]` (RO)
+///
 ///   1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
+///
 /// - **EHR_VALID** `[0]` (RO)
+///
 ///   1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
 #[repr(transparent)]
 pub struct RngIsr {
@@ -341,34 +383,44 @@ impl RngIsr {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
     /// **VN_ERR**
+    ///
     /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_OFFSET: u32 = 3;
     pub const VN_ERR_MASK: u32 = 0x00000008;
     pub const VN_ERR: u32 = 1 << 3;
 
     /// **CRNGT_ERR**
+    ///
     /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_OFFSET: u32 = 2;
     pub const CRNGT_ERR_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR: u32 = 1 << 2;
 
     /// **AUTOCORR_ERR**
+    ///
     /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR: u32 = 1 << 1;
 
     /// **EHR_VALID**
+    ///
     /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
@@ -377,6 +429,7 @@ impl RngIsr {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:4]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -384,6 +437,7 @@ impl RngIsr {
     }
 
     /// **VN_ERR** `[3]` (RO)
+    ///
     /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
     #[inline(always)]
     pub fn vn_err(&self) -> bool {
@@ -391,6 +445,7 @@ impl RngIsr {
     }
 
     /// **CRNGT_ERR** `[2]` (RO)
+    ///
     /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
     #[inline(always)]
     pub fn crngt_err(&self) -> bool {
@@ -398,6 +453,7 @@ impl RngIsr {
     }
 
     /// **AUTOCORR_ERR** `[1]` (RO)
+    ///
     /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
     #[inline(always)]
     pub fn autocorr_err(&self) -> bool {
@@ -405,6 +461,7 @@ impl RngIsr {
     }
 
     /// **EHR_VALID** `[0]` (RO)
+    ///
     /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
@@ -442,6 +499,7 @@ impl RngIsrVal {
     }
 
     /// Read **RESERVED** `[31:4]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -449,6 +507,7 @@ impl RngIsrVal {
     }
 
     /// Read **VN_ERR** `[3:3]`
+    ///
     /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
     #[inline(always)]
     pub const fn vn_err(&self) -> bool {
@@ -456,6 +515,7 @@ impl RngIsrVal {
     }
 
     /// Read **CRNGT_ERR** `[2:2]`
+    ///
     /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
     #[inline(always)]
     pub const fn crngt_err(&self) -> bool {
@@ -463,6 +523,7 @@ impl RngIsrVal {
     }
 
     /// Read **AUTOCORR_ERR** `[1:1]`
+    ///
     /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
     #[inline(always)]
     pub const fn autocorr_err(&self) -> bool {
@@ -470,6 +531,7 @@ impl RngIsrVal {
     }
 
     /// Read **EHR_VALID** `[0:0]`
+    ///
     /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
@@ -515,14 +577,23 @@ impl RngIsr {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:4]` (RO)
+///
 ///   RESERVED
+///
 /// - **VN_ERR** `[3]` (RW)
+///
 ///   Write 1'b1 - clear corresponding bit in RNG_ISR.
+///
 /// - **CRNGT_ERR** `[2]` (RW)
+///
 ///   Write 1'b1 - clear corresponding bit in RNG_ISR.
+///
 /// - **AUTOCORR_ERR** `[1]` (RW)
+///
 ///   Cannot be cleared by SW! Only RNG reset clears this bit.
+///
 /// - **EHR_VALID** `[0]` (RW)
+///
 ///   Write 1'b1 - clear corresponding bit in RNG_ISR.
 #[repr(transparent)]
 pub struct RngIcr {
@@ -541,34 +612,44 @@ impl RngIcr {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
     /// **VN_ERR**
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_OFFSET: u32 = 3;
     pub const VN_ERR_MASK: u32 = 0x00000008;
     pub const VN_ERR: u32 = 1 << 3;
 
     /// **CRNGT_ERR**
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_OFFSET: u32 = 2;
     pub const CRNGT_ERR_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR: u32 = 1 << 2;
 
     /// **AUTOCORR_ERR**
+    ///
     /// Cannot be cleared by SW! Only RNG reset clears this bit.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR: u32 = 1 << 1;
 
     /// **EHR_VALID**
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
@@ -577,6 +658,7 @@ impl RngIcr {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:4]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -584,6 +666,7 @@ impl RngIcr {
     }
 
     /// **VN_ERR** `[3]` (RW)
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn vn_err(&self) -> bool {
@@ -603,6 +686,7 @@ impl RngIcr {
     }
 
     /// **CRNGT_ERR** `[2]` (RW)
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn crngt_err(&self) -> bool {
@@ -622,6 +706,7 @@ impl RngIcr {
     }
 
     /// **AUTOCORR_ERR** `[1]` (RW)
+    ///
     /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub fn autocorr_err(&self) -> bool {
@@ -641,6 +726,7 @@ impl RngIcr {
     }
 
     /// **EHR_VALID** `[0]` (RW)
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
@@ -690,6 +776,7 @@ impl RngIcrVal {
     }
 
     /// Read **RESERVED** `[31:4]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -697,6 +784,7 @@ impl RngIcrVal {
     }
 
     /// Read **VN_ERR** `[3:3]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn vn_err(&self) -> bool {
@@ -704,6 +792,7 @@ impl RngIcrVal {
     }
 
     /// Read **CRNGT_ERR** `[2:2]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn crngt_err(&self) -> bool {
@@ -711,6 +800,7 @@ impl RngIcrVal {
     }
 
     /// Read **AUTOCORR_ERR** `[1:1]`
+    ///
     /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub const fn autocorr_err(&self) -> bool {
@@ -718,6 +808,7 @@ impl RngIcrVal {
     }
 
     /// Read **EHR_VALID** `[0:0]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
@@ -725,6 +816,7 @@ impl RngIcrVal {
     }
 
     /// Set **VN_ERR** `[3:3]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_vn_err(self, value: bool) -> Self {
@@ -738,6 +830,7 @@ impl RngIcrVal {
     }
 
     /// Set **CRNGT_ERR** `[2:2]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_crngt_err(self, value: bool) -> Self {
@@ -751,6 +844,7 @@ impl RngIcrVal {
     }
 
     /// Set **AUTOCORR_ERR** `[1:1]`
+    ///
     /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub const fn with_autocorr_err(self, value: bool) -> Self {
@@ -764,6 +858,7 @@ impl RngIcrVal {
     }
 
     /// Set **EHR_VALID** `[0:0]`
+    ///
     /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_ehr_valid(self, value: bool) -> Self {
@@ -815,8 +910,11 @@ impl RngIcr {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:2]` (RO)
+///
 ///   RESERVED
+///
 /// - **RND_SRC_SEL** `[1:0]` (RW)
+///
 ///   Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
 #[repr(transparent)]
 pub struct TrngConfig {
@@ -835,13 +933,17 @@ impl TrngConfig {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:2]`, mask `0xfffffffc`
     pub const RESERVED_OFFSET: u32 = 2;
     pub const RESERVED_MASK: u32 = 0xfffffffc;
 
     /// **RND_SRC_SEL**
+    ///
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const RND_SRC_SEL_OFFSET: u32 = 0;
     pub const RND_SRC_SEL_MASK: u32 = 0x00000003;
@@ -849,6 +951,7 @@ impl TrngConfig {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:2]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -856,6 +959,7 @@ impl TrngConfig {
     }
 
     /// **RND_SRC_SEL** `[1:0]` (RW)
+    ///
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub fn rnd_src_sel(&self) -> u32 {
@@ -863,6 +967,7 @@ impl TrngConfig {
     }
 
     /// Write **RND_SRC_SEL** `[1:0]` (RW)
+    ///
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub fn write_rnd_src_sel(&self, value: u32) {
@@ -900,6 +1005,7 @@ impl TrngConfigVal {
     }
 
     /// Read **RESERVED** `[31:2]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -907,6 +1013,7 @@ impl TrngConfigVal {
     }
 
     /// Read **RND_SRC_SEL** `[1:0]`
+    ///
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub const fn rnd_src_sel(&self) -> u32 {
@@ -914,6 +1021,7 @@ impl TrngConfigVal {
     }
 
     /// Set **RND_SRC_SEL** `[1:0]`
+    ///
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub const fn with_rnd_src_sel(self, value: u32) -> Self {
@@ -961,8 +1069,11 @@ impl TrngConfig {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **EHR_VALID** `[0]` (RO)
+///
 ///   1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
 #[repr(transparent)]
 pub struct TrngValid {
@@ -981,13 +1092,17 @@ impl TrngValid {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **EHR_VALID**
+    ///
     /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
@@ -996,6 +1111,7 @@ impl TrngValid {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -1003,6 +1119,7 @@ impl TrngValid {
     }
 
     /// **EHR_VALID** `[0]` (RO)
+    ///
     /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
@@ -1040,6 +1157,7 @@ impl TrngValidVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -1047,6 +1165,7 @@ impl TrngValidVal {
     }
 
     /// Read **EHR_VALID** `[0:0]`
+    ///
     /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
@@ -1092,6 +1211,7 @@ impl TrngValid {
 /// ## Fields
 ///
 /// - **EHR_DATA0** `[31:0]` (RO)
+///
 ///   Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData0 {
@@ -1110,7 +1230,9 @@ impl EhrData0 {
     // ======== Field Constants ========
 
     /// **EHR_DATA0**
+    ///
     /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA0_OFFSET: u32 = 0;
     pub const EHR_DATA0_MASK: u32 = 0xffffffff;
@@ -1118,6 +1240,7 @@ impl EhrData0 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA0** `[31:0]` (RO)
+    ///
     /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data0(&self) -> u32 {
@@ -1155,6 +1278,7 @@ impl EhrData0Val {
     }
 
     /// Read **EHR_DATA0** `[31:0]`
+    ///
     /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data0(&self) -> u32 {
@@ -1200,6 +1324,7 @@ impl EhrData0 {
 /// ## Fields
 ///
 /// - **EHR_DATA1** `[31:0]` (RO)
+///
 ///   Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData1 {
@@ -1218,7 +1343,9 @@ impl EhrData1 {
     // ======== Field Constants ========
 
     /// **EHR_DATA1**
+    ///
     /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA1_OFFSET: u32 = 0;
     pub const EHR_DATA1_MASK: u32 = 0xffffffff;
@@ -1226,6 +1353,7 @@ impl EhrData1 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA1** `[31:0]` (RO)
+    ///
     /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data1(&self) -> u32 {
@@ -1263,6 +1391,7 @@ impl EhrData1Val {
     }
 
     /// Read **EHR_DATA1** `[31:0]`
+    ///
     /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data1(&self) -> u32 {
@@ -1308,6 +1437,7 @@ impl EhrData1 {
 /// ## Fields
 ///
 /// - **EHR_DATA2** `[31:0]` (RO)
+///
 ///   Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData2 {
@@ -1326,7 +1456,9 @@ impl EhrData2 {
     // ======== Field Constants ========
 
     /// **EHR_DATA2**
+    ///
     /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA2_OFFSET: u32 = 0;
     pub const EHR_DATA2_MASK: u32 = 0xffffffff;
@@ -1334,6 +1466,7 @@ impl EhrData2 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA2** `[31:0]` (RO)
+    ///
     /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data2(&self) -> u32 {
@@ -1371,6 +1504,7 @@ impl EhrData2Val {
     }
 
     /// Read **EHR_DATA2** `[31:0]`
+    ///
     /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data2(&self) -> u32 {
@@ -1416,6 +1550,7 @@ impl EhrData2 {
 /// ## Fields
 ///
 /// - **EHR_DATA3** `[31:0]` (RO)
+///
 ///   Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData3 {
@@ -1434,7 +1569,9 @@ impl EhrData3 {
     // ======== Field Constants ========
 
     /// **EHR_DATA3**
+    ///
     /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA3_OFFSET: u32 = 0;
     pub const EHR_DATA3_MASK: u32 = 0xffffffff;
@@ -1442,6 +1579,7 @@ impl EhrData3 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA3** `[31:0]` (RO)
+    ///
     /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data3(&self) -> u32 {
@@ -1479,6 +1617,7 @@ impl EhrData3Val {
     }
 
     /// Read **EHR_DATA3** `[31:0]`
+    ///
     /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data3(&self) -> u32 {
@@ -1524,6 +1663,7 @@ impl EhrData3 {
 /// ## Fields
 ///
 /// - **EHR_DATA4** `[31:0]` (RO)
+///
 ///   Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData4 {
@@ -1542,7 +1682,9 @@ impl EhrData4 {
     // ======== Field Constants ========
 
     /// **EHR_DATA4**
+    ///
     /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA4_OFFSET: u32 = 0;
     pub const EHR_DATA4_MASK: u32 = 0xffffffff;
@@ -1550,6 +1692,7 @@ impl EhrData4 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA4** `[31:0]` (RO)
+    ///
     /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data4(&self) -> u32 {
@@ -1587,6 +1730,7 @@ impl EhrData4Val {
     }
 
     /// Read **EHR_DATA4** `[31:0]`
+    ///
     /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data4(&self) -> u32 {
@@ -1632,6 +1776,7 @@ impl EhrData4 {
 /// ## Fields
 ///
 /// - **EHR_DATA5** `[31:0]` (RO)
+///
 ///   Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData5 {
@@ -1650,7 +1795,9 @@ impl EhrData5 {
     // ======== Field Constants ========
 
     /// **EHR_DATA5**
+    ///
     /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA5_OFFSET: u32 = 0;
     pub const EHR_DATA5_MASK: u32 = 0xffffffff;
@@ -1658,6 +1805,7 @@ impl EhrData5 {
     // ======== Field Accessors ========
 
     /// **EHR_DATA5** `[31:0]` (RO)
+    ///
     /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data5(&self) -> u32 {
@@ -1695,6 +1843,7 @@ impl EhrData5Val {
     }
 
     /// Read **EHR_DATA5** `[31:0]`
+    ///
     /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data5(&self) -> u32 {
@@ -1740,8 +1889,11 @@ impl EhrData5 {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **RND_SRC_EN** `[0]` (RW)
+///
 ///   * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
 #[repr(transparent)]
 pub struct RndSourceEnable {
@@ -1760,13 +1912,17 @@ impl RndSourceEnable {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **RND_SRC_EN**
+    ///
     /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RND_SRC_EN_OFFSET: u32 = 0;
     pub const RND_SRC_EN_MASK: u32 = 0x00000001;
@@ -1775,6 +1931,7 @@ impl RndSourceEnable {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -1782,6 +1939,7 @@ impl RndSourceEnable {
     }
 
     /// **RND_SRC_EN** `[0]` (RW)
+    ///
     /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub fn rnd_src_en(&self) -> bool {
@@ -1831,6 +1989,7 @@ impl RndSourceEnableVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -1838,6 +1997,7 @@ impl RndSourceEnableVal {
     }
 
     /// Read **RND_SRC_EN** `[0:0]`
+    ///
     /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub const fn rnd_src_en(&self) -> bool {
@@ -1845,6 +2005,7 @@ impl RndSourceEnableVal {
     }
 
     /// Set **RND_SRC_EN** `[0:0]`
+    ///
     /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub const fn with_rnd_src_en(self, value: bool) -> Self {
@@ -1896,6 +2057,7 @@ impl RndSourceEnable {
 /// ## Fields
 ///
 /// - **SAMPLE_CNTR1** `[31:0]` (RW)
+///
 ///   Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
 #[repr(transparent)]
 pub struct SampleCnt1 {
@@ -1914,7 +2076,9 @@ impl SampleCnt1 {
     // ======== Field Constants ========
 
     /// **SAMPLE_CNTR1**
+    ///
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const SAMPLE_CNTR1_OFFSET: u32 = 0;
     pub const SAMPLE_CNTR1_MASK: u32 = 0xffffffff;
@@ -1922,6 +2086,7 @@ impl SampleCnt1 {
     // ======== Field Accessors ========
 
     /// **SAMPLE_CNTR1** `[31:0]` (RW)
+    ///
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub fn sample_cntr1(&self) -> u32 {
@@ -1929,6 +2094,7 @@ impl SampleCnt1 {
     }
 
     /// Write **SAMPLE_CNTR1** `[31:0]` (RW)
+    ///
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub fn write_sample_cntr1(&self, value: u32) {
@@ -1966,6 +2132,7 @@ impl SampleCnt1Val {
     }
 
     /// Read **SAMPLE_CNTR1** `[31:0]`
+    ///
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub const fn sample_cntr1(&self) -> u32 {
@@ -1973,6 +2140,7 @@ impl SampleCnt1Val {
     }
 
     /// Set **SAMPLE_CNTR1** `[31:0]`
+    ///
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub const fn with_sample_cntr1(self, value: u32) -> Self {
@@ -2020,10 +2188,15 @@ impl SampleCnt1 {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:22]` (RO)
+///
 ///   RESERVED
+///
 /// - **AUTOCORR_FAILS** `[21:14]` (RW)
+///
 ///   Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+///
 /// - **AUTOCORR_TRYS** `[13:0]` (RW)
+///
 ///   Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
 #[repr(transparent)]
 pub struct AutocorrStatistic {
@@ -2042,19 +2215,25 @@ impl AutocorrStatistic {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
     /// **AUTOCORR_FAILS**
+    ///
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+    ///
     /// Bits `[21:14]`, mask `0x003fc000`
     pub const AUTOCORR_FAILS_OFFSET: u32 = 14;
     pub const AUTOCORR_FAILS_MASK: u32 = 0x003fc000;
 
     /// **AUTOCORR_TRYS**
+    ///
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+    ///
     /// Bits `[13:0]`, mask `0x00003fff`
     pub const AUTOCORR_TRYS_OFFSET: u32 = 0;
     pub const AUTOCORR_TRYS_MASK: u32 = 0x00003fff;
@@ -2062,6 +2241,7 @@ impl AutocorrStatistic {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:22]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -2069,6 +2249,7 @@ impl AutocorrStatistic {
     }
 
     /// **AUTOCORR_FAILS** `[21:14]` (RW)
+    ///
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn autocorr_fails(&self) -> u32 {
@@ -2076,6 +2257,7 @@ impl AutocorrStatistic {
     }
 
     /// Write **AUTOCORR_FAILS** `[21:14]` (RW)
+    ///
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_fails(&self, value: u32) {
@@ -2083,6 +2265,7 @@ impl AutocorrStatistic {
     }
 
     /// **AUTOCORR_TRYS** `[13:0]` (RW)
+    ///
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn autocorr_trys(&self) -> u32 {
@@ -2090,6 +2273,7 @@ impl AutocorrStatistic {
     }
 
     /// Write **AUTOCORR_TRYS** `[13:0]` (RW)
+    ///
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_trys(&self, value: u32) {
@@ -2127,6 +2311,7 @@ impl AutocorrStatisticVal {
     }
 
     /// Read **RESERVED** `[31:22]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -2134,6 +2319,7 @@ impl AutocorrStatisticVal {
     }
 
     /// Read **AUTOCORR_FAILS** `[21:14]`
+    ///
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_fails(&self) -> u32 {
@@ -2141,6 +2327,7 @@ impl AutocorrStatisticVal {
     }
 
     /// Read **AUTOCORR_TRYS** `[13:0]`
+    ///
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_trys(&self) -> u32 {
@@ -2148,6 +2335,7 @@ impl AutocorrStatisticVal {
     }
 
     /// Set **AUTOCORR_FAILS** `[21:14]`
+    ///
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn with_autocorr_fails(self, value: u32) -> Self {
@@ -2157,6 +2345,7 @@ impl AutocorrStatisticVal {
     }
 
     /// Set **AUTOCORR_TRYS** `[13:0]`
+    ///
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn with_autocorr_trys(self, value: u32) -> Self {
@@ -2204,12 +2393,19 @@ impl AutocorrStatistic {
 /// ## Fields
 ///
 /// - **AUTO_CORRELATE_BYPASS** `[3]` (RW)
+///
 ///   When set, the autocorrelation test in the TRNG module is bypassed.
+///
 /// - **TRNG_CRNGT_BYPASS** `[2]` (RW)
+///
 ///   When set, the CRNGT test in the RNG is bypassed.
+///
 /// - **VNC_BYPASS** `[1]` (RW)
+///
 ///   When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
+///
 /// - **RESERVED** `[0]` (RO)
+///
 ///   N/A
 #[repr(transparent)]
 pub struct TrngDebugControl {
@@ -2228,28 +2424,36 @@ impl TrngDebugControl {
     // ======== Field Constants ========
 
     /// **AUTO_CORRELATE_BYPASS**
+    ///
     /// When set, the autocorrelation test in the TRNG module is bypassed.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const AUTO_CORRELATE_BYPASS_OFFSET: u32 = 3;
     pub const AUTO_CORRELATE_BYPASS_MASK: u32 = 0x00000008;
     pub const AUTO_CORRELATE_BYPASS: u32 = 1 << 3;
 
     /// **TRNG_CRNGT_BYPASS**
+    ///
     /// When set, the CRNGT test in the RNG is bypassed.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const TRNG_CRNGT_BYPASS_OFFSET: u32 = 2;
     pub const TRNG_CRNGT_BYPASS_MASK: u32 = 0x00000004;
     pub const TRNG_CRNGT_BYPASS: u32 = 1 << 2;
 
     /// **VNC_BYPASS**
+    ///
     /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const VNC_BYPASS_OFFSET: u32 = 1;
     pub const VNC_BYPASS_MASK: u32 = 0x00000002;
     pub const VNC_BYPASS: u32 = 1 << 1;
 
     /// **RESERVED**
+    ///
     /// N/A
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RESERVED_OFFSET: u32 = 0;
     pub const RESERVED_MASK: u32 = 0x00000001;
@@ -2258,6 +2462,7 @@ impl TrngDebugControl {
     // ======== Field Accessors ========
 
     /// **AUTO_CORRELATE_BYPASS** `[3]` (RW)
+    ///
     /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub fn auto_correlate_bypass(&self) -> bool {
@@ -2277,6 +2482,7 @@ impl TrngDebugControl {
     }
 
     /// **TRNG_CRNGT_BYPASS** `[2]` (RW)
+    ///
     /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub fn trng_crngt_bypass(&self) -> bool {
@@ -2296,6 +2502,7 @@ impl TrngDebugControl {
     }
 
     /// **VNC_BYPASS** `[1]` (RW)
+    ///
     /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub fn vnc_bypass(&self) -> bool {
@@ -2315,6 +2522,7 @@ impl TrngDebugControl {
     }
 
     /// **RESERVED** `[0]` (RO)
+    ///
     /// N/A
     #[inline(always)]
     pub fn reserved(&self) -> bool {
@@ -2352,6 +2560,7 @@ impl TrngDebugControlVal {
     }
 
     /// Read **AUTO_CORRELATE_BYPASS** `[3:3]`
+    ///
     /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub const fn auto_correlate_bypass(&self) -> bool {
@@ -2359,6 +2568,7 @@ impl TrngDebugControlVal {
     }
 
     /// Read **TRNG_CRNGT_BYPASS** `[2:2]`
+    ///
     /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub const fn trng_crngt_bypass(&self) -> bool {
@@ -2366,6 +2576,7 @@ impl TrngDebugControlVal {
     }
 
     /// Read **VNC_BYPASS** `[1:1]`
+    ///
     /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub const fn vnc_bypass(&self) -> bool {
@@ -2373,6 +2584,7 @@ impl TrngDebugControlVal {
     }
 
     /// Read **RESERVED** `[0:0]`
+    ///
     /// N/A
     #[inline(always)]
     pub const fn reserved(&self) -> bool {
@@ -2380,6 +2592,7 @@ impl TrngDebugControlVal {
     }
 
     /// Set **AUTO_CORRELATE_BYPASS** `[3:3]`
+    ///
     /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub const fn with_auto_correlate_bypass(self, value: bool) -> Self {
@@ -2393,6 +2606,7 @@ impl TrngDebugControlVal {
     }
 
     /// Set **TRNG_CRNGT_BYPASS** `[2:2]`
+    ///
     /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub const fn with_trng_crngt_bypass(self, value: bool) -> Self {
@@ -2406,6 +2620,7 @@ impl TrngDebugControlVal {
     }
 
     /// Set **VNC_BYPASS** `[1:1]`
+    ///
     /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub const fn with_vnc_bypass(self, value: bool) -> Self {
@@ -2457,8 +2672,11 @@ impl TrngDebugControl {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **TRNG_SW_RESET** `[0]` (RW)
+///
 ///   Writing 1'b1 to this register causes an internal RNG reset.
 #[repr(transparent)]
 pub struct TrngSwReset {
@@ -2477,13 +2695,17 @@ impl TrngSwReset {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **TRNG_SW_RESET**
+    ///
     /// Writing 1'b1 to this register causes an internal RNG reset.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const TRNG_SW_RESET_OFFSET: u32 = 0;
     pub const TRNG_SW_RESET_MASK: u32 = 0x00000001;
@@ -2492,6 +2714,7 @@ impl TrngSwReset {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -2499,6 +2722,7 @@ impl TrngSwReset {
     }
 
     /// **TRNG_SW_RESET** `[0]` (RW)
+    ///
     /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub fn trng_sw_reset(&self) -> bool {
@@ -2548,6 +2772,7 @@ impl TrngSwResetVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -2555,6 +2780,7 @@ impl TrngSwResetVal {
     }
 
     /// Read **TRNG_SW_RESET** `[0:0]`
+    ///
     /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub const fn trng_sw_reset(&self) -> bool {
@@ -2562,6 +2788,7 @@ impl TrngSwResetVal {
     }
 
     /// Set **TRNG_SW_RESET** `[0:0]`
+    ///
     /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub const fn with_trng_sw_reset(self, value: bool) -> Self {
@@ -2613,8 +2840,11 @@ impl TrngSwReset {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **RNG_DEBUG_EN** `[0]` (RW)
+///
 ///   * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
 #[repr(transparent)]
 pub struct RngDebugEnInput {
@@ -2633,13 +2863,17 @@ impl RngDebugEnInput {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **RNG_DEBUG_EN**
+    ///
     /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RNG_DEBUG_EN_OFFSET: u32 = 0;
     pub const RNG_DEBUG_EN_MASK: u32 = 0x00000001;
@@ -2648,6 +2882,7 @@ impl RngDebugEnInput {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -2655,6 +2890,7 @@ impl RngDebugEnInput {
     }
 
     /// **RNG_DEBUG_EN** `[0]` (RW)
+    ///
     /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub fn rng_debug_en(&self) -> bool {
@@ -2704,6 +2940,7 @@ impl RngDebugEnInputVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -2711,6 +2948,7 @@ impl RngDebugEnInputVal {
     }
 
     /// Read **RNG_DEBUG_EN** `[0:0]`
+    ///
     /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub const fn rng_debug_en(&self) -> bool {
@@ -2718,6 +2956,7 @@ impl RngDebugEnInputVal {
     }
 
     /// Set **RNG_DEBUG_EN** `[0:0]`
+    ///
     /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub const fn with_rng_debug_en(self, value: bool) -> Self {
@@ -2769,8 +3008,11 @@ impl RngDebugEnInput {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **TRNG_BUSY** `[0]` (RO)
+///
 ///   Reflects rng_busy status.
 #[repr(transparent)]
 pub struct TrngBusy {
@@ -2789,13 +3031,17 @@ impl TrngBusy {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **TRNG_BUSY**
+    ///
     /// Reflects rng_busy status.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const TRNG_BUSY_OFFSET: u32 = 0;
     pub const TRNG_BUSY_MASK: u32 = 0x00000001;
@@ -2804,6 +3050,7 @@ impl TrngBusy {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -2811,6 +3058,7 @@ impl TrngBusy {
     }
 
     /// **TRNG_BUSY** `[0]` (RO)
+    ///
     /// Reflects rng_busy status.
     #[inline(always)]
     pub fn trng_busy(&self) -> bool {
@@ -2848,6 +3096,7 @@ impl TrngBusyVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -2855,6 +3104,7 @@ impl TrngBusyVal {
     }
 
     /// Read **TRNG_BUSY** `[0:0]`
+    ///
     /// Reflects rng_busy status.
     #[inline(always)]
     pub const fn trng_busy(&self) -> bool {
@@ -2900,8 +3150,11 @@ impl TrngBusy {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:1]` (RO)
+///
 ///   RESERVED
+///
 /// - **RST_BITS_COUNTER** `[0]` (RW)
+///
 ///   Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
 #[repr(transparent)]
 pub struct RstBitsCounter {
@@ -2920,13 +3173,17 @@ impl RstBitsCounter {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
     /// **RST_BITS_COUNTER**
+    ///
     /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RST_BITS_COUNTER_OFFSET: u32 = 0;
     pub const RST_BITS_COUNTER_MASK: u32 = 0x00000001;
@@ -2935,6 +3192,7 @@ impl RstBitsCounter {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:1]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -2942,6 +3200,7 @@ impl RstBitsCounter {
     }
 
     /// **RST_BITS_COUNTER** `[0]` (RW)
+    ///
     /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub fn rst_bits_counter(&self) -> bool {
@@ -2991,6 +3250,7 @@ impl RstBitsCounterVal {
     }
 
     /// Read **RESERVED** `[31:1]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -2998,6 +3258,7 @@ impl RstBitsCounterVal {
     }
 
     /// Read **RST_BITS_COUNTER** `[0:0]`
+    ///
     /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub const fn rst_bits_counter(&self) -> bool {
@@ -3005,6 +3266,7 @@ impl RstBitsCounterVal {
     }
 
     /// Set **RST_BITS_COUNTER** `[0:0]`
+    ///
     /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub const fn with_rst_bits_counter(self, value: bool) -> Self {
@@ -3056,22 +3318,39 @@ impl RstBitsCounter {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:8]` (RO)
+///
 ///   RESERVED
+///
 /// - **RNG_USE_5_SBOXES** `[7]` (RO)
+///
 ///   * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+///
 /// - **RESEEDING_EXISTS** `[6]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **KAT_EXISTS** `[5]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **PRNG_EXISTS** `[4]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **TRNG_TESTS_BYPASS_EN** `[3]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **AUTOCORR_EXISTS** `[2]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **CRNGT_EXISTS** `[1]` (RO)
+///
 ///   * 1'b1 - Exists. *1'b0 - Does not exist
+///
 /// - **EHR_WIDTH_192** `[0]` (RO)
+///
 ///   * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
 #[repr(transparent)]
 pub struct RngVersion {
@@ -3090,62 +3369,80 @@ impl RngVersion {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:8]`, mask `0xffffff00`
     pub const RESERVED_OFFSET: u32 = 8;
     pub const RESERVED_MASK: u32 = 0xffffff00;
 
     /// **RNG_USE_5_SBOXES**
+    ///
     /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const RNG_USE_5_SBOXES_OFFSET: u32 = 7;
     pub const RNG_USE_5_SBOXES_MASK: u32 = 0x00000080;
     pub const RNG_USE_5_SBOXES: u32 = 1 << 7;
 
     /// **RESEEDING_EXISTS**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const RESEEDING_EXISTS_OFFSET: u32 = 6;
     pub const RESEEDING_EXISTS_MASK: u32 = 0x00000040;
     pub const RESEEDING_EXISTS: u32 = 1 << 6;
 
     /// **KAT_EXISTS**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const KAT_EXISTS_OFFSET: u32 = 5;
     pub const KAT_EXISTS_MASK: u32 = 0x00000020;
     pub const KAT_EXISTS: u32 = 1 << 5;
 
     /// **PRNG_EXISTS**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const PRNG_EXISTS_OFFSET: u32 = 4;
     pub const PRNG_EXISTS_MASK: u32 = 0x00000010;
     pub const PRNG_EXISTS: u32 = 1 << 4;
 
     /// **TRNG_TESTS_BYPASS_EN**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TRNG_TESTS_BYPASS_EN_OFFSET: u32 = 3;
     pub const TRNG_TESTS_BYPASS_EN_MASK: u32 = 0x00000008;
     pub const TRNG_TESTS_BYPASS_EN: u32 = 1 << 3;
 
     /// **AUTOCORR_EXISTS**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const AUTOCORR_EXISTS_OFFSET: u32 = 2;
     pub const AUTOCORR_EXISTS_MASK: u32 = 0x00000004;
     pub const AUTOCORR_EXISTS: u32 = 1 << 2;
 
     /// **CRNGT_EXISTS**
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CRNGT_EXISTS_OFFSET: u32 = 1;
     pub const CRNGT_EXISTS_MASK: u32 = 0x00000002;
     pub const CRNGT_EXISTS: u32 = 1 << 1;
 
     /// **EHR_WIDTH_192**
+    ///
     /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_WIDTH_192_OFFSET: u32 = 0;
     pub const EHR_WIDTH_192_MASK: u32 = 0x00000001;
@@ -3154,6 +3451,7 @@ impl RngVersion {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:8]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -3161,6 +3459,7 @@ impl RngVersion {
     }
 
     /// **RNG_USE_5_SBOXES** `[7]` (RO)
+    ///
     /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
     #[inline(always)]
     pub fn rng_use_5_sboxes(&self) -> bool {
@@ -3168,6 +3467,7 @@ impl RngVersion {
     }
 
     /// **RESEEDING_EXISTS** `[6]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn reseeding_exists(&self) -> bool {
@@ -3175,6 +3475,7 @@ impl RngVersion {
     }
 
     /// **KAT_EXISTS** `[5]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn kat_exists(&self) -> bool {
@@ -3182,6 +3483,7 @@ impl RngVersion {
     }
 
     /// **PRNG_EXISTS** `[4]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn prng_exists(&self) -> bool {
@@ -3189,6 +3491,7 @@ impl RngVersion {
     }
 
     /// **TRNG_TESTS_BYPASS_EN** `[3]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn trng_tests_bypass_en(&self) -> bool {
@@ -3196,6 +3499,7 @@ impl RngVersion {
     }
 
     /// **AUTOCORR_EXISTS** `[2]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn autocorr_exists(&self) -> bool {
@@ -3203,6 +3507,7 @@ impl RngVersion {
     }
 
     /// **CRNGT_EXISTS** `[1]` (RO)
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn crngt_exists(&self) -> bool {
@@ -3210,6 +3515,7 @@ impl RngVersion {
     }
 
     /// **EHR_WIDTH_192** `[0]` (RO)
+    ///
     /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
     #[inline(always)]
     pub fn ehr_width_192(&self) -> bool {
@@ -3247,6 +3553,7 @@ impl RngVersionVal {
     }
 
     /// Read **RESERVED** `[31:8]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -3254,6 +3561,7 @@ impl RngVersionVal {
     }
 
     /// Read **RNG_USE_5_SBOXES** `[7:7]`
+    ///
     /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
     #[inline(always)]
     pub const fn rng_use_5_sboxes(&self) -> bool {
@@ -3261,6 +3569,7 @@ impl RngVersionVal {
     }
 
     /// Read **RESEEDING_EXISTS** `[6:6]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn reseeding_exists(&self) -> bool {
@@ -3268,6 +3577,7 @@ impl RngVersionVal {
     }
 
     /// Read **KAT_EXISTS** `[5:5]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn kat_exists(&self) -> bool {
@@ -3275,6 +3585,7 @@ impl RngVersionVal {
     }
 
     /// Read **PRNG_EXISTS** `[4:4]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn prng_exists(&self) -> bool {
@@ -3282,6 +3593,7 @@ impl RngVersionVal {
     }
 
     /// Read **TRNG_TESTS_BYPASS_EN** `[3:3]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn trng_tests_bypass_en(&self) -> bool {
@@ -3289,6 +3601,7 @@ impl RngVersionVal {
     }
 
     /// Read **AUTOCORR_EXISTS** `[2:2]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn autocorr_exists(&self) -> bool {
@@ -3296,6 +3609,7 @@ impl RngVersionVal {
     }
 
     /// Read **CRNGT_EXISTS** `[1:1]`
+    ///
     /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn crngt_exists(&self) -> bool {
@@ -3303,6 +3617,7 @@ impl RngVersionVal {
     }
 
     /// Read **EHR_WIDTH_192** `[0:0]`
+    ///
     /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
     #[inline(always)]
     pub const fn ehr_width_192(&self) -> bool {
@@ -3348,8 +3663,11 @@ impl RngVersion {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:22]` (RO)
+///
 ///   RESERVED
+///
 /// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr0 {
@@ -3368,13 +3686,17 @@ impl RngBistCntr0 {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
     /// **ROSC_CNTR_VAL**
+    ///
     /// Reflects the results of RNG BIST counter.
+    ///
     /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
@@ -3382,6 +3704,7 @@ impl RngBistCntr0 {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:22]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -3389,6 +3712,7 @@ impl RngBistCntr0 {
     }
 
     /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
@@ -3426,6 +3750,7 @@ impl RngBistCntr0Val {
     }
 
     /// Read **RESERVED** `[31:22]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -3433,6 +3758,7 @@ impl RngBistCntr0Val {
     }
 
     /// Read **ROSC_CNTR_VAL** `[21:0]`
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {
@@ -3478,8 +3804,11 @@ impl RngBistCntr0 {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:22]` (RO)
+///
 ///   RESERVED
+///
 /// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr1 {
@@ -3498,13 +3827,17 @@ impl RngBistCntr1 {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
     /// **ROSC_CNTR_VAL**
+    ///
     /// Reflects the results of RNG BIST counter.
+    ///
     /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
@@ -3512,6 +3845,7 @@ impl RngBistCntr1 {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:22]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -3519,6 +3853,7 @@ impl RngBistCntr1 {
     }
 
     /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
@@ -3556,6 +3891,7 @@ impl RngBistCntr1Val {
     }
 
     /// Read **RESERVED** `[31:22]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -3563,6 +3899,7 @@ impl RngBistCntr1Val {
     }
 
     /// Read **ROSC_CNTR_VAL** `[21:0]`
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {
@@ -3608,8 +3945,11 @@ impl RngBistCntr1 {
 /// ## Fields
 ///
 /// - **RESERVED** `[31:22]` (RO)
+///
 ///   RESERVED
+///
 /// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr2 {
@@ -3628,13 +3968,17 @@ impl RngBistCntr2 {
     // ======== Field Constants ========
 
     /// **RESERVED**
+    ///
     /// RESERVED
+    ///
     /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
     /// **ROSC_CNTR_VAL**
+    ///
     /// Reflects the results of RNG BIST counter.
+    ///
     /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
@@ -3642,6 +3986,7 @@ impl RngBistCntr2 {
     // ======== Field Accessors ========
 
     /// **RESERVED** `[31:22]` (RO)
+    ///
     /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
@@ -3649,6 +3994,7 @@ impl RngBistCntr2 {
     }
 
     /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
@@ -3686,6 +4032,7 @@ impl RngBistCntr2Val {
     }
 
     /// Read **RESERVED** `[31:22]`
+    ///
     /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
@@ -3693,6 +4040,7 @@ impl RngBistCntr2Val {
     }
 
     /// Read **ROSC_CNTR_VAL** `[21:0]`
+    ///
     /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {

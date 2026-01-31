@@ -15,20 +15,32 @@ pub const BASE: u32 = 0x400a8000;
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch0Csr {
@@ -47,17 +59,21 @@ impl Ch0Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -85,28 +101,36 @@ impl Ch0Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -114,11 +138,8 @@ impl Ch0Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -127,10 +148,8 @@ impl Ch0Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -151,6 +170,7 @@ impl Ch0Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -170,6 +190,7 @@ impl Ch0Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -189,6 +210,7 @@ impl Ch0Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -208,6 +230,7 @@ impl Ch0Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -263,6 +286,7 @@ impl Ch0CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -270,6 +294,7 @@ impl Ch0CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -277,6 +302,7 @@ impl Ch0CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -284,6 +310,7 @@ impl Ch0CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -291,6 +318,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -306,6 +334,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -328,6 +357,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -341,6 +371,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -354,6 +385,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -367,6 +399,7 @@ impl Ch0CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -420,6 +453,7 @@ impl Ch0Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Div {
@@ -688,6 +722,7 @@ impl Ch0Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Cc {
@@ -956,20 +991,32 @@ impl Ch0Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch1Csr {
@@ -988,17 +1035,21 @@ impl Ch1Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -1026,28 +1077,36 @@ impl Ch1Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -1055,11 +1114,8 @@ impl Ch1Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -1068,10 +1124,8 @@ impl Ch1Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -1092,6 +1146,7 @@ impl Ch1Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -1111,6 +1166,7 @@ impl Ch1Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -1130,6 +1186,7 @@ impl Ch1Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -1149,6 +1206,7 @@ impl Ch1Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -1204,6 +1262,7 @@ impl Ch1CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -1211,6 +1270,7 @@ impl Ch1CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -1218,6 +1278,7 @@ impl Ch1CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -1225,6 +1286,7 @@ impl Ch1CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -1232,6 +1294,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -1247,6 +1310,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -1269,6 +1333,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -1282,6 +1347,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -1295,6 +1361,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -1308,6 +1375,7 @@ impl Ch1CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -1361,6 +1429,7 @@ impl Ch1Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Div {
@@ -1629,6 +1698,7 @@ impl Ch1Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Cc {
@@ -1897,20 +1967,32 @@ impl Ch1Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch2Csr {
@@ -1929,17 +2011,21 @@ impl Ch2Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -1967,28 +2053,36 @@ impl Ch2Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -1996,11 +2090,8 @@ impl Ch2Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -2009,10 +2100,8 @@ impl Ch2Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -2033,6 +2122,7 @@ impl Ch2Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -2052,6 +2142,7 @@ impl Ch2Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -2071,6 +2162,7 @@ impl Ch2Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -2090,6 +2182,7 @@ impl Ch2Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -2145,6 +2238,7 @@ impl Ch2CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -2152,6 +2246,7 @@ impl Ch2CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -2159,6 +2254,7 @@ impl Ch2CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -2166,6 +2262,7 @@ impl Ch2CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -2173,6 +2270,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -2188,6 +2286,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -2210,6 +2309,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -2223,6 +2323,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -2236,6 +2337,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -2249,6 +2351,7 @@ impl Ch2CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -2302,6 +2405,7 @@ impl Ch2Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Div {
@@ -2570,6 +2674,7 @@ impl Ch2Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Cc {
@@ -2838,20 +2943,32 @@ impl Ch2Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch3Csr {
@@ -2870,17 +2987,21 @@ impl Ch3Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -2908,28 +3029,36 @@ impl Ch3Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -2937,11 +3066,8 @@ impl Ch3Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -2950,10 +3076,8 @@ impl Ch3Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -2974,6 +3098,7 @@ impl Ch3Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -2993,6 +3118,7 @@ impl Ch3Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -3012,6 +3138,7 @@ impl Ch3Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -3031,6 +3158,7 @@ impl Ch3Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -3086,6 +3214,7 @@ impl Ch3CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -3093,6 +3222,7 @@ impl Ch3CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -3100,6 +3230,7 @@ impl Ch3CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -3107,6 +3238,7 @@ impl Ch3CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -3114,6 +3246,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -3129,6 +3262,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -3151,6 +3285,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -3164,6 +3299,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -3177,6 +3313,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -3190,6 +3327,7 @@ impl Ch3CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -3243,6 +3381,7 @@ impl Ch3Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Div {
@@ -3511,6 +3650,7 @@ impl Ch3Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Cc {
@@ -3779,20 +3919,32 @@ impl Ch3Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch4Csr {
@@ -3811,17 +3963,21 @@ impl Ch4Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -3849,28 +4005,36 @@ impl Ch4Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -3878,11 +4042,8 @@ impl Ch4Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -3891,10 +4052,8 @@ impl Ch4Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -3915,6 +4074,7 @@ impl Ch4Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -3934,6 +4094,7 @@ impl Ch4Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -3953,6 +4114,7 @@ impl Ch4Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -3972,6 +4134,7 @@ impl Ch4Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -4027,6 +4190,7 @@ impl Ch4CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -4034,6 +4198,7 @@ impl Ch4CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -4041,6 +4206,7 @@ impl Ch4CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -4048,6 +4214,7 @@ impl Ch4CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -4055,6 +4222,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -4070,6 +4238,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -4092,6 +4261,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -4105,6 +4275,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -4118,6 +4289,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -4131,6 +4303,7 @@ impl Ch4CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -4184,6 +4357,7 @@ impl Ch4Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Div {
@@ -4452,6 +4626,7 @@ impl Ch4Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Cc {
@@ -4720,20 +4895,32 @@ impl Ch4Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch5Csr {
@@ -4752,17 +4939,21 @@ impl Ch5Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -4790,28 +4981,36 @@ impl Ch5Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -4819,11 +5018,8 @@ impl Ch5Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -4832,10 +5028,8 @@ impl Ch5Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -4856,6 +5050,7 @@ impl Ch5Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -4875,6 +5070,7 @@ impl Ch5Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -4894,6 +5090,7 @@ impl Ch5Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -4913,6 +5110,7 @@ impl Ch5Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -4968,6 +5166,7 @@ impl Ch5CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -4975,6 +5174,7 @@ impl Ch5CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -4982,6 +5182,7 @@ impl Ch5CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -4989,6 +5190,7 @@ impl Ch5CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -4996,6 +5198,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -5011,6 +5214,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -5033,6 +5237,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -5046,6 +5251,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -5059,6 +5265,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -5072,6 +5279,7 @@ impl Ch5CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -5125,6 +5333,7 @@ impl Ch5Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Div {
@@ -5393,6 +5602,7 @@ impl Ch5Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Cc {
@@ -5661,20 +5871,32 @@ impl Ch5Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch6Csr {
@@ -5693,17 +5915,21 @@ impl Ch6Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -5731,28 +5957,36 @@ impl Ch6Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -5760,11 +5994,8 @@ impl Ch6Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -5773,10 +6004,8 @@ impl Ch6Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -5797,6 +6026,7 @@ impl Ch6Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -5816,6 +6046,7 @@ impl Ch6Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -5835,6 +6066,7 @@ impl Ch6Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -5854,6 +6086,7 @@ impl Ch6Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -5909,6 +6142,7 @@ impl Ch6CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -5916,6 +6150,7 @@ impl Ch6CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -5923,6 +6158,7 @@ impl Ch6CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -5930,6 +6166,7 @@ impl Ch6CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -5937,6 +6174,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -5952,6 +6190,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -5974,6 +6213,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -5987,6 +6227,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -6000,6 +6241,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -6013,6 +6255,7 @@ impl Ch6CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -6066,6 +6309,7 @@ impl Ch6Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Div {
@@ -6334,6 +6578,7 @@ impl Ch6Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Cc {
@@ -6602,20 +6847,32 @@ impl Ch6Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch7Csr {
@@ -6634,17 +6891,21 @@ impl Ch7Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -6672,28 +6933,36 @@ impl Ch7Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -6701,11 +6970,8 @@ impl Ch7Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -6714,10 +6980,8 @@ impl Ch7Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -6738,6 +7002,7 @@ impl Ch7Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -6757,6 +7022,7 @@ impl Ch7Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -6776,6 +7042,7 @@ impl Ch7Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -6795,6 +7062,7 @@ impl Ch7Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -6850,6 +7118,7 @@ impl Ch7CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -6857,6 +7126,7 @@ impl Ch7CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -6864,6 +7134,7 @@ impl Ch7CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -6871,6 +7142,7 @@ impl Ch7CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -6878,6 +7150,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -6893,6 +7166,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -6915,6 +7189,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -6928,6 +7203,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -6941,6 +7217,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -6954,6 +7231,7 @@ impl Ch7CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -7007,6 +7285,7 @@ impl Ch7Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Div {
@@ -7275,6 +7554,7 @@ impl Ch7Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Cc {
@@ -7543,20 +7823,32 @@ impl Ch7Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch8Csr {
@@ -7575,17 +7867,21 @@ impl Ch8Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -7613,28 +7909,36 @@ impl Ch8Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -7642,11 +7946,8 @@ impl Ch8Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -7655,10 +7956,8 @@ impl Ch8Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -7679,6 +7978,7 @@ impl Ch8Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -7698,6 +7998,7 @@ impl Ch8Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -7717,6 +8018,7 @@ impl Ch8Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -7736,6 +8038,7 @@ impl Ch8Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -7791,6 +8094,7 @@ impl Ch8CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -7798,6 +8102,7 @@ impl Ch8CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -7805,6 +8110,7 @@ impl Ch8CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -7812,6 +8118,7 @@ impl Ch8CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -7819,6 +8126,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -7834,6 +8142,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -7856,6 +8165,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -7869,6 +8179,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -7882,6 +8193,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -7895,6 +8207,7 @@ impl Ch8CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -7948,6 +8261,7 @@ impl Ch8Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Div {
@@ -8216,6 +8530,7 @@ impl Ch8Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Cc {
@@ -8484,20 +8799,32 @@ impl Ch8Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch9Csr {
@@ -8516,17 +8843,21 @@ impl Ch9Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -8554,28 +8885,36 @@ impl Ch9Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -8583,11 +8922,8 @@ impl Ch9Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -8596,10 +8932,8 @@ impl Ch9Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -8620,6 +8954,7 @@ impl Ch9Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -8639,6 +8974,7 @@ impl Ch9Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -8658,6 +8994,7 @@ impl Ch9Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -8677,6 +9014,7 @@ impl Ch9Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -8732,6 +9070,7 @@ impl Ch9CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -8739,6 +9078,7 @@ impl Ch9CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -8746,6 +9086,7 @@ impl Ch9CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -8753,6 +9094,7 @@ impl Ch9CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -8760,6 +9102,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -8775,6 +9118,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -8797,6 +9141,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -8810,6 +9155,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -8823,6 +9169,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -8836,6 +9183,7 @@ impl Ch9CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -8889,6 +9237,7 @@ impl Ch9Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Div {
@@ -9157,6 +9506,7 @@ impl Ch9Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Cc {
@@ -9425,20 +9775,32 @@ impl Ch9Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch10Csr {
@@ -9457,17 +9819,21 @@ impl Ch10Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -9495,28 +9861,36 @@ impl Ch10Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -9524,11 +9898,8 @@ impl Ch10Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -9537,10 +9908,8 @@ impl Ch10Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -9561,6 +9930,7 @@ impl Ch10Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -9580,6 +9950,7 @@ impl Ch10Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -9599,6 +9970,7 @@ impl Ch10Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -9618,6 +9990,7 @@ impl Ch10Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -9673,6 +10046,7 @@ impl Ch10CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -9680,6 +10054,7 @@ impl Ch10CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -9687,6 +10062,7 @@ impl Ch10CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -9694,6 +10070,7 @@ impl Ch10CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -9701,6 +10078,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -9716,6 +10094,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -9738,6 +10117,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -9751,6 +10131,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -9764,6 +10145,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -9777,6 +10159,7 @@ impl Ch10CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -9830,6 +10213,7 @@ impl Ch10Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Div {
@@ -10098,6 +10482,7 @@ impl Ch10Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Cc {
@@ -10366,20 +10751,32 @@ impl Ch10Top {
 /// ## Fields
 ///
 /// - **PH_ADV** `[7]` (WO)
+///
 ///   Advance the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running
 ///   at less than full speed (div_int + div_frac / 16 > 1)
+///
 /// - **PH_RET** `[6]` (WO)
+///
 ///   Retard the phase of the counter by 1 count, while it is running.
 ///   Self-clearing. Write a 1, and poll until low. Counter must be running.
+///
 /// - **DIVMODE** `[5:4]` (RW)
+///
 /// - **B_INV** `[3]` (RW)
+///
 ///   Invert output B
+///
 /// - **A_INV** `[2]` (RW)
+///
 ///   Invert output A
+///
 /// - **PH_CORRECT** `[1]` (RW)
+///
 ///   1: Enable phase-correct modulation. 0: Trailing-edge
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch11Csr {
@@ -10398,17 +10795,21 @@ impl Ch11Csr {
     // ======== Field Constants ========
 
     /// **PH_ADV**
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const PH_ADV_OFFSET: u32 = 7;
     pub const PH_ADV_MASK: u32 = 0x00000080;
     pub const PH_ADV: u32 = 1 << 7;
 
     /// **PH_RET**
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PH_RET_OFFSET: u32 = 6;
     pub const PH_RET_MASK: u32 = 0x00000040;
@@ -10436,28 +10837,36 @@ impl Ch11Csr {
     pub const DIVMODE_FALL_VAL: u32 = 3;
 
     /// **B_INV**
+    ///
     /// Invert output B
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const B_INV_OFFSET: u32 = 3;
     pub const B_INV_MASK: u32 = 0x00000008;
     pub const B_INV: u32 = 1 << 3;
 
     /// **A_INV**
+    ///
     /// Invert output A
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const A_INV_OFFSET: u32 = 2;
     pub const A_INV_MASK: u32 = 0x00000004;
     pub const A_INV: u32 = 1 << 2;
 
     /// **PH_CORRECT**
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PH_CORRECT_OFFSET: u32 = 1;
     pub const PH_CORRECT_MASK: u32 = 0x00000002;
     pub const PH_CORRECT: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable the PWM channel.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -10465,11 +10874,8 @@ impl Ch11Csr {
 
     // ======== Field Accessors ========
 
-    /// **PH_ADV** `[7]` (WO)
-    /// Advance the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running
-    /// at less than full speed (div_int + div_frac / 16 > 1)
     /// Trigger **PH_ADV** (WO)
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -10478,10 +10884,8 @@ impl Ch11Csr {
         self.value.write_bits(Self::PH_ADV_MASK);
     }
 
-    /// **PH_RET** `[6]` (WO)
-    /// Retard the phase of the counter by 1 count, while it is running.
-    /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     /// Trigger **PH_RET** (WO)
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -10502,6 +10906,7 @@ impl Ch11Csr {
     }
 
     /// **B_INV** `[3]` (RW)
+    ///
     /// Invert output B
     #[inline(always)]
     pub fn b_inv(&self) -> bool {
@@ -10521,6 +10926,7 @@ impl Ch11Csr {
     }
 
     /// **A_INV** `[2]` (RW)
+    ///
     /// Invert output A
     #[inline(always)]
     pub fn a_inv(&self) -> bool {
@@ -10540,6 +10946,7 @@ impl Ch11Csr {
     }
 
     /// **PH_CORRECT** `[1]` (RW)
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub fn ph_correct(&self) -> bool {
@@ -10559,6 +10966,7 @@ impl Ch11Csr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -10614,6 +11022,7 @@ impl Ch11CsrVal {
     }
 
     /// Read **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn b_inv(&self) -> bool {
@@ -10621,6 +11030,7 @@ impl Ch11CsrVal {
     }
 
     /// Read **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn a_inv(&self) -> bool {
@@ -10628,6 +11038,7 @@ impl Ch11CsrVal {
     }
 
     /// Read **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn ph_correct(&self) -> bool {
@@ -10635,6 +11046,7 @@ impl Ch11CsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -10642,6 +11054,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **PH_ADV** `[7:7]`
+    ///
     /// Advance the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running
     /// at less than full speed (div_int + div_frac / 16 > 1)
@@ -10657,6 +11070,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **PH_RET** `[6:6]`
+    ///
     /// Retard the phase of the counter by 1 count, while it is running.
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
@@ -10679,6 +11093,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **B_INV** `[3:3]`
+    ///
     /// Invert output B
     #[inline(always)]
     pub const fn with_b_inv(self, value: bool) -> Self {
@@ -10692,6 +11107,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **A_INV** `[2:2]`
+    ///
     /// Invert output A
     #[inline(always)]
     pub const fn with_a_inv(self, value: bool) -> Self {
@@ -10705,6 +11121,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **PH_CORRECT** `[1:1]`
+    ///
     /// 1: Enable phase-correct modulation. 0: Trailing-edge
     #[inline(always)]
     pub const fn with_ph_correct(self, value: bool) -> Self {
@@ -10718,6 +11135,7 @@ impl Ch11CsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable the PWM channel.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -10771,6 +11189,7 @@ impl Ch11Csr {
 /// ## Fields
 ///
 /// - **INT** `[11:4]` (RW)
+///
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Div {
@@ -11039,6 +11458,7 @@ impl Ch11Ctr {
 /// ## Fields
 ///
 /// - **B** `[31:16]` (RW)
+///
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Cc {
@@ -11311,16 +11731,27 @@ impl Ch11Top {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct En {
@@ -11913,16 +12344,27 @@ impl En {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
@@ -12515,16 +12957,27 @@ impl Intr {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Inte {
@@ -13117,16 +13570,27 @@ impl Irq0Inte {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Intf {
@@ -13719,16 +14183,27 @@ impl Irq0Intf {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RO)
+///
 /// - **CH10** `[10]` (RO)
+///
 /// - **CH9** `[9]` (RO)
+///
 /// - **CH8** `[8]` (RO)
+///
 /// - **CH7** `[7]` (RO)
+///
 /// - **CH6** `[6]` (RO)
+///
 /// - **CH5** `[5]` (RO)
+///
 /// - **CH4** `[4]` (RO)
+///
 /// - **CH3** `[3]` (RO)
+///
 /// - **CH2** `[2]` (RO)
+///
 /// - **CH1** `[1]` (RO)
+///
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq0Ints {
@@ -14033,16 +14508,27 @@ impl Irq0Ints {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Inte {
@@ -14635,16 +15121,27 @@ impl Irq1Inte {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RW)
+///
 /// - **CH10** `[10]` (RW)
+///
 /// - **CH9** `[9]` (RW)
+///
 /// - **CH8** `[8]` (RW)
+///
 /// - **CH7** `[7]` (RW)
+///
 /// - **CH6** `[6]` (RW)
+///
 /// - **CH5** `[5]` (RW)
+///
 /// - **CH4** `[4]` (RW)
+///
 /// - **CH3** `[3]` (RW)
+///
 /// - **CH2** `[2]` (RW)
+///
 /// - **CH1** `[1]` (RW)
+///
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Intf {
@@ -15237,16 +15734,27 @@ impl Irq1Intf {
 /// ## Fields
 ///
 /// - **CH11** `[11]` (RO)
+///
 /// - **CH10** `[10]` (RO)
+///
 /// - **CH9** `[9]` (RO)
+///
 /// - **CH8** `[8]` (RO)
+///
 /// - **CH7** `[7]` (RO)
+///
 /// - **CH6** `[6]` (RO)
+///
 /// - **CH5** `[5]` (RO)
+///
 /// - **CH4** `[4]` (RO)
+///
 /// - **CH3** `[3]` (RO)
+///
 /// - **CH2** `[2]` (RO)
+///
 /// - **CH1** `[1]` (RO)
+///
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq1Ints {

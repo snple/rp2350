@@ -14,14 +14,23 @@ pub const BASE: u32 = 0x40088000;
 /// ## Fields
 ///
 /// - **SCR** `[15:8]` (RW)
+///
 ///   Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
+///
 /// - **SPH** `[7]` (RW)
+///
 ///   SSPCLKOUT phase, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
+///
 /// - **SPO** `[6]` (RW)
+///
 ///   SSPCLKOUT polarity, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
+///
 /// - **FRF** `[5:4]` (RW)
+///
 ///   Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
+///
 /// - **DSS** `[3:0]` (RW)
+///
 ///   Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
 #[repr(transparent)]
 pub struct Sspcr0 {
@@ -40,33 +49,43 @@ impl Sspcr0 {
     // ======== Field Constants ========
 
     /// **SCR**
+    ///
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SCR_OFFSET: u32 = 8;
     pub const SCR_MASK: u32 = 0x0000ff00;
 
     /// **SPH**
+    ///
     /// SSPCLKOUT phase, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const SPH_OFFSET: u32 = 7;
     pub const SPH_MASK: u32 = 0x00000080;
     pub const SPH: u32 = 1 << 7;
 
     /// **SPO**
+    ///
     /// SSPCLKOUT polarity, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const SPO_OFFSET: u32 = 6;
     pub const SPO_MASK: u32 = 0x00000040;
     pub const SPO: u32 = 1 << 6;
 
     /// **FRF**
+    ///
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const FRF_OFFSET: u32 = 4;
     pub const FRF_MASK: u32 = 0x00000030;
 
     /// **DSS**
+    ///
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DSS_OFFSET: u32 = 0;
     pub const DSS_MASK: u32 = 0x0000000f;
@@ -74,6 +93,7 @@ impl Sspcr0 {
     // ======== Field Accessors ========
 
     /// **SCR** `[15:8]` (RW)
+    ///
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
     #[inline(always)]
     pub fn scr(&self) -> u32 {
@@ -81,6 +101,7 @@ impl Sspcr0 {
     }
 
     /// Write **SCR** `[15:8]` (RW)
+    ///
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
     #[inline(always)]
     pub fn write_scr(&self, value: u32) {
@@ -88,6 +109,7 @@ impl Sspcr0 {
     }
 
     /// **SPH** `[7]` (RW)
+    ///
     /// SSPCLKOUT phase, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub fn sph(&self) -> bool {
@@ -107,6 +129,7 @@ impl Sspcr0 {
     }
 
     /// **SPO** `[6]` (RW)
+    ///
     /// SSPCLKOUT polarity, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub fn spo(&self) -> bool {
@@ -126,6 +149,7 @@ impl Sspcr0 {
     }
 
     /// **FRF** `[5:4]` (RW)
+    ///
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
     #[inline(always)]
     pub fn frf(&self) -> u32 {
@@ -133,6 +157,7 @@ impl Sspcr0 {
     }
 
     /// Write **FRF** `[5:4]` (RW)
+    ///
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
     #[inline(always)]
     pub fn write_frf(&self, value: u32) {
@@ -140,6 +165,7 @@ impl Sspcr0 {
     }
 
     /// **DSS** `[3:0]` (RW)
+    ///
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
     #[inline(always)]
     pub fn dss(&self) -> u32 {
@@ -147,6 +173,7 @@ impl Sspcr0 {
     }
 
     /// Write **DSS** `[3:0]` (RW)
+    ///
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
     #[inline(always)]
     pub fn write_dss(&self, value: u32) {
@@ -184,6 +211,7 @@ impl Sspcr0Val {
     }
 
     /// Read **SCR** `[15:8]`
+    ///
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
     #[inline(always)]
     pub const fn scr(&self) -> u32 {
@@ -191,6 +219,7 @@ impl Sspcr0Val {
     }
 
     /// Read **SPH** `[7:7]`
+    ///
     /// SSPCLKOUT phase, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub const fn sph(&self) -> bool {
@@ -198,6 +227,7 @@ impl Sspcr0Val {
     }
 
     /// Read **SPO** `[6:6]`
+    ///
     /// SSPCLKOUT polarity, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub const fn spo(&self) -> bool {
@@ -205,6 +235,7 @@ impl Sspcr0Val {
     }
 
     /// Read **FRF** `[5:4]`
+    ///
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
     #[inline(always)]
     pub const fn frf(&self) -> u32 {
@@ -212,6 +243,7 @@ impl Sspcr0Val {
     }
 
     /// Read **DSS** `[3:0]`
+    ///
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
     #[inline(always)]
     pub const fn dss(&self) -> u32 {
@@ -219,6 +251,7 @@ impl Sspcr0Val {
     }
 
     /// Set **SCR** `[15:8]`
+    ///
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
     #[inline(always)]
     pub const fn with_scr(self, value: u32) -> Self {
@@ -228,6 +261,7 @@ impl Sspcr0Val {
     }
 
     /// Set **SPH** `[7:7]`
+    ///
     /// SSPCLKOUT phase, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub const fn with_sph(self, value: bool) -> Self {
@@ -241,6 +275,7 @@ impl Sspcr0Val {
     }
 
     /// Set **SPO** `[6:6]`
+    ///
     /// SSPCLKOUT polarity, applicable to Motorola SPI frame format only. See Motorola SPI frame format on page 2-10.
     #[inline(always)]
     pub const fn with_spo(self, value: bool) -> Self {
@@ -254,6 +289,7 @@ impl Sspcr0Val {
     }
 
     /// Set **FRF** `[5:4]`
+    ///
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
     #[inline(always)]
     pub const fn with_frf(self, value: u32) -> Self {
@@ -263,6 +299,7 @@ impl Sspcr0Val {
     }
 
     /// Set **DSS** `[3:0]`
+    ///
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
     #[inline(always)]
     pub const fn with_dss(self, value: u32) -> Self {
@@ -310,12 +347,19 @@ impl Sspcr0 {
 /// ## Fields
 ///
 /// - **SOD** `[3]` (RW)
+///
 ///   Slave-mode output disable. This bit is relevant only in the slave mode, MS=1. In multiple-slave systems, it is possible for an PrimeCell SSP master to broadcast a message to all slaves in the system while ensuring that only one slave drives data onto its serial output line. In such systems the RXD lines from multiple slaves could be tied together. To operate in such systems, the SOD bit can be set if the PrimeCell SSP slave is not supposed to drive the SSPTXD line: 0 SSP can drive the SSPTXD output in slave mode. 1 SSP must not drive the SSPTXD output in slave mode.
+///
 /// - **MS** `[2]` (RW)
+///
 ///   Master or slave mode select. This bit can be modified only when the PrimeCell SSP is disabled, SSE=0: 0 Device configured as master, default. 1 Device configured as slave.
+///
 /// - **SSE** `[1]` (RW)
+///
 ///   Synchronous serial port enable: 0 SSP operation disabled. 1 SSP operation enabled.
+///
 /// - **LBM** `[0]` (RW)
+///
 ///   Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
 #[repr(transparent)]
 pub struct Sspcr1 {
@@ -334,28 +378,36 @@ impl Sspcr1 {
     // ======== Field Constants ========
 
     /// **SOD**
+    ///
     /// Slave-mode output disable. This bit is relevant only in the slave mode, MS=1. In multiple-slave systems, it is possible for an PrimeCell SSP master to broadcast a message to all slaves in the system while ensuring that only one slave drives data onto its serial output line. In such systems the RXD lines from multiple slaves could be tied together. To operate in such systems, the SOD bit can be set if the PrimeCell SSP slave is not supposed to drive the SSPTXD line: 0 SSP can drive the SSPTXD output in slave mode. 1 SSP must not drive the SSPTXD output in slave mode.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SOD_OFFSET: u32 = 3;
     pub const SOD_MASK: u32 = 0x00000008;
     pub const SOD: u32 = 1 << 3;
 
     /// **MS**
+    ///
     /// Master or slave mode select. This bit can be modified only when the PrimeCell SSP is disabled, SSE=0: 0 Device configured as master, default. 1 Device configured as slave.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const MS_OFFSET: u32 = 2;
     pub const MS_MASK: u32 = 0x00000004;
     pub const MS: u32 = 1 << 2;
 
     /// **SSE**
+    ///
     /// Synchronous serial port enable: 0 SSP operation disabled. 1 SSP operation enabled.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SSE_OFFSET: u32 = 1;
     pub const SSE_MASK: u32 = 0x00000002;
     pub const SSE: u32 = 1 << 1;
 
     /// **LBM**
+    ///
     /// Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const LBM_OFFSET: u32 = 0;
     pub const LBM_MASK: u32 = 0x00000001;
@@ -364,6 +416,7 @@ impl Sspcr1 {
     // ======== Field Accessors ========
 
     /// **SOD** `[3]` (RW)
+    ///
     /// Slave-mode output disable. This bit is relevant only in the slave mode, MS=1. In multiple-slave systems, it is possible for an PrimeCell SSP master to broadcast a message to all slaves in the system while ensuring that only one slave drives data onto its serial output line. In such systems the RXD lines from multiple slaves could be tied together. To operate in such systems, the SOD bit can be set if the PrimeCell SSP slave is not supposed to drive the SSPTXD line: 0 SSP can drive the SSPTXD output in slave mode. 1 SSP must not drive the SSPTXD output in slave mode.
     #[inline(always)]
     pub fn sod(&self) -> bool {
@@ -383,6 +436,7 @@ impl Sspcr1 {
     }
 
     /// **MS** `[2]` (RW)
+    ///
     /// Master or slave mode select. This bit can be modified only when the PrimeCell SSP is disabled, SSE=0: 0 Device configured as master, default. 1 Device configured as slave.
     #[inline(always)]
     pub fn ms(&self) -> bool {
@@ -402,6 +456,7 @@ impl Sspcr1 {
     }
 
     /// **SSE** `[1]` (RW)
+    ///
     /// Synchronous serial port enable: 0 SSP operation disabled. 1 SSP operation enabled.
     #[inline(always)]
     pub fn sse(&self) -> bool {
@@ -421,6 +476,7 @@ impl Sspcr1 {
     }
 
     /// **LBM** `[0]` (RW)
+    ///
     /// Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
     #[inline(always)]
     pub fn lbm(&self) -> bool {
@@ -470,6 +526,7 @@ impl Sspcr1Val {
     }
 
     /// Read **SOD** `[3:3]`
+    ///
     /// Slave-mode output disable. This bit is relevant only in the slave mode, MS=1. In multiple-slave systems, it is possible for an PrimeCell SSP master to broadcast a message to all slaves in the system while ensuring that only one slave drives data onto its serial output line. In such systems the RXD lines from multiple slaves could be tied together. To operate in such systems, the SOD bit can be set if the PrimeCell SSP slave is not supposed to drive the SSPTXD line: 0 SSP can drive the SSPTXD output in slave mode. 1 SSP must not drive the SSPTXD output in slave mode.
     #[inline(always)]
     pub const fn sod(&self) -> bool {
@@ -477,6 +534,7 @@ impl Sspcr1Val {
     }
 
     /// Read **MS** `[2:2]`
+    ///
     /// Master or slave mode select. This bit can be modified only when the PrimeCell SSP is disabled, SSE=0: 0 Device configured as master, default. 1 Device configured as slave.
     #[inline(always)]
     pub const fn ms(&self) -> bool {
@@ -484,6 +542,7 @@ impl Sspcr1Val {
     }
 
     /// Read **SSE** `[1:1]`
+    ///
     /// Synchronous serial port enable: 0 SSP operation disabled. 1 SSP operation enabled.
     #[inline(always)]
     pub const fn sse(&self) -> bool {
@@ -491,6 +550,7 @@ impl Sspcr1Val {
     }
 
     /// Read **LBM** `[0:0]`
+    ///
     /// Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
     #[inline(always)]
     pub const fn lbm(&self) -> bool {
@@ -498,6 +558,7 @@ impl Sspcr1Val {
     }
 
     /// Set **SOD** `[3:3]`
+    ///
     /// Slave-mode output disable. This bit is relevant only in the slave mode, MS=1. In multiple-slave systems, it is possible for an PrimeCell SSP master to broadcast a message to all slaves in the system while ensuring that only one slave drives data onto its serial output line. In such systems the RXD lines from multiple slaves could be tied together. To operate in such systems, the SOD bit can be set if the PrimeCell SSP slave is not supposed to drive the SSPTXD line: 0 SSP can drive the SSPTXD output in slave mode. 1 SSP must not drive the SSPTXD output in slave mode.
     #[inline(always)]
     pub const fn with_sod(self, value: bool) -> Self {
@@ -511,6 +572,7 @@ impl Sspcr1Val {
     }
 
     /// Set **MS** `[2:2]`
+    ///
     /// Master or slave mode select. This bit can be modified only when the PrimeCell SSP is disabled, SSE=0: 0 Device configured as master, default. 1 Device configured as slave.
     #[inline(always)]
     pub const fn with_ms(self, value: bool) -> Self {
@@ -524,6 +586,7 @@ impl Sspcr1Val {
     }
 
     /// Set **SSE** `[1:1]`
+    ///
     /// Synchronous serial port enable: 0 SSP operation disabled. 1 SSP operation enabled.
     #[inline(always)]
     pub const fn with_sse(self, value: bool) -> Self {
@@ -537,6 +600,7 @@ impl Sspcr1Val {
     }
 
     /// Set **LBM** `[0:0]`
+    ///
     /// Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
     #[inline(always)]
     pub const fn with_lbm(self, value: bool) -> Self {
@@ -587,6 +651,7 @@ impl Sspcr1 {
 /// ## Fields
 ///
 /// - **DATA** `[15:0]` (RW)
+///
 ///   Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
 #[repr(transparent)]
 pub struct Sspdr {
@@ -605,7 +670,9 @@ impl Sspdr {
     // ======== Field Constants ========
 
     /// **DATA**
+    ///
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DATA_OFFSET: u32 = 0;
     pub const DATA_MASK: u32 = 0x0000ffff;
@@ -613,6 +680,7 @@ impl Sspdr {
     // ======== Field Accessors ========
 
     /// **DATA** `[15:0]` (RW)
+    ///
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
     #[inline(always)]
     pub fn data(&self) -> u32 {
@@ -620,6 +688,7 @@ impl Sspdr {
     }
 
     /// Write **DATA** `[15:0]` (RW)
+    ///
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
@@ -651,6 +720,7 @@ impl SspdrVal {
     }
 
     /// Read **DATA** `[15:0]`
+    ///
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
     #[inline(always)]
     pub const fn data(&self) -> u32 {
@@ -658,6 +728,7 @@ impl SspdrVal {
     }
 
     /// Set **DATA** `[15:0]`
+    ///
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
@@ -705,14 +776,23 @@ impl Sspdr {
 /// ## Fields
 ///
 /// - **BSY** `[4]` (RO)
+///
 ///   PrimeCell SSP busy flag, RO: 0 SSP is idle. 1 SSP is currently transmitting and/or receiving a frame or the transmit FIFO is not empty.
+///
 /// - **RFF** `[3]` (RO)
+///
 ///   Receive FIFO full, RO: 0 Receive FIFO is not full. 1 Receive FIFO is full.
+///
 /// - **RNE** `[2]` (RO)
+///
 ///   Receive FIFO not empty, RO: 0 Receive FIFO is empty. 1 Receive FIFO is not empty.
+///
 /// - **TNF** `[1]` (RO)
+///
 ///   Transmit FIFO not full, RO: 0 Transmit FIFO is full. 1 Transmit FIFO is not full.
+///
 /// - **TFE** `[0]` (RO)
+///
 ///   Transmit FIFO empty, RO: 0 Transmit FIFO is not empty. 1 Transmit FIFO is empty.
 #[repr(transparent)]
 pub struct Sspsr {
@@ -731,35 +811,45 @@ impl Sspsr {
     // ======== Field Constants ========
 
     /// **BSY**
+    ///
     /// PrimeCell SSP busy flag, RO: 0 SSP is idle. 1 SSP is currently transmitting and/or receiving a frame or the transmit FIFO is not empty.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const BSY_OFFSET: u32 = 4;
     pub const BSY_MASK: u32 = 0x00000010;
     pub const BSY: u32 = 1 << 4;
 
     /// **RFF**
+    ///
     /// Receive FIFO full, RO: 0 Receive FIFO is not full. 1 Receive FIFO is full.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const RFF_OFFSET: u32 = 3;
     pub const RFF_MASK: u32 = 0x00000008;
     pub const RFF: u32 = 1 << 3;
 
     /// **RNE**
+    ///
     /// Receive FIFO not empty, RO: 0 Receive FIFO is empty. 1 Receive FIFO is not empty.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const RNE_OFFSET: u32 = 2;
     pub const RNE_MASK: u32 = 0x00000004;
     pub const RNE: u32 = 1 << 2;
 
     /// **TNF**
+    ///
     /// Transmit FIFO not full, RO: 0 Transmit FIFO is full. 1 Transmit FIFO is not full.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TNF_OFFSET: u32 = 1;
     pub const TNF_MASK: u32 = 0x00000002;
     pub const TNF: u32 = 1 << 1;
 
     /// **TFE**
+    ///
     /// Transmit FIFO empty, RO: 0 Transmit FIFO is not empty. 1 Transmit FIFO is empty.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const TFE_OFFSET: u32 = 0;
     pub const TFE_MASK: u32 = 0x00000001;
@@ -768,6 +858,7 @@ impl Sspsr {
     // ======== Field Accessors ========
 
     /// **BSY** `[4]` (RO)
+    ///
     /// PrimeCell SSP busy flag, RO: 0 SSP is idle. 1 SSP is currently transmitting and/or receiving a frame or the transmit FIFO is not empty.
     #[inline(always)]
     pub fn bsy(&self) -> bool {
@@ -775,6 +866,7 @@ impl Sspsr {
     }
 
     /// **RFF** `[3]` (RO)
+    ///
     /// Receive FIFO full, RO: 0 Receive FIFO is not full. 1 Receive FIFO is full.
     #[inline(always)]
     pub fn rff(&self) -> bool {
@@ -782,6 +874,7 @@ impl Sspsr {
     }
 
     /// **RNE** `[2]` (RO)
+    ///
     /// Receive FIFO not empty, RO: 0 Receive FIFO is empty. 1 Receive FIFO is not empty.
     #[inline(always)]
     pub fn rne(&self) -> bool {
@@ -789,6 +882,7 @@ impl Sspsr {
     }
 
     /// **TNF** `[1]` (RO)
+    ///
     /// Transmit FIFO not full, RO: 0 Transmit FIFO is full. 1 Transmit FIFO is not full.
     #[inline(always)]
     pub fn tnf(&self) -> bool {
@@ -796,6 +890,7 @@ impl Sspsr {
     }
 
     /// **TFE** `[0]` (RO)
+    ///
     /// Transmit FIFO empty, RO: 0 Transmit FIFO is not empty. 1 Transmit FIFO is empty.
     #[inline(always)]
     pub fn tfe(&self) -> bool {
@@ -833,6 +928,7 @@ impl SspsrVal {
     }
 
     /// Read **BSY** `[4:4]`
+    ///
     /// PrimeCell SSP busy flag, RO: 0 SSP is idle. 1 SSP is currently transmitting and/or receiving a frame or the transmit FIFO is not empty.
     #[inline(always)]
     pub const fn bsy(&self) -> bool {
@@ -840,6 +936,7 @@ impl SspsrVal {
     }
 
     /// Read **RFF** `[3:3]`
+    ///
     /// Receive FIFO full, RO: 0 Receive FIFO is not full. 1 Receive FIFO is full.
     #[inline(always)]
     pub const fn rff(&self) -> bool {
@@ -847,6 +944,7 @@ impl SspsrVal {
     }
 
     /// Read **RNE** `[2:2]`
+    ///
     /// Receive FIFO not empty, RO: 0 Receive FIFO is empty. 1 Receive FIFO is not empty.
     #[inline(always)]
     pub const fn rne(&self) -> bool {
@@ -854,6 +952,7 @@ impl SspsrVal {
     }
 
     /// Read **TNF** `[1:1]`
+    ///
     /// Transmit FIFO not full, RO: 0 Transmit FIFO is full. 1 Transmit FIFO is not full.
     #[inline(always)]
     pub const fn tnf(&self) -> bool {
@@ -861,6 +960,7 @@ impl SspsrVal {
     }
 
     /// Read **TFE** `[0:0]`
+    ///
     /// Transmit FIFO empty, RO: 0 Transmit FIFO is not empty. 1 Transmit FIFO is empty.
     #[inline(always)]
     pub const fn tfe(&self) -> bool {
@@ -906,6 +1006,7 @@ impl Sspsr {
 /// ## Fields
 ///
 /// - **CPSDVSR** `[7:0]` (RW)
+///
 ///   Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
 #[repr(transparent)]
 pub struct Sspcpsr {
@@ -924,7 +1025,9 @@ impl Sspcpsr {
     // ======== Field Constants ========
 
     /// **CPSDVSR**
+    ///
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CPSDVSR_OFFSET: u32 = 0;
     pub const CPSDVSR_MASK: u32 = 0x000000ff;
@@ -932,6 +1035,7 @@ impl Sspcpsr {
     // ======== Field Accessors ========
 
     /// **CPSDVSR** `[7:0]` (RW)
+    ///
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
     #[inline(always)]
     pub fn cpsdvsr(&self) -> u32 {
@@ -939,6 +1043,7 @@ impl Sspcpsr {
     }
 
     /// Write **CPSDVSR** `[7:0]` (RW)
+    ///
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
     #[inline(always)]
     pub fn write_cpsdvsr(&self, value: u32) {
@@ -976,6 +1081,7 @@ impl SspcpsrVal {
     }
 
     /// Read **CPSDVSR** `[7:0]`
+    ///
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
     #[inline(always)]
     pub const fn cpsdvsr(&self) -> u32 {
@@ -983,6 +1089,7 @@ impl SspcpsrVal {
     }
 
     /// Set **CPSDVSR** `[7:0]`
+    ///
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
     #[inline(always)]
     pub const fn with_cpsdvsr(self, value: u32) -> Self {
@@ -1030,12 +1137,19 @@ impl Sspcpsr {
 /// ## Fields
 ///
 /// - **TXIM** `[3]` (RW)
+///
 ///   Transmit FIFO interrupt mask: 0 Transmit FIFO half empty or less condition interrupt is masked. 1 Transmit FIFO half empty or less condition interrupt is not masked.
+///
 /// - **RXIM** `[2]` (RW)
+///
 ///   Receive FIFO interrupt mask: 0 Receive FIFO half full or less condition interrupt is masked. 1 Receive FIFO half full or less condition interrupt is not masked.
+///
 /// - **RTIM** `[1]` (RW)
+///
 ///   Receive timeout interrupt mask: 0 Receive FIFO not empty and no read prior to timeout period interrupt is masked. 1 Receive FIFO not empty and no read prior to timeout period interrupt is not masked.
+///
 /// - **RORIM** `[0]` (RW)
+///
 ///   Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
 #[repr(transparent)]
 pub struct Sspimsc {
@@ -1054,28 +1168,36 @@ impl Sspimsc {
     // ======== Field Constants ========
 
     /// **TXIM**
+    ///
     /// Transmit FIFO interrupt mask: 0 Transmit FIFO half empty or less condition interrupt is masked. 1 Transmit FIFO half empty or less condition interrupt is not masked.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TXIM_OFFSET: u32 = 3;
     pub const TXIM_MASK: u32 = 0x00000008;
     pub const TXIM: u32 = 1 << 3;
 
     /// **RXIM**
+    ///
     /// Receive FIFO interrupt mask: 0 Receive FIFO half full or less condition interrupt is masked. 1 Receive FIFO half full or less condition interrupt is not masked.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const RXIM_OFFSET: u32 = 2;
     pub const RXIM_MASK: u32 = 0x00000004;
     pub const RXIM: u32 = 1 << 2;
 
     /// **RTIM**
+    ///
     /// Receive timeout interrupt mask: 0 Receive FIFO not empty and no read prior to timeout period interrupt is masked. 1 Receive FIFO not empty and no read prior to timeout period interrupt is not masked.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RTIM_OFFSET: u32 = 1;
     pub const RTIM_MASK: u32 = 0x00000002;
     pub const RTIM: u32 = 1 << 1;
 
     /// **RORIM**
+    ///
     /// Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RORIM_OFFSET: u32 = 0;
     pub const RORIM_MASK: u32 = 0x00000001;
@@ -1084,6 +1206,7 @@ impl Sspimsc {
     // ======== Field Accessors ========
 
     /// **TXIM** `[3]` (RW)
+    ///
     /// Transmit FIFO interrupt mask: 0 Transmit FIFO half empty or less condition interrupt is masked. 1 Transmit FIFO half empty or less condition interrupt is not masked.
     #[inline(always)]
     pub fn txim(&self) -> bool {
@@ -1103,6 +1226,7 @@ impl Sspimsc {
     }
 
     /// **RXIM** `[2]` (RW)
+    ///
     /// Receive FIFO interrupt mask: 0 Receive FIFO half full or less condition interrupt is masked. 1 Receive FIFO half full or less condition interrupt is not masked.
     #[inline(always)]
     pub fn rxim(&self) -> bool {
@@ -1122,6 +1246,7 @@ impl Sspimsc {
     }
 
     /// **RTIM** `[1]` (RW)
+    ///
     /// Receive timeout interrupt mask: 0 Receive FIFO not empty and no read prior to timeout period interrupt is masked. 1 Receive FIFO not empty and no read prior to timeout period interrupt is not masked.
     #[inline(always)]
     pub fn rtim(&self) -> bool {
@@ -1141,6 +1266,7 @@ impl Sspimsc {
     }
 
     /// **RORIM** `[0]` (RW)
+    ///
     /// Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
     #[inline(always)]
     pub fn rorim(&self) -> bool {
@@ -1190,6 +1316,7 @@ impl SspimscVal {
     }
 
     /// Read **TXIM** `[3:3]`
+    ///
     /// Transmit FIFO interrupt mask: 0 Transmit FIFO half empty or less condition interrupt is masked. 1 Transmit FIFO half empty or less condition interrupt is not masked.
     #[inline(always)]
     pub const fn txim(&self) -> bool {
@@ -1197,6 +1324,7 @@ impl SspimscVal {
     }
 
     /// Read **RXIM** `[2:2]`
+    ///
     /// Receive FIFO interrupt mask: 0 Receive FIFO half full or less condition interrupt is masked. 1 Receive FIFO half full or less condition interrupt is not masked.
     #[inline(always)]
     pub const fn rxim(&self) -> bool {
@@ -1204,6 +1332,7 @@ impl SspimscVal {
     }
 
     /// Read **RTIM** `[1:1]`
+    ///
     /// Receive timeout interrupt mask: 0 Receive FIFO not empty and no read prior to timeout period interrupt is masked. 1 Receive FIFO not empty and no read prior to timeout period interrupt is not masked.
     #[inline(always)]
     pub const fn rtim(&self) -> bool {
@@ -1211,6 +1340,7 @@ impl SspimscVal {
     }
 
     /// Read **RORIM** `[0:0]`
+    ///
     /// Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
     #[inline(always)]
     pub const fn rorim(&self) -> bool {
@@ -1218,6 +1348,7 @@ impl SspimscVal {
     }
 
     /// Set **TXIM** `[3:3]`
+    ///
     /// Transmit FIFO interrupt mask: 0 Transmit FIFO half empty or less condition interrupt is masked. 1 Transmit FIFO half empty or less condition interrupt is not masked.
     #[inline(always)]
     pub const fn with_txim(self, value: bool) -> Self {
@@ -1231,6 +1362,7 @@ impl SspimscVal {
     }
 
     /// Set **RXIM** `[2:2]`
+    ///
     /// Receive FIFO interrupt mask: 0 Receive FIFO half full or less condition interrupt is masked. 1 Receive FIFO half full or less condition interrupt is not masked.
     #[inline(always)]
     pub const fn with_rxim(self, value: bool) -> Self {
@@ -1244,6 +1376,7 @@ impl SspimscVal {
     }
 
     /// Set **RTIM** `[1:1]`
+    ///
     /// Receive timeout interrupt mask: 0 Receive FIFO not empty and no read prior to timeout period interrupt is masked. 1 Receive FIFO not empty and no read prior to timeout period interrupt is not masked.
     #[inline(always)]
     pub const fn with_rtim(self, value: bool) -> Self {
@@ -1257,6 +1390,7 @@ impl SspimscVal {
     }
 
     /// Set **RORIM** `[0:0]`
+    ///
     /// Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
     #[inline(always)]
     pub const fn with_rorim(self, value: bool) -> Self {
@@ -1308,12 +1442,19 @@ impl Sspimsc {
 /// ## Fields
 ///
 /// - **TXRIS** `[3]` (RO)
+///
 ///   Gives the raw interrupt state, prior to masking, of the SSPTXINTR interrupt
+///
 /// - **RXRIS** `[2]` (RO)
+///
 ///   Gives the raw interrupt state, prior to masking, of the SSPRXINTR interrupt
+///
 /// - **RTRIS** `[1]` (RO)
+///
 ///   Gives the raw interrupt state, prior to masking, of the SSPRTINTR interrupt
+///
 /// - **RORRIS** `[0]` (RO)
+///
 ///   Gives the raw interrupt state, prior to masking, of the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspris {
@@ -1332,28 +1473,36 @@ impl Sspris {
     // ======== Field Constants ========
 
     /// **TXRIS**
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPTXINTR interrupt
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TXRIS_OFFSET: u32 = 3;
     pub const TXRIS_MASK: u32 = 0x00000008;
     pub const TXRIS: u32 = 1 << 3;
 
     /// **RXRIS**
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRXINTR interrupt
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const RXRIS_OFFSET: u32 = 2;
     pub const RXRIS_MASK: u32 = 0x00000004;
     pub const RXRIS: u32 = 1 << 2;
 
     /// **RTRIS**
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRTINTR interrupt
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RTRIS_OFFSET: u32 = 1;
     pub const RTRIS_MASK: u32 = 0x00000002;
     pub const RTRIS: u32 = 1 << 1;
 
     /// **RORRIS**
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRORINTR interrupt
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RORRIS_OFFSET: u32 = 0;
     pub const RORRIS_MASK: u32 = 0x00000001;
@@ -1362,6 +1511,7 @@ impl Sspris {
     // ======== Field Accessors ========
 
     /// **TXRIS** `[3]` (RO)
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPTXINTR interrupt
     #[inline(always)]
     pub fn txris(&self) -> bool {
@@ -1369,6 +1519,7 @@ impl Sspris {
     }
 
     /// **RXRIS** `[2]` (RO)
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRXINTR interrupt
     #[inline(always)]
     pub fn rxris(&self) -> bool {
@@ -1376,6 +1527,7 @@ impl Sspris {
     }
 
     /// **RTRIS** `[1]` (RO)
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRTINTR interrupt
     #[inline(always)]
     pub fn rtris(&self) -> bool {
@@ -1383,6 +1535,7 @@ impl Sspris {
     }
 
     /// **RORRIS** `[0]` (RO)
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRORINTR interrupt
     #[inline(always)]
     pub fn rorris(&self) -> bool {
@@ -1420,6 +1573,7 @@ impl SsprisVal {
     }
 
     /// Read **TXRIS** `[3:3]`
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPTXINTR interrupt
     #[inline(always)]
     pub const fn txris(&self) -> bool {
@@ -1427,6 +1581,7 @@ impl SsprisVal {
     }
 
     /// Read **RXRIS** `[2:2]`
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRXINTR interrupt
     #[inline(always)]
     pub const fn rxris(&self) -> bool {
@@ -1434,6 +1589,7 @@ impl SsprisVal {
     }
 
     /// Read **RTRIS** `[1:1]`
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRTINTR interrupt
     #[inline(always)]
     pub const fn rtris(&self) -> bool {
@@ -1441,6 +1597,7 @@ impl SsprisVal {
     }
 
     /// Read **RORRIS** `[0:0]`
+    ///
     /// Gives the raw interrupt state, prior to masking, of the SSPRORINTR interrupt
     #[inline(always)]
     pub const fn rorris(&self) -> bool {
@@ -1486,12 +1643,19 @@ impl Sspris {
 /// ## Fields
 ///
 /// - **TXMIS** `[3]` (RO)
+///
 ///   Gives the transmit FIFO masked interrupt state, after masking, of the SSPTXINTR interrupt
+///
 /// - **RXMIS** `[2]` (RO)
+///
 ///   Gives the receive FIFO masked interrupt state, after masking, of the SSPRXINTR interrupt
+///
 /// - **RTMIS** `[1]` (RO)
+///
 ///   Gives the receive timeout masked interrupt state, after masking, of the SSPRTINTR interrupt
+///
 /// - **RORMIS** `[0]` (RO)
+///
 ///   Gives the receive over run masked interrupt status, after masking, of the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspmis {
@@ -1510,28 +1674,36 @@ impl Sspmis {
     // ======== Field Constants ========
 
     /// **TXMIS**
+    ///
     /// Gives the transmit FIFO masked interrupt state, after masking, of the SSPTXINTR interrupt
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TXMIS_OFFSET: u32 = 3;
     pub const TXMIS_MASK: u32 = 0x00000008;
     pub const TXMIS: u32 = 1 << 3;
 
     /// **RXMIS**
+    ///
     /// Gives the receive FIFO masked interrupt state, after masking, of the SSPRXINTR interrupt
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const RXMIS_OFFSET: u32 = 2;
     pub const RXMIS_MASK: u32 = 0x00000004;
     pub const RXMIS: u32 = 1 << 2;
 
     /// **RTMIS**
+    ///
     /// Gives the receive timeout masked interrupt state, after masking, of the SSPRTINTR interrupt
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RTMIS_OFFSET: u32 = 1;
     pub const RTMIS_MASK: u32 = 0x00000002;
     pub const RTMIS: u32 = 1 << 1;
 
     /// **RORMIS**
+    ///
     /// Gives the receive over run masked interrupt status, after masking, of the SSPRORINTR interrupt
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RORMIS_OFFSET: u32 = 0;
     pub const RORMIS_MASK: u32 = 0x00000001;
@@ -1540,6 +1712,7 @@ impl Sspmis {
     // ======== Field Accessors ========
 
     /// **TXMIS** `[3]` (RO)
+    ///
     /// Gives the transmit FIFO masked interrupt state, after masking, of the SSPTXINTR interrupt
     #[inline(always)]
     pub fn txmis(&self) -> bool {
@@ -1547,6 +1720,7 @@ impl Sspmis {
     }
 
     /// **RXMIS** `[2]` (RO)
+    ///
     /// Gives the receive FIFO masked interrupt state, after masking, of the SSPRXINTR interrupt
     #[inline(always)]
     pub fn rxmis(&self) -> bool {
@@ -1554,6 +1728,7 @@ impl Sspmis {
     }
 
     /// **RTMIS** `[1]` (RO)
+    ///
     /// Gives the receive timeout masked interrupt state, after masking, of the SSPRTINTR interrupt
     #[inline(always)]
     pub fn rtmis(&self) -> bool {
@@ -1561,6 +1736,7 @@ impl Sspmis {
     }
 
     /// **RORMIS** `[0]` (RO)
+    ///
     /// Gives the receive over run masked interrupt status, after masking, of the SSPRORINTR interrupt
     #[inline(always)]
     pub fn rormis(&self) -> bool {
@@ -1598,6 +1774,7 @@ impl SspmisVal {
     }
 
     /// Read **TXMIS** `[3:3]`
+    ///
     /// Gives the transmit FIFO masked interrupt state, after masking, of the SSPTXINTR interrupt
     #[inline(always)]
     pub const fn txmis(&self) -> bool {
@@ -1605,6 +1782,7 @@ impl SspmisVal {
     }
 
     /// Read **RXMIS** `[2:2]`
+    ///
     /// Gives the receive FIFO masked interrupt state, after masking, of the SSPRXINTR interrupt
     #[inline(always)]
     pub const fn rxmis(&self) -> bool {
@@ -1612,6 +1790,7 @@ impl SspmisVal {
     }
 
     /// Read **RTMIS** `[1:1]`
+    ///
     /// Gives the receive timeout masked interrupt state, after masking, of the SSPRTINTR interrupt
     #[inline(always)]
     pub const fn rtmis(&self) -> bool {
@@ -1619,6 +1798,7 @@ impl SspmisVal {
     }
 
     /// Read **RORMIS** `[0:0]`
+    ///
     /// Gives the receive over run masked interrupt status, after masking, of the SSPRORINTR interrupt
     #[inline(always)]
     pub const fn rormis(&self) -> bool {
@@ -1664,8 +1844,11 @@ impl Sspmis {
 /// ## Fields
 ///
 /// - **RTIC** `[1]` (RW)
+///
 ///   Clears the SSPRTINTR interrupt
+///
 /// - **RORIC** `[0]` (RW)
+///
 ///   Clears the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspicr {
@@ -1684,14 +1867,18 @@ impl Sspicr {
     // ======== Field Constants ========
 
     /// **RTIC**
+    ///
     /// Clears the SSPRTINTR interrupt
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RTIC_OFFSET: u32 = 1;
     pub const RTIC_MASK: u32 = 0x00000002;
     pub const RTIC: u32 = 1 << 1;
 
     /// **RORIC**
+    ///
     /// Clears the SSPRORINTR interrupt
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RORIC_OFFSET: u32 = 0;
     pub const RORIC_MASK: u32 = 0x00000001;
@@ -1700,6 +1887,7 @@ impl Sspicr {
     // ======== Field Accessors ========
 
     /// **RTIC** `[1]` (RW)
+    ///
     /// Clears the SSPRTINTR interrupt
     #[inline(always)]
     pub fn rtic(&self) -> bool {
@@ -1719,6 +1907,7 @@ impl Sspicr {
     }
 
     /// **RORIC** `[0]` (RW)
+    ///
     /// Clears the SSPRORINTR interrupt
     #[inline(always)]
     pub fn roric(&self) -> bool {
@@ -1768,6 +1957,7 @@ impl SspicrVal {
     }
 
     /// Read **RTIC** `[1:1]`
+    ///
     /// Clears the SSPRTINTR interrupt
     #[inline(always)]
     pub const fn rtic(&self) -> bool {
@@ -1775,6 +1965,7 @@ impl SspicrVal {
     }
 
     /// Read **RORIC** `[0:0]`
+    ///
     /// Clears the SSPRORINTR interrupt
     #[inline(always)]
     pub const fn roric(&self) -> bool {
@@ -1782,6 +1973,7 @@ impl SspicrVal {
     }
 
     /// Set **RTIC** `[1:1]`
+    ///
     /// Clears the SSPRTINTR interrupt
     #[inline(always)]
     pub const fn with_rtic(self, value: bool) -> Self {
@@ -1795,6 +1987,7 @@ impl SspicrVal {
     }
 
     /// Set **RORIC** `[0:0]`
+    ///
     /// Clears the SSPRORINTR interrupt
     #[inline(always)]
     pub const fn with_roric(self, value: bool) -> Self {
@@ -1846,8 +2039,11 @@ impl Sspicr {
 /// ## Fields
 ///
 /// - **TXDMAE** `[1]` (RW)
+///
 ///   Transmit DMA Enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
+///
 /// - **RXDMAE** `[0]` (RW)
+///
 ///   Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
 #[repr(transparent)]
 pub struct Sspdmacr {
@@ -1866,14 +2062,18 @@ impl Sspdmacr {
     // ======== Field Constants ========
 
     /// **TXDMAE**
+    ///
     /// Transmit DMA Enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TXDMAE_OFFSET: u32 = 1;
     pub const TXDMAE_MASK: u32 = 0x00000002;
     pub const TXDMAE: u32 = 1 << 1;
 
     /// **RXDMAE**
+    ///
     /// Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RXDMAE_OFFSET: u32 = 0;
     pub const RXDMAE_MASK: u32 = 0x00000001;
@@ -1882,6 +2082,7 @@ impl Sspdmacr {
     // ======== Field Accessors ========
 
     /// **TXDMAE** `[1]` (RW)
+    ///
     /// Transmit DMA Enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub fn txdmae(&self) -> bool {
@@ -1901,6 +2102,7 @@ impl Sspdmacr {
     }
 
     /// **RXDMAE** `[0]` (RW)
+    ///
     /// Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub fn rxdmae(&self) -> bool {
@@ -1950,6 +2152,7 @@ impl SspdmacrVal {
     }
 
     /// Read **TXDMAE** `[1:1]`
+    ///
     /// Transmit DMA Enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub const fn txdmae(&self) -> bool {
@@ -1957,6 +2160,7 @@ impl SspdmacrVal {
     }
 
     /// Read **RXDMAE** `[0:0]`
+    ///
     /// Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub const fn rxdmae(&self) -> bool {
@@ -1964,6 +2168,7 @@ impl SspdmacrVal {
     }
 
     /// Set **TXDMAE** `[1:1]`
+    ///
     /// Transmit DMA Enable. If this bit is set to 1, DMA for the transmit FIFO is enabled.
     #[inline(always)]
     pub const fn with_txdmae(self, value: bool) -> Self {
@@ -1977,6 +2182,7 @@ impl SspdmacrVal {
     }
 
     /// Set **RXDMAE** `[0:0]`
+    ///
     /// Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
     #[inline(always)]
     pub const fn with_rxdmae(self, value: bool) -> Self {
@@ -2028,6 +2234,7 @@ impl Sspdmacr {
 /// ## Fields
 ///
 /// - **PARTNUMBER0** `[7:0]` (RO)
+///
 ///   These bits read back as 0x22
 #[repr(transparent)]
 pub struct Sspperiphid0 {
@@ -2046,7 +2253,9 @@ impl Sspperiphid0 {
     // ======== Field Constants ========
 
     /// **PARTNUMBER0**
+    ///
     /// These bits read back as 0x22
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PARTNUMBER0_OFFSET: u32 = 0;
     pub const PARTNUMBER0_MASK: u32 = 0x000000ff;
@@ -2054,6 +2263,7 @@ impl Sspperiphid0 {
     // ======== Field Accessors ========
 
     /// **PARTNUMBER0** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x22
     #[inline(always)]
     pub fn partnumber0(&self) -> u32 {
@@ -2091,6 +2301,7 @@ impl Sspperiphid0Val {
     }
 
     /// Read **PARTNUMBER0** `[7:0]`
+    ///
     /// These bits read back as 0x22
     #[inline(always)]
     pub const fn partnumber0(&self) -> u32 {
@@ -2136,8 +2347,11 @@ impl Sspperiphid0 {
 /// ## Fields
 ///
 /// - **DESIGNER0** `[7:4]` (RO)
+///
 ///   These bits read back as 0x1
+///
 /// - **PARTNUMBER1** `[3:0]` (RO)
+///
 ///   These bits read back as 0x0
 #[repr(transparent)]
 pub struct Sspperiphid1 {
@@ -2156,13 +2370,17 @@ impl Sspperiphid1 {
     // ======== Field Constants ========
 
     /// **DESIGNER0**
+    ///
     /// These bits read back as 0x1
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DESIGNER0_OFFSET: u32 = 4;
     pub const DESIGNER0_MASK: u32 = 0x000000f0;
 
     /// **PARTNUMBER1**
+    ///
     /// These bits read back as 0x0
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PARTNUMBER1_OFFSET: u32 = 0;
     pub const PARTNUMBER1_MASK: u32 = 0x0000000f;
@@ -2170,6 +2388,7 @@ impl Sspperiphid1 {
     // ======== Field Accessors ========
 
     /// **DESIGNER0** `[7:4]` (RO)
+    ///
     /// These bits read back as 0x1
     #[inline(always)]
     pub fn designer0(&self) -> u32 {
@@ -2177,6 +2396,7 @@ impl Sspperiphid1 {
     }
 
     /// **PARTNUMBER1** `[3:0]` (RO)
+    ///
     /// These bits read back as 0x0
     #[inline(always)]
     pub fn partnumber1(&self) -> u32 {
@@ -2214,6 +2434,7 @@ impl Sspperiphid1Val {
     }
 
     /// Read **DESIGNER0** `[7:4]`
+    ///
     /// These bits read back as 0x1
     #[inline(always)]
     pub const fn designer0(&self) -> u32 {
@@ -2221,6 +2442,7 @@ impl Sspperiphid1Val {
     }
 
     /// Read **PARTNUMBER1** `[3:0]`
+    ///
     /// These bits read back as 0x0
     #[inline(always)]
     pub const fn partnumber1(&self) -> u32 {
@@ -2266,8 +2488,11 @@ impl Sspperiphid1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   These bits return the peripheral revision
+///
 /// - **DESIGNER1** `[3:0]` (RO)
+///
 ///   These bits read back as 0x4
 #[repr(transparent)]
 pub struct Sspperiphid2 {
@@ -2286,13 +2511,17 @@ impl Sspperiphid2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// These bits return the peripheral revision
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **DESIGNER1**
+    ///
     /// These bits read back as 0x4
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DESIGNER1_OFFSET: u32 = 0;
     pub const DESIGNER1_MASK: u32 = 0x0000000f;
@@ -2300,6 +2529,7 @@ impl Sspperiphid2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// These bits return the peripheral revision
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -2307,6 +2537,7 @@ impl Sspperiphid2 {
     }
 
     /// **DESIGNER1** `[3:0]` (RO)
+    ///
     /// These bits read back as 0x4
     #[inline(always)]
     pub fn designer1(&self) -> u32 {
@@ -2344,6 +2575,7 @@ impl Sspperiphid2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// These bits return the peripheral revision
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -2351,6 +2583,7 @@ impl Sspperiphid2Val {
     }
 
     /// Read **DESIGNER1** `[3:0]`
+    ///
     /// These bits read back as 0x4
     #[inline(always)]
     pub const fn designer1(&self) -> u32 {
@@ -2396,6 +2629,7 @@ impl Sspperiphid2 {
 /// ## Fields
 ///
 /// - **CONFIGURATION** `[7:0]` (RO)
+///
 ///   These bits read back as 0x00
 #[repr(transparent)]
 pub struct Sspperiphid3 {
@@ -2414,7 +2648,9 @@ impl Sspperiphid3 {
     // ======== Field Constants ========
 
     /// **CONFIGURATION**
+    ///
     /// These bits read back as 0x00
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CONFIGURATION_OFFSET: u32 = 0;
     pub const CONFIGURATION_MASK: u32 = 0x000000ff;
@@ -2422,6 +2658,7 @@ impl Sspperiphid3 {
     // ======== Field Accessors ========
 
     /// **CONFIGURATION** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x00
     #[inline(always)]
     pub fn configuration(&self) -> u32 {
@@ -2459,6 +2696,7 @@ impl Sspperiphid3Val {
     }
 
     /// Read **CONFIGURATION** `[7:0]`
+    ///
     /// These bits read back as 0x00
     #[inline(always)]
     pub const fn configuration(&self) -> u32 {
@@ -2504,6 +2742,7 @@ impl Sspperiphid3 {
 /// ## Fields
 ///
 /// - **SSPPCELLID0** `[7:0]` (RO)
+///
 ///   These bits read back as 0x0D
 #[repr(transparent)]
 pub struct Ssppcellid0 {
@@ -2522,7 +2761,9 @@ impl Ssppcellid0 {
     // ======== Field Constants ========
 
     /// **SSPPCELLID0**
+    ///
     /// These bits read back as 0x0D
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SSPPCELLID0_OFFSET: u32 = 0;
     pub const SSPPCELLID0_MASK: u32 = 0x000000ff;
@@ -2530,6 +2771,7 @@ impl Ssppcellid0 {
     // ======== Field Accessors ========
 
     /// **SSPPCELLID0** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x0D
     #[inline(always)]
     pub fn ssppcellid0(&self) -> u32 {
@@ -2567,6 +2809,7 @@ impl Ssppcellid0Val {
     }
 
     /// Read **SSPPCELLID0** `[7:0]`
+    ///
     /// These bits read back as 0x0D
     #[inline(always)]
     pub const fn ssppcellid0(&self) -> u32 {
@@ -2612,6 +2855,7 @@ impl Ssppcellid0 {
 /// ## Fields
 ///
 /// - **SSPPCELLID1** `[7:0]` (RO)
+///
 ///   These bits read back as 0xF0
 #[repr(transparent)]
 pub struct Ssppcellid1 {
@@ -2630,7 +2874,9 @@ impl Ssppcellid1 {
     // ======== Field Constants ========
 
     /// **SSPPCELLID1**
+    ///
     /// These bits read back as 0xF0
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SSPPCELLID1_OFFSET: u32 = 0;
     pub const SSPPCELLID1_MASK: u32 = 0x000000ff;
@@ -2638,6 +2884,7 @@ impl Ssppcellid1 {
     // ======== Field Accessors ========
 
     /// **SSPPCELLID1** `[7:0]` (RO)
+    ///
     /// These bits read back as 0xF0
     #[inline(always)]
     pub fn ssppcellid1(&self) -> u32 {
@@ -2675,6 +2922,7 @@ impl Ssppcellid1Val {
     }
 
     /// Read **SSPPCELLID1** `[7:0]`
+    ///
     /// These bits read back as 0xF0
     #[inline(always)]
     pub const fn ssppcellid1(&self) -> u32 {
@@ -2720,6 +2968,7 @@ impl Ssppcellid1 {
 /// ## Fields
 ///
 /// - **SSPPCELLID2** `[7:0]` (RO)
+///
 ///   These bits read back as 0x05
 #[repr(transparent)]
 pub struct Ssppcellid2 {
@@ -2738,7 +2987,9 @@ impl Ssppcellid2 {
     // ======== Field Constants ========
 
     /// **SSPPCELLID2**
+    ///
     /// These bits read back as 0x05
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SSPPCELLID2_OFFSET: u32 = 0;
     pub const SSPPCELLID2_MASK: u32 = 0x000000ff;
@@ -2746,6 +2997,7 @@ impl Ssppcellid2 {
     // ======== Field Accessors ========
 
     /// **SSPPCELLID2** `[7:0]` (RO)
+    ///
     /// These bits read back as 0x05
     #[inline(always)]
     pub fn ssppcellid2(&self) -> u32 {
@@ -2783,6 +3035,7 @@ impl Ssppcellid2Val {
     }
 
     /// Read **SSPPCELLID2** `[7:0]`
+    ///
     /// These bits read back as 0x05
     #[inline(always)]
     pub const fn ssppcellid2(&self) -> u32 {
@@ -2828,6 +3081,7 @@ impl Ssppcellid2 {
 /// ## Fields
 ///
 /// - **SSPPCELLID3** `[7:0]` (RO)
+///
 ///   These bits read back as 0xB1
 #[repr(transparent)]
 pub struct Ssppcellid3 {
@@ -2846,7 +3100,9 @@ impl Ssppcellid3 {
     // ======== Field Constants ========
 
     /// **SSPPCELLID3**
+    ///
     /// These bits read back as 0xB1
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SSPPCELLID3_OFFSET: u32 = 0;
     pub const SSPPCELLID3_MASK: u32 = 0x000000ff;
@@ -2854,6 +3110,7 @@ impl Ssppcellid3 {
     // ======== Field Accessors ========
 
     /// **SSPPCELLID3** `[7:0]` (RO)
+    ///
     /// These bits read back as 0xB1
     #[inline(always)]
     pub fn ssppcellid3(&self) -> u32 {
@@ -2891,6 +3148,7 @@ impl Ssppcellid3Val {
     }
 
     /// Read **SSPPCELLID3** `[7:0]`
+    ///
     /// These bits read back as 0xB1
     #[inline(always)]
     pub const fn ssppcellid3(&self) -> u32 {

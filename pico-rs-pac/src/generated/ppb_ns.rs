@@ -14,6 +14,7 @@ pub const BASE: u32 = 0xe0020000;
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim0 {
@@ -32,7 +33,9 @@ impl ItmStim0 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -40,6 +43,7 @@ impl ItmStim0 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -47,6 +51,7 @@ impl ItmStim0 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -84,6 +89,7 @@ impl ItmStim0Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -91,6 +97,7 @@ impl ItmStim0Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -138,6 +145,7 @@ impl ItmStim0 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim1 {
@@ -156,7 +164,9 @@ impl ItmStim1 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -164,6 +174,7 @@ impl ItmStim1 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -171,6 +182,7 @@ impl ItmStim1 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -208,6 +220,7 @@ impl ItmStim1Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -215,6 +228,7 @@ impl ItmStim1Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -262,6 +276,7 @@ impl ItmStim1 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim2 {
@@ -280,7 +295,9 @@ impl ItmStim2 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -288,6 +305,7 @@ impl ItmStim2 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -295,6 +313,7 @@ impl ItmStim2 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -332,6 +351,7 @@ impl ItmStim2Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -339,6 +359,7 @@ impl ItmStim2Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -386,6 +407,7 @@ impl ItmStim2 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim3 {
@@ -404,7 +426,9 @@ impl ItmStim3 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -412,6 +436,7 @@ impl ItmStim3 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -419,6 +444,7 @@ impl ItmStim3 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -456,6 +482,7 @@ impl ItmStim3Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -463,6 +490,7 @@ impl ItmStim3Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -510,6 +538,7 @@ impl ItmStim3 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim4 {
@@ -528,7 +557,9 @@ impl ItmStim4 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -536,6 +567,7 @@ impl ItmStim4 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -543,6 +575,7 @@ impl ItmStim4 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -580,6 +613,7 @@ impl ItmStim4Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -587,6 +621,7 @@ impl ItmStim4Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -634,6 +669,7 @@ impl ItmStim4 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim5 {
@@ -652,7 +688,9 @@ impl ItmStim5 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -660,6 +698,7 @@ impl ItmStim5 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -667,6 +706,7 @@ impl ItmStim5 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -704,6 +744,7 @@ impl ItmStim5Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -711,6 +752,7 @@ impl ItmStim5Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -758,6 +800,7 @@ impl ItmStim5 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim6 {
@@ -776,7 +819,9 @@ impl ItmStim6 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -784,6 +829,7 @@ impl ItmStim6 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -791,6 +837,7 @@ impl ItmStim6 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -828,6 +875,7 @@ impl ItmStim6Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -835,6 +883,7 @@ impl ItmStim6Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -882,6 +931,7 @@ impl ItmStim6 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim7 {
@@ -900,7 +950,9 @@ impl ItmStim7 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -908,6 +960,7 @@ impl ItmStim7 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -915,6 +968,7 @@ impl ItmStim7 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -952,6 +1006,7 @@ impl ItmStim7Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -959,6 +1014,7 @@ impl ItmStim7Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1006,6 +1062,7 @@ impl ItmStim7 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim8 {
@@ -1024,7 +1081,9 @@ impl ItmStim8 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1032,6 +1091,7 @@ impl ItmStim8 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1039,6 +1099,7 @@ impl ItmStim8 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1076,6 +1137,7 @@ impl ItmStim8Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1083,6 +1145,7 @@ impl ItmStim8Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1130,6 +1193,7 @@ impl ItmStim8 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim9 {
@@ -1148,7 +1212,9 @@ impl ItmStim9 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1156,6 +1222,7 @@ impl ItmStim9 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1163,6 +1230,7 @@ impl ItmStim9 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1200,6 +1268,7 @@ impl ItmStim9Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1207,6 +1276,7 @@ impl ItmStim9Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1254,6 +1324,7 @@ impl ItmStim9 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim10 {
@@ -1272,7 +1343,9 @@ impl ItmStim10 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1280,6 +1353,7 @@ impl ItmStim10 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1287,6 +1361,7 @@ impl ItmStim10 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1324,6 +1399,7 @@ impl ItmStim10Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1331,6 +1407,7 @@ impl ItmStim10Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1378,6 +1455,7 @@ impl ItmStim10 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim11 {
@@ -1396,7 +1474,9 @@ impl ItmStim11 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1404,6 +1484,7 @@ impl ItmStim11 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1411,6 +1492,7 @@ impl ItmStim11 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1448,6 +1530,7 @@ impl ItmStim11Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1455,6 +1538,7 @@ impl ItmStim11Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1502,6 +1586,7 @@ impl ItmStim11 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim12 {
@@ -1520,7 +1605,9 @@ impl ItmStim12 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1528,6 +1615,7 @@ impl ItmStim12 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1535,6 +1623,7 @@ impl ItmStim12 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1572,6 +1661,7 @@ impl ItmStim12Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1579,6 +1669,7 @@ impl ItmStim12Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1626,6 +1717,7 @@ impl ItmStim12 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim13 {
@@ -1644,7 +1736,9 @@ impl ItmStim13 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1652,6 +1746,7 @@ impl ItmStim13 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1659,6 +1754,7 @@ impl ItmStim13 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1696,6 +1792,7 @@ impl ItmStim13Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1703,6 +1800,7 @@ impl ItmStim13Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1750,6 +1848,7 @@ impl ItmStim13 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim14 {
@@ -1768,7 +1867,9 @@ impl ItmStim14 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1776,6 +1877,7 @@ impl ItmStim14 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1783,6 +1885,7 @@ impl ItmStim14 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1820,6 +1923,7 @@ impl ItmStim14Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1827,6 +1931,7 @@ impl ItmStim14Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1874,6 +1979,7 @@ impl ItmStim14 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim15 {
@@ -1892,7 +1998,9 @@ impl ItmStim15 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -1900,6 +2008,7 @@ impl ItmStim15 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -1907,6 +2016,7 @@ impl ItmStim15 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -1944,6 +2054,7 @@ impl ItmStim15Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -1951,6 +2062,7 @@ impl ItmStim15Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -1998,6 +2110,7 @@ impl ItmStim15 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim16 {
@@ -2016,7 +2129,9 @@ impl ItmStim16 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2024,6 +2139,7 @@ impl ItmStim16 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2031,6 +2147,7 @@ impl ItmStim16 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2068,6 +2185,7 @@ impl ItmStim16Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2075,6 +2193,7 @@ impl ItmStim16Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2122,6 +2241,7 @@ impl ItmStim16 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim17 {
@@ -2140,7 +2260,9 @@ impl ItmStim17 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2148,6 +2270,7 @@ impl ItmStim17 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2155,6 +2278,7 @@ impl ItmStim17 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2192,6 +2316,7 @@ impl ItmStim17Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2199,6 +2324,7 @@ impl ItmStim17Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2246,6 +2372,7 @@ impl ItmStim17 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim18 {
@@ -2264,7 +2391,9 @@ impl ItmStim18 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2272,6 +2401,7 @@ impl ItmStim18 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2279,6 +2409,7 @@ impl ItmStim18 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2316,6 +2447,7 @@ impl ItmStim18Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2323,6 +2455,7 @@ impl ItmStim18Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2370,6 +2503,7 @@ impl ItmStim18 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim19 {
@@ -2388,7 +2522,9 @@ impl ItmStim19 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2396,6 +2532,7 @@ impl ItmStim19 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2403,6 +2540,7 @@ impl ItmStim19 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2440,6 +2578,7 @@ impl ItmStim19Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2447,6 +2586,7 @@ impl ItmStim19Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2494,6 +2634,7 @@ impl ItmStim19 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim20 {
@@ -2512,7 +2653,9 @@ impl ItmStim20 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2520,6 +2663,7 @@ impl ItmStim20 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2527,6 +2671,7 @@ impl ItmStim20 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2564,6 +2709,7 @@ impl ItmStim20Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2571,6 +2717,7 @@ impl ItmStim20Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2618,6 +2765,7 @@ impl ItmStim20 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim21 {
@@ -2636,7 +2784,9 @@ impl ItmStim21 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2644,6 +2794,7 @@ impl ItmStim21 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2651,6 +2802,7 @@ impl ItmStim21 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2688,6 +2840,7 @@ impl ItmStim21Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2695,6 +2848,7 @@ impl ItmStim21Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2742,6 +2896,7 @@ impl ItmStim21 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim22 {
@@ -2760,7 +2915,9 @@ impl ItmStim22 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2768,6 +2925,7 @@ impl ItmStim22 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2775,6 +2933,7 @@ impl ItmStim22 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2812,6 +2971,7 @@ impl ItmStim22Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2819,6 +2979,7 @@ impl ItmStim22Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2866,6 +3027,7 @@ impl ItmStim22 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim23 {
@@ -2884,7 +3046,9 @@ impl ItmStim23 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -2892,6 +3056,7 @@ impl ItmStim23 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -2899,6 +3064,7 @@ impl ItmStim23 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -2936,6 +3102,7 @@ impl ItmStim23Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -2943,6 +3110,7 @@ impl ItmStim23Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -2990,6 +3158,7 @@ impl ItmStim23 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim24 {
@@ -3008,7 +3177,9 @@ impl ItmStim24 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3016,6 +3187,7 @@ impl ItmStim24 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3023,6 +3195,7 @@ impl ItmStim24 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3060,6 +3233,7 @@ impl ItmStim24Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3067,6 +3241,7 @@ impl ItmStim24Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3114,6 +3289,7 @@ impl ItmStim24 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim25 {
@@ -3132,7 +3308,9 @@ impl ItmStim25 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3140,6 +3318,7 @@ impl ItmStim25 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3147,6 +3326,7 @@ impl ItmStim25 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3184,6 +3364,7 @@ impl ItmStim25Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3191,6 +3372,7 @@ impl ItmStim25Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3238,6 +3420,7 @@ impl ItmStim25 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim26 {
@@ -3256,7 +3439,9 @@ impl ItmStim26 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3264,6 +3449,7 @@ impl ItmStim26 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3271,6 +3457,7 @@ impl ItmStim26 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3308,6 +3495,7 @@ impl ItmStim26Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3315,6 +3503,7 @@ impl ItmStim26Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3362,6 +3551,7 @@ impl ItmStim26 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim27 {
@@ -3380,7 +3570,9 @@ impl ItmStim27 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3388,6 +3580,7 @@ impl ItmStim27 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3395,6 +3588,7 @@ impl ItmStim27 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3432,6 +3626,7 @@ impl ItmStim27Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3439,6 +3634,7 @@ impl ItmStim27Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3486,6 +3682,7 @@ impl ItmStim27 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim28 {
@@ -3504,7 +3701,9 @@ impl ItmStim28 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3512,6 +3711,7 @@ impl ItmStim28 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3519,6 +3719,7 @@ impl ItmStim28 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3556,6 +3757,7 @@ impl ItmStim28Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3563,6 +3765,7 @@ impl ItmStim28Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3610,6 +3813,7 @@ impl ItmStim28 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim29 {
@@ -3628,7 +3832,9 @@ impl ItmStim29 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3636,6 +3842,7 @@ impl ItmStim29 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3643,6 +3850,7 @@ impl ItmStim29 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3680,6 +3888,7 @@ impl ItmStim29Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3687,6 +3896,7 @@ impl ItmStim29Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3734,6 +3944,7 @@ impl ItmStim29 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim30 {
@@ -3752,7 +3963,9 @@ impl ItmStim30 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3760,6 +3973,7 @@ impl ItmStim30 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3767,6 +3981,7 @@ impl ItmStim30 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3804,6 +4019,7 @@ impl ItmStim30Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3811,6 +4027,7 @@ impl ItmStim30Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3858,6 +4075,7 @@ impl ItmStim30 {
 /// ## Fields
 ///
 /// - **STIMULUS** `[31:0]` (RW)
+///
 ///   Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
 #[repr(transparent)]
 pub struct ItmStim31 {
@@ -3876,7 +4094,9 @@ impl ItmStim31 {
     // ======== Field Constants ========
 
     /// **STIMULUS**
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMULUS_OFFSET: u32 = 0;
     pub const STIMULUS_MASK: u32 = 0xffffffff;
@@ -3884,6 +4104,7 @@ impl ItmStim31 {
     // ======== Field Accessors ========
 
     /// **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn stimulus(&self) -> u32 {
@@ -3891,6 +4112,7 @@ impl ItmStim31 {
     }
 
     /// Write **STIMULUS** `[31:0]` (RW)
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
@@ -3928,6 +4150,7 @@ impl ItmStim31Val {
     }
 
     /// Read **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn stimulus(&self) -> u32 {
@@ -3935,6 +4158,7 @@ impl ItmStim31Val {
     }
 
     /// Set **STIMULUS** `[31:0]`
+    ///
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
@@ -3982,6 +4206,7 @@ impl ItmStim31 {
 /// ## Fields
 ///
 /// - **STIMENA** `[31:0]` (RW)
+///
 ///   For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
 #[repr(transparent)]
 pub struct ItmTer0 {
@@ -4000,7 +4225,9 @@ impl ItmTer0 {
     // ======== Field Constants ========
 
     /// **STIMENA**
+    ///
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STIMENA_OFFSET: u32 = 0;
     pub const STIMENA_MASK: u32 = 0xffffffff;
@@ -4008,6 +4235,7 @@ impl ItmTer0 {
     // ======== Field Accessors ========
 
     /// **STIMENA** `[31:0]` (RW)
+    ///
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
     #[inline(always)]
     pub fn stimena(&self) -> u32 {
@@ -4015,6 +4243,7 @@ impl ItmTer0 {
     }
 
     /// Write **STIMENA** `[31:0]` (RW)
+    ///
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
     #[inline(always)]
     pub fn write_stimena(&self, value: u32) {
@@ -4052,6 +4281,7 @@ impl ItmTer0Val {
     }
 
     /// Read **STIMENA** `[31:0]`
+    ///
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
     #[inline(always)]
     pub const fn stimena(&self) -> u32 {
@@ -4059,6 +4289,7 @@ impl ItmTer0Val {
     }
 
     /// Set **STIMENA** `[31:0]`
+    ///
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
     #[inline(always)]
     pub const fn with_stimena(self, value: u32) -> Self {
@@ -4106,6 +4337,7 @@ impl ItmTer0 {
 /// ## Fields
 ///
 /// - **PRIVMASK** `[3:0]` (RW)
+///
 ///   Bit mask to enable tracing on ITM stimulus ports
 #[repr(transparent)]
 pub struct ItmTpr {
@@ -4124,7 +4356,9 @@ impl ItmTpr {
     // ======== Field Constants ========
 
     /// **PRIVMASK**
+    ///
     /// Bit mask to enable tracing on ITM stimulus ports
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRIVMASK_OFFSET: u32 = 0;
     pub const PRIVMASK_MASK: u32 = 0x0000000f;
@@ -4132,6 +4366,7 @@ impl ItmTpr {
     // ======== Field Accessors ========
 
     /// **PRIVMASK** `[3:0]` (RW)
+    ///
     /// Bit mask to enable tracing on ITM stimulus ports
     #[inline(always)]
     pub fn privmask(&self) -> u32 {
@@ -4139,6 +4374,7 @@ impl ItmTpr {
     }
 
     /// Write **PRIVMASK** `[3:0]` (RW)
+    ///
     /// Bit mask to enable tracing on ITM stimulus ports
     #[inline(always)]
     pub fn write_privmask(&self, value: u32) {
@@ -4176,6 +4412,7 @@ impl ItmTprVal {
     }
 
     /// Read **PRIVMASK** `[3:0]`
+    ///
     /// Bit mask to enable tracing on ITM stimulus ports
     #[inline(always)]
     pub const fn privmask(&self) -> u32 {
@@ -4183,6 +4420,7 @@ impl ItmTprVal {
     }
 
     /// Set **PRIVMASK** `[3:0]`
+    ///
     /// Bit mask to enable tracing on ITM stimulus ports
     #[inline(always)]
     pub const fn with_privmask(self, value: u32) -> Self {
@@ -4230,24 +4468,43 @@ impl ItmTpr {
 /// ## Fields
 ///
 /// - **BUSY** `[23]` (RO)
+///
 ///   Indicates whether the ITM is currently processing events
+///
 /// - **TRACEBUSID** `[22:16]` (RW)
+///
 ///   Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
+///
 /// - **GTSFREQ** `[11:10]` (RW)
+///
 ///   Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
+///
 /// - **TSPRESCALE** `[9:8]` (RW)
+///
 ///   Local timestamp prescaler, used with the trace packet reference clock
+///
 /// - **STALLENA** `[5]` (RW)
+///
 ///   Stall the PE to guarantee delivery of Data Trace packets.
+///
 /// - **SWOENA** `[4]` (RW)
+///
 ///   Enables asynchronous clocking of the timestamp counter
+///
 /// - **TXENA** `[3]` (RW)
+///
 ///   Enables forwarding of hardware event packet from the DWT unit to the ITM for output to the TPIU
+///
 /// - **SYNCENA** `[2]` (RW)
+///
 ///   Enables Synchronization packet transmission for a synchronous TPIU
+///
 /// - **TSENA** `[1]` (RW)
+///
 ///   Enables Local timestamp generation
+///
 /// - **ITMENA** `[0]` (RW)
+///
 ///   Enables the ITM
 #[repr(transparent)]
 pub struct ItmTcr {
@@ -4266,67 +4523,87 @@ impl ItmTcr {
     // ======== Field Constants ========
 
     /// **BUSY**
+    ///
     /// Indicates whether the ITM is currently processing events
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const BUSY_OFFSET: u32 = 23;
     pub const BUSY_MASK: u32 = 0x00800000;
     pub const BUSY: u32 = 1 << 23;
 
     /// **TRACEBUSID**
+    ///
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
+    ///
     /// Bits `[22:16]`, mask `0x007f0000`
     pub const TRACEBUSID_OFFSET: u32 = 16;
     pub const TRACEBUSID_MASK: u32 = 0x007f0000;
 
     /// **GTSFREQ**
+    ///
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const GTSFREQ_OFFSET: u32 = 10;
     pub const GTSFREQ_MASK: u32 = 0x00000c00;
 
     /// **TSPRESCALE**
+    ///
     /// Local timestamp prescaler, used with the trace packet reference clock
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const TSPRESCALE_OFFSET: u32 = 8;
     pub const TSPRESCALE_MASK: u32 = 0x00000300;
 
     /// **STALLENA**
+    ///
     /// Stall the PE to guarantee delivery of Data Trace packets.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const STALLENA_OFFSET: u32 = 5;
     pub const STALLENA_MASK: u32 = 0x00000020;
     pub const STALLENA: u32 = 1 << 5;
 
     /// **SWOENA**
+    ///
     /// Enables asynchronous clocking of the timestamp counter
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const SWOENA_OFFSET: u32 = 4;
     pub const SWOENA_MASK: u32 = 0x00000010;
     pub const SWOENA: u32 = 1 << 4;
 
     /// **TXENA**
+    ///
     /// Enables forwarding of hardware event packet from the DWT unit to the ITM for output to the TPIU
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TXENA_OFFSET: u32 = 3;
     pub const TXENA_MASK: u32 = 0x00000008;
     pub const TXENA: u32 = 1 << 3;
 
     /// **SYNCENA**
+    ///
     /// Enables Synchronization packet transmission for a synchronous TPIU
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SYNCENA_OFFSET: u32 = 2;
     pub const SYNCENA_MASK: u32 = 0x00000004;
     pub const SYNCENA: u32 = 1 << 2;
 
     /// **TSENA**
+    ///
     /// Enables Local timestamp generation
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TSENA_OFFSET: u32 = 1;
     pub const TSENA_MASK: u32 = 0x00000002;
     pub const TSENA: u32 = 1 << 1;
 
     /// **ITMENA**
+    ///
     /// Enables the ITM
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ITMENA_OFFSET: u32 = 0;
     pub const ITMENA_MASK: u32 = 0x00000001;
@@ -4335,6 +4612,7 @@ impl ItmTcr {
     // ======== Field Accessors ========
 
     /// **BUSY** `[23]` (RO)
+    ///
     /// Indicates whether the ITM is currently processing events
     #[inline(always)]
     pub fn busy(&self) -> bool {
@@ -4342,6 +4620,7 @@ impl ItmTcr {
     }
 
     /// **TRACEBUSID** `[22:16]` (RW)
+    ///
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
     #[inline(always)]
     pub fn tracebusid(&self) -> u32 {
@@ -4349,6 +4628,7 @@ impl ItmTcr {
     }
 
     /// Write **TRACEBUSID** `[22:16]` (RW)
+    ///
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
     #[inline(always)]
     pub fn write_tracebusid(&self, value: u32) {
@@ -4356,6 +4636,7 @@ impl ItmTcr {
     }
 
     /// **GTSFREQ** `[11:10]` (RW)
+    ///
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
     #[inline(always)]
     pub fn gtsfreq(&self) -> u32 {
@@ -4363,6 +4644,7 @@ impl ItmTcr {
     }
 
     /// Write **GTSFREQ** `[11:10]` (RW)
+    ///
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
     #[inline(always)]
     pub fn write_gtsfreq(&self, value: u32) {
@@ -4370,6 +4652,7 @@ impl ItmTcr {
     }
 
     /// **TSPRESCALE** `[9:8]` (RW)
+    ///
     /// Local timestamp prescaler, used with the trace packet reference clock
     #[inline(always)]
     pub fn tsprescale(&self) -> u32 {
@@ -4377,6 +4660,7 @@ impl ItmTcr {
     }
 
     /// Write **TSPRESCALE** `[9:8]` (RW)
+    ///
     /// Local timestamp prescaler, used with the trace packet reference clock
     #[inline(always)]
     pub fn write_tsprescale(&self, value: u32) {
@@ -4384,6 +4668,7 @@ impl ItmTcr {
     }
 
     /// **STALLENA** `[5]` (RW)
+    ///
     /// Stall the PE to guarantee delivery of Data Trace packets.
     #[inline(always)]
     pub fn stallena(&self) -> bool {
@@ -4403,6 +4688,7 @@ impl ItmTcr {
     }
 
     /// **SWOENA** `[4]` (RW)
+    ///
     /// Enables asynchronous clocking of the timestamp counter
     #[inline(always)]
     pub fn swoena(&self) -> bool {
@@ -4422,6 +4708,7 @@ impl ItmTcr {
     }
 
     /// **TXENA** `[3]` (RW)
+    ///
     /// Enables forwarding of hardware event packet from the DWT unit to the ITM for output to the TPIU
     #[inline(always)]
     pub fn txena(&self) -> bool {
@@ -4441,6 +4728,7 @@ impl ItmTcr {
     }
 
     /// **SYNCENA** `[2]` (RW)
+    ///
     /// Enables Synchronization packet transmission for a synchronous TPIU
     #[inline(always)]
     pub fn syncena(&self) -> bool {
@@ -4460,6 +4748,7 @@ impl ItmTcr {
     }
 
     /// **TSENA** `[1]` (RW)
+    ///
     /// Enables Local timestamp generation
     #[inline(always)]
     pub fn tsena(&self) -> bool {
@@ -4479,6 +4768,7 @@ impl ItmTcr {
     }
 
     /// **ITMENA** `[0]` (RW)
+    ///
     /// Enables the ITM
     #[inline(always)]
     pub fn itmena(&self) -> bool {
@@ -4528,6 +4818,7 @@ impl ItmTcrVal {
     }
 
     /// Read **BUSY** `[23:23]`
+    ///
     /// Indicates whether the ITM is currently processing events
     #[inline(always)]
     pub const fn busy(&self) -> bool {
@@ -4535,6 +4826,7 @@ impl ItmTcrVal {
     }
 
     /// Read **TRACEBUSID** `[22:16]`
+    ///
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
     #[inline(always)]
     pub const fn tracebusid(&self) -> u32 {
@@ -4542,6 +4834,7 @@ impl ItmTcrVal {
     }
 
     /// Read **GTSFREQ** `[11:10]`
+    ///
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
     #[inline(always)]
     pub const fn gtsfreq(&self) -> u32 {
@@ -4549,6 +4842,7 @@ impl ItmTcrVal {
     }
 
     /// Read **TSPRESCALE** `[9:8]`
+    ///
     /// Local timestamp prescaler, used with the trace packet reference clock
     #[inline(always)]
     pub const fn tsprescale(&self) -> u32 {
@@ -4556,6 +4850,7 @@ impl ItmTcrVal {
     }
 
     /// Read **STALLENA** `[5:5]`
+    ///
     /// Stall the PE to guarantee delivery of Data Trace packets.
     #[inline(always)]
     pub const fn stallena(&self) -> bool {
@@ -4563,6 +4858,7 @@ impl ItmTcrVal {
     }
 
     /// Read **SWOENA** `[4:4]`
+    ///
     /// Enables asynchronous clocking of the timestamp counter
     #[inline(always)]
     pub const fn swoena(&self) -> bool {
@@ -4570,6 +4866,7 @@ impl ItmTcrVal {
     }
 
     /// Read **TXENA** `[3:3]`
+    ///
     /// Enables forwarding of hardware event packet from the DWT unit to the ITM for output to the TPIU
     #[inline(always)]
     pub const fn txena(&self) -> bool {
@@ -4577,6 +4874,7 @@ impl ItmTcrVal {
     }
 
     /// Read **SYNCENA** `[2:2]`
+    ///
     /// Enables Synchronization packet transmission for a synchronous TPIU
     #[inline(always)]
     pub const fn syncena(&self) -> bool {
@@ -4584,6 +4882,7 @@ impl ItmTcrVal {
     }
 
     /// Read **TSENA** `[1:1]`
+    ///
     /// Enables Local timestamp generation
     #[inline(always)]
     pub const fn tsena(&self) -> bool {
@@ -4591,6 +4890,7 @@ impl ItmTcrVal {
     }
 
     /// Read **ITMENA** `[0:0]`
+    ///
     /// Enables the ITM
     #[inline(always)]
     pub const fn itmena(&self) -> bool {
@@ -4598,6 +4898,7 @@ impl ItmTcrVal {
     }
 
     /// Set **TRACEBUSID** `[22:16]`
+    ///
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
     #[inline(always)]
     pub const fn with_tracebusid(self, value: u32) -> Self {
@@ -4607,6 +4908,7 @@ impl ItmTcrVal {
     }
 
     /// Set **GTSFREQ** `[11:10]`
+    ///
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
     #[inline(always)]
     pub const fn with_gtsfreq(self, value: u32) -> Self {
@@ -4616,6 +4918,7 @@ impl ItmTcrVal {
     }
 
     /// Set **TSPRESCALE** `[9:8]`
+    ///
     /// Local timestamp prescaler, used with the trace packet reference clock
     #[inline(always)]
     pub const fn with_tsprescale(self, value: u32) -> Self {
@@ -4625,6 +4928,7 @@ impl ItmTcrVal {
     }
 
     /// Set **STALLENA** `[5:5]`
+    ///
     /// Stall the PE to guarantee delivery of Data Trace packets.
     #[inline(always)]
     pub const fn with_stallena(self, value: bool) -> Self {
@@ -4638,6 +4942,7 @@ impl ItmTcrVal {
     }
 
     /// Set **SWOENA** `[4:4]`
+    ///
     /// Enables asynchronous clocking of the timestamp counter
     #[inline(always)]
     pub const fn with_swoena(self, value: bool) -> Self {
@@ -4651,6 +4956,7 @@ impl ItmTcrVal {
     }
 
     /// Set **TXENA** `[3:3]`
+    ///
     /// Enables forwarding of hardware event packet from the DWT unit to the ITM for output to the TPIU
     #[inline(always)]
     pub const fn with_txena(self, value: bool) -> Self {
@@ -4664,6 +4970,7 @@ impl ItmTcrVal {
     }
 
     /// Set **SYNCENA** `[2:2]`
+    ///
     /// Enables Synchronization packet transmission for a synchronous TPIU
     #[inline(always)]
     pub const fn with_syncena(self, value: bool) -> Self {
@@ -4677,6 +4984,7 @@ impl ItmTcrVal {
     }
 
     /// Set **TSENA** `[1:1]`
+    ///
     /// Enables Local timestamp generation
     #[inline(always)]
     pub const fn with_tsena(self, value: bool) -> Self {
@@ -4690,6 +4998,7 @@ impl ItmTcrVal {
     }
 
     /// Set **ITMENA** `[0:0]`
+    ///
     /// Enables the ITM
     #[inline(always)]
     pub const fn with_itmena(self, value: bool) -> Self {
@@ -4741,8 +5050,11 @@ impl ItmTcr {
 /// ## Fields
 ///
 /// - **AFVALID** `[1]` (RO)
+///
 ///   A read of this bit returns the value of AFVALID
+///
 /// - **ATREADY** `[0]` (RO)
+///
 ///   A read of this bit returns the value of ATREADY
 #[repr(transparent)]
 pub struct IntAtready {
@@ -4761,14 +5073,18 @@ impl IntAtready {
     // ======== Field Constants ========
 
     /// **AFVALID**
+    ///
     /// A read of this bit returns the value of AFVALID
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AFVALID_OFFSET: u32 = 1;
     pub const AFVALID_MASK: u32 = 0x00000002;
     pub const AFVALID: u32 = 1 << 1;
 
     /// **ATREADY**
+    ///
     /// A read of this bit returns the value of ATREADY
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ATREADY_OFFSET: u32 = 0;
     pub const ATREADY_MASK: u32 = 0x00000001;
@@ -4777,6 +5093,7 @@ impl IntAtready {
     // ======== Field Accessors ========
 
     /// **AFVALID** `[1]` (RO)
+    ///
     /// A read of this bit returns the value of AFVALID
     #[inline(always)]
     pub fn afvalid(&self) -> bool {
@@ -4784,6 +5101,7 @@ impl IntAtready {
     }
 
     /// **ATREADY** `[0]` (RO)
+    ///
     /// A read of this bit returns the value of ATREADY
     #[inline(always)]
     pub fn atready(&self) -> bool {
@@ -4821,6 +5139,7 @@ impl IntAtreadyVal {
     }
 
     /// Read **AFVALID** `[1:1]`
+    ///
     /// A read of this bit returns the value of AFVALID
     #[inline(always)]
     pub const fn afvalid(&self) -> bool {
@@ -4828,6 +5147,7 @@ impl IntAtreadyVal {
     }
 
     /// Read **ATREADY** `[0:0]`
+    ///
     /// A read of this bit returns the value of ATREADY
     #[inline(always)]
     pub const fn atready(&self) -> bool {
@@ -4873,8 +5193,11 @@ impl IntAtready {
 /// ## Fields
 ///
 /// - **AFREADY** `[1]` (RW)
+///
 ///   A write to this bit gives the value of AFREADY
+///
 /// - **ATREADY** `[0]` (RW)
+///
 ///   A write to this bit gives the value of ATVALID
 #[repr(transparent)]
 pub struct IntAtvalid {
@@ -4893,14 +5216,18 @@ impl IntAtvalid {
     // ======== Field Constants ========
 
     /// **AFREADY**
+    ///
     /// A write to this bit gives the value of AFREADY
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AFREADY_OFFSET: u32 = 1;
     pub const AFREADY_MASK: u32 = 0x00000002;
     pub const AFREADY: u32 = 1 << 1;
 
     /// **ATREADY**
+    ///
     /// A write to this bit gives the value of ATVALID
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ATREADY_OFFSET: u32 = 0;
     pub const ATREADY_MASK: u32 = 0x00000001;
@@ -4909,6 +5236,7 @@ impl IntAtvalid {
     // ======== Field Accessors ========
 
     /// **AFREADY** `[1]` (RW)
+    ///
     /// A write to this bit gives the value of AFREADY
     #[inline(always)]
     pub fn afready(&self) -> bool {
@@ -4928,6 +5256,7 @@ impl IntAtvalid {
     }
 
     /// **ATREADY** `[0]` (RW)
+    ///
     /// A write to this bit gives the value of ATVALID
     #[inline(always)]
     pub fn atready(&self) -> bool {
@@ -4977,6 +5306,7 @@ impl IntAtvalidVal {
     }
 
     /// Read **AFREADY** `[1:1]`
+    ///
     /// A write to this bit gives the value of AFREADY
     #[inline(always)]
     pub const fn afready(&self) -> bool {
@@ -4984,6 +5314,7 @@ impl IntAtvalidVal {
     }
 
     /// Read **ATREADY** `[0:0]`
+    ///
     /// A write to this bit gives the value of ATVALID
     #[inline(always)]
     pub const fn atready(&self) -> bool {
@@ -4991,6 +5322,7 @@ impl IntAtvalidVal {
     }
 
     /// Set **AFREADY** `[1:1]`
+    ///
     /// A write to this bit gives the value of AFREADY
     #[inline(always)]
     pub const fn with_afready(self, value: bool) -> Self {
@@ -5004,6 +5336,7 @@ impl IntAtvalidVal {
     }
 
     /// Set **ATREADY** `[0:0]`
+    ///
     /// A write to this bit gives the value of ATVALID
     #[inline(always)]
     pub const fn with_atready(self, value: bool) -> Self {
@@ -5055,6 +5388,7 @@ impl IntAtvalid {
 /// ## Fields
 ///
 /// - **IME** `[0]` (RW)
+///
 ///   Integration mode enable bit - The possible values are: 0 - The trace unit is not in integration mode. 1 - The trace unit is in integration mode. This mode enables: A debug agent to perform topology detection. SoC test software to perform integration testing.
 #[repr(transparent)]
 pub struct ItmItctrl {
@@ -5073,7 +5407,9 @@ impl ItmItctrl {
     // ======== Field Constants ========
 
     /// **IME**
+    ///
     /// Integration mode enable bit - The possible values are: 0 - The trace unit is not in integration mode. 1 - The trace unit is in integration mode. This mode enables: A debug agent to perform topology detection. SoC test software to perform integration testing.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const IME_OFFSET: u32 = 0;
     pub const IME_MASK: u32 = 0x00000001;
@@ -5082,6 +5418,7 @@ impl ItmItctrl {
     // ======== Field Accessors ========
 
     /// **IME** `[0]` (RW)
+    ///
     /// Integration mode enable bit - The possible values are: 0 - The trace unit is not in integration mode. 1 - The trace unit is in integration mode. This mode enables: A debug agent to perform topology detection. SoC test software to perform integration testing.
     #[inline(always)]
     pub fn ime(&self) -> bool {
@@ -5131,6 +5468,7 @@ impl ItmItctrlVal {
     }
 
     /// Read **IME** `[0:0]`
+    ///
     /// Integration mode enable bit - The possible values are: 0 - The trace unit is not in integration mode. 1 - The trace unit is in integration mode. This mode enables: A debug agent to perform topology detection. SoC test software to perform integration testing.
     #[inline(always)]
     pub const fn ime(&self) -> bool {
@@ -5138,6 +5476,7 @@ impl ItmItctrlVal {
     }
 
     /// Set **IME** `[0:0]`
+    ///
     /// Integration mode enable bit - The possible values are: 0 - The trace unit is not in integration mode. 1 - The trace unit is in integration mode. This mode enables: A debug agent to perform topology detection. SoC test software to perform integration testing.
     #[inline(always)]
     pub const fn with_ime(self, value: bool) -> Self {
@@ -5189,14 +5528,23 @@ impl ItmItctrl {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   Defines that the DEVARCH register is present
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   Defines the architecture revision of the component
+///
 /// - **ARCHVER** `[15:12]` (RO)
+///
 ///   Defines the architecture version of the component
+///
 /// - **ARCHPART** `[11:0]` (RO)
+///
 ///   Defines the architecture of the component
 #[repr(transparent)]
 pub struct ItmDevarch {
@@ -5215,32 +5563,42 @@ impl ItmDevarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// Defines that the DEVARCH register is present
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// Defines the architecture revision of the component
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHVER**
+    ///
     /// Defines the architecture version of the component
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const ARCHVER_OFFSET: u32 = 12;
     pub const ARCHVER_MASK: u32 = 0x0000f000;
 
     /// **ARCHPART**
+    ///
     /// Defines the architecture of the component
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const ARCHPART_OFFSET: u32 = 0;
     pub const ARCHPART_MASK: u32 = 0x00000fff;
@@ -5248,6 +5606,7 @@ impl ItmDevarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -5255,6 +5614,7 @@ impl ItmDevarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -5262,6 +5622,7 @@ impl ItmDevarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -5269,6 +5630,7 @@ impl ItmDevarch {
     }
 
     /// **ARCHVER** `[15:12]` (RO)
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub fn archver(&self) -> u32 {
@@ -5276,6 +5638,7 @@ impl ItmDevarch {
     }
 
     /// **ARCHPART** `[11:0]` (RO)
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub fn archpart(&self) -> u32 {
@@ -5313,6 +5676,7 @@ impl ItmDevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -5320,6 +5684,7 @@ impl ItmDevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -5327,6 +5692,7 @@ impl ItmDevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -5334,6 +5700,7 @@ impl ItmDevarchVal {
     }
 
     /// Read **ARCHVER** `[15:12]`
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub const fn archver(&self) -> u32 {
@@ -5341,6 +5708,7 @@ impl ItmDevarchVal {
     }
 
     /// Read **ARCHPART** `[11:0]`
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub const fn archpart(&self) -> u32 {
@@ -5386,8 +5754,11 @@ impl ItmDevarch {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   Component sub-type
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   Component major type
 #[repr(transparent)]
 pub struct ItmDevtype {
@@ -5406,13 +5777,17 @@ impl ItmDevtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// Component sub-type
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// Component major type
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -5420,6 +5795,7 @@ impl ItmDevtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// Component sub-type
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -5427,6 +5803,7 @@ impl ItmDevtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// Component major type
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -5464,6 +5841,7 @@ impl ItmDevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// Component sub-type
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -5471,6 +5849,7 @@ impl ItmDevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// Component major type
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -5516,8 +5895,11 @@ impl ItmDevtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmPidr4 {
@@ -5536,13 +5918,17 @@ impl ItmPidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -5550,6 +5936,7 @@ impl ItmPidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -5557,6 +5944,7 @@ impl ItmPidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -5594,6 +5982,7 @@ impl ItmPidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -5601,6 +5990,7 @@ impl ItmPidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -6000,6 +6390,7 @@ impl ItmPidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmPidr0 {
@@ -6018,7 +6409,9 @@ impl ItmPidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -6026,6 +6419,7 @@ impl ItmPidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -6063,6 +6457,7 @@ impl ItmPidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -6108,8 +6503,11 @@ impl ItmPidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PART_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmPidr1 {
@@ -6128,13 +6526,17 @@ impl ItmPidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_1_OFFSET: u32 = 0;
     pub const PART_1_MASK: u32 = 0x0000000f;
@@ -6142,6 +6544,7 @@ impl ItmPidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -6149,6 +6552,7 @@ impl ItmPidr1 {
     }
 
     /// **PART_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_1(&self) -> u32 {
@@ -6186,6 +6590,7 @@ impl ItmPidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -6193,6 +6598,7 @@ impl ItmPidr1Val {
     }
 
     /// Read **PART_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_1(&self) -> u32 {
@@ -6238,10 +6644,15 @@ impl ItmPidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_1** `[2:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmPidr2 {
@@ -6260,20 +6671,26 @@ impl ItmPidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_1_OFFSET: u32 = 0;
     pub const DES_1_MASK: u32 = 0x00000007;
@@ -6281,6 +6698,7 @@ impl ItmPidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -6288,6 +6706,7 @@ impl ItmPidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -6295,6 +6714,7 @@ impl ItmPidr2 {
     }
 
     /// **DES_1** `[2:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_1(&self) -> u32 {
@@ -6332,6 +6752,7 @@ impl ItmPidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -6339,6 +6760,7 @@ impl ItmPidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -6346,6 +6768,7 @@ impl ItmPidr2Val {
     }
 
     /// Read **DES_1** `[2:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_1(&self) -> u32 {
@@ -6391,8 +6814,11 @@ impl ItmPidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmPidr3 {
@@ -6411,13 +6837,17 @@ impl ItmPidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -6425,6 +6855,7 @@ impl ItmPidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -6432,6 +6863,7 @@ impl ItmPidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -6469,6 +6901,7 @@ impl ItmPidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -6476,6 +6909,7 @@ impl ItmPidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -6521,6 +6955,7 @@ impl ItmPidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmCidr0 {
@@ -6539,7 +6974,9 @@ impl ItmCidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -6547,6 +6984,7 @@ impl ItmCidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -6584,6 +7022,7 @@ impl ItmCidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -6629,8 +7068,11 @@ impl ItmCidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmCidr1 {
@@ -6649,13 +7091,17 @@ impl ItmCidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -6663,6 +7109,7 @@ impl ItmCidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -6670,6 +7117,7 @@ impl ItmCidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -6707,6 +7155,7 @@ impl ItmCidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -6714,6 +7163,7 @@ impl ItmCidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -6759,6 +7209,7 @@ impl ItmCidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmCidr2 {
@@ -6777,7 +7228,9 @@ impl ItmCidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -6785,6 +7238,7 @@ impl ItmCidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -6822,6 +7276,7 @@ impl ItmCidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -6867,6 +7322,7 @@ impl ItmCidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct ItmCidr3 {
@@ -6885,7 +7341,9 @@ impl ItmCidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -6893,6 +7351,7 @@ impl ItmCidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -6930,6 +7389,7 @@ impl ItmCidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {
@@ -6975,42 +7435,79 @@ impl ItmCidr3 {
 /// ## Fields
 ///
 /// - **NUMCOMP** `[31:28]` (RO)
+///
 ///   Number of DWT comparators implemented
+///
 /// - **NOTRCPKT** `[27]` (RO)
+///
 ///   Indicates whether the implementation does not support trace
+///
 /// - **NOEXTTRIG** `[26]` (RO)
+///
 ///   Reserved, RAZ
+///
 /// - **NOCYCCNT** `[25]` (RO)
+///
 ///   Indicates whether the implementation does not include a cycle counter
+///
 /// - **NOPRFCNT** `[24]` (RO)
+///
 ///   Indicates whether the implementation does not include the profiling counters
+///
 /// - **CYCDISS** `[23]` (RW)
+///
 ///   Controls whether the cycle counter is disabled in Secure state
+///
 /// - **CYCEVTENA** `[22]` (RW)
+///
 ///   Enables Event Counter packet generation on POSTCNT underflow
+///
 /// - **FOLDEVTENA** `[21]` (RW)
+///
 ///   Enables DWT_FOLDCNT counter
+///
 /// - **LSUEVTENA** `[20]` (RW)
+///
 ///   Enables DWT_LSUCNT counter
+///
 /// - **SLEEPEVTENA** `[19]` (RW)
+///
 ///   Enable DWT_SLEEPCNT counter
+///
 /// - **EXCEVTENA** `[18]` (RW)
+///
 ///   Enables DWT_EXCCNT counter
+///
 /// - **CPIEVTENA** `[17]` (RW)
+///
 ///   Enables DWT_CPICNT counter
+///
 /// - **EXTTRCENA** `[16]` (RW)
+///
 ///   Enables generation of Exception Trace packets
+///
 /// - **PCSAMPLENA** `[12]` (RW)
+///
 ///   Enables use of POSTCNT counter as a timer for Periodic PC Sample packet generation
+///
 /// - **SYNCTAP** `[11:10]` (RW)
+///
 ///   Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
+///
 /// - **CYCTAP** `[9]` (RW)
+///
 ///   Selects the position of the POSTCNT tap on the CYCCNT counter
+///
 /// - **POSTINIT** `[8:5]` (RW)
+///
 ///   Initial value for the POSTCNT counter
+///
 /// - **POSTPRESET** `[4:1]` (RW)
+///
 ///   Reload value for the POSTCNT counter
+///
 /// - **CYCCNTENA** `[0]` (RW)
+///
 ///   Enables CYCCNT
 #[repr(transparent)]
 pub struct DwtCtrl {
@@ -7029,129 +7526,167 @@ impl DwtCtrl {
     // ======== Field Constants ========
 
     /// **NUMCOMP**
+    ///
     /// Number of DWT comparators implemented
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const NUMCOMP_OFFSET: u32 = 28;
     pub const NUMCOMP_MASK: u32 = 0xf0000000;
 
     /// **NOTRCPKT**
+    ///
     /// Indicates whether the implementation does not support trace
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const NOTRCPKT_OFFSET: u32 = 27;
     pub const NOTRCPKT_MASK: u32 = 0x08000000;
     pub const NOTRCPKT: u32 = 1 << 27;
 
     /// **NOEXTTRIG**
+    ///
     /// Reserved, RAZ
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const NOEXTTRIG_OFFSET: u32 = 26;
     pub const NOEXTTRIG_MASK: u32 = 0x04000000;
     pub const NOEXTTRIG: u32 = 1 << 26;
 
     /// **NOCYCCNT**
+    ///
     /// Indicates whether the implementation does not include a cycle counter
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const NOCYCCNT_OFFSET: u32 = 25;
     pub const NOCYCCNT_MASK: u32 = 0x02000000;
     pub const NOCYCCNT: u32 = 1 << 25;
 
     /// **NOPRFCNT**
+    ///
     /// Indicates whether the implementation does not include the profiling counters
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const NOPRFCNT_OFFSET: u32 = 24;
     pub const NOPRFCNT_MASK: u32 = 0x01000000;
     pub const NOPRFCNT: u32 = 1 << 24;
 
     /// **CYCDISS**
+    ///
     /// Controls whether the cycle counter is disabled in Secure state
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const CYCDISS_OFFSET: u32 = 23;
     pub const CYCDISS_MASK: u32 = 0x00800000;
     pub const CYCDISS: u32 = 1 << 23;
 
     /// **CYCEVTENA**
+    ///
     /// Enables Event Counter packet generation on POSTCNT underflow
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const CYCEVTENA_OFFSET: u32 = 22;
     pub const CYCEVTENA_MASK: u32 = 0x00400000;
     pub const CYCEVTENA: u32 = 1 << 22;
 
     /// **FOLDEVTENA**
+    ///
     /// Enables DWT_FOLDCNT counter
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const FOLDEVTENA_OFFSET: u32 = 21;
     pub const FOLDEVTENA_MASK: u32 = 0x00200000;
     pub const FOLDEVTENA: u32 = 1 << 21;
 
     /// **LSUEVTENA**
+    ///
     /// Enables DWT_LSUCNT counter
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const LSUEVTENA_OFFSET: u32 = 20;
     pub const LSUEVTENA_MASK: u32 = 0x00100000;
     pub const LSUEVTENA: u32 = 1 << 20;
 
     /// **SLEEPEVTENA**
+    ///
     /// Enable DWT_SLEEPCNT counter
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const SLEEPEVTENA_OFFSET: u32 = 19;
     pub const SLEEPEVTENA_MASK: u32 = 0x00080000;
     pub const SLEEPEVTENA: u32 = 1 << 19;
 
     /// **EXCEVTENA**
+    ///
     /// Enables DWT_EXCCNT counter
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const EXCEVTENA_OFFSET: u32 = 18;
     pub const EXCEVTENA_MASK: u32 = 0x00040000;
     pub const EXCEVTENA: u32 = 1 << 18;
 
     /// **CPIEVTENA**
+    ///
     /// Enables DWT_CPICNT counter
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CPIEVTENA_OFFSET: u32 = 17;
     pub const CPIEVTENA_MASK: u32 = 0x00020000;
     pub const CPIEVTENA: u32 = 1 << 17;
 
     /// **EXTTRCENA**
+    ///
     /// Enables generation of Exception Trace packets
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const EXTTRCENA_OFFSET: u32 = 16;
     pub const EXTTRCENA_MASK: u32 = 0x00010000;
     pub const EXTTRCENA: u32 = 1 << 16;
 
     /// **PCSAMPLENA**
+    ///
     /// Enables use of POSTCNT counter as a timer for Periodic PC Sample packet generation
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const PCSAMPLENA_OFFSET: u32 = 12;
     pub const PCSAMPLENA_MASK: u32 = 0x00001000;
     pub const PCSAMPLENA: u32 = 1 << 12;
 
     /// **SYNCTAP**
+    ///
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const SYNCTAP_OFFSET: u32 = 10;
     pub const SYNCTAP_MASK: u32 = 0x00000c00;
 
     /// **CYCTAP**
+    ///
     /// Selects the position of the POSTCNT tap on the CYCCNT counter
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const CYCTAP_OFFSET: u32 = 9;
     pub const CYCTAP_MASK: u32 = 0x00000200;
     pub const CYCTAP: u32 = 1 << 9;
 
     /// **POSTINIT**
+    ///
     /// Initial value for the POSTCNT counter
+    ///
     /// Bits `[8:5]`, mask `0x000001e0`
     pub const POSTINIT_OFFSET: u32 = 5;
     pub const POSTINIT_MASK: u32 = 0x000001e0;
 
     /// **POSTPRESET**
+    ///
     /// Reload value for the POSTCNT counter
+    ///
     /// Bits `[4:1]`, mask `0x0000001e`
     pub const POSTPRESET_OFFSET: u32 = 1;
     pub const POSTPRESET_MASK: u32 = 0x0000001e;
 
     /// **CYCCNTENA**
+    ///
     /// Enables CYCCNT
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CYCCNTENA_OFFSET: u32 = 0;
     pub const CYCCNTENA_MASK: u32 = 0x00000001;
@@ -7160,6 +7695,7 @@ impl DwtCtrl {
     // ======== Field Accessors ========
 
     /// **NUMCOMP** `[31:28]` (RO)
+    ///
     /// Number of DWT comparators implemented
     #[inline(always)]
     pub fn numcomp(&self) -> u32 {
@@ -7167,6 +7703,7 @@ impl DwtCtrl {
     }
 
     /// **NOTRCPKT** `[27]` (RO)
+    ///
     /// Indicates whether the implementation does not support trace
     #[inline(always)]
     pub fn notrcpkt(&self) -> bool {
@@ -7174,6 +7711,7 @@ impl DwtCtrl {
     }
 
     /// **NOEXTTRIG** `[26]` (RO)
+    ///
     /// Reserved, RAZ
     #[inline(always)]
     pub fn noexttrig(&self) -> bool {
@@ -7181,6 +7719,7 @@ impl DwtCtrl {
     }
 
     /// **NOCYCCNT** `[25]` (RO)
+    ///
     /// Indicates whether the implementation does not include a cycle counter
     #[inline(always)]
     pub fn nocyccnt(&self) -> bool {
@@ -7188,6 +7727,7 @@ impl DwtCtrl {
     }
 
     /// **NOPRFCNT** `[24]` (RO)
+    ///
     /// Indicates whether the implementation does not include the profiling counters
     #[inline(always)]
     pub fn noprfcnt(&self) -> bool {
@@ -7195,6 +7735,7 @@ impl DwtCtrl {
     }
 
     /// **CYCDISS** `[23]` (RW)
+    ///
     /// Controls whether the cycle counter is disabled in Secure state
     #[inline(always)]
     pub fn cycdiss(&self) -> bool {
@@ -7214,6 +7755,7 @@ impl DwtCtrl {
     }
 
     /// **CYCEVTENA** `[22]` (RW)
+    ///
     /// Enables Event Counter packet generation on POSTCNT underflow
     #[inline(always)]
     pub fn cycevtena(&self) -> bool {
@@ -7233,6 +7775,7 @@ impl DwtCtrl {
     }
 
     /// **FOLDEVTENA** `[21]` (RW)
+    ///
     /// Enables DWT_FOLDCNT counter
     #[inline(always)]
     pub fn foldevtena(&self) -> bool {
@@ -7252,6 +7795,7 @@ impl DwtCtrl {
     }
 
     /// **LSUEVTENA** `[20]` (RW)
+    ///
     /// Enables DWT_LSUCNT counter
     #[inline(always)]
     pub fn lsuevtena(&self) -> bool {
@@ -7271,6 +7815,7 @@ impl DwtCtrl {
     }
 
     /// **SLEEPEVTENA** `[19]` (RW)
+    ///
     /// Enable DWT_SLEEPCNT counter
     #[inline(always)]
     pub fn sleepevtena(&self) -> bool {
@@ -7290,6 +7835,7 @@ impl DwtCtrl {
     }
 
     /// **EXCEVTENA** `[18]` (RW)
+    ///
     /// Enables DWT_EXCCNT counter
     #[inline(always)]
     pub fn excevtena(&self) -> bool {
@@ -7309,6 +7855,7 @@ impl DwtCtrl {
     }
 
     /// **CPIEVTENA** `[17]` (RW)
+    ///
     /// Enables DWT_CPICNT counter
     #[inline(always)]
     pub fn cpievtena(&self) -> bool {
@@ -7328,6 +7875,7 @@ impl DwtCtrl {
     }
 
     /// **EXTTRCENA** `[16]` (RW)
+    ///
     /// Enables generation of Exception Trace packets
     #[inline(always)]
     pub fn exttrcena(&self) -> bool {
@@ -7347,6 +7895,7 @@ impl DwtCtrl {
     }
 
     /// **PCSAMPLENA** `[12]` (RW)
+    ///
     /// Enables use of POSTCNT counter as a timer for Periodic PC Sample packet generation
     #[inline(always)]
     pub fn pcsamplena(&self) -> bool {
@@ -7366,6 +7915,7 @@ impl DwtCtrl {
     }
 
     /// **SYNCTAP** `[11:10]` (RW)
+    ///
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
     #[inline(always)]
     pub fn synctap(&self) -> u32 {
@@ -7373,6 +7923,7 @@ impl DwtCtrl {
     }
 
     /// Write **SYNCTAP** `[11:10]` (RW)
+    ///
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
     #[inline(always)]
     pub fn write_synctap(&self, value: u32) {
@@ -7380,6 +7931,7 @@ impl DwtCtrl {
     }
 
     /// **CYCTAP** `[9]` (RW)
+    ///
     /// Selects the position of the POSTCNT tap on the CYCCNT counter
     #[inline(always)]
     pub fn cyctap(&self) -> bool {
@@ -7399,6 +7951,7 @@ impl DwtCtrl {
     }
 
     /// **POSTINIT** `[8:5]` (RW)
+    ///
     /// Initial value for the POSTCNT counter
     #[inline(always)]
     pub fn postinit(&self) -> u32 {
@@ -7406,6 +7959,7 @@ impl DwtCtrl {
     }
 
     /// Write **POSTINIT** `[8:5]` (RW)
+    ///
     /// Initial value for the POSTCNT counter
     #[inline(always)]
     pub fn write_postinit(&self, value: u32) {
@@ -7413,6 +7967,7 @@ impl DwtCtrl {
     }
 
     /// **POSTPRESET** `[4:1]` (RW)
+    ///
     /// Reload value for the POSTCNT counter
     #[inline(always)]
     pub fn postpreset(&self) -> u32 {
@@ -7420,6 +7975,7 @@ impl DwtCtrl {
     }
 
     /// Write **POSTPRESET** `[4:1]` (RW)
+    ///
     /// Reload value for the POSTCNT counter
     #[inline(always)]
     pub fn write_postpreset(&self, value: u32) {
@@ -7427,6 +7983,7 @@ impl DwtCtrl {
     }
 
     /// **CYCCNTENA** `[0]` (RW)
+    ///
     /// Enables CYCCNT
     #[inline(always)]
     pub fn cyccntena(&self) -> bool {
@@ -7476,6 +8033,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **NUMCOMP** `[31:28]`
+    ///
     /// Number of DWT comparators implemented
     #[inline(always)]
     pub const fn numcomp(&self) -> u32 {
@@ -7483,6 +8041,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **NOTRCPKT** `[27:27]`
+    ///
     /// Indicates whether the implementation does not support trace
     #[inline(always)]
     pub const fn notrcpkt(&self) -> bool {
@@ -7490,6 +8049,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **NOEXTTRIG** `[26:26]`
+    ///
     /// Reserved, RAZ
     #[inline(always)]
     pub const fn noexttrig(&self) -> bool {
@@ -7497,6 +8057,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **NOCYCCNT** `[25:25]`
+    ///
     /// Indicates whether the implementation does not include a cycle counter
     #[inline(always)]
     pub const fn nocyccnt(&self) -> bool {
@@ -7504,6 +8065,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **NOPRFCNT** `[24:24]`
+    ///
     /// Indicates whether the implementation does not include the profiling counters
     #[inline(always)]
     pub const fn noprfcnt(&self) -> bool {
@@ -7511,6 +8073,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **CYCDISS** `[23:23]`
+    ///
     /// Controls whether the cycle counter is disabled in Secure state
     #[inline(always)]
     pub const fn cycdiss(&self) -> bool {
@@ -7518,6 +8081,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **CYCEVTENA** `[22:22]`
+    ///
     /// Enables Event Counter packet generation on POSTCNT underflow
     #[inline(always)]
     pub const fn cycevtena(&self) -> bool {
@@ -7525,6 +8089,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **FOLDEVTENA** `[21:21]`
+    ///
     /// Enables DWT_FOLDCNT counter
     #[inline(always)]
     pub const fn foldevtena(&self) -> bool {
@@ -7532,6 +8097,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **LSUEVTENA** `[20:20]`
+    ///
     /// Enables DWT_LSUCNT counter
     #[inline(always)]
     pub const fn lsuevtena(&self) -> bool {
@@ -7539,6 +8105,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **SLEEPEVTENA** `[19:19]`
+    ///
     /// Enable DWT_SLEEPCNT counter
     #[inline(always)]
     pub const fn sleepevtena(&self) -> bool {
@@ -7546,6 +8113,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **EXCEVTENA** `[18:18]`
+    ///
     /// Enables DWT_EXCCNT counter
     #[inline(always)]
     pub const fn excevtena(&self) -> bool {
@@ -7553,6 +8121,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **CPIEVTENA** `[17:17]`
+    ///
     /// Enables DWT_CPICNT counter
     #[inline(always)]
     pub const fn cpievtena(&self) -> bool {
@@ -7560,6 +8129,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **EXTTRCENA** `[16:16]`
+    ///
     /// Enables generation of Exception Trace packets
     #[inline(always)]
     pub const fn exttrcena(&self) -> bool {
@@ -7567,6 +8137,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **PCSAMPLENA** `[12:12]`
+    ///
     /// Enables use of POSTCNT counter as a timer for Periodic PC Sample packet generation
     #[inline(always)]
     pub const fn pcsamplena(&self) -> bool {
@@ -7574,6 +8145,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **SYNCTAP** `[11:10]`
+    ///
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
     #[inline(always)]
     pub const fn synctap(&self) -> u32 {
@@ -7581,6 +8153,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **CYCTAP** `[9:9]`
+    ///
     /// Selects the position of the POSTCNT tap on the CYCCNT counter
     #[inline(always)]
     pub const fn cyctap(&self) -> bool {
@@ -7588,6 +8161,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **POSTINIT** `[8:5]`
+    ///
     /// Initial value for the POSTCNT counter
     #[inline(always)]
     pub const fn postinit(&self) -> u32 {
@@ -7595,6 +8169,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **POSTPRESET** `[4:1]`
+    ///
     /// Reload value for the POSTCNT counter
     #[inline(always)]
     pub const fn postpreset(&self) -> u32 {
@@ -7602,6 +8177,7 @@ impl DwtCtrlVal {
     }
 
     /// Read **CYCCNTENA** `[0:0]`
+    ///
     /// Enables CYCCNT
     #[inline(always)]
     pub const fn cyccntena(&self) -> bool {
@@ -7609,6 +8185,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **CYCDISS** `[23:23]`
+    ///
     /// Controls whether the cycle counter is disabled in Secure state
     #[inline(always)]
     pub const fn with_cycdiss(self, value: bool) -> Self {
@@ -7622,6 +8199,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **CYCEVTENA** `[22:22]`
+    ///
     /// Enables Event Counter packet generation on POSTCNT underflow
     #[inline(always)]
     pub const fn with_cycevtena(self, value: bool) -> Self {
@@ -7635,6 +8213,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **FOLDEVTENA** `[21:21]`
+    ///
     /// Enables DWT_FOLDCNT counter
     #[inline(always)]
     pub const fn with_foldevtena(self, value: bool) -> Self {
@@ -7648,6 +8227,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **LSUEVTENA** `[20:20]`
+    ///
     /// Enables DWT_LSUCNT counter
     #[inline(always)]
     pub const fn with_lsuevtena(self, value: bool) -> Self {
@@ -7661,6 +8241,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **SLEEPEVTENA** `[19:19]`
+    ///
     /// Enable DWT_SLEEPCNT counter
     #[inline(always)]
     pub const fn with_sleepevtena(self, value: bool) -> Self {
@@ -7674,6 +8255,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **EXCEVTENA** `[18:18]`
+    ///
     /// Enables DWT_EXCCNT counter
     #[inline(always)]
     pub const fn with_excevtena(self, value: bool) -> Self {
@@ -7687,6 +8269,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **CPIEVTENA** `[17:17]`
+    ///
     /// Enables DWT_CPICNT counter
     #[inline(always)]
     pub const fn with_cpievtena(self, value: bool) -> Self {
@@ -7700,6 +8283,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **EXTTRCENA** `[16:16]`
+    ///
     /// Enables generation of Exception Trace packets
     #[inline(always)]
     pub const fn with_exttrcena(self, value: bool) -> Self {
@@ -7713,6 +8297,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **PCSAMPLENA** `[12:12]`
+    ///
     /// Enables use of POSTCNT counter as a timer for Periodic PC Sample packet generation
     #[inline(always)]
     pub const fn with_pcsamplena(self, value: bool) -> Self {
@@ -7726,6 +8311,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **SYNCTAP** `[11:10]`
+    ///
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
     #[inline(always)]
     pub const fn with_synctap(self, value: u32) -> Self {
@@ -7735,6 +8321,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **CYCTAP** `[9:9]`
+    ///
     /// Selects the position of the POSTCNT tap on the CYCCNT counter
     #[inline(always)]
     pub const fn with_cyctap(self, value: bool) -> Self {
@@ -7748,6 +8335,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **POSTINIT** `[8:5]`
+    ///
     /// Initial value for the POSTCNT counter
     #[inline(always)]
     pub const fn with_postinit(self, value: u32) -> Self {
@@ -7757,6 +8345,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **POSTPRESET** `[4:1]`
+    ///
     /// Reload value for the POSTCNT counter
     #[inline(always)]
     pub const fn with_postpreset(self, value: u32) -> Self {
@@ -7766,6 +8355,7 @@ impl DwtCtrlVal {
     }
 
     /// Set **CYCCNTENA** `[0:0]`
+    ///
     /// Enables CYCCNT
     #[inline(always)]
     pub const fn with_cyccntena(self, value: bool) -> Self {
@@ -7817,6 +8407,7 @@ impl DwtCtrl {
 /// ## Fields
 ///
 /// - **CYCCNT** `[31:0]` (RW)
+///
 ///   Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
 #[repr(transparent)]
 pub struct DwtCyccnt {
@@ -7835,7 +8426,9 @@ impl DwtCyccnt {
     // ======== Field Constants ========
 
     /// **CYCCNT**
+    ///
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CYCCNT_OFFSET: u32 = 0;
     pub const CYCCNT_MASK: u32 = 0xffffffff;
@@ -7843,6 +8436,7 @@ impl DwtCyccnt {
     // ======== Field Accessors ========
 
     /// **CYCCNT** `[31:0]` (RW)
+    ///
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
     #[inline(always)]
     pub fn cyccnt(&self) -> u32 {
@@ -7850,6 +8444,7 @@ impl DwtCyccnt {
     }
 
     /// Write **CYCCNT** `[31:0]` (RW)
+    ///
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
     #[inline(always)]
     pub fn write_cyccnt(&self, value: u32) {
@@ -7887,6 +8482,7 @@ impl DwtCyccntVal {
     }
 
     /// Read **CYCCNT** `[31:0]`
+    ///
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
     #[inline(always)]
     pub const fn cyccnt(&self) -> u32 {
@@ -7894,6 +8490,7 @@ impl DwtCyccntVal {
     }
 
     /// Set **CYCCNT** `[31:0]`
+    ///
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
     #[inline(always)]
     pub const fn with_cyccnt(self, value: u32) -> Self {
@@ -7941,6 +8538,7 @@ impl DwtCyccnt {
 /// ## Fields
 ///
 /// - **EXCCNT** `[7:0]` (RW)
+///
 ///   Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
 #[repr(transparent)]
 pub struct DwtExccnt {
@@ -7959,7 +8557,9 @@ impl DwtExccnt {
     // ======== Field Constants ========
 
     /// **EXCCNT**
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const EXCCNT_OFFSET: u32 = 0;
     pub const EXCCNT_MASK: u32 = 0x000000ff;
@@ -7967,6 +8567,7 @@ impl DwtExccnt {
     // ======== Field Accessors ========
 
     /// **EXCCNT** `[7:0]` (RW)
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn exccnt(&self) -> u32 {
@@ -7974,6 +8575,7 @@ impl DwtExccnt {
     }
 
     /// Write **EXCCNT** `[7:0]` (RW)
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn write_exccnt(&self, value: u32) {
@@ -8011,6 +8613,7 @@ impl DwtExccntVal {
     }
 
     /// Read **EXCCNT** `[7:0]`
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub const fn exccnt(&self) -> u32 {
@@ -8018,6 +8621,7 @@ impl DwtExccntVal {
     }
 
     /// Set **EXCCNT** `[7:0]`
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub const fn with_exccnt(self, value: u32) -> Self {
@@ -8065,6 +8669,7 @@ impl DwtExccnt {
 /// ## Fields
 ///
 /// - **LSUCNT** `[7:0]` (RW)
+///
 ///   Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
 #[repr(transparent)]
 pub struct DwtLsucnt {
@@ -8083,7 +8688,9 @@ impl DwtLsucnt {
     // ======== Field Constants ========
 
     /// **LSUCNT**
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const LSUCNT_OFFSET: u32 = 0;
     pub const LSUCNT_MASK: u32 = 0x000000ff;
@@ -8091,6 +8698,7 @@ impl DwtLsucnt {
     // ======== Field Accessors ========
 
     /// **LSUCNT** `[7:0]` (RW)
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn lsucnt(&self) -> u32 {
@@ -8098,6 +8706,7 @@ impl DwtLsucnt {
     }
 
     /// Write **LSUCNT** `[7:0]` (RW)
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn write_lsucnt(&self, value: u32) {
@@ -8135,6 +8744,7 @@ impl DwtLsucntVal {
     }
 
     /// Read **LSUCNT** `[7:0]`
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub const fn lsucnt(&self) -> u32 {
@@ -8142,6 +8752,7 @@ impl DwtLsucntVal {
     }
 
     /// Set **LSUCNT** `[7:0]`
+    ///
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub const fn with_lsucnt(self, value: u32) -> Self {
@@ -8189,6 +8800,7 @@ impl DwtLsucnt {
 /// ## Fields
 ///
 /// - **FOLDCNT** `[7:0]` (RW)
+///
 ///   Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
 #[repr(transparent)]
 pub struct DwtFoldcnt {
@@ -8207,7 +8819,9 @@ impl DwtFoldcnt {
     // ======== Field Constants ========
 
     /// **FOLDCNT**
+    ///
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const FOLDCNT_OFFSET: u32 = 0;
     pub const FOLDCNT_MASK: u32 = 0x000000ff;
@@ -8215,6 +8829,7 @@ impl DwtFoldcnt {
     // ======== Field Accessors ========
 
     /// **FOLDCNT** `[7:0]` (RW)
+    ///
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
     #[inline(always)]
     pub fn foldcnt(&self) -> u32 {
@@ -8222,6 +8837,7 @@ impl DwtFoldcnt {
     }
 
     /// Write **FOLDCNT** `[7:0]` (RW)
+    ///
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
     #[inline(always)]
     pub fn write_foldcnt(&self, value: u32) {
@@ -8259,6 +8875,7 @@ impl DwtFoldcntVal {
     }
 
     /// Read **FOLDCNT** `[7:0]`
+    ///
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
     #[inline(always)]
     pub const fn foldcnt(&self) -> u32 {
@@ -8266,6 +8883,7 @@ impl DwtFoldcntVal {
     }
 
     /// Set **FOLDCNT** `[7:0]`
+    ///
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
     #[inline(always)]
     pub const fn with_foldcnt(self, value: u32) -> Self {
@@ -8431,14 +9049,23 @@ impl DwtComp0 {
 /// ## Fields
 ///
 /// - **ID** `[31:27]` (RO)
+///
 ///   Identifies the capabilities for MATCH for comparator *n
+///
 /// - **MATCHED** `[24]` (RO)
+///
 ///   Set to 1 when the comparator matches
+///
 /// - **DATAVSIZE** `[11:10]` (RW)
+///
 ///   Defines the size of the object being watched for by Data Value and Data Address comparators
+///
 /// - **ACTION** `[5:4]` (RW)
+///
 ///   Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+///
 /// - **MATCH** `[3:0]` (RW)
+///
 ///   Controls the type of match generated by this comparator
 #[repr(transparent)]
 pub struct DwtFunction0 {
@@ -8457,32 +9084,42 @@ impl DwtFunction0 {
     // ======== Field Constants ========
 
     /// **ID**
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
+    ///
     /// Bits `[31:27]`, mask `0xf8000000`
     pub const ID_OFFSET: u32 = 27;
     pub const ID_MASK: u32 = 0xf8000000;
 
     /// **MATCHED**
+    ///
     /// Set to 1 when the comparator matches
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const MATCHED_OFFSET: u32 = 24;
     pub const MATCHED_MASK: u32 = 0x01000000;
     pub const MATCHED: u32 = 1 << 24;
 
     /// **DATAVSIZE**
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const DATAVSIZE_OFFSET: u32 = 10;
     pub const DATAVSIZE_MASK: u32 = 0x00000c00;
 
     /// **ACTION**
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const ACTION_OFFSET: u32 = 4;
     pub const ACTION_MASK: u32 = 0x00000030;
 
     /// **MATCH**
+    ///
     /// Controls the type of match generated by this comparator
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MATCH_OFFSET: u32 = 0;
     pub const MATCH_MASK: u32 = 0x0000000f;
@@ -8490,6 +9127,7 @@ impl DwtFunction0 {
     // ======== Field Accessors ========
 
     /// **ID** `[31:27]` (RO)
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub fn id(&self) -> u32 {
@@ -8497,6 +9135,7 @@ impl DwtFunction0 {
     }
 
     /// **MATCHED** `[24]` (RO)
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub fn matched(&self) -> bool {
@@ -8504,6 +9143,7 @@ impl DwtFunction0 {
     }
 
     /// **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn datavsize(&self) -> u32 {
@@ -8511,6 +9151,7 @@ impl DwtFunction0 {
     }
 
     /// Write **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
@@ -8518,6 +9159,7 @@ impl DwtFunction0 {
     }
 
     /// **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn action(&self) -> u32 {
@@ -8525,6 +9167,7 @@ impl DwtFunction0 {
     }
 
     /// Write **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
@@ -8532,6 +9175,7 @@ impl DwtFunction0 {
     }
 
     /// **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn r#match(&self) -> u32 {
@@ -8539,6 +9183,7 @@ impl DwtFunction0 {
     }
 
     /// Write **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
@@ -8576,6 +9221,7 @@ impl DwtFunction0Val {
     }
 
     /// Read **ID** `[31:27]`
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub const fn id(&self) -> u32 {
@@ -8583,6 +9229,7 @@ impl DwtFunction0Val {
     }
 
     /// Read **MATCHED** `[24:24]`
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub const fn matched(&self) -> bool {
@@ -8590,6 +9237,7 @@ impl DwtFunction0Val {
     }
 
     /// Read **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn datavsize(&self) -> u32 {
@@ -8597,6 +9245,7 @@ impl DwtFunction0Val {
     }
 
     /// Read **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn action(&self) -> u32 {
@@ -8604,6 +9253,7 @@ impl DwtFunction0Val {
     }
 
     /// Read **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn r#match(&self) -> u32 {
@@ -8611,6 +9261,7 @@ impl DwtFunction0Val {
     }
 
     /// Set **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
@@ -8620,6 +9271,7 @@ impl DwtFunction0Val {
     }
 
     /// Set **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
@@ -8629,6 +9281,7 @@ impl DwtFunction0Val {
     }
 
     /// Set **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
@@ -8794,14 +9447,23 @@ impl DwtComp1 {
 /// ## Fields
 ///
 /// - **ID** `[31:27]` (RO)
+///
 ///   Identifies the capabilities for MATCH for comparator *n
+///
 /// - **MATCHED** `[24]` (RO)
+///
 ///   Set to 1 when the comparator matches
+///
 /// - **DATAVSIZE** `[11:10]` (RW)
+///
 ///   Defines the size of the object being watched for by Data Value and Data Address comparators
+///
 /// - **ACTION** `[5:4]` (RW)
+///
 ///   Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+///
 /// - **MATCH** `[3:0]` (RW)
+///
 ///   Controls the type of match generated by this comparator
 #[repr(transparent)]
 pub struct DwtFunction1 {
@@ -8820,32 +9482,42 @@ impl DwtFunction1 {
     // ======== Field Constants ========
 
     /// **ID**
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
+    ///
     /// Bits `[31:27]`, mask `0xf8000000`
     pub const ID_OFFSET: u32 = 27;
     pub const ID_MASK: u32 = 0xf8000000;
 
     /// **MATCHED**
+    ///
     /// Set to 1 when the comparator matches
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const MATCHED_OFFSET: u32 = 24;
     pub const MATCHED_MASK: u32 = 0x01000000;
     pub const MATCHED: u32 = 1 << 24;
 
     /// **DATAVSIZE**
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const DATAVSIZE_OFFSET: u32 = 10;
     pub const DATAVSIZE_MASK: u32 = 0x00000c00;
 
     /// **ACTION**
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const ACTION_OFFSET: u32 = 4;
     pub const ACTION_MASK: u32 = 0x00000030;
 
     /// **MATCH**
+    ///
     /// Controls the type of match generated by this comparator
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MATCH_OFFSET: u32 = 0;
     pub const MATCH_MASK: u32 = 0x0000000f;
@@ -8853,6 +9525,7 @@ impl DwtFunction1 {
     // ======== Field Accessors ========
 
     /// **ID** `[31:27]` (RO)
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub fn id(&self) -> u32 {
@@ -8860,6 +9533,7 @@ impl DwtFunction1 {
     }
 
     /// **MATCHED** `[24]` (RO)
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub fn matched(&self) -> bool {
@@ -8867,6 +9541,7 @@ impl DwtFunction1 {
     }
 
     /// **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn datavsize(&self) -> u32 {
@@ -8874,6 +9549,7 @@ impl DwtFunction1 {
     }
 
     /// Write **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
@@ -8881,6 +9557,7 @@ impl DwtFunction1 {
     }
 
     /// **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn action(&self) -> u32 {
@@ -8888,6 +9565,7 @@ impl DwtFunction1 {
     }
 
     /// Write **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
@@ -8895,6 +9573,7 @@ impl DwtFunction1 {
     }
 
     /// **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn r#match(&self) -> u32 {
@@ -8902,6 +9581,7 @@ impl DwtFunction1 {
     }
 
     /// Write **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
@@ -8939,6 +9619,7 @@ impl DwtFunction1Val {
     }
 
     /// Read **ID** `[31:27]`
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub const fn id(&self) -> u32 {
@@ -8946,6 +9627,7 @@ impl DwtFunction1Val {
     }
 
     /// Read **MATCHED** `[24:24]`
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub const fn matched(&self) -> bool {
@@ -8953,6 +9635,7 @@ impl DwtFunction1Val {
     }
 
     /// Read **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn datavsize(&self) -> u32 {
@@ -8960,6 +9643,7 @@ impl DwtFunction1Val {
     }
 
     /// Read **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn action(&self) -> u32 {
@@ -8967,6 +9651,7 @@ impl DwtFunction1Val {
     }
 
     /// Read **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn r#match(&self) -> u32 {
@@ -8974,6 +9659,7 @@ impl DwtFunction1Val {
     }
 
     /// Set **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
@@ -8983,6 +9669,7 @@ impl DwtFunction1Val {
     }
 
     /// Set **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
@@ -8992,6 +9679,7 @@ impl DwtFunction1Val {
     }
 
     /// Set **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
@@ -9157,14 +9845,23 @@ impl DwtComp2 {
 /// ## Fields
 ///
 /// - **ID** `[31:27]` (RO)
+///
 ///   Identifies the capabilities for MATCH for comparator *n
+///
 /// - **MATCHED** `[24]` (RO)
+///
 ///   Set to 1 when the comparator matches
+///
 /// - **DATAVSIZE** `[11:10]` (RW)
+///
 ///   Defines the size of the object being watched for by Data Value and Data Address comparators
+///
 /// - **ACTION** `[5:4]` (RW)
+///
 ///   Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+///
 /// - **MATCH** `[3:0]` (RW)
+///
 ///   Controls the type of match generated by this comparator
 #[repr(transparent)]
 pub struct DwtFunction2 {
@@ -9183,32 +9880,42 @@ impl DwtFunction2 {
     // ======== Field Constants ========
 
     /// **ID**
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
+    ///
     /// Bits `[31:27]`, mask `0xf8000000`
     pub const ID_OFFSET: u32 = 27;
     pub const ID_MASK: u32 = 0xf8000000;
 
     /// **MATCHED**
+    ///
     /// Set to 1 when the comparator matches
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const MATCHED_OFFSET: u32 = 24;
     pub const MATCHED_MASK: u32 = 0x01000000;
     pub const MATCHED: u32 = 1 << 24;
 
     /// **DATAVSIZE**
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const DATAVSIZE_OFFSET: u32 = 10;
     pub const DATAVSIZE_MASK: u32 = 0x00000c00;
 
     /// **ACTION**
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const ACTION_OFFSET: u32 = 4;
     pub const ACTION_MASK: u32 = 0x00000030;
 
     /// **MATCH**
+    ///
     /// Controls the type of match generated by this comparator
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MATCH_OFFSET: u32 = 0;
     pub const MATCH_MASK: u32 = 0x0000000f;
@@ -9216,6 +9923,7 @@ impl DwtFunction2 {
     // ======== Field Accessors ========
 
     /// **ID** `[31:27]` (RO)
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub fn id(&self) -> u32 {
@@ -9223,6 +9931,7 @@ impl DwtFunction2 {
     }
 
     /// **MATCHED** `[24]` (RO)
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub fn matched(&self) -> bool {
@@ -9230,6 +9939,7 @@ impl DwtFunction2 {
     }
 
     /// **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn datavsize(&self) -> u32 {
@@ -9237,6 +9947,7 @@ impl DwtFunction2 {
     }
 
     /// Write **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
@@ -9244,6 +9955,7 @@ impl DwtFunction2 {
     }
 
     /// **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn action(&self) -> u32 {
@@ -9251,6 +9963,7 @@ impl DwtFunction2 {
     }
 
     /// Write **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
@@ -9258,6 +9971,7 @@ impl DwtFunction2 {
     }
 
     /// **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn r#match(&self) -> u32 {
@@ -9265,6 +9979,7 @@ impl DwtFunction2 {
     }
 
     /// Write **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
@@ -9302,6 +10017,7 @@ impl DwtFunction2Val {
     }
 
     /// Read **ID** `[31:27]`
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub const fn id(&self) -> u32 {
@@ -9309,6 +10025,7 @@ impl DwtFunction2Val {
     }
 
     /// Read **MATCHED** `[24:24]`
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub const fn matched(&self) -> bool {
@@ -9316,6 +10033,7 @@ impl DwtFunction2Val {
     }
 
     /// Read **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn datavsize(&self) -> u32 {
@@ -9323,6 +10041,7 @@ impl DwtFunction2Val {
     }
 
     /// Read **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn action(&self) -> u32 {
@@ -9330,6 +10049,7 @@ impl DwtFunction2Val {
     }
 
     /// Read **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn r#match(&self) -> u32 {
@@ -9337,6 +10057,7 @@ impl DwtFunction2Val {
     }
 
     /// Set **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
@@ -9346,6 +10067,7 @@ impl DwtFunction2Val {
     }
 
     /// Set **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
@@ -9355,6 +10077,7 @@ impl DwtFunction2Val {
     }
 
     /// Set **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
@@ -9520,14 +10243,23 @@ impl DwtComp3 {
 /// ## Fields
 ///
 /// - **ID** `[31:27]` (RO)
+///
 ///   Identifies the capabilities for MATCH for comparator *n
+///
 /// - **MATCHED** `[24]` (RO)
+///
 ///   Set to 1 when the comparator matches
+///
 /// - **DATAVSIZE** `[11:10]` (RW)
+///
 ///   Defines the size of the object being watched for by Data Value and Data Address comparators
+///
 /// - **ACTION** `[5:4]` (RW)
+///
 ///   Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+///
 /// - **MATCH** `[3:0]` (RW)
+///
 ///   Controls the type of match generated by this comparator
 #[repr(transparent)]
 pub struct DwtFunction3 {
@@ -9546,32 +10278,42 @@ impl DwtFunction3 {
     // ======== Field Constants ========
 
     /// **ID**
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
+    ///
     /// Bits `[31:27]`, mask `0xf8000000`
     pub const ID_OFFSET: u32 = 27;
     pub const ID_MASK: u32 = 0xf8000000;
 
     /// **MATCHED**
+    ///
     /// Set to 1 when the comparator matches
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const MATCHED_OFFSET: u32 = 24;
     pub const MATCHED_MASK: u32 = 0x01000000;
     pub const MATCHED: u32 = 1 << 24;
 
     /// **DATAVSIZE**
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const DATAVSIZE_OFFSET: u32 = 10;
     pub const DATAVSIZE_MASK: u32 = 0x00000c00;
 
     /// **ACTION**
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const ACTION_OFFSET: u32 = 4;
     pub const ACTION_MASK: u32 = 0x00000030;
 
     /// **MATCH**
+    ///
     /// Controls the type of match generated by this comparator
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MATCH_OFFSET: u32 = 0;
     pub const MATCH_MASK: u32 = 0x0000000f;
@@ -9579,6 +10321,7 @@ impl DwtFunction3 {
     // ======== Field Accessors ========
 
     /// **ID** `[31:27]` (RO)
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub fn id(&self) -> u32 {
@@ -9586,6 +10329,7 @@ impl DwtFunction3 {
     }
 
     /// **MATCHED** `[24]` (RO)
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub fn matched(&self) -> bool {
@@ -9593,6 +10337,7 @@ impl DwtFunction3 {
     }
 
     /// **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn datavsize(&self) -> u32 {
@@ -9600,6 +10345,7 @@ impl DwtFunction3 {
     }
 
     /// Write **DATAVSIZE** `[11:10]` (RW)
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
@@ -9607,6 +10353,7 @@ impl DwtFunction3 {
     }
 
     /// **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn action(&self) -> u32 {
@@ -9614,6 +10361,7 @@ impl DwtFunction3 {
     }
 
     /// Write **ACTION** `[5:4]` (RW)
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
@@ -9621,6 +10369,7 @@ impl DwtFunction3 {
     }
 
     /// **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn r#match(&self) -> u32 {
@@ -9628,6 +10377,7 @@ impl DwtFunction3 {
     }
 
     /// Write **MATCH** `[3:0]` (RW)
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
@@ -9665,6 +10415,7 @@ impl DwtFunction3Val {
     }
 
     /// Read **ID** `[31:27]`
+    ///
     /// Identifies the capabilities for MATCH for comparator *n
     #[inline(always)]
     pub const fn id(&self) -> u32 {
@@ -9672,6 +10423,7 @@ impl DwtFunction3Val {
     }
 
     /// Read **MATCHED** `[24:24]`
+    ///
     /// Set to 1 when the comparator matches
     #[inline(always)]
     pub const fn matched(&self) -> bool {
@@ -9679,6 +10431,7 @@ impl DwtFunction3Val {
     }
 
     /// Read **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn datavsize(&self) -> u32 {
@@ -9686,6 +10439,7 @@ impl DwtFunction3Val {
     }
 
     /// Read **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn action(&self) -> u32 {
@@ -9693,6 +10447,7 @@ impl DwtFunction3Val {
     }
 
     /// Read **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn r#match(&self) -> u32 {
@@ -9700,6 +10455,7 @@ impl DwtFunction3Val {
     }
 
     /// Set **DATAVSIZE** `[11:10]`
+    ///
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
@@ -9709,6 +10465,7 @@ impl DwtFunction3Val {
     }
 
     /// Set **ACTION** `[5:4]`
+    ///
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
@@ -9718,6 +10475,7 @@ impl DwtFunction3Val {
     }
 
     /// Set **MATCH** `[3:0]`
+    ///
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
@@ -9765,14 +10523,23 @@ impl DwtFunction3 {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   Defines that the DEVARCH register is present
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   Defines the architecture revision of the component
+///
 /// - **ARCHVER** `[15:12]` (RO)
+///
 ///   Defines the architecture version of the component
+///
 /// - **ARCHPART** `[11:0]` (RO)
+///
 ///   Defines the architecture of the component
 #[repr(transparent)]
 pub struct DwtDevarch {
@@ -9791,32 +10558,42 @@ impl DwtDevarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// Defines that the DEVARCH register is present
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// Defines the architecture revision of the component
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHVER**
+    ///
     /// Defines the architecture version of the component
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const ARCHVER_OFFSET: u32 = 12;
     pub const ARCHVER_MASK: u32 = 0x0000f000;
 
     /// **ARCHPART**
+    ///
     /// Defines the architecture of the component
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const ARCHPART_OFFSET: u32 = 0;
     pub const ARCHPART_MASK: u32 = 0x00000fff;
@@ -9824,6 +10601,7 @@ impl DwtDevarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -9831,6 +10609,7 @@ impl DwtDevarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -9838,6 +10617,7 @@ impl DwtDevarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -9845,6 +10625,7 @@ impl DwtDevarch {
     }
 
     /// **ARCHVER** `[15:12]` (RO)
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub fn archver(&self) -> u32 {
@@ -9852,6 +10633,7 @@ impl DwtDevarch {
     }
 
     /// **ARCHPART** `[11:0]` (RO)
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub fn archpart(&self) -> u32 {
@@ -9889,6 +10671,7 @@ impl DwtDevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -9896,6 +10679,7 @@ impl DwtDevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -9903,6 +10687,7 @@ impl DwtDevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -9910,6 +10695,7 @@ impl DwtDevarchVal {
     }
 
     /// Read **ARCHVER** `[15:12]`
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub const fn archver(&self) -> u32 {
@@ -9917,6 +10703,7 @@ impl DwtDevarchVal {
     }
 
     /// Read **ARCHPART** `[11:0]`
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub const fn archpart(&self) -> u32 {
@@ -9962,8 +10749,11 @@ impl DwtDevarch {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   Component sub-type
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   Component major type
 #[repr(transparent)]
 pub struct DwtDevtype {
@@ -9982,13 +10772,17 @@ impl DwtDevtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// Component sub-type
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// Component major type
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -9996,6 +10790,7 @@ impl DwtDevtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// Component sub-type
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -10003,6 +10798,7 @@ impl DwtDevtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// Component major type
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -10040,6 +10836,7 @@ impl DwtDevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// Component sub-type
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -10047,6 +10844,7 @@ impl DwtDevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// Component major type
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -10092,8 +10890,11 @@ impl DwtDevtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtPidr4 {
@@ -10112,13 +10913,17 @@ impl DwtPidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -10126,6 +10931,7 @@ impl DwtPidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -10133,6 +10939,7 @@ impl DwtPidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -10170,6 +10977,7 @@ impl DwtPidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -10177,6 +10985,7 @@ impl DwtPidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -10576,6 +11385,7 @@ impl DwtPidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtPidr0 {
@@ -10594,7 +11404,9 @@ impl DwtPidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -10602,6 +11414,7 @@ impl DwtPidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -10639,6 +11452,7 @@ impl DwtPidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -10684,8 +11498,11 @@ impl DwtPidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PART_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtPidr1 {
@@ -10704,13 +11521,17 @@ impl DwtPidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_1_OFFSET: u32 = 0;
     pub const PART_1_MASK: u32 = 0x0000000f;
@@ -10718,6 +11539,7 @@ impl DwtPidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -10725,6 +11547,7 @@ impl DwtPidr1 {
     }
 
     /// **PART_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_1(&self) -> u32 {
@@ -10762,6 +11585,7 @@ impl DwtPidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -10769,6 +11593,7 @@ impl DwtPidr1Val {
     }
 
     /// Read **PART_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_1(&self) -> u32 {
@@ -10814,10 +11639,15 @@ impl DwtPidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_1** `[2:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtPidr2 {
@@ -10836,20 +11666,26 @@ impl DwtPidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_1_OFFSET: u32 = 0;
     pub const DES_1_MASK: u32 = 0x00000007;
@@ -10857,6 +11693,7 @@ impl DwtPidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -10864,6 +11701,7 @@ impl DwtPidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -10871,6 +11709,7 @@ impl DwtPidr2 {
     }
 
     /// **DES_1** `[2:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_1(&self) -> u32 {
@@ -10908,6 +11747,7 @@ impl DwtPidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -10915,6 +11755,7 @@ impl DwtPidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -10922,6 +11763,7 @@ impl DwtPidr2Val {
     }
 
     /// Read **DES_1** `[2:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_1(&self) -> u32 {
@@ -10967,8 +11809,11 @@ impl DwtPidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtPidr3 {
@@ -10987,13 +11832,17 @@ impl DwtPidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -11001,6 +11850,7 @@ impl DwtPidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -11008,6 +11858,7 @@ impl DwtPidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -11045,6 +11896,7 @@ impl DwtPidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -11052,6 +11904,7 @@ impl DwtPidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -11097,6 +11950,7 @@ impl DwtPidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtCidr0 {
@@ -11115,7 +11969,9 @@ impl DwtCidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -11123,6 +11979,7 @@ impl DwtCidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -11160,6 +12017,7 @@ impl DwtCidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -11205,8 +12063,11 @@ impl DwtCidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtCidr1 {
@@ -11225,13 +12086,17 @@ impl DwtCidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -11239,6 +12104,7 @@ impl DwtCidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -11246,6 +12112,7 @@ impl DwtCidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -11283,6 +12150,7 @@ impl DwtCidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -11290,6 +12158,7 @@ impl DwtCidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -11335,6 +12204,7 @@ impl DwtCidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtCidr2 {
@@ -11353,7 +12223,9 @@ impl DwtCidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -11361,6 +12233,7 @@ impl DwtCidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -11398,6 +12271,7 @@ impl DwtCidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -11443,6 +12317,7 @@ impl DwtCidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct DwtCidr3 {
@@ -11461,7 +12336,9 @@ impl DwtCidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -11469,6 +12346,7 @@ impl DwtCidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -11506,6 +12384,7 @@ impl DwtCidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {
@@ -11551,16 +12430,27 @@ impl DwtCidr3 {
 /// ## Fields
 ///
 /// - **REV** `[31:28]` (RO)
+///
 ///   Flash Patch and Breakpoint Unit architecture revision
+///
 /// - **NUM_CODE_14_12_** `[14:12]` (RO)
+///
 ///   Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
+///
 /// - **NUM_LIT** `[11:8]` (RO)
+///
 ///   Indicates the number of implemented literal address comparators. The Literal Address comparators are numbered from NUM_CODE to NUM_CODE + NUM_LIT - 1
+///
 /// - **NUM_CODE_7_4_** `[7:4]` (RO)
+///
 ///   Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
+///
 /// - **KEY** `[1]` (RW)
+///
 ///   Writes to the FP_CTRL are ignored unless KEY is concurrently written to one
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   Enables the FPB
 #[repr(transparent)]
 pub struct FpCtrl {
@@ -11579,38 +12469,50 @@ impl FpCtrl {
     // ======== Field Constants ========
 
     /// **REV**
+    ///
     /// Flash Patch and Breakpoint Unit architecture revision
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const REV_OFFSET: u32 = 28;
     pub const REV_MASK: u32 = 0xf0000000;
 
     /// **NUM_CODE_14_12_**
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const NUM_CODE_14_12_OFFSET: u32 = 12;
     pub const NUM_CODE_14_12_MASK: u32 = 0x00007000;
 
     /// **NUM_LIT**
+    ///
     /// Indicates the number of implemented literal address comparators. The Literal Address comparators are numbered from NUM_CODE to NUM_CODE + NUM_LIT - 1
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const NUM_LIT_OFFSET: u32 = 8;
     pub const NUM_LIT_MASK: u32 = 0x00000f00;
 
     /// **NUM_CODE_7_4_**
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const NUM_CODE_7_4_OFFSET: u32 = 4;
     pub const NUM_CODE_7_4_MASK: u32 = 0x000000f0;
 
     /// **KEY**
+    ///
     /// Writes to the FP_CTRL are ignored unless KEY is concurrently written to one
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const KEY_OFFSET: u32 = 1;
     pub const KEY_MASK: u32 = 0x00000002;
     pub const KEY: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// Enables the FPB
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -11619,6 +12521,7 @@ impl FpCtrl {
     // ======== Field Accessors ========
 
     /// **REV** `[31:28]` (RO)
+    ///
     /// Flash Patch and Breakpoint Unit architecture revision
     #[inline(always)]
     pub fn rev(&self) -> u32 {
@@ -11626,6 +12529,7 @@ impl FpCtrl {
     }
 
     /// **NUM_CODE_14_12_** `[14:12]` (RO)
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
     #[inline(always)]
     pub fn num_code_14_12(&self) -> u32 {
@@ -11633,6 +12537,7 @@ impl FpCtrl {
     }
 
     /// **NUM_LIT** `[11:8]` (RO)
+    ///
     /// Indicates the number of implemented literal address comparators. The Literal Address comparators are numbered from NUM_CODE to NUM_CODE + NUM_LIT - 1
     #[inline(always)]
     pub fn num_lit(&self) -> u32 {
@@ -11640,6 +12545,7 @@ impl FpCtrl {
     }
 
     /// **NUM_CODE_7_4_** `[7:4]` (RO)
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
     #[inline(always)]
     pub fn num_code_7_4(&self) -> u32 {
@@ -11647,6 +12553,7 @@ impl FpCtrl {
     }
 
     /// **KEY** `[1]` (RW)
+    ///
     /// Writes to the FP_CTRL are ignored unless KEY is concurrently written to one
     #[inline(always)]
     pub fn key(&self) -> bool {
@@ -11666,6 +12573,7 @@ impl FpCtrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// Enables the FPB
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -11715,6 +12623,7 @@ impl FpCtrlVal {
     }
 
     /// Read **REV** `[31:28]`
+    ///
     /// Flash Patch and Breakpoint Unit architecture revision
     #[inline(always)]
     pub const fn rev(&self) -> u32 {
@@ -11722,6 +12631,7 @@ impl FpCtrlVal {
     }
 
     /// Read **NUM_CODE_14_12_** `[14:12]`
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
     #[inline(always)]
     pub const fn num_code_14_12(&self) -> u32 {
@@ -11729,6 +12639,7 @@ impl FpCtrlVal {
     }
 
     /// Read **NUM_LIT** `[11:8]`
+    ///
     /// Indicates the number of implemented literal address comparators. The Literal Address comparators are numbered from NUM_CODE to NUM_CODE + NUM_LIT - 1
     #[inline(always)]
     pub const fn num_lit(&self) -> u32 {
@@ -11736,6 +12647,7 @@ impl FpCtrlVal {
     }
 
     /// Read **NUM_CODE_7_4_** `[7:4]`
+    ///
     /// Indicates the number of implemented instruction address comparators. Zero indicates no Instruction Address comparators are implemented. The Instruction Address comparators are numbered from 0 to NUM_CODE - 1
     #[inline(always)]
     pub const fn num_code_7_4(&self) -> u32 {
@@ -11743,6 +12655,7 @@ impl FpCtrlVal {
     }
 
     /// Read **KEY** `[1:1]`
+    ///
     /// Writes to the FP_CTRL are ignored unless KEY is concurrently written to one
     #[inline(always)]
     pub const fn key(&self) -> bool {
@@ -11750,6 +12663,7 @@ impl FpCtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// Enables the FPB
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -11757,6 +12671,7 @@ impl FpCtrlVal {
     }
 
     /// Set **KEY** `[1:1]`
+    ///
     /// Writes to the FP_CTRL are ignored unless KEY is concurrently written to one
     #[inline(always)]
     pub const fn with_key(self, value: bool) -> Self {
@@ -11770,6 +12685,7 @@ impl FpCtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// Enables the FPB
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -11821,8 +12737,11 @@ impl FpCtrl {
 /// ## Fields
 ///
 /// - **RMPSPT** `[29]` (RO)
+///
 ///   Indicates whether the FPB unit supports the Flash Patch remap function
+///
 /// - **REMAP** `[28:5]` (RO)
+///
 ///   Holds the bits[28:5] of the Flash Patch remap address
 #[repr(transparent)]
 pub struct FpRemap {
@@ -11841,14 +12760,18 @@ impl FpRemap {
     // ======== Field Constants ========
 
     /// **RMPSPT**
+    ///
     /// Indicates whether the FPB unit supports the Flash Patch remap function
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const RMPSPT_OFFSET: u32 = 29;
     pub const RMPSPT_MASK: u32 = 0x20000000;
     pub const RMPSPT: u32 = 1 << 29;
 
     /// **REMAP**
+    ///
     /// Holds the bits[28:5] of the Flash Patch remap address
+    ///
     /// Bits `[28:5]`, mask `0x1fffffe0`
     pub const REMAP_OFFSET: u32 = 5;
     pub const REMAP_MASK: u32 = 0x1fffffe0;
@@ -11856,6 +12779,7 @@ impl FpRemap {
     // ======== Field Accessors ========
 
     /// **RMPSPT** `[29]` (RO)
+    ///
     /// Indicates whether the FPB unit supports the Flash Patch remap function
     #[inline(always)]
     pub fn rmpspt(&self) -> bool {
@@ -11863,6 +12787,7 @@ impl FpRemap {
     }
 
     /// **REMAP** `[28:5]` (RO)
+    ///
     /// Holds the bits[28:5] of the Flash Patch remap address
     #[inline(always)]
     pub fn remap(&self) -> u32 {
@@ -11900,6 +12825,7 @@ impl FpRemapVal {
     }
 
     /// Read **RMPSPT** `[29:29]`
+    ///
     /// Indicates whether the FPB unit supports the Flash Patch remap function
     #[inline(always)]
     pub const fn rmpspt(&self) -> bool {
@@ -11907,6 +12833,7 @@ impl FpRemapVal {
     }
 
     /// Read **REMAP** `[28:5]`
+    ///
     /// Holds the bits[28:5] of the Flash Patch remap address
     #[inline(always)]
     pub const fn remap(&self) -> u32 {
@@ -11952,6 +12879,7 @@ impl FpRemap {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp0 {
@@ -11970,7 +12898,9 @@ impl FpComp0 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -11979,6 +12909,7 @@ impl FpComp0 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12028,6 +12959,7 @@ impl FpComp0Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12035,6 +12967,7 @@ impl FpComp0Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12086,6 +13019,7 @@ impl FpComp0 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp1 {
@@ -12104,7 +13038,9 @@ impl FpComp1 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12113,6 +13049,7 @@ impl FpComp1 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12162,6 +13099,7 @@ impl FpComp1Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12169,6 +13107,7 @@ impl FpComp1Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12220,6 +13159,7 @@ impl FpComp1 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp2 {
@@ -12238,7 +13178,9 @@ impl FpComp2 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12247,6 +13189,7 @@ impl FpComp2 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12296,6 +13239,7 @@ impl FpComp2Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12303,6 +13247,7 @@ impl FpComp2Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12354,6 +13299,7 @@ impl FpComp2 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp3 {
@@ -12372,7 +13318,9 @@ impl FpComp3 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12381,6 +13329,7 @@ impl FpComp3 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12430,6 +13379,7 @@ impl FpComp3Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12437,6 +13387,7 @@ impl FpComp3Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12488,6 +13439,7 @@ impl FpComp3 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp4 {
@@ -12506,7 +13458,9 @@ impl FpComp4 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12515,6 +13469,7 @@ impl FpComp4 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12564,6 +13519,7 @@ impl FpComp4Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12571,6 +13527,7 @@ impl FpComp4Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12622,6 +13579,7 @@ impl FpComp4 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp5 {
@@ -12640,7 +13598,9 @@ impl FpComp5 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12649,6 +13609,7 @@ impl FpComp5 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12698,6 +13659,7 @@ impl FpComp5Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12705,6 +13667,7 @@ impl FpComp5Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12756,6 +13719,7 @@ impl FpComp5 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp6 {
@@ -12774,7 +13738,9 @@ impl FpComp6 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12783,6 +13749,7 @@ impl FpComp6 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12832,6 +13799,7 @@ impl FpComp6Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12839,6 +13807,7 @@ impl FpComp6Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -12890,6 +13859,7 @@ impl FpComp6 {
 /// ## Fields
 ///
 /// - **BE** `[0]` (RW)
+///
 ///   Selects between flashpatch and breakpoint functionality
 #[repr(transparent)]
 pub struct FpComp7 {
@@ -12908,7 +13878,9 @@ impl FpComp7 {
     // ======== Field Constants ========
 
     /// **BE**
+    ///
     /// Selects between flashpatch and breakpoint functionality
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BE_OFFSET: u32 = 0;
     pub const BE_MASK: u32 = 0x00000001;
@@ -12917,6 +13889,7 @@ impl FpComp7 {
     // ======== Field Accessors ========
 
     /// **BE** `[0]` (RW)
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub fn be(&self) -> bool {
@@ -12966,6 +13939,7 @@ impl FpComp7Val {
     }
 
     /// Read **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn be(&self) -> bool {
@@ -12973,6 +13947,7 @@ impl FpComp7Val {
     }
 
     /// Set **BE** `[0:0]`
+    ///
     /// Selects between flashpatch and breakpoint functionality
     #[inline(always)]
     pub const fn with_be(self, value: bool) -> Self {
@@ -13024,14 +13999,23 @@ impl FpComp7 {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   Defines that the DEVARCH register is present
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   Defines the architecture revision of the component
+///
 /// - **ARCHVER** `[15:12]` (RO)
+///
 ///   Defines the architecture version of the component
+///
 /// - **ARCHPART** `[11:0]` (RO)
+///
 ///   Defines the architecture of the component
 #[repr(transparent)]
 pub struct FpDevarch {
@@ -13050,32 +14034,42 @@ impl FpDevarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// Defines that the DEVARCH register is present
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// Defines the architecture revision of the component
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHVER**
+    ///
     /// Defines the architecture version of the component
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const ARCHVER_OFFSET: u32 = 12;
     pub const ARCHVER_MASK: u32 = 0x0000f000;
 
     /// **ARCHPART**
+    ///
     /// Defines the architecture of the component
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const ARCHPART_OFFSET: u32 = 0;
     pub const ARCHPART_MASK: u32 = 0x00000fff;
@@ -13083,6 +14077,7 @@ impl FpDevarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -13090,6 +14085,7 @@ impl FpDevarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -13097,6 +14093,7 @@ impl FpDevarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -13104,6 +14101,7 @@ impl FpDevarch {
     }
 
     /// **ARCHVER** `[15:12]` (RO)
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub fn archver(&self) -> u32 {
@@ -13111,6 +14109,7 @@ impl FpDevarch {
     }
 
     /// **ARCHPART** `[11:0]` (RO)
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub fn archpart(&self) -> u32 {
@@ -13148,6 +14147,7 @@ impl FpDevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -13155,6 +14155,7 @@ impl FpDevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -13162,6 +14163,7 @@ impl FpDevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -13169,6 +14171,7 @@ impl FpDevarchVal {
     }
 
     /// Read **ARCHVER** `[15:12]`
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub const fn archver(&self) -> u32 {
@@ -13176,6 +14179,7 @@ impl FpDevarchVal {
     }
 
     /// Read **ARCHPART** `[11:0]`
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub const fn archpart(&self) -> u32 {
@@ -13221,8 +14225,11 @@ impl FpDevarch {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   Component sub-type
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   Component major type
 #[repr(transparent)]
 pub struct FpDevtype {
@@ -13241,13 +14248,17 @@ impl FpDevtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// Component sub-type
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// Component major type
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -13255,6 +14266,7 @@ impl FpDevtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// Component sub-type
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -13262,6 +14274,7 @@ impl FpDevtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// Component major type
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -13299,6 +14312,7 @@ impl FpDevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// Component sub-type
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -13306,6 +14320,7 @@ impl FpDevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// Component major type
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -13351,8 +14366,11 @@ impl FpDevtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpPidr4 {
@@ -13371,13 +14389,17 @@ impl FpPidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -13385,6 +14407,7 @@ impl FpPidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -13392,6 +14415,7 @@ impl FpPidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -13429,6 +14453,7 @@ impl FpPidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -13436,6 +14461,7 @@ impl FpPidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -13835,6 +14861,7 @@ impl FpPidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpPidr0 {
@@ -13853,7 +14880,9 @@ impl FpPidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -13861,6 +14890,7 @@ impl FpPidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -13898,6 +14928,7 @@ impl FpPidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -13943,8 +14974,11 @@ impl FpPidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PART_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpPidr1 {
@@ -13963,13 +14997,17 @@ impl FpPidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_1_OFFSET: u32 = 0;
     pub const PART_1_MASK: u32 = 0x0000000f;
@@ -13977,6 +15015,7 @@ impl FpPidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -13984,6 +15023,7 @@ impl FpPidr1 {
     }
 
     /// **PART_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_1(&self) -> u32 {
@@ -14021,6 +15061,7 @@ impl FpPidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -14028,6 +15069,7 @@ impl FpPidr1Val {
     }
 
     /// Read **PART_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_1(&self) -> u32 {
@@ -14073,10 +15115,15 @@ impl FpPidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_1** `[2:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpPidr2 {
@@ -14095,20 +15142,26 @@ impl FpPidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_1_OFFSET: u32 = 0;
     pub const DES_1_MASK: u32 = 0x00000007;
@@ -14116,6 +15169,7 @@ impl FpPidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -14123,6 +15177,7 @@ impl FpPidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -14130,6 +15185,7 @@ impl FpPidr2 {
     }
 
     /// **DES_1** `[2:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_1(&self) -> u32 {
@@ -14167,6 +15223,7 @@ impl FpPidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -14174,6 +15231,7 @@ impl FpPidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -14181,6 +15239,7 @@ impl FpPidr2Val {
     }
 
     /// Read **DES_1** `[2:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_1(&self) -> u32 {
@@ -14226,8 +15285,11 @@ impl FpPidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpPidr3 {
@@ -14246,13 +15308,17 @@ impl FpPidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -14260,6 +15326,7 @@ impl FpPidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -14267,6 +15334,7 @@ impl FpPidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -14304,6 +15372,7 @@ impl FpPidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -14311,6 +15380,7 @@ impl FpPidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -14356,6 +15426,7 @@ impl FpPidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpCidr0 {
@@ -14374,7 +15445,9 @@ impl FpCidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -14382,6 +15455,7 @@ impl FpCidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -14419,6 +15493,7 @@ impl FpCidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -14464,8 +15539,11 @@ impl FpCidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpCidr1 {
@@ -14484,13 +15562,17 @@ impl FpCidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -14498,6 +15580,7 @@ impl FpCidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -14505,6 +15588,7 @@ impl FpCidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -14542,6 +15626,7 @@ impl FpCidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -14549,6 +15634,7 @@ impl FpCidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -14594,6 +15680,7 @@ impl FpCidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpCidr2 {
@@ -14612,7 +15699,9 @@ impl FpCidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -14620,6 +15709,7 @@ impl FpCidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -14657,6 +15747,7 @@ impl FpCidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -14702,6 +15793,7 @@ impl FpCidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct FpCidr3 {
@@ -14720,7 +15812,9 @@ impl FpCidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -14728,6 +15822,7 @@ impl FpCidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -14765,6 +15860,7 @@ impl FpCidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {
@@ -14810,6 +15906,7 @@ impl FpCidr3 {
 /// ## Fields
 ///
 /// - **INTLINESNUM** `[3:0]` (RO)
+///
 ///   Indicates the number of the highest implemented register in each of the NVIC control register sets, or in the case of NVIC_IPR*n, 4×INTLINESNUM
 #[repr(transparent)]
 pub struct Ictr {
@@ -14828,7 +15925,9 @@ impl Ictr {
     // ======== Field Constants ========
 
     /// **INTLINESNUM**
+    ///
     /// Indicates the number of the highest implemented register in each of the NVIC control register sets, or in the case of NVIC_IPR*n, 4×INTLINESNUM
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const INTLINESNUM_OFFSET: u32 = 0;
     pub const INTLINESNUM_MASK: u32 = 0x0000000f;
@@ -14836,6 +15935,7 @@ impl Ictr {
     // ======== Field Accessors ========
 
     /// **INTLINESNUM** `[3:0]` (RO)
+    ///
     /// Indicates the number of the highest implemented register in each of the NVIC control register sets, or in the case of NVIC_IPR*n, 4×INTLINESNUM
     #[inline(always)]
     pub fn intlinesnum(&self) -> u32 {
@@ -14873,6 +15973,7 @@ impl IctrVal {
     }
 
     /// Read **INTLINESNUM** `[3:0]`
+    ///
     /// Indicates the number of the highest implemented register in each of the NVIC control register sets, or in the case of NVIC_IPR*n, 4×INTLINESNUM
     #[inline(always)]
     pub const fn intlinesnum(&self) -> u32 {
@@ -14918,16 +16019,27 @@ impl Ictr {
 /// ## Fields
 ///
 /// - **EXTEXCLALL** `[29]` (RW)
+///
 ///   External Exclusives Allowed with no MPU
+///
 /// - **DISITMATBFLUSH** `[12]` (RW)
+///
 ///   Disable ATB Flush
+///
 /// - **FPEXCODIS** `[10]` (RW)
+///
 ///   Disable FPU exception outputs
+///
 /// - **DISOOFP** `[9]` (RW)
+///
 ///   Disable out-of-order FP instruction completion
+///
 /// - **DISFOLD** `[2]` (RW)
+///
 ///   Disable dual-issue.
+///
 /// - **DISMCYCINT** `[0]` (RW)
+///
 ///   Disable dual-issue.
 #[repr(transparent)]
 pub struct Actlr {
@@ -14946,42 +16058,54 @@ impl Actlr {
     // ======== Field Constants ========
 
     /// **EXTEXCLALL**
+    ///
     /// External Exclusives Allowed with no MPU
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const EXTEXCLALL_OFFSET: u32 = 29;
     pub const EXTEXCLALL_MASK: u32 = 0x20000000;
     pub const EXTEXCLALL: u32 = 1 << 29;
 
     /// **DISITMATBFLUSH**
+    ///
     /// Disable ATB Flush
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DISITMATBFLUSH_OFFSET: u32 = 12;
     pub const DISITMATBFLUSH_MASK: u32 = 0x00001000;
     pub const DISITMATBFLUSH: u32 = 1 << 12;
 
     /// **FPEXCODIS**
+    ///
     /// Disable FPU exception outputs
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const FPEXCODIS_OFFSET: u32 = 10;
     pub const FPEXCODIS_MASK: u32 = 0x00000400;
     pub const FPEXCODIS: u32 = 1 << 10;
 
     /// **DISOOFP**
+    ///
     /// Disable out-of-order FP instruction completion
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const DISOOFP_OFFSET: u32 = 9;
     pub const DISOOFP_MASK: u32 = 0x00000200;
     pub const DISOOFP: u32 = 1 << 9;
 
     /// **DISFOLD**
+    ///
     /// Disable dual-issue.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DISFOLD_OFFSET: u32 = 2;
     pub const DISFOLD_MASK: u32 = 0x00000004;
     pub const DISFOLD: u32 = 1 << 2;
 
     /// **DISMCYCINT**
+    ///
     /// Disable dual-issue.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const DISMCYCINT_OFFSET: u32 = 0;
     pub const DISMCYCINT_MASK: u32 = 0x00000001;
@@ -14990,6 +16114,7 @@ impl Actlr {
     // ======== Field Accessors ========
 
     /// **EXTEXCLALL** `[29]` (RW)
+    ///
     /// External Exclusives Allowed with no MPU
     #[inline(always)]
     pub fn extexclall(&self) -> bool {
@@ -15009,6 +16134,7 @@ impl Actlr {
     }
 
     /// **DISITMATBFLUSH** `[12]` (RW)
+    ///
     /// Disable ATB Flush
     #[inline(always)]
     pub fn disitmatbflush(&self) -> bool {
@@ -15028,6 +16154,7 @@ impl Actlr {
     }
 
     /// **FPEXCODIS** `[10]` (RW)
+    ///
     /// Disable FPU exception outputs
     #[inline(always)]
     pub fn fpexcodis(&self) -> bool {
@@ -15047,6 +16174,7 @@ impl Actlr {
     }
 
     /// **DISOOFP** `[9]` (RW)
+    ///
     /// Disable out-of-order FP instruction completion
     #[inline(always)]
     pub fn disoofp(&self) -> bool {
@@ -15066,6 +16194,7 @@ impl Actlr {
     }
 
     /// **DISFOLD** `[2]` (RW)
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub fn disfold(&self) -> bool {
@@ -15085,6 +16214,7 @@ impl Actlr {
     }
 
     /// **DISMCYCINT** `[0]` (RW)
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub fn dismcycint(&self) -> bool {
@@ -15134,6 +16264,7 @@ impl ActlrVal {
     }
 
     /// Read **EXTEXCLALL** `[29:29]`
+    ///
     /// External Exclusives Allowed with no MPU
     #[inline(always)]
     pub const fn extexclall(&self) -> bool {
@@ -15141,6 +16272,7 @@ impl ActlrVal {
     }
 
     /// Read **DISITMATBFLUSH** `[12:12]`
+    ///
     /// Disable ATB Flush
     #[inline(always)]
     pub const fn disitmatbflush(&self) -> bool {
@@ -15148,6 +16280,7 @@ impl ActlrVal {
     }
 
     /// Read **FPEXCODIS** `[10:10]`
+    ///
     /// Disable FPU exception outputs
     #[inline(always)]
     pub const fn fpexcodis(&self) -> bool {
@@ -15155,6 +16288,7 @@ impl ActlrVal {
     }
 
     /// Read **DISOOFP** `[9:9]`
+    ///
     /// Disable out-of-order FP instruction completion
     #[inline(always)]
     pub const fn disoofp(&self) -> bool {
@@ -15162,6 +16296,7 @@ impl ActlrVal {
     }
 
     /// Read **DISFOLD** `[2:2]`
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub const fn disfold(&self) -> bool {
@@ -15169,6 +16304,7 @@ impl ActlrVal {
     }
 
     /// Read **DISMCYCINT** `[0:0]`
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub const fn dismcycint(&self) -> bool {
@@ -15176,6 +16312,7 @@ impl ActlrVal {
     }
 
     /// Set **EXTEXCLALL** `[29:29]`
+    ///
     /// External Exclusives Allowed with no MPU
     #[inline(always)]
     pub const fn with_extexclall(self, value: bool) -> Self {
@@ -15189,6 +16326,7 @@ impl ActlrVal {
     }
 
     /// Set **DISITMATBFLUSH** `[12:12]`
+    ///
     /// Disable ATB Flush
     #[inline(always)]
     pub const fn with_disitmatbflush(self, value: bool) -> Self {
@@ -15202,6 +16340,7 @@ impl ActlrVal {
     }
 
     /// Set **FPEXCODIS** `[10:10]`
+    ///
     /// Disable FPU exception outputs
     #[inline(always)]
     pub const fn with_fpexcodis(self, value: bool) -> Self {
@@ -15215,6 +16354,7 @@ impl ActlrVal {
     }
 
     /// Set **DISOOFP** `[9:9]`
+    ///
     /// Disable out-of-order FP instruction completion
     #[inline(always)]
     pub const fn with_disoofp(self, value: bool) -> Self {
@@ -15228,6 +16368,7 @@ impl ActlrVal {
     }
 
     /// Set **DISFOLD** `[2:2]`
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub const fn with_disfold(self, value: bool) -> Self {
@@ -15241,6 +16382,7 @@ impl ActlrVal {
     }
 
     /// Set **DISMCYCINT** `[0:0]`
+    ///
     /// Disable dual-issue.
     #[inline(always)]
     pub const fn with_dismcycint(self, value: bool) -> Self {
@@ -15292,17 +16434,24 @@ impl Actlr {
 /// ## Fields
 ///
 /// - **COUNTFLAG** `[16]` (RO)
+///
 ///   Returns 1 if timer counted to 0 since last time this was read. Clears on read by application or debugger.
+///
 /// - **CLKSOURCE** `[2]` (RW)
+///
 ///   SysTick clock source. Always reads as one if SYST_CALIB reports NOREF.
 ///   Selects the SysTick timer clock source:
 ///   0 = External reference clock.
 ///   1 = Processor clock.
+///
 /// - **TICKINT** `[1]` (RW)
+///
 ///   Enables SysTick exception request:
 ///   0 = Counting down to zero does not assert the SysTick exception request.
 ///   1 = Counting down to zero to asserts the SysTick exception request.
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   Enable SysTick counter:
 ///   0 = Counter disabled.
 ///   1 = Counter enabled.
@@ -15323,35 +16472,43 @@ impl SystCsr {
     // ======== Field Constants ========
 
     /// **COUNTFLAG**
+    ///
     /// Returns 1 if timer counted to 0 since last time this was read. Clears on read by application or debugger.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const COUNTFLAG_OFFSET: u32 = 16;
     pub const COUNTFLAG_MASK: u32 = 0x00010000;
     pub const COUNTFLAG: u32 = 1 << 16;
 
     /// **CLKSOURCE**
+    ///
     /// SysTick clock source. Always reads as one if SYST_CALIB reports NOREF.
     /// Selects the SysTick timer clock source:
     /// 0 = External reference clock.
     /// 1 = Processor clock.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CLKSOURCE_OFFSET: u32 = 2;
     pub const CLKSOURCE_MASK: u32 = 0x00000004;
     pub const CLKSOURCE: u32 = 1 << 2;
 
     /// **TICKINT**
+    ///
     /// Enables SysTick exception request:
     /// 0 = Counting down to zero does not assert the SysTick exception request.
     /// 1 = Counting down to zero to asserts the SysTick exception request.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TICKINT_OFFSET: u32 = 1;
     pub const TICKINT_MASK: u32 = 0x00000002;
     pub const TICKINT: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// Enable SysTick counter:
     /// 0 = Counter disabled.
     /// 1 = Counter enabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -15360,6 +16517,7 @@ impl SystCsr {
     // ======== Field Accessors ========
 
     /// **COUNTFLAG** `[16]` (RO)
+    ///
     /// Returns 1 if timer counted to 0 since last time this was read. Clears on read by application or debugger.
     #[inline(always)]
     pub fn countflag(&self) -> bool {
@@ -15367,6 +16525,7 @@ impl SystCsr {
     }
 
     /// **CLKSOURCE** `[2]` (RW)
+    ///
     /// SysTick clock source. Always reads as one if SYST_CALIB reports NOREF.
     /// Selects the SysTick timer clock source:
     /// 0 = External reference clock.
@@ -15389,6 +16548,7 @@ impl SystCsr {
     }
 
     /// **TICKINT** `[1]` (RW)
+    ///
     /// Enables SysTick exception request:
     /// 0 = Counting down to zero does not assert the SysTick exception request.
     /// 1 = Counting down to zero to asserts the SysTick exception request.
@@ -15410,6 +16570,7 @@ impl SystCsr {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// Enable SysTick counter:
     /// 0 = Counter disabled.
     /// 1 = Counter enabled.
@@ -15461,6 +16622,7 @@ impl SystCsrVal {
     }
 
     /// Read **COUNTFLAG** `[16:16]`
+    ///
     /// Returns 1 if timer counted to 0 since last time this was read. Clears on read by application or debugger.
     #[inline(always)]
     pub const fn countflag(&self) -> bool {
@@ -15468,6 +16630,7 @@ impl SystCsrVal {
     }
 
     /// Read **CLKSOURCE** `[2:2]`
+    ///
     /// SysTick clock source. Always reads as one if SYST_CALIB reports NOREF.
     /// Selects the SysTick timer clock source:
     /// 0 = External reference clock.
@@ -15478,6 +16641,7 @@ impl SystCsrVal {
     }
 
     /// Read **TICKINT** `[1:1]`
+    ///
     /// Enables SysTick exception request:
     /// 0 = Counting down to zero does not assert the SysTick exception request.
     /// 1 = Counting down to zero to asserts the SysTick exception request.
@@ -15487,6 +16651,7 @@ impl SystCsrVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// Enable SysTick counter:
     /// 0 = Counter disabled.
     /// 1 = Counter enabled.
@@ -15496,6 +16661,7 @@ impl SystCsrVal {
     }
 
     /// Set **CLKSOURCE** `[2:2]`
+    ///
     /// SysTick clock source. Always reads as one if SYST_CALIB reports NOREF.
     /// Selects the SysTick timer clock source:
     /// 0 = External reference clock.
@@ -15512,6 +16678,7 @@ impl SystCsrVal {
     }
 
     /// Set **TICKINT** `[1:1]`
+    ///
     /// Enables SysTick exception request:
     /// 0 = Counting down to zero does not assert the SysTick exception request.
     /// 1 = Counting down to zero to asserts the SysTick exception request.
@@ -15527,6 +16694,7 @@ impl SystCsrVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// Enable SysTick counter:
     /// 0 = Counter disabled.
     /// 1 = Counter enabled.
@@ -15581,6 +16749,7 @@ impl SystCsr {
 /// ## Fields
 ///
 /// - **RELOAD** `[23:0]` (RW)
+///
 ///   Value to load into the SysTick Current Value Register when the counter reaches 0.
 #[repr(transparent)]
 pub struct SystRvr {
@@ -15599,7 +16768,9 @@ impl SystRvr {
     // ======== Field Constants ========
 
     /// **RELOAD**
+    ///
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const RELOAD_OFFSET: u32 = 0;
     pub const RELOAD_MASK: u32 = 0x00ffffff;
@@ -15607,6 +16778,7 @@ impl SystRvr {
     // ======== Field Accessors ========
 
     /// **RELOAD** `[23:0]` (RW)
+    ///
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
     #[inline(always)]
     pub fn reload(&self) -> u32 {
@@ -15614,6 +16786,7 @@ impl SystRvr {
     }
 
     /// Write **RELOAD** `[23:0]` (RW)
+    ///
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
     #[inline(always)]
     pub fn write_reload(&self, value: u32) {
@@ -15651,6 +16824,7 @@ impl SystRvrVal {
     }
 
     /// Read **RELOAD** `[23:0]`
+    ///
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
     #[inline(always)]
     pub const fn reload(&self) -> u32 {
@@ -15658,6 +16832,7 @@ impl SystRvrVal {
     }
 
     /// Set **RELOAD** `[23:0]`
+    ///
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
     #[inline(always)]
     pub const fn with_reload(self, value: u32) -> Self {
@@ -15705,6 +16880,7 @@ impl SystRvr {
 /// ## Fields
 ///
 /// - **CURRENT** `[23:0]` (RW)
+///
 ///   Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
 #[repr(transparent)]
 pub struct SystCvr {
@@ -15723,7 +16899,9 @@ impl SystCvr {
     // ======== Field Constants ========
 
     /// **CURRENT**
+    ///
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const CURRENT_OFFSET: u32 = 0;
     pub const CURRENT_MASK: u32 = 0x00ffffff;
@@ -15731,6 +16909,7 @@ impl SystCvr {
     // ======== Field Accessors ========
 
     /// **CURRENT** `[23:0]` (RW)
+    ///
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
     #[inline(always)]
     pub fn current(&self) -> u32 {
@@ -15738,6 +16917,7 @@ impl SystCvr {
     }
 
     /// Write **CURRENT** `[23:0]` (RW)
+    ///
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
     #[inline(always)]
     pub fn write_current(&self, value: u32) {
@@ -15775,6 +16955,7 @@ impl SystCvrVal {
     }
 
     /// Read **CURRENT** `[23:0]`
+    ///
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
     #[inline(always)]
     pub const fn current(&self) -> u32 {
@@ -15782,6 +16963,7 @@ impl SystCvrVal {
     }
 
     /// Set **CURRENT** `[23:0]`
+    ///
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
     #[inline(always)]
     pub const fn with_current(self, value: u32) -> Self {
@@ -15829,10 +17011,15 @@ impl SystCvr {
 /// ## Fields
 ///
 /// - **NOREF** `[31]` (RO)
+///
 ///   If reads as 1, the Reference clock is not provided - the CLKSOURCE bit of the SysTick Control and Status register will be forced to 1 and cannot be cleared to 0.
+///
 /// - **SKEW** `[30]` (RO)
+///
 ///   If reads as 1, the calibration value for 10ms is inexact (due to clock frequency).
+///
 /// - **TENMS** `[23:0]` (RO)
+///
 ///   An optional Reload value to be used for 10ms (100Hz) timing, subject to system clock skew errors. If the value reads as 0, the calibration value is not known.
 #[repr(transparent)]
 pub struct SystCalib {
@@ -15851,21 +17038,27 @@ impl SystCalib {
     // ======== Field Constants ========
 
     /// **NOREF**
+    ///
     /// If reads as 1, the Reference clock is not provided - the CLKSOURCE bit of the SysTick Control and Status register will be forced to 1 and cannot be cleared to 0.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const NOREF_OFFSET: u32 = 31;
     pub const NOREF_MASK: u32 = 0x80000000;
     pub const NOREF: u32 = 1 << 31;
 
     /// **SKEW**
+    ///
     /// If reads as 1, the calibration value for 10ms is inexact (due to clock frequency).
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const SKEW_OFFSET: u32 = 30;
     pub const SKEW_MASK: u32 = 0x40000000;
     pub const SKEW: u32 = 1 << 30;
 
     /// **TENMS**
+    ///
     /// An optional Reload value to be used for 10ms (100Hz) timing, subject to system clock skew errors. If the value reads as 0, the calibration value is not known.
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const TENMS_OFFSET: u32 = 0;
     pub const TENMS_MASK: u32 = 0x00ffffff;
@@ -15873,6 +17066,7 @@ impl SystCalib {
     // ======== Field Accessors ========
 
     /// **NOREF** `[31]` (RO)
+    ///
     /// If reads as 1, the Reference clock is not provided - the CLKSOURCE bit of the SysTick Control and Status register will be forced to 1 and cannot be cleared to 0.
     #[inline(always)]
     pub fn noref(&self) -> bool {
@@ -15880,6 +17074,7 @@ impl SystCalib {
     }
 
     /// **SKEW** `[30]` (RO)
+    ///
     /// If reads as 1, the calibration value for 10ms is inexact (due to clock frequency).
     #[inline(always)]
     pub fn skew(&self) -> bool {
@@ -15887,6 +17082,7 @@ impl SystCalib {
     }
 
     /// **TENMS** `[23:0]` (RO)
+    ///
     /// An optional Reload value to be used for 10ms (100Hz) timing, subject to system clock skew errors. If the value reads as 0, the calibration value is not known.
     #[inline(always)]
     pub fn tenms(&self) -> u32 {
@@ -15924,6 +17120,7 @@ impl SystCalibVal {
     }
 
     /// Read **NOREF** `[31:31]`
+    ///
     /// If reads as 1, the Reference clock is not provided - the CLKSOURCE bit of the SysTick Control and Status register will be forced to 1 and cannot be cleared to 0.
     #[inline(always)]
     pub const fn noref(&self) -> bool {
@@ -15931,6 +17128,7 @@ impl SystCalibVal {
     }
 
     /// Read **SKEW** `[30:30]`
+    ///
     /// If reads as 1, the calibration value for 10ms is inexact (due to clock frequency).
     #[inline(always)]
     pub const fn skew(&self) -> bool {
@@ -15938,6 +17136,7 @@ impl SystCalibVal {
     }
 
     /// Read **TENMS** `[23:0]`
+    ///
     /// An optional Reload value to be used for 10ms (100Hz) timing, subject to system clock skew errors. If the value reads as 0, the calibration value is not known.
     #[inline(always)]
     pub const fn tenms(&self) -> u32 {
@@ -15983,6 +17182,7 @@ impl SystCalib {
 /// ## Fields
 ///
 /// - **SETENA** `[31:0]` (RW)
+///
 ///   For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
 #[repr(transparent)]
 pub struct NvicIser0 {
@@ -16001,7 +17201,9 @@ impl NvicIser0 {
     // ======== Field Constants ========
 
     /// **SETENA**
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const SETENA_OFFSET: u32 = 0;
     pub const SETENA_MASK: u32 = 0xffffffff;
@@ -16009,6 +17211,7 @@ impl NvicIser0 {
     // ======== Field Accessors ========
 
     /// **SETENA** `[31:0]` (RW)
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn setena(&self) -> u32 {
@@ -16016,6 +17219,7 @@ impl NvicIser0 {
     }
 
     /// Write **SETENA** `[31:0]` (RW)
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_setena(&self, value: u32) {
@@ -16053,6 +17257,7 @@ impl NvicIser0Val {
     }
 
     /// Read **SETENA** `[31:0]`
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn setena(&self) -> u32 {
@@ -16060,6 +17265,7 @@ impl NvicIser0Val {
     }
 
     /// Set **SETENA** `[31:0]`
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn with_setena(self, value: u32) -> Self {
@@ -16107,6 +17313,7 @@ impl NvicIser0 {
 /// ## Fields
 ///
 /// - **SETENA** `[31:0]` (RW)
+///
 ///   For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
 #[repr(transparent)]
 pub struct NvicIser1 {
@@ -16125,7 +17332,9 @@ impl NvicIser1 {
     // ======== Field Constants ========
 
     /// **SETENA**
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const SETENA_OFFSET: u32 = 0;
     pub const SETENA_MASK: u32 = 0xffffffff;
@@ -16133,6 +17342,7 @@ impl NvicIser1 {
     // ======== Field Accessors ========
 
     /// **SETENA** `[31:0]` (RW)
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn setena(&self) -> u32 {
@@ -16140,6 +17350,7 @@ impl NvicIser1 {
     }
 
     /// Write **SETENA** `[31:0]` (RW)
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_setena(&self, value: u32) {
@@ -16177,6 +17388,7 @@ impl NvicIser1Val {
     }
 
     /// Read **SETENA** `[31:0]`
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn setena(&self) -> u32 {
@@ -16184,6 +17396,7 @@ impl NvicIser1Val {
     }
 
     /// Set **SETENA** `[31:0]`
+    ///
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn with_setena(self, value: u32) -> Self {
@@ -16231,6 +17444,7 @@ impl NvicIser1 {
 /// ## Fields
 ///
 /// - **CLRENA** `[31:0]` (RW)
+///
 ///   For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
 #[repr(transparent)]
 pub struct NvicIcer0 {
@@ -16249,7 +17463,9 @@ impl NvicIcer0 {
     // ======== Field Constants ========
 
     /// **CLRENA**
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CLRENA_OFFSET: u32 = 0;
     pub const CLRENA_MASK: u32 = 0xffffffff;
@@ -16257,6 +17473,7 @@ impl NvicIcer0 {
     // ======== Field Accessors ========
 
     /// **CLRENA** `[31:0]` (RW)
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn clrena(&self) -> u32 {
@@ -16264,6 +17481,7 @@ impl NvicIcer0 {
     }
 
     /// Write **CLRENA** `[31:0]` (RW)
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_clrena(&self, value: u32) {
@@ -16301,6 +17519,7 @@ impl NvicIcer0Val {
     }
 
     /// Read **CLRENA** `[31:0]`
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn clrena(&self) -> u32 {
@@ -16308,6 +17527,7 @@ impl NvicIcer0Val {
     }
 
     /// Set **CLRENA** `[31:0]`
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn with_clrena(self, value: u32) -> Self {
@@ -16355,6 +17575,7 @@ impl NvicIcer0 {
 /// ## Fields
 ///
 /// - **CLRENA** `[31:0]` (RW)
+///
 ///   For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
 #[repr(transparent)]
 pub struct NvicIcer1 {
@@ -16373,7 +17594,9 @@ impl NvicIcer1 {
     // ======== Field Constants ========
 
     /// **CLRENA**
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CLRENA_OFFSET: u32 = 0;
     pub const CLRENA_MASK: u32 = 0xffffffff;
@@ -16381,6 +17604,7 @@ impl NvicIcer1 {
     // ======== Field Accessors ========
 
     /// **CLRENA** `[31:0]` (RW)
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn clrena(&self) -> u32 {
@@ -16388,6 +17612,7 @@ impl NvicIcer1 {
     }
 
     /// Write **CLRENA** `[31:0]` (RW)
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_clrena(&self, value: u32) {
@@ -16425,6 +17650,7 @@ impl NvicIcer1Val {
     }
 
     /// Read **CLRENA** `[31:0]`
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn clrena(&self) -> u32 {
@@ -16432,6 +17658,7 @@ impl NvicIcer1Val {
     }
 
     /// Set **CLRENA** `[31:0]`
+    ///
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub const fn with_clrena(self, value: u32) -> Self {
@@ -16479,6 +17706,7 @@ impl NvicIcer1 {
 /// ## Fields
 ///
 /// - **SETPEND** `[31:0]` (RW)
+///
 ///   For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
 #[repr(transparent)]
 pub struct NvicIspr0 {
@@ -16497,7 +17725,9 @@ impl NvicIspr0 {
     // ======== Field Constants ========
 
     /// **SETPEND**
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const SETPEND_OFFSET: u32 = 0;
     pub const SETPEND_MASK: u32 = 0xffffffff;
@@ -16505,6 +17735,7 @@ impl NvicIspr0 {
     // ======== Field Accessors ========
 
     /// **SETPEND** `[31:0]` (RW)
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn setpend(&self) -> u32 {
@@ -16512,6 +17743,7 @@ impl NvicIspr0 {
     }
 
     /// Write **SETPEND** `[31:0]` (RW)
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_setpend(&self, value: u32) {
@@ -16549,6 +17781,7 @@ impl NvicIspr0Val {
     }
 
     /// Read **SETPEND** `[31:0]`
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn setpend(&self) -> u32 {
@@ -16556,6 +17789,7 @@ impl NvicIspr0Val {
     }
 
     /// Set **SETPEND** `[31:0]`
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn with_setpend(self, value: u32) -> Self {
@@ -16603,6 +17837,7 @@ impl NvicIspr0 {
 /// ## Fields
 ///
 /// - **SETPEND** `[31:0]` (RW)
+///
 ///   For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
 #[repr(transparent)]
 pub struct NvicIspr1 {
@@ -16621,7 +17856,9 @@ impl NvicIspr1 {
     // ======== Field Constants ========
 
     /// **SETPEND**
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const SETPEND_OFFSET: u32 = 0;
     pub const SETPEND_MASK: u32 = 0xffffffff;
@@ -16629,6 +17866,7 @@ impl NvicIspr1 {
     // ======== Field Accessors ========
 
     /// **SETPEND** `[31:0]` (RW)
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn setpend(&self) -> u32 {
@@ -16636,6 +17874,7 @@ impl NvicIspr1 {
     }
 
     /// Write **SETPEND** `[31:0]` (RW)
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_setpend(&self, value: u32) {
@@ -16673,6 +17912,7 @@ impl NvicIspr1Val {
     }
 
     /// Read **SETPEND** `[31:0]`
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn setpend(&self) -> u32 {
@@ -16680,6 +17920,7 @@ impl NvicIspr1Val {
     }
 
     /// Set **SETPEND** `[31:0]`
+    ///
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn with_setpend(self, value: u32) -> Self {
@@ -16727,6 +17968,7 @@ impl NvicIspr1 {
 /// ## Fields
 ///
 /// - **CLRPEND** `[31:0]` (RW)
+///
 ///   For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
 #[repr(transparent)]
 pub struct NvicIcpr0 {
@@ -16745,7 +17987,9 @@ impl NvicIcpr0 {
     // ======== Field Constants ========
 
     /// **CLRPEND**
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CLRPEND_OFFSET: u32 = 0;
     pub const CLRPEND_MASK: u32 = 0xffffffff;
@@ -16753,6 +17997,7 @@ impl NvicIcpr0 {
     // ======== Field Accessors ========
 
     /// **CLRPEND** `[31:0]` (RW)
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn clrpend(&self) -> u32 {
@@ -16760,6 +18005,7 @@ impl NvicIcpr0 {
     }
 
     /// Write **CLRPEND** `[31:0]` (RW)
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_clrpend(&self, value: u32) {
@@ -16797,6 +18043,7 @@ impl NvicIcpr0Val {
     }
 
     /// Read **CLRPEND** `[31:0]`
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn clrpend(&self) -> u32 {
@@ -16804,6 +18051,7 @@ impl NvicIcpr0Val {
     }
 
     /// Set **CLRPEND** `[31:0]`
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn with_clrpend(self, value: u32) -> Self {
@@ -16851,6 +18099,7 @@ impl NvicIcpr0 {
 /// ## Fields
 ///
 /// - **CLRPEND** `[31:0]` (RW)
+///
 ///   For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
 #[repr(transparent)]
 pub struct NvicIcpr1 {
@@ -16869,7 +18118,9 @@ impl NvicIcpr1 {
     // ======== Field Constants ========
 
     /// **CLRPEND**
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CLRPEND_OFFSET: u32 = 0;
     pub const CLRPEND_MASK: u32 = 0xffffffff;
@@ -16877,6 +18128,7 @@ impl NvicIcpr1 {
     // ======== Field Accessors ========
 
     /// **CLRPEND** `[31:0]` (RW)
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn clrpend(&self) -> u32 {
@@ -16884,6 +18136,7 @@ impl NvicIcpr1 {
     }
 
     /// Write **CLRPEND** `[31:0]` (RW)
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_clrpend(&self, value: u32) {
@@ -16921,6 +18174,7 @@ impl NvicIcpr1Val {
     }
 
     /// Read **CLRPEND** `[31:0]`
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn clrpend(&self) -> u32 {
@@ -16928,6 +18182,7 @@ impl NvicIcpr1Val {
     }
 
     /// Set **CLRPEND** `[31:0]`
+    ///
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub const fn with_clrpend(self, value: u32) -> Self {
@@ -16975,6 +18230,7 @@ impl NvicIcpr1 {
 /// ## Fields
 ///
 /// - **ACTIVE** `[31:0]` (RW)
+///
 ///   For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
 #[repr(transparent)]
 pub struct NvicIabr0 {
@@ -16993,7 +18249,9 @@ impl NvicIabr0 {
     // ======== Field Constants ========
 
     /// **ACTIVE**
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ACTIVE_OFFSET: u32 = 0;
     pub const ACTIVE_MASK: u32 = 0xffffffff;
@@ -17001,6 +18259,7 @@ impl NvicIabr0 {
     // ======== Field Accessors ========
 
     /// **ACTIVE** `[31:0]` (RW)
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn active(&self) -> u32 {
@@ -17008,6 +18267,7 @@ impl NvicIabr0 {
     }
 
     /// Write **ACTIVE** `[31:0]` (RW)
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_active(&self, value: u32) {
@@ -17045,6 +18305,7 @@ impl NvicIabr0Val {
     }
 
     /// Read **ACTIVE** `[31:0]`
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub const fn active(&self) -> u32 {
@@ -17052,6 +18313,7 @@ impl NvicIabr0Val {
     }
 
     /// Set **ACTIVE** `[31:0]`
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub const fn with_active(self, value: u32) -> Self {
@@ -17099,6 +18361,7 @@ impl NvicIabr0 {
 /// ## Fields
 ///
 /// - **ACTIVE** `[31:0]` (RW)
+///
 ///   For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
 #[repr(transparent)]
 pub struct NvicIabr1 {
@@ -17117,7 +18380,9 @@ impl NvicIabr1 {
     // ======== Field Constants ========
 
     /// **ACTIVE**
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ACTIVE_OFFSET: u32 = 0;
     pub const ACTIVE_MASK: u32 = 0xffffffff;
@@ -17125,6 +18390,7 @@ impl NvicIabr1 {
     // ======== Field Accessors ========
 
     /// **ACTIVE** `[31:0]` (RW)
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn active(&self) -> u32 {
@@ -17132,6 +18398,7 @@ impl NvicIabr1 {
     }
 
     /// Write **ACTIVE** `[31:0]` (RW)
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_active(&self, value: u32) {
@@ -17169,6 +18436,7 @@ impl NvicIabr1Val {
     }
 
     /// Read **ACTIVE** `[31:0]`
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub const fn active(&self) -> u32 {
@@ -17176,6 +18444,7 @@ impl NvicIabr1Val {
     }
 
     /// Set **ACTIVE** `[31:0]`
+    ///
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub const fn with_active(self, value: u32) -> Self {
@@ -17223,6 +18492,7 @@ impl NvicIabr1 {
 /// ## Fields
 ///
 /// - **ITNS** `[31:0]` (RW)
+///
 ///   For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
 #[repr(transparent)]
 pub struct NvicItns0 {
@@ -17241,7 +18511,9 @@ impl NvicItns0 {
     // ======== Field Constants ========
 
     /// **ITNS**
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ITNS_OFFSET: u32 = 0;
     pub const ITNS_MASK: u32 = 0xffffffff;
@@ -17249,6 +18521,7 @@ impl NvicItns0 {
     // ======== Field Accessors ========
 
     /// **ITNS** `[31:0]` (RW)
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn itns(&self) -> u32 {
@@ -17256,6 +18529,7 @@ impl NvicItns0 {
     }
 
     /// Write **ITNS** `[31:0]` (RW)
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_itns(&self, value: u32) {
@@ -17293,6 +18567,7 @@ impl NvicItns0Val {
     }
 
     /// Read **ITNS** `[31:0]`
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub const fn itns(&self) -> u32 {
@@ -17300,6 +18575,7 @@ impl NvicItns0Val {
     }
 
     /// Set **ITNS** `[31:0]`
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub const fn with_itns(self, value: u32) -> Self {
@@ -17347,6 +18623,7 @@ impl NvicItns0 {
 /// ## Fields
 ///
 /// - **ITNS** `[31:0]` (RW)
+///
 ///   For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
 #[repr(transparent)]
 pub struct NvicItns1 {
@@ -17365,7 +18642,9 @@ impl NvicItns1 {
     // ======== Field Constants ========
 
     /// **ITNS**
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ITNS_OFFSET: u32 = 0;
     pub const ITNS_MASK: u32 = 0xffffffff;
@@ -17373,6 +18652,7 @@ impl NvicItns1 {
     // ======== Field Accessors ========
 
     /// **ITNS** `[31:0]` (RW)
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn itns(&self) -> u32 {
@@ -17380,6 +18660,7 @@ impl NvicItns1 {
     }
 
     /// Write **ITNS** `[31:0]` (RW)
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_itns(&self, value: u32) {
@@ -17417,6 +18698,7 @@ impl NvicItns1Val {
     }
 
     /// Read **ITNS** `[31:0]`
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub const fn itns(&self) -> u32 {
@@ -17424,6 +18706,7 @@ impl NvicItns1Val {
     }
 
     /// Set **ITNS** `[31:0]`
+    ///
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub const fn with_itns(self, value: u32) -> Self {
@@ -17471,12 +18754,19 @@ impl NvicItns1 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr0 {
@@ -17495,25 +18785,33 @@ impl NvicIpr0 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -17521,6 +18819,7 @@ impl NvicIpr0 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -17528,6 +18827,7 @@ impl NvicIpr0 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -17535,6 +18835,7 @@ impl NvicIpr0 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -17542,6 +18843,7 @@ impl NvicIpr0 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -17549,6 +18851,7 @@ impl NvicIpr0 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -17556,6 +18859,7 @@ impl NvicIpr0 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -17563,6 +18867,7 @@ impl NvicIpr0 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -17570,6 +18875,7 @@ impl NvicIpr0 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -17607,6 +18913,7 @@ impl NvicIpr0Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -17614,6 +18921,7 @@ impl NvicIpr0Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -17621,6 +18929,7 @@ impl NvicIpr0Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -17628,6 +18937,7 @@ impl NvicIpr0Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -17635,6 +18945,7 @@ impl NvicIpr0Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -17644,6 +18955,7 @@ impl NvicIpr0Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -17653,6 +18965,7 @@ impl NvicIpr0Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -17662,6 +18975,7 @@ impl NvicIpr0Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -17709,12 +19023,19 @@ impl NvicIpr0 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr1 {
@@ -17733,25 +19054,33 @@ impl NvicIpr1 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -17759,6 +19088,7 @@ impl NvicIpr1 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -17766,6 +19096,7 @@ impl NvicIpr1 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -17773,6 +19104,7 @@ impl NvicIpr1 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -17780,6 +19112,7 @@ impl NvicIpr1 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -17787,6 +19120,7 @@ impl NvicIpr1 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -17794,6 +19128,7 @@ impl NvicIpr1 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -17801,6 +19136,7 @@ impl NvicIpr1 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -17808,6 +19144,7 @@ impl NvicIpr1 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -17845,6 +19182,7 @@ impl NvicIpr1Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -17852,6 +19190,7 @@ impl NvicIpr1Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -17859,6 +19198,7 @@ impl NvicIpr1Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -17866,6 +19206,7 @@ impl NvicIpr1Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -17873,6 +19214,7 @@ impl NvicIpr1Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -17882,6 +19224,7 @@ impl NvicIpr1Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -17891,6 +19234,7 @@ impl NvicIpr1Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -17900,6 +19244,7 @@ impl NvicIpr1Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -17947,12 +19292,19 @@ impl NvicIpr1 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr2 {
@@ -17971,25 +19323,33 @@ impl NvicIpr2 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -17997,6 +19357,7 @@ impl NvicIpr2 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -18004,6 +19365,7 @@ impl NvicIpr2 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -18011,6 +19373,7 @@ impl NvicIpr2 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -18018,6 +19381,7 @@ impl NvicIpr2 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -18025,6 +19389,7 @@ impl NvicIpr2 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -18032,6 +19397,7 @@ impl NvicIpr2 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -18039,6 +19405,7 @@ impl NvicIpr2 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -18046,6 +19413,7 @@ impl NvicIpr2 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -18083,6 +19451,7 @@ impl NvicIpr2Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -18090,6 +19459,7 @@ impl NvicIpr2Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -18097,6 +19467,7 @@ impl NvicIpr2Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -18104,6 +19475,7 @@ impl NvicIpr2Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -18111,6 +19483,7 @@ impl NvicIpr2Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -18120,6 +19493,7 @@ impl NvicIpr2Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -18129,6 +19503,7 @@ impl NvicIpr2Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -18138,6 +19513,7 @@ impl NvicIpr2Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -18185,12 +19561,19 @@ impl NvicIpr2 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr3 {
@@ -18209,25 +19592,33 @@ impl NvicIpr3 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -18235,6 +19626,7 @@ impl NvicIpr3 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -18242,6 +19634,7 @@ impl NvicIpr3 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -18249,6 +19642,7 @@ impl NvicIpr3 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -18256,6 +19650,7 @@ impl NvicIpr3 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -18263,6 +19658,7 @@ impl NvicIpr3 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -18270,6 +19666,7 @@ impl NvicIpr3 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -18277,6 +19674,7 @@ impl NvicIpr3 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -18284,6 +19682,7 @@ impl NvicIpr3 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -18321,6 +19720,7 @@ impl NvicIpr3Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -18328,6 +19728,7 @@ impl NvicIpr3Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -18335,6 +19736,7 @@ impl NvicIpr3Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -18342,6 +19744,7 @@ impl NvicIpr3Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -18349,6 +19752,7 @@ impl NvicIpr3Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -18358,6 +19762,7 @@ impl NvicIpr3Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -18367,6 +19772,7 @@ impl NvicIpr3Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -18376,6 +19782,7 @@ impl NvicIpr3Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -18423,12 +19830,19 @@ impl NvicIpr3 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr4 {
@@ -18447,25 +19861,33 @@ impl NvicIpr4 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -18473,6 +19895,7 @@ impl NvicIpr4 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -18480,6 +19903,7 @@ impl NvicIpr4 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -18487,6 +19911,7 @@ impl NvicIpr4 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -18494,6 +19919,7 @@ impl NvicIpr4 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -18501,6 +19927,7 @@ impl NvicIpr4 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -18508,6 +19935,7 @@ impl NvicIpr4 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -18515,6 +19943,7 @@ impl NvicIpr4 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -18522,6 +19951,7 @@ impl NvicIpr4 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -18559,6 +19989,7 @@ impl NvicIpr4Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -18566,6 +19997,7 @@ impl NvicIpr4Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -18573,6 +20005,7 @@ impl NvicIpr4Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -18580,6 +20013,7 @@ impl NvicIpr4Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -18587,6 +20021,7 @@ impl NvicIpr4Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -18596,6 +20031,7 @@ impl NvicIpr4Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -18605,6 +20041,7 @@ impl NvicIpr4Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -18614,6 +20051,7 @@ impl NvicIpr4Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -18661,12 +20099,19 @@ impl NvicIpr4 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr5 {
@@ -18685,25 +20130,33 @@ impl NvicIpr5 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -18711,6 +20164,7 @@ impl NvicIpr5 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -18718,6 +20172,7 @@ impl NvicIpr5 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -18725,6 +20180,7 @@ impl NvicIpr5 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -18732,6 +20188,7 @@ impl NvicIpr5 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -18739,6 +20196,7 @@ impl NvicIpr5 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -18746,6 +20204,7 @@ impl NvicIpr5 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -18753,6 +20212,7 @@ impl NvicIpr5 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -18760,6 +20220,7 @@ impl NvicIpr5 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -18797,6 +20258,7 @@ impl NvicIpr5Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -18804,6 +20266,7 @@ impl NvicIpr5Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -18811,6 +20274,7 @@ impl NvicIpr5Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -18818,6 +20282,7 @@ impl NvicIpr5Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -18825,6 +20290,7 @@ impl NvicIpr5Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -18834,6 +20300,7 @@ impl NvicIpr5Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -18843,6 +20310,7 @@ impl NvicIpr5Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -18852,6 +20320,7 @@ impl NvicIpr5Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -18899,12 +20368,19 @@ impl NvicIpr5 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr6 {
@@ -18923,25 +20399,33 @@ impl NvicIpr6 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -18949,6 +20433,7 @@ impl NvicIpr6 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -18956,6 +20441,7 @@ impl NvicIpr6 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -18963,6 +20449,7 @@ impl NvicIpr6 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -18970,6 +20457,7 @@ impl NvicIpr6 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -18977,6 +20465,7 @@ impl NvicIpr6 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -18984,6 +20473,7 @@ impl NvicIpr6 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -18991,6 +20481,7 @@ impl NvicIpr6 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -18998,6 +20489,7 @@ impl NvicIpr6 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -19035,6 +20527,7 @@ impl NvicIpr6Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -19042,6 +20535,7 @@ impl NvicIpr6Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -19049,6 +20543,7 @@ impl NvicIpr6Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -19056,6 +20551,7 @@ impl NvicIpr6Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -19063,6 +20559,7 @@ impl NvicIpr6Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -19072,6 +20569,7 @@ impl NvicIpr6Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -19081,6 +20579,7 @@ impl NvicIpr6Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -19090,6 +20589,7 @@ impl NvicIpr6Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -19137,12 +20637,19 @@ impl NvicIpr6 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr7 {
@@ -19161,25 +20668,33 @@ impl NvicIpr7 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -19187,6 +20702,7 @@ impl NvicIpr7 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -19194,6 +20710,7 @@ impl NvicIpr7 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -19201,6 +20718,7 @@ impl NvicIpr7 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -19208,6 +20726,7 @@ impl NvicIpr7 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -19215,6 +20734,7 @@ impl NvicIpr7 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -19222,6 +20742,7 @@ impl NvicIpr7 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -19229,6 +20750,7 @@ impl NvicIpr7 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -19236,6 +20758,7 @@ impl NvicIpr7 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -19273,6 +20796,7 @@ impl NvicIpr7Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -19280,6 +20804,7 @@ impl NvicIpr7Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -19287,6 +20812,7 @@ impl NvicIpr7Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -19294,6 +20820,7 @@ impl NvicIpr7Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -19301,6 +20828,7 @@ impl NvicIpr7Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -19310,6 +20838,7 @@ impl NvicIpr7Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -19319,6 +20848,7 @@ impl NvicIpr7Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -19328,6 +20858,7 @@ impl NvicIpr7Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -19375,12 +20906,19 @@ impl NvicIpr7 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr8 {
@@ -19399,25 +20937,33 @@ impl NvicIpr8 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -19425,6 +20971,7 @@ impl NvicIpr8 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -19432,6 +20979,7 @@ impl NvicIpr8 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -19439,6 +20987,7 @@ impl NvicIpr8 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -19446,6 +20995,7 @@ impl NvicIpr8 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -19453,6 +21003,7 @@ impl NvicIpr8 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -19460,6 +21011,7 @@ impl NvicIpr8 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -19467,6 +21019,7 @@ impl NvicIpr8 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -19474,6 +21027,7 @@ impl NvicIpr8 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -19511,6 +21065,7 @@ impl NvicIpr8Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -19518,6 +21073,7 @@ impl NvicIpr8Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -19525,6 +21081,7 @@ impl NvicIpr8Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -19532,6 +21089,7 @@ impl NvicIpr8Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -19539,6 +21097,7 @@ impl NvicIpr8Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -19548,6 +21107,7 @@ impl NvicIpr8Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -19557,6 +21117,7 @@ impl NvicIpr8Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -19566,6 +21127,7 @@ impl NvicIpr8Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -19613,12 +21175,19 @@ impl NvicIpr8 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr9 {
@@ -19637,25 +21206,33 @@ impl NvicIpr9 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -19663,6 +21240,7 @@ impl NvicIpr9 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -19670,6 +21248,7 @@ impl NvicIpr9 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -19677,6 +21256,7 @@ impl NvicIpr9 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -19684,6 +21264,7 @@ impl NvicIpr9 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -19691,6 +21272,7 @@ impl NvicIpr9 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -19698,6 +21280,7 @@ impl NvicIpr9 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -19705,6 +21288,7 @@ impl NvicIpr9 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -19712,6 +21296,7 @@ impl NvicIpr9 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -19749,6 +21334,7 @@ impl NvicIpr9Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -19756,6 +21342,7 @@ impl NvicIpr9Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -19763,6 +21350,7 @@ impl NvicIpr9Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -19770,6 +21358,7 @@ impl NvicIpr9Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -19777,6 +21366,7 @@ impl NvicIpr9Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -19786,6 +21376,7 @@ impl NvicIpr9Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -19795,6 +21386,7 @@ impl NvicIpr9Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -19804,6 +21396,7 @@ impl NvicIpr9Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -19851,12 +21444,19 @@ impl NvicIpr9 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr10 {
@@ -19875,25 +21475,33 @@ impl NvicIpr10 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -19901,6 +21509,7 @@ impl NvicIpr10 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -19908,6 +21517,7 @@ impl NvicIpr10 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -19915,6 +21525,7 @@ impl NvicIpr10 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -19922,6 +21533,7 @@ impl NvicIpr10 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -19929,6 +21541,7 @@ impl NvicIpr10 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -19936,6 +21549,7 @@ impl NvicIpr10 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -19943,6 +21557,7 @@ impl NvicIpr10 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -19950,6 +21565,7 @@ impl NvicIpr10 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -19987,6 +21603,7 @@ impl NvicIpr10Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -19994,6 +21611,7 @@ impl NvicIpr10Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -20001,6 +21619,7 @@ impl NvicIpr10Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -20008,6 +21627,7 @@ impl NvicIpr10Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -20015,6 +21635,7 @@ impl NvicIpr10Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -20024,6 +21645,7 @@ impl NvicIpr10Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -20033,6 +21655,7 @@ impl NvicIpr10Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -20042,6 +21665,7 @@ impl NvicIpr10Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -20089,12 +21713,19 @@ impl NvicIpr10 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr11 {
@@ -20113,25 +21744,33 @@ impl NvicIpr11 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -20139,6 +21778,7 @@ impl NvicIpr11 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -20146,6 +21786,7 @@ impl NvicIpr11 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -20153,6 +21794,7 @@ impl NvicIpr11 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -20160,6 +21802,7 @@ impl NvicIpr11 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -20167,6 +21810,7 @@ impl NvicIpr11 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -20174,6 +21818,7 @@ impl NvicIpr11 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -20181,6 +21826,7 @@ impl NvicIpr11 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -20188,6 +21834,7 @@ impl NvicIpr11 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -20225,6 +21872,7 @@ impl NvicIpr11Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -20232,6 +21880,7 @@ impl NvicIpr11Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -20239,6 +21888,7 @@ impl NvicIpr11Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -20246,6 +21896,7 @@ impl NvicIpr11Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -20253,6 +21904,7 @@ impl NvicIpr11Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -20262,6 +21914,7 @@ impl NvicIpr11Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -20271,6 +21924,7 @@ impl NvicIpr11Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -20280,6 +21934,7 @@ impl NvicIpr11Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -20327,12 +21982,19 @@ impl NvicIpr11 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr12 {
@@ -20351,25 +22013,33 @@ impl NvicIpr12 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -20377,6 +22047,7 @@ impl NvicIpr12 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -20384,6 +22055,7 @@ impl NvicIpr12 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -20391,6 +22063,7 @@ impl NvicIpr12 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -20398,6 +22071,7 @@ impl NvicIpr12 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -20405,6 +22079,7 @@ impl NvicIpr12 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -20412,6 +22087,7 @@ impl NvicIpr12 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -20419,6 +22095,7 @@ impl NvicIpr12 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -20426,6 +22103,7 @@ impl NvicIpr12 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -20463,6 +22141,7 @@ impl NvicIpr12Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -20470,6 +22149,7 @@ impl NvicIpr12Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -20477,6 +22157,7 @@ impl NvicIpr12Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -20484,6 +22165,7 @@ impl NvicIpr12Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -20491,6 +22173,7 @@ impl NvicIpr12Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -20500,6 +22183,7 @@ impl NvicIpr12Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -20509,6 +22193,7 @@ impl NvicIpr12Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -20518,6 +22203,7 @@ impl NvicIpr12Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -20565,12 +22251,19 @@ impl NvicIpr12 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr13 {
@@ -20589,25 +22282,33 @@ impl NvicIpr13 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -20615,6 +22316,7 @@ impl NvicIpr13 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -20622,6 +22324,7 @@ impl NvicIpr13 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -20629,6 +22332,7 @@ impl NvicIpr13 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -20636,6 +22340,7 @@ impl NvicIpr13 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -20643,6 +22348,7 @@ impl NvicIpr13 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -20650,6 +22356,7 @@ impl NvicIpr13 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -20657,6 +22364,7 @@ impl NvicIpr13 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -20664,6 +22372,7 @@ impl NvicIpr13 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -20701,6 +22410,7 @@ impl NvicIpr13Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -20708,6 +22418,7 @@ impl NvicIpr13Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -20715,6 +22426,7 @@ impl NvicIpr13Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -20722,6 +22434,7 @@ impl NvicIpr13Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -20729,6 +22442,7 @@ impl NvicIpr13Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -20738,6 +22452,7 @@ impl NvicIpr13Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -20747,6 +22462,7 @@ impl NvicIpr13Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -20756,6 +22472,7 @@ impl NvicIpr13Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -20803,12 +22520,19 @@ impl NvicIpr13 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr14 {
@@ -20827,25 +22551,33 @@ impl NvicIpr14 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -20853,6 +22585,7 @@ impl NvicIpr14 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -20860,6 +22593,7 @@ impl NvicIpr14 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -20867,6 +22601,7 @@ impl NvicIpr14 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -20874,6 +22609,7 @@ impl NvicIpr14 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -20881,6 +22617,7 @@ impl NvicIpr14 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -20888,6 +22625,7 @@ impl NvicIpr14 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -20895,6 +22633,7 @@ impl NvicIpr14 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -20902,6 +22641,7 @@ impl NvicIpr14 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -20939,6 +22679,7 @@ impl NvicIpr14Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -20946,6 +22687,7 @@ impl NvicIpr14Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -20953,6 +22695,7 @@ impl NvicIpr14Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -20960,6 +22703,7 @@ impl NvicIpr14Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -20967,6 +22711,7 @@ impl NvicIpr14Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -20976,6 +22721,7 @@ impl NvicIpr14Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -20985,6 +22731,7 @@ impl NvicIpr14Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -20994,6 +22741,7 @@ impl NvicIpr14Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -21041,12 +22789,19 @@ impl NvicIpr14 {
 /// ## Fields
 ///
 /// - **PRI_N3** `[31:28]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N2** `[23:20]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N1** `[15:12]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+///
 /// - **PRI_N0** `[7:4]` (RW)
+///
 ///   For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
 #[repr(transparent)]
 pub struct NvicIpr15 {
@@ -21065,25 +22820,33 @@ impl NvicIpr15 {
     // ======== Field Constants ========
 
     /// **PRI_N3**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const PRI_N3_OFFSET: u32 = 28;
     pub const PRI_N3_MASK: u32 = 0xf0000000;
 
     /// **PRI_N2**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const PRI_N2_OFFSET: u32 = 20;
     pub const PRI_N2_MASK: u32 = 0x00f00000;
 
     /// **PRI_N1**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const PRI_N1_OFFSET: u32 = 12;
     pub const PRI_N1_MASK: u32 = 0x0000f000;
 
     /// **PRI_N0**
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PRI_N0_OFFSET: u32 = 4;
     pub const PRI_N0_MASK: u32 = 0x000000f0;
@@ -21091,6 +22854,7 @@ impl NvicIpr15 {
     // ======== Field Accessors ========
 
     /// **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n3(&self) -> u32 {
@@ -21098,6 +22862,7 @@ impl NvicIpr15 {
     }
 
     /// Write **PRI_N3** `[31:28]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
@@ -21105,6 +22870,7 @@ impl NvicIpr15 {
     }
 
     /// **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n2(&self) -> u32 {
@@ -21112,6 +22878,7 @@ impl NvicIpr15 {
     }
 
     /// Write **PRI_N2** `[23:20]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
@@ -21119,6 +22886,7 @@ impl NvicIpr15 {
     }
 
     /// **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n1(&self) -> u32 {
@@ -21126,6 +22894,7 @@ impl NvicIpr15 {
     }
 
     /// Write **PRI_N1** `[15:12]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
@@ -21133,6 +22902,7 @@ impl NvicIpr15 {
     }
 
     /// **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn pri_n0(&self) -> u32 {
@@ -21140,6 +22910,7 @@ impl NvicIpr15 {
     }
 
     /// Write **PRI_N0** `[7:4]` (RW)
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
@@ -21177,6 +22948,7 @@ impl NvicIpr15Val {
     }
 
     /// Read **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n3(&self) -> u32 {
@@ -21184,6 +22956,7 @@ impl NvicIpr15Val {
     }
 
     /// Read **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n2(&self) -> u32 {
@@ -21191,6 +22964,7 @@ impl NvicIpr15Val {
     }
 
     /// Read **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n1(&self) -> u32 {
@@ -21198,6 +22972,7 @@ impl NvicIpr15Val {
     }
 
     /// Read **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn pri_n0(&self) -> u32 {
@@ -21205,6 +22980,7 @@ impl NvicIpr15Val {
     }
 
     /// Set **PRI_N3** `[31:28]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
@@ -21214,6 +22990,7 @@ impl NvicIpr15Val {
     }
 
     /// Set **PRI_N2** `[23:20]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
@@ -21223,6 +23000,7 @@ impl NvicIpr15Val {
     }
 
     /// Set **PRI_N1** `[15:12]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
@@ -21232,6 +23010,7 @@ impl NvicIpr15Val {
     }
 
     /// Set **PRI_N0** `[7:4]`
+    ///
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
@@ -21279,14 +23058,23 @@ impl NvicIpr15 {
 /// ## Fields
 ///
 /// - **IMPLEMENTER** `[31:24]` (RO)
+///
 ///   This field must hold an implementer code that has been assigned by ARM
+///
 /// - **VARIANT** `[23:20]` (RO)
+///
 ///   IMPLEMENTATION DEFINED variant number. Typically, this field is used to distinguish between different product variants, or major revisions of a product
+///
 /// - **ARCHITECTURE** `[19:16]` (RO)
+///
 ///   Defines the Architecture implemented by the PE
+///
 /// - **PARTNO** `[15:4]` (RO)
+///
 ///   IMPLEMENTATION DEFINED primary part number for the device
+///
 /// - **REVISION** `[3:0]` (RO)
+///
 ///   IMPLEMENTATION DEFINED revision number for the device
 #[repr(transparent)]
 pub struct Cpuid {
@@ -21305,31 +23093,41 @@ impl Cpuid {
     // ======== Field Constants ========
 
     /// **IMPLEMENTER**
+    ///
     /// This field must hold an implementer code that has been assigned by ARM
+    ///
     /// Bits `[31:24]`, mask `0xff000000`
     pub const IMPLEMENTER_OFFSET: u32 = 24;
     pub const IMPLEMENTER_MASK: u32 = 0xff000000;
 
     /// **VARIANT**
+    ///
     /// IMPLEMENTATION DEFINED variant number. Typically, this field is used to distinguish between different product variants, or major revisions of a product
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const VARIANT_OFFSET: u32 = 20;
     pub const VARIANT_MASK: u32 = 0x00f00000;
 
     /// **ARCHITECTURE**
+    ///
     /// Defines the Architecture implemented by the PE
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ARCHITECTURE_OFFSET: u32 = 16;
     pub const ARCHITECTURE_MASK: u32 = 0x000f0000;
 
     /// **PARTNO**
+    ///
     /// IMPLEMENTATION DEFINED primary part number for the device
+    ///
     /// Bits `[15:4]`, mask `0x0000fff0`
     pub const PARTNO_OFFSET: u32 = 4;
     pub const PARTNO_MASK: u32 = 0x0000fff0;
 
     /// **REVISION**
+    ///
     /// IMPLEMENTATION DEFINED revision number for the device
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const REVISION_OFFSET: u32 = 0;
     pub const REVISION_MASK: u32 = 0x0000000f;
@@ -21337,6 +23135,7 @@ impl Cpuid {
     // ======== Field Accessors ========
 
     /// **IMPLEMENTER** `[31:24]` (RO)
+    ///
     /// This field must hold an implementer code that has been assigned by ARM
     #[inline(always)]
     pub fn implementer(&self) -> u32 {
@@ -21344,6 +23143,7 @@ impl Cpuid {
     }
 
     /// **VARIANT** `[23:20]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED variant number. Typically, this field is used to distinguish between different product variants, or major revisions of a product
     #[inline(always)]
     pub fn variant(&self) -> u32 {
@@ -21351,6 +23151,7 @@ impl Cpuid {
     }
 
     /// **ARCHITECTURE** `[19:16]` (RO)
+    ///
     /// Defines the Architecture implemented by the PE
     #[inline(always)]
     pub fn architecture(&self) -> u32 {
@@ -21358,6 +23159,7 @@ impl Cpuid {
     }
 
     /// **PARTNO** `[15:4]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED primary part number for the device
     #[inline(always)]
     pub fn partno(&self) -> u32 {
@@ -21365,6 +23167,7 @@ impl Cpuid {
     }
 
     /// **REVISION** `[3:0]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED revision number for the device
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -21402,6 +23205,7 @@ impl CpuidVal {
     }
 
     /// Read **IMPLEMENTER** `[31:24]`
+    ///
     /// This field must hold an implementer code that has been assigned by ARM
     #[inline(always)]
     pub const fn implementer(&self) -> u32 {
@@ -21409,6 +23213,7 @@ impl CpuidVal {
     }
 
     /// Read **VARIANT** `[23:20]`
+    ///
     /// IMPLEMENTATION DEFINED variant number. Typically, this field is used to distinguish between different product variants, or major revisions of a product
     #[inline(always)]
     pub const fn variant(&self) -> u32 {
@@ -21416,6 +23221,7 @@ impl CpuidVal {
     }
 
     /// Read **ARCHITECTURE** `[19:16]`
+    ///
     /// Defines the Architecture implemented by the PE
     #[inline(always)]
     pub const fn architecture(&self) -> u32 {
@@ -21423,6 +23229,7 @@ impl CpuidVal {
     }
 
     /// Read **PARTNO** `[15:4]`
+    ///
     /// IMPLEMENTATION DEFINED primary part number for the device
     #[inline(always)]
     pub const fn partno(&self) -> u32 {
@@ -21430,6 +23237,7 @@ impl CpuidVal {
     }
 
     /// Read **REVISION** `[3:0]`
+    ///
     /// IMPLEMENTATION DEFINED revision number for the device
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -21475,28 +23283,51 @@ impl Cpuid {
 /// ## Fields
 ///
 /// - **PENDNMISET** `[31]` (RO)
+///
 ///   Indicates whether the NMI exception is pending
+///
 /// - **PENDNMICLR** `[30]` (RW)
+///
 ///   Allows the NMI exception pend state to be cleared
+///
 /// - **PENDSVSET** `[28]` (RO)
+///
 ///   Indicates whether the PendSV `FTSSS exception is pending
+///
 /// - **PENDSVCLR** `[27]` (RW)
+///
 ///   Allows the PendSV exception pend state to be cleared `FTSSS
+///
 /// - **PENDSTSET** `[26]` (RO)
+///
 ///   Indicates whether the SysTick `FTSSS exception is pending
+///
 /// - **PENDSTCLR** `[25]` (RW)
+///
 ///   Allows the SysTick exception pend state to be cleared `FTSSS
+///
 /// - **STTNS** `[24]` (RW)
+///
 ///   Controls whether in a single SysTick implementation, the SysTick is Secure or Non-secure
+///
 /// - **ISRPREEMPT** `[23]` (RO)
+///
 ///   Indicates whether a pending exception will be serviced on exit from debug halt state
+///
 /// - **ISRPENDING** `[22]` (RO)
+///
 ///   Indicates whether an external interrupt, generated by the NVIC, is pending
+///
 /// - **VECTPENDING** `[20:12]` (RO)
+///
 ///   The exception number of the highest priority pending and enabled interrupt
+///
 /// - **RETTOBASE** `[11]` (RO)
+///
 ///   In Handler mode, indicates whether there is more than one active exception
+///
 /// - **VECTACTIVE** `[8:0]` (RO)
+///
 ///   The exception number of the current executing exception
 #[repr(transparent)]
 pub struct Icsr {
@@ -21515,83 +23346,107 @@ impl Icsr {
     // ======== Field Constants ========
 
     /// **PENDNMISET**
+    ///
     /// Indicates whether the NMI exception is pending
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const PENDNMISET_OFFSET: u32 = 31;
     pub const PENDNMISET_MASK: u32 = 0x80000000;
     pub const PENDNMISET: u32 = 1 << 31;
 
     /// **PENDNMICLR**
+    ///
     /// Allows the NMI exception pend state to be cleared
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const PENDNMICLR_OFFSET: u32 = 30;
     pub const PENDNMICLR_MASK: u32 = 0x40000000;
     pub const PENDNMICLR: u32 = 1 << 30;
 
     /// **PENDSVSET**
+    ///
     /// Indicates whether the PendSV `FTSSS exception is pending
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const PENDSVSET_OFFSET: u32 = 28;
     pub const PENDSVSET_MASK: u32 = 0x10000000;
     pub const PENDSVSET: u32 = 1 << 28;
 
     /// **PENDSVCLR**
+    ///
     /// Allows the PendSV exception pend state to be cleared `FTSSS
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const PENDSVCLR_OFFSET: u32 = 27;
     pub const PENDSVCLR_MASK: u32 = 0x08000000;
     pub const PENDSVCLR: u32 = 1 << 27;
 
     /// **PENDSTSET**
+    ///
     /// Indicates whether the SysTick `FTSSS exception is pending
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const PENDSTSET_OFFSET: u32 = 26;
     pub const PENDSTSET_MASK: u32 = 0x04000000;
     pub const PENDSTSET: u32 = 1 << 26;
 
     /// **PENDSTCLR**
+    ///
     /// Allows the SysTick exception pend state to be cleared `FTSSS
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const PENDSTCLR_OFFSET: u32 = 25;
     pub const PENDSTCLR_MASK: u32 = 0x02000000;
     pub const PENDSTCLR: u32 = 1 << 25;
 
     /// **STTNS**
+    ///
     /// Controls whether in a single SysTick implementation, the SysTick is Secure or Non-secure
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const STTNS_OFFSET: u32 = 24;
     pub const STTNS_MASK: u32 = 0x01000000;
     pub const STTNS: u32 = 1 << 24;
 
     /// **ISRPREEMPT**
+    ///
     /// Indicates whether a pending exception will be serviced on exit from debug halt state
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const ISRPREEMPT_OFFSET: u32 = 23;
     pub const ISRPREEMPT_MASK: u32 = 0x00800000;
     pub const ISRPREEMPT: u32 = 1 << 23;
 
     /// **ISRPENDING**
+    ///
     /// Indicates whether an external interrupt, generated by the NVIC, is pending
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const ISRPENDING_OFFSET: u32 = 22;
     pub const ISRPENDING_MASK: u32 = 0x00400000;
     pub const ISRPENDING: u32 = 1 << 22;
 
     /// **VECTPENDING**
+    ///
     /// The exception number of the highest priority pending and enabled interrupt
+    ///
     /// Bits `[20:12]`, mask `0x001ff000`
     pub const VECTPENDING_OFFSET: u32 = 12;
     pub const VECTPENDING_MASK: u32 = 0x001ff000;
 
     /// **RETTOBASE**
+    ///
     /// In Handler mode, indicates whether there is more than one active exception
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const RETTOBASE_OFFSET: u32 = 11;
     pub const RETTOBASE_MASK: u32 = 0x00000800;
     pub const RETTOBASE: u32 = 1 << 11;
 
     /// **VECTACTIVE**
+    ///
     /// The exception number of the current executing exception
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const VECTACTIVE_OFFSET: u32 = 0;
     pub const VECTACTIVE_MASK: u32 = 0x000001ff;
@@ -21599,6 +23454,7 @@ impl Icsr {
     // ======== Field Accessors ========
 
     /// **PENDNMISET** `[31]` (RO)
+    ///
     /// Indicates whether the NMI exception is pending
     #[inline(always)]
     pub fn pendnmiset(&self) -> bool {
@@ -21606,6 +23462,7 @@ impl Icsr {
     }
 
     /// **PENDNMICLR** `[30]` (RW)
+    ///
     /// Allows the NMI exception pend state to be cleared
     #[inline(always)]
     pub fn pendnmiclr(&self) -> bool {
@@ -21625,6 +23482,7 @@ impl Icsr {
     }
 
     /// **PENDSVSET** `[28]` (RO)
+    ///
     /// Indicates whether the PendSV `FTSSS exception is pending
     #[inline(always)]
     pub fn pendsvset(&self) -> bool {
@@ -21632,6 +23490,7 @@ impl Icsr {
     }
 
     /// **PENDSVCLR** `[27]` (RW)
+    ///
     /// Allows the PendSV exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub fn pendsvclr(&self) -> bool {
@@ -21651,6 +23510,7 @@ impl Icsr {
     }
 
     /// **PENDSTSET** `[26]` (RO)
+    ///
     /// Indicates whether the SysTick `FTSSS exception is pending
     #[inline(always)]
     pub fn pendstset(&self) -> bool {
@@ -21658,6 +23518,7 @@ impl Icsr {
     }
 
     /// **PENDSTCLR** `[25]` (RW)
+    ///
     /// Allows the SysTick exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub fn pendstclr(&self) -> bool {
@@ -21677,6 +23538,7 @@ impl Icsr {
     }
 
     /// **STTNS** `[24]` (RW)
+    ///
     /// Controls whether in a single SysTick implementation, the SysTick is Secure or Non-secure
     #[inline(always)]
     pub fn sttns(&self) -> bool {
@@ -21696,6 +23558,7 @@ impl Icsr {
     }
 
     /// **ISRPREEMPT** `[23]` (RO)
+    ///
     /// Indicates whether a pending exception will be serviced on exit from debug halt state
     #[inline(always)]
     pub fn isrpreempt(&self) -> bool {
@@ -21703,6 +23566,7 @@ impl Icsr {
     }
 
     /// **ISRPENDING** `[22]` (RO)
+    ///
     /// Indicates whether an external interrupt, generated by the NVIC, is pending
     #[inline(always)]
     pub fn isrpending(&self) -> bool {
@@ -21710,6 +23574,7 @@ impl Icsr {
     }
 
     /// **VECTPENDING** `[20:12]` (RO)
+    ///
     /// The exception number of the highest priority pending and enabled interrupt
     #[inline(always)]
     pub fn vectpending(&self) -> u32 {
@@ -21717,6 +23582,7 @@ impl Icsr {
     }
 
     /// **RETTOBASE** `[11]` (RO)
+    ///
     /// In Handler mode, indicates whether there is more than one active exception
     #[inline(always)]
     pub fn rettobase(&self) -> bool {
@@ -21724,6 +23590,7 @@ impl Icsr {
     }
 
     /// **VECTACTIVE** `[8:0]` (RO)
+    ///
     /// The exception number of the current executing exception
     #[inline(always)]
     pub fn vectactive(&self) -> u32 {
@@ -21761,6 +23628,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDNMISET** `[31:31]`
+    ///
     /// Indicates whether the NMI exception is pending
     #[inline(always)]
     pub const fn pendnmiset(&self) -> bool {
@@ -21768,6 +23636,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDNMICLR** `[30:30]`
+    ///
     /// Allows the NMI exception pend state to be cleared
     #[inline(always)]
     pub const fn pendnmiclr(&self) -> bool {
@@ -21775,6 +23644,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDSVSET** `[28:28]`
+    ///
     /// Indicates whether the PendSV `FTSSS exception is pending
     #[inline(always)]
     pub const fn pendsvset(&self) -> bool {
@@ -21782,6 +23652,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDSVCLR** `[27:27]`
+    ///
     /// Allows the PendSV exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub const fn pendsvclr(&self) -> bool {
@@ -21789,6 +23660,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDSTSET** `[26:26]`
+    ///
     /// Indicates whether the SysTick `FTSSS exception is pending
     #[inline(always)]
     pub const fn pendstset(&self) -> bool {
@@ -21796,6 +23668,7 @@ impl IcsrVal {
     }
 
     /// Read **PENDSTCLR** `[25:25]`
+    ///
     /// Allows the SysTick exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub const fn pendstclr(&self) -> bool {
@@ -21803,6 +23676,7 @@ impl IcsrVal {
     }
 
     /// Read **STTNS** `[24:24]`
+    ///
     /// Controls whether in a single SysTick implementation, the SysTick is Secure or Non-secure
     #[inline(always)]
     pub const fn sttns(&self) -> bool {
@@ -21810,6 +23684,7 @@ impl IcsrVal {
     }
 
     /// Read **ISRPREEMPT** `[23:23]`
+    ///
     /// Indicates whether a pending exception will be serviced on exit from debug halt state
     #[inline(always)]
     pub const fn isrpreempt(&self) -> bool {
@@ -21817,6 +23692,7 @@ impl IcsrVal {
     }
 
     /// Read **ISRPENDING** `[22:22]`
+    ///
     /// Indicates whether an external interrupt, generated by the NVIC, is pending
     #[inline(always)]
     pub const fn isrpending(&self) -> bool {
@@ -21824,6 +23700,7 @@ impl IcsrVal {
     }
 
     /// Read **VECTPENDING** `[20:12]`
+    ///
     /// The exception number of the highest priority pending and enabled interrupt
     #[inline(always)]
     pub const fn vectpending(&self) -> u32 {
@@ -21831,6 +23708,7 @@ impl IcsrVal {
     }
 
     /// Read **RETTOBASE** `[11:11]`
+    ///
     /// In Handler mode, indicates whether there is more than one active exception
     #[inline(always)]
     pub const fn rettobase(&self) -> bool {
@@ -21838,6 +23716,7 @@ impl IcsrVal {
     }
 
     /// Read **VECTACTIVE** `[8:0]`
+    ///
     /// The exception number of the current executing exception
     #[inline(always)]
     pub const fn vectactive(&self) -> u32 {
@@ -21845,6 +23724,7 @@ impl IcsrVal {
     }
 
     /// Set **PENDNMICLR** `[30:30]`
+    ///
     /// Allows the NMI exception pend state to be cleared
     #[inline(always)]
     pub const fn with_pendnmiclr(self, value: bool) -> Self {
@@ -21858,6 +23738,7 @@ impl IcsrVal {
     }
 
     /// Set **PENDSVCLR** `[27:27]`
+    ///
     /// Allows the PendSV exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub const fn with_pendsvclr(self, value: bool) -> Self {
@@ -21871,6 +23752,7 @@ impl IcsrVal {
     }
 
     /// Set **PENDSTCLR** `[25:25]`
+    ///
     /// Allows the SysTick exception pend state to be cleared `FTSSS
     #[inline(always)]
     pub const fn with_pendstclr(self, value: bool) -> Self {
@@ -21884,6 +23766,7 @@ impl IcsrVal {
     }
 
     /// Set **STTNS** `[24:24]`
+    ///
     /// Controls whether in a single SysTick implementation, the SysTick is Secure or Non-secure
     #[inline(always)]
     pub const fn with_sttns(self, value: bool) -> Self {
@@ -21935,6 +23818,7 @@ impl Icsr {
 /// ## Fields
 ///
 /// - **TBLOFF** `[31:7]` (RW)
+///
 ///   Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
 #[repr(transparent)]
 pub struct Vtor {
@@ -21953,7 +23837,9 @@ impl Vtor {
     // ======== Field Constants ========
 
     /// **TBLOFF**
+    ///
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
+    ///
     /// Bits `[31:7]`, mask `0xffffff80`
     pub const TBLOFF_OFFSET: u32 = 7;
     pub const TBLOFF_MASK: u32 = 0xffffff80;
@@ -21961,6 +23847,7 @@ impl Vtor {
     // ======== Field Accessors ========
 
     /// **TBLOFF** `[31:7]` (RW)
+    ///
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
     #[inline(always)]
     pub fn tbloff(&self) -> u32 {
@@ -21968,6 +23855,7 @@ impl Vtor {
     }
 
     /// Write **TBLOFF** `[31:7]` (RW)
+    ///
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
     #[inline(always)]
     pub fn write_tbloff(&self, value: u32) {
@@ -22005,6 +23893,7 @@ impl VtorVal {
     }
 
     /// Read **TBLOFF** `[31:7]`
+    ///
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
     #[inline(always)]
     pub const fn tbloff(&self) -> u32 {
@@ -22012,6 +23901,7 @@ impl VtorVal {
     }
 
     /// Set **TBLOFF** `[31:7]`
+    ///
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
     #[inline(always)]
     pub const fn with_tbloff(self, value: u32) -> Self {
@@ -22059,30 +23949,45 @@ impl Vtor {
 /// ## Fields
 ///
 /// - **VECTKEY** `[31:16]` (RW)
+///
 ///   Register key:
 ///   Reads as Unknown
 ///   On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
+///
 /// - **ENDIANESS** `[15]` (RO)
+///
 ///   Data endianness implemented:
 ///   0 = Little-endian.
+///
 /// - **PRIS** `[14]` (RW)
+///
 ///   Prioritize Secure exceptions. The value of this bit defines whether Secure exception priority boosting is enabled.
 ///   0 Priority ranges of Secure and Non-secure exceptions are identical.
 ///   1 Non-secure exceptions are de-prioritized.
+///
 /// - **BFHFNMINS** `[13]` (RW)
+///
 ///   BusFault, HardFault, and NMI Non-secure enable.
 ///   0 BusFault, HardFault, and NMI are Secure.
 ///   1 BusFault and NMI are Non-secure and exceptions can target Non-secure HardFault.
+///
 /// - **PRIGROUP** `[10:8]` (RW)
+///
 ///   Interrupt priority grouping field. This field determines the split of group priority from subpriority.
 ///   See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
+///
 /// - **SYSRESETREQS** `[3]` (RW)
+///
 ///   System reset request, Secure state only.
 ///   0 SYSRESETREQ functionality is available to both Security states.
 ///   1 SYSRESETREQ functionality is only available to Secure state.
+///
 /// - **SYSRESETREQ** `[2]` (RW)
+///
 ///   Writing 1 to this bit causes the SYSRESETREQ signal to the outer system to be asserted to request a reset. The intention is to force a large system reset of all major components except for debug. The C_HALT bit in the DHCSR is cleared as a result of the system reset requested. The debugger does not lose contact with the device.
+///
 /// - **VECTCLRACTIVE** `[1]` (RW)
+///
 ///   Clears all active state information for fixed and configurable exceptions. This bit: is self-clearing, can only be set by the DAP when the core is halted. When set: clears all active exception status of the processor, forces a return to Thread mode, forces an IPSR of 0. A debugger must re-initialize the stack.
 #[repr(transparent)]
 pub struct Aircr {
@@ -22101,64 +24006,80 @@ impl Aircr {
     // ======== Field Constants ========
 
     /// **VECTKEY**
+    ///
     /// Register key:
     /// Reads as Unknown
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const VECTKEY_OFFSET: u32 = 16;
     pub const VECTKEY_MASK: u32 = 0xffff0000;
 
     /// **ENDIANESS**
+    ///
     /// Data endianness implemented:
     /// 0 = Little-endian.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const ENDIANESS_OFFSET: u32 = 15;
     pub const ENDIANESS_MASK: u32 = 0x00008000;
     pub const ENDIANESS: u32 = 1 << 15;
 
     /// **PRIS**
+    ///
     /// Prioritize Secure exceptions. The value of this bit defines whether Secure exception priority boosting is enabled.
     /// 0 Priority ranges of Secure and Non-secure exceptions are identical.
     /// 1 Non-secure exceptions are de-prioritized.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const PRIS_OFFSET: u32 = 14;
     pub const PRIS_MASK: u32 = 0x00004000;
     pub const PRIS: u32 = 1 << 14;
 
     /// **BFHFNMINS**
+    ///
     /// BusFault, HardFault, and NMI Non-secure enable.
     /// 0 BusFault, HardFault, and NMI are Secure.
     /// 1 BusFault and NMI are Non-secure and exceptions can target Non-secure HardFault.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const BFHFNMINS_OFFSET: u32 = 13;
     pub const BFHFNMINS_MASK: u32 = 0x00002000;
     pub const BFHFNMINS: u32 = 1 << 13;
 
     /// **PRIGROUP**
+    ///
     /// Interrupt priority grouping field. This field determines the split of group priority from subpriority.
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const PRIGROUP_OFFSET: u32 = 8;
     pub const PRIGROUP_MASK: u32 = 0x00000700;
 
     /// **SYSRESETREQS**
+    ///
     /// System reset request, Secure state only.
     /// 0 SYSRESETREQ functionality is available to both Security states.
     /// 1 SYSRESETREQ functionality is only available to Secure state.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SYSRESETREQS_OFFSET: u32 = 3;
     pub const SYSRESETREQS_MASK: u32 = 0x00000008;
     pub const SYSRESETREQS: u32 = 1 << 3;
 
     /// **SYSRESETREQ**
+    ///
     /// Writing 1 to this bit causes the SYSRESETREQ signal to the outer system to be asserted to request a reset. The intention is to force a large system reset of all major components except for debug. The C_HALT bit in the DHCSR is cleared as a result of the system reset requested. The debugger does not lose contact with the device.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SYSRESETREQ_OFFSET: u32 = 2;
     pub const SYSRESETREQ_MASK: u32 = 0x00000004;
     pub const SYSRESETREQ: u32 = 1 << 2;
 
     /// **VECTCLRACTIVE**
+    ///
     /// Clears all active state information for fixed and configurable exceptions. This bit: is self-clearing, can only be set by the DAP when the core is halted. When set: clears all active exception status of the processor, forces a return to Thread mode, forces an IPSR of 0. A debugger must re-initialize the stack.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const VECTCLRACTIVE_OFFSET: u32 = 1;
     pub const VECTCLRACTIVE_MASK: u32 = 0x00000002;
@@ -22167,6 +24088,7 @@ impl Aircr {
     // ======== Field Accessors ========
 
     /// **VECTKEY** `[31:16]` (RW)
+    ///
     /// Register key:
     /// Reads as Unknown
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
@@ -22176,6 +24098,7 @@ impl Aircr {
     }
 
     /// Write **VECTKEY** `[31:16]` (RW)
+    ///
     /// Register key:
     /// Reads as Unknown
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
@@ -22185,6 +24108,7 @@ impl Aircr {
     }
 
     /// **ENDIANESS** `[15]` (RO)
+    ///
     /// Data endianness implemented:
     /// 0 = Little-endian.
     #[inline(always)]
@@ -22193,6 +24117,7 @@ impl Aircr {
     }
 
     /// **PRIS** `[14]` (RW)
+    ///
     /// Prioritize Secure exceptions. The value of this bit defines whether Secure exception priority boosting is enabled.
     /// 0 Priority ranges of Secure and Non-secure exceptions are identical.
     /// 1 Non-secure exceptions are de-prioritized.
@@ -22214,6 +24139,7 @@ impl Aircr {
     }
 
     /// **BFHFNMINS** `[13]` (RW)
+    ///
     /// BusFault, HardFault, and NMI Non-secure enable.
     /// 0 BusFault, HardFault, and NMI are Secure.
     /// 1 BusFault and NMI are Non-secure and exceptions can target Non-secure HardFault.
@@ -22235,6 +24161,7 @@ impl Aircr {
     }
 
     /// **PRIGROUP** `[10:8]` (RW)
+    ///
     /// Interrupt priority grouping field. This field determines the split of group priority from subpriority.
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
     #[inline(always)]
@@ -22243,6 +24170,7 @@ impl Aircr {
     }
 
     /// Write **PRIGROUP** `[10:8]` (RW)
+    ///
     /// Interrupt priority grouping field. This field determines the split of group priority from subpriority.
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
     #[inline(always)]
@@ -22251,6 +24179,7 @@ impl Aircr {
     }
 
     /// **SYSRESETREQS** `[3]` (RW)
+    ///
     /// System reset request, Secure state only.
     /// 0 SYSRESETREQ functionality is available to both Security states.
     /// 1 SYSRESETREQ functionality is only available to Secure state.
@@ -22272,6 +24201,7 @@ impl Aircr {
     }
 
     /// **SYSRESETREQ** `[2]` (RW)
+    ///
     /// Writing 1 to this bit causes the SYSRESETREQ signal to the outer system to be asserted to request a reset. The intention is to force a large system reset of all major components except for debug. The C_HALT bit in the DHCSR is cleared as a result of the system reset requested. The debugger does not lose contact with the device.
     #[inline(always)]
     pub fn sysresetreq(&self) -> bool {
@@ -22291,6 +24221,7 @@ impl Aircr {
     }
 
     /// **VECTCLRACTIVE** `[1]` (RW)
+    ///
     /// Clears all active state information for fixed and configurable exceptions. This bit: is self-clearing, can only be set by the DAP when the core is halted. When set: clears all active exception status of the processor, forces a return to Thread mode, forces an IPSR of 0. A debugger must re-initialize the stack.
     #[inline(always)]
     pub fn vectclractive(&self) -> bool {
@@ -22340,6 +24271,7 @@ impl AircrVal {
     }
 
     /// Read **VECTKEY** `[31:16]`
+    ///
     /// Register key:
     /// Reads as Unknown
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
@@ -22349,6 +24281,7 @@ impl AircrVal {
     }
 
     /// Read **ENDIANESS** `[15:15]`
+    ///
     /// Data endianness implemented:
     /// 0 = Little-endian.
     #[inline(always)]
@@ -22357,6 +24290,7 @@ impl AircrVal {
     }
 
     /// Read **PRIS** `[14:14]`
+    ///
     /// Prioritize Secure exceptions. The value of this bit defines whether Secure exception priority boosting is enabled.
     /// 0 Priority ranges of Secure and Non-secure exceptions are identical.
     /// 1 Non-secure exceptions are de-prioritized.
@@ -22366,6 +24300,7 @@ impl AircrVal {
     }
 
     /// Read **BFHFNMINS** `[13:13]`
+    ///
     /// BusFault, HardFault, and NMI Non-secure enable.
     /// 0 BusFault, HardFault, and NMI are Secure.
     /// 1 BusFault and NMI are Non-secure and exceptions can target Non-secure HardFault.
@@ -22375,6 +24310,7 @@ impl AircrVal {
     }
 
     /// Read **PRIGROUP** `[10:8]`
+    ///
     /// Interrupt priority grouping field. This field determines the split of group priority from subpriority.
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
     #[inline(always)]
@@ -22383,6 +24319,7 @@ impl AircrVal {
     }
 
     /// Read **SYSRESETREQS** `[3:3]`
+    ///
     /// System reset request, Secure state only.
     /// 0 SYSRESETREQ functionality is available to both Security states.
     /// 1 SYSRESETREQ functionality is only available to Secure state.
@@ -22392,6 +24329,7 @@ impl AircrVal {
     }
 
     /// Read **SYSRESETREQ** `[2:2]`
+    ///
     /// Writing 1 to this bit causes the SYSRESETREQ signal to the outer system to be asserted to request a reset. The intention is to force a large system reset of all major components except for debug. The C_HALT bit in the DHCSR is cleared as a result of the system reset requested. The debugger does not lose contact with the device.
     #[inline(always)]
     pub const fn sysresetreq(&self) -> bool {
@@ -22399,6 +24337,7 @@ impl AircrVal {
     }
 
     /// Read **VECTCLRACTIVE** `[1:1]`
+    ///
     /// Clears all active state information for fixed and configurable exceptions. This bit: is self-clearing, can only be set by the DAP when the core is halted. When set: clears all active exception status of the processor, forces a return to Thread mode, forces an IPSR of 0. A debugger must re-initialize the stack.
     #[inline(always)]
     pub const fn vectclractive(&self) -> bool {
@@ -22406,6 +24345,7 @@ impl AircrVal {
     }
 
     /// Set **VECTKEY** `[31:16]`
+    ///
     /// Register key:
     /// Reads as Unknown
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
@@ -22417,6 +24357,7 @@ impl AircrVal {
     }
 
     /// Set **PRIS** `[14:14]`
+    ///
     /// Prioritize Secure exceptions. The value of this bit defines whether Secure exception priority boosting is enabled.
     /// 0 Priority ranges of Secure and Non-secure exceptions are identical.
     /// 1 Non-secure exceptions are de-prioritized.
@@ -22432,6 +24373,7 @@ impl AircrVal {
     }
 
     /// Set **BFHFNMINS** `[13:13]`
+    ///
     /// BusFault, HardFault, and NMI Non-secure enable.
     /// 0 BusFault, HardFault, and NMI are Secure.
     /// 1 BusFault and NMI are Non-secure and exceptions can target Non-secure HardFault.
@@ -22447,6 +24389,7 @@ impl AircrVal {
     }
 
     /// Set **PRIGROUP** `[10:8]`
+    ///
     /// Interrupt priority grouping field. This field determines the split of group priority from subpriority.
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
     #[inline(always)]
@@ -22457,6 +24400,7 @@ impl AircrVal {
     }
 
     /// Set **SYSRESETREQS** `[3:3]`
+    ///
     /// System reset request, Secure state only.
     /// 0 SYSRESETREQ functionality is available to both Security states.
     /// 1 SYSRESETREQ functionality is only available to Secure state.
@@ -22472,6 +24416,7 @@ impl AircrVal {
     }
 
     /// Set **SYSRESETREQ** `[2:2]`
+    ///
     /// Writing 1 to this bit causes the SYSRESETREQ signal to the outer system to be asserted to request a reset. The intention is to force a large system reset of all major components except for debug. The C_HALT bit in the DHCSR is cleared as a result of the system reset requested. The debugger does not lose contact with the device.
     #[inline(always)]
     pub const fn with_sysresetreq(self, value: bool) -> Self {
@@ -22485,6 +24430,7 @@ impl AircrVal {
     }
 
     /// Set **VECTCLRACTIVE** `[1:1]`
+    ///
     /// Clears all active state information for fixed and configurable exceptions. This bit: is self-clearing, can only be set by the DAP when the core is halted. When set: clears all active exception status of the processor, forces a return to Thread mode, forces an IPSR of 0. A debugger must re-initialize the stack.
     #[inline(always)]
     pub const fn with_vectclractive(self, value: bool) -> Self {
@@ -22536,20 +24482,27 @@ impl Aircr {
 /// ## Fields
 ///
 /// - **SEVONPEND** `[4]` (RW)
+///
 ///   Send Event on Pending bit:
 ///   0 = Only enabled interrupts or events can wakeup the processor, disabled interrupts are excluded.
 ///   1 = Enabled events and all interrupts, including disabled interrupts, can wakeup the processor.
 ///   When an event or interrupt becomes pending, the event signal wakes up the processor from WFE. If the
 ///   processor is not waiting for an event, the event is registered and affects the next WFE.
 ///   The processor also wakes up on execution of an SEV instruction or an external event.
+///
 /// - **SLEEPDEEPS** `[3]` (RW)
+///
 ///   0 SLEEPDEEP is available to both security states
 ///   1 SLEEPDEEP is only available to Secure state
+///
 /// - **SLEEPDEEP** `[2]` (RW)
+///
 ///   Controls whether the processor uses sleep or deep sleep as its low power mode:
 ///   0 = Sleep.
 ///   1 = Deep sleep.
+///
 /// - **SLEEPONEXIT** `[1]` (RW)
+///
 ///   Indicates sleep-on-exit when returning from Handler mode to Thread mode:
 ///   0 = Do not sleep when returning to Thread mode.
 ///   1 = Enter sleep, or deep sleep, on return from an ISR to Thread mode.
@@ -22571,39 +24524,47 @@ impl Scr {
     // ======== Field Constants ========
 
     /// **SEVONPEND**
+    ///
     /// Send Event on Pending bit:
     /// 0 = Only enabled interrupts or events can wakeup the processor, disabled interrupts are excluded.
     /// 1 = Enabled events and all interrupts, including disabled interrupts, can wakeup the processor.
     /// When an event or interrupt becomes pending, the event signal wakes up the processor from WFE. If the
     /// processor is not waiting for an event, the event is registered and affects the next WFE.
     /// The processor also wakes up on execution of an SEV instruction or an external event.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const SEVONPEND_OFFSET: u32 = 4;
     pub const SEVONPEND_MASK: u32 = 0x00000010;
     pub const SEVONPEND: u32 = 1 << 4;
 
     /// **SLEEPDEEPS**
+    ///
     /// 0 SLEEPDEEP is available to both security states
     /// 1 SLEEPDEEP is only available to Secure state
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SLEEPDEEPS_OFFSET: u32 = 3;
     pub const SLEEPDEEPS_MASK: u32 = 0x00000008;
     pub const SLEEPDEEPS: u32 = 1 << 3;
 
     /// **SLEEPDEEP**
+    ///
     /// Controls whether the processor uses sleep or deep sleep as its low power mode:
     /// 0 = Sleep.
     /// 1 = Deep sleep.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SLEEPDEEP_OFFSET: u32 = 2;
     pub const SLEEPDEEP_MASK: u32 = 0x00000004;
     pub const SLEEPDEEP: u32 = 1 << 2;
 
     /// **SLEEPONEXIT**
+    ///
     /// Indicates sleep-on-exit when returning from Handler mode to Thread mode:
     /// 0 = Do not sleep when returning to Thread mode.
     /// 1 = Enter sleep, or deep sleep, on return from an ISR to Thread mode.
     /// Setting this bit to 1 enables an interrupt driven application to avoid returning to an empty main application.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SLEEPONEXIT_OFFSET: u32 = 1;
     pub const SLEEPONEXIT_MASK: u32 = 0x00000002;
@@ -22612,6 +24573,7 @@ impl Scr {
     // ======== Field Accessors ========
 
     /// **SEVONPEND** `[4]` (RW)
+    ///
     /// Send Event on Pending bit:
     /// 0 = Only enabled interrupts or events can wakeup the processor, disabled interrupts are excluded.
     /// 1 = Enabled events and all interrupts, including disabled interrupts, can wakeup the processor.
@@ -22636,6 +24598,7 @@ impl Scr {
     }
 
     /// **SLEEPDEEPS** `[3]` (RW)
+    ///
     /// 0 SLEEPDEEP is available to both security states
     /// 1 SLEEPDEEP is only available to Secure state
     #[inline(always)]
@@ -22656,6 +24619,7 @@ impl Scr {
     }
 
     /// **SLEEPDEEP** `[2]` (RW)
+    ///
     /// Controls whether the processor uses sleep or deep sleep as its low power mode:
     /// 0 = Sleep.
     /// 1 = Deep sleep.
@@ -22677,6 +24641,7 @@ impl Scr {
     }
 
     /// **SLEEPONEXIT** `[1]` (RW)
+    ///
     /// Indicates sleep-on-exit when returning from Handler mode to Thread mode:
     /// 0 = Do not sleep when returning to Thread mode.
     /// 1 = Enter sleep, or deep sleep, on return from an ISR to Thread mode.
@@ -22729,6 +24694,7 @@ impl ScrVal {
     }
 
     /// Read **SEVONPEND** `[4:4]`
+    ///
     /// Send Event on Pending bit:
     /// 0 = Only enabled interrupts or events can wakeup the processor, disabled interrupts are excluded.
     /// 1 = Enabled events and all interrupts, including disabled interrupts, can wakeup the processor.
@@ -22741,6 +24707,7 @@ impl ScrVal {
     }
 
     /// Read **SLEEPDEEPS** `[3:3]`
+    ///
     /// 0 SLEEPDEEP is available to both security states
     /// 1 SLEEPDEEP is only available to Secure state
     #[inline(always)]
@@ -22749,6 +24716,7 @@ impl ScrVal {
     }
 
     /// Read **SLEEPDEEP** `[2:2]`
+    ///
     /// Controls whether the processor uses sleep or deep sleep as its low power mode:
     /// 0 = Sleep.
     /// 1 = Deep sleep.
@@ -22758,6 +24726,7 @@ impl ScrVal {
     }
 
     /// Read **SLEEPONEXIT** `[1:1]`
+    ///
     /// Indicates sleep-on-exit when returning from Handler mode to Thread mode:
     /// 0 = Do not sleep when returning to Thread mode.
     /// 1 = Enter sleep, or deep sleep, on return from an ISR to Thread mode.
@@ -22768,6 +24737,7 @@ impl ScrVal {
     }
 
     /// Set **SEVONPEND** `[4:4]`
+    ///
     /// Send Event on Pending bit:
     /// 0 = Only enabled interrupts or events can wakeup the processor, disabled interrupts are excluded.
     /// 1 = Enabled events and all interrupts, including disabled interrupts, can wakeup the processor.
@@ -22786,6 +24756,7 @@ impl ScrVal {
     }
 
     /// Set **SLEEPDEEPS** `[3:3]`
+    ///
     /// 0 SLEEPDEEP is available to both security states
     /// 1 SLEEPDEEP is only available to Secure state
     #[inline(always)]
@@ -22800,6 +24771,7 @@ impl ScrVal {
     }
 
     /// Set **SLEEPDEEP** `[2:2]`
+    ///
     /// Controls whether the processor uses sleep or deep sleep as its low power mode:
     /// 0 = Sleep.
     /// 1 = Deep sleep.
@@ -22815,6 +24787,7 @@ impl ScrVal {
     }
 
     /// Set **SLEEPONEXIT** `[1:1]`
+    ///
     /// Indicates sleep-on-exit when returning from Handler mode to Thread mode:
     /// 0 = Do not sleep when returning to Thread mode.
     /// 1 = Enter sleep, or deep sleep, on return from an ISR to Thread mode.
@@ -22869,24 +24842,43 @@ impl Scr {
 /// ## Fields
 ///
 /// - **BP** `[18]` (RO)
+///
 ///   Enables program flow prediction `FTSSS
+///
 /// - **IC** `[17]` (RO)
+///
 ///   This is a global enable bit for instruction caches in the selected Security state
+///
 /// - **DC** `[16]` (RO)
+///
 ///   Enables data caching of all data accesses to Normal memory `FTSSS
+///
 /// - **STKOFHFNMIGN** `[10]` (RW)
+///
 ///   Controls the effect of a stack limit violation while executing at a requested priority less than 0
+///
 /// - **RES1** `[9]` (RO)
+///
 ///   Reserved, RES1
+///
 /// - **BFHFNMIGN** `[8]` (RW)
+///
 ///   Determines the effect of precise BusFaults on handlers running at a requested priority less than 0
+///
 /// - **DIV_0_TRP** `[4]` (RW)
+///
 ///   Controls the generation of a DIVBYZERO UsageFault when attempting to perform integer division by zero
+///
 /// - **UNALIGN_TRP** `[3]` (RW)
+///
 ///   Controls the trapping of unaligned word or halfword accesses
+///
 /// - **USERSETMPEND** `[1]` (RW)
+///
 ///   Determines whether unprivileged accesses are permitted to pend interrupts via the STIR
+///
 /// - **RES1_1** `[0]` (RO)
+///
 ///   Reserved, RES1
 #[repr(transparent)]
 pub struct Ccr {
@@ -22905,70 +24897,90 @@ impl Ccr {
     // ======== Field Constants ========
 
     /// **BP**
+    ///
     /// Enables program flow prediction `FTSSS
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const BP_OFFSET: u32 = 18;
     pub const BP_MASK: u32 = 0x00040000;
     pub const BP: u32 = 1 << 18;
 
     /// **IC**
+    ///
     /// This is a global enable bit for instruction caches in the selected Security state
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const IC_OFFSET: u32 = 17;
     pub const IC_MASK: u32 = 0x00020000;
     pub const IC: u32 = 1 << 17;
 
     /// **DC**
+    ///
     /// Enables data caching of all data accesses to Normal memory `FTSSS
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const DC_OFFSET: u32 = 16;
     pub const DC_MASK: u32 = 0x00010000;
     pub const DC: u32 = 1 << 16;
 
     /// **STKOFHFNMIGN**
+    ///
     /// Controls the effect of a stack limit violation while executing at a requested priority less than 0
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const STKOFHFNMIGN_OFFSET: u32 = 10;
     pub const STKOFHFNMIGN_MASK: u32 = 0x00000400;
     pub const STKOFHFNMIGN: u32 = 1 << 10;
 
     /// **RES1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const RES1_OFFSET: u32 = 9;
     pub const RES1_MASK: u32 = 0x00000200;
     pub const RES1: u32 = 1 << 9;
 
     /// **BFHFNMIGN**
+    ///
     /// Determines the effect of precise BusFaults on handlers running at a requested priority less than 0
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const BFHFNMIGN_OFFSET: u32 = 8;
     pub const BFHFNMIGN_MASK: u32 = 0x00000100;
     pub const BFHFNMIGN: u32 = 1 << 8;
 
     /// **DIV_0_TRP**
+    ///
     /// Controls the generation of a DIVBYZERO UsageFault when attempting to perform integer division by zero
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const DIV_0_TRP_OFFSET: u32 = 4;
     pub const DIV_0_TRP_MASK: u32 = 0x00000010;
     pub const DIV_0_TRP: u32 = 1 << 4;
 
     /// **UNALIGN_TRP**
+    ///
     /// Controls the trapping of unaligned word or halfword accesses
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const UNALIGN_TRP_OFFSET: u32 = 3;
     pub const UNALIGN_TRP_MASK: u32 = 0x00000008;
     pub const UNALIGN_TRP: u32 = 1 << 3;
 
     /// **USERSETMPEND**
+    ///
     /// Determines whether unprivileged accesses are permitted to pend interrupts via the STIR
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const USERSETMPEND_OFFSET: u32 = 1;
     pub const USERSETMPEND_MASK: u32 = 0x00000002;
     pub const USERSETMPEND: u32 = 1 << 1;
 
     /// **RES1_1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RES1_1_OFFSET: u32 = 0;
     pub const RES1_1_MASK: u32 = 0x00000001;
@@ -22977,6 +24989,7 @@ impl Ccr {
     // ======== Field Accessors ========
 
     /// **BP** `[18]` (RO)
+    ///
     /// Enables program flow prediction `FTSSS
     #[inline(always)]
     pub fn bp(&self) -> bool {
@@ -22984,6 +24997,7 @@ impl Ccr {
     }
 
     /// **IC** `[17]` (RO)
+    ///
     /// This is a global enable bit for instruction caches in the selected Security state
     #[inline(always)]
     pub fn ic(&self) -> bool {
@@ -22991,6 +25005,7 @@ impl Ccr {
     }
 
     /// **DC** `[16]` (RO)
+    ///
     /// Enables data caching of all data accesses to Normal memory `FTSSS
     #[inline(always)]
     pub fn dc(&self) -> bool {
@@ -22998,6 +25013,7 @@ impl Ccr {
     }
 
     /// **STKOFHFNMIGN** `[10]` (RW)
+    ///
     /// Controls the effect of a stack limit violation while executing at a requested priority less than 0
     #[inline(always)]
     pub fn stkofhfnmign(&self) -> bool {
@@ -23017,6 +25033,7 @@ impl Ccr {
     }
 
     /// **RES1** `[9]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1(&self) -> bool {
@@ -23024,6 +25041,7 @@ impl Ccr {
     }
 
     /// **BFHFNMIGN** `[8]` (RW)
+    ///
     /// Determines the effect of precise BusFaults on handlers running at a requested priority less than 0
     #[inline(always)]
     pub fn bfhfnmign(&self) -> bool {
@@ -23043,6 +25061,7 @@ impl Ccr {
     }
 
     /// **DIV_0_TRP** `[4]` (RW)
+    ///
     /// Controls the generation of a DIVBYZERO UsageFault when attempting to perform integer division by zero
     #[inline(always)]
     pub fn div_0_trp(&self) -> bool {
@@ -23062,6 +25081,7 @@ impl Ccr {
     }
 
     /// **UNALIGN_TRP** `[3]` (RW)
+    ///
     /// Controls the trapping of unaligned word or halfword accesses
     #[inline(always)]
     pub fn unalign_trp(&self) -> bool {
@@ -23081,6 +25101,7 @@ impl Ccr {
     }
 
     /// **USERSETMPEND** `[1]` (RW)
+    ///
     /// Determines whether unprivileged accesses are permitted to pend interrupts via the STIR
     #[inline(always)]
     pub fn usersetmpend(&self) -> bool {
@@ -23100,6 +25121,7 @@ impl Ccr {
     }
 
     /// **RES1_1** `[0]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1_1(&self) -> bool {
@@ -23137,6 +25159,7 @@ impl CcrVal {
     }
 
     /// Read **BP** `[18:18]`
+    ///
     /// Enables program flow prediction `FTSSS
     #[inline(always)]
     pub const fn bp(&self) -> bool {
@@ -23144,6 +25167,7 @@ impl CcrVal {
     }
 
     /// Read **IC** `[17:17]`
+    ///
     /// This is a global enable bit for instruction caches in the selected Security state
     #[inline(always)]
     pub const fn ic(&self) -> bool {
@@ -23151,6 +25175,7 @@ impl CcrVal {
     }
 
     /// Read **DC** `[16:16]`
+    ///
     /// Enables data caching of all data accesses to Normal memory `FTSSS
     #[inline(always)]
     pub const fn dc(&self) -> bool {
@@ -23158,6 +25183,7 @@ impl CcrVal {
     }
 
     /// Read **STKOFHFNMIGN** `[10:10]`
+    ///
     /// Controls the effect of a stack limit violation while executing at a requested priority less than 0
     #[inline(always)]
     pub const fn stkofhfnmign(&self) -> bool {
@@ -23165,6 +25191,7 @@ impl CcrVal {
     }
 
     /// Read **RES1** `[9:9]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1(&self) -> bool {
@@ -23172,6 +25199,7 @@ impl CcrVal {
     }
 
     /// Read **BFHFNMIGN** `[8:8]`
+    ///
     /// Determines the effect of precise BusFaults on handlers running at a requested priority less than 0
     #[inline(always)]
     pub const fn bfhfnmign(&self) -> bool {
@@ -23179,6 +25207,7 @@ impl CcrVal {
     }
 
     /// Read **DIV_0_TRP** `[4:4]`
+    ///
     /// Controls the generation of a DIVBYZERO UsageFault when attempting to perform integer division by zero
     #[inline(always)]
     pub const fn div_0_trp(&self) -> bool {
@@ -23186,6 +25215,7 @@ impl CcrVal {
     }
 
     /// Read **UNALIGN_TRP** `[3:3]`
+    ///
     /// Controls the trapping of unaligned word or halfword accesses
     #[inline(always)]
     pub const fn unalign_trp(&self) -> bool {
@@ -23193,6 +25223,7 @@ impl CcrVal {
     }
 
     /// Read **USERSETMPEND** `[1:1]`
+    ///
     /// Determines whether unprivileged accesses are permitted to pend interrupts via the STIR
     #[inline(always)]
     pub const fn usersetmpend(&self) -> bool {
@@ -23200,6 +25231,7 @@ impl CcrVal {
     }
 
     /// Read **RES1_1** `[0:0]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1_1(&self) -> bool {
@@ -23207,6 +25239,7 @@ impl CcrVal {
     }
 
     /// Set **STKOFHFNMIGN** `[10:10]`
+    ///
     /// Controls the effect of a stack limit violation while executing at a requested priority less than 0
     #[inline(always)]
     pub const fn with_stkofhfnmign(self, value: bool) -> Self {
@@ -23220,6 +25253,7 @@ impl CcrVal {
     }
 
     /// Set **BFHFNMIGN** `[8:8]`
+    ///
     /// Determines the effect of precise BusFaults on handlers running at a requested priority less than 0
     #[inline(always)]
     pub const fn with_bfhfnmign(self, value: bool) -> Self {
@@ -23233,6 +25267,7 @@ impl CcrVal {
     }
 
     /// Set **DIV_0_TRP** `[4:4]`
+    ///
     /// Controls the generation of a DIVBYZERO UsageFault when attempting to perform integer division by zero
     #[inline(always)]
     pub const fn with_div_0_trp(self, value: bool) -> Self {
@@ -23246,6 +25281,7 @@ impl CcrVal {
     }
 
     /// Set **UNALIGN_TRP** `[3:3]`
+    ///
     /// Controls the trapping of unaligned word or halfword accesses
     #[inline(always)]
     pub const fn with_unalign_trp(self, value: bool) -> Self {
@@ -23259,6 +25295,7 @@ impl CcrVal {
     }
 
     /// Set **USERSETMPEND** `[1:1]`
+    ///
     /// Determines whether unprivileged accesses are permitted to pend interrupts via the STIR
     #[inline(always)]
     pub const fn with_usersetmpend(self, value: bool) -> Self {
@@ -23310,12 +25347,19 @@ impl Ccr {
 /// ## Fields
 ///
 /// - **PRI_7_3** `[31:29]` (RW)
+///
 ///   Priority of system handler 7, SecureFault
+///
 /// - **PRI_6_3** `[23:21]` (RW)
+///
 ///   Priority of system handler 6, SecureFault
+///
 /// - **PRI_5_3** `[15:13]` (RW)
+///
 ///   Priority of system handler 5, SecureFault
+///
 /// - **PRI_4_3** `[7:5]` (RW)
+///
 ///   Priority of system handler 4, SecureFault
 #[repr(transparent)]
 pub struct Shpr1 {
@@ -23334,25 +25378,33 @@ impl Shpr1 {
     // ======== Field Constants ========
 
     /// **PRI_7_3**
+    ///
     /// Priority of system handler 7, SecureFault
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const PRI_7_3_OFFSET: u32 = 29;
     pub const PRI_7_3_MASK: u32 = 0xe0000000;
 
     /// **PRI_6_3**
+    ///
     /// Priority of system handler 6, SecureFault
+    ///
     /// Bits `[23:21]`, mask `0x00e00000`
     pub const PRI_6_3_OFFSET: u32 = 21;
     pub const PRI_6_3_MASK: u32 = 0x00e00000;
 
     /// **PRI_5_3**
+    ///
     /// Priority of system handler 5, SecureFault
+    ///
     /// Bits `[15:13]`, mask `0x0000e000`
     pub const PRI_5_3_OFFSET: u32 = 13;
     pub const PRI_5_3_MASK: u32 = 0x0000e000;
 
     /// **PRI_4_3**
+    ///
     /// Priority of system handler 4, SecureFault
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const PRI_4_3_OFFSET: u32 = 5;
     pub const PRI_4_3_MASK: u32 = 0x000000e0;
@@ -23360,6 +25412,7 @@ impl Shpr1 {
     // ======== Field Accessors ========
 
     /// **PRI_7_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 7, SecureFault
     #[inline(always)]
     pub fn pri_7_3(&self) -> u32 {
@@ -23367,6 +25420,7 @@ impl Shpr1 {
     }
 
     /// Write **PRI_7_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 7, SecureFault
     #[inline(always)]
     pub fn write_pri_7_3(&self, value: u32) {
@@ -23374,6 +25428,7 @@ impl Shpr1 {
     }
 
     /// **PRI_6_3** `[23:21]` (RW)
+    ///
     /// Priority of system handler 6, SecureFault
     #[inline(always)]
     pub fn pri_6_3(&self) -> u32 {
@@ -23381,6 +25436,7 @@ impl Shpr1 {
     }
 
     /// Write **PRI_6_3** `[23:21]` (RW)
+    ///
     /// Priority of system handler 6, SecureFault
     #[inline(always)]
     pub fn write_pri_6_3(&self, value: u32) {
@@ -23388,6 +25444,7 @@ impl Shpr1 {
     }
 
     /// **PRI_5_3** `[15:13]` (RW)
+    ///
     /// Priority of system handler 5, SecureFault
     #[inline(always)]
     pub fn pri_5_3(&self) -> u32 {
@@ -23395,6 +25452,7 @@ impl Shpr1 {
     }
 
     /// Write **PRI_5_3** `[15:13]` (RW)
+    ///
     /// Priority of system handler 5, SecureFault
     #[inline(always)]
     pub fn write_pri_5_3(&self, value: u32) {
@@ -23402,6 +25460,7 @@ impl Shpr1 {
     }
 
     /// **PRI_4_3** `[7:5]` (RW)
+    ///
     /// Priority of system handler 4, SecureFault
     #[inline(always)]
     pub fn pri_4_3(&self) -> u32 {
@@ -23409,6 +25468,7 @@ impl Shpr1 {
     }
 
     /// Write **PRI_4_3** `[7:5]` (RW)
+    ///
     /// Priority of system handler 4, SecureFault
     #[inline(always)]
     pub fn write_pri_4_3(&self, value: u32) {
@@ -23446,6 +25506,7 @@ impl Shpr1Val {
     }
 
     /// Read **PRI_7_3** `[31:29]`
+    ///
     /// Priority of system handler 7, SecureFault
     #[inline(always)]
     pub const fn pri_7_3(&self) -> u32 {
@@ -23453,6 +25514,7 @@ impl Shpr1Val {
     }
 
     /// Read **PRI_6_3** `[23:21]`
+    ///
     /// Priority of system handler 6, SecureFault
     #[inline(always)]
     pub const fn pri_6_3(&self) -> u32 {
@@ -23460,6 +25522,7 @@ impl Shpr1Val {
     }
 
     /// Read **PRI_5_3** `[15:13]`
+    ///
     /// Priority of system handler 5, SecureFault
     #[inline(always)]
     pub const fn pri_5_3(&self) -> u32 {
@@ -23467,6 +25530,7 @@ impl Shpr1Val {
     }
 
     /// Read **PRI_4_3** `[7:5]`
+    ///
     /// Priority of system handler 4, SecureFault
     #[inline(always)]
     pub const fn pri_4_3(&self) -> u32 {
@@ -23474,6 +25538,7 @@ impl Shpr1Val {
     }
 
     /// Set **PRI_7_3** `[31:29]`
+    ///
     /// Priority of system handler 7, SecureFault
     #[inline(always)]
     pub const fn with_pri_7_3(self, value: u32) -> Self {
@@ -23483,6 +25548,7 @@ impl Shpr1Val {
     }
 
     /// Set **PRI_6_3** `[23:21]`
+    ///
     /// Priority of system handler 6, SecureFault
     #[inline(always)]
     pub const fn with_pri_6_3(self, value: u32) -> Self {
@@ -23492,6 +25558,7 @@ impl Shpr1Val {
     }
 
     /// Set **PRI_5_3** `[15:13]`
+    ///
     /// Priority of system handler 5, SecureFault
     #[inline(always)]
     pub const fn with_pri_5_3(self, value: u32) -> Self {
@@ -23501,6 +25568,7 @@ impl Shpr1Val {
     }
 
     /// Set **PRI_4_3** `[7:5]`
+    ///
     /// Priority of system handler 4, SecureFault
     #[inline(always)]
     pub const fn with_pri_4_3(self, value: u32) -> Self {
@@ -23548,12 +25616,19 @@ impl Shpr1 {
 /// ## Fields
 ///
 /// - **PRI_11_3** `[31:29]` (RW)
+///
 ///   Priority of system handler 11, SecureFault
+///
 /// - **PRI_10** `[23:16]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **PRI_9** `[15:8]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **PRI_8** `[7:0]` (RO)
+///
 ///   Reserved, RES0
 #[repr(transparent)]
 pub struct Shpr2 {
@@ -23572,25 +25647,33 @@ impl Shpr2 {
     // ======== Field Constants ========
 
     /// **PRI_11_3**
+    ///
     /// Priority of system handler 11, SecureFault
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const PRI_11_3_OFFSET: u32 = 29;
     pub const PRI_11_3_MASK: u32 = 0xe0000000;
 
     /// **PRI_10**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const PRI_10_OFFSET: u32 = 16;
     pub const PRI_10_MASK: u32 = 0x00ff0000;
 
     /// **PRI_9**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const PRI_9_OFFSET: u32 = 8;
     pub const PRI_9_MASK: u32 = 0x0000ff00;
 
     /// **PRI_8**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRI_8_OFFSET: u32 = 0;
     pub const PRI_8_MASK: u32 = 0x000000ff;
@@ -23598,6 +25681,7 @@ impl Shpr2 {
     // ======== Field Accessors ========
 
     /// **PRI_11_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 11, SecureFault
     #[inline(always)]
     pub fn pri_11_3(&self) -> u32 {
@@ -23605,6 +25689,7 @@ impl Shpr2 {
     }
 
     /// Write **PRI_11_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 11, SecureFault
     #[inline(always)]
     pub fn write_pri_11_3(&self, value: u32) {
@@ -23612,6 +25697,7 @@ impl Shpr2 {
     }
 
     /// **PRI_10** `[23:16]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn pri_10(&self) -> u32 {
@@ -23619,6 +25705,7 @@ impl Shpr2 {
     }
 
     /// **PRI_9** `[15:8]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn pri_9(&self) -> u32 {
@@ -23626,6 +25713,7 @@ impl Shpr2 {
     }
 
     /// **PRI_8** `[7:0]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn pri_8(&self) -> u32 {
@@ -23663,6 +25751,7 @@ impl Shpr2Val {
     }
 
     /// Read **PRI_11_3** `[31:29]`
+    ///
     /// Priority of system handler 11, SecureFault
     #[inline(always)]
     pub const fn pri_11_3(&self) -> u32 {
@@ -23670,6 +25759,7 @@ impl Shpr2Val {
     }
 
     /// Read **PRI_10** `[23:16]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn pri_10(&self) -> u32 {
@@ -23677,6 +25767,7 @@ impl Shpr2Val {
     }
 
     /// Read **PRI_9** `[15:8]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn pri_9(&self) -> u32 {
@@ -23684,6 +25775,7 @@ impl Shpr2Val {
     }
 
     /// Read **PRI_8** `[7:0]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn pri_8(&self) -> u32 {
@@ -23691,6 +25783,7 @@ impl Shpr2Val {
     }
 
     /// Set **PRI_11_3** `[31:29]`
+    ///
     /// Priority of system handler 11, SecureFault
     #[inline(always)]
     pub const fn with_pri_11_3(self, value: u32) -> Self {
@@ -23738,12 +25831,19 @@ impl Shpr2 {
 /// ## Fields
 ///
 /// - **PRI_15_3** `[31:29]` (RW)
+///
 ///   Priority of system handler 15, SecureFault
+///
 /// - **PRI_14_3** `[23:21]` (RW)
+///
 ///   Priority of system handler 14, SecureFault
+///
 /// - **PRI_13** `[15:8]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **PRI_12_3** `[7:5]` (RW)
+///
 ///   Priority of system handler 12, SecureFault
 #[repr(transparent)]
 pub struct Shpr3 {
@@ -23762,25 +25862,33 @@ impl Shpr3 {
     // ======== Field Constants ========
 
     /// **PRI_15_3**
+    ///
     /// Priority of system handler 15, SecureFault
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const PRI_15_3_OFFSET: u32 = 29;
     pub const PRI_15_3_MASK: u32 = 0xe0000000;
 
     /// **PRI_14_3**
+    ///
     /// Priority of system handler 14, SecureFault
+    ///
     /// Bits `[23:21]`, mask `0x00e00000`
     pub const PRI_14_3_OFFSET: u32 = 21;
     pub const PRI_14_3_MASK: u32 = 0x00e00000;
 
     /// **PRI_13**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const PRI_13_OFFSET: u32 = 8;
     pub const PRI_13_MASK: u32 = 0x0000ff00;
 
     /// **PRI_12_3**
+    ///
     /// Priority of system handler 12, SecureFault
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const PRI_12_3_OFFSET: u32 = 5;
     pub const PRI_12_3_MASK: u32 = 0x000000e0;
@@ -23788,6 +25896,7 @@ impl Shpr3 {
     // ======== Field Accessors ========
 
     /// **PRI_15_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 15, SecureFault
     #[inline(always)]
     pub fn pri_15_3(&self) -> u32 {
@@ -23795,6 +25904,7 @@ impl Shpr3 {
     }
 
     /// Write **PRI_15_3** `[31:29]` (RW)
+    ///
     /// Priority of system handler 15, SecureFault
     #[inline(always)]
     pub fn write_pri_15_3(&self, value: u32) {
@@ -23802,6 +25912,7 @@ impl Shpr3 {
     }
 
     /// **PRI_14_3** `[23:21]` (RW)
+    ///
     /// Priority of system handler 14, SecureFault
     #[inline(always)]
     pub fn pri_14_3(&self) -> u32 {
@@ -23809,6 +25920,7 @@ impl Shpr3 {
     }
 
     /// Write **PRI_14_3** `[23:21]` (RW)
+    ///
     /// Priority of system handler 14, SecureFault
     #[inline(always)]
     pub fn write_pri_14_3(&self, value: u32) {
@@ -23816,6 +25928,7 @@ impl Shpr3 {
     }
 
     /// **PRI_13** `[15:8]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn pri_13(&self) -> u32 {
@@ -23823,6 +25936,7 @@ impl Shpr3 {
     }
 
     /// **PRI_12_3** `[7:5]` (RW)
+    ///
     /// Priority of system handler 12, SecureFault
     #[inline(always)]
     pub fn pri_12_3(&self) -> u32 {
@@ -23830,6 +25944,7 @@ impl Shpr3 {
     }
 
     /// Write **PRI_12_3** `[7:5]` (RW)
+    ///
     /// Priority of system handler 12, SecureFault
     #[inline(always)]
     pub fn write_pri_12_3(&self, value: u32) {
@@ -23867,6 +25982,7 @@ impl Shpr3Val {
     }
 
     /// Read **PRI_15_3** `[31:29]`
+    ///
     /// Priority of system handler 15, SecureFault
     #[inline(always)]
     pub const fn pri_15_3(&self) -> u32 {
@@ -23874,6 +25990,7 @@ impl Shpr3Val {
     }
 
     /// Read **PRI_14_3** `[23:21]`
+    ///
     /// Priority of system handler 14, SecureFault
     #[inline(always)]
     pub const fn pri_14_3(&self) -> u32 {
@@ -23881,6 +25998,7 @@ impl Shpr3Val {
     }
 
     /// Read **PRI_13** `[15:8]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn pri_13(&self) -> u32 {
@@ -23888,6 +26006,7 @@ impl Shpr3Val {
     }
 
     /// Read **PRI_12_3** `[7:5]`
+    ///
     /// Priority of system handler 12, SecureFault
     #[inline(always)]
     pub const fn pri_12_3(&self) -> u32 {
@@ -23895,6 +26014,7 @@ impl Shpr3Val {
     }
 
     /// Set **PRI_15_3** `[31:29]`
+    ///
     /// Priority of system handler 15, SecureFault
     #[inline(always)]
     pub const fn with_pri_15_3(self, value: u32) -> Self {
@@ -23904,6 +26024,7 @@ impl Shpr3Val {
     }
 
     /// Set **PRI_14_3** `[23:21]`
+    ///
     /// Priority of system handler 14, SecureFault
     #[inline(always)]
     pub const fn with_pri_14_3(self, value: u32) -> Self {
@@ -23913,6 +26034,7 @@ impl Shpr3Val {
     }
 
     /// Set **PRI_12_3** `[7:5]`
+    ///
     /// Priority of system handler 12, SecureFault
     #[inline(always)]
     pub const fn with_pri_12_3(self, value: u32) -> Self {
@@ -23960,44 +26082,83 @@ impl Shpr3 {
 /// ## Fields
 ///
 /// - **HARDFAULTPENDED** `[21]` (RW)
+///
 ///   `IAAMO the pending state of the HardFault exception `CTTSSS
+///
 /// - **SECUREFAULTPENDED** `[20]` (RW)
+///
 ///   `IAAMO the pending state of the SecureFault exception
+///
 /// - **SECUREFAULTENA** `[19]` (RW)
+///
 ///   `DW the SecureFault exception is enabled
+///
 /// - **USGFAULTENA** `[18]` (RW)
+///
 ///   `DW the UsageFault exception is enabled `FTSSS
+///
 /// - **BUSFAULTENA** `[17]` (RW)
+///
 ///   `DW the BusFault exception is enabled
+///
 /// - **MEMFAULTENA** `[16]` (RW)
+///
 ///   `DW the MemManage exception is enabled `FTSSS
+///
 /// - **SVCALLPENDED** `[15]` (RW)
+///
 ///   `IAAMO the pending state of the SVCall exception `FTSSS
+///
 /// - **BUSFAULTPENDED** `[14]` (RW)
+///
 ///   `IAAMO the pending state of the BusFault exception
+///
 /// - **MEMFAULTPENDED** `[13]` (RW)
+///
 ///   `IAAMO the pending state of the MemManage exception `FTSSS
+///
 /// - **USGFAULTPENDED** `[12]` (RW)
+///
 ///   The UsageFault exception is banked between Security states, `IAAMO the pending state of the UsageFault exception `FTSSS
+///
 /// - **SYSTICKACT** `[11]` (RW)
+///
 ///   `IAAMO the active state of the SysTick exception `FTSSS
+///
 /// - **PENDSVACT** `[10]` (RW)
+///
 ///   `IAAMO the active state of the PendSV exception `FTSSS
+///
 /// - **MONITORACT** `[8]` (RW)
+///
 ///   `IAAMO the active state of the DebugMonitor exception
+///
 /// - **SVCALLACT** `[7]` (RW)
+///
 ///   `IAAMO the active state of the SVCall exception `FTSSS
+///
 /// - **NMIACT** `[5]` (RW)
+///
 ///   `IAAMO the active state of the NMI exception
+///
 /// - **SECUREFAULTACT** `[4]` (RW)
+///
 ///   `IAAMO the active state of the SecureFault exception
+///
 /// - **USGFAULTACT** `[3]` (RW)
+///
 ///   `IAAMO the active state of the UsageFault exception `FTSSS
+///
 /// - **HARDFAULTACT** `[2]` (RW)
+///
 ///   Indicates and allows limited modification of the active state of the HardFault exception `FTSSS
+///
 /// - **BUSFAULTACT** `[1]` (RW)
+///
 ///   `IAAMO the active state of the BusFault exception
+///
 /// - **MEMFAULTACT** `[0]` (RW)
+///
 ///   `IAAMO the active state of the MemManage exception `FTSSS
 #[repr(transparent)]
 pub struct Shcsr {
@@ -24016,140 +26177,180 @@ impl Shcsr {
     // ======== Field Constants ========
 
     /// **HARDFAULTPENDED**
+    ///
     /// `IAAMO the pending state of the HardFault exception `CTTSSS
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const HARDFAULTPENDED_OFFSET: u32 = 21;
     pub const HARDFAULTPENDED_MASK: u32 = 0x00200000;
     pub const HARDFAULTPENDED: u32 = 1 << 21;
 
     /// **SECUREFAULTPENDED**
+    ///
     /// `IAAMO the pending state of the SecureFault exception
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const SECUREFAULTPENDED_OFFSET: u32 = 20;
     pub const SECUREFAULTPENDED_MASK: u32 = 0x00100000;
     pub const SECUREFAULTPENDED: u32 = 1 << 20;
 
     /// **SECUREFAULTENA**
+    ///
     /// `DW the SecureFault exception is enabled
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const SECUREFAULTENA_OFFSET: u32 = 19;
     pub const SECUREFAULTENA_MASK: u32 = 0x00080000;
     pub const SECUREFAULTENA: u32 = 1 << 19;
 
     /// **USGFAULTENA**
+    ///
     /// `DW the UsageFault exception is enabled `FTSSS
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const USGFAULTENA_OFFSET: u32 = 18;
     pub const USGFAULTENA_MASK: u32 = 0x00040000;
     pub const USGFAULTENA: u32 = 1 << 18;
 
     /// **BUSFAULTENA**
+    ///
     /// `DW the BusFault exception is enabled
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const BUSFAULTENA_OFFSET: u32 = 17;
     pub const BUSFAULTENA_MASK: u32 = 0x00020000;
     pub const BUSFAULTENA: u32 = 1 << 17;
 
     /// **MEMFAULTENA**
+    ///
     /// `DW the MemManage exception is enabled `FTSSS
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const MEMFAULTENA_OFFSET: u32 = 16;
     pub const MEMFAULTENA_MASK: u32 = 0x00010000;
     pub const MEMFAULTENA: u32 = 1 << 16;
 
     /// **SVCALLPENDED**
+    ///
     /// `IAAMO the pending state of the SVCall exception `FTSSS
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const SVCALLPENDED_OFFSET: u32 = 15;
     pub const SVCALLPENDED_MASK: u32 = 0x00008000;
     pub const SVCALLPENDED: u32 = 1 << 15;
 
     /// **BUSFAULTPENDED**
+    ///
     /// `IAAMO the pending state of the BusFault exception
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const BUSFAULTPENDED_OFFSET: u32 = 14;
     pub const BUSFAULTPENDED_MASK: u32 = 0x00004000;
     pub const BUSFAULTPENDED: u32 = 1 << 14;
 
     /// **MEMFAULTPENDED**
+    ///
     /// `IAAMO the pending state of the MemManage exception `FTSSS
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const MEMFAULTPENDED_OFFSET: u32 = 13;
     pub const MEMFAULTPENDED_MASK: u32 = 0x00002000;
     pub const MEMFAULTPENDED: u32 = 1 << 13;
 
     /// **USGFAULTPENDED**
+    ///
     /// The UsageFault exception is banked between Security states, `IAAMO the pending state of the UsageFault exception `FTSSS
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const USGFAULTPENDED_OFFSET: u32 = 12;
     pub const USGFAULTPENDED_MASK: u32 = 0x00001000;
     pub const USGFAULTPENDED: u32 = 1 << 12;
 
     /// **SYSTICKACT**
+    ///
     /// `IAAMO the active state of the SysTick exception `FTSSS
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const SYSTICKACT_OFFSET: u32 = 11;
     pub const SYSTICKACT_MASK: u32 = 0x00000800;
     pub const SYSTICKACT: u32 = 1 << 11;
 
     /// **PENDSVACT**
+    ///
     /// `IAAMO the active state of the PendSV exception `FTSSS
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const PENDSVACT_OFFSET: u32 = 10;
     pub const PENDSVACT_MASK: u32 = 0x00000400;
     pub const PENDSVACT: u32 = 1 << 10;
 
     /// **MONITORACT**
+    ///
     /// `IAAMO the active state of the DebugMonitor exception
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MONITORACT_OFFSET: u32 = 8;
     pub const MONITORACT_MASK: u32 = 0x00000100;
     pub const MONITORACT: u32 = 1 << 8;
 
     /// **SVCALLACT**
+    ///
     /// `IAAMO the active state of the SVCall exception `FTSSS
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const SVCALLACT_OFFSET: u32 = 7;
     pub const SVCALLACT_MASK: u32 = 0x00000080;
     pub const SVCALLACT: u32 = 1 << 7;
 
     /// **NMIACT**
+    ///
     /// `IAAMO the active state of the NMI exception
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const NMIACT_OFFSET: u32 = 5;
     pub const NMIACT_MASK: u32 = 0x00000020;
     pub const NMIACT: u32 = 1 << 5;
 
     /// **SECUREFAULTACT**
+    ///
     /// `IAAMO the active state of the SecureFault exception
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const SECUREFAULTACT_OFFSET: u32 = 4;
     pub const SECUREFAULTACT_MASK: u32 = 0x00000010;
     pub const SECUREFAULTACT: u32 = 1 << 4;
 
     /// **USGFAULTACT**
+    ///
     /// `IAAMO the active state of the UsageFault exception `FTSSS
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const USGFAULTACT_OFFSET: u32 = 3;
     pub const USGFAULTACT_MASK: u32 = 0x00000008;
     pub const USGFAULTACT: u32 = 1 << 3;
 
     /// **HARDFAULTACT**
+    ///
     /// Indicates and allows limited modification of the active state of the HardFault exception `FTSSS
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HARDFAULTACT_OFFSET: u32 = 2;
     pub const HARDFAULTACT_MASK: u32 = 0x00000004;
     pub const HARDFAULTACT: u32 = 1 << 2;
 
     /// **BUSFAULTACT**
+    ///
     /// `IAAMO the active state of the BusFault exception
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const BUSFAULTACT_OFFSET: u32 = 1;
     pub const BUSFAULTACT_MASK: u32 = 0x00000002;
     pub const BUSFAULTACT: u32 = 1 << 1;
 
     /// **MEMFAULTACT**
+    ///
     /// `IAAMO the active state of the MemManage exception `FTSSS
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const MEMFAULTACT_OFFSET: u32 = 0;
     pub const MEMFAULTACT_MASK: u32 = 0x00000001;
@@ -24158,6 +26359,7 @@ impl Shcsr {
     // ======== Field Accessors ========
 
     /// **HARDFAULTPENDED** `[21]` (RW)
+    ///
     /// `IAAMO the pending state of the HardFault exception `CTTSSS
     #[inline(always)]
     pub fn hardfaultpended(&self) -> bool {
@@ -24177,6 +26379,7 @@ impl Shcsr {
     }
 
     /// **SECUREFAULTPENDED** `[20]` (RW)
+    ///
     /// `IAAMO the pending state of the SecureFault exception
     #[inline(always)]
     pub fn securefaultpended(&self) -> bool {
@@ -24196,6 +26399,7 @@ impl Shcsr {
     }
 
     /// **SECUREFAULTENA** `[19]` (RW)
+    ///
     /// `DW the SecureFault exception is enabled
     #[inline(always)]
     pub fn securefaultena(&self) -> bool {
@@ -24215,6 +26419,7 @@ impl Shcsr {
     }
 
     /// **USGFAULTENA** `[18]` (RW)
+    ///
     /// `DW the UsageFault exception is enabled `FTSSS
     #[inline(always)]
     pub fn usgfaultena(&self) -> bool {
@@ -24234,6 +26439,7 @@ impl Shcsr {
     }
 
     /// **BUSFAULTENA** `[17]` (RW)
+    ///
     /// `DW the BusFault exception is enabled
     #[inline(always)]
     pub fn busfaultena(&self) -> bool {
@@ -24253,6 +26459,7 @@ impl Shcsr {
     }
 
     /// **MEMFAULTENA** `[16]` (RW)
+    ///
     /// `DW the MemManage exception is enabled `FTSSS
     #[inline(always)]
     pub fn memfaultena(&self) -> bool {
@@ -24272,6 +26479,7 @@ impl Shcsr {
     }
 
     /// **SVCALLPENDED** `[15]` (RW)
+    ///
     /// `IAAMO the pending state of the SVCall exception `FTSSS
     #[inline(always)]
     pub fn svcallpended(&self) -> bool {
@@ -24291,6 +26499,7 @@ impl Shcsr {
     }
 
     /// **BUSFAULTPENDED** `[14]` (RW)
+    ///
     /// `IAAMO the pending state of the BusFault exception
     #[inline(always)]
     pub fn busfaultpended(&self) -> bool {
@@ -24310,6 +26519,7 @@ impl Shcsr {
     }
 
     /// **MEMFAULTPENDED** `[13]` (RW)
+    ///
     /// `IAAMO the pending state of the MemManage exception `FTSSS
     #[inline(always)]
     pub fn memfaultpended(&self) -> bool {
@@ -24329,6 +26539,7 @@ impl Shcsr {
     }
 
     /// **USGFAULTPENDED** `[12]` (RW)
+    ///
     /// The UsageFault exception is banked between Security states, `IAAMO the pending state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub fn usgfaultpended(&self) -> bool {
@@ -24348,6 +26559,7 @@ impl Shcsr {
     }
 
     /// **SYSTICKACT** `[11]` (RW)
+    ///
     /// `IAAMO the active state of the SysTick exception `FTSSS
     #[inline(always)]
     pub fn systickact(&self) -> bool {
@@ -24367,6 +26579,7 @@ impl Shcsr {
     }
 
     /// **PENDSVACT** `[10]` (RW)
+    ///
     /// `IAAMO the active state of the PendSV exception `FTSSS
     #[inline(always)]
     pub fn pendsvact(&self) -> bool {
@@ -24386,6 +26599,7 @@ impl Shcsr {
     }
 
     /// **MONITORACT** `[8]` (RW)
+    ///
     /// `IAAMO the active state of the DebugMonitor exception
     #[inline(always)]
     pub fn monitoract(&self) -> bool {
@@ -24405,6 +26619,7 @@ impl Shcsr {
     }
 
     /// **SVCALLACT** `[7]` (RW)
+    ///
     /// `IAAMO the active state of the SVCall exception `FTSSS
     #[inline(always)]
     pub fn svcallact(&self) -> bool {
@@ -24424,6 +26639,7 @@ impl Shcsr {
     }
 
     /// **NMIACT** `[5]` (RW)
+    ///
     /// `IAAMO the active state of the NMI exception
     #[inline(always)]
     pub fn nmiact(&self) -> bool {
@@ -24443,6 +26659,7 @@ impl Shcsr {
     }
 
     /// **SECUREFAULTACT** `[4]` (RW)
+    ///
     /// `IAAMO the active state of the SecureFault exception
     #[inline(always)]
     pub fn securefaultact(&self) -> bool {
@@ -24462,6 +26679,7 @@ impl Shcsr {
     }
 
     /// **USGFAULTACT** `[3]` (RW)
+    ///
     /// `IAAMO the active state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub fn usgfaultact(&self) -> bool {
@@ -24481,6 +26699,7 @@ impl Shcsr {
     }
 
     /// **HARDFAULTACT** `[2]` (RW)
+    ///
     /// Indicates and allows limited modification of the active state of the HardFault exception `FTSSS
     #[inline(always)]
     pub fn hardfaultact(&self) -> bool {
@@ -24500,6 +26719,7 @@ impl Shcsr {
     }
 
     /// **BUSFAULTACT** `[1]` (RW)
+    ///
     /// `IAAMO the active state of the BusFault exception
     #[inline(always)]
     pub fn busfaultact(&self) -> bool {
@@ -24519,6 +26739,7 @@ impl Shcsr {
     }
 
     /// **MEMFAULTACT** `[0]` (RW)
+    ///
     /// `IAAMO the active state of the MemManage exception `FTSSS
     #[inline(always)]
     pub fn memfaultact(&self) -> bool {
@@ -24568,6 +26789,7 @@ impl ShcsrVal {
     }
 
     /// Read **HARDFAULTPENDED** `[21:21]`
+    ///
     /// `IAAMO the pending state of the HardFault exception `CTTSSS
     #[inline(always)]
     pub const fn hardfaultpended(&self) -> bool {
@@ -24575,6 +26797,7 @@ impl ShcsrVal {
     }
 
     /// Read **SECUREFAULTPENDED** `[20:20]`
+    ///
     /// `IAAMO the pending state of the SecureFault exception
     #[inline(always)]
     pub const fn securefaultpended(&self) -> bool {
@@ -24582,6 +26805,7 @@ impl ShcsrVal {
     }
 
     /// Read **SECUREFAULTENA** `[19:19]`
+    ///
     /// `DW the SecureFault exception is enabled
     #[inline(always)]
     pub const fn securefaultena(&self) -> bool {
@@ -24589,6 +26813,7 @@ impl ShcsrVal {
     }
 
     /// Read **USGFAULTENA** `[18:18]`
+    ///
     /// `DW the UsageFault exception is enabled `FTSSS
     #[inline(always)]
     pub const fn usgfaultena(&self) -> bool {
@@ -24596,6 +26821,7 @@ impl ShcsrVal {
     }
 
     /// Read **BUSFAULTENA** `[17:17]`
+    ///
     /// `DW the BusFault exception is enabled
     #[inline(always)]
     pub const fn busfaultena(&self) -> bool {
@@ -24603,6 +26829,7 @@ impl ShcsrVal {
     }
 
     /// Read **MEMFAULTENA** `[16:16]`
+    ///
     /// `DW the MemManage exception is enabled `FTSSS
     #[inline(always)]
     pub const fn memfaultena(&self) -> bool {
@@ -24610,6 +26837,7 @@ impl ShcsrVal {
     }
 
     /// Read **SVCALLPENDED** `[15:15]`
+    ///
     /// `IAAMO the pending state of the SVCall exception `FTSSS
     #[inline(always)]
     pub const fn svcallpended(&self) -> bool {
@@ -24617,6 +26845,7 @@ impl ShcsrVal {
     }
 
     /// Read **BUSFAULTPENDED** `[14:14]`
+    ///
     /// `IAAMO the pending state of the BusFault exception
     #[inline(always)]
     pub const fn busfaultpended(&self) -> bool {
@@ -24624,6 +26853,7 @@ impl ShcsrVal {
     }
 
     /// Read **MEMFAULTPENDED** `[13:13]`
+    ///
     /// `IAAMO the pending state of the MemManage exception `FTSSS
     #[inline(always)]
     pub const fn memfaultpended(&self) -> bool {
@@ -24631,6 +26861,7 @@ impl ShcsrVal {
     }
 
     /// Read **USGFAULTPENDED** `[12:12]`
+    ///
     /// The UsageFault exception is banked between Security states, `IAAMO the pending state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub const fn usgfaultpended(&self) -> bool {
@@ -24638,6 +26869,7 @@ impl ShcsrVal {
     }
 
     /// Read **SYSTICKACT** `[11:11]`
+    ///
     /// `IAAMO the active state of the SysTick exception `FTSSS
     #[inline(always)]
     pub const fn systickact(&self) -> bool {
@@ -24645,6 +26877,7 @@ impl ShcsrVal {
     }
 
     /// Read **PENDSVACT** `[10:10]`
+    ///
     /// `IAAMO the active state of the PendSV exception `FTSSS
     #[inline(always)]
     pub const fn pendsvact(&self) -> bool {
@@ -24652,6 +26885,7 @@ impl ShcsrVal {
     }
 
     /// Read **MONITORACT** `[8:8]`
+    ///
     /// `IAAMO the active state of the DebugMonitor exception
     #[inline(always)]
     pub const fn monitoract(&self) -> bool {
@@ -24659,6 +26893,7 @@ impl ShcsrVal {
     }
 
     /// Read **SVCALLACT** `[7:7]`
+    ///
     /// `IAAMO the active state of the SVCall exception `FTSSS
     #[inline(always)]
     pub const fn svcallact(&self) -> bool {
@@ -24666,6 +26901,7 @@ impl ShcsrVal {
     }
 
     /// Read **NMIACT** `[5:5]`
+    ///
     /// `IAAMO the active state of the NMI exception
     #[inline(always)]
     pub const fn nmiact(&self) -> bool {
@@ -24673,6 +26909,7 @@ impl ShcsrVal {
     }
 
     /// Read **SECUREFAULTACT** `[4:4]`
+    ///
     /// `IAAMO the active state of the SecureFault exception
     #[inline(always)]
     pub const fn securefaultact(&self) -> bool {
@@ -24680,6 +26917,7 @@ impl ShcsrVal {
     }
 
     /// Read **USGFAULTACT** `[3:3]`
+    ///
     /// `IAAMO the active state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub const fn usgfaultact(&self) -> bool {
@@ -24687,6 +26925,7 @@ impl ShcsrVal {
     }
 
     /// Read **HARDFAULTACT** `[2:2]`
+    ///
     /// Indicates and allows limited modification of the active state of the HardFault exception `FTSSS
     #[inline(always)]
     pub const fn hardfaultact(&self) -> bool {
@@ -24694,6 +26933,7 @@ impl ShcsrVal {
     }
 
     /// Read **BUSFAULTACT** `[1:1]`
+    ///
     /// `IAAMO the active state of the BusFault exception
     #[inline(always)]
     pub const fn busfaultact(&self) -> bool {
@@ -24701,6 +26941,7 @@ impl ShcsrVal {
     }
 
     /// Read **MEMFAULTACT** `[0:0]`
+    ///
     /// `IAAMO the active state of the MemManage exception `FTSSS
     #[inline(always)]
     pub const fn memfaultact(&self) -> bool {
@@ -24708,6 +26949,7 @@ impl ShcsrVal {
     }
 
     /// Set **HARDFAULTPENDED** `[21:21]`
+    ///
     /// `IAAMO the pending state of the HardFault exception `CTTSSS
     #[inline(always)]
     pub const fn with_hardfaultpended(self, value: bool) -> Self {
@@ -24721,6 +26963,7 @@ impl ShcsrVal {
     }
 
     /// Set **SECUREFAULTPENDED** `[20:20]`
+    ///
     /// `IAAMO the pending state of the SecureFault exception
     #[inline(always)]
     pub const fn with_securefaultpended(self, value: bool) -> Self {
@@ -24734,6 +26977,7 @@ impl ShcsrVal {
     }
 
     /// Set **SECUREFAULTENA** `[19:19]`
+    ///
     /// `DW the SecureFault exception is enabled
     #[inline(always)]
     pub const fn with_securefaultena(self, value: bool) -> Self {
@@ -24747,6 +26991,7 @@ impl ShcsrVal {
     }
 
     /// Set **USGFAULTENA** `[18:18]`
+    ///
     /// `DW the UsageFault exception is enabled `FTSSS
     #[inline(always)]
     pub const fn with_usgfaultena(self, value: bool) -> Self {
@@ -24760,6 +27005,7 @@ impl ShcsrVal {
     }
 
     /// Set **BUSFAULTENA** `[17:17]`
+    ///
     /// `DW the BusFault exception is enabled
     #[inline(always)]
     pub const fn with_busfaultena(self, value: bool) -> Self {
@@ -24773,6 +27019,7 @@ impl ShcsrVal {
     }
 
     /// Set **MEMFAULTENA** `[16:16]`
+    ///
     /// `DW the MemManage exception is enabled `FTSSS
     #[inline(always)]
     pub const fn with_memfaultena(self, value: bool) -> Self {
@@ -24786,6 +27033,7 @@ impl ShcsrVal {
     }
 
     /// Set **SVCALLPENDED** `[15:15]`
+    ///
     /// `IAAMO the pending state of the SVCall exception `FTSSS
     #[inline(always)]
     pub const fn with_svcallpended(self, value: bool) -> Self {
@@ -24799,6 +27047,7 @@ impl ShcsrVal {
     }
 
     /// Set **BUSFAULTPENDED** `[14:14]`
+    ///
     /// `IAAMO the pending state of the BusFault exception
     #[inline(always)]
     pub const fn with_busfaultpended(self, value: bool) -> Self {
@@ -24812,6 +27061,7 @@ impl ShcsrVal {
     }
 
     /// Set **MEMFAULTPENDED** `[13:13]`
+    ///
     /// `IAAMO the pending state of the MemManage exception `FTSSS
     #[inline(always)]
     pub const fn with_memfaultpended(self, value: bool) -> Self {
@@ -24825,6 +27075,7 @@ impl ShcsrVal {
     }
 
     /// Set **USGFAULTPENDED** `[12:12]`
+    ///
     /// The UsageFault exception is banked between Security states, `IAAMO the pending state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub const fn with_usgfaultpended(self, value: bool) -> Self {
@@ -24838,6 +27089,7 @@ impl ShcsrVal {
     }
 
     /// Set **SYSTICKACT** `[11:11]`
+    ///
     /// `IAAMO the active state of the SysTick exception `FTSSS
     #[inline(always)]
     pub const fn with_systickact(self, value: bool) -> Self {
@@ -24851,6 +27103,7 @@ impl ShcsrVal {
     }
 
     /// Set **PENDSVACT** `[10:10]`
+    ///
     /// `IAAMO the active state of the PendSV exception `FTSSS
     #[inline(always)]
     pub const fn with_pendsvact(self, value: bool) -> Self {
@@ -24864,6 +27117,7 @@ impl ShcsrVal {
     }
 
     /// Set **MONITORACT** `[8:8]`
+    ///
     /// `IAAMO the active state of the DebugMonitor exception
     #[inline(always)]
     pub const fn with_monitoract(self, value: bool) -> Self {
@@ -24877,6 +27131,7 @@ impl ShcsrVal {
     }
 
     /// Set **SVCALLACT** `[7:7]`
+    ///
     /// `IAAMO the active state of the SVCall exception `FTSSS
     #[inline(always)]
     pub const fn with_svcallact(self, value: bool) -> Self {
@@ -24890,6 +27145,7 @@ impl ShcsrVal {
     }
 
     /// Set **NMIACT** `[5:5]`
+    ///
     /// `IAAMO the active state of the NMI exception
     #[inline(always)]
     pub const fn with_nmiact(self, value: bool) -> Self {
@@ -24903,6 +27159,7 @@ impl ShcsrVal {
     }
 
     /// Set **SECUREFAULTACT** `[4:4]`
+    ///
     /// `IAAMO the active state of the SecureFault exception
     #[inline(always)]
     pub const fn with_securefaultact(self, value: bool) -> Self {
@@ -24916,6 +27173,7 @@ impl ShcsrVal {
     }
 
     /// Set **USGFAULTACT** `[3:3]`
+    ///
     /// `IAAMO the active state of the UsageFault exception `FTSSS
     #[inline(always)]
     pub const fn with_usgfaultact(self, value: bool) -> Self {
@@ -24929,6 +27187,7 @@ impl ShcsrVal {
     }
 
     /// Set **HARDFAULTACT** `[2:2]`
+    ///
     /// Indicates and allows limited modification of the active state of the HardFault exception `FTSSS
     #[inline(always)]
     pub const fn with_hardfaultact(self, value: bool) -> Self {
@@ -24942,6 +27201,7 @@ impl ShcsrVal {
     }
 
     /// Set **BUSFAULTACT** `[1:1]`
+    ///
     /// `IAAMO the active state of the BusFault exception
     #[inline(always)]
     pub const fn with_busfaultact(self, value: bool) -> Self {
@@ -24955,6 +27215,7 @@ impl ShcsrVal {
     }
 
     /// Set **MEMFAULTACT** `[0:0]`
+    ///
     /// `IAAMO the active state of the MemManage exception `FTSSS
     #[inline(always)]
     pub const fn with_memfaultact(self, value: bool) -> Self {
@@ -25009,34 +27270,63 @@ impl Shcsr {
 /// ## Fields
 ///
 /// - **UFSR_DIVBYZERO** `[25]` (RW)
+///
 ///   Sticky flag indicating whether an integer division by zero error has occurred
+///
 /// - **UFSR_UNALIGNED** `[24]` (RW)
+///
 ///   Sticky flag indicating whether an unaligned access error has occurred
+///
 /// - **UFSR_STKOF** `[20]` (RW)
+///
 ///   Sticky flag indicating whether a stack overflow error has occurred
+///
 /// - **UFSR_NOCP** `[19]` (RW)
+///
 ///   Sticky flag indicating whether a coprocessor disabled or not present error has occurred
+///
 /// - **UFSR_INVPC** `[18]` (RW)
+///
 ///   Sticky flag indicating whether an integrity check error has occurred
+///
 /// - **UFSR_INVSTATE** `[17]` (RW)
+///
 ///   Sticky flag indicating whether an EPSR.T or EPSR.IT validity error has occurred
+///
 /// - **UFSR_UNDEFINSTR** `[16]` (RW)
+///
 ///   Sticky flag indicating whether an undefined instruction error has occurred
+///
 /// - **BFSR_BFARVALID** `[15]` (RW)
+///
 ///   Indicates validity of the contents of the BFAR register
+///
 /// - **BFSR_LSPERR** `[13]` (RW)
+///
 ///   Records whether a BusFault occurred during FP lazy state preservation
+///
 /// - **BFSR_STKERR** `[12]` (RW)
+///
 ///   Records whether a derived BusFault occurred during exception entry stacking
+///
 /// - **BFSR_UNSTKERR** `[11]` (RW)
+///
 ///   Records whether a derived BusFault occurred during exception return unstacking
+///
 /// - **BFSR_IMPRECISERR** `[10]` (RW)
+///
 ///   Records whether an imprecise data access error has occurred
+///
 /// - **BFSR_PRECISERR** `[9]` (RW)
+///
 ///   Records whether a precise data access error has occurred
+///
 /// - **BFSR_IBUSERR** `[8]` (RW)
+///
 ///   Records whether a BusFault on an instruction prefetch has occurred
+///
 /// - **MMFSR** `[7:0]` (RW)
+///
 ///   Provides information on MemManage exceptions
 #[repr(transparent)]
 pub struct Cfsr {
@@ -25055,105 +27345,135 @@ impl Cfsr {
     // ======== Field Constants ========
 
     /// **UFSR_DIVBYZERO**
+    ///
     /// Sticky flag indicating whether an integer division by zero error has occurred
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const UFSR_DIVBYZERO_OFFSET: u32 = 25;
     pub const UFSR_DIVBYZERO_MASK: u32 = 0x02000000;
     pub const UFSR_DIVBYZERO: u32 = 1 << 25;
 
     /// **UFSR_UNALIGNED**
+    ///
     /// Sticky flag indicating whether an unaligned access error has occurred
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const UFSR_UNALIGNED_OFFSET: u32 = 24;
     pub const UFSR_UNALIGNED_MASK: u32 = 0x01000000;
     pub const UFSR_UNALIGNED: u32 = 1 << 24;
 
     /// **UFSR_STKOF**
+    ///
     /// Sticky flag indicating whether a stack overflow error has occurred
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const UFSR_STKOF_OFFSET: u32 = 20;
     pub const UFSR_STKOF_MASK: u32 = 0x00100000;
     pub const UFSR_STKOF: u32 = 1 << 20;
 
     /// **UFSR_NOCP**
+    ///
     /// Sticky flag indicating whether a coprocessor disabled or not present error has occurred
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const UFSR_NOCP_OFFSET: u32 = 19;
     pub const UFSR_NOCP_MASK: u32 = 0x00080000;
     pub const UFSR_NOCP: u32 = 1 << 19;
 
     /// **UFSR_INVPC**
+    ///
     /// Sticky flag indicating whether an integrity check error has occurred
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const UFSR_INVPC_OFFSET: u32 = 18;
     pub const UFSR_INVPC_MASK: u32 = 0x00040000;
     pub const UFSR_INVPC: u32 = 1 << 18;
 
     /// **UFSR_INVSTATE**
+    ///
     /// Sticky flag indicating whether an EPSR.T or EPSR.IT validity error has occurred
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const UFSR_INVSTATE_OFFSET: u32 = 17;
     pub const UFSR_INVSTATE_MASK: u32 = 0x00020000;
     pub const UFSR_INVSTATE: u32 = 1 << 17;
 
     /// **UFSR_UNDEFINSTR**
+    ///
     /// Sticky flag indicating whether an undefined instruction error has occurred
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const UFSR_UNDEFINSTR_OFFSET: u32 = 16;
     pub const UFSR_UNDEFINSTR_MASK: u32 = 0x00010000;
     pub const UFSR_UNDEFINSTR: u32 = 1 << 16;
 
     /// **BFSR_BFARVALID**
+    ///
     /// Indicates validity of the contents of the BFAR register
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const BFSR_BFARVALID_OFFSET: u32 = 15;
     pub const BFSR_BFARVALID_MASK: u32 = 0x00008000;
     pub const BFSR_BFARVALID: u32 = 1 << 15;
 
     /// **BFSR_LSPERR**
+    ///
     /// Records whether a BusFault occurred during FP lazy state preservation
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const BFSR_LSPERR_OFFSET: u32 = 13;
     pub const BFSR_LSPERR_MASK: u32 = 0x00002000;
     pub const BFSR_LSPERR: u32 = 1 << 13;
 
     /// **BFSR_STKERR**
+    ///
     /// Records whether a derived BusFault occurred during exception entry stacking
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BFSR_STKERR_OFFSET: u32 = 12;
     pub const BFSR_STKERR_MASK: u32 = 0x00001000;
     pub const BFSR_STKERR: u32 = 1 << 12;
 
     /// **BFSR_UNSTKERR**
+    ///
     /// Records whether a derived BusFault occurred during exception return unstacking
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const BFSR_UNSTKERR_OFFSET: u32 = 11;
     pub const BFSR_UNSTKERR_MASK: u32 = 0x00000800;
     pub const BFSR_UNSTKERR: u32 = 1 << 11;
 
     /// **BFSR_IMPRECISERR**
+    ///
     /// Records whether an imprecise data access error has occurred
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const BFSR_IMPRECISERR_OFFSET: u32 = 10;
     pub const BFSR_IMPRECISERR_MASK: u32 = 0x00000400;
     pub const BFSR_IMPRECISERR: u32 = 1 << 10;
 
     /// **BFSR_PRECISERR**
+    ///
     /// Records whether a precise data access error has occurred
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const BFSR_PRECISERR_OFFSET: u32 = 9;
     pub const BFSR_PRECISERR_MASK: u32 = 0x00000200;
     pub const BFSR_PRECISERR: u32 = 1 << 9;
 
     /// **BFSR_IBUSERR**
+    ///
     /// Records whether a BusFault on an instruction prefetch has occurred
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const BFSR_IBUSERR_OFFSET: u32 = 8;
     pub const BFSR_IBUSERR_MASK: u32 = 0x00000100;
     pub const BFSR_IBUSERR: u32 = 1 << 8;
 
     /// **MMFSR**
+    ///
     /// Provides information on MemManage exceptions
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const MMFSR_OFFSET: u32 = 0;
     pub const MMFSR_MASK: u32 = 0x000000ff;
@@ -25161,6 +27481,7 @@ impl Cfsr {
     // ======== Field Accessors ========
 
     /// **UFSR_DIVBYZERO** `[25]` (RW)
+    ///
     /// Sticky flag indicating whether an integer division by zero error has occurred
     #[inline(always)]
     pub fn ufsr_divbyzero(&self) -> bool {
@@ -25180,6 +27501,7 @@ impl Cfsr {
     }
 
     /// **UFSR_UNALIGNED** `[24]` (RW)
+    ///
     /// Sticky flag indicating whether an unaligned access error has occurred
     #[inline(always)]
     pub fn ufsr_unaligned(&self) -> bool {
@@ -25199,6 +27521,7 @@ impl Cfsr {
     }
 
     /// **UFSR_STKOF** `[20]` (RW)
+    ///
     /// Sticky flag indicating whether a stack overflow error has occurred
     #[inline(always)]
     pub fn ufsr_stkof(&self) -> bool {
@@ -25218,6 +27541,7 @@ impl Cfsr {
     }
 
     /// **UFSR_NOCP** `[19]` (RW)
+    ///
     /// Sticky flag indicating whether a coprocessor disabled or not present error has occurred
     #[inline(always)]
     pub fn ufsr_nocp(&self) -> bool {
@@ -25237,6 +27561,7 @@ impl Cfsr {
     }
 
     /// **UFSR_INVPC** `[18]` (RW)
+    ///
     /// Sticky flag indicating whether an integrity check error has occurred
     #[inline(always)]
     pub fn ufsr_invpc(&self) -> bool {
@@ -25256,6 +27581,7 @@ impl Cfsr {
     }
 
     /// **UFSR_INVSTATE** `[17]` (RW)
+    ///
     /// Sticky flag indicating whether an EPSR.T or EPSR.IT validity error has occurred
     #[inline(always)]
     pub fn ufsr_invstate(&self) -> bool {
@@ -25275,6 +27601,7 @@ impl Cfsr {
     }
 
     /// **UFSR_UNDEFINSTR** `[16]` (RW)
+    ///
     /// Sticky flag indicating whether an undefined instruction error has occurred
     #[inline(always)]
     pub fn ufsr_undefinstr(&self) -> bool {
@@ -25294,6 +27621,7 @@ impl Cfsr {
     }
 
     /// **BFSR_BFARVALID** `[15]` (RW)
+    ///
     /// Indicates validity of the contents of the BFAR register
     #[inline(always)]
     pub fn bfsr_bfarvalid(&self) -> bool {
@@ -25313,6 +27641,7 @@ impl Cfsr {
     }
 
     /// **BFSR_LSPERR** `[13]` (RW)
+    ///
     /// Records whether a BusFault occurred during FP lazy state preservation
     #[inline(always)]
     pub fn bfsr_lsperr(&self) -> bool {
@@ -25332,6 +27661,7 @@ impl Cfsr {
     }
 
     /// **BFSR_STKERR** `[12]` (RW)
+    ///
     /// Records whether a derived BusFault occurred during exception entry stacking
     #[inline(always)]
     pub fn bfsr_stkerr(&self) -> bool {
@@ -25351,6 +27681,7 @@ impl Cfsr {
     }
 
     /// **BFSR_UNSTKERR** `[11]` (RW)
+    ///
     /// Records whether a derived BusFault occurred during exception return unstacking
     #[inline(always)]
     pub fn bfsr_unstkerr(&self) -> bool {
@@ -25370,6 +27701,7 @@ impl Cfsr {
     }
 
     /// **BFSR_IMPRECISERR** `[10]` (RW)
+    ///
     /// Records whether an imprecise data access error has occurred
     #[inline(always)]
     pub fn bfsr_impreciserr(&self) -> bool {
@@ -25389,6 +27721,7 @@ impl Cfsr {
     }
 
     /// **BFSR_PRECISERR** `[9]` (RW)
+    ///
     /// Records whether a precise data access error has occurred
     #[inline(always)]
     pub fn bfsr_preciserr(&self) -> bool {
@@ -25408,6 +27741,7 @@ impl Cfsr {
     }
 
     /// **BFSR_IBUSERR** `[8]` (RW)
+    ///
     /// Records whether a BusFault on an instruction prefetch has occurred
     #[inline(always)]
     pub fn bfsr_ibuserr(&self) -> bool {
@@ -25427,6 +27761,7 @@ impl Cfsr {
     }
 
     /// **MMFSR** `[7:0]` (RW)
+    ///
     /// Provides information on MemManage exceptions
     #[inline(always)]
     pub fn mmfsr(&self) -> u32 {
@@ -25434,6 +27769,7 @@ impl Cfsr {
     }
 
     /// Write **MMFSR** `[7:0]` (RW)
+    ///
     /// Provides information on MemManage exceptions
     #[inline(always)]
     pub fn write_mmfsr(&self, value: u32) {
@@ -25471,6 +27807,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_DIVBYZERO** `[25:25]`
+    ///
     /// Sticky flag indicating whether an integer division by zero error has occurred
     #[inline(always)]
     pub const fn ufsr_divbyzero(&self) -> bool {
@@ -25478,6 +27815,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_UNALIGNED** `[24:24]`
+    ///
     /// Sticky flag indicating whether an unaligned access error has occurred
     #[inline(always)]
     pub const fn ufsr_unaligned(&self) -> bool {
@@ -25485,6 +27823,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_STKOF** `[20:20]`
+    ///
     /// Sticky flag indicating whether a stack overflow error has occurred
     #[inline(always)]
     pub const fn ufsr_stkof(&self) -> bool {
@@ -25492,6 +27831,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_NOCP** `[19:19]`
+    ///
     /// Sticky flag indicating whether a coprocessor disabled or not present error has occurred
     #[inline(always)]
     pub const fn ufsr_nocp(&self) -> bool {
@@ -25499,6 +27839,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_INVPC** `[18:18]`
+    ///
     /// Sticky flag indicating whether an integrity check error has occurred
     #[inline(always)]
     pub const fn ufsr_invpc(&self) -> bool {
@@ -25506,6 +27847,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_INVSTATE** `[17:17]`
+    ///
     /// Sticky flag indicating whether an EPSR.T or EPSR.IT validity error has occurred
     #[inline(always)]
     pub const fn ufsr_invstate(&self) -> bool {
@@ -25513,6 +27855,7 @@ impl CfsrVal {
     }
 
     /// Read **UFSR_UNDEFINSTR** `[16:16]`
+    ///
     /// Sticky flag indicating whether an undefined instruction error has occurred
     #[inline(always)]
     pub const fn ufsr_undefinstr(&self) -> bool {
@@ -25520,6 +27863,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_BFARVALID** `[15:15]`
+    ///
     /// Indicates validity of the contents of the BFAR register
     #[inline(always)]
     pub const fn bfsr_bfarvalid(&self) -> bool {
@@ -25527,6 +27871,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_LSPERR** `[13:13]`
+    ///
     /// Records whether a BusFault occurred during FP lazy state preservation
     #[inline(always)]
     pub const fn bfsr_lsperr(&self) -> bool {
@@ -25534,6 +27879,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_STKERR** `[12:12]`
+    ///
     /// Records whether a derived BusFault occurred during exception entry stacking
     #[inline(always)]
     pub const fn bfsr_stkerr(&self) -> bool {
@@ -25541,6 +27887,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_UNSTKERR** `[11:11]`
+    ///
     /// Records whether a derived BusFault occurred during exception return unstacking
     #[inline(always)]
     pub const fn bfsr_unstkerr(&self) -> bool {
@@ -25548,6 +27895,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_IMPRECISERR** `[10:10]`
+    ///
     /// Records whether an imprecise data access error has occurred
     #[inline(always)]
     pub const fn bfsr_impreciserr(&self) -> bool {
@@ -25555,6 +27903,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_PRECISERR** `[9:9]`
+    ///
     /// Records whether a precise data access error has occurred
     #[inline(always)]
     pub const fn bfsr_preciserr(&self) -> bool {
@@ -25562,6 +27911,7 @@ impl CfsrVal {
     }
 
     /// Read **BFSR_IBUSERR** `[8:8]`
+    ///
     /// Records whether a BusFault on an instruction prefetch has occurred
     #[inline(always)]
     pub const fn bfsr_ibuserr(&self) -> bool {
@@ -25569,6 +27919,7 @@ impl CfsrVal {
     }
 
     /// Read **MMFSR** `[7:0]`
+    ///
     /// Provides information on MemManage exceptions
     #[inline(always)]
     pub const fn mmfsr(&self) -> u32 {
@@ -25576,6 +27927,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_DIVBYZERO** `[25:25]`
+    ///
     /// Sticky flag indicating whether an integer division by zero error has occurred
     #[inline(always)]
     pub const fn with_ufsr_divbyzero(self, value: bool) -> Self {
@@ -25589,6 +27941,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_UNALIGNED** `[24:24]`
+    ///
     /// Sticky flag indicating whether an unaligned access error has occurred
     #[inline(always)]
     pub const fn with_ufsr_unaligned(self, value: bool) -> Self {
@@ -25602,6 +27955,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_STKOF** `[20:20]`
+    ///
     /// Sticky flag indicating whether a stack overflow error has occurred
     #[inline(always)]
     pub const fn with_ufsr_stkof(self, value: bool) -> Self {
@@ -25615,6 +27969,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_NOCP** `[19:19]`
+    ///
     /// Sticky flag indicating whether a coprocessor disabled or not present error has occurred
     #[inline(always)]
     pub const fn with_ufsr_nocp(self, value: bool) -> Self {
@@ -25628,6 +27983,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_INVPC** `[18:18]`
+    ///
     /// Sticky flag indicating whether an integrity check error has occurred
     #[inline(always)]
     pub const fn with_ufsr_invpc(self, value: bool) -> Self {
@@ -25641,6 +27997,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_INVSTATE** `[17:17]`
+    ///
     /// Sticky flag indicating whether an EPSR.T or EPSR.IT validity error has occurred
     #[inline(always)]
     pub const fn with_ufsr_invstate(self, value: bool) -> Self {
@@ -25654,6 +28011,7 @@ impl CfsrVal {
     }
 
     /// Set **UFSR_UNDEFINSTR** `[16:16]`
+    ///
     /// Sticky flag indicating whether an undefined instruction error has occurred
     #[inline(always)]
     pub const fn with_ufsr_undefinstr(self, value: bool) -> Self {
@@ -25667,6 +28025,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_BFARVALID** `[15:15]`
+    ///
     /// Indicates validity of the contents of the BFAR register
     #[inline(always)]
     pub const fn with_bfsr_bfarvalid(self, value: bool) -> Self {
@@ -25680,6 +28039,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_LSPERR** `[13:13]`
+    ///
     /// Records whether a BusFault occurred during FP lazy state preservation
     #[inline(always)]
     pub const fn with_bfsr_lsperr(self, value: bool) -> Self {
@@ -25693,6 +28053,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_STKERR** `[12:12]`
+    ///
     /// Records whether a derived BusFault occurred during exception entry stacking
     #[inline(always)]
     pub const fn with_bfsr_stkerr(self, value: bool) -> Self {
@@ -25706,6 +28067,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_UNSTKERR** `[11:11]`
+    ///
     /// Records whether a derived BusFault occurred during exception return unstacking
     #[inline(always)]
     pub const fn with_bfsr_unstkerr(self, value: bool) -> Self {
@@ -25719,6 +28081,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_IMPRECISERR** `[10:10]`
+    ///
     /// Records whether an imprecise data access error has occurred
     #[inline(always)]
     pub const fn with_bfsr_impreciserr(self, value: bool) -> Self {
@@ -25732,6 +28095,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_PRECISERR** `[9:9]`
+    ///
     /// Records whether a precise data access error has occurred
     #[inline(always)]
     pub const fn with_bfsr_preciserr(self, value: bool) -> Self {
@@ -25745,6 +28109,7 @@ impl CfsrVal {
     }
 
     /// Set **BFSR_IBUSERR** `[8:8]`
+    ///
     /// Records whether a BusFault on an instruction prefetch has occurred
     #[inline(always)]
     pub const fn with_bfsr_ibuserr(self, value: bool) -> Self {
@@ -25758,6 +28123,7 @@ impl CfsrVal {
     }
 
     /// Set **MMFSR** `[7:0]`
+    ///
     /// Provides information on MemManage exceptions
     #[inline(always)]
     pub const fn with_mmfsr(self, value: u32) -> Self {
@@ -25805,10 +28171,15 @@ impl Cfsr {
 /// ## Fields
 ///
 /// - **DEBUGEVT** `[31]` (RW)
+///
 ///   Indicates when a Debug event has occurred
+///
 /// - **FORCED** `[30]` (RW)
+///
 ///   Indicates that a fault with configurable priority has been escalated to a HardFault exception, because it could not be made active, because of priority, or because it was disabled
+///
 /// - **VECTTBL** `[1]` (RW)
+///
 ///   Indicates when a fault has occurred because of a vector table read error on exception processing
 #[repr(transparent)]
 pub struct Hfsr {
@@ -25827,21 +28198,27 @@ impl Hfsr {
     // ======== Field Constants ========
 
     /// **DEBUGEVT**
+    ///
     /// Indicates when a Debug event has occurred
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const DEBUGEVT_OFFSET: u32 = 31;
     pub const DEBUGEVT_MASK: u32 = 0x80000000;
     pub const DEBUGEVT: u32 = 1 << 31;
 
     /// **FORCED**
+    ///
     /// Indicates that a fault with configurable priority has been escalated to a HardFault exception, because it could not be made active, because of priority, or because it was disabled
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const FORCED_OFFSET: u32 = 30;
     pub const FORCED_MASK: u32 = 0x40000000;
     pub const FORCED: u32 = 1 << 30;
 
     /// **VECTTBL**
+    ///
     /// Indicates when a fault has occurred because of a vector table read error on exception processing
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const VECTTBL_OFFSET: u32 = 1;
     pub const VECTTBL_MASK: u32 = 0x00000002;
@@ -25850,6 +28227,7 @@ impl Hfsr {
     // ======== Field Accessors ========
 
     /// **DEBUGEVT** `[31]` (RW)
+    ///
     /// Indicates when a Debug event has occurred
     #[inline(always)]
     pub fn debugevt(&self) -> bool {
@@ -25869,6 +28247,7 @@ impl Hfsr {
     }
 
     /// **FORCED** `[30]` (RW)
+    ///
     /// Indicates that a fault with configurable priority has been escalated to a HardFault exception, because it could not be made active, because of priority, or because it was disabled
     #[inline(always)]
     pub fn forced(&self) -> bool {
@@ -25888,6 +28267,7 @@ impl Hfsr {
     }
 
     /// **VECTTBL** `[1]` (RW)
+    ///
     /// Indicates when a fault has occurred because of a vector table read error on exception processing
     #[inline(always)]
     pub fn vecttbl(&self) -> bool {
@@ -25937,6 +28317,7 @@ impl HfsrVal {
     }
 
     /// Read **DEBUGEVT** `[31:31]`
+    ///
     /// Indicates when a Debug event has occurred
     #[inline(always)]
     pub const fn debugevt(&self) -> bool {
@@ -25944,6 +28325,7 @@ impl HfsrVal {
     }
 
     /// Read **FORCED** `[30:30]`
+    ///
     /// Indicates that a fault with configurable priority has been escalated to a HardFault exception, because it could not be made active, because of priority, or because it was disabled
     #[inline(always)]
     pub const fn forced(&self) -> bool {
@@ -25951,6 +28333,7 @@ impl HfsrVal {
     }
 
     /// Read **VECTTBL** `[1:1]`
+    ///
     /// Indicates when a fault has occurred because of a vector table read error on exception processing
     #[inline(always)]
     pub const fn vecttbl(&self) -> bool {
@@ -25958,6 +28341,7 @@ impl HfsrVal {
     }
 
     /// Set **DEBUGEVT** `[31:31]`
+    ///
     /// Indicates when a Debug event has occurred
     #[inline(always)]
     pub const fn with_debugevt(self, value: bool) -> Self {
@@ -25971,6 +28355,7 @@ impl HfsrVal {
     }
 
     /// Set **FORCED** `[30:30]`
+    ///
     /// Indicates that a fault with configurable priority has been escalated to a HardFault exception, because it could not be made active, because of priority, or because it was disabled
     #[inline(always)]
     pub const fn with_forced(self, value: bool) -> Self {
@@ -25984,6 +28369,7 @@ impl HfsrVal {
     }
 
     /// Set **VECTTBL** `[1:1]`
+    ///
     /// Indicates when a fault has occurred because of a vector table read error on exception processing
     #[inline(always)]
     pub const fn with_vecttbl(self, value: bool) -> Self {
@@ -26035,14 +28421,23 @@ impl Hfsr {
 /// ## Fields
 ///
 /// - **EXTERNAL** `[4]` (RW)
+///
 ///   Sticky flag indicating whether an External debug request debug event has occurred
+///
 /// - **VCATCH** `[3]` (RW)
+///
 ///   Sticky flag indicating whether a Vector catch debug event has occurred
+///
 /// - **DWTTRAP** `[2]` (RW)
+///
 ///   Sticky flag indicating whether a Watchpoint debug event has occurred
+///
 /// - **BKPT** `[1]` (RW)
+///
 ///   Sticky flag indicating whether a Breakpoint debug event has occurred
+///
 /// - **HALTED** `[0]` (RW)
+///
 ///   Sticky flag indicating that a Halt request debug event or Step debug event has occurred
 #[repr(transparent)]
 pub struct Dfsr {
@@ -26061,35 +28456,45 @@ impl Dfsr {
     // ======== Field Constants ========
 
     /// **EXTERNAL**
+    ///
     /// Sticky flag indicating whether an External debug request debug event has occurred
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const EXTERNAL_OFFSET: u32 = 4;
     pub const EXTERNAL_MASK: u32 = 0x00000010;
     pub const EXTERNAL: u32 = 1 << 4;
 
     /// **VCATCH**
+    ///
     /// Sticky flag indicating whether a Vector catch debug event has occurred
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const VCATCH_OFFSET: u32 = 3;
     pub const VCATCH_MASK: u32 = 0x00000008;
     pub const VCATCH: u32 = 1 << 3;
 
     /// **DWTTRAP**
+    ///
     /// Sticky flag indicating whether a Watchpoint debug event has occurred
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DWTTRAP_OFFSET: u32 = 2;
     pub const DWTTRAP_MASK: u32 = 0x00000004;
     pub const DWTTRAP: u32 = 1 << 2;
 
     /// **BKPT**
+    ///
     /// Sticky flag indicating whether a Breakpoint debug event has occurred
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const BKPT_OFFSET: u32 = 1;
     pub const BKPT_MASK: u32 = 0x00000002;
     pub const BKPT: u32 = 1 << 1;
 
     /// **HALTED**
+    ///
     /// Sticky flag indicating that a Halt request debug event or Step debug event has occurred
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HALTED_OFFSET: u32 = 0;
     pub const HALTED_MASK: u32 = 0x00000001;
@@ -26098,6 +28503,7 @@ impl Dfsr {
     // ======== Field Accessors ========
 
     /// **EXTERNAL** `[4]` (RW)
+    ///
     /// Sticky flag indicating whether an External debug request debug event has occurred
     #[inline(always)]
     pub fn external(&self) -> bool {
@@ -26117,6 +28523,7 @@ impl Dfsr {
     }
 
     /// **VCATCH** `[3]` (RW)
+    ///
     /// Sticky flag indicating whether a Vector catch debug event has occurred
     #[inline(always)]
     pub fn vcatch(&self) -> bool {
@@ -26136,6 +28543,7 @@ impl Dfsr {
     }
 
     /// **DWTTRAP** `[2]` (RW)
+    ///
     /// Sticky flag indicating whether a Watchpoint debug event has occurred
     #[inline(always)]
     pub fn dwttrap(&self) -> bool {
@@ -26155,6 +28563,7 @@ impl Dfsr {
     }
 
     /// **BKPT** `[1]` (RW)
+    ///
     /// Sticky flag indicating whether a Breakpoint debug event has occurred
     #[inline(always)]
     pub fn bkpt(&self) -> bool {
@@ -26174,6 +28583,7 @@ impl Dfsr {
     }
 
     /// **HALTED** `[0]` (RW)
+    ///
     /// Sticky flag indicating that a Halt request debug event or Step debug event has occurred
     #[inline(always)]
     pub fn halted(&self) -> bool {
@@ -26223,6 +28633,7 @@ impl DfsrVal {
     }
 
     /// Read **EXTERNAL** `[4:4]`
+    ///
     /// Sticky flag indicating whether an External debug request debug event has occurred
     #[inline(always)]
     pub const fn external(&self) -> bool {
@@ -26230,6 +28641,7 @@ impl DfsrVal {
     }
 
     /// Read **VCATCH** `[3:3]`
+    ///
     /// Sticky flag indicating whether a Vector catch debug event has occurred
     #[inline(always)]
     pub const fn vcatch(&self) -> bool {
@@ -26237,6 +28649,7 @@ impl DfsrVal {
     }
 
     /// Read **DWTTRAP** `[2:2]`
+    ///
     /// Sticky flag indicating whether a Watchpoint debug event has occurred
     #[inline(always)]
     pub const fn dwttrap(&self) -> bool {
@@ -26244,6 +28657,7 @@ impl DfsrVal {
     }
 
     /// Read **BKPT** `[1:1]`
+    ///
     /// Sticky flag indicating whether a Breakpoint debug event has occurred
     #[inline(always)]
     pub const fn bkpt(&self) -> bool {
@@ -26251,6 +28665,7 @@ impl DfsrVal {
     }
 
     /// Read **HALTED** `[0:0]`
+    ///
     /// Sticky flag indicating that a Halt request debug event or Step debug event has occurred
     #[inline(always)]
     pub const fn halted(&self) -> bool {
@@ -26258,6 +28673,7 @@ impl DfsrVal {
     }
 
     /// Set **EXTERNAL** `[4:4]`
+    ///
     /// Sticky flag indicating whether an External debug request debug event has occurred
     #[inline(always)]
     pub const fn with_external(self, value: bool) -> Self {
@@ -26271,6 +28687,7 @@ impl DfsrVal {
     }
 
     /// Set **VCATCH** `[3:3]`
+    ///
     /// Sticky flag indicating whether a Vector catch debug event has occurred
     #[inline(always)]
     pub const fn with_vcatch(self, value: bool) -> Self {
@@ -26284,6 +28701,7 @@ impl DfsrVal {
     }
 
     /// Set **DWTTRAP** `[2:2]`
+    ///
     /// Sticky flag indicating whether a Watchpoint debug event has occurred
     #[inline(always)]
     pub const fn with_dwttrap(self, value: bool) -> Self {
@@ -26297,6 +28715,7 @@ impl DfsrVal {
     }
 
     /// Set **BKPT** `[1:1]`
+    ///
     /// Sticky flag indicating whether a Breakpoint debug event has occurred
     #[inline(always)]
     pub const fn with_bkpt(self, value: bool) -> Self {
@@ -26310,6 +28729,7 @@ impl DfsrVal {
     }
 
     /// Set **HALTED** `[0:0]`
+    ///
     /// Sticky flag indicating that a Halt request debug event or Step debug event has occurred
     #[inline(always)]
     pub const fn with_halted(self, value: bool) -> Self {
@@ -26361,6 +28781,7 @@ impl Dfsr {
 /// ## Fields
 ///
 /// - **ADDRESS** `[31:0]` (RW)
+///
 ///   This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
 #[repr(transparent)]
 pub struct Mmfar {
@@ -26379,7 +28800,9 @@ impl Mmfar {
     // ======== Field Constants ========
 
     /// **ADDRESS**
+    ///
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0xffffffff;
@@ -26387,6 +28810,7 @@ impl Mmfar {
     // ======== Field Accessors ========
 
     /// **ADDRESS** `[31:0]` (RW)
+    ///
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -26394,6 +28818,7 @@ impl Mmfar {
     }
 
     /// Write **ADDRESS** `[31:0]` (RW)
+    ///
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -26431,6 +28856,7 @@ impl MmfarVal {
     }
 
     /// Read **ADDRESS** `[31:0]`
+    ///
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -26438,6 +28864,7 @@ impl MmfarVal {
     }
 
     /// Set **ADDRESS** `[31:0]`
+    ///
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -26485,6 +28912,7 @@ impl Mmfar {
 /// ## Fields
 ///
 /// - **ADDRESS** `[31:0]` (RW)
+///
 ///   This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
 #[repr(transparent)]
 pub struct Bfar {
@@ -26503,7 +28931,9 @@ impl Bfar {
     // ======== Field Constants ========
 
     /// **ADDRESS**
+    ///
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0xffffffff;
@@ -26511,6 +28941,7 @@ impl Bfar {
     // ======== Field Accessors ========
 
     /// **ADDRESS** `[31:0]` (RW)
+    ///
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -26518,6 +28949,7 @@ impl Bfar {
     }
 
     /// Write **ADDRESS** `[31:0]` (RW)
+    ///
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -26555,6 +28987,7 @@ impl BfarVal {
     }
 
     /// Read **ADDRESS** `[31:0]`
+    ///
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -26562,6 +28995,7 @@ impl BfarVal {
     }
 
     /// Set **ADDRESS** `[31:0]`
+    ///
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -26609,8 +29043,11 @@ impl Bfar {
 /// ## Fields
 ///
 /// - **STATE1** `[7:4]` (RO)
+///
 ///   T32 instruction set support
+///
 /// - **STATE0** `[3:0]` (RO)
+///
 ///   A32 instruction set support
 #[repr(transparent)]
 pub struct IdPfr0 {
@@ -26629,13 +29066,17 @@ impl IdPfr0 {
     // ======== Field Constants ========
 
     /// **STATE1**
+    ///
     /// T32 instruction set support
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const STATE1_OFFSET: u32 = 4;
     pub const STATE1_MASK: u32 = 0x000000f0;
 
     /// **STATE0**
+    ///
     /// A32 instruction set support
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const STATE0_OFFSET: u32 = 0;
     pub const STATE0_MASK: u32 = 0x0000000f;
@@ -26643,6 +29084,7 @@ impl IdPfr0 {
     // ======== Field Accessors ========
 
     /// **STATE1** `[7:4]` (RO)
+    ///
     /// T32 instruction set support
     #[inline(always)]
     pub fn state1(&self) -> u32 {
@@ -26650,6 +29092,7 @@ impl IdPfr0 {
     }
 
     /// **STATE0** `[3:0]` (RO)
+    ///
     /// A32 instruction set support
     #[inline(always)]
     pub fn state0(&self) -> u32 {
@@ -26687,6 +29130,7 @@ impl IdPfr0Val {
     }
 
     /// Read **STATE1** `[7:4]`
+    ///
     /// T32 instruction set support
     #[inline(always)]
     pub const fn state1(&self) -> u32 {
@@ -26694,6 +29138,7 @@ impl IdPfr0Val {
     }
 
     /// Read **STATE0** `[3:0]`
+    ///
     /// A32 instruction set support
     #[inline(always)]
     pub const fn state0(&self) -> u32 {
@@ -26739,8 +29184,11 @@ impl IdPfr0 {
 /// ## Fields
 ///
 /// - **MPROGMOD** `[11:8]` (RO)
+///
 ///   Identifies support for the M-Profile programmers' model support
+///
 /// - **SECURITY** `[7:4]` (RO)
+///
 ///   Identifies whether the Security Extension is implemented
 #[repr(transparent)]
 pub struct IdPfr1 {
@@ -26759,13 +29207,17 @@ impl IdPfr1 {
     // ======== Field Constants ========
 
     /// **MPROGMOD**
+    ///
     /// Identifies support for the M-Profile programmers' model support
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const MPROGMOD_OFFSET: u32 = 8;
     pub const MPROGMOD_MASK: u32 = 0x00000f00;
 
     /// **SECURITY**
+    ///
     /// Identifies whether the Security Extension is implemented
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SECURITY_OFFSET: u32 = 4;
     pub const SECURITY_MASK: u32 = 0x000000f0;
@@ -26773,6 +29225,7 @@ impl IdPfr1 {
     // ======== Field Accessors ========
 
     /// **MPROGMOD** `[11:8]` (RO)
+    ///
     /// Identifies support for the M-Profile programmers' model support
     #[inline(always)]
     pub fn mprogmod(&self) -> u32 {
@@ -26780,6 +29233,7 @@ impl IdPfr1 {
     }
 
     /// **SECURITY** `[7:4]` (RO)
+    ///
     /// Identifies whether the Security Extension is implemented
     #[inline(always)]
     pub fn security(&self) -> u32 {
@@ -26817,6 +29271,7 @@ impl IdPfr1Val {
     }
 
     /// Read **MPROGMOD** `[11:8]`
+    ///
     /// Identifies support for the M-Profile programmers' model support
     #[inline(always)]
     pub const fn mprogmod(&self) -> u32 {
@@ -26824,6 +29279,7 @@ impl IdPfr1Val {
     }
 
     /// Read **SECURITY** `[7:4]`
+    ///
     /// Identifies whether the Security Extension is implemented
     #[inline(always)]
     pub const fn security(&self) -> u32 {
@@ -26869,6 +29325,7 @@ impl IdPfr1 {
 /// ## Fields
 ///
 /// - **MPROFDBG** `[23:20]` (RO)
+///
 ///   Indicates the supported M-profile debug architecture
 #[repr(transparent)]
 pub struct IdDfr0 {
@@ -26887,7 +29344,9 @@ impl IdDfr0 {
     // ======== Field Constants ========
 
     /// **MPROFDBG**
+    ///
     /// Indicates the supported M-profile debug architecture
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const MPROFDBG_OFFSET: u32 = 20;
     pub const MPROFDBG_MASK: u32 = 0x00f00000;
@@ -26895,6 +29354,7 @@ impl IdDfr0 {
     // ======== Field Accessors ========
 
     /// **MPROFDBG** `[23:20]` (RO)
+    ///
     /// Indicates the supported M-profile debug architecture
     #[inline(always)]
     pub fn mprofdbg(&self) -> u32 {
@@ -26932,6 +29392,7 @@ impl IdDfr0Val {
     }
 
     /// Read **MPROFDBG** `[23:20]`
+    ///
     /// Indicates the supported M-profile debug architecture
     #[inline(always)]
     pub const fn mprofdbg(&self) -> u32 {
@@ -26977,12 +29438,19 @@ impl IdDfr0 {
 /// ## Fields
 ///
 /// - **IMPDEF3** `[15:12]` (RO)
+///
 ///   IMPLEMENTATION DEFINED meaning
+///
 /// - **IMPDEF2** `[11:8]` (RO)
+///
 ///   IMPLEMENTATION DEFINED meaning
+///
 /// - **IMPDEF1** `[7:4]` (RO)
+///
 ///   IMPLEMENTATION DEFINED meaning
+///
 /// - **IMPDEF0** `[3:0]` (RO)
+///
 ///   IMPLEMENTATION DEFINED meaning
 #[repr(transparent)]
 pub struct IdAfr0 {
@@ -27001,25 +29469,33 @@ impl IdAfr0 {
     // ======== Field Constants ========
 
     /// **IMPDEF3**
+    ///
     /// IMPLEMENTATION DEFINED meaning
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const IMPDEF3_OFFSET: u32 = 12;
     pub const IMPDEF3_MASK: u32 = 0x0000f000;
 
     /// **IMPDEF2**
+    ///
     /// IMPLEMENTATION DEFINED meaning
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const IMPDEF2_OFFSET: u32 = 8;
     pub const IMPDEF2_MASK: u32 = 0x00000f00;
 
     /// **IMPDEF1**
+    ///
     /// IMPLEMENTATION DEFINED meaning
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const IMPDEF1_OFFSET: u32 = 4;
     pub const IMPDEF1_MASK: u32 = 0x000000f0;
 
     /// **IMPDEF0**
+    ///
     /// IMPLEMENTATION DEFINED meaning
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const IMPDEF0_OFFSET: u32 = 0;
     pub const IMPDEF0_MASK: u32 = 0x0000000f;
@@ -27027,6 +29503,7 @@ impl IdAfr0 {
     // ======== Field Accessors ========
 
     /// **IMPDEF3** `[15:12]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub fn impdef3(&self) -> u32 {
@@ -27034,6 +29511,7 @@ impl IdAfr0 {
     }
 
     /// **IMPDEF2** `[11:8]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub fn impdef2(&self) -> u32 {
@@ -27041,6 +29519,7 @@ impl IdAfr0 {
     }
 
     /// **IMPDEF1** `[7:4]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub fn impdef1(&self) -> u32 {
@@ -27048,6 +29527,7 @@ impl IdAfr0 {
     }
 
     /// **IMPDEF0** `[3:0]` (RO)
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub fn impdef0(&self) -> u32 {
@@ -27085,6 +29565,7 @@ impl IdAfr0Val {
     }
 
     /// Read **IMPDEF3** `[15:12]`
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub const fn impdef3(&self) -> u32 {
@@ -27092,6 +29573,7 @@ impl IdAfr0Val {
     }
 
     /// Read **IMPDEF2** `[11:8]`
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub const fn impdef2(&self) -> u32 {
@@ -27099,6 +29581,7 @@ impl IdAfr0Val {
     }
 
     /// Read **IMPDEF1** `[7:4]`
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub const fn impdef1(&self) -> u32 {
@@ -27106,6 +29589,7 @@ impl IdAfr0Val {
     }
 
     /// Read **IMPDEF0** `[3:0]`
+    ///
     /// IMPLEMENTATION DEFINED meaning
     #[inline(always)]
     pub const fn impdef0(&self) -> u32 {
@@ -27151,14 +29635,23 @@ impl IdAfr0 {
 /// ## Fields
 ///
 /// - **AUXREG** `[23:20]` (RO)
+///
 ///   Indicates support for Auxiliary Control Registers
+///
 /// - **TCM** `[19:16]` (RO)
+///
 ///   Indicates support for tightly coupled memories (TCMs)
+///
 /// - **SHARELVL** `[15:12]` (RO)
+///
 ///   Indicates the number of shareability levels implemented
+///
 /// - **OUTERSHR** `[11:8]` (RO)
+///
 ///   Indicates the outermost shareability domain implemented
+///
 /// - **PMSA** `[7:4]` (RO)
+///
 ///   Indicates support for the protected memory system architecture (PMSA)
 #[repr(transparent)]
 pub struct IdMmfr0 {
@@ -27177,31 +29670,41 @@ impl IdMmfr0 {
     // ======== Field Constants ========
 
     /// **AUXREG**
+    ///
     /// Indicates support for Auxiliary Control Registers
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const AUXREG_OFFSET: u32 = 20;
     pub const AUXREG_MASK: u32 = 0x00f00000;
 
     /// **TCM**
+    ///
     /// Indicates support for tightly coupled memories (TCMs)
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const TCM_OFFSET: u32 = 16;
     pub const TCM_MASK: u32 = 0x000f0000;
 
     /// **SHARELVL**
+    ///
     /// Indicates the number of shareability levels implemented
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const SHARELVL_OFFSET: u32 = 12;
     pub const SHARELVL_MASK: u32 = 0x0000f000;
 
     /// **OUTERSHR**
+    ///
     /// Indicates the outermost shareability domain implemented
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const OUTERSHR_OFFSET: u32 = 8;
     pub const OUTERSHR_MASK: u32 = 0x00000f00;
 
     /// **PMSA**
+    ///
     /// Indicates support for the protected memory system architecture (PMSA)
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PMSA_OFFSET: u32 = 4;
     pub const PMSA_MASK: u32 = 0x000000f0;
@@ -27209,6 +29712,7 @@ impl IdMmfr0 {
     // ======== Field Accessors ========
 
     /// **AUXREG** `[23:20]` (RO)
+    ///
     /// Indicates support for Auxiliary Control Registers
     #[inline(always)]
     pub fn auxreg(&self) -> u32 {
@@ -27216,6 +29720,7 @@ impl IdMmfr0 {
     }
 
     /// **TCM** `[19:16]` (RO)
+    ///
     /// Indicates support for tightly coupled memories (TCMs)
     #[inline(always)]
     pub fn tcm(&self) -> u32 {
@@ -27223,6 +29728,7 @@ impl IdMmfr0 {
     }
 
     /// **SHARELVL** `[15:12]` (RO)
+    ///
     /// Indicates the number of shareability levels implemented
     #[inline(always)]
     pub fn sharelvl(&self) -> u32 {
@@ -27230,6 +29736,7 @@ impl IdMmfr0 {
     }
 
     /// **OUTERSHR** `[11:8]` (RO)
+    ///
     /// Indicates the outermost shareability domain implemented
     #[inline(always)]
     pub fn outershr(&self) -> u32 {
@@ -27237,6 +29744,7 @@ impl IdMmfr0 {
     }
 
     /// **PMSA** `[7:4]` (RO)
+    ///
     /// Indicates support for the protected memory system architecture (PMSA)
     #[inline(always)]
     pub fn pmsa(&self) -> u32 {
@@ -27274,6 +29782,7 @@ impl IdMmfr0Val {
     }
 
     /// Read **AUXREG** `[23:20]`
+    ///
     /// Indicates support for Auxiliary Control Registers
     #[inline(always)]
     pub const fn auxreg(&self) -> u32 {
@@ -27281,6 +29790,7 @@ impl IdMmfr0Val {
     }
 
     /// Read **TCM** `[19:16]`
+    ///
     /// Indicates support for tightly coupled memories (TCMs)
     #[inline(always)]
     pub const fn tcm(&self) -> u32 {
@@ -27288,6 +29798,7 @@ impl IdMmfr0Val {
     }
 
     /// Read **SHARELVL** `[15:12]`
+    ///
     /// Indicates the number of shareability levels implemented
     #[inline(always)]
     pub const fn sharelvl(&self) -> u32 {
@@ -27295,6 +29806,7 @@ impl IdMmfr0Val {
     }
 
     /// Read **OUTERSHR** `[11:8]`
+    ///
     /// Indicates the outermost shareability domain implemented
     #[inline(always)]
     pub const fn outershr(&self) -> u32 {
@@ -27302,6 +29814,7 @@ impl IdMmfr0Val {
     }
 
     /// Read **PMSA** `[7:4]`
+    ///
     /// Indicates support for the protected memory system architecture (PMSA)
     #[inline(always)]
     pub const fn pmsa(&self) -> u32 {
@@ -27465,6 +29978,7 @@ impl IdMmfr1 {
 /// ## Fields
 ///
 /// - **WFISTALL** `[27:24]` (RO)
+///
 ///   Indicates the support for Wait For Interrupt (WFI) stalling
 #[repr(transparent)]
 pub struct IdMmfr2 {
@@ -27483,7 +29997,9 @@ impl IdMmfr2 {
     // ======== Field Constants ========
 
     /// **WFISTALL**
+    ///
     /// Indicates the support for Wait For Interrupt (WFI) stalling
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const WFISTALL_OFFSET: u32 = 24;
     pub const WFISTALL_MASK: u32 = 0x0f000000;
@@ -27491,6 +30007,7 @@ impl IdMmfr2 {
     // ======== Field Accessors ========
 
     /// **WFISTALL** `[27:24]` (RO)
+    ///
     /// Indicates the support for Wait For Interrupt (WFI) stalling
     #[inline(always)]
     pub fn wfistall(&self) -> u32 {
@@ -27528,6 +30045,7 @@ impl IdMmfr2Val {
     }
 
     /// Read **WFISTALL** `[27:24]`
+    ///
     /// Indicates the support for Wait For Interrupt (WFI) stalling
     #[inline(always)]
     pub const fn wfistall(&self) -> u32 {
@@ -27573,10 +30091,15 @@ impl IdMmfr2 {
 /// ## Fields
 ///
 /// - **BPMAINT** `[11:8]` (RO)
+///
 ///   Indicates the supported branch predictor maintenance
+///
 /// - **CMAINTSW** `[7:4]` (RO)
+///
 ///   Indicates the supported cache maintenance operations by set/way
+///
 /// - **CMAINTVA** `[3:0]` (RO)
+///
 ///   Indicates the supported cache maintenance operations by address
 #[repr(transparent)]
 pub struct IdMmfr3 {
@@ -27595,19 +30118,25 @@ impl IdMmfr3 {
     // ======== Field Constants ========
 
     /// **BPMAINT**
+    ///
     /// Indicates the supported branch predictor maintenance
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const BPMAINT_OFFSET: u32 = 8;
     pub const BPMAINT_MASK: u32 = 0x00000f00;
 
     /// **CMAINTSW**
+    ///
     /// Indicates the supported cache maintenance operations by set/way
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CMAINTSW_OFFSET: u32 = 4;
     pub const CMAINTSW_MASK: u32 = 0x000000f0;
 
     /// **CMAINTVA**
+    ///
     /// Indicates the supported cache maintenance operations by address
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMAINTVA_OFFSET: u32 = 0;
     pub const CMAINTVA_MASK: u32 = 0x0000000f;
@@ -27615,6 +30144,7 @@ impl IdMmfr3 {
     // ======== Field Accessors ========
 
     /// **BPMAINT** `[11:8]` (RO)
+    ///
     /// Indicates the supported branch predictor maintenance
     #[inline(always)]
     pub fn bpmaint(&self) -> u32 {
@@ -27622,6 +30152,7 @@ impl IdMmfr3 {
     }
 
     /// **CMAINTSW** `[7:4]` (RO)
+    ///
     /// Indicates the supported cache maintenance operations by set/way
     #[inline(always)]
     pub fn cmaintsw(&self) -> u32 {
@@ -27629,6 +30160,7 @@ impl IdMmfr3 {
     }
 
     /// **CMAINTVA** `[3:0]` (RO)
+    ///
     /// Indicates the supported cache maintenance operations by address
     #[inline(always)]
     pub fn cmaintva(&self) -> u32 {
@@ -27666,6 +30198,7 @@ impl IdMmfr3Val {
     }
 
     /// Read **BPMAINT** `[11:8]`
+    ///
     /// Indicates the supported branch predictor maintenance
     #[inline(always)]
     pub const fn bpmaint(&self) -> u32 {
@@ -27673,6 +30206,7 @@ impl IdMmfr3Val {
     }
 
     /// Read **CMAINTSW** `[7:4]`
+    ///
     /// Indicates the supported cache maintenance operations by set/way
     #[inline(always)]
     pub const fn cmaintsw(&self) -> u32 {
@@ -27680,6 +30214,7 @@ impl IdMmfr3Val {
     }
 
     /// Read **CMAINTVA** `[3:0]`
+    ///
     /// Indicates the supported cache maintenance operations by address
     #[inline(always)]
     pub const fn cmaintva(&self) -> u32 {
@@ -27725,16 +30260,27 @@ impl IdMmfr3 {
 /// ## Fields
 ///
 /// - **DIVIDE** `[27:24]` (RO)
+///
 ///   Indicates the supported Divide instructions
+///
 /// - **DEBUG** `[23:20]` (RO)
+///
 ///   Indicates the implemented Debug instructions
+///
 /// - **COPROC** `[19:16]` (RO)
+///
 ///   Indicates the supported Coprocessor instructions
+///
 /// - **CMPBRANCH** `[15:12]` (RO)
+///
 ///   Indicates the supported combined Compare and Branch instructions
+///
 /// - **BITFIELD** `[11:8]` (RO)
+///
 ///   Indicates the supported bit field instructions
+///
 /// - **BITCOUNT** `[7:4]` (RO)
+///
 ///   Indicates the supported bit count instructions
 #[repr(transparent)]
 pub struct IdIsar0 {
@@ -27753,37 +30299,49 @@ impl IdIsar0 {
     // ======== Field Constants ========
 
     /// **DIVIDE**
+    ///
     /// Indicates the supported Divide instructions
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const DIVIDE_OFFSET: u32 = 24;
     pub const DIVIDE_MASK: u32 = 0x0f000000;
 
     /// **DEBUG**
+    ///
     /// Indicates the implemented Debug instructions
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const DEBUG_OFFSET: u32 = 20;
     pub const DEBUG_MASK: u32 = 0x00f00000;
 
     /// **COPROC**
+    ///
     /// Indicates the supported Coprocessor instructions
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const COPROC_OFFSET: u32 = 16;
     pub const COPROC_MASK: u32 = 0x000f0000;
 
     /// **CMPBRANCH**
+    ///
     /// Indicates the supported combined Compare and Branch instructions
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const CMPBRANCH_OFFSET: u32 = 12;
     pub const CMPBRANCH_MASK: u32 = 0x0000f000;
 
     /// **BITFIELD**
+    ///
     /// Indicates the supported bit field instructions
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const BITFIELD_OFFSET: u32 = 8;
     pub const BITFIELD_MASK: u32 = 0x00000f00;
 
     /// **BITCOUNT**
+    ///
     /// Indicates the supported bit count instructions
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const BITCOUNT_OFFSET: u32 = 4;
     pub const BITCOUNT_MASK: u32 = 0x000000f0;
@@ -27791,6 +30349,7 @@ impl IdIsar0 {
     // ======== Field Accessors ========
 
     /// **DIVIDE** `[27:24]` (RO)
+    ///
     /// Indicates the supported Divide instructions
     #[inline(always)]
     pub fn divide(&self) -> u32 {
@@ -27798,6 +30357,7 @@ impl IdIsar0 {
     }
 
     /// **DEBUG** `[23:20]` (RO)
+    ///
     /// Indicates the implemented Debug instructions
     #[inline(always)]
     pub fn debug(&self) -> u32 {
@@ -27805,6 +30365,7 @@ impl IdIsar0 {
     }
 
     /// **COPROC** `[19:16]` (RO)
+    ///
     /// Indicates the supported Coprocessor instructions
     #[inline(always)]
     pub fn coproc(&self) -> u32 {
@@ -27812,6 +30373,7 @@ impl IdIsar0 {
     }
 
     /// **CMPBRANCH** `[15:12]` (RO)
+    ///
     /// Indicates the supported combined Compare and Branch instructions
     #[inline(always)]
     pub fn cmpbranch(&self) -> u32 {
@@ -27819,6 +30381,7 @@ impl IdIsar0 {
     }
 
     /// **BITFIELD** `[11:8]` (RO)
+    ///
     /// Indicates the supported bit field instructions
     #[inline(always)]
     pub fn bitfield(&self) -> u32 {
@@ -27826,6 +30389,7 @@ impl IdIsar0 {
     }
 
     /// **BITCOUNT** `[7:4]` (RO)
+    ///
     /// Indicates the supported bit count instructions
     #[inline(always)]
     pub fn bitcount(&self) -> u32 {
@@ -27863,6 +30427,7 @@ impl IdIsar0Val {
     }
 
     /// Read **DIVIDE** `[27:24]`
+    ///
     /// Indicates the supported Divide instructions
     #[inline(always)]
     pub const fn divide(&self) -> u32 {
@@ -27870,6 +30435,7 @@ impl IdIsar0Val {
     }
 
     /// Read **DEBUG** `[23:20]`
+    ///
     /// Indicates the implemented Debug instructions
     #[inline(always)]
     pub const fn debug(&self) -> u32 {
@@ -27877,6 +30443,7 @@ impl IdIsar0Val {
     }
 
     /// Read **COPROC** `[19:16]`
+    ///
     /// Indicates the supported Coprocessor instructions
     #[inline(always)]
     pub const fn coproc(&self) -> u32 {
@@ -27884,6 +30451,7 @@ impl IdIsar0Val {
     }
 
     /// Read **CMPBRANCH** `[15:12]`
+    ///
     /// Indicates the supported combined Compare and Branch instructions
     #[inline(always)]
     pub const fn cmpbranch(&self) -> u32 {
@@ -27891,6 +30459,7 @@ impl IdIsar0Val {
     }
 
     /// Read **BITFIELD** `[11:8]`
+    ///
     /// Indicates the supported bit field instructions
     #[inline(always)]
     pub const fn bitfield(&self) -> u32 {
@@ -27898,6 +30467,7 @@ impl IdIsar0Val {
     }
 
     /// Read **BITCOUNT** `[7:4]`
+    ///
     /// Indicates the supported bit count instructions
     #[inline(always)]
     pub const fn bitcount(&self) -> u32 {
@@ -27943,12 +30513,19 @@ impl IdIsar0 {
 /// ## Fields
 ///
 /// - **INTERWORK** `[27:24]` (RO)
+///
 ///   Indicates the implemented Interworking instructions
+///
 /// - **IMMEDIATE** `[23:20]` (RO)
+///
 ///   Indicates the implemented for data-processing instructions with long immediates
+///
 /// - **IFTHEN** `[19:16]` (RO)
+///
 ///   Indicates the implemented If-Then instructions
+///
 /// - **EXTEND** `[15:12]` (RO)
+///
 ///   Indicates the implemented Extend instructions
 #[repr(transparent)]
 pub struct IdIsar1 {
@@ -27967,25 +30544,33 @@ impl IdIsar1 {
     // ======== Field Constants ========
 
     /// **INTERWORK**
+    ///
     /// Indicates the implemented Interworking instructions
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const INTERWORK_OFFSET: u32 = 24;
     pub const INTERWORK_MASK: u32 = 0x0f000000;
 
     /// **IMMEDIATE**
+    ///
     /// Indicates the implemented for data-processing instructions with long immediates
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const IMMEDIATE_OFFSET: u32 = 20;
     pub const IMMEDIATE_MASK: u32 = 0x00f00000;
 
     /// **IFTHEN**
+    ///
     /// Indicates the implemented If-Then instructions
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const IFTHEN_OFFSET: u32 = 16;
     pub const IFTHEN_MASK: u32 = 0x000f0000;
 
     /// **EXTEND**
+    ///
     /// Indicates the implemented Extend instructions
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const EXTEND_OFFSET: u32 = 12;
     pub const EXTEND_MASK: u32 = 0x0000f000;
@@ -27993,6 +30578,7 @@ impl IdIsar1 {
     // ======== Field Accessors ========
 
     /// **INTERWORK** `[27:24]` (RO)
+    ///
     /// Indicates the implemented Interworking instructions
     #[inline(always)]
     pub fn interwork(&self) -> u32 {
@@ -28000,6 +30586,7 @@ impl IdIsar1 {
     }
 
     /// **IMMEDIATE** `[23:20]` (RO)
+    ///
     /// Indicates the implemented for data-processing instructions with long immediates
     #[inline(always)]
     pub fn immediate(&self) -> u32 {
@@ -28007,6 +30594,7 @@ impl IdIsar1 {
     }
 
     /// **IFTHEN** `[19:16]` (RO)
+    ///
     /// Indicates the implemented If-Then instructions
     #[inline(always)]
     pub fn ifthen(&self) -> u32 {
@@ -28014,6 +30602,7 @@ impl IdIsar1 {
     }
 
     /// **EXTEND** `[15:12]` (RO)
+    ///
     /// Indicates the implemented Extend instructions
     #[inline(always)]
     pub fn extend(&self) -> u32 {
@@ -28051,6 +30640,7 @@ impl IdIsar1Val {
     }
 
     /// Read **INTERWORK** `[27:24]`
+    ///
     /// Indicates the implemented Interworking instructions
     #[inline(always)]
     pub const fn interwork(&self) -> u32 {
@@ -28058,6 +30648,7 @@ impl IdIsar1Val {
     }
 
     /// Read **IMMEDIATE** `[23:20]`
+    ///
     /// Indicates the implemented for data-processing instructions with long immediates
     #[inline(always)]
     pub const fn immediate(&self) -> u32 {
@@ -28065,6 +30656,7 @@ impl IdIsar1Val {
     }
 
     /// Read **IFTHEN** `[19:16]`
+    ///
     /// Indicates the implemented If-Then instructions
     #[inline(always)]
     pub const fn ifthen(&self) -> u32 {
@@ -28072,6 +30664,7 @@ impl IdIsar1Val {
     }
 
     /// Read **EXTEND** `[15:12]`
+    ///
     /// Indicates the implemented Extend instructions
     #[inline(always)]
     pub const fn extend(&self) -> u32 {
@@ -28117,18 +30710,31 @@ impl IdIsar1 {
 /// ## Fields
 ///
 /// - **REVERSAL** `[31:28]` (RO)
+///
 ///   Indicates the implemented Reversal instructions
+///
 /// - **MULTU** `[23:20]` (RO)
+///
 ///   Indicates the implemented advanced unsigned Multiply instructions
+///
 /// - **MULTS** `[19:16]` (RO)
+///
 ///   Indicates the implemented advanced signed Multiply instructions
+///
 /// - **MULT** `[15:12]` (RO)
+///
 ///   Indicates the implemented additional Multiply instructions
+///
 /// - **MULTIACCESSINT** `[11:8]` (RO)
+///
 ///   Indicates the support for interruptible multi-access instructions
+///
 /// - **MEMHINT** `[7:4]` (RO)
+///
 ///   Indicates the implemented Memory Hint instructions
+///
 /// - **LOADSTORE** `[3:0]` (RO)
+///
 ///   Indicates the implemented additional load/store instructions
 #[repr(transparent)]
 pub struct IdIsar2 {
@@ -28147,43 +30753,57 @@ impl IdIsar2 {
     // ======== Field Constants ========
 
     /// **REVERSAL**
+    ///
     /// Indicates the implemented Reversal instructions
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const REVERSAL_OFFSET: u32 = 28;
     pub const REVERSAL_MASK: u32 = 0xf0000000;
 
     /// **MULTU**
+    ///
     /// Indicates the implemented advanced unsigned Multiply instructions
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const MULTU_OFFSET: u32 = 20;
     pub const MULTU_MASK: u32 = 0x00f00000;
 
     /// **MULTS**
+    ///
     /// Indicates the implemented advanced signed Multiply instructions
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const MULTS_OFFSET: u32 = 16;
     pub const MULTS_MASK: u32 = 0x000f0000;
 
     /// **MULT**
+    ///
     /// Indicates the implemented additional Multiply instructions
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const MULT_OFFSET: u32 = 12;
     pub const MULT_MASK: u32 = 0x0000f000;
 
     /// **MULTIACCESSINT**
+    ///
     /// Indicates the support for interruptible multi-access instructions
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const MULTIACCESSINT_OFFSET: u32 = 8;
     pub const MULTIACCESSINT_MASK: u32 = 0x00000f00;
 
     /// **MEMHINT**
+    ///
     /// Indicates the implemented Memory Hint instructions
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const MEMHINT_OFFSET: u32 = 4;
     pub const MEMHINT_MASK: u32 = 0x000000f0;
 
     /// **LOADSTORE**
+    ///
     /// Indicates the implemented additional load/store instructions
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const LOADSTORE_OFFSET: u32 = 0;
     pub const LOADSTORE_MASK: u32 = 0x0000000f;
@@ -28191,6 +30811,7 @@ impl IdIsar2 {
     // ======== Field Accessors ========
 
     /// **REVERSAL** `[31:28]` (RO)
+    ///
     /// Indicates the implemented Reversal instructions
     #[inline(always)]
     pub fn reversal(&self) -> u32 {
@@ -28198,6 +30819,7 @@ impl IdIsar2 {
     }
 
     /// **MULTU** `[23:20]` (RO)
+    ///
     /// Indicates the implemented advanced unsigned Multiply instructions
     #[inline(always)]
     pub fn multu(&self) -> u32 {
@@ -28205,6 +30827,7 @@ impl IdIsar2 {
     }
 
     /// **MULTS** `[19:16]` (RO)
+    ///
     /// Indicates the implemented advanced signed Multiply instructions
     #[inline(always)]
     pub fn mults(&self) -> u32 {
@@ -28212,6 +30835,7 @@ impl IdIsar2 {
     }
 
     /// **MULT** `[15:12]` (RO)
+    ///
     /// Indicates the implemented additional Multiply instructions
     #[inline(always)]
     pub fn mult(&self) -> u32 {
@@ -28219,6 +30843,7 @@ impl IdIsar2 {
     }
 
     /// **MULTIACCESSINT** `[11:8]` (RO)
+    ///
     /// Indicates the support for interruptible multi-access instructions
     #[inline(always)]
     pub fn multiaccessint(&self) -> u32 {
@@ -28226,6 +30851,7 @@ impl IdIsar2 {
     }
 
     /// **MEMHINT** `[7:4]` (RO)
+    ///
     /// Indicates the implemented Memory Hint instructions
     #[inline(always)]
     pub fn memhint(&self) -> u32 {
@@ -28233,6 +30859,7 @@ impl IdIsar2 {
     }
 
     /// **LOADSTORE** `[3:0]` (RO)
+    ///
     /// Indicates the implemented additional load/store instructions
     #[inline(always)]
     pub fn loadstore(&self) -> u32 {
@@ -28270,6 +30897,7 @@ impl IdIsar2Val {
     }
 
     /// Read **REVERSAL** `[31:28]`
+    ///
     /// Indicates the implemented Reversal instructions
     #[inline(always)]
     pub const fn reversal(&self) -> u32 {
@@ -28277,6 +30905,7 @@ impl IdIsar2Val {
     }
 
     /// Read **MULTU** `[23:20]`
+    ///
     /// Indicates the implemented advanced unsigned Multiply instructions
     #[inline(always)]
     pub const fn multu(&self) -> u32 {
@@ -28284,6 +30913,7 @@ impl IdIsar2Val {
     }
 
     /// Read **MULTS** `[19:16]`
+    ///
     /// Indicates the implemented advanced signed Multiply instructions
     #[inline(always)]
     pub const fn mults(&self) -> u32 {
@@ -28291,6 +30921,7 @@ impl IdIsar2Val {
     }
 
     /// Read **MULT** `[15:12]`
+    ///
     /// Indicates the implemented additional Multiply instructions
     #[inline(always)]
     pub const fn mult(&self) -> u32 {
@@ -28298,6 +30929,7 @@ impl IdIsar2Val {
     }
 
     /// Read **MULTIACCESSINT** `[11:8]`
+    ///
     /// Indicates the support for interruptible multi-access instructions
     #[inline(always)]
     pub const fn multiaccessint(&self) -> u32 {
@@ -28305,6 +30937,7 @@ impl IdIsar2Val {
     }
 
     /// Read **MEMHINT** `[7:4]`
+    ///
     /// Indicates the implemented Memory Hint instructions
     #[inline(always)]
     pub const fn memhint(&self) -> u32 {
@@ -28312,6 +30945,7 @@ impl IdIsar2Val {
     }
 
     /// Read **LOADSTORE** `[3:0]`
+    ///
     /// Indicates the implemented additional load/store instructions
     #[inline(always)]
     pub const fn loadstore(&self) -> u32 {
@@ -28357,18 +30991,31 @@ impl IdIsar2 {
 /// ## Fields
 ///
 /// - **TRUENOP** `[27:24]` (RO)
+///
 ///   Indicates the implemented true NOP instructions
+///
 /// - **T32COPY** `[23:20]` (RO)
+///
 ///   Indicates the support for T32 non flag-setting MOV instructions
+///
 /// - **TABBRANCH** `[19:16]` (RO)
+///
 ///   Indicates the implemented Table Branch instructions
+///
 /// - **SYNCHPRIM** `[15:12]` (RO)
+///
 ///   Used in conjunction with ID_ISAR4.SynchPrim_frac to indicate the implemented Synchronization Primitive instructions
+///
 /// - **SVC** `[11:8]` (RO)
+///
 ///   Indicates the implemented SVC instructions
+///
 /// - **SIMD** `[7:4]` (RO)
+///
 ///   Indicates the implemented SIMD instructions
+///
 /// - **SATURATE** `[3:0]` (RO)
+///
 ///   Indicates the implemented saturating instructions
 #[repr(transparent)]
 pub struct IdIsar3 {
@@ -28387,43 +31034,57 @@ impl IdIsar3 {
     // ======== Field Constants ========
 
     /// **TRUENOP**
+    ///
     /// Indicates the implemented true NOP instructions
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const TRUENOP_OFFSET: u32 = 24;
     pub const TRUENOP_MASK: u32 = 0x0f000000;
 
     /// **T32COPY**
+    ///
     /// Indicates the support for T32 non flag-setting MOV instructions
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const T32COPY_OFFSET: u32 = 20;
     pub const T32COPY_MASK: u32 = 0x00f00000;
 
     /// **TABBRANCH**
+    ///
     /// Indicates the implemented Table Branch instructions
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const TABBRANCH_OFFSET: u32 = 16;
     pub const TABBRANCH_MASK: u32 = 0x000f0000;
 
     /// **SYNCHPRIM**
+    ///
     /// Used in conjunction with ID_ISAR4.SynchPrim_frac to indicate the implemented Synchronization Primitive instructions
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const SYNCHPRIM_OFFSET: u32 = 12;
     pub const SYNCHPRIM_MASK: u32 = 0x0000f000;
 
     /// **SVC**
+    ///
     /// Indicates the implemented SVC instructions
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const SVC_OFFSET: u32 = 8;
     pub const SVC_MASK: u32 = 0x00000f00;
 
     /// **SIMD**
+    ///
     /// Indicates the implemented SIMD instructions
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIMD_OFFSET: u32 = 4;
     pub const SIMD_MASK: u32 = 0x000000f0;
 
     /// **SATURATE**
+    ///
     /// Indicates the implemented saturating instructions
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const SATURATE_OFFSET: u32 = 0;
     pub const SATURATE_MASK: u32 = 0x0000000f;
@@ -28431,6 +31092,7 @@ impl IdIsar3 {
     // ======== Field Accessors ========
 
     /// **TRUENOP** `[27:24]` (RO)
+    ///
     /// Indicates the implemented true NOP instructions
     #[inline(always)]
     pub fn truenop(&self) -> u32 {
@@ -28438,6 +31100,7 @@ impl IdIsar3 {
     }
 
     /// **T32COPY** `[23:20]` (RO)
+    ///
     /// Indicates the support for T32 non flag-setting MOV instructions
     #[inline(always)]
     pub fn t32copy(&self) -> u32 {
@@ -28445,6 +31108,7 @@ impl IdIsar3 {
     }
 
     /// **TABBRANCH** `[19:16]` (RO)
+    ///
     /// Indicates the implemented Table Branch instructions
     #[inline(always)]
     pub fn tabbranch(&self) -> u32 {
@@ -28452,6 +31116,7 @@ impl IdIsar3 {
     }
 
     /// **SYNCHPRIM** `[15:12]` (RO)
+    ///
     /// Used in conjunction with ID_ISAR4.SynchPrim_frac to indicate the implemented Synchronization Primitive instructions
     #[inline(always)]
     pub fn synchprim(&self) -> u32 {
@@ -28459,6 +31124,7 @@ impl IdIsar3 {
     }
 
     /// **SVC** `[11:8]` (RO)
+    ///
     /// Indicates the implemented SVC instructions
     #[inline(always)]
     pub fn svc(&self) -> u32 {
@@ -28466,6 +31132,7 @@ impl IdIsar3 {
     }
 
     /// **SIMD** `[7:4]` (RO)
+    ///
     /// Indicates the implemented SIMD instructions
     #[inline(always)]
     pub fn simd(&self) -> u32 {
@@ -28473,6 +31140,7 @@ impl IdIsar3 {
     }
 
     /// **SATURATE** `[3:0]` (RO)
+    ///
     /// Indicates the implemented saturating instructions
     #[inline(always)]
     pub fn saturate(&self) -> u32 {
@@ -28510,6 +31178,7 @@ impl IdIsar3Val {
     }
 
     /// Read **TRUENOP** `[27:24]`
+    ///
     /// Indicates the implemented true NOP instructions
     #[inline(always)]
     pub const fn truenop(&self) -> u32 {
@@ -28517,6 +31186,7 @@ impl IdIsar3Val {
     }
 
     /// Read **T32COPY** `[23:20]`
+    ///
     /// Indicates the support for T32 non flag-setting MOV instructions
     #[inline(always)]
     pub const fn t32copy(&self) -> u32 {
@@ -28524,6 +31194,7 @@ impl IdIsar3Val {
     }
 
     /// Read **TABBRANCH** `[19:16]`
+    ///
     /// Indicates the implemented Table Branch instructions
     #[inline(always)]
     pub const fn tabbranch(&self) -> u32 {
@@ -28531,6 +31202,7 @@ impl IdIsar3Val {
     }
 
     /// Read **SYNCHPRIM** `[15:12]`
+    ///
     /// Used in conjunction with ID_ISAR4.SynchPrim_frac to indicate the implemented Synchronization Primitive instructions
     #[inline(always)]
     pub const fn synchprim(&self) -> u32 {
@@ -28538,6 +31210,7 @@ impl IdIsar3Val {
     }
 
     /// Read **SVC** `[11:8]`
+    ///
     /// Indicates the implemented SVC instructions
     #[inline(always)]
     pub const fn svc(&self) -> u32 {
@@ -28545,6 +31218,7 @@ impl IdIsar3Val {
     }
 
     /// Read **SIMD** `[7:4]`
+    ///
     /// Indicates the implemented SIMD instructions
     #[inline(always)]
     pub const fn simd(&self) -> u32 {
@@ -28552,6 +31226,7 @@ impl IdIsar3Val {
     }
 
     /// Read **SATURATE** `[3:0]`
+    ///
     /// Indicates the implemented saturating instructions
     #[inline(always)]
     pub const fn saturate(&self) -> u32 {
@@ -28597,16 +31272,27 @@ impl IdIsar3 {
 /// ## Fields
 ///
 /// - **PSR_M** `[27:24]` (RO)
+///
 ///   Indicates the implemented M profile instructions to modify the PSRs
+///
 /// - **SYNCPRIM_FRAC** `[23:20]` (RO)
+///
 ///   Used in conjunction with ID_ISAR3.SynchPrim to indicate the implemented Synchronization Primitive instructions
+///
 /// - **BARRIER** `[19:16]` (RO)
+///
 ///   Indicates the implemented Barrier instructions
+///
 /// - **WRITEBACK** `[11:8]` (RO)
+///
 ///   Indicates the support for writeback addressing modes
+///
 /// - **WITHSHIFTS** `[7:4]` (RO)
+///
 ///   Indicates the support for writeback addressing modes
+///
 /// - **UNPRIV** `[3:0]` (RO)
+///
 ///   Indicates the implemented unprivileged instructions
 #[repr(transparent)]
 pub struct IdIsar4 {
@@ -28625,37 +31311,49 @@ impl IdIsar4 {
     // ======== Field Constants ========
 
     /// **PSR_M**
+    ///
     /// Indicates the implemented M profile instructions to modify the PSRs
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const PSR_M_OFFSET: u32 = 24;
     pub const PSR_M_MASK: u32 = 0x0f000000;
 
     /// **SYNCPRIM_FRAC**
+    ///
     /// Used in conjunction with ID_ISAR3.SynchPrim to indicate the implemented Synchronization Primitive instructions
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const SYNCPRIM_FRAC_OFFSET: u32 = 20;
     pub const SYNCPRIM_FRAC_MASK: u32 = 0x00f00000;
 
     /// **BARRIER**
+    ///
     /// Indicates the implemented Barrier instructions
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const BARRIER_OFFSET: u32 = 16;
     pub const BARRIER_MASK: u32 = 0x000f0000;
 
     /// **WRITEBACK**
+    ///
     /// Indicates the support for writeback addressing modes
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const WRITEBACK_OFFSET: u32 = 8;
     pub const WRITEBACK_MASK: u32 = 0x00000f00;
 
     /// **WITHSHIFTS**
+    ///
     /// Indicates the support for writeback addressing modes
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const WITHSHIFTS_OFFSET: u32 = 4;
     pub const WITHSHIFTS_MASK: u32 = 0x000000f0;
 
     /// **UNPRIV**
+    ///
     /// Indicates the implemented unprivileged instructions
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const UNPRIV_OFFSET: u32 = 0;
     pub const UNPRIV_MASK: u32 = 0x0000000f;
@@ -28663,6 +31361,7 @@ impl IdIsar4 {
     // ======== Field Accessors ========
 
     /// **PSR_M** `[27:24]` (RO)
+    ///
     /// Indicates the implemented M profile instructions to modify the PSRs
     #[inline(always)]
     pub fn psr_m(&self) -> u32 {
@@ -28670,6 +31369,7 @@ impl IdIsar4 {
     }
 
     /// **SYNCPRIM_FRAC** `[23:20]` (RO)
+    ///
     /// Used in conjunction with ID_ISAR3.SynchPrim to indicate the implemented Synchronization Primitive instructions
     #[inline(always)]
     pub fn syncprim_frac(&self) -> u32 {
@@ -28677,6 +31377,7 @@ impl IdIsar4 {
     }
 
     /// **BARRIER** `[19:16]` (RO)
+    ///
     /// Indicates the implemented Barrier instructions
     #[inline(always)]
     pub fn barrier(&self) -> u32 {
@@ -28684,6 +31385,7 @@ impl IdIsar4 {
     }
 
     /// **WRITEBACK** `[11:8]` (RO)
+    ///
     /// Indicates the support for writeback addressing modes
     #[inline(always)]
     pub fn writeback(&self) -> u32 {
@@ -28691,6 +31393,7 @@ impl IdIsar4 {
     }
 
     /// **WITHSHIFTS** `[7:4]` (RO)
+    ///
     /// Indicates the support for writeback addressing modes
     #[inline(always)]
     pub fn withshifts(&self) -> u32 {
@@ -28698,6 +31401,7 @@ impl IdIsar4 {
     }
 
     /// **UNPRIV** `[3:0]` (RO)
+    ///
     /// Indicates the implemented unprivileged instructions
     #[inline(always)]
     pub fn unpriv(&self) -> u32 {
@@ -28735,6 +31439,7 @@ impl IdIsar4Val {
     }
 
     /// Read **PSR_M** `[27:24]`
+    ///
     /// Indicates the implemented M profile instructions to modify the PSRs
     #[inline(always)]
     pub const fn psr_m(&self) -> u32 {
@@ -28742,6 +31447,7 @@ impl IdIsar4Val {
     }
 
     /// Read **SYNCPRIM_FRAC** `[23:20]`
+    ///
     /// Used in conjunction with ID_ISAR3.SynchPrim to indicate the implemented Synchronization Primitive instructions
     #[inline(always)]
     pub const fn syncprim_frac(&self) -> u32 {
@@ -28749,6 +31455,7 @@ impl IdIsar4Val {
     }
 
     /// Read **BARRIER** `[19:16]`
+    ///
     /// Indicates the implemented Barrier instructions
     #[inline(always)]
     pub const fn barrier(&self) -> u32 {
@@ -28756,6 +31463,7 @@ impl IdIsar4Val {
     }
 
     /// Read **WRITEBACK** `[11:8]`
+    ///
     /// Indicates the support for writeback addressing modes
     #[inline(always)]
     pub const fn writeback(&self) -> u32 {
@@ -28763,6 +31471,7 @@ impl IdIsar4Val {
     }
 
     /// Read **WITHSHIFTS** `[7:4]`
+    ///
     /// Indicates the support for writeback addressing modes
     #[inline(always)]
     pub const fn withshifts(&self) -> u32 {
@@ -28770,6 +31479,7 @@ impl IdIsar4Val {
     }
 
     /// Read **UNPRIV** `[3:0]`
+    ///
     /// Indicates the implemented unprivileged instructions
     #[inline(always)]
     pub const fn unpriv(&self) -> u32 {
@@ -28933,16 +31643,27 @@ impl IdIsar5 {
 /// ## Fields
 ///
 /// - **RES1** `[31]` (RO)
+///
 ///   Reserved, RES1
+///
 /// - **CWG** `[27:24]` (RO)
+///
 ///   Log2 of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified
+///
 /// - **ERG** `[23:20]` (RO)
+///
 ///   Log2 of the number of words of the maximum size of the reservation granule that has been implemented for the Load-Exclusive and Store-Exclusive instructions
+///
 /// - **DMINLINE** `[19:16]` (RO)
+///
 ///   Log2 of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE
+///
 /// - **RES1_1** `[15:14]` (RO)
+///
 ///   Reserved, RES1
+///
 /// - **IMINLINE** `[3:0]` (RO)
+///
 ///   Log2 of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE
 #[repr(transparent)]
 pub struct Ctr {
@@ -28961,38 +31682,50 @@ impl Ctr {
     // ======== Field Constants ========
 
     /// **RES1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const RES1_OFFSET: u32 = 31;
     pub const RES1_MASK: u32 = 0x80000000;
     pub const RES1: u32 = 1 << 31;
 
     /// **CWG**
+    ///
     /// Log2 of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const CWG_OFFSET: u32 = 24;
     pub const CWG_MASK: u32 = 0x0f000000;
 
     /// **ERG**
+    ///
     /// Log2 of the number of words of the maximum size of the reservation granule that has been implemented for the Load-Exclusive and Store-Exclusive instructions
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const ERG_OFFSET: u32 = 20;
     pub const ERG_MASK: u32 = 0x00f00000;
 
     /// **DMINLINE**
+    ///
     /// Log2 of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const DMINLINE_OFFSET: u32 = 16;
     pub const DMINLINE_MASK: u32 = 0x000f0000;
 
     /// **RES1_1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const RES1_1_OFFSET: u32 = 14;
     pub const RES1_1_MASK: u32 = 0x0000c000;
 
     /// **IMINLINE**
+    ///
     /// Log2 of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const IMINLINE_OFFSET: u32 = 0;
     pub const IMINLINE_MASK: u32 = 0x0000000f;
@@ -29000,6 +31733,7 @@ impl Ctr {
     // ======== Field Accessors ========
 
     /// **RES1** `[31]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1(&self) -> bool {
@@ -29007,6 +31741,7 @@ impl Ctr {
     }
 
     /// **CWG** `[27:24]` (RO)
+    ///
     /// Log2 of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified
     #[inline(always)]
     pub fn cwg(&self) -> u32 {
@@ -29014,6 +31749,7 @@ impl Ctr {
     }
 
     /// **ERG** `[23:20]` (RO)
+    ///
     /// Log2 of the number of words of the maximum size of the reservation granule that has been implemented for the Load-Exclusive and Store-Exclusive instructions
     #[inline(always)]
     pub fn erg(&self) -> u32 {
@@ -29021,6 +31757,7 @@ impl Ctr {
     }
 
     /// **DMINLINE** `[19:16]` (RO)
+    ///
     /// Log2 of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE
     #[inline(always)]
     pub fn dminline(&self) -> u32 {
@@ -29028,6 +31765,7 @@ impl Ctr {
     }
 
     /// **RES1_1** `[15:14]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1_1(&self) -> u32 {
@@ -29035,6 +31773,7 @@ impl Ctr {
     }
 
     /// **IMINLINE** `[3:0]` (RO)
+    ///
     /// Log2 of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE
     #[inline(always)]
     pub fn iminline(&self) -> u32 {
@@ -29072,6 +31811,7 @@ impl CtrVal {
     }
 
     /// Read **RES1** `[31:31]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1(&self) -> bool {
@@ -29079,6 +31819,7 @@ impl CtrVal {
     }
 
     /// Read **CWG** `[27:24]`
+    ///
     /// Log2 of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified
     #[inline(always)]
     pub const fn cwg(&self) -> u32 {
@@ -29086,6 +31827,7 @@ impl CtrVal {
     }
 
     /// Read **ERG** `[23:20]`
+    ///
     /// Log2 of the number of words of the maximum size of the reservation granule that has been implemented for the Load-Exclusive and Store-Exclusive instructions
     #[inline(always)]
     pub const fn erg(&self) -> u32 {
@@ -29093,6 +31835,7 @@ impl CtrVal {
     }
 
     /// Read **DMINLINE** `[19:16]`
+    ///
     /// Log2 of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE
     #[inline(always)]
     pub const fn dminline(&self) -> u32 {
@@ -29100,6 +31843,7 @@ impl CtrVal {
     }
 
     /// Read **RES1_1** `[15:14]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1_1(&self) -> u32 {
@@ -29107,6 +31851,7 @@ impl CtrVal {
     }
 
     /// Read **IMINLINE** `[3:0]`
+    ///
     /// Log2 of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE
     #[inline(always)]
     pub const fn iminline(&self) -> u32 {
@@ -29152,24 +31897,43 @@ impl Ctr {
 /// ## Fields
 ///
 /// - **CP11** `[23:22]` (RW)
+///
 ///   The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
+///
 /// - **CP10** `[21:20]` (RW)
+///
 ///   Defines the access rights for the floating-point functionality
+///
 /// - **CP7** `[15:14]` (RW)
+///
 ///   Controls access privileges for coprocessor 7
+///
 /// - **CP6** `[13:12]` (RW)
+///
 ///   Controls access privileges for coprocessor 6
+///
 /// - **CP5** `[11:10]` (RW)
+///
 ///   Controls access privileges for coprocessor 5
+///
 /// - **CP4** `[9:8]` (RW)
+///
 ///   Controls access privileges for coprocessor 4
+///
 /// - **CP3** `[7:6]` (RW)
+///
 ///   Controls access privileges for coprocessor 3
+///
 /// - **CP2** `[5:4]` (RW)
+///
 ///   Controls access privileges for coprocessor 2
+///
 /// - **CP1** `[3:2]` (RW)
+///
 ///   Controls access privileges for coprocessor 1
+///
 /// - **CP0** `[1:0]` (RW)
+///
 ///   Controls access privileges for coprocessor 0
 #[repr(transparent)]
 pub struct Cpacr {
@@ -29188,61 +31952,81 @@ impl Cpacr {
     // ======== Field Constants ========
 
     /// **CP11**
+    ///
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
+    ///
     /// Bits `[23:22]`, mask `0x00c00000`
     pub const CP11_OFFSET: u32 = 22;
     pub const CP11_MASK: u32 = 0x00c00000;
 
     /// **CP10**
+    ///
     /// Defines the access rights for the floating-point functionality
+    ///
     /// Bits `[21:20]`, mask `0x00300000`
     pub const CP10_OFFSET: u32 = 20;
     pub const CP10_MASK: u32 = 0x00300000;
 
     /// **CP7**
+    ///
     /// Controls access privileges for coprocessor 7
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const CP7_OFFSET: u32 = 14;
     pub const CP7_MASK: u32 = 0x0000c000;
 
     /// **CP6**
+    ///
     /// Controls access privileges for coprocessor 6
+    ///
     /// Bits `[13:12]`, mask `0x00003000`
     pub const CP6_OFFSET: u32 = 12;
     pub const CP6_MASK: u32 = 0x00003000;
 
     /// **CP5**
+    ///
     /// Controls access privileges for coprocessor 5
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const CP5_OFFSET: u32 = 10;
     pub const CP5_MASK: u32 = 0x00000c00;
 
     /// **CP4**
+    ///
     /// Controls access privileges for coprocessor 4
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const CP4_OFFSET: u32 = 8;
     pub const CP4_MASK: u32 = 0x00000300;
 
     /// **CP3**
+    ///
     /// Controls access privileges for coprocessor 3
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const CP3_OFFSET: u32 = 6;
     pub const CP3_MASK: u32 = 0x000000c0;
 
     /// **CP2**
+    ///
     /// Controls access privileges for coprocessor 2
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const CP2_OFFSET: u32 = 4;
     pub const CP2_MASK: u32 = 0x00000030;
 
     /// **CP1**
+    ///
     /// Controls access privileges for coprocessor 1
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const CP1_OFFSET: u32 = 2;
     pub const CP1_MASK: u32 = 0x0000000c;
 
     /// **CP0**
+    ///
     /// Controls access privileges for coprocessor 0
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const CP0_OFFSET: u32 = 0;
     pub const CP0_MASK: u32 = 0x00000003;
@@ -29250,6 +32034,7 @@ impl Cpacr {
     // ======== Field Accessors ========
 
     /// **CP11** `[23:22]` (RW)
+    ///
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
     #[inline(always)]
     pub fn cp11(&self) -> u32 {
@@ -29257,6 +32042,7 @@ impl Cpacr {
     }
 
     /// Write **CP11** `[23:22]` (RW)
+    ///
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
     #[inline(always)]
     pub fn write_cp11(&self, value: u32) {
@@ -29264,6 +32050,7 @@ impl Cpacr {
     }
 
     /// **CP10** `[21:20]` (RW)
+    ///
     /// Defines the access rights for the floating-point functionality
     #[inline(always)]
     pub fn cp10(&self) -> u32 {
@@ -29271,6 +32058,7 @@ impl Cpacr {
     }
 
     /// Write **CP10** `[21:20]` (RW)
+    ///
     /// Defines the access rights for the floating-point functionality
     #[inline(always)]
     pub fn write_cp10(&self, value: u32) {
@@ -29278,6 +32066,7 @@ impl Cpacr {
     }
 
     /// **CP7** `[15:14]` (RW)
+    ///
     /// Controls access privileges for coprocessor 7
     #[inline(always)]
     pub fn cp7(&self) -> u32 {
@@ -29285,6 +32074,7 @@ impl Cpacr {
     }
 
     /// Write **CP7** `[15:14]` (RW)
+    ///
     /// Controls access privileges for coprocessor 7
     #[inline(always)]
     pub fn write_cp7(&self, value: u32) {
@@ -29292,6 +32082,7 @@ impl Cpacr {
     }
 
     /// **CP6** `[13:12]` (RW)
+    ///
     /// Controls access privileges for coprocessor 6
     #[inline(always)]
     pub fn cp6(&self) -> u32 {
@@ -29299,6 +32090,7 @@ impl Cpacr {
     }
 
     /// Write **CP6** `[13:12]` (RW)
+    ///
     /// Controls access privileges for coprocessor 6
     #[inline(always)]
     pub fn write_cp6(&self, value: u32) {
@@ -29306,6 +32098,7 @@ impl Cpacr {
     }
 
     /// **CP5** `[11:10]` (RW)
+    ///
     /// Controls access privileges for coprocessor 5
     #[inline(always)]
     pub fn cp5(&self) -> u32 {
@@ -29313,6 +32106,7 @@ impl Cpacr {
     }
 
     /// Write **CP5** `[11:10]` (RW)
+    ///
     /// Controls access privileges for coprocessor 5
     #[inline(always)]
     pub fn write_cp5(&self, value: u32) {
@@ -29320,6 +32114,7 @@ impl Cpacr {
     }
 
     /// **CP4** `[9:8]` (RW)
+    ///
     /// Controls access privileges for coprocessor 4
     #[inline(always)]
     pub fn cp4(&self) -> u32 {
@@ -29327,6 +32122,7 @@ impl Cpacr {
     }
 
     /// Write **CP4** `[9:8]` (RW)
+    ///
     /// Controls access privileges for coprocessor 4
     #[inline(always)]
     pub fn write_cp4(&self, value: u32) {
@@ -29334,6 +32130,7 @@ impl Cpacr {
     }
 
     /// **CP3** `[7:6]` (RW)
+    ///
     /// Controls access privileges for coprocessor 3
     #[inline(always)]
     pub fn cp3(&self) -> u32 {
@@ -29341,6 +32138,7 @@ impl Cpacr {
     }
 
     /// Write **CP3** `[7:6]` (RW)
+    ///
     /// Controls access privileges for coprocessor 3
     #[inline(always)]
     pub fn write_cp3(&self, value: u32) {
@@ -29348,6 +32146,7 @@ impl Cpacr {
     }
 
     /// **CP2** `[5:4]` (RW)
+    ///
     /// Controls access privileges for coprocessor 2
     #[inline(always)]
     pub fn cp2(&self) -> u32 {
@@ -29355,6 +32154,7 @@ impl Cpacr {
     }
 
     /// Write **CP2** `[5:4]` (RW)
+    ///
     /// Controls access privileges for coprocessor 2
     #[inline(always)]
     pub fn write_cp2(&self, value: u32) {
@@ -29362,6 +32162,7 @@ impl Cpacr {
     }
 
     /// **CP1** `[3:2]` (RW)
+    ///
     /// Controls access privileges for coprocessor 1
     #[inline(always)]
     pub fn cp1(&self) -> u32 {
@@ -29369,6 +32170,7 @@ impl Cpacr {
     }
 
     /// Write **CP1** `[3:2]` (RW)
+    ///
     /// Controls access privileges for coprocessor 1
     #[inline(always)]
     pub fn write_cp1(&self, value: u32) {
@@ -29376,6 +32178,7 @@ impl Cpacr {
     }
 
     /// **CP0** `[1:0]` (RW)
+    ///
     /// Controls access privileges for coprocessor 0
     #[inline(always)]
     pub fn cp0(&self) -> u32 {
@@ -29383,6 +32186,7 @@ impl Cpacr {
     }
 
     /// Write **CP0** `[1:0]` (RW)
+    ///
     /// Controls access privileges for coprocessor 0
     #[inline(always)]
     pub fn write_cp0(&self, value: u32) {
@@ -29420,6 +32224,7 @@ impl CpacrVal {
     }
 
     /// Read **CP11** `[23:22]`
+    ///
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
     #[inline(always)]
     pub const fn cp11(&self) -> u32 {
@@ -29427,6 +32232,7 @@ impl CpacrVal {
     }
 
     /// Read **CP10** `[21:20]`
+    ///
     /// Defines the access rights for the floating-point functionality
     #[inline(always)]
     pub const fn cp10(&self) -> u32 {
@@ -29434,6 +32240,7 @@ impl CpacrVal {
     }
 
     /// Read **CP7** `[15:14]`
+    ///
     /// Controls access privileges for coprocessor 7
     #[inline(always)]
     pub const fn cp7(&self) -> u32 {
@@ -29441,6 +32248,7 @@ impl CpacrVal {
     }
 
     /// Read **CP6** `[13:12]`
+    ///
     /// Controls access privileges for coprocessor 6
     #[inline(always)]
     pub const fn cp6(&self) -> u32 {
@@ -29448,6 +32256,7 @@ impl CpacrVal {
     }
 
     /// Read **CP5** `[11:10]`
+    ///
     /// Controls access privileges for coprocessor 5
     #[inline(always)]
     pub const fn cp5(&self) -> u32 {
@@ -29455,6 +32264,7 @@ impl CpacrVal {
     }
 
     /// Read **CP4** `[9:8]`
+    ///
     /// Controls access privileges for coprocessor 4
     #[inline(always)]
     pub const fn cp4(&self) -> u32 {
@@ -29462,6 +32272,7 @@ impl CpacrVal {
     }
 
     /// Read **CP3** `[7:6]`
+    ///
     /// Controls access privileges for coprocessor 3
     #[inline(always)]
     pub const fn cp3(&self) -> u32 {
@@ -29469,6 +32280,7 @@ impl CpacrVal {
     }
 
     /// Read **CP2** `[5:4]`
+    ///
     /// Controls access privileges for coprocessor 2
     #[inline(always)]
     pub const fn cp2(&self) -> u32 {
@@ -29476,6 +32288,7 @@ impl CpacrVal {
     }
 
     /// Read **CP1** `[3:2]`
+    ///
     /// Controls access privileges for coprocessor 1
     #[inline(always)]
     pub const fn cp1(&self) -> u32 {
@@ -29483,6 +32296,7 @@ impl CpacrVal {
     }
 
     /// Read **CP0** `[1:0]`
+    ///
     /// Controls access privileges for coprocessor 0
     #[inline(always)]
     pub const fn cp0(&self) -> u32 {
@@ -29490,6 +32304,7 @@ impl CpacrVal {
     }
 
     /// Set **CP11** `[23:22]`
+    ///
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
     #[inline(always)]
     pub const fn with_cp11(self, value: u32) -> Self {
@@ -29499,6 +32314,7 @@ impl CpacrVal {
     }
 
     /// Set **CP10** `[21:20]`
+    ///
     /// Defines the access rights for the floating-point functionality
     #[inline(always)]
     pub const fn with_cp10(self, value: u32) -> Self {
@@ -29508,6 +32324,7 @@ impl CpacrVal {
     }
 
     /// Set **CP7** `[15:14]`
+    ///
     /// Controls access privileges for coprocessor 7
     #[inline(always)]
     pub const fn with_cp7(self, value: u32) -> Self {
@@ -29517,6 +32334,7 @@ impl CpacrVal {
     }
 
     /// Set **CP6** `[13:12]`
+    ///
     /// Controls access privileges for coprocessor 6
     #[inline(always)]
     pub const fn with_cp6(self, value: u32) -> Self {
@@ -29526,6 +32344,7 @@ impl CpacrVal {
     }
 
     /// Set **CP5** `[11:10]`
+    ///
     /// Controls access privileges for coprocessor 5
     #[inline(always)]
     pub const fn with_cp5(self, value: u32) -> Self {
@@ -29535,6 +32354,7 @@ impl CpacrVal {
     }
 
     /// Set **CP4** `[9:8]`
+    ///
     /// Controls access privileges for coprocessor 4
     #[inline(always)]
     pub const fn with_cp4(self, value: u32) -> Self {
@@ -29544,6 +32364,7 @@ impl CpacrVal {
     }
 
     /// Set **CP3** `[7:6]`
+    ///
     /// Controls access privileges for coprocessor 3
     #[inline(always)]
     pub const fn with_cp3(self, value: u32) -> Self {
@@ -29553,6 +32374,7 @@ impl CpacrVal {
     }
 
     /// Set **CP2** `[5:4]`
+    ///
     /// Controls access privileges for coprocessor 2
     #[inline(always)]
     pub const fn with_cp2(self, value: u32) -> Self {
@@ -29562,6 +32384,7 @@ impl CpacrVal {
     }
 
     /// Set **CP1** `[3:2]`
+    ///
     /// Controls access privileges for coprocessor 1
     #[inline(always)]
     pub const fn with_cp1(self, value: u32) -> Self {
@@ -29571,6 +32394,7 @@ impl CpacrVal {
     }
 
     /// Set **CP0** `[1:0]`
+    ///
     /// Controls access privileges for coprocessor 0
     #[inline(always)]
     pub const fn with_cp0(self, value: u32) -> Self {
@@ -29618,24 +32442,43 @@ impl Cpacr {
 /// ## Fields
 ///
 /// - **CP11** `[11]` (RW)
+///
 ///   Enables Non-secure access to the Floating-point Extension
+///
 /// - **CP10** `[10]` (RW)
+///
 ///   Enables Non-secure access to the Floating-point Extension
+///
 /// - **CP7** `[7]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP7
+///
 /// - **CP6** `[6]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP6
+///
 /// - **CP5** `[5]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP5
+///
 /// - **CP4** `[4]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP4
+///
 /// - **CP3** `[3]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP3
+///
 /// - **CP2** `[2]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP2
+///
 /// - **CP1** `[1]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP1
+///
 /// - **CP0** `[0]` (RW)
+///
 ///   Enables Non-secure access to coprocessor CP0
 #[repr(transparent)]
 pub struct Nsacr {
@@ -29654,70 +32497,90 @@ impl Nsacr {
     // ======== Field Constants ========
 
     /// **CP11**
+    ///
     /// Enables Non-secure access to the Floating-point Extension
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const CP11_OFFSET: u32 = 11;
     pub const CP11_MASK: u32 = 0x00000800;
     pub const CP11: u32 = 1 << 11;
 
     /// **CP10**
+    ///
     /// Enables Non-secure access to the Floating-point Extension
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const CP10_OFFSET: u32 = 10;
     pub const CP10_MASK: u32 = 0x00000400;
     pub const CP10: u32 = 1 << 10;
 
     /// **CP7**
+    ///
     /// Enables Non-secure access to coprocessor CP7
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const CP7_OFFSET: u32 = 7;
     pub const CP7_MASK: u32 = 0x00000080;
     pub const CP7: u32 = 1 << 7;
 
     /// **CP6**
+    ///
     /// Enables Non-secure access to coprocessor CP6
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const CP6_OFFSET: u32 = 6;
     pub const CP6_MASK: u32 = 0x00000040;
     pub const CP6: u32 = 1 << 6;
 
     /// **CP5**
+    ///
     /// Enables Non-secure access to coprocessor CP5
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CP5_OFFSET: u32 = 5;
     pub const CP5_MASK: u32 = 0x00000020;
     pub const CP5: u32 = 1 << 5;
 
     /// **CP4**
+    ///
     /// Enables Non-secure access to coprocessor CP4
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CP4_OFFSET: u32 = 4;
     pub const CP4_MASK: u32 = 0x00000010;
     pub const CP4: u32 = 1 << 4;
 
     /// **CP3**
+    ///
     /// Enables Non-secure access to coprocessor CP3
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const CP3_OFFSET: u32 = 3;
     pub const CP3_MASK: u32 = 0x00000008;
     pub const CP3: u32 = 1 << 3;
 
     /// **CP2**
+    ///
     /// Enables Non-secure access to coprocessor CP2
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CP2_OFFSET: u32 = 2;
     pub const CP2_MASK: u32 = 0x00000004;
     pub const CP2: u32 = 1 << 2;
 
     /// **CP1**
+    ///
     /// Enables Non-secure access to coprocessor CP1
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CP1_OFFSET: u32 = 1;
     pub const CP1_MASK: u32 = 0x00000002;
     pub const CP1: u32 = 1 << 1;
 
     /// **CP0**
+    ///
     /// Enables Non-secure access to coprocessor CP0
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CP0_OFFSET: u32 = 0;
     pub const CP0_MASK: u32 = 0x00000001;
@@ -29726,6 +32589,7 @@ impl Nsacr {
     // ======== Field Accessors ========
 
     /// **CP11** `[11]` (RW)
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub fn cp11(&self) -> bool {
@@ -29745,6 +32609,7 @@ impl Nsacr {
     }
 
     /// **CP10** `[10]` (RW)
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub fn cp10(&self) -> bool {
@@ -29764,6 +32629,7 @@ impl Nsacr {
     }
 
     /// **CP7** `[7]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP7
     #[inline(always)]
     pub fn cp7(&self) -> bool {
@@ -29783,6 +32649,7 @@ impl Nsacr {
     }
 
     /// **CP6** `[6]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP6
     #[inline(always)]
     pub fn cp6(&self) -> bool {
@@ -29802,6 +32669,7 @@ impl Nsacr {
     }
 
     /// **CP5** `[5]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP5
     #[inline(always)]
     pub fn cp5(&self) -> bool {
@@ -29821,6 +32689,7 @@ impl Nsacr {
     }
 
     /// **CP4** `[4]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP4
     #[inline(always)]
     pub fn cp4(&self) -> bool {
@@ -29840,6 +32709,7 @@ impl Nsacr {
     }
 
     /// **CP3** `[3]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP3
     #[inline(always)]
     pub fn cp3(&self) -> bool {
@@ -29859,6 +32729,7 @@ impl Nsacr {
     }
 
     /// **CP2** `[2]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP2
     #[inline(always)]
     pub fn cp2(&self) -> bool {
@@ -29878,6 +32749,7 @@ impl Nsacr {
     }
 
     /// **CP1** `[1]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP1
     #[inline(always)]
     pub fn cp1(&self) -> bool {
@@ -29897,6 +32769,7 @@ impl Nsacr {
     }
 
     /// **CP0** `[0]` (RW)
+    ///
     /// Enables Non-secure access to coprocessor CP0
     #[inline(always)]
     pub fn cp0(&self) -> bool {
@@ -29946,6 +32819,7 @@ impl NsacrVal {
     }
 
     /// Read **CP11** `[11:11]`
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub const fn cp11(&self) -> bool {
@@ -29953,6 +32827,7 @@ impl NsacrVal {
     }
 
     /// Read **CP10** `[10:10]`
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub const fn cp10(&self) -> bool {
@@ -29960,6 +32835,7 @@ impl NsacrVal {
     }
 
     /// Read **CP7** `[7:7]`
+    ///
     /// Enables Non-secure access to coprocessor CP7
     #[inline(always)]
     pub const fn cp7(&self) -> bool {
@@ -29967,6 +32843,7 @@ impl NsacrVal {
     }
 
     /// Read **CP6** `[6:6]`
+    ///
     /// Enables Non-secure access to coprocessor CP6
     #[inline(always)]
     pub const fn cp6(&self) -> bool {
@@ -29974,6 +32851,7 @@ impl NsacrVal {
     }
 
     /// Read **CP5** `[5:5]`
+    ///
     /// Enables Non-secure access to coprocessor CP5
     #[inline(always)]
     pub const fn cp5(&self) -> bool {
@@ -29981,6 +32859,7 @@ impl NsacrVal {
     }
 
     /// Read **CP4** `[4:4]`
+    ///
     /// Enables Non-secure access to coprocessor CP4
     #[inline(always)]
     pub const fn cp4(&self) -> bool {
@@ -29988,6 +32867,7 @@ impl NsacrVal {
     }
 
     /// Read **CP3** `[3:3]`
+    ///
     /// Enables Non-secure access to coprocessor CP3
     #[inline(always)]
     pub const fn cp3(&self) -> bool {
@@ -29995,6 +32875,7 @@ impl NsacrVal {
     }
 
     /// Read **CP2** `[2:2]`
+    ///
     /// Enables Non-secure access to coprocessor CP2
     #[inline(always)]
     pub const fn cp2(&self) -> bool {
@@ -30002,6 +32883,7 @@ impl NsacrVal {
     }
 
     /// Read **CP1** `[1:1]`
+    ///
     /// Enables Non-secure access to coprocessor CP1
     #[inline(always)]
     pub const fn cp1(&self) -> bool {
@@ -30009,6 +32891,7 @@ impl NsacrVal {
     }
 
     /// Read **CP0** `[0:0]`
+    ///
     /// Enables Non-secure access to coprocessor CP0
     #[inline(always)]
     pub const fn cp0(&self) -> bool {
@@ -30016,6 +32899,7 @@ impl NsacrVal {
     }
 
     /// Set **CP11** `[11:11]`
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub const fn with_cp11(self, value: bool) -> Self {
@@ -30029,6 +32913,7 @@ impl NsacrVal {
     }
 
     /// Set **CP10** `[10:10]`
+    ///
     /// Enables Non-secure access to the Floating-point Extension
     #[inline(always)]
     pub const fn with_cp10(self, value: bool) -> Self {
@@ -30042,6 +32927,7 @@ impl NsacrVal {
     }
 
     /// Set **CP7** `[7:7]`
+    ///
     /// Enables Non-secure access to coprocessor CP7
     #[inline(always)]
     pub const fn with_cp7(self, value: bool) -> Self {
@@ -30055,6 +32941,7 @@ impl NsacrVal {
     }
 
     /// Set **CP6** `[6:6]`
+    ///
     /// Enables Non-secure access to coprocessor CP6
     #[inline(always)]
     pub const fn with_cp6(self, value: bool) -> Self {
@@ -30068,6 +32955,7 @@ impl NsacrVal {
     }
 
     /// Set **CP5** `[5:5]`
+    ///
     /// Enables Non-secure access to coprocessor CP5
     #[inline(always)]
     pub const fn with_cp5(self, value: bool) -> Self {
@@ -30081,6 +32969,7 @@ impl NsacrVal {
     }
 
     /// Set **CP4** `[4:4]`
+    ///
     /// Enables Non-secure access to coprocessor CP4
     #[inline(always)]
     pub const fn with_cp4(self, value: bool) -> Self {
@@ -30094,6 +32983,7 @@ impl NsacrVal {
     }
 
     /// Set **CP3** `[3:3]`
+    ///
     /// Enables Non-secure access to coprocessor CP3
     #[inline(always)]
     pub const fn with_cp3(self, value: bool) -> Self {
@@ -30107,6 +32997,7 @@ impl NsacrVal {
     }
 
     /// Set **CP2** `[2:2]`
+    ///
     /// Enables Non-secure access to coprocessor CP2
     #[inline(always)]
     pub const fn with_cp2(self, value: bool) -> Self {
@@ -30120,6 +33011,7 @@ impl NsacrVal {
     }
 
     /// Set **CP1** `[1:1]`
+    ///
     /// Enables Non-secure access to coprocessor CP1
     #[inline(always)]
     pub const fn with_cp1(self, value: bool) -> Self {
@@ -30133,6 +33025,7 @@ impl NsacrVal {
     }
 
     /// Set **CP0** `[0:0]`
+    ///
     /// Enables Non-secure access to coprocessor CP0
     #[inline(always)]
     pub const fn with_cp0(self, value: bool) -> Self {
@@ -30184,8 +33077,11 @@ impl Nsacr {
 /// ## Fields
 ///
 /// - **DREGION** `[15:8]` (RO)
+///
 ///   Number of regions supported by the MPU
+///
 /// - **SEPARATE** `[0]` (RO)
+///
 ///   Indicates support for separate instructions and data address regions
 #[repr(transparent)]
 pub struct MpuType {
@@ -30204,13 +33100,17 @@ impl MpuType {
     // ======== Field Constants ========
 
     /// **DREGION**
+    ///
     /// Number of regions supported by the MPU
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const DREGION_OFFSET: u32 = 8;
     pub const DREGION_MASK: u32 = 0x0000ff00;
 
     /// **SEPARATE**
+    ///
     /// Indicates support for separate instructions and data address regions
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SEPARATE_OFFSET: u32 = 0;
     pub const SEPARATE_MASK: u32 = 0x00000001;
@@ -30219,6 +33119,7 @@ impl MpuType {
     // ======== Field Accessors ========
 
     /// **DREGION** `[15:8]` (RO)
+    ///
     /// Number of regions supported by the MPU
     #[inline(always)]
     pub fn dregion(&self) -> u32 {
@@ -30226,6 +33127,7 @@ impl MpuType {
     }
 
     /// **SEPARATE** `[0]` (RO)
+    ///
     /// Indicates support for separate instructions and data address regions
     #[inline(always)]
     pub fn separate(&self) -> bool {
@@ -30263,6 +33165,7 @@ impl MpuTypeVal {
     }
 
     /// Read **DREGION** `[15:8]`
+    ///
     /// Number of regions supported by the MPU
     #[inline(always)]
     pub const fn dregion(&self) -> u32 {
@@ -30270,6 +33173,7 @@ impl MpuTypeVal {
     }
 
     /// Read **SEPARATE** `[0:0]`
+    ///
     /// Indicates support for separate instructions and data address regions
     #[inline(always)]
     pub const fn separate(&self) -> bool {
@@ -30315,10 +33219,15 @@ impl MpuType {
 /// ## Fields
 ///
 /// - **PRIVDEFENA** `[2]` (RW)
+///
 ///   Controls whether the default memory map is enabled for privileged software
+///
 /// - **HFNMIENA** `[1]` (RW)
+///
 ///   Controls whether handlers executing with priority less than 0 access memory with the MPU enabled or disabled. This applies to HardFaults, NMIs, and exception handlers when FAULTMASK is set to 1
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   Enables the MPU
 #[repr(transparent)]
 pub struct MpuCtrl {
@@ -30337,21 +33246,27 @@ impl MpuCtrl {
     // ======== Field Constants ========
 
     /// **PRIVDEFENA**
+    ///
     /// Controls whether the default memory map is enabled for privileged software
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PRIVDEFENA_OFFSET: u32 = 2;
     pub const PRIVDEFENA_MASK: u32 = 0x00000004;
     pub const PRIVDEFENA: u32 = 1 << 2;
 
     /// **HFNMIENA**
+    ///
     /// Controls whether handlers executing with priority less than 0 access memory with the MPU enabled or disabled. This applies to HardFaults, NMIs, and exception handlers when FAULTMASK is set to 1
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HFNMIENA_OFFSET: u32 = 1;
     pub const HFNMIENA_MASK: u32 = 0x00000002;
     pub const HFNMIENA: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// Enables the MPU
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -30360,6 +33275,7 @@ impl MpuCtrl {
     // ======== Field Accessors ========
 
     /// **PRIVDEFENA** `[2]` (RW)
+    ///
     /// Controls whether the default memory map is enabled for privileged software
     #[inline(always)]
     pub fn privdefena(&self) -> bool {
@@ -30379,6 +33295,7 @@ impl MpuCtrl {
     }
 
     /// **HFNMIENA** `[1]` (RW)
+    ///
     /// Controls whether handlers executing with priority less than 0 access memory with the MPU enabled or disabled. This applies to HardFaults, NMIs, and exception handlers when FAULTMASK is set to 1
     #[inline(always)]
     pub fn hfnmiena(&self) -> bool {
@@ -30398,6 +33315,7 @@ impl MpuCtrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// Enables the MPU
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -30447,6 +33365,7 @@ impl MpuCtrlVal {
     }
 
     /// Read **PRIVDEFENA** `[2:2]`
+    ///
     /// Controls whether the default memory map is enabled for privileged software
     #[inline(always)]
     pub const fn privdefena(&self) -> bool {
@@ -30454,6 +33373,7 @@ impl MpuCtrlVal {
     }
 
     /// Read **HFNMIENA** `[1:1]`
+    ///
     /// Controls whether handlers executing with priority less than 0 access memory with the MPU enabled or disabled. This applies to HardFaults, NMIs, and exception handlers when FAULTMASK is set to 1
     #[inline(always)]
     pub const fn hfnmiena(&self) -> bool {
@@ -30461,6 +33381,7 @@ impl MpuCtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// Enables the MPU
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -30468,6 +33389,7 @@ impl MpuCtrlVal {
     }
 
     /// Set **PRIVDEFENA** `[2:2]`
+    ///
     /// Controls whether the default memory map is enabled for privileged software
     #[inline(always)]
     pub const fn with_privdefena(self, value: bool) -> Self {
@@ -30481,6 +33403,7 @@ impl MpuCtrlVal {
     }
 
     /// Set **HFNMIENA** `[1:1]`
+    ///
     /// Controls whether handlers executing with priority less than 0 access memory with the MPU enabled or disabled. This applies to HardFaults, NMIs, and exception handlers when FAULTMASK is set to 1
     #[inline(always)]
     pub const fn with_hfnmiena(self, value: bool) -> Self {
@@ -30494,6 +33417,7 @@ impl MpuCtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// Enables the MPU
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -30545,6 +33469,7 @@ impl MpuCtrl {
 /// ## Fields
 ///
 /// - **REGION** `[2:0]` (RW)
+///
 ///   Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
 #[repr(transparent)]
 pub struct MpuRnr {
@@ -30563,7 +33488,9 @@ impl MpuRnr {
     // ======== Field Constants ========
 
     /// **REGION**
+    ///
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const REGION_OFFSET: u32 = 0;
     pub const REGION_MASK: u32 = 0x00000007;
@@ -30571,6 +33498,7 @@ impl MpuRnr {
     // ======== Field Accessors ========
 
     /// **REGION** `[2:0]` (RW)
+    ///
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
     #[inline(always)]
     pub fn region(&self) -> u32 {
@@ -30578,6 +33506,7 @@ impl MpuRnr {
     }
 
     /// Write **REGION** `[2:0]` (RW)
+    ///
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
     #[inline(always)]
     pub fn write_region(&self, value: u32) {
@@ -30615,6 +33544,7 @@ impl MpuRnrVal {
     }
 
     /// Read **REGION** `[2:0]`
+    ///
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
     #[inline(always)]
     pub const fn region(&self) -> u32 {
@@ -30622,6 +33552,7 @@ impl MpuRnrVal {
     }
 
     /// Set **REGION** `[2:0]`
+    ///
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
     #[inline(always)]
     pub const fn with_region(self, value: u32) -> Self {
@@ -30669,12 +33600,19 @@ impl MpuRnr {
 /// ## Fields
 ///
 /// - **BASE** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+///
 /// - **SH** `[4:3]` (RW)
+///
 ///   Defines the Shareability domain of this region for Normal memory
+///
 /// - **AP** `[2:1]` (RW)
+///
 ///   Defines the access permissions for this region
+///
 /// - **XN** `[0]` (RW)
+///
 ///   Defines whether code can be executed from this region
 #[repr(transparent)]
 pub struct MpuRbar {
@@ -30693,25 +33631,33 @@ impl MpuRbar {
     // ======== Field Constants ========
 
     /// **BASE**
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const BASE_OFFSET: u32 = 5;
     pub const BASE_MASK: u32 = 0xffffffe0;
 
     /// **SH**
+    ///
     /// Defines the Shareability domain of this region for Normal memory
+    ///
     /// Bits `[4:3]`, mask `0x00000018`
     pub const SH_OFFSET: u32 = 3;
     pub const SH_MASK: u32 = 0x00000018;
 
     /// **AP**
+    ///
     /// Defines the access permissions for this region
+    ///
     /// Bits `[2:1]`, mask `0x00000006`
     pub const AP_OFFSET: u32 = 1;
     pub const AP_MASK: u32 = 0x00000006;
 
     /// **XN**
+    ///
     /// Defines whether code can be executed from this region
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const XN_OFFSET: u32 = 0;
     pub const XN_MASK: u32 = 0x00000001;
@@ -30720,6 +33666,7 @@ impl MpuRbar {
     // ======== Field Accessors ========
 
     /// **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn base(&self) -> u32 {
@@ -30727,6 +33674,7 @@ impl MpuRbar {
     }
 
     /// Write **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
@@ -30734,6 +33682,7 @@ impl MpuRbar {
     }
 
     /// **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn sh(&self) -> u32 {
@@ -30741,6 +33690,7 @@ impl MpuRbar {
     }
 
     /// Write **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
@@ -30748,6 +33698,7 @@ impl MpuRbar {
     }
 
     /// **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn ap(&self) -> u32 {
@@ -30755,6 +33706,7 @@ impl MpuRbar {
     }
 
     /// Write **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
@@ -30762,6 +33714,7 @@ impl MpuRbar {
     }
 
     /// **XN** `[0]` (RW)
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub fn xn(&self) -> bool {
@@ -30811,6 +33764,7 @@ impl MpuRbarVal {
     }
 
     /// Read **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn base(&self) -> u32 {
@@ -30818,6 +33772,7 @@ impl MpuRbarVal {
     }
 
     /// Read **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn sh(&self) -> u32 {
@@ -30825,6 +33780,7 @@ impl MpuRbarVal {
     }
 
     /// Read **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn ap(&self) -> u32 {
@@ -30832,6 +33788,7 @@ impl MpuRbarVal {
     }
 
     /// Read **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn xn(&self) -> bool {
@@ -30839,6 +33796,7 @@ impl MpuRbarVal {
     }
 
     /// Set **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
@@ -30848,6 +33806,7 @@ impl MpuRbarVal {
     }
 
     /// Set **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
@@ -30857,6 +33816,7 @@ impl MpuRbarVal {
     }
 
     /// Set **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
@@ -30866,6 +33826,7 @@ impl MpuRbarVal {
     }
 
     /// Set **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn with_xn(self, value: bool) -> Self {
@@ -30917,10 +33878,15 @@ impl MpuRbar {
 /// ## Fields
 ///
 /// - **LIMIT** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+///
 /// - **ATTRINDX** `[3:1]` (RW)
+///
 ///   Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Region enable
 #[repr(transparent)]
 pub struct MpuRlar {
@@ -30939,19 +33905,25 @@ impl MpuRlar {
     // ======== Field Constants ========
 
     /// **LIMIT**
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const LIMIT_OFFSET: u32 = 5;
     pub const LIMIT_MASK: u32 = 0xffffffe0;
 
     /// **ATTRINDX**
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+    ///
     /// Bits `[3:1]`, mask `0x0000000e`
     pub const ATTRINDX_OFFSET: u32 = 1;
     pub const ATTRINDX_MASK: u32 = 0x0000000e;
 
     /// **EN**
+    ///
     /// Region enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -30960,6 +33932,7 @@ impl MpuRlar {
     // ======== Field Accessors ========
 
     /// **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn limit(&self) -> u32 {
@@ -30967,6 +33940,7 @@ impl MpuRlar {
     }
 
     /// Write **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
@@ -30974,6 +33948,7 @@ impl MpuRlar {
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn attrindx(&self) -> u32 {
@@ -30981,6 +33956,7 @@ impl MpuRlar {
     }
 
     /// Write **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
@@ -30988,6 +33964,7 @@ impl MpuRlar {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Region enable
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -31037,6 +34014,7 @@ impl MpuRlarVal {
     }
 
     /// Read **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn limit(&self) -> u32 {
@@ -31044,6 +34022,7 @@ impl MpuRlarVal {
     }
 
     /// Read **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn attrindx(&self) -> u32 {
@@ -31051,6 +34030,7 @@ impl MpuRlarVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -31058,6 +34038,7 @@ impl MpuRlarVal {
     }
 
     /// Set **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
@@ -31067,6 +34048,7 @@ impl MpuRlarVal {
     }
 
     /// Set **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
@@ -31076,6 +34058,7 @@ impl MpuRlarVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -31127,12 +34110,19 @@ impl MpuRlar {
 /// ## Fields
 ///
 /// - **BASE** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+///
 /// - **SH** `[4:3]` (RW)
+///
 ///   Defines the Shareability domain of this region for Normal memory
+///
 /// - **AP** `[2:1]` (RW)
+///
 ///   Defines the access permissions for this region
+///
 /// - **XN** `[0]` (RW)
+///
 ///   Defines whether code can be executed from this region
 #[repr(transparent)]
 pub struct MpuRbarA1 {
@@ -31151,25 +34141,33 @@ impl MpuRbarA1 {
     // ======== Field Constants ========
 
     /// **BASE**
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const BASE_OFFSET: u32 = 5;
     pub const BASE_MASK: u32 = 0xffffffe0;
 
     /// **SH**
+    ///
     /// Defines the Shareability domain of this region for Normal memory
+    ///
     /// Bits `[4:3]`, mask `0x00000018`
     pub const SH_OFFSET: u32 = 3;
     pub const SH_MASK: u32 = 0x00000018;
 
     /// **AP**
+    ///
     /// Defines the access permissions for this region
+    ///
     /// Bits `[2:1]`, mask `0x00000006`
     pub const AP_OFFSET: u32 = 1;
     pub const AP_MASK: u32 = 0x00000006;
 
     /// **XN**
+    ///
     /// Defines whether code can be executed from this region
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const XN_OFFSET: u32 = 0;
     pub const XN_MASK: u32 = 0x00000001;
@@ -31178,6 +34176,7 @@ impl MpuRbarA1 {
     // ======== Field Accessors ========
 
     /// **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn base(&self) -> u32 {
@@ -31185,6 +34184,7 @@ impl MpuRbarA1 {
     }
 
     /// Write **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
@@ -31192,6 +34192,7 @@ impl MpuRbarA1 {
     }
 
     /// **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn sh(&self) -> u32 {
@@ -31199,6 +34200,7 @@ impl MpuRbarA1 {
     }
 
     /// Write **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
@@ -31206,6 +34208,7 @@ impl MpuRbarA1 {
     }
 
     /// **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn ap(&self) -> u32 {
@@ -31213,6 +34216,7 @@ impl MpuRbarA1 {
     }
 
     /// Write **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
@@ -31220,6 +34224,7 @@ impl MpuRbarA1 {
     }
 
     /// **XN** `[0]` (RW)
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub fn xn(&self) -> bool {
@@ -31269,6 +34274,7 @@ impl MpuRbarA1Val {
     }
 
     /// Read **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn base(&self) -> u32 {
@@ -31276,6 +34282,7 @@ impl MpuRbarA1Val {
     }
 
     /// Read **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn sh(&self) -> u32 {
@@ -31283,6 +34290,7 @@ impl MpuRbarA1Val {
     }
 
     /// Read **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn ap(&self) -> u32 {
@@ -31290,6 +34298,7 @@ impl MpuRbarA1Val {
     }
 
     /// Read **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn xn(&self) -> bool {
@@ -31297,6 +34306,7 @@ impl MpuRbarA1Val {
     }
 
     /// Set **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
@@ -31306,6 +34316,7 @@ impl MpuRbarA1Val {
     }
 
     /// Set **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
@@ -31315,6 +34326,7 @@ impl MpuRbarA1Val {
     }
 
     /// Set **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
@@ -31324,6 +34336,7 @@ impl MpuRbarA1Val {
     }
 
     /// Set **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn with_xn(self, value: bool) -> Self {
@@ -31375,10 +34388,15 @@ impl MpuRbarA1 {
 /// ## Fields
 ///
 /// - **LIMIT** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+///
 /// - **ATTRINDX** `[3:1]` (RW)
+///
 ///   Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Region enable
 #[repr(transparent)]
 pub struct MpuRlarA1 {
@@ -31397,19 +34415,25 @@ impl MpuRlarA1 {
     // ======== Field Constants ========
 
     /// **LIMIT**
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const LIMIT_OFFSET: u32 = 5;
     pub const LIMIT_MASK: u32 = 0xffffffe0;
 
     /// **ATTRINDX**
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+    ///
     /// Bits `[3:1]`, mask `0x0000000e`
     pub const ATTRINDX_OFFSET: u32 = 1;
     pub const ATTRINDX_MASK: u32 = 0x0000000e;
 
     /// **EN**
+    ///
     /// Region enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -31418,6 +34442,7 @@ impl MpuRlarA1 {
     // ======== Field Accessors ========
 
     /// **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn limit(&self) -> u32 {
@@ -31425,6 +34450,7 @@ impl MpuRlarA1 {
     }
 
     /// Write **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
@@ -31432,6 +34458,7 @@ impl MpuRlarA1 {
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn attrindx(&self) -> u32 {
@@ -31439,6 +34466,7 @@ impl MpuRlarA1 {
     }
 
     /// Write **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
@@ -31446,6 +34474,7 @@ impl MpuRlarA1 {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Region enable
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -31495,6 +34524,7 @@ impl MpuRlarA1Val {
     }
 
     /// Read **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn limit(&self) -> u32 {
@@ -31502,6 +34532,7 @@ impl MpuRlarA1Val {
     }
 
     /// Read **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn attrindx(&self) -> u32 {
@@ -31509,6 +34540,7 @@ impl MpuRlarA1Val {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -31516,6 +34548,7 @@ impl MpuRlarA1Val {
     }
 
     /// Set **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
@@ -31525,6 +34558,7 @@ impl MpuRlarA1Val {
     }
 
     /// Set **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
@@ -31534,6 +34568,7 @@ impl MpuRlarA1Val {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -31585,12 +34620,19 @@ impl MpuRlarA1 {
 /// ## Fields
 ///
 /// - **BASE** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+///
 /// - **SH** `[4:3]` (RW)
+///
 ///   Defines the Shareability domain of this region for Normal memory
+///
 /// - **AP** `[2:1]` (RW)
+///
 ///   Defines the access permissions for this region
+///
 /// - **XN** `[0]` (RW)
+///
 ///   Defines whether code can be executed from this region
 #[repr(transparent)]
 pub struct MpuRbarA2 {
@@ -31609,25 +34651,33 @@ impl MpuRbarA2 {
     // ======== Field Constants ========
 
     /// **BASE**
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const BASE_OFFSET: u32 = 5;
     pub const BASE_MASK: u32 = 0xffffffe0;
 
     /// **SH**
+    ///
     /// Defines the Shareability domain of this region for Normal memory
+    ///
     /// Bits `[4:3]`, mask `0x00000018`
     pub const SH_OFFSET: u32 = 3;
     pub const SH_MASK: u32 = 0x00000018;
 
     /// **AP**
+    ///
     /// Defines the access permissions for this region
+    ///
     /// Bits `[2:1]`, mask `0x00000006`
     pub const AP_OFFSET: u32 = 1;
     pub const AP_MASK: u32 = 0x00000006;
 
     /// **XN**
+    ///
     /// Defines whether code can be executed from this region
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const XN_OFFSET: u32 = 0;
     pub const XN_MASK: u32 = 0x00000001;
@@ -31636,6 +34686,7 @@ impl MpuRbarA2 {
     // ======== Field Accessors ========
 
     /// **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn base(&self) -> u32 {
@@ -31643,6 +34694,7 @@ impl MpuRbarA2 {
     }
 
     /// Write **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
@@ -31650,6 +34702,7 @@ impl MpuRbarA2 {
     }
 
     /// **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn sh(&self) -> u32 {
@@ -31657,6 +34710,7 @@ impl MpuRbarA2 {
     }
 
     /// Write **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
@@ -31664,6 +34718,7 @@ impl MpuRbarA2 {
     }
 
     /// **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn ap(&self) -> u32 {
@@ -31671,6 +34726,7 @@ impl MpuRbarA2 {
     }
 
     /// Write **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
@@ -31678,6 +34734,7 @@ impl MpuRbarA2 {
     }
 
     /// **XN** `[0]` (RW)
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub fn xn(&self) -> bool {
@@ -31727,6 +34784,7 @@ impl MpuRbarA2Val {
     }
 
     /// Read **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn base(&self) -> u32 {
@@ -31734,6 +34792,7 @@ impl MpuRbarA2Val {
     }
 
     /// Read **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn sh(&self) -> u32 {
@@ -31741,6 +34800,7 @@ impl MpuRbarA2Val {
     }
 
     /// Read **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn ap(&self) -> u32 {
@@ -31748,6 +34808,7 @@ impl MpuRbarA2Val {
     }
 
     /// Read **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn xn(&self) -> bool {
@@ -31755,6 +34816,7 @@ impl MpuRbarA2Val {
     }
 
     /// Set **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
@@ -31764,6 +34826,7 @@ impl MpuRbarA2Val {
     }
 
     /// Set **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
@@ -31773,6 +34836,7 @@ impl MpuRbarA2Val {
     }
 
     /// Set **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
@@ -31782,6 +34846,7 @@ impl MpuRbarA2Val {
     }
 
     /// Set **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn with_xn(self, value: bool) -> Self {
@@ -31833,10 +34898,15 @@ impl MpuRbarA2 {
 /// ## Fields
 ///
 /// - **LIMIT** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+///
 /// - **ATTRINDX** `[3:1]` (RW)
+///
 ///   Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Region enable
 #[repr(transparent)]
 pub struct MpuRlarA2 {
@@ -31855,19 +34925,25 @@ impl MpuRlarA2 {
     // ======== Field Constants ========
 
     /// **LIMIT**
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const LIMIT_OFFSET: u32 = 5;
     pub const LIMIT_MASK: u32 = 0xffffffe0;
 
     /// **ATTRINDX**
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+    ///
     /// Bits `[3:1]`, mask `0x0000000e`
     pub const ATTRINDX_OFFSET: u32 = 1;
     pub const ATTRINDX_MASK: u32 = 0x0000000e;
 
     /// **EN**
+    ///
     /// Region enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -31876,6 +34952,7 @@ impl MpuRlarA2 {
     // ======== Field Accessors ========
 
     /// **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn limit(&self) -> u32 {
@@ -31883,6 +34960,7 @@ impl MpuRlarA2 {
     }
 
     /// Write **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
@@ -31890,6 +34968,7 @@ impl MpuRlarA2 {
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn attrindx(&self) -> u32 {
@@ -31897,6 +34976,7 @@ impl MpuRlarA2 {
     }
 
     /// Write **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
@@ -31904,6 +34984,7 @@ impl MpuRlarA2 {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Region enable
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -31953,6 +35034,7 @@ impl MpuRlarA2Val {
     }
 
     /// Read **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn limit(&self) -> u32 {
@@ -31960,6 +35042,7 @@ impl MpuRlarA2Val {
     }
 
     /// Read **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn attrindx(&self) -> u32 {
@@ -31967,6 +35050,7 @@ impl MpuRlarA2Val {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -31974,6 +35058,7 @@ impl MpuRlarA2Val {
     }
 
     /// Set **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
@@ -31983,6 +35068,7 @@ impl MpuRlarA2Val {
     }
 
     /// Set **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
@@ -31992,6 +35078,7 @@ impl MpuRlarA2Val {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -32043,12 +35130,19 @@ impl MpuRlarA2 {
 /// ## Fields
 ///
 /// - **BASE** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+///
 /// - **SH** `[4:3]` (RW)
+///
 ///   Defines the Shareability domain of this region for Normal memory
+///
 /// - **AP** `[2:1]` (RW)
+///
 ///   Defines the access permissions for this region
+///
 /// - **XN** `[0]` (RW)
+///
 ///   Defines whether code can be executed from this region
 #[repr(transparent)]
 pub struct MpuRbarA3 {
@@ -32067,25 +35161,33 @@ impl MpuRbarA3 {
     // ======== Field Constants ========
 
     /// **BASE**
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const BASE_OFFSET: u32 = 5;
     pub const BASE_MASK: u32 = 0xffffffe0;
 
     /// **SH**
+    ///
     /// Defines the Shareability domain of this region for Normal memory
+    ///
     /// Bits `[4:3]`, mask `0x00000018`
     pub const SH_OFFSET: u32 = 3;
     pub const SH_MASK: u32 = 0x00000018;
 
     /// **AP**
+    ///
     /// Defines the access permissions for this region
+    ///
     /// Bits `[2:1]`, mask `0x00000006`
     pub const AP_OFFSET: u32 = 1;
     pub const AP_MASK: u32 = 0x00000006;
 
     /// **XN**
+    ///
     /// Defines whether code can be executed from this region
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const XN_OFFSET: u32 = 0;
     pub const XN_MASK: u32 = 0x00000001;
@@ -32094,6 +35196,7 @@ impl MpuRbarA3 {
     // ======== Field Accessors ========
 
     /// **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn base(&self) -> u32 {
@@ -32101,6 +35204,7 @@ impl MpuRbarA3 {
     }
 
     /// Write **BASE** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
@@ -32108,6 +35212,7 @@ impl MpuRbarA3 {
     }
 
     /// **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn sh(&self) -> u32 {
@@ -32115,6 +35220,7 @@ impl MpuRbarA3 {
     }
 
     /// Write **SH** `[4:3]` (RW)
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
@@ -32122,6 +35228,7 @@ impl MpuRbarA3 {
     }
 
     /// **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn ap(&self) -> u32 {
@@ -32129,6 +35236,7 @@ impl MpuRbarA3 {
     }
 
     /// Write **AP** `[2:1]` (RW)
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
@@ -32136,6 +35244,7 @@ impl MpuRbarA3 {
     }
 
     /// **XN** `[0]` (RW)
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub fn xn(&self) -> bool {
@@ -32185,6 +35294,7 @@ impl MpuRbarA3Val {
     }
 
     /// Read **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn base(&self) -> u32 {
@@ -32192,6 +35302,7 @@ impl MpuRbarA3Val {
     }
 
     /// Read **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn sh(&self) -> u32 {
@@ -32199,6 +35310,7 @@ impl MpuRbarA3Val {
     }
 
     /// Read **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn ap(&self) -> u32 {
@@ -32206,6 +35318,7 @@ impl MpuRbarA3Val {
     }
 
     /// Read **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn xn(&self) -> bool {
@@ -32213,6 +35326,7 @@ impl MpuRbarA3Val {
     }
 
     /// Set **BASE** `[31:5]`
+    ///
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
@@ -32222,6 +35336,7 @@ impl MpuRbarA3Val {
     }
 
     /// Set **SH** `[4:3]`
+    ///
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
@@ -32231,6 +35346,7 @@ impl MpuRbarA3Val {
     }
 
     /// Set **AP** `[2:1]`
+    ///
     /// Defines the access permissions for this region
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
@@ -32240,6 +35356,7 @@ impl MpuRbarA3Val {
     }
 
     /// Set **XN** `[0:0]`
+    ///
     /// Defines whether code can be executed from this region
     #[inline(always)]
     pub const fn with_xn(self, value: bool) -> Self {
@@ -32291,10 +35408,15 @@ impl MpuRbarA3 {
 /// ## Fields
 ///
 /// - **LIMIT** `[31:5]` (RW)
+///
 ///   Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+///
 /// - **ATTRINDX** `[3:1]` (RW)
+///
 ///   Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Region enable
 #[repr(transparent)]
 pub struct MpuRlarA3 {
@@ -32313,19 +35435,25 @@ impl MpuRlarA3 {
     // ======== Field Constants ========
 
     /// **LIMIT**
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const LIMIT_OFFSET: u32 = 5;
     pub const LIMIT_MASK: u32 = 0xffffffe0;
 
     /// **ATTRINDX**
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
+    ///
     /// Bits `[3:1]`, mask `0x0000000e`
     pub const ATTRINDX_OFFSET: u32 = 1;
     pub const ATTRINDX_MASK: u32 = 0x0000000e;
 
     /// **EN**
+    ///
     /// Region enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -32334,6 +35462,7 @@ impl MpuRlarA3 {
     // ======== Field Accessors ========
 
     /// **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn limit(&self) -> u32 {
@@ -32341,6 +35470,7 @@ impl MpuRlarA3 {
     }
 
     /// Write **LIMIT** `[31:5]` (RW)
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
@@ -32348,6 +35478,7 @@ impl MpuRlarA3 {
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn attrindx(&self) -> u32 {
@@ -32355,6 +35486,7 @@ impl MpuRlarA3 {
     }
 
     /// Write **ATTRINDX** `[3:1]` (RW)
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
@@ -32362,6 +35494,7 @@ impl MpuRlarA3 {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Region enable
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -32411,6 +35544,7 @@ impl MpuRlarA3Val {
     }
 
     /// Read **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn limit(&self) -> u32 {
@@ -32418,6 +35552,7 @@ impl MpuRlarA3Val {
     }
 
     /// Read **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn attrindx(&self) -> u32 {
@@ -32425,6 +35560,7 @@ impl MpuRlarA3Val {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -32432,6 +35568,7 @@ impl MpuRlarA3Val {
     }
 
     /// Set **LIMIT** `[31:5]`
+    ///
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
@@ -32441,6 +35578,7 @@ impl MpuRlarA3Val {
     }
 
     /// Set **ATTRINDX** `[3:1]`
+    ///
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
@@ -32450,6 +35588,7 @@ impl MpuRlarA3Val {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Region enable
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -32501,12 +35640,19 @@ impl MpuRlarA3 {
 /// ## Fields
 ///
 /// - **ATTR3** `[31:24]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 3
+///
 /// - **ATTR2** `[23:16]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 2
+///
 /// - **ATTR1** `[15:8]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 1
+///
 /// - **ATTR0** `[7:0]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 0
 #[repr(transparent)]
 pub struct MpuMair0 {
@@ -32525,25 +35671,33 @@ impl MpuMair0 {
     // ======== Field Constants ========
 
     /// **ATTR3**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
+    ///
     /// Bits `[31:24]`, mask `0xff000000`
     pub const ATTR3_OFFSET: u32 = 24;
     pub const ATTR3_MASK: u32 = 0xff000000;
 
     /// **ATTR2**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const ATTR2_OFFSET: u32 = 16;
     pub const ATTR2_MASK: u32 = 0x00ff0000;
 
     /// **ATTR1**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const ATTR1_OFFSET: u32 = 8;
     pub const ATTR1_MASK: u32 = 0x0000ff00;
 
     /// **ATTR0**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const ATTR0_OFFSET: u32 = 0;
     pub const ATTR0_MASK: u32 = 0x000000ff;
@@ -32551,6 +35705,7 @@ impl MpuMair0 {
     // ======== Field Accessors ========
 
     /// **ATTR3** `[31:24]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
     #[inline(always)]
     pub fn attr3(&self) -> u32 {
@@ -32558,6 +35713,7 @@ impl MpuMair0 {
     }
 
     /// Write **ATTR3** `[31:24]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
     #[inline(always)]
     pub fn write_attr3(&self, value: u32) {
@@ -32565,6 +35721,7 @@ impl MpuMair0 {
     }
 
     /// **ATTR2** `[23:16]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
     #[inline(always)]
     pub fn attr2(&self) -> u32 {
@@ -32572,6 +35729,7 @@ impl MpuMair0 {
     }
 
     /// Write **ATTR2** `[23:16]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
     #[inline(always)]
     pub fn write_attr2(&self, value: u32) {
@@ -32579,6 +35737,7 @@ impl MpuMair0 {
     }
 
     /// **ATTR1** `[15:8]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
     #[inline(always)]
     pub fn attr1(&self) -> u32 {
@@ -32586,6 +35745,7 @@ impl MpuMair0 {
     }
 
     /// Write **ATTR1** `[15:8]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
     #[inline(always)]
     pub fn write_attr1(&self, value: u32) {
@@ -32593,6 +35753,7 @@ impl MpuMair0 {
     }
 
     /// **ATTR0** `[7:0]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
     #[inline(always)]
     pub fn attr0(&self) -> u32 {
@@ -32600,6 +35761,7 @@ impl MpuMair0 {
     }
 
     /// Write **ATTR0** `[7:0]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
     #[inline(always)]
     pub fn write_attr0(&self, value: u32) {
@@ -32637,6 +35799,7 @@ impl MpuMair0Val {
     }
 
     /// Read **ATTR3** `[31:24]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
     #[inline(always)]
     pub const fn attr3(&self) -> u32 {
@@ -32644,6 +35807,7 @@ impl MpuMair0Val {
     }
 
     /// Read **ATTR2** `[23:16]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
     #[inline(always)]
     pub const fn attr2(&self) -> u32 {
@@ -32651,6 +35815,7 @@ impl MpuMair0Val {
     }
 
     /// Read **ATTR1** `[15:8]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
     #[inline(always)]
     pub const fn attr1(&self) -> u32 {
@@ -32658,6 +35823,7 @@ impl MpuMair0Val {
     }
 
     /// Read **ATTR0** `[7:0]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
     #[inline(always)]
     pub const fn attr0(&self) -> u32 {
@@ -32665,6 +35831,7 @@ impl MpuMair0Val {
     }
 
     /// Set **ATTR3** `[31:24]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
     #[inline(always)]
     pub const fn with_attr3(self, value: u32) -> Self {
@@ -32674,6 +35841,7 @@ impl MpuMair0Val {
     }
 
     /// Set **ATTR2** `[23:16]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
     #[inline(always)]
     pub const fn with_attr2(self, value: u32) -> Self {
@@ -32683,6 +35851,7 @@ impl MpuMair0Val {
     }
 
     /// Set **ATTR1** `[15:8]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
     #[inline(always)]
     pub const fn with_attr1(self, value: u32) -> Self {
@@ -32692,6 +35861,7 @@ impl MpuMair0Val {
     }
 
     /// Set **ATTR0** `[7:0]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
     #[inline(always)]
     pub const fn with_attr0(self, value: u32) -> Self {
@@ -32739,12 +35909,19 @@ impl MpuMair0 {
 /// ## Fields
 ///
 /// - **ATTR7** `[31:24]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 7
+///
 /// - **ATTR6** `[23:16]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 6
+///
 /// - **ATTR5** `[15:8]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 5
+///
 /// - **ATTR4** `[7:0]` (RW)
+///
 ///   Memory attribute encoding for MPU regions with an AttrIndex of 4
 #[repr(transparent)]
 pub struct MpuMair1 {
@@ -32763,25 +35940,33 @@ impl MpuMair1 {
     // ======== Field Constants ========
 
     /// **ATTR7**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
+    ///
     /// Bits `[31:24]`, mask `0xff000000`
     pub const ATTR7_OFFSET: u32 = 24;
     pub const ATTR7_MASK: u32 = 0xff000000;
 
     /// **ATTR6**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const ATTR6_OFFSET: u32 = 16;
     pub const ATTR6_MASK: u32 = 0x00ff0000;
 
     /// **ATTR5**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const ATTR5_OFFSET: u32 = 8;
     pub const ATTR5_MASK: u32 = 0x0000ff00;
 
     /// **ATTR4**
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const ATTR4_OFFSET: u32 = 0;
     pub const ATTR4_MASK: u32 = 0x000000ff;
@@ -32789,6 +35974,7 @@ impl MpuMair1 {
     // ======== Field Accessors ========
 
     /// **ATTR7** `[31:24]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
     #[inline(always)]
     pub fn attr7(&self) -> u32 {
@@ -32796,6 +35982,7 @@ impl MpuMair1 {
     }
 
     /// Write **ATTR7** `[31:24]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
     #[inline(always)]
     pub fn write_attr7(&self, value: u32) {
@@ -32803,6 +35990,7 @@ impl MpuMair1 {
     }
 
     /// **ATTR6** `[23:16]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
     #[inline(always)]
     pub fn attr6(&self) -> u32 {
@@ -32810,6 +35998,7 @@ impl MpuMair1 {
     }
 
     /// Write **ATTR6** `[23:16]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
     #[inline(always)]
     pub fn write_attr6(&self, value: u32) {
@@ -32817,6 +36006,7 @@ impl MpuMair1 {
     }
 
     /// **ATTR5** `[15:8]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
     #[inline(always)]
     pub fn attr5(&self) -> u32 {
@@ -32824,6 +36014,7 @@ impl MpuMair1 {
     }
 
     /// Write **ATTR5** `[15:8]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
     #[inline(always)]
     pub fn write_attr5(&self, value: u32) {
@@ -32831,6 +36022,7 @@ impl MpuMair1 {
     }
 
     /// **ATTR4** `[7:0]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
     #[inline(always)]
     pub fn attr4(&self) -> u32 {
@@ -32838,6 +36030,7 @@ impl MpuMair1 {
     }
 
     /// Write **ATTR4** `[7:0]` (RW)
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
     #[inline(always)]
     pub fn write_attr4(&self, value: u32) {
@@ -32875,6 +36068,7 @@ impl MpuMair1Val {
     }
 
     /// Read **ATTR7** `[31:24]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
     #[inline(always)]
     pub const fn attr7(&self) -> u32 {
@@ -32882,6 +36076,7 @@ impl MpuMair1Val {
     }
 
     /// Read **ATTR6** `[23:16]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
     #[inline(always)]
     pub const fn attr6(&self) -> u32 {
@@ -32889,6 +36084,7 @@ impl MpuMair1Val {
     }
 
     /// Read **ATTR5** `[15:8]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
     #[inline(always)]
     pub const fn attr5(&self) -> u32 {
@@ -32896,6 +36092,7 @@ impl MpuMair1Val {
     }
 
     /// Read **ATTR4** `[7:0]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
     #[inline(always)]
     pub const fn attr4(&self) -> u32 {
@@ -32903,6 +36100,7 @@ impl MpuMair1Val {
     }
 
     /// Set **ATTR7** `[31:24]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
     #[inline(always)]
     pub const fn with_attr7(self, value: u32) -> Self {
@@ -32912,6 +36110,7 @@ impl MpuMair1Val {
     }
 
     /// Set **ATTR6** `[23:16]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
     #[inline(always)]
     pub const fn with_attr6(self, value: u32) -> Self {
@@ -32921,6 +36120,7 @@ impl MpuMair1Val {
     }
 
     /// Set **ATTR5** `[15:8]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
     #[inline(always)]
     pub const fn with_attr5(self, value: u32) -> Self {
@@ -32930,6 +36130,7 @@ impl MpuMair1Val {
     }
 
     /// Set **ATTR4** `[7:0]`
+    ///
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
     #[inline(always)]
     pub const fn with_attr4(self, value: u32) -> Self {
@@ -32977,8 +36178,11 @@ impl MpuMair1 {
 /// ## Fields
 ///
 /// - **ALLNS** `[1]` (RW)
+///
 ///   When SAU_CTRL.ENABLE is 0 this bit controls if the memory is marked as Non-secure or Secure
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   Enables the SAU
 #[repr(transparent)]
 pub struct SauCtrl {
@@ -32997,14 +36201,18 @@ impl SauCtrl {
     // ======== Field Constants ========
 
     /// **ALLNS**
+    ///
     /// When SAU_CTRL.ENABLE is 0 this bit controls if the memory is marked as Non-secure or Secure
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const ALLNS_OFFSET: u32 = 1;
     pub const ALLNS_MASK: u32 = 0x00000002;
     pub const ALLNS: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// Enables the SAU
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -33013,6 +36221,7 @@ impl SauCtrl {
     // ======== Field Accessors ========
 
     /// **ALLNS** `[1]` (RW)
+    ///
     /// When SAU_CTRL.ENABLE is 0 this bit controls if the memory is marked as Non-secure or Secure
     #[inline(always)]
     pub fn allns(&self) -> bool {
@@ -33032,6 +36241,7 @@ impl SauCtrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// Enables the SAU
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -33081,6 +36291,7 @@ impl SauCtrlVal {
     }
 
     /// Read **ALLNS** `[1:1]`
+    ///
     /// When SAU_CTRL.ENABLE is 0 this bit controls if the memory is marked as Non-secure or Secure
     #[inline(always)]
     pub const fn allns(&self) -> bool {
@@ -33088,6 +36299,7 @@ impl SauCtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// Enables the SAU
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -33095,6 +36307,7 @@ impl SauCtrlVal {
     }
 
     /// Set **ALLNS** `[1:1]`
+    ///
     /// When SAU_CTRL.ENABLE is 0 this bit controls if the memory is marked as Non-secure or Secure
     #[inline(always)]
     pub const fn with_allns(self, value: bool) -> Self {
@@ -33108,6 +36321,7 @@ impl SauCtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// Enables the SAU
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -33159,6 +36373,7 @@ impl SauCtrl {
 /// ## Fields
 ///
 /// - **SREGION** `[7:0]` (RO)
+///
 ///   The number of implemented SAU regions
 #[repr(transparent)]
 pub struct SauType {
@@ -33177,7 +36392,9 @@ impl SauType {
     // ======== Field Constants ========
 
     /// **SREGION**
+    ///
     /// The number of implemented SAU regions
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SREGION_OFFSET: u32 = 0;
     pub const SREGION_MASK: u32 = 0x000000ff;
@@ -33185,6 +36402,7 @@ impl SauType {
     // ======== Field Accessors ========
 
     /// **SREGION** `[7:0]` (RO)
+    ///
     /// The number of implemented SAU regions
     #[inline(always)]
     pub fn sregion(&self) -> u32 {
@@ -33222,6 +36440,7 @@ impl SauTypeVal {
     }
 
     /// Read **SREGION** `[7:0]`
+    ///
     /// The number of implemented SAU regions
     #[inline(always)]
     pub const fn sregion(&self) -> u32 {
@@ -33267,6 +36486,7 @@ impl SauType {
 /// ## Fields
 ///
 /// - **REGION** `[7:0]` (RW)
+///
 ///   Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
 #[repr(transparent)]
 pub struct SauRnr {
@@ -33285,7 +36505,9 @@ impl SauRnr {
     // ======== Field Constants ========
 
     /// **REGION**
+    ///
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const REGION_OFFSET: u32 = 0;
     pub const REGION_MASK: u32 = 0x000000ff;
@@ -33293,6 +36515,7 @@ impl SauRnr {
     // ======== Field Accessors ========
 
     /// **REGION** `[7:0]` (RW)
+    ///
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
     #[inline(always)]
     pub fn region(&self) -> u32 {
@@ -33300,6 +36523,7 @@ impl SauRnr {
     }
 
     /// Write **REGION** `[7:0]` (RW)
+    ///
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
     #[inline(always)]
     pub fn write_region(&self, value: u32) {
@@ -33337,6 +36561,7 @@ impl SauRnrVal {
     }
 
     /// Read **REGION** `[7:0]`
+    ///
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
     #[inline(always)]
     pub const fn region(&self) -> u32 {
@@ -33344,6 +36569,7 @@ impl SauRnrVal {
     }
 
     /// Set **REGION** `[7:0]`
+    ///
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
     #[inline(always)]
     pub const fn with_region(self, value: u32) -> Self {
@@ -33391,6 +36617,7 @@ impl SauRnr {
 /// ## Fields
 ///
 /// - **BADDR** `[31:5]` (RW)
+///
 ///   Holds bits [31:5] of the base address for the selected SAU region
 #[repr(transparent)]
 pub struct SauRbar {
@@ -33409,7 +36636,9 @@ impl SauRbar {
     // ======== Field Constants ========
 
     /// **BADDR**
+    ///
     /// Holds bits [31:5] of the base address for the selected SAU region
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const BADDR_OFFSET: u32 = 5;
     pub const BADDR_MASK: u32 = 0xffffffe0;
@@ -33417,6 +36646,7 @@ impl SauRbar {
     // ======== Field Accessors ========
 
     /// **BADDR** `[31:5]` (RW)
+    ///
     /// Holds bits [31:5] of the base address for the selected SAU region
     #[inline(always)]
     pub fn baddr(&self) -> u32 {
@@ -33424,6 +36654,7 @@ impl SauRbar {
     }
 
     /// Write **BADDR** `[31:5]` (RW)
+    ///
     /// Holds bits [31:5] of the base address for the selected SAU region
     #[inline(always)]
     pub fn write_baddr(&self, value: u32) {
@@ -33461,6 +36692,7 @@ impl SauRbarVal {
     }
 
     /// Read **BADDR** `[31:5]`
+    ///
     /// Holds bits [31:5] of the base address for the selected SAU region
     #[inline(always)]
     pub const fn baddr(&self) -> u32 {
@@ -33468,6 +36700,7 @@ impl SauRbarVal {
     }
 
     /// Set **BADDR** `[31:5]`
+    ///
     /// Holds bits [31:5] of the base address for the selected SAU region
     #[inline(always)]
     pub const fn with_baddr(self, value: u32) -> Self {
@@ -33515,10 +36748,15 @@ impl SauRbar {
 /// ## Fields
 ///
 /// - **LADDR** `[31:5]` (RW)
+///
 ///   Holds bits [31:5] of the limit address for the selected SAU region
+///
 /// - **NSC** `[1]` (RW)
+///
 ///   Controls whether Non-secure state is permitted to execute an SG instruction from this region
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   SAU region enable
 #[repr(transparent)]
 pub struct SauRlar {
@@ -33537,20 +36775,26 @@ impl SauRlar {
     // ======== Field Constants ========
 
     /// **LADDR**
+    ///
     /// Holds bits [31:5] of the limit address for the selected SAU region
+    ///
     /// Bits `[31:5]`, mask `0xffffffe0`
     pub const LADDR_OFFSET: u32 = 5;
     pub const LADDR_MASK: u32 = 0xffffffe0;
 
     /// **NSC**
+    ///
     /// Controls whether Non-secure state is permitted to execute an SG instruction from this region
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSC_OFFSET: u32 = 1;
     pub const NSC_MASK: u32 = 0x00000002;
     pub const NSC: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// SAU region enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -33559,6 +36803,7 @@ impl SauRlar {
     // ======== Field Accessors ========
 
     /// **LADDR** `[31:5]` (RW)
+    ///
     /// Holds bits [31:5] of the limit address for the selected SAU region
     #[inline(always)]
     pub fn laddr(&self) -> u32 {
@@ -33566,6 +36811,7 @@ impl SauRlar {
     }
 
     /// Write **LADDR** `[31:5]` (RW)
+    ///
     /// Holds bits [31:5] of the limit address for the selected SAU region
     #[inline(always)]
     pub fn write_laddr(&self, value: u32) {
@@ -33573,6 +36819,7 @@ impl SauRlar {
     }
 
     /// **NSC** `[1]` (RW)
+    ///
     /// Controls whether Non-secure state is permitted to execute an SG instruction from this region
     #[inline(always)]
     pub fn nsc(&self) -> bool {
@@ -33592,6 +36839,7 @@ impl SauRlar {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// SAU region enable
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -33641,6 +36889,7 @@ impl SauRlarVal {
     }
 
     /// Read **LADDR** `[31:5]`
+    ///
     /// Holds bits [31:5] of the limit address for the selected SAU region
     #[inline(always)]
     pub const fn laddr(&self) -> u32 {
@@ -33648,6 +36897,7 @@ impl SauRlarVal {
     }
 
     /// Read **NSC** `[1:1]`
+    ///
     /// Controls whether Non-secure state is permitted to execute an SG instruction from this region
     #[inline(always)]
     pub const fn nsc(&self) -> bool {
@@ -33655,6 +36905,7 @@ impl SauRlarVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// SAU region enable
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -33662,6 +36913,7 @@ impl SauRlarVal {
     }
 
     /// Set **LADDR** `[31:5]`
+    ///
     /// Holds bits [31:5] of the limit address for the selected SAU region
     #[inline(always)]
     pub const fn with_laddr(self, value: u32) -> Self {
@@ -33671,6 +36923,7 @@ impl SauRlarVal {
     }
 
     /// Set **NSC** `[1:1]`
+    ///
     /// Controls whether Non-secure state is permitted to execute an SG instruction from this region
     #[inline(always)]
     pub const fn with_nsc(self, value: bool) -> Self {
@@ -33684,6 +36937,7 @@ impl SauRlarVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// SAU region enable
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -33735,20 +36989,35 @@ impl SauRlar {
 /// ## Fields
 ///
 /// - **LSERR** `[7]` (RW)
+///
 ///   Sticky flag indicating that an error occurred during lazy state activation or deactivation
+///
 /// - **SFARVALID** `[6]` (RW)
+///
 ///   This bit is set when the SFAR register contains a valid value. As with similar fields, such as BFSR.BFARVALID and MMFSR.MMARVALID, this bit can be cleared by other exceptions, such as BusFault
+///
 /// - **LSPERR** `[5]` (RW)
+///
 ///   Stick flag indicating that an SAU or IDAU violation occurred during the lazy preservation of floating-point state
+///
 /// - **INVTRAN** `[4]` (RW)
+///
 ///   Sticky flag indicating that an exception was raised due to a branch that was not flagged as being domain crossing causing a transition from Secure to Non-secure memory
+///
 /// - **AUVIOL** `[3]` (RW)
+///
 ///   Sticky flag indicating that an attempt was made to access parts of the address space that are marked as Secure with NS-Req for the transaction set to Non-secure. This bit is not set if the violation occurred during lazy state preservation. See LSPERR
+///
 /// - **INVER** `[2]` (RW)
+///
 ///   This can be caused by EXC_RETURN.DCRS being set to 0 when returning from an exception in the Non-secure state, or by EXC_RETURN.ES being set to 1 when returning from an exception in the Non-secure state
+///
 /// - **INVIS** `[1]` (RW)
+///
 ///   This bit is set if the integrity signature in an exception stack frame is found to be invalid during the unstacking operation
+///
 /// - **INVEP** `[0]` (RW)
+///
 ///   This bit is set if a function call from the Non-secure state or exception targets a non-SG instruction in the Secure state. This bit is also set if the target address is a SG instruction, but there is no matching SAU/IDAU region with the NSC flag set
 #[repr(transparent)]
 pub struct Sfsr {
@@ -33767,56 +37036,72 @@ impl Sfsr {
     // ======== Field Constants ========
 
     /// **LSERR**
+    ///
     /// Sticky flag indicating that an error occurred during lazy state activation or deactivation
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const LSERR_OFFSET: u32 = 7;
     pub const LSERR_MASK: u32 = 0x00000080;
     pub const LSERR: u32 = 1 << 7;
 
     /// **SFARVALID**
+    ///
     /// This bit is set when the SFAR register contains a valid value. As with similar fields, such as BFSR.BFARVALID and MMFSR.MMARVALID, this bit can be cleared by other exceptions, such as BusFault
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const SFARVALID_OFFSET: u32 = 6;
     pub const SFARVALID_MASK: u32 = 0x00000040;
     pub const SFARVALID: u32 = 1 << 6;
 
     /// **LSPERR**
+    ///
     /// Stick flag indicating that an SAU or IDAU violation occurred during the lazy preservation of floating-point state
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const LSPERR_OFFSET: u32 = 5;
     pub const LSPERR_MASK: u32 = 0x00000020;
     pub const LSPERR: u32 = 1 << 5;
 
     /// **INVTRAN**
+    ///
     /// Sticky flag indicating that an exception was raised due to a branch that was not flagged as being domain crossing causing a transition from Secure to Non-secure memory
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const INVTRAN_OFFSET: u32 = 4;
     pub const INVTRAN_MASK: u32 = 0x00000010;
     pub const INVTRAN: u32 = 1 << 4;
 
     /// **AUVIOL**
+    ///
     /// Sticky flag indicating that an attempt was made to access parts of the address space that are marked as Secure with NS-Req for the transaction set to Non-secure. This bit is not set if the violation occurred during lazy state preservation. See LSPERR
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const AUVIOL_OFFSET: u32 = 3;
     pub const AUVIOL_MASK: u32 = 0x00000008;
     pub const AUVIOL: u32 = 1 << 3;
 
     /// **INVER**
+    ///
     /// This can be caused by EXC_RETURN.DCRS being set to 0 when returning from an exception in the Non-secure state, or by EXC_RETURN.ES being set to 1 when returning from an exception in the Non-secure state
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const INVER_OFFSET: u32 = 2;
     pub const INVER_MASK: u32 = 0x00000004;
     pub const INVER: u32 = 1 << 2;
 
     /// **INVIS**
+    ///
     /// This bit is set if the integrity signature in an exception stack frame is found to be invalid during the unstacking operation
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const INVIS_OFFSET: u32 = 1;
     pub const INVIS_MASK: u32 = 0x00000002;
     pub const INVIS: u32 = 1 << 1;
 
     /// **INVEP**
+    ///
     /// This bit is set if a function call from the Non-secure state or exception targets a non-SG instruction in the Secure state. This bit is also set if the target address is a SG instruction, but there is no matching SAU/IDAU region with the NSC flag set
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const INVEP_OFFSET: u32 = 0;
     pub const INVEP_MASK: u32 = 0x00000001;
@@ -33825,6 +37110,7 @@ impl Sfsr {
     // ======== Field Accessors ========
 
     /// **LSERR** `[7]` (RW)
+    ///
     /// Sticky flag indicating that an error occurred during lazy state activation or deactivation
     #[inline(always)]
     pub fn lserr(&self) -> bool {
@@ -33844,6 +37130,7 @@ impl Sfsr {
     }
 
     /// **SFARVALID** `[6]` (RW)
+    ///
     /// This bit is set when the SFAR register contains a valid value. As with similar fields, such as BFSR.BFARVALID and MMFSR.MMARVALID, this bit can be cleared by other exceptions, such as BusFault
     #[inline(always)]
     pub fn sfarvalid(&self) -> bool {
@@ -33863,6 +37150,7 @@ impl Sfsr {
     }
 
     /// **LSPERR** `[5]` (RW)
+    ///
     /// Stick flag indicating that an SAU or IDAU violation occurred during the lazy preservation of floating-point state
     #[inline(always)]
     pub fn lsperr(&self) -> bool {
@@ -33882,6 +37170,7 @@ impl Sfsr {
     }
 
     /// **INVTRAN** `[4]` (RW)
+    ///
     /// Sticky flag indicating that an exception was raised due to a branch that was not flagged as being domain crossing causing a transition from Secure to Non-secure memory
     #[inline(always)]
     pub fn invtran(&self) -> bool {
@@ -33901,6 +37190,7 @@ impl Sfsr {
     }
 
     /// **AUVIOL** `[3]` (RW)
+    ///
     /// Sticky flag indicating that an attempt was made to access parts of the address space that are marked as Secure with NS-Req for the transaction set to Non-secure. This bit is not set if the violation occurred during lazy state preservation. See LSPERR
     #[inline(always)]
     pub fn auviol(&self) -> bool {
@@ -33920,6 +37210,7 @@ impl Sfsr {
     }
 
     /// **INVER** `[2]` (RW)
+    ///
     /// This can be caused by EXC_RETURN.DCRS being set to 0 when returning from an exception in the Non-secure state, or by EXC_RETURN.ES being set to 1 when returning from an exception in the Non-secure state
     #[inline(always)]
     pub fn inver(&self) -> bool {
@@ -33939,6 +37230,7 @@ impl Sfsr {
     }
 
     /// **INVIS** `[1]` (RW)
+    ///
     /// This bit is set if the integrity signature in an exception stack frame is found to be invalid during the unstacking operation
     #[inline(always)]
     pub fn invis(&self) -> bool {
@@ -33958,6 +37250,7 @@ impl Sfsr {
     }
 
     /// **INVEP** `[0]` (RW)
+    ///
     /// This bit is set if a function call from the Non-secure state or exception targets a non-SG instruction in the Secure state. This bit is also set if the target address is a SG instruction, but there is no matching SAU/IDAU region with the NSC flag set
     #[inline(always)]
     pub fn invep(&self) -> bool {
@@ -34007,6 +37300,7 @@ impl SfsrVal {
     }
 
     /// Read **LSERR** `[7:7]`
+    ///
     /// Sticky flag indicating that an error occurred during lazy state activation or deactivation
     #[inline(always)]
     pub const fn lserr(&self) -> bool {
@@ -34014,6 +37308,7 @@ impl SfsrVal {
     }
 
     /// Read **SFARVALID** `[6:6]`
+    ///
     /// This bit is set when the SFAR register contains a valid value. As with similar fields, such as BFSR.BFARVALID and MMFSR.MMARVALID, this bit can be cleared by other exceptions, such as BusFault
     #[inline(always)]
     pub const fn sfarvalid(&self) -> bool {
@@ -34021,6 +37316,7 @@ impl SfsrVal {
     }
 
     /// Read **LSPERR** `[5:5]`
+    ///
     /// Stick flag indicating that an SAU or IDAU violation occurred during the lazy preservation of floating-point state
     #[inline(always)]
     pub const fn lsperr(&self) -> bool {
@@ -34028,6 +37324,7 @@ impl SfsrVal {
     }
 
     /// Read **INVTRAN** `[4:4]`
+    ///
     /// Sticky flag indicating that an exception was raised due to a branch that was not flagged as being domain crossing causing a transition from Secure to Non-secure memory
     #[inline(always)]
     pub const fn invtran(&self) -> bool {
@@ -34035,6 +37332,7 @@ impl SfsrVal {
     }
 
     /// Read **AUVIOL** `[3:3]`
+    ///
     /// Sticky flag indicating that an attempt was made to access parts of the address space that are marked as Secure with NS-Req for the transaction set to Non-secure. This bit is not set if the violation occurred during lazy state preservation. See LSPERR
     #[inline(always)]
     pub const fn auviol(&self) -> bool {
@@ -34042,6 +37340,7 @@ impl SfsrVal {
     }
 
     /// Read **INVER** `[2:2]`
+    ///
     /// This can be caused by EXC_RETURN.DCRS being set to 0 when returning from an exception in the Non-secure state, or by EXC_RETURN.ES being set to 1 when returning from an exception in the Non-secure state
     #[inline(always)]
     pub const fn inver(&self) -> bool {
@@ -34049,6 +37348,7 @@ impl SfsrVal {
     }
 
     /// Read **INVIS** `[1:1]`
+    ///
     /// This bit is set if the integrity signature in an exception stack frame is found to be invalid during the unstacking operation
     #[inline(always)]
     pub const fn invis(&self) -> bool {
@@ -34056,6 +37356,7 @@ impl SfsrVal {
     }
 
     /// Read **INVEP** `[0:0]`
+    ///
     /// This bit is set if a function call from the Non-secure state or exception targets a non-SG instruction in the Secure state. This bit is also set if the target address is a SG instruction, but there is no matching SAU/IDAU region with the NSC flag set
     #[inline(always)]
     pub const fn invep(&self) -> bool {
@@ -34063,6 +37364,7 @@ impl SfsrVal {
     }
 
     /// Set **LSERR** `[7:7]`
+    ///
     /// Sticky flag indicating that an error occurred during lazy state activation or deactivation
     #[inline(always)]
     pub const fn with_lserr(self, value: bool) -> Self {
@@ -34076,6 +37378,7 @@ impl SfsrVal {
     }
 
     /// Set **SFARVALID** `[6:6]`
+    ///
     /// This bit is set when the SFAR register contains a valid value. As with similar fields, such as BFSR.BFARVALID and MMFSR.MMARVALID, this bit can be cleared by other exceptions, such as BusFault
     #[inline(always)]
     pub const fn with_sfarvalid(self, value: bool) -> Self {
@@ -34089,6 +37392,7 @@ impl SfsrVal {
     }
 
     /// Set **LSPERR** `[5:5]`
+    ///
     /// Stick flag indicating that an SAU or IDAU violation occurred during the lazy preservation of floating-point state
     #[inline(always)]
     pub const fn with_lsperr(self, value: bool) -> Self {
@@ -34102,6 +37406,7 @@ impl SfsrVal {
     }
 
     /// Set **INVTRAN** `[4:4]`
+    ///
     /// Sticky flag indicating that an exception was raised due to a branch that was not flagged as being domain crossing causing a transition from Secure to Non-secure memory
     #[inline(always)]
     pub const fn with_invtran(self, value: bool) -> Self {
@@ -34115,6 +37420,7 @@ impl SfsrVal {
     }
 
     /// Set **AUVIOL** `[3:3]`
+    ///
     /// Sticky flag indicating that an attempt was made to access parts of the address space that are marked as Secure with NS-Req for the transaction set to Non-secure. This bit is not set if the violation occurred during lazy state preservation. See LSPERR
     #[inline(always)]
     pub const fn with_auviol(self, value: bool) -> Self {
@@ -34128,6 +37434,7 @@ impl SfsrVal {
     }
 
     /// Set **INVER** `[2:2]`
+    ///
     /// This can be caused by EXC_RETURN.DCRS being set to 0 when returning from an exception in the Non-secure state, or by EXC_RETURN.ES being set to 1 when returning from an exception in the Non-secure state
     #[inline(always)]
     pub const fn with_inver(self, value: bool) -> Self {
@@ -34141,6 +37448,7 @@ impl SfsrVal {
     }
 
     /// Set **INVIS** `[1:1]`
+    ///
     /// This bit is set if the integrity signature in an exception stack frame is found to be invalid during the unstacking operation
     #[inline(always)]
     pub const fn with_invis(self, value: bool) -> Self {
@@ -34154,6 +37462,7 @@ impl SfsrVal {
     }
 
     /// Set **INVEP** `[0:0]`
+    ///
     /// This bit is set if a function call from the Non-secure state or exception targets a non-SG instruction in the Secure state. This bit is also set if the target address is a SG instruction, but there is no matching SAU/IDAU region with the NSC flag set
     #[inline(always)]
     pub const fn with_invep(self, value: bool) -> Self {
@@ -34205,6 +37514,7 @@ impl Sfsr {
 /// ## Fields
 ///
 /// - **ADDRESS** `[31:0]` (RW)
+///
 ///   The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
 #[repr(transparent)]
 pub struct Sfar {
@@ -34223,7 +37533,9 @@ impl Sfar {
     // ======== Field Constants ========
 
     /// **ADDRESS**
+    ///
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0xffffffff;
@@ -34231,6 +37543,7 @@ impl Sfar {
     // ======== Field Accessors ========
 
     /// **ADDRESS** `[31:0]` (RW)
+    ///
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -34238,6 +37551,7 @@ impl Sfar {
     }
 
     /// Write **ADDRESS** `[31:0]` (RW)
+    ///
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -34275,6 +37589,7 @@ impl SfarVal {
     }
 
     /// Read **ADDRESS** `[31:0]`
+    ///
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -34282,6 +37597,7 @@ impl SfarVal {
     }
 
     /// Set **ADDRESS** `[31:0]`
+    ///
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -34329,30 +37645,55 @@ impl Sfar {
 /// ## Fields
 ///
 /// - **S_RESTART_ST** `[26]` (RO)
+///
 ///   Indicates the PE has processed a request to clear DHCSR.C_HALT to 0. That is, either a write to DHCSR that clears DHCSR.C_HALT from 1 to 0, or an External Restart Request
+///
 /// - **S_RESET_ST** `[25]` (RO)
+///
 ///   Indicates whether the PE has been reset since the last read of the DHCSR
+///
 /// - **S_RETIRE_ST** `[24]` (RO)
+///
 ///   Set to 1 every time the PE retires one of more instructions
+///
 /// - **S_SDE** `[20]` (RO)
+///
 ///   Indicates whether Secure invasive debug is allowed
+///
 /// - **S_LOCKUP** `[19]` (RO)
+///
 ///   Indicates whether the PE is in Lockup state
+///
 /// - **S_SLEEP** `[18]` (RO)
+///
 ///   Indicates whether the PE is sleeping
+///
 /// - **S_HALT** `[17]` (RO)
+///
 ///   Indicates whether the PE is in Debug state
+///
 /// - **S_REGRDY** `[16]` (RO)
+///
 ///   Handshake flag to transfers through the DCRDR
+///
 /// - **C_SNAPSTALL** `[5]` (RW)
+///
 ///   Allow imprecise entry to Debug state
+///
 /// - **C_MASKINTS** `[3]` (RW)
+///
 ///   When debug is enabled, the debugger can write to this bit to mask PendSV, SysTick and external configurable interrupts
+///
 /// - **C_STEP** `[2]` (RW)
+///
 ///   Enable single instruction step
+///
 /// - **C_HALT** `[1]` (RW)
+///
 ///   PE enter Debug state halt request
+///
 /// - **C_DEBUGEN** `[0]` (RW)
+///
 ///   Enable Halting debug
 #[repr(transparent)]
 pub struct Dhcsr {
@@ -34371,91 +37712,117 @@ impl Dhcsr {
     // ======== Field Constants ========
 
     /// **S_RESTART_ST**
+    ///
     /// Indicates the PE has processed a request to clear DHCSR.C_HALT to 0. That is, either a write to DHCSR that clears DHCSR.C_HALT from 1 to 0, or an External Restart Request
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const S_RESTART_ST_OFFSET: u32 = 26;
     pub const S_RESTART_ST_MASK: u32 = 0x04000000;
     pub const S_RESTART_ST: u32 = 1 << 26;
 
     /// **S_RESET_ST**
+    ///
     /// Indicates whether the PE has been reset since the last read of the DHCSR
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const S_RESET_ST_OFFSET: u32 = 25;
     pub const S_RESET_ST_MASK: u32 = 0x02000000;
     pub const S_RESET_ST: u32 = 1 << 25;
 
     /// **S_RETIRE_ST**
+    ///
     /// Set to 1 every time the PE retires one of more instructions
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const S_RETIRE_ST_OFFSET: u32 = 24;
     pub const S_RETIRE_ST_MASK: u32 = 0x01000000;
     pub const S_RETIRE_ST: u32 = 1 << 24;
 
     /// **S_SDE**
+    ///
     /// Indicates whether Secure invasive debug is allowed
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const S_SDE_OFFSET: u32 = 20;
     pub const S_SDE_MASK: u32 = 0x00100000;
     pub const S_SDE: u32 = 1 << 20;
 
     /// **S_LOCKUP**
+    ///
     /// Indicates whether the PE is in Lockup state
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const S_LOCKUP_OFFSET: u32 = 19;
     pub const S_LOCKUP_MASK: u32 = 0x00080000;
     pub const S_LOCKUP: u32 = 1 << 19;
 
     /// **S_SLEEP**
+    ///
     /// Indicates whether the PE is sleeping
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const S_SLEEP_OFFSET: u32 = 18;
     pub const S_SLEEP_MASK: u32 = 0x00040000;
     pub const S_SLEEP: u32 = 1 << 18;
 
     /// **S_HALT**
+    ///
     /// Indicates whether the PE is in Debug state
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const S_HALT_OFFSET: u32 = 17;
     pub const S_HALT_MASK: u32 = 0x00020000;
     pub const S_HALT: u32 = 1 << 17;
 
     /// **S_REGRDY**
+    ///
     /// Handshake flag to transfers through the DCRDR
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const S_REGRDY_OFFSET: u32 = 16;
     pub const S_REGRDY_MASK: u32 = 0x00010000;
     pub const S_REGRDY: u32 = 1 << 16;
 
     /// **C_SNAPSTALL**
+    ///
     /// Allow imprecise entry to Debug state
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const C_SNAPSTALL_OFFSET: u32 = 5;
     pub const C_SNAPSTALL_MASK: u32 = 0x00000020;
     pub const C_SNAPSTALL: u32 = 1 << 5;
 
     /// **C_MASKINTS**
+    ///
     /// When debug is enabled, the debugger can write to this bit to mask PendSV, SysTick and external configurable interrupts
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const C_MASKINTS_OFFSET: u32 = 3;
     pub const C_MASKINTS_MASK: u32 = 0x00000008;
     pub const C_MASKINTS: u32 = 1 << 3;
 
     /// **C_STEP**
+    ///
     /// Enable single instruction step
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const C_STEP_OFFSET: u32 = 2;
     pub const C_STEP_MASK: u32 = 0x00000004;
     pub const C_STEP: u32 = 1 << 2;
 
     /// **C_HALT**
+    ///
     /// PE enter Debug state halt request
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const C_HALT_OFFSET: u32 = 1;
     pub const C_HALT_MASK: u32 = 0x00000002;
     pub const C_HALT: u32 = 1 << 1;
 
     /// **C_DEBUGEN**
+    ///
     /// Enable Halting debug
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const C_DEBUGEN_OFFSET: u32 = 0;
     pub const C_DEBUGEN_MASK: u32 = 0x00000001;
@@ -34464,6 +37831,7 @@ impl Dhcsr {
     // ======== Field Accessors ========
 
     /// **S_RESTART_ST** `[26]` (RO)
+    ///
     /// Indicates the PE has processed a request to clear DHCSR.C_HALT to 0. That is, either a write to DHCSR that clears DHCSR.C_HALT from 1 to 0, or an External Restart Request
     #[inline(always)]
     pub fn s_restart_st(&self) -> bool {
@@ -34471,6 +37839,7 @@ impl Dhcsr {
     }
 
     /// **S_RESET_ST** `[25]` (RO)
+    ///
     /// Indicates whether the PE has been reset since the last read of the DHCSR
     #[inline(always)]
     pub fn s_reset_st(&self) -> bool {
@@ -34478,6 +37847,7 @@ impl Dhcsr {
     }
 
     /// **S_RETIRE_ST** `[24]` (RO)
+    ///
     /// Set to 1 every time the PE retires one of more instructions
     #[inline(always)]
     pub fn s_retire_st(&self) -> bool {
@@ -34485,6 +37855,7 @@ impl Dhcsr {
     }
 
     /// **S_SDE** `[20]` (RO)
+    ///
     /// Indicates whether Secure invasive debug is allowed
     #[inline(always)]
     pub fn s_sde(&self) -> bool {
@@ -34492,6 +37863,7 @@ impl Dhcsr {
     }
 
     /// **S_LOCKUP** `[19]` (RO)
+    ///
     /// Indicates whether the PE is in Lockup state
     #[inline(always)]
     pub fn s_lockup(&self) -> bool {
@@ -34499,6 +37871,7 @@ impl Dhcsr {
     }
 
     /// **S_SLEEP** `[18]` (RO)
+    ///
     /// Indicates whether the PE is sleeping
     #[inline(always)]
     pub fn s_sleep(&self) -> bool {
@@ -34506,6 +37879,7 @@ impl Dhcsr {
     }
 
     /// **S_HALT** `[17]` (RO)
+    ///
     /// Indicates whether the PE is in Debug state
     #[inline(always)]
     pub fn s_halt(&self) -> bool {
@@ -34513,6 +37887,7 @@ impl Dhcsr {
     }
 
     /// **S_REGRDY** `[16]` (RO)
+    ///
     /// Handshake flag to transfers through the DCRDR
     #[inline(always)]
     pub fn s_regrdy(&self) -> bool {
@@ -34520,6 +37895,7 @@ impl Dhcsr {
     }
 
     /// **C_SNAPSTALL** `[5]` (RW)
+    ///
     /// Allow imprecise entry to Debug state
     #[inline(always)]
     pub fn c_snapstall(&self) -> bool {
@@ -34539,6 +37915,7 @@ impl Dhcsr {
     }
 
     /// **C_MASKINTS** `[3]` (RW)
+    ///
     /// When debug is enabled, the debugger can write to this bit to mask PendSV, SysTick and external configurable interrupts
     #[inline(always)]
     pub fn c_maskints(&self) -> bool {
@@ -34558,6 +37935,7 @@ impl Dhcsr {
     }
 
     /// **C_STEP** `[2]` (RW)
+    ///
     /// Enable single instruction step
     #[inline(always)]
     pub fn c_step(&self) -> bool {
@@ -34577,6 +37955,7 @@ impl Dhcsr {
     }
 
     /// **C_HALT** `[1]` (RW)
+    ///
     /// PE enter Debug state halt request
     #[inline(always)]
     pub fn c_halt(&self) -> bool {
@@ -34596,6 +37975,7 @@ impl Dhcsr {
     }
 
     /// **C_DEBUGEN** `[0]` (RW)
+    ///
     /// Enable Halting debug
     #[inline(always)]
     pub fn c_debugen(&self) -> bool {
@@ -34645,6 +38025,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_RESTART_ST** `[26:26]`
+    ///
     /// Indicates the PE has processed a request to clear DHCSR.C_HALT to 0. That is, either a write to DHCSR that clears DHCSR.C_HALT from 1 to 0, or an External Restart Request
     #[inline(always)]
     pub const fn s_restart_st(&self) -> bool {
@@ -34652,6 +38033,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_RESET_ST** `[25:25]`
+    ///
     /// Indicates whether the PE has been reset since the last read of the DHCSR
     #[inline(always)]
     pub const fn s_reset_st(&self) -> bool {
@@ -34659,6 +38041,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_RETIRE_ST** `[24:24]`
+    ///
     /// Set to 1 every time the PE retires one of more instructions
     #[inline(always)]
     pub const fn s_retire_st(&self) -> bool {
@@ -34666,6 +38049,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_SDE** `[20:20]`
+    ///
     /// Indicates whether Secure invasive debug is allowed
     #[inline(always)]
     pub const fn s_sde(&self) -> bool {
@@ -34673,6 +38057,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_LOCKUP** `[19:19]`
+    ///
     /// Indicates whether the PE is in Lockup state
     #[inline(always)]
     pub const fn s_lockup(&self) -> bool {
@@ -34680,6 +38065,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_SLEEP** `[18:18]`
+    ///
     /// Indicates whether the PE is sleeping
     #[inline(always)]
     pub const fn s_sleep(&self) -> bool {
@@ -34687,6 +38073,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_HALT** `[17:17]`
+    ///
     /// Indicates whether the PE is in Debug state
     #[inline(always)]
     pub const fn s_halt(&self) -> bool {
@@ -34694,6 +38081,7 @@ impl DhcsrVal {
     }
 
     /// Read **S_REGRDY** `[16:16]`
+    ///
     /// Handshake flag to transfers through the DCRDR
     #[inline(always)]
     pub const fn s_regrdy(&self) -> bool {
@@ -34701,6 +38089,7 @@ impl DhcsrVal {
     }
 
     /// Read **C_SNAPSTALL** `[5:5]`
+    ///
     /// Allow imprecise entry to Debug state
     #[inline(always)]
     pub const fn c_snapstall(&self) -> bool {
@@ -34708,6 +38097,7 @@ impl DhcsrVal {
     }
 
     /// Read **C_MASKINTS** `[3:3]`
+    ///
     /// When debug is enabled, the debugger can write to this bit to mask PendSV, SysTick and external configurable interrupts
     #[inline(always)]
     pub const fn c_maskints(&self) -> bool {
@@ -34715,6 +38105,7 @@ impl DhcsrVal {
     }
 
     /// Read **C_STEP** `[2:2]`
+    ///
     /// Enable single instruction step
     #[inline(always)]
     pub const fn c_step(&self) -> bool {
@@ -34722,6 +38113,7 @@ impl DhcsrVal {
     }
 
     /// Read **C_HALT** `[1:1]`
+    ///
     /// PE enter Debug state halt request
     #[inline(always)]
     pub const fn c_halt(&self) -> bool {
@@ -34729,6 +38121,7 @@ impl DhcsrVal {
     }
 
     /// Read **C_DEBUGEN** `[0:0]`
+    ///
     /// Enable Halting debug
     #[inline(always)]
     pub const fn c_debugen(&self) -> bool {
@@ -34736,6 +38129,7 @@ impl DhcsrVal {
     }
 
     /// Set **C_SNAPSTALL** `[5:5]`
+    ///
     /// Allow imprecise entry to Debug state
     #[inline(always)]
     pub const fn with_c_snapstall(self, value: bool) -> Self {
@@ -34749,6 +38143,7 @@ impl DhcsrVal {
     }
 
     /// Set **C_MASKINTS** `[3:3]`
+    ///
     /// When debug is enabled, the debugger can write to this bit to mask PendSV, SysTick and external configurable interrupts
     #[inline(always)]
     pub const fn with_c_maskints(self, value: bool) -> Self {
@@ -34762,6 +38157,7 @@ impl DhcsrVal {
     }
 
     /// Set **C_STEP** `[2:2]`
+    ///
     /// Enable single instruction step
     #[inline(always)]
     pub const fn with_c_step(self, value: bool) -> Self {
@@ -34775,6 +38171,7 @@ impl DhcsrVal {
     }
 
     /// Set **C_HALT** `[1:1]`
+    ///
     /// PE enter Debug state halt request
     #[inline(always)]
     pub const fn with_c_halt(self, value: bool) -> Self {
@@ -34788,6 +38185,7 @@ impl DhcsrVal {
     }
 
     /// Set **C_DEBUGEN** `[0:0]`
+    ///
     /// Enable Halting debug
     #[inline(always)]
     pub const fn with_c_debugen(self, value: bool) -> Self {
@@ -34839,8 +38237,11 @@ impl Dhcsr {
 /// ## Fields
 ///
 /// - **REGWNR** `[16]` (RW)
+///
 ///   Specifies the access type for the transfer
+///
 /// - **REGSEL** `[6:0]` (RW)
+///
 ///   Specifies the general-purpose register, special-purpose register, or FP register to transfer
 #[repr(transparent)]
 pub struct Dcrsr {
@@ -34859,14 +38260,18 @@ impl Dcrsr {
     // ======== Field Constants ========
 
     /// **REGWNR**
+    ///
     /// Specifies the access type for the transfer
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const REGWNR_OFFSET: u32 = 16;
     pub const REGWNR_MASK: u32 = 0x00010000;
     pub const REGWNR: u32 = 1 << 16;
 
     /// **REGSEL**
+    ///
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const REGSEL_OFFSET: u32 = 0;
     pub const REGSEL_MASK: u32 = 0x0000007f;
@@ -34874,6 +38279,7 @@ impl Dcrsr {
     // ======== Field Accessors ========
 
     /// **REGWNR** `[16]` (RW)
+    ///
     /// Specifies the access type for the transfer
     #[inline(always)]
     pub fn regwnr(&self) -> bool {
@@ -34893,6 +38299,7 @@ impl Dcrsr {
     }
 
     /// **REGSEL** `[6:0]` (RW)
+    ///
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
     #[inline(always)]
     pub fn regsel(&self) -> u32 {
@@ -34900,6 +38307,7 @@ impl Dcrsr {
     }
 
     /// Write **REGSEL** `[6:0]` (RW)
+    ///
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
     #[inline(always)]
     pub fn write_regsel(&self, value: u32) {
@@ -34937,6 +38345,7 @@ impl DcrsrVal {
     }
 
     /// Read **REGWNR** `[16:16]`
+    ///
     /// Specifies the access type for the transfer
     #[inline(always)]
     pub const fn regwnr(&self) -> bool {
@@ -34944,6 +38353,7 @@ impl DcrsrVal {
     }
 
     /// Read **REGSEL** `[6:0]`
+    ///
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
     #[inline(always)]
     pub const fn regsel(&self) -> u32 {
@@ -34951,6 +38361,7 @@ impl DcrsrVal {
     }
 
     /// Set **REGWNR** `[16:16]`
+    ///
     /// Specifies the access type for the transfer
     #[inline(always)]
     pub const fn with_regwnr(self, value: bool) -> Self {
@@ -34964,6 +38375,7 @@ impl DcrsrVal {
     }
 
     /// Set **REGSEL** `[6:0]`
+    ///
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
     #[inline(always)]
     pub const fn with_regsel(self, value: u32) -> Self {
@@ -35011,6 +38423,7 @@ impl Dcrsr {
 /// ## Fields
 ///
 /// - **DBGTMP** `[31:0]` (RW)
+///
 ///   Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
 #[repr(transparent)]
 pub struct Dcrdr {
@@ -35029,7 +38442,9 @@ impl Dcrdr {
     // ======== Field Constants ========
 
     /// **DBGTMP**
+    ///
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const DBGTMP_OFFSET: u32 = 0;
     pub const DBGTMP_MASK: u32 = 0xffffffff;
@@ -35037,6 +38452,7 @@ impl Dcrdr {
     // ======== Field Accessors ========
 
     /// **DBGTMP** `[31:0]` (RW)
+    ///
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
     #[inline(always)]
     pub fn dbgtmp(&self) -> u32 {
@@ -35044,6 +38460,7 @@ impl Dcrdr {
     }
 
     /// Write **DBGTMP** `[31:0]` (RW)
+    ///
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
     #[inline(always)]
     pub fn write_dbgtmp(&self, value: u32) {
@@ -35081,6 +38498,7 @@ impl DcrdrVal {
     }
 
     /// Read **DBGTMP** `[31:0]`
+    ///
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
     #[inline(always)]
     pub const fn dbgtmp(&self) -> u32 {
@@ -35088,6 +38506,7 @@ impl DcrdrVal {
     }
 
     /// Set **DBGTMP** `[31:0]`
+    ///
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
     #[inline(always)]
     pub const fn with_dbgtmp(self, value: u32) -> Self {
@@ -35135,34 +38554,63 @@ impl Dcrdr {
 /// ## Fields
 ///
 /// - **TRCENA** `[24]` (RW)
+///
 ///   Global enable for all DWT and ITM features
+///
 /// - **SDME** `[20]` (RO)
+///
 ///   Indicates whether the DebugMonitor targets the Secure or the Non-secure state and whether debug events are allowed in Secure state
+///
 /// - **MON_REQ** `[19]` (RW)
+///
 ///   DebugMonitor semaphore bit
+///
 /// - **MON_STEP** `[18]` (RW)
+///
 ///   Enable DebugMonitor stepping
+///
 /// - **MON_PEND** `[17]` (RW)
+///
 ///   Sets or clears the pending state of the DebugMonitor exception
+///
 /// - **MON_EN** `[16]` (RW)
+///
 ///   Enable the DebugMonitor exception
+///
 /// - **VC_SFERR** `[11]` (RW)
+///
 ///   SecureFault exception halting debug vector catch enable
+///
 /// - **VC_HARDERR** `[10]` (RW)
+///
 ///   HardFault exception halting debug vector catch enable
+///
 /// - **VC_INTERR** `[9]` (RW)
+///
 ///   Enable halting debug vector catch for faults during exception entry and return
+///
 /// - **VC_BUSERR** `[8]` (RW)
+///
 ///   BusFault exception halting debug vector catch enable
+///
 /// - **VC_STATERR** `[7]` (RW)
+///
 ///   Enable halting debug trap on a UsageFault exception caused by a state information error, for example an Undefined Instruction exception
+///
 /// - **VC_CHKERR** `[6]` (RW)
+///
 ///   Enable halting debug trap on a UsageFault exception caused by a checking error, for example an alignment check error
+///
 /// - **VC_NOCPERR** `[5]` (RW)
+///
 ///   Enable halting debug trap on a UsageFault caused by an access to a coprocessor
+///
 /// - **VC_MMERR** `[4]` (RW)
+///
 ///   Enable halting debug trap on a MemManage exception
+///
 /// - **VC_CORERESET** `[0]` (RW)
+///
 ///   Enable Reset Vector Catch. This causes a warm reset to halt a running system
 #[repr(transparent)]
 pub struct Demcr {
@@ -35181,105 +38629,135 @@ impl Demcr {
     // ======== Field Constants ========
 
     /// **TRCENA**
+    ///
     /// Global enable for all DWT and ITM features
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const TRCENA_OFFSET: u32 = 24;
     pub const TRCENA_MASK: u32 = 0x01000000;
     pub const TRCENA: u32 = 1 << 24;
 
     /// **SDME**
+    ///
     /// Indicates whether the DebugMonitor targets the Secure or the Non-secure state and whether debug events are allowed in Secure state
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const SDME_OFFSET: u32 = 20;
     pub const SDME_MASK: u32 = 0x00100000;
     pub const SDME: u32 = 1 << 20;
 
     /// **MON_REQ**
+    ///
     /// DebugMonitor semaphore bit
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const MON_REQ_OFFSET: u32 = 19;
     pub const MON_REQ_MASK: u32 = 0x00080000;
     pub const MON_REQ: u32 = 1 << 19;
 
     /// **MON_STEP**
+    ///
     /// Enable DebugMonitor stepping
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const MON_STEP_OFFSET: u32 = 18;
     pub const MON_STEP_MASK: u32 = 0x00040000;
     pub const MON_STEP: u32 = 1 << 18;
 
     /// **MON_PEND**
+    ///
     /// Sets or clears the pending state of the DebugMonitor exception
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const MON_PEND_OFFSET: u32 = 17;
     pub const MON_PEND_MASK: u32 = 0x00020000;
     pub const MON_PEND: u32 = 1 << 17;
 
     /// **MON_EN**
+    ///
     /// Enable the DebugMonitor exception
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const MON_EN_OFFSET: u32 = 16;
     pub const MON_EN_MASK: u32 = 0x00010000;
     pub const MON_EN: u32 = 1 << 16;
 
     /// **VC_SFERR**
+    ///
     /// SecureFault exception halting debug vector catch enable
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VC_SFERR_OFFSET: u32 = 11;
     pub const VC_SFERR_MASK: u32 = 0x00000800;
     pub const VC_SFERR: u32 = 1 << 11;
 
     /// **VC_HARDERR**
+    ///
     /// HardFault exception halting debug vector catch enable
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const VC_HARDERR_OFFSET: u32 = 10;
     pub const VC_HARDERR_MASK: u32 = 0x00000400;
     pub const VC_HARDERR: u32 = 1 << 10;
 
     /// **VC_INTERR**
+    ///
     /// Enable halting debug vector catch for faults during exception entry and return
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const VC_INTERR_OFFSET: u32 = 9;
     pub const VC_INTERR_MASK: u32 = 0x00000200;
     pub const VC_INTERR: u32 = 1 << 9;
 
     /// **VC_BUSERR**
+    ///
     /// BusFault exception halting debug vector catch enable
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VC_BUSERR_OFFSET: u32 = 8;
     pub const VC_BUSERR_MASK: u32 = 0x00000100;
     pub const VC_BUSERR: u32 = 1 << 8;
 
     /// **VC_STATERR**
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a state information error, for example an Undefined Instruction exception
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const VC_STATERR_OFFSET: u32 = 7;
     pub const VC_STATERR_MASK: u32 = 0x00000080;
     pub const VC_STATERR: u32 = 1 << 7;
 
     /// **VC_CHKERR**
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a checking error, for example an alignment check error
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const VC_CHKERR_OFFSET: u32 = 6;
     pub const VC_CHKERR_MASK: u32 = 0x00000040;
     pub const VC_CHKERR: u32 = 1 << 6;
 
     /// **VC_NOCPERR**
+    ///
     /// Enable halting debug trap on a UsageFault caused by an access to a coprocessor
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const VC_NOCPERR_OFFSET: u32 = 5;
     pub const VC_NOCPERR_MASK: u32 = 0x00000020;
     pub const VC_NOCPERR: u32 = 1 << 5;
 
     /// **VC_MMERR**
+    ///
     /// Enable halting debug trap on a MemManage exception
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const VC_MMERR_OFFSET: u32 = 4;
     pub const VC_MMERR_MASK: u32 = 0x00000010;
     pub const VC_MMERR: u32 = 1 << 4;
 
     /// **VC_CORERESET**
+    ///
     /// Enable Reset Vector Catch. This causes a warm reset to halt a running system
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const VC_CORERESET_OFFSET: u32 = 0;
     pub const VC_CORERESET_MASK: u32 = 0x00000001;
@@ -35288,6 +38766,7 @@ impl Demcr {
     // ======== Field Accessors ========
 
     /// **TRCENA** `[24]` (RW)
+    ///
     /// Global enable for all DWT and ITM features
     #[inline(always)]
     pub fn trcena(&self) -> bool {
@@ -35307,6 +38786,7 @@ impl Demcr {
     }
 
     /// **SDME** `[20]` (RO)
+    ///
     /// Indicates whether the DebugMonitor targets the Secure or the Non-secure state and whether debug events are allowed in Secure state
     #[inline(always)]
     pub fn sdme(&self) -> bool {
@@ -35314,6 +38794,7 @@ impl Demcr {
     }
 
     /// **MON_REQ** `[19]` (RW)
+    ///
     /// DebugMonitor semaphore bit
     #[inline(always)]
     pub fn mon_req(&self) -> bool {
@@ -35333,6 +38814,7 @@ impl Demcr {
     }
 
     /// **MON_STEP** `[18]` (RW)
+    ///
     /// Enable DebugMonitor stepping
     #[inline(always)]
     pub fn mon_step(&self) -> bool {
@@ -35352,6 +38834,7 @@ impl Demcr {
     }
 
     /// **MON_PEND** `[17]` (RW)
+    ///
     /// Sets or clears the pending state of the DebugMonitor exception
     #[inline(always)]
     pub fn mon_pend(&self) -> bool {
@@ -35371,6 +38854,7 @@ impl Demcr {
     }
 
     /// **MON_EN** `[16]` (RW)
+    ///
     /// Enable the DebugMonitor exception
     #[inline(always)]
     pub fn mon_en(&self) -> bool {
@@ -35390,6 +38874,7 @@ impl Demcr {
     }
 
     /// **VC_SFERR** `[11]` (RW)
+    ///
     /// SecureFault exception halting debug vector catch enable
     #[inline(always)]
     pub fn vc_sferr(&self) -> bool {
@@ -35409,6 +38894,7 @@ impl Demcr {
     }
 
     /// **VC_HARDERR** `[10]` (RW)
+    ///
     /// HardFault exception halting debug vector catch enable
     #[inline(always)]
     pub fn vc_harderr(&self) -> bool {
@@ -35428,6 +38914,7 @@ impl Demcr {
     }
 
     /// **VC_INTERR** `[9]` (RW)
+    ///
     /// Enable halting debug vector catch for faults during exception entry and return
     #[inline(always)]
     pub fn vc_interr(&self) -> bool {
@@ -35447,6 +38934,7 @@ impl Demcr {
     }
 
     /// **VC_BUSERR** `[8]` (RW)
+    ///
     /// BusFault exception halting debug vector catch enable
     #[inline(always)]
     pub fn vc_buserr(&self) -> bool {
@@ -35466,6 +38954,7 @@ impl Demcr {
     }
 
     /// **VC_STATERR** `[7]` (RW)
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a state information error, for example an Undefined Instruction exception
     #[inline(always)]
     pub fn vc_staterr(&self) -> bool {
@@ -35485,6 +38974,7 @@ impl Demcr {
     }
 
     /// **VC_CHKERR** `[6]` (RW)
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a checking error, for example an alignment check error
     #[inline(always)]
     pub fn vc_chkerr(&self) -> bool {
@@ -35504,6 +38994,7 @@ impl Demcr {
     }
 
     /// **VC_NOCPERR** `[5]` (RW)
+    ///
     /// Enable halting debug trap on a UsageFault caused by an access to a coprocessor
     #[inline(always)]
     pub fn vc_nocperr(&self) -> bool {
@@ -35523,6 +39014,7 @@ impl Demcr {
     }
 
     /// **VC_MMERR** `[4]` (RW)
+    ///
     /// Enable halting debug trap on a MemManage exception
     #[inline(always)]
     pub fn vc_mmerr(&self) -> bool {
@@ -35542,6 +39034,7 @@ impl Demcr {
     }
 
     /// **VC_CORERESET** `[0]` (RW)
+    ///
     /// Enable Reset Vector Catch. This causes a warm reset to halt a running system
     #[inline(always)]
     pub fn vc_corereset(&self) -> bool {
@@ -35591,6 +39084,7 @@ impl DemcrVal {
     }
 
     /// Read **TRCENA** `[24:24]`
+    ///
     /// Global enable for all DWT and ITM features
     #[inline(always)]
     pub const fn trcena(&self) -> bool {
@@ -35598,6 +39092,7 @@ impl DemcrVal {
     }
 
     /// Read **SDME** `[20:20]`
+    ///
     /// Indicates whether the DebugMonitor targets the Secure or the Non-secure state and whether debug events are allowed in Secure state
     #[inline(always)]
     pub const fn sdme(&self) -> bool {
@@ -35605,6 +39100,7 @@ impl DemcrVal {
     }
 
     /// Read **MON_REQ** `[19:19]`
+    ///
     /// DebugMonitor semaphore bit
     #[inline(always)]
     pub const fn mon_req(&self) -> bool {
@@ -35612,6 +39108,7 @@ impl DemcrVal {
     }
 
     /// Read **MON_STEP** `[18:18]`
+    ///
     /// Enable DebugMonitor stepping
     #[inline(always)]
     pub const fn mon_step(&self) -> bool {
@@ -35619,6 +39116,7 @@ impl DemcrVal {
     }
 
     /// Read **MON_PEND** `[17:17]`
+    ///
     /// Sets or clears the pending state of the DebugMonitor exception
     #[inline(always)]
     pub const fn mon_pend(&self) -> bool {
@@ -35626,6 +39124,7 @@ impl DemcrVal {
     }
 
     /// Read **MON_EN** `[16:16]`
+    ///
     /// Enable the DebugMonitor exception
     #[inline(always)]
     pub const fn mon_en(&self) -> bool {
@@ -35633,6 +39132,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_SFERR** `[11:11]`
+    ///
     /// SecureFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn vc_sferr(&self) -> bool {
@@ -35640,6 +39140,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_HARDERR** `[10:10]`
+    ///
     /// HardFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn vc_harderr(&self) -> bool {
@@ -35647,6 +39148,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_INTERR** `[9:9]`
+    ///
     /// Enable halting debug vector catch for faults during exception entry and return
     #[inline(always)]
     pub const fn vc_interr(&self) -> bool {
@@ -35654,6 +39156,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_BUSERR** `[8:8]`
+    ///
     /// BusFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn vc_buserr(&self) -> bool {
@@ -35661,6 +39164,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_STATERR** `[7:7]`
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a state information error, for example an Undefined Instruction exception
     #[inline(always)]
     pub const fn vc_staterr(&self) -> bool {
@@ -35668,6 +39172,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_CHKERR** `[6:6]`
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a checking error, for example an alignment check error
     #[inline(always)]
     pub const fn vc_chkerr(&self) -> bool {
@@ -35675,6 +39180,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_NOCPERR** `[5:5]`
+    ///
     /// Enable halting debug trap on a UsageFault caused by an access to a coprocessor
     #[inline(always)]
     pub const fn vc_nocperr(&self) -> bool {
@@ -35682,6 +39188,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_MMERR** `[4:4]`
+    ///
     /// Enable halting debug trap on a MemManage exception
     #[inline(always)]
     pub const fn vc_mmerr(&self) -> bool {
@@ -35689,6 +39196,7 @@ impl DemcrVal {
     }
 
     /// Read **VC_CORERESET** `[0:0]`
+    ///
     /// Enable Reset Vector Catch. This causes a warm reset to halt a running system
     #[inline(always)]
     pub const fn vc_corereset(&self) -> bool {
@@ -35696,6 +39204,7 @@ impl DemcrVal {
     }
 
     /// Set **TRCENA** `[24:24]`
+    ///
     /// Global enable for all DWT and ITM features
     #[inline(always)]
     pub const fn with_trcena(self, value: bool) -> Self {
@@ -35709,6 +39218,7 @@ impl DemcrVal {
     }
 
     /// Set **MON_REQ** `[19:19]`
+    ///
     /// DebugMonitor semaphore bit
     #[inline(always)]
     pub const fn with_mon_req(self, value: bool) -> Self {
@@ -35722,6 +39232,7 @@ impl DemcrVal {
     }
 
     /// Set **MON_STEP** `[18:18]`
+    ///
     /// Enable DebugMonitor stepping
     #[inline(always)]
     pub const fn with_mon_step(self, value: bool) -> Self {
@@ -35735,6 +39246,7 @@ impl DemcrVal {
     }
 
     /// Set **MON_PEND** `[17:17]`
+    ///
     /// Sets or clears the pending state of the DebugMonitor exception
     #[inline(always)]
     pub const fn with_mon_pend(self, value: bool) -> Self {
@@ -35748,6 +39260,7 @@ impl DemcrVal {
     }
 
     /// Set **MON_EN** `[16:16]`
+    ///
     /// Enable the DebugMonitor exception
     #[inline(always)]
     pub const fn with_mon_en(self, value: bool) -> Self {
@@ -35761,6 +39274,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_SFERR** `[11:11]`
+    ///
     /// SecureFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn with_vc_sferr(self, value: bool) -> Self {
@@ -35774,6 +39288,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_HARDERR** `[10:10]`
+    ///
     /// HardFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn with_vc_harderr(self, value: bool) -> Self {
@@ -35787,6 +39302,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_INTERR** `[9:9]`
+    ///
     /// Enable halting debug vector catch for faults during exception entry and return
     #[inline(always)]
     pub const fn with_vc_interr(self, value: bool) -> Self {
@@ -35800,6 +39316,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_BUSERR** `[8:8]`
+    ///
     /// BusFault exception halting debug vector catch enable
     #[inline(always)]
     pub const fn with_vc_buserr(self, value: bool) -> Self {
@@ -35813,6 +39330,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_STATERR** `[7:7]`
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a state information error, for example an Undefined Instruction exception
     #[inline(always)]
     pub const fn with_vc_staterr(self, value: bool) -> Self {
@@ -35826,6 +39344,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_CHKERR** `[6:6]`
+    ///
     /// Enable halting debug trap on a UsageFault exception caused by a checking error, for example an alignment check error
     #[inline(always)]
     pub const fn with_vc_chkerr(self, value: bool) -> Self {
@@ -35839,6 +39358,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_NOCPERR** `[5:5]`
+    ///
     /// Enable halting debug trap on a UsageFault caused by an access to a coprocessor
     #[inline(always)]
     pub const fn with_vc_nocperr(self, value: bool) -> Self {
@@ -35852,6 +39372,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_MMERR** `[4:4]`
+    ///
     /// Enable halting debug trap on a MemManage exception
     #[inline(always)]
     pub const fn with_vc_mmerr(self, value: bool) -> Self {
@@ -35865,6 +39386,7 @@ impl DemcrVal {
     }
 
     /// Set **VC_CORERESET** `[0:0]`
+    ///
     /// Enable Reset Vector Catch. This causes a warm reset to halt a running system
     #[inline(always)]
     pub const fn with_vc_corereset(self, value: bool) -> Self {
@@ -35916,12 +39438,19 @@ impl Demcr {
 /// ## Fields
 ///
 /// - **CDSKEY** `[17]` (RW)
+///
 ///   Writes to the CDS bit are ignored unless CDSKEY is concurrently written to zero
+///
 /// - **CDS** `[16]` (RW)
+///
 ///   This field indicates the current Security state of the processor
+///
 /// - **SBRSEL** `[1]` (RW)
+///
 ///   If SBRSELEN is 1 this bit selects whether the Non-secure or the Secure version of the memory-mapped Banked registers are accessible to the debugger
+///
 /// - **SBRSELEN** `[0]` (RW)
+///
 ///   Controls whether the SBRSEL field or the current Security state of the processor selects which version of the memory-mapped Banked registers are accessed to the debugger
 #[repr(transparent)]
 pub struct Dscsr {
@@ -35940,28 +39469,36 @@ impl Dscsr {
     // ======== Field Constants ========
 
     /// **CDSKEY**
+    ///
     /// Writes to the CDS bit are ignored unless CDSKEY is concurrently written to zero
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CDSKEY_OFFSET: u32 = 17;
     pub const CDSKEY_MASK: u32 = 0x00020000;
     pub const CDSKEY: u32 = 1 << 17;
 
     /// **CDS**
+    ///
     /// This field indicates the current Security state of the processor
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CDS_OFFSET: u32 = 16;
     pub const CDS_MASK: u32 = 0x00010000;
     pub const CDS: u32 = 1 << 16;
 
     /// **SBRSEL**
+    ///
     /// If SBRSELEN is 1 this bit selects whether the Non-secure or the Secure version of the memory-mapped Banked registers are accessible to the debugger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SBRSEL_OFFSET: u32 = 1;
     pub const SBRSEL_MASK: u32 = 0x00000002;
     pub const SBRSEL: u32 = 1 << 1;
 
     /// **SBRSELEN**
+    ///
     /// Controls whether the SBRSEL field or the current Security state of the processor selects which version of the memory-mapped Banked registers are accessed to the debugger
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SBRSELEN_OFFSET: u32 = 0;
     pub const SBRSELEN_MASK: u32 = 0x00000001;
@@ -35970,6 +39507,7 @@ impl Dscsr {
     // ======== Field Accessors ========
 
     /// **CDSKEY** `[17]` (RW)
+    ///
     /// Writes to the CDS bit are ignored unless CDSKEY is concurrently written to zero
     #[inline(always)]
     pub fn cdskey(&self) -> bool {
@@ -35989,6 +39527,7 @@ impl Dscsr {
     }
 
     /// **CDS** `[16]` (RW)
+    ///
     /// This field indicates the current Security state of the processor
     #[inline(always)]
     pub fn cds(&self) -> bool {
@@ -36008,6 +39547,7 @@ impl Dscsr {
     }
 
     /// **SBRSEL** `[1]` (RW)
+    ///
     /// If SBRSELEN is 1 this bit selects whether the Non-secure or the Secure version of the memory-mapped Banked registers are accessible to the debugger
     #[inline(always)]
     pub fn sbrsel(&self) -> bool {
@@ -36027,6 +39567,7 @@ impl Dscsr {
     }
 
     /// **SBRSELEN** `[0]` (RW)
+    ///
     /// Controls whether the SBRSEL field or the current Security state of the processor selects which version of the memory-mapped Banked registers are accessed to the debugger
     #[inline(always)]
     pub fn sbrselen(&self) -> bool {
@@ -36076,6 +39617,7 @@ impl DscsrVal {
     }
 
     /// Read **CDSKEY** `[17:17]`
+    ///
     /// Writes to the CDS bit are ignored unless CDSKEY is concurrently written to zero
     #[inline(always)]
     pub const fn cdskey(&self) -> bool {
@@ -36083,6 +39625,7 @@ impl DscsrVal {
     }
 
     /// Read **CDS** `[16:16]`
+    ///
     /// This field indicates the current Security state of the processor
     #[inline(always)]
     pub const fn cds(&self) -> bool {
@@ -36090,6 +39633,7 @@ impl DscsrVal {
     }
 
     /// Read **SBRSEL** `[1:1]`
+    ///
     /// If SBRSELEN is 1 this bit selects whether the Non-secure or the Secure version of the memory-mapped Banked registers are accessible to the debugger
     #[inline(always)]
     pub const fn sbrsel(&self) -> bool {
@@ -36097,6 +39641,7 @@ impl DscsrVal {
     }
 
     /// Read **SBRSELEN** `[0:0]`
+    ///
     /// Controls whether the SBRSEL field or the current Security state of the processor selects which version of the memory-mapped Banked registers are accessed to the debugger
     #[inline(always)]
     pub const fn sbrselen(&self) -> bool {
@@ -36104,6 +39649,7 @@ impl DscsrVal {
     }
 
     /// Set **CDSKEY** `[17:17]`
+    ///
     /// Writes to the CDS bit are ignored unless CDSKEY is concurrently written to zero
     #[inline(always)]
     pub const fn with_cdskey(self, value: bool) -> Self {
@@ -36117,6 +39663,7 @@ impl DscsrVal {
     }
 
     /// Set **CDS** `[16:16]`
+    ///
     /// This field indicates the current Security state of the processor
     #[inline(always)]
     pub const fn with_cds(self, value: bool) -> Self {
@@ -36130,6 +39677,7 @@ impl DscsrVal {
     }
 
     /// Set **SBRSEL** `[1:1]`
+    ///
     /// If SBRSELEN is 1 this bit selects whether the Non-secure or the Secure version of the memory-mapped Banked registers are accessible to the debugger
     #[inline(always)]
     pub const fn with_sbrsel(self, value: bool) -> Self {
@@ -36143,6 +39691,7 @@ impl DscsrVal {
     }
 
     /// Set **SBRSELEN** `[0:0]`
+    ///
     /// Controls whether the SBRSEL field or the current Security state of the processor selects which version of the memory-mapped Banked registers are accessed to the debugger
     #[inline(always)]
     pub const fn with_sbrselen(self, value: bool) -> Self {
@@ -36194,6 +39743,7 @@ impl Dscsr {
 /// ## Fields
 ///
 /// - **INTID** `[8:0]` (RW)
+///
 ///   Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
 #[repr(transparent)]
 pub struct Stir {
@@ -36212,7 +39762,9 @@ impl Stir {
     // ======== Field Constants ========
 
     /// **INTID**
+    ///
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const INTID_OFFSET: u32 = 0;
     pub const INTID_MASK: u32 = 0x000001ff;
@@ -36220,6 +39772,7 @@ impl Stir {
     // ======== Field Accessors ========
 
     /// **INTID** `[8:0]` (RW)
+    ///
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
     #[inline(always)]
     pub fn intid(&self) -> u32 {
@@ -36227,6 +39780,7 @@ impl Stir {
     }
 
     /// Write **INTID** `[8:0]` (RW)
+    ///
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
     #[inline(always)]
     pub fn write_intid(&self, value: u32) {
@@ -36264,6 +39818,7 @@ impl StirVal {
     }
 
     /// Read **INTID** `[8:0]`
+    ///
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
     #[inline(always)]
     pub const fn intid(&self) -> u32 {
@@ -36271,6 +39826,7 @@ impl StirVal {
     }
 
     /// Set **INTID** `[8:0]`
+    ///
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
     #[inline(always)]
     pub const fn with_intid(self, value: u32) -> Self {
@@ -36318,38 +39874,71 @@ impl Stir {
 /// ## Fields
 ///
 /// - **ASPEN** `[31]` (RW)
+///
 ///   When this bit is set to 1, execution of a floating-point instruction sets the CONTROL.FPCA bit to 1
+///
 /// - **LSPEN** `[30]` (RW)
+///
 ///   Enables lazy context save of floating-point state
+///
 /// - **LSPENS** `[29]` (RW)
+///
 ///   This bit controls whether the LSPEN bit is writeable from the Non-secure state
+///
 /// - **CLRONRET** `[28]` (RW)
+///
 ///   Clear floating-point caller saved registers on exception return
+///
 /// - **CLRONRETS** `[27]` (RW)
+///
 ///   This bit controls whether the CLRONRET bit is writeable from the Non-secure state
+///
 /// - **TS** `[26]` (RW)
+///
 ///   Treat floating-point registers as Secure enable
+///
 /// - **UFRDY** `[10]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the UsageFault exception to pending
+///
 /// - **SPLIMVIOL** `[9]` (RW)
+///
 ///   This bit is banked between the Security states and indicates whether the floating-point context violates the stack pointer limit that was active when lazy state preservation was activated. SPLIMVIOL modifies the lazy floating-point state preservation behavior
+///
 /// - **MONRDY** `[8]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the DebugMonitor exception to pending
+///
 /// - **SFRDY** `[7]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the SecureFault exception to pending. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state
+///
 /// - **BFRDY** `[6]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the BusFault exception to pending
+///
 /// - **MMRDY** `[5]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the MemManage exception to pending
+///
 /// - **HFRDY** `[4]` (RW)
+///
 ///   Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the HardFault exception to pending
+///
 /// - **THREAD** `[3]` (RW)
+///
 ///   Indicates the PE mode when it allocated the floating-point stack frame
+///
 /// - **S** `[2]` (RW)
+///
 ///   Security status of the floating-point context. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state. This bit is updated whenever lazy state preservation is activated, or when a floating-point instruction is executed
+///
 /// - **USER** `[1]` (RW)
+///
 ///   Indicates the privilege level of the software executing when the PE allocated the floating-point stack frame
+///
 /// - **LSPACT** `[0]` (RW)
+///
 ///   Indicates whether lazy preservation of the floating-point state is active
 #[repr(transparent)]
 pub struct Fpccr {
@@ -36368,119 +39957,153 @@ impl Fpccr {
     // ======== Field Constants ========
 
     /// **ASPEN**
+    ///
     /// When this bit is set to 1, execution of a floating-point instruction sets the CONTROL.FPCA bit to 1
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ASPEN_OFFSET: u32 = 31;
     pub const ASPEN_MASK: u32 = 0x80000000;
     pub const ASPEN: u32 = 1 << 31;
 
     /// **LSPEN**
+    ///
     /// Enables lazy context save of floating-point state
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LSPEN_OFFSET: u32 = 30;
     pub const LSPEN_MASK: u32 = 0x40000000;
     pub const LSPEN: u32 = 1 << 30;
 
     /// **LSPENS**
+    ///
     /// This bit controls whether the LSPEN bit is writeable from the Non-secure state
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const LSPENS_OFFSET: u32 = 29;
     pub const LSPENS_MASK: u32 = 0x20000000;
     pub const LSPENS: u32 = 1 << 29;
 
     /// **CLRONRET**
+    ///
     /// Clear floating-point caller saved registers on exception return
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const CLRONRET_OFFSET: u32 = 28;
     pub const CLRONRET_MASK: u32 = 0x10000000;
     pub const CLRONRET: u32 = 1 << 28;
 
     /// **CLRONRETS**
+    ///
     /// This bit controls whether the CLRONRET bit is writeable from the Non-secure state
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const CLRONRETS_OFFSET: u32 = 27;
     pub const CLRONRETS_MASK: u32 = 0x08000000;
     pub const CLRONRETS: u32 = 1 << 27;
 
     /// **TS**
+    ///
     /// Treat floating-point registers as Secure enable
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const TS_OFFSET: u32 = 26;
     pub const TS_MASK: u32 = 0x04000000;
     pub const TS: u32 = 1 << 26;
 
     /// **UFRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the UsageFault exception to pending
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const UFRDY_OFFSET: u32 = 10;
     pub const UFRDY_MASK: u32 = 0x00000400;
     pub const UFRDY: u32 = 1 << 10;
 
     /// **SPLIMVIOL**
+    ///
     /// This bit is banked between the Security states and indicates whether the floating-point context violates the stack pointer limit that was active when lazy state preservation was activated. SPLIMVIOL modifies the lazy floating-point state preservation behavior
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const SPLIMVIOL_OFFSET: u32 = 9;
     pub const SPLIMVIOL_MASK: u32 = 0x00000200;
     pub const SPLIMVIOL: u32 = 1 << 9;
 
     /// **MONRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the DebugMonitor exception to pending
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MONRDY_OFFSET: u32 = 8;
     pub const MONRDY_MASK: u32 = 0x00000100;
     pub const MONRDY: u32 = 1 << 8;
 
     /// **SFRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the SecureFault exception to pending. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const SFRDY_OFFSET: u32 = 7;
     pub const SFRDY_MASK: u32 = 0x00000080;
     pub const SFRDY: u32 = 1 << 7;
 
     /// **BFRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the BusFault exception to pending
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const BFRDY_OFFSET: u32 = 6;
     pub const BFRDY_MASK: u32 = 0x00000040;
     pub const BFRDY: u32 = 1 << 6;
 
     /// **MMRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the MemManage exception to pending
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const MMRDY_OFFSET: u32 = 5;
     pub const MMRDY_MASK: u32 = 0x00000020;
     pub const MMRDY: u32 = 1 << 5;
 
     /// **HFRDY**
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the HardFault exception to pending
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const HFRDY_OFFSET: u32 = 4;
     pub const HFRDY_MASK: u32 = 0x00000010;
     pub const HFRDY: u32 = 1 << 4;
 
     /// **THREAD**
+    ///
     /// Indicates the PE mode when it allocated the floating-point stack frame
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const THREAD_OFFSET: u32 = 3;
     pub const THREAD_MASK: u32 = 0x00000008;
     pub const THREAD: u32 = 1 << 3;
 
     /// **S**
+    ///
     /// Security status of the floating-point context. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state. This bit is updated whenever lazy state preservation is activated, or when a floating-point instruction is executed
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const S_OFFSET: u32 = 2;
     pub const S_MASK: u32 = 0x00000004;
     pub const S: u32 = 1 << 2;
 
     /// **USER**
+    ///
     /// Indicates the privilege level of the software executing when the PE allocated the floating-point stack frame
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const USER_OFFSET: u32 = 1;
     pub const USER_MASK: u32 = 0x00000002;
     pub const USER: u32 = 1 << 1;
 
     /// **LSPACT**
+    ///
     /// Indicates whether lazy preservation of the floating-point state is active
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const LSPACT_OFFSET: u32 = 0;
     pub const LSPACT_MASK: u32 = 0x00000001;
@@ -36489,6 +40112,7 @@ impl Fpccr {
     // ======== Field Accessors ========
 
     /// **ASPEN** `[31]` (RW)
+    ///
     /// When this bit is set to 1, execution of a floating-point instruction sets the CONTROL.FPCA bit to 1
     #[inline(always)]
     pub fn aspen(&self) -> bool {
@@ -36508,6 +40132,7 @@ impl Fpccr {
     }
 
     /// **LSPEN** `[30]` (RW)
+    ///
     /// Enables lazy context save of floating-point state
     #[inline(always)]
     pub fn lspen(&self) -> bool {
@@ -36527,6 +40152,7 @@ impl Fpccr {
     }
 
     /// **LSPENS** `[29]` (RW)
+    ///
     /// This bit controls whether the LSPEN bit is writeable from the Non-secure state
     #[inline(always)]
     pub fn lspens(&self) -> bool {
@@ -36546,6 +40172,7 @@ impl Fpccr {
     }
 
     /// **CLRONRET** `[28]` (RW)
+    ///
     /// Clear floating-point caller saved registers on exception return
     #[inline(always)]
     pub fn clronret(&self) -> bool {
@@ -36565,6 +40192,7 @@ impl Fpccr {
     }
 
     /// **CLRONRETS** `[27]` (RW)
+    ///
     /// This bit controls whether the CLRONRET bit is writeable from the Non-secure state
     #[inline(always)]
     pub fn clronrets(&self) -> bool {
@@ -36584,6 +40212,7 @@ impl Fpccr {
     }
 
     /// **TS** `[26]` (RW)
+    ///
     /// Treat floating-point registers as Secure enable
     #[inline(always)]
     pub fn ts(&self) -> bool {
@@ -36603,6 +40232,7 @@ impl Fpccr {
     }
 
     /// **UFRDY** `[10]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the UsageFault exception to pending
     #[inline(always)]
     pub fn ufrdy(&self) -> bool {
@@ -36622,6 +40252,7 @@ impl Fpccr {
     }
 
     /// **SPLIMVIOL** `[9]` (RW)
+    ///
     /// This bit is banked between the Security states and indicates whether the floating-point context violates the stack pointer limit that was active when lazy state preservation was activated. SPLIMVIOL modifies the lazy floating-point state preservation behavior
     #[inline(always)]
     pub fn splimviol(&self) -> bool {
@@ -36641,6 +40272,7 @@ impl Fpccr {
     }
 
     /// **MONRDY** `[8]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the DebugMonitor exception to pending
     #[inline(always)]
     pub fn monrdy(&self) -> bool {
@@ -36660,6 +40292,7 @@ impl Fpccr {
     }
 
     /// **SFRDY** `[7]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the SecureFault exception to pending. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state
     #[inline(always)]
     pub fn sfrdy(&self) -> bool {
@@ -36679,6 +40312,7 @@ impl Fpccr {
     }
 
     /// **BFRDY** `[6]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the BusFault exception to pending
     #[inline(always)]
     pub fn bfrdy(&self) -> bool {
@@ -36698,6 +40332,7 @@ impl Fpccr {
     }
 
     /// **MMRDY** `[5]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the MemManage exception to pending
     #[inline(always)]
     pub fn mmrdy(&self) -> bool {
@@ -36717,6 +40352,7 @@ impl Fpccr {
     }
 
     /// **HFRDY** `[4]` (RW)
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the HardFault exception to pending
     #[inline(always)]
     pub fn hfrdy(&self) -> bool {
@@ -36736,6 +40372,7 @@ impl Fpccr {
     }
 
     /// **THREAD** `[3]` (RW)
+    ///
     /// Indicates the PE mode when it allocated the floating-point stack frame
     #[inline(always)]
     pub fn thread(&self) -> bool {
@@ -36755,6 +40392,7 @@ impl Fpccr {
     }
 
     /// **S** `[2]` (RW)
+    ///
     /// Security status of the floating-point context. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state. This bit is updated whenever lazy state preservation is activated, or when a floating-point instruction is executed
     #[inline(always)]
     pub fn s(&self) -> bool {
@@ -36774,6 +40412,7 @@ impl Fpccr {
     }
 
     /// **USER** `[1]` (RW)
+    ///
     /// Indicates the privilege level of the software executing when the PE allocated the floating-point stack frame
     #[inline(always)]
     pub fn user(&self) -> bool {
@@ -36793,6 +40432,7 @@ impl Fpccr {
     }
 
     /// **LSPACT** `[0]` (RW)
+    ///
     /// Indicates whether lazy preservation of the floating-point state is active
     #[inline(always)]
     pub fn lspact(&self) -> bool {
@@ -36842,6 +40482,7 @@ impl FpccrVal {
     }
 
     /// Read **ASPEN** `[31:31]`
+    ///
     /// When this bit is set to 1, execution of a floating-point instruction sets the CONTROL.FPCA bit to 1
     #[inline(always)]
     pub const fn aspen(&self) -> bool {
@@ -36849,6 +40490,7 @@ impl FpccrVal {
     }
 
     /// Read **LSPEN** `[30:30]`
+    ///
     /// Enables lazy context save of floating-point state
     #[inline(always)]
     pub const fn lspen(&self) -> bool {
@@ -36856,6 +40498,7 @@ impl FpccrVal {
     }
 
     /// Read **LSPENS** `[29:29]`
+    ///
     /// This bit controls whether the LSPEN bit is writeable from the Non-secure state
     #[inline(always)]
     pub const fn lspens(&self) -> bool {
@@ -36863,6 +40506,7 @@ impl FpccrVal {
     }
 
     /// Read **CLRONRET** `[28:28]`
+    ///
     /// Clear floating-point caller saved registers on exception return
     #[inline(always)]
     pub const fn clronret(&self) -> bool {
@@ -36870,6 +40514,7 @@ impl FpccrVal {
     }
 
     /// Read **CLRONRETS** `[27:27]`
+    ///
     /// This bit controls whether the CLRONRET bit is writeable from the Non-secure state
     #[inline(always)]
     pub const fn clronrets(&self) -> bool {
@@ -36877,6 +40522,7 @@ impl FpccrVal {
     }
 
     /// Read **TS** `[26:26]`
+    ///
     /// Treat floating-point registers as Secure enable
     #[inline(always)]
     pub const fn ts(&self) -> bool {
@@ -36884,6 +40530,7 @@ impl FpccrVal {
     }
 
     /// Read **UFRDY** `[10:10]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the UsageFault exception to pending
     #[inline(always)]
     pub const fn ufrdy(&self) -> bool {
@@ -36891,6 +40538,7 @@ impl FpccrVal {
     }
 
     /// Read **SPLIMVIOL** `[9:9]`
+    ///
     /// This bit is banked between the Security states and indicates whether the floating-point context violates the stack pointer limit that was active when lazy state preservation was activated. SPLIMVIOL modifies the lazy floating-point state preservation behavior
     #[inline(always)]
     pub const fn splimviol(&self) -> bool {
@@ -36898,6 +40546,7 @@ impl FpccrVal {
     }
 
     /// Read **MONRDY** `[8:8]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the DebugMonitor exception to pending
     #[inline(always)]
     pub const fn monrdy(&self) -> bool {
@@ -36905,6 +40554,7 @@ impl FpccrVal {
     }
 
     /// Read **SFRDY** `[7:7]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the SecureFault exception to pending. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state
     #[inline(always)]
     pub const fn sfrdy(&self) -> bool {
@@ -36912,6 +40562,7 @@ impl FpccrVal {
     }
 
     /// Read **BFRDY** `[6:6]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the BusFault exception to pending
     #[inline(always)]
     pub const fn bfrdy(&self) -> bool {
@@ -36919,6 +40570,7 @@ impl FpccrVal {
     }
 
     /// Read **MMRDY** `[5:5]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the MemManage exception to pending
     #[inline(always)]
     pub const fn mmrdy(&self) -> bool {
@@ -36926,6 +40578,7 @@ impl FpccrVal {
     }
 
     /// Read **HFRDY** `[4:4]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the HardFault exception to pending
     #[inline(always)]
     pub const fn hfrdy(&self) -> bool {
@@ -36933,6 +40586,7 @@ impl FpccrVal {
     }
 
     /// Read **THREAD** `[3:3]`
+    ///
     /// Indicates the PE mode when it allocated the floating-point stack frame
     #[inline(always)]
     pub const fn thread(&self) -> bool {
@@ -36940,6 +40594,7 @@ impl FpccrVal {
     }
 
     /// Read **S** `[2:2]`
+    ///
     /// Security status of the floating-point context. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state. This bit is updated whenever lazy state preservation is activated, or when a floating-point instruction is executed
     #[inline(always)]
     pub const fn s(&self) -> bool {
@@ -36947,6 +40602,7 @@ impl FpccrVal {
     }
 
     /// Read **USER** `[1:1]`
+    ///
     /// Indicates the privilege level of the software executing when the PE allocated the floating-point stack frame
     #[inline(always)]
     pub const fn user(&self) -> bool {
@@ -36954,6 +40610,7 @@ impl FpccrVal {
     }
 
     /// Read **LSPACT** `[0:0]`
+    ///
     /// Indicates whether lazy preservation of the floating-point state is active
     #[inline(always)]
     pub const fn lspact(&self) -> bool {
@@ -36961,6 +40618,7 @@ impl FpccrVal {
     }
 
     /// Set **ASPEN** `[31:31]`
+    ///
     /// When this bit is set to 1, execution of a floating-point instruction sets the CONTROL.FPCA bit to 1
     #[inline(always)]
     pub const fn with_aspen(self, value: bool) -> Self {
@@ -36974,6 +40632,7 @@ impl FpccrVal {
     }
 
     /// Set **LSPEN** `[30:30]`
+    ///
     /// Enables lazy context save of floating-point state
     #[inline(always)]
     pub const fn with_lspen(self, value: bool) -> Self {
@@ -36987,6 +40646,7 @@ impl FpccrVal {
     }
 
     /// Set **LSPENS** `[29:29]`
+    ///
     /// This bit controls whether the LSPEN bit is writeable from the Non-secure state
     #[inline(always)]
     pub const fn with_lspens(self, value: bool) -> Self {
@@ -37000,6 +40660,7 @@ impl FpccrVal {
     }
 
     /// Set **CLRONRET** `[28:28]`
+    ///
     /// Clear floating-point caller saved registers on exception return
     #[inline(always)]
     pub const fn with_clronret(self, value: bool) -> Self {
@@ -37013,6 +40674,7 @@ impl FpccrVal {
     }
 
     /// Set **CLRONRETS** `[27:27]`
+    ///
     /// This bit controls whether the CLRONRET bit is writeable from the Non-secure state
     #[inline(always)]
     pub const fn with_clronrets(self, value: bool) -> Self {
@@ -37026,6 +40688,7 @@ impl FpccrVal {
     }
 
     /// Set **TS** `[26:26]`
+    ///
     /// Treat floating-point registers as Secure enable
     #[inline(always)]
     pub const fn with_ts(self, value: bool) -> Self {
@@ -37039,6 +40702,7 @@ impl FpccrVal {
     }
 
     /// Set **UFRDY** `[10:10]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the UsageFault exception to pending
     #[inline(always)]
     pub const fn with_ufrdy(self, value: bool) -> Self {
@@ -37052,6 +40716,7 @@ impl FpccrVal {
     }
 
     /// Set **SPLIMVIOL** `[9:9]`
+    ///
     /// This bit is banked between the Security states and indicates whether the floating-point context violates the stack pointer limit that was active when lazy state preservation was activated. SPLIMVIOL modifies the lazy floating-point state preservation behavior
     #[inline(always)]
     pub const fn with_splimviol(self, value: bool) -> Self {
@@ -37065,6 +40730,7 @@ impl FpccrVal {
     }
 
     /// Set **MONRDY** `[8:8]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the DebugMonitor exception to pending
     #[inline(always)]
     pub const fn with_monrdy(self, value: bool) -> Self {
@@ -37078,6 +40744,7 @@ impl FpccrVal {
     }
 
     /// Set **SFRDY** `[7:7]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the SecureFault exception to pending. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state
     #[inline(always)]
     pub const fn with_sfrdy(self, value: bool) -> Self {
@@ -37091,6 +40758,7 @@ impl FpccrVal {
     }
 
     /// Set **BFRDY** `[6:6]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the BusFault exception to pending
     #[inline(always)]
     pub const fn with_bfrdy(self, value: bool) -> Self {
@@ -37104,6 +40772,7 @@ impl FpccrVal {
     }
 
     /// Set **MMRDY** `[5:5]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the MemManage exception to pending
     #[inline(always)]
     pub const fn with_mmrdy(self, value: bool) -> Self {
@@ -37117,6 +40786,7 @@ impl FpccrVal {
     }
 
     /// Set **HFRDY** `[4:4]`
+    ///
     /// Indicates whether the software executing when the PE allocated the floating-point stack frame was able to set the HardFault exception to pending
     #[inline(always)]
     pub const fn with_hfrdy(self, value: bool) -> Self {
@@ -37130,6 +40800,7 @@ impl FpccrVal {
     }
 
     /// Set **THREAD** `[3:3]`
+    ///
     /// Indicates the PE mode when it allocated the floating-point stack frame
     #[inline(always)]
     pub const fn with_thread(self, value: bool) -> Self {
@@ -37143,6 +40814,7 @@ impl FpccrVal {
     }
 
     /// Set **S** `[2:2]`
+    ///
     /// Security status of the floating-point context. This bit is only present in the Secure version of the register, and behaves as RAZ/WI when accessed from the Non-secure state. This bit is updated whenever lazy state preservation is activated, or when a floating-point instruction is executed
     #[inline(always)]
     pub const fn with_s(self, value: bool) -> Self {
@@ -37156,6 +40828,7 @@ impl FpccrVal {
     }
 
     /// Set **USER** `[1:1]`
+    ///
     /// Indicates the privilege level of the software executing when the PE allocated the floating-point stack frame
     #[inline(always)]
     pub const fn with_user(self, value: bool) -> Self {
@@ -37169,6 +40842,7 @@ impl FpccrVal {
     }
 
     /// Set **LSPACT** `[0:0]`
+    ///
     /// Indicates whether lazy preservation of the floating-point state is active
     #[inline(always)]
     pub const fn with_lspact(self, value: bool) -> Self {
@@ -37220,6 +40894,7 @@ impl Fpccr {
 /// ## Fields
 ///
 /// - **ADDRESS** `[31:3]` (RW)
+///
 ///   The location of the unpopulated floating-point register space allocated on an exception stack frame
 #[repr(transparent)]
 pub struct Fpcar {
@@ -37238,7 +40913,9 @@ impl Fpcar {
     // ======== Field Constants ========
 
     /// **ADDRESS**
+    ///
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
+    ///
     /// Bits `[31:3]`, mask `0xfffffff8`
     pub const ADDRESS_OFFSET: u32 = 3;
     pub const ADDRESS_MASK: u32 = 0xfffffff8;
@@ -37246,6 +40923,7 @@ impl Fpcar {
     // ======== Field Accessors ========
 
     /// **ADDRESS** `[31:3]` (RW)
+    ///
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -37253,6 +40931,7 @@ impl Fpcar {
     }
 
     /// Write **ADDRESS** `[31:3]` (RW)
+    ///
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -37290,6 +40969,7 @@ impl FpcarVal {
     }
 
     /// Read **ADDRESS** `[31:3]`
+    ///
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -37297,6 +40977,7 @@ impl FpcarVal {
     }
 
     /// Set **ADDRESS** `[31:3]`
+    ///
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -37344,12 +41025,19 @@ impl Fpcar {
 /// ## Fields
 ///
 /// - **AHP** `[26]` (RW)
+///
 ///   Default value for FPSCR.AHP
+///
 /// - **DN** `[25]` (RW)
+///
 ///   Default value for FPSCR.DN
+///
 /// - **FZ** `[24]` (RW)
+///
 ///   Default value for FPSCR.FZ
+///
 /// - **RMODE** `[23:22]` (RW)
+///
 ///   Default value for FPSCR.RMode
 #[repr(transparent)]
 pub struct Fpdscr {
@@ -37368,28 +41056,36 @@ impl Fpdscr {
     // ======== Field Constants ========
 
     /// **AHP**
+    ///
     /// Default value for FPSCR.AHP
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AHP_OFFSET: u32 = 26;
     pub const AHP_MASK: u32 = 0x04000000;
     pub const AHP: u32 = 1 << 26;
 
     /// **DN**
+    ///
     /// Default value for FPSCR.DN
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const DN_OFFSET: u32 = 25;
     pub const DN_MASK: u32 = 0x02000000;
     pub const DN: u32 = 1 << 25;
 
     /// **FZ**
+    ///
     /// Default value for FPSCR.FZ
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const FZ_OFFSET: u32 = 24;
     pub const FZ_MASK: u32 = 0x01000000;
     pub const FZ: u32 = 1 << 24;
 
     /// **RMODE**
+    ///
     /// Default value for FPSCR.RMode
+    ///
     /// Bits `[23:22]`, mask `0x00c00000`
     pub const RMODE_OFFSET: u32 = 22;
     pub const RMODE_MASK: u32 = 0x00c00000;
@@ -37397,6 +41093,7 @@ impl Fpdscr {
     // ======== Field Accessors ========
 
     /// **AHP** `[26]` (RW)
+    ///
     /// Default value for FPSCR.AHP
     #[inline(always)]
     pub fn ahp(&self) -> bool {
@@ -37416,6 +41113,7 @@ impl Fpdscr {
     }
 
     /// **DN** `[25]` (RW)
+    ///
     /// Default value for FPSCR.DN
     #[inline(always)]
     pub fn dn(&self) -> bool {
@@ -37435,6 +41133,7 @@ impl Fpdscr {
     }
 
     /// **FZ** `[24]` (RW)
+    ///
     /// Default value for FPSCR.FZ
     #[inline(always)]
     pub fn fz(&self) -> bool {
@@ -37454,6 +41153,7 @@ impl Fpdscr {
     }
 
     /// **RMODE** `[23:22]` (RW)
+    ///
     /// Default value for FPSCR.RMode
     #[inline(always)]
     pub fn rmode(&self) -> u32 {
@@ -37461,6 +41161,7 @@ impl Fpdscr {
     }
 
     /// Write **RMODE** `[23:22]` (RW)
+    ///
     /// Default value for FPSCR.RMode
     #[inline(always)]
     pub fn write_rmode(&self, value: u32) {
@@ -37498,6 +41199,7 @@ impl FpdscrVal {
     }
 
     /// Read **AHP** `[26:26]`
+    ///
     /// Default value for FPSCR.AHP
     #[inline(always)]
     pub const fn ahp(&self) -> bool {
@@ -37505,6 +41207,7 @@ impl FpdscrVal {
     }
 
     /// Read **DN** `[25:25]`
+    ///
     /// Default value for FPSCR.DN
     #[inline(always)]
     pub const fn dn(&self) -> bool {
@@ -37512,6 +41215,7 @@ impl FpdscrVal {
     }
 
     /// Read **FZ** `[24:24]`
+    ///
     /// Default value for FPSCR.FZ
     #[inline(always)]
     pub const fn fz(&self) -> bool {
@@ -37519,6 +41223,7 @@ impl FpdscrVal {
     }
 
     /// Read **RMODE** `[23:22]`
+    ///
     /// Default value for FPSCR.RMode
     #[inline(always)]
     pub const fn rmode(&self) -> u32 {
@@ -37526,6 +41231,7 @@ impl FpdscrVal {
     }
 
     /// Set **AHP** `[26:26]`
+    ///
     /// Default value for FPSCR.AHP
     #[inline(always)]
     pub const fn with_ahp(self, value: bool) -> Self {
@@ -37539,6 +41245,7 @@ impl FpdscrVal {
     }
 
     /// Set **DN** `[25:25]`
+    ///
     /// Default value for FPSCR.DN
     #[inline(always)]
     pub const fn with_dn(self, value: bool) -> Self {
@@ -37552,6 +41259,7 @@ impl FpdscrVal {
     }
 
     /// Set **FZ** `[24:24]`
+    ///
     /// Default value for FPSCR.FZ
     #[inline(always)]
     pub const fn with_fz(self, value: bool) -> Self {
@@ -37565,6 +41273,7 @@ impl FpdscrVal {
     }
 
     /// Set **RMODE** `[23:22]`
+    ///
     /// Default value for FPSCR.RMode
     #[inline(always)]
     pub const fn with_rmode(self, value: u32) -> Self {
@@ -37612,16 +41321,27 @@ impl Fpdscr {
 /// ## Fields
 ///
 /// - **FPROUND** `[31:28]` (RO)
+///
 ///   Indicates the rounding modes supported by the FP Extension
+///
 /// - **FPSQRT** `[23:20]` (RO)
+///
 ///   Indicates the support for FP square root operations
+///
 /// - **FPDIVIDE** `[19:16]` (RO)
+///
 ///   Indicates the support for FP divide operations
+///
 /// - **FPDP** `[11:8]` (RO)
+///
 ///   Indicates support for FP double-precision operations
+///
 /// - **FPSP** `[7:4]` (RO)
+///
 ///   Indicates support for FP single-precision operations
+///
 /// - **SIMDREG** `[3:0]` (RO)
+///
 ///   Indicates size of FP register file
 #[repr(transparent)]
 pub struct Mvfr0 {
@@ -37640,37 +41360,49 @@ impl Mvfr0 {
     // ======== Field Constants ========
 
     /// **FPROUND**
+    ///
     /// Indicates the rounding modes supported by the FP Extension
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const FPROUND_OFFSET: u32 = 28;
     pub const FPROUND_MASK: u32 = 0xf0000000;
 
     /// **FPSQRT**
+    ///
     /// Indicates the support for FP square root operations
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const FPSQRT_OFFSET: u32 = 20;
     pub const FPSQRT_MASK: u32 = 0x00f00000;
 
     /// **FPDIVIDE**
+    ///
     /// Indicates the support for FP divide operations
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const FPDIVIDE_OFFSET: u32 = 16;
     pub const FPDIVIDE_MASK: u32 = 0x000f0000;
 
     /// **FPDP**
+    ///
     /// Indicates support for FP double-precision operations
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const FPDP_OFFSET: u32 = 8;
     pub const FPDP_MASK: u32 = 0x00000f00;
 
     /// **FPSP**
+    ///
     /// Indicates support for FP single-precision operations
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const FPSP_OFFSET: u32 = 4;
     pub const FPSP_MASK: u32 = 0x000000f0;
 
     /// **SIMDREG**
+    ///
     /// Indicates size of FP register file
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const SIMDREG_OFFSET: u32 = 0;
     pub const SIMDREG_MASK: u32 = 0x0000000f;
@@ -37678,6 +41410,7 @@ impl Mvfr0 {
     // ======== Field Accessors ========
 
     /// **FPROUND** `[31:28]` (RO)
+    ///
     /// Indicates the rounding modes supported by the FP Extension
     #[inline(always)]
     pub fn fpround(&self) -> u32 {
@@ -37685,6 +41418,7 @@ impl Mvfr0 {
     }
 
     /// **FPSQRT** `[23:20]` (RO)
+    ///
     /// Indicates the support for FP square root operations
     #[inline(always)]
     pub fn fpsqrt(&self) -> u32 {
@@ -37692,6 +41426,7 @@ impl Mvfr0 {
     }
 
     /// **FPDIVIDE** `[19:16]` (RO)
+    ///
     /// Indicates the support for FP divide operations
     #[inline(always)]
     pub fn fpdivide(&self) -> u32 {
@@ -37699,6 +41434,7 @@ impl Mvfr0 {
     }
 
     /// **FPDP** `[11:8]` (RO)
+    ///
     /// Indicates support for FP double-precision operations
     #[inline(always)]
     pub fn fpdp(&self) -> u32 {
@@ -37706,6 +41442,7 @@ impl Mvfr0 {
     }
 
     /// **FPSP** `[7:4]` (RO)
+    ///
     /// Indicates support for FP single-precision operations
     #[inline(always)]
     pub fn fpsp(&self) -> u32 {
@@ -37713,6 +41450,7 @@ impl Mvfr0 {
     }
 
     /// **SIMDREG** `[3:0]` (RO)
+    ///
     /// Indicates size of FP register file
     #[inline(always)]
     pub fn simdreg(&self) -> u32 {
@@ -37750,6 +41488,7 @@ impl Mvfr0Val {
     }
 
     /// Read **FPROUND** `[31:28]`
+    ///
     /// Indicates the rounding modes supported by the FP Extension
     #[inline(always)]
     pub const fn fpround(&self) -> u32 {
@@ -37757,6 +41496,7 @@ impl Mvfr0Val {
     }
 
     /// Read **FPSQRT** `[23:20]`
+    ///
     /// Indicates the support for FP square root operations
     #[inline(always)]
     pub const fn fpsqrt(&self) -> u32 {
@@ -37764,6 +41504,7 @@ impl Mvfr0Val {
     }
 
     /// Read **FPDIVIDE** `[19:16]`
+    ///
     /// Indicates the support for FP divide operations
     #[inline(always)]
     pub const fn fpdivide(&self) -> u32 {
@@ -37771,6 +41512,7 @@ impl Mvfr0Val {
     }
 
     /// Read **FPDP** `[11:8]`
+    ///
     /// Indicates support for FP double-precision operations
     #[inline(always)]
     pub const fn fpdp(&self) -> u32 {
@@ -37778,6 +41520,7 @@ impl Mvfr0Val {
     }
 
     /// Read **FPSP** `[7:4]`
+    ///
     /// Indicates support for FP single-precision operations
     #[inline(always)]
     pub const fn fpsp(&self) -> u32 {
@@ -37785,6 +41528,7 @@ impl Mvfr0Val {
     }
 
     /// Read **SIMDREG** `[3:0]`
+    ///
     /// Indicates size of FP register file
     #[inline(always)]
     pub const fn simdreg(&self) -> u32 {
@@ -37830,12 +41574,19 @@ impl Mvfr0 {
 /// ## Fields
 ///
 /// - **FMAC** `[31:28]` (RO)
+///
 ///   Indicates whether the FP Extension implements the fused multiply accumulate instructions
+///
 /// - **FPHP** `[27:24]` (RO)
+///
 ///   Indicates whether the FP Extension implements half-precision FP conversion instructions
+///
 /// - **FPDNAN** `[7:4]` (RO)
+///
 ///   Indicates whether the FP hardware implementation supports NaN propagation
+///
 /// - **FPFTZ** `[3:0]` (RO)
+///
 ///   Indicates whether subnormals are always flushed-to-zero
 #[repr(transparent)]
 pub struct Mvfr1 {
@@ -37854,25 +41605,33 @@ impl Mvfr1 {
     // ======== Field Constants ========
 
     /// **FMAC**
+    ///
     /// Indicates whether the FP Extension implements the fused multiply accumulate instructions
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const FMAC_OFFSET: u32 = 28;
     pub const FMAC_MASK: u32 = 0xf0000000;
 
     /// **FPHP**
+    ///
     /// Indicates whether the FP Extension implements half-precision FP conversion instructions
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const FPHP_OFFSET: u32 = 24;
     pub const FPHP_MASK: u32 = 0x0f000000;
 
     /// **FPDNAN**
+    ///
     /// Indicates whether the FP hardware implementation supports NaN propagation
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const FPDNAN_OFFSET: u32 = 4;
     pub const FPDNAN_MASK: u32 = 0x000000f0;
 
     /// **FPFTZ**
+    ///
     /// Indicates whether subnormals are always flushed-to-zero
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const FPFTZ_OFFSET: u32 = 0;
     pub const FPFTZ_MASK: u32 = 0x0000000f;
@@ -37880,6 +41639,7 @@ impl Mvfr1 {
     // ======== Field Accessors ========
 
     /// **FMAC** `[31:28]` (RO)
+    ///
     /// Indicates whether the FP Extension implements the fused multiply accumulate instructions
     #[inline(always)]
     pub fn fmac(&self) -> u32 {
@@ -37887,6 +41647,7 @@ impl Mvfr1 {
     }
 
     /// **FPHP** `[27:24]` (RO)
+    ///
     /// Indicates whether the FP Extension implements half-precision FP conversion instructions
     #[inline(always)]
     pub fn fphp(&self) -> u32 {
@@ -37894,6 +41655,7 @@ impl Mvfr1 {
     }
 
     /// **FPDNAN** `[7:4]` (RO)
+    ///
     /// Indicates whether the FP hardware implementation supports NaN propagation
     #[inline(always)]
     pub fn fpdnan(&self) -> u32 {
@@ -37901,6 +41663,7 @@ impl Mvfr1 {
     }
 
     /// **FPFTZ** `[3:0]` (RO)
+    ///
     /// Indicates whether subnormals are always flushed-to-zero
     #[inline(always)]
     pub fn fpftz(&self) -> u32 {
@@ -37938,6 +41701,7 @@ impl Mvfr1Val {
     }
 
     /// Read **FMAC** `[31:28]`
+    ///
     /// Indicates whether the FP Extension implements the fused multiply accumulate instructions
     #[inline(always)]
     pub const fn fmac(&self) -> u32 {
@@ -37945,6 +41709,7 @@ impl Mvfr1Val {
     }
 
     /// Read **FPHP** `[27:24]`
+    ///
     /// Indicates whether the FP Extension implements half-precision FP conversion instructions
     #[inline(always)]
     pub const fn fphp(&self) -> u32 {
@@ -37952,6 +41717,7 @@ impl Mvfr1Val {
     }
 
     /// Read **FPDNAN** `[7:4]`
+    ///
     /// Indicates whether the FP hardware implementation supports NaN propagation
     #[inline(always)]
     pub const fn fpdnan(&self) -> u32 {
@@ -37959,6 +41725,7 @@ impl Mvfr1Val {
     }
 
     /// Read **FPFTZ** `[3:0]`
+    ///
     /// Indicates whether subnormals are always flushed-to-zero
     #[inline(always)]
     pub const fn fpftz(&self) -> u32 {
@@ -38004,6 +41771,7 @@ impl Mvfr1 {
 /// ## Fields
 ///
 /// - **FPMISC** `[7:4]` (RO)
+///
 ///   Indicates support for miscellaneous FP features
 #[repr(transparent)]
 pub struct Mvfr2 {
@@ -38022,7 +41790,9 @@ impl Mvfr2 {
     // ======== Field Constants ========
 
     /// **FPMISC**
+    ///
     /// Indicates support for miscellaneous FP features
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const FPMISC_OFFSET: u32 = 4;
     pub const FPMISC_MASK: u32 = 0x000000f0;
@@ -38030,6 +41800,7 @@ impl Mvfr2 {
     // ======== Field Accessors ========
 
     /// **FPMISC** `[7:4]` (RO)
+    ///
     /// Indicates support for miscellaneous FP features
     #[inline(always)]
     pub fn fpmisc(&self) -> u32 {
@@ -38067,6 +41838,7 @@ impl Mvfr2Val {
     }
 
     /// Read **FPMISC** `[7:4]`
+    ///
     /// Indicates support for miscellaneous FP features
     #[inline(always)]
     pub const fn fpmisc(&self) -> u32 {
@@ -38112,14 +41884,23 @@ impl Mvfr2 {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   Defines that the DEVARCH register is present
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   Defines the architecture revision of the component
+///
 /// - **ARCHVER** `[15:12]` (RO)
+///
 ///   Defines the architecture version of the component
+///
 /// - **ARCHPART** `[11:0]` (RO)
+///
 ///   Defines the architecture of the component
 #[repr(transparent)]
 pub struct Ddevarch {
@@ -38138,32 +41919,42 @@ impl Ddevarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// Defines that the DEVARCH register is present
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// Defines the architecture revision of the component
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHVER**
+    ///
     /// Defines the architecture version of the component
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const ARCHVER_OFFSET: u32 = 12;
     pub const ARCHVER_MASK: u32 = 0x0000f000;
 
     /// **ARCHPART**
+    ///
     /// Defines the architecture of the component
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const ARCHPART_OFFSET: u32 = 0;
     pub const ARCHPART_MASK: u32 = 0x00000fff;
@@ -38171,6 +41962,7 @@ impl Ddevarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -38178,6 +41970,7 @@ impl Ddevarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -38185,6 +41978,7 @@ impl Ddevarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -38192,6 +41986,7 @@ impl Ddevarch {
     }
 
     /// **ARCHVER** `[15:12]` (RO)
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub fn archver(&self) -> u32 {
@@ -38199,6 +41994,7 @@ impl Ddevarch {
     }
 
     /// **ARCHPART** `[11:0]` (RO)
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub fn archpart(&self) -> u32 {
@@ -38236,6 +42032,7 @@ impl DdevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// Defines the architect of the component. Bits [31:28] are the JEP106 continuation code (JEP106 bank ID, minus 1) and bits [27:21] are the JEP106 ID code.
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -38243,6 +42040,7 @@ impl DdevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// Defines that the DEVARCH register is present
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -38250,6 +42048,7 @@ impl DdevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// Defines the architecture revision of the component
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -38257,6 +42056,7 @@ impl DdevarchVal {
     }
 
     /// Read **ARCHVER** `[15:12]`
+    ///
     /// Defines the architecture version of the component
     #[inline(always)]
     pub const fn archver(&self) -> u32 {
@@ -38264,6 +42064,7 @@ impl DdevarchVal {
     }
 
     /// Read **ARCHPART** `[11:0]`
+    ///
     /// Defines the architecture of the component
     #[inline(always)]
     pub const fn archpart(&self) -> u32 {
@@ -38309,8 +42110,11 @@ impl Ddevarch {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   Component sub-type
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   CoreSight major type
 #[repr(transparent)]
 pub struct Ddevtype {
@@ -38329,13 +42133,17 @@ impl Ddevtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// Component sub-type
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// CoreSight major type
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -38343,6 +42151,7 @@ impl Ddevtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// Component sub-type
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -38350,6 +42159,7 @@ impl Ddevtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// CoreSight major type
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -38387,6 +42197,7 @@ impl DdevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// Component sub-type
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -38394,6 +42205,7 @@ impl DdevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// CoreSight major type
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -38439,8 +42251,11 @@ impl Ddevtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dpidr4 {
@@ -38459,13 +42274,17 @@ impl Dpidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -38473,6 +42292,7 @@ impl Dpidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -38480,6 +42300,7 @@ impl Dpidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -38517,6 +42338,7 @@ impl Dpidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -38524,6 +42346,7 @@ impl Dpidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -38923,6 +42746,7 @@ impl Dpidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dpidr0 {
@@ -38941,7 +42765,9 @@ impl Dpidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -38949,6 +42775,7 @@ impl Dpidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -38986,6 +42813,7 @@ impl Dpidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -39031,8 +42859,11 @@ impl Dpidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PART_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dpidr1 {
@@ -39051,13 +42882,17 @@ impl Dpidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_1_OFFSET: u32 = 0;
     pub const PART_1_MASK: u32 = 0x0000000f;
@@ -39065,6 +42900,7 @@ impl Dpidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -39072,6 +42908,7 @@ impl Dpidr1 {
     }
 
     /// **PART_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn part_1(&self) -> u32 {
@@ -39109,6 +42946,7 @@ impl Dpidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -39116,6 +42954,7 @@ impl Dpidr1Val {
     }
 
     /// Read **PART_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn part_1(&self) -> u32 {
@@ -39161,10 +43000,15 @@ impl Dpidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **DES_1** `[2:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dpidr2 {
@@ -39183,20 +43027,26 @@ impl Dpidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_1_OFFSET: u32 = 0;
     pub const DES_1_MASK: u32 = 0x00000007;
@@ -39204,6 +43054,7 @@ impl Dpidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -39211,6 +43062,7 @@ impl Dpidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -39218,6 +43070,7 @@ impl Dpidr2 {
     }
 
     /// **DES_1** `[2:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn des_1(&self) -> u32 {
@@ -39255,6 +43108,7 @@ impl Dpidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -39262,6 +43116,7 @@ impl Dpidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -39269,6 +43124,7 @@ impl Dpidr2Val {
     }
 
     /// Read **DES_1** `[2:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn des_1(&self) -> u32 {
@@ -39314,8 +43170,11 @@ impl Dpidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dpidr3 {
@@ -39334,13 +43193,17 @@ impl Dpidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -39348,6 +43211,7 @@ impl Dpidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -39355,6 +43219,7 @@ impl Dpidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -39392,6 +43257,7 @@ impl Dpidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -39399,6 +43265,7 @@ impl Dpidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -39444,6 +43311,7 @@ impl Dpidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dcidr0 {
@@ -39462,7 +43330,9 @@ impl Dcidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -39470,6 +43340,7 @@ impl Dcidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -39507,6 +43378,7 @@ impl Dcidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -39552,8 +43424,11 @@ impl Dcidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   See CoreSight Architecture Specification
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dcidr1 {
@@ -39572,13 +43447,17 @@ impl Dcidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -39586,6 +43465,7 @@ impl Dcidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -39593,6 +43473,7 @@ impl Dcidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -39630,6 +43511,7 @@ impl Dcidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -39637,6 +43519,7 @@ impl Dcidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -39682,6 +43565,7 @@ impl Dcidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dcidr2 {
@@ -39700,7 +43584,9 @@ impl Dcidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -39708,6 +43594,7 @@ impl Dcidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -39745,6 +43632,7 @@ impl Dcidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -39790,6 +43678,7 @@ impl Dcidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   See CoreSight Architecture Specification
 #[repr(transparent)]
 pub struct Dcidr3 {
@@ -39808,7 +43697,9 @@ impl Dcidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// See CoreSight Architecture Specification
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -39816,6 +43707,7 @@ impl Dcidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -39853,6 +43745,7 @@ impl Dcidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// See CoreSight Architecture Specification
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {
@@ -39898,6 +43791,7 @@ impl Dcidr3 {
 /// ## Fields
 ///
 /// - **EN** `[0]` (RW)
+///
 ///   Trace Unit Enable
 #[repr(transparent)]
 pub struct Trcprgctlr {
@@ -39916,7 +43810,9 @@ impl Trcprgctlr {
     // ======== Field Constants ========
 
     /// **EN**
+    ///
     /// Trace Unit Enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -39925,6 +43821,7 @@ impl Trcprgctlr {
     // ======== Field Accessors ========
 
     /// **EN** `[0]` (RW)
+    ///
     /// Trace Unit Enable
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -39974,6 +43871,7 @@ impl TrcprgctlrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Trace Unit Enable
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -39981,6 +43879,7 @@ impl TrcprgctlrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Trace Unit Enable
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -40032,8 +43931,11 @@ impl Trcprgctlr {
 /// ## Fields
 ///
 /// - **PMSTABLE** `[1]` (RO)
+///
 ///   Indicates whether the ETM-Teal registers are stable and can be read
+///
 /// - **IDLE** `[0]` (RO)
+///
 ///   Indicates that the trace unit is inactive
 #[repr(transparent)]
 pub struct Trcstatr {
@@ -40052,14 +43954,18 @@ impl Trcstatr {
     // ======== Field Constants ========
 
     /// **PMSTABLE**
+    ///
     /// Indicates whether the ETM-Teal registers are stable and can be read
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PMSTABLE_OFFSET: u32 = 1;
     pub const PMSTABLE_MASK: u32 = 0x00000002;
     pub const PMSTABLE: u32 = 1 << 1;
 
     /// **IDLE**
+    ///
     /// Indicates that the trace unit is inactive
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const IDLE_OFFSET: u32 = 0;
     pub const IDLE_MASK: u32 = 0x00000001;
@@ -40068,6 +43974,7 @@ impl Trcstatr {
     // ======== Field Accessors ========
 
     /// **PMSTABLE** `[1]` (RO)
+    ///
     /// Indicates whether the ETM-Teal registers are stable and can be read
     #[inline(always)]
     pub fn pmstable(&self) -> bool {
@@ -40075,6 +43982,7 @@ impl Trcstatr {
     }
 
     /// **IDLE** `[0]` (RO)
+    ///
     /// Indicates that the trace unit is inactive
     #[inline(always)]
     pub fn idle(&self) -> bool {
@@ -40112,6 +44020,7 @@ impl TrcstatrVal {
     }
 
     /// Read **PMSTABLE** `[1:1]`
+    ///
     /// Indicates whether the ETM-Teal registers are stable and can be read
     #[inline(always)]
     pub const fn pmstable(&self) -> bool {
@@ -40119,6 +44028,7 @@ impl TrcstatrVal {
     }
 
     /// Read **IDLE** `[0:0]`
+    ///
     /// Indicates that the trace unit is inactive
     #[inline(always)]
     pub const fn idle(&self) -> bool {
@@ -40164,14 +44074,23 @@ impl Trcstatr {
 /// ## Fields
 ///
 /// - **RS** `[12]` (RW)
+///
 ///   Return stack enable
+///
 /// - **TS** `[11]` (RW)
+///
 ///   Global timestamp tracing
+///
 /// - **COND** `[10:5]` (RW)
+///
 ///   Conditional instruction tracing
+///
 /// - **CCI** `[4]` (RW)
+///
 ///   Cycle counting in instruction trace
+///
 /// - **BB** `[3]` (RW)
+///
 ///   Branch broadcast mode
 #[repr(transparent)]
 pub struct Trcconfigr {
@@ -40190,34 +44109,44 @@ impl Trcconfigr {
     // ======== Field Constants ========
 
     /// **RS**
+    ///
     /// Return stack enable
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RS_OFFSET: u32 = 12;
     pub const RS_MASK: u32 = 0x00001000;
     pub const RS: u32 = 1 << 12;
 
     /// **TS**
+    ///
     /// Global timestamp tracing
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const TS_OFFSET: u32 = 11;
     pub const TS_MASK: u32 = 0x00000800;
     pub const TS: u32 = 1 << 11;
 
     /// **COND**
+    ///
     /// Conditional instruction tracing
+    ///
     /// Bits `[10:5]`, mask `0x000007e0`
     pub const COND_OFFSET: u32 = 5;
     pub const COND_MASK: u32 = 0x000007e0;
 
     /// **CCI**
+    ///
     /// Cycle counting in instruction trace
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CCI_OFFSET: u32 = 4;
     pub const CCI_MASK: u32 = 0x00000010;
     pub const CCI: u32 = 1 << 4;
 
     /// **BB**
+    ///
     /// Branch broadcast mode
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const BB_OFFSET: u32 = 3;
     pub const BB_MASK: u32 = 0x00000008;
@@ -40226,6 +44155,7 @@ impl Trcconfigr {
     // ======== Field Accessors ========
 
     /// **RS** `[12]` (RW)
+    ///
     /// Return stack enable
     #[inline(always)]
     pub fn rs(&self) -> bool {
@@ -40245,6 +44175,7 @@ impl Trcconfigr {
     }
 
     /// **TS** `[11]` (RW)
+    ///
     /// Global timestamp tracing
     #[inline(always)]
     pub fn ts(&self) -> bool {
@@ -40264,6 +44195,7 @@ impl Trcconfigr {
     }
 
     /// **COND** `[10:5]` (RW)
+    ///
     /// Conditional instruction tracing
     #[inline(always)]
     pub fn cond(&self) -> u32 {
@@ -40271,6 +44203,7 @@ impl Trcconfigr {
     }
 
     /// Write **COND** `[10:5]` (RW)
+    ///
     /// Conditional instruction tracing
     #[inline(always)]
     pub fn write_cond(&self, value: u32) {
@@ -40278,6 +44211,7 @@ impl Trcconfigr {
     }
 
     /// **CCI** `[4]` (RW)
+    ///
     /// Cycle counting in instruction trace
     #[inline(always)]
     pub fn cci(&self) -> bool {
@@ -40297,6 +44231,7 @@ impl Trcconfigr {
     }
 
     /// **BB** `[3]` (RW)
+    ///
     /// Branch broadcast mode
     #[inline(always)]
     pub fn bb(&self) -> bool {
@@ -40346,6 +44281,7 @@ impl TrcconfigrVal {
     }
 
     /// Read **RS** `[12:12]`
+    ///
     /// Return stack enable
     #[inline(always)]
     pub const fn rs(&self) -> bool {
@@ -40353,6 +44289,7 @@ impl TrcconfigrVal {
     }
 
     /// Read **TS** `[11:11]`
+    ///
     /// Global timestamp tracing
     #[inline(always)]
     pub const fn ts(&self) -> bool {
@@ -40360,6 +44297,7 @@ impl TrcconfigrVal {
     }
 
     /// Read **COND** `[10:5]`
+    ///
     /// Conditional instruction tracing
     #[inline(always)]
     pub const fn cond(&self) -> u32 {
@@ -40367,6 +44305,7 @@ impl TrcconfigrVal {
     }
 
     /// Read **CCI** `[4:4]`
+    ///
     /// Cycle counting in instruction trace
     #[inline(always)]
     pub const fn cci(&self) -> bool {
@@ -40374,6 +44313,7 @@ impl TrcconfigrVal {
     }
 
     /// Read **BB** `[3:3]`
+    ///
     /// Branch broadcast mode
     #[inline(always)]
     pub const fn bb(&self) -> bool {
@@ -40381,6 +44321,7 @@ impl TrcconfigrVal {
     }
 
     /// Set **RS** `[12:12]`
+    ///
     /// Return stack enable
     #[inline(always)]
     pub const fn with_rs(self, value: bool) -> Self {
@@ -40394,6 +44335,7 @@ impl TrcconfigrVal {
     }
 
     /// Set **TS** `[11:11]`
+    ///
     /// Global timestamp tracing
     #[inline(always)]
     pub const fn with_ts(self, value: bool) -> Self {
@@ -40407,6 +44349,7 @@ impl TrcconfigrVal {
     }
 
     /// Set **COND** `[10:5]`
+    ///
     /// Conditional instruction tracing
     #[inline(always)]
     pub const fn with_cond(self, value: u32) -> Self {
@@ -40416,6 +44359,7 @@ impl TrcconfigrVal {
     }
 
     /// Set **CCI** `[4:4]`
+    ///
     /// Cycle counting in instruction trace
     #[inline(always)]
     pub const fn with_cci(self, value: bool) -> Self {
@@ -40429,6 +44373,7 @@ impl TrcconfigrVal {
     }
 
     /// Set **BB** `[3:3]`
+    ///
     /// Branch broadcast mode
     #[inline(always)]
     pub const fn with_bb(self, value: bool) -> Self {
@@ -40480,12 +44425,19 @@ impl Trcconfigr {
 /// ## Fields
 ///
 /// - **TYPE1** `[15]` (RW)
+///
 ///   Selects the resource type for event 1
+///
 /// - **SEL1** `[10:8]` (RW)
+///
 ///   Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
+///
 /// - **TYPE0** `[7]` (RW)
+///
 ///   Selects the resource type for event 0
+///
 /// - **SEL0** `[2:0]` (RW)
+///
 ///   Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
 #[repr(transparent)]
 pub struct Trceventctl0r {
@@ -40504,27 +44456,35 @@ impl Trceventctl0r {
     // ======== Field Constants ========
 
     /// **TYPE1**
+    ///
     /// Selects the resource type for event 1
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const TYPE1_OFFSET: u32 = 15;
     pub const TYPE1_MASK: u32 = 0x00008000;
     pub const TYPE1: u32 = 1 << 15;
 
     /// **SEL1**
+    ///
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const SEL1_OFFSET: u32 = 8;
     pub const SEL1_MASK: u32 = 0x00000700;
 
     /// **TYPE0**
+    ///
     /// Selects the resource type for event 0
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const TYPE0_OFFSET: u32 = 7;
     pub const TYPE0_MASK: u32 = 0x00000080;
     pub const TYPE0: u32 = 1 << 7;
 
     /// **SEL0**
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const SEL0_OFFSET: u32 = 0;
     pub const SEL0_MASK: u32 = 0x00000007;
@@ -40532,6 +44492,7 @@ impl Trceventctl0r {
     // ======== Field Accessors ========
 
     /// **TYPE1** `[15]` (RW)
+    ///
     /// Selects the resource type for event 1
     #[inline(always)]
     pub fn type1(&self) -> bool {
@@ -40551,6 +44512,7 @@ impl Trceventctl0r {
     }
 
     /// **SEL1** `[10:8]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
     #[inline(always)]
     pub fn sel1(&self) -> u32 {
@@ -40558,6 +44520,7 @@ impl Trceventctl0r {
     }
 
     /// Write **SEL1** `[10:8]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
     #[inline(always)]
     pub fn write_sel1(&self, value: u32) {
@@ -40565,6 +44528,7 @@ impl Trceventctl0r {
     }
 
     /// **TYPE0** `[7]` (RW)
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub fn type0(&self) -> bool {
@@ -40584,6 +44548,7 @@ impl Trceventctl0r {
     }
 
     /// **SEL0** `[2:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn sel0(&self) -> u32 {
@@ -40591,6 +44556,7 @@ impl Trceventctl0r {
     }
 
     /// Write **SEL0** `[2:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
@@ -40628,6 +44594,7 @@ impl Trceventctl0rVal {
     }
 
     /// Read **TYPE1** `[15:15]`
+    ///
     /// Selects the resource type for event 1
     #[inline(always)]
     pub const fn type1(&self) -> bool {
@@ -40635,6 +44602,7 @@ impl Trceventctl0rVal {
     }
 
     /// Read **SEL1** `[10:8]`
+    ///
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
     #[inline(always)]
     pub const fn sel1(&self) -> u32 {
@@ -40642,6 +44610,7 @@ impl Trceventctl0rVal {
     }
 
     /// Read **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn type0(&self) -> bool {
@@ -40649,6 +44618,7 @@ impl Trceventctl0rVal {
     }
 
     /// Read **SEL0** `[2:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn sel0(&self) -> u32 {
@@ -40656,6 +44626,7 @@ impl Trceventctl0rVal {
     }
 
     /// Set **TYPE1** `[15:15]`
+    ///
     /// Selects the resource type for event 1
     #[inline(always)]
     pub const fn with_type1(self, value: bool) -> Self {
@@ -40669,6 +44640,7 @@ impl Trceventctl0rVal {
     }
 
     /// Set **SEL1** `[10:8]`
+    ///
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
     #[inline(always)]
     pub const fn with_sel1(self, value: u32) -> Self {
@@ -40678,6 +44650,7 @@ impl Trceventctl0rVal {
     }
 
     /// Set **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn with_type0(self, value: bool) -> Self {
@@ -40691,6 +44664,7 @@ impl Trceventctl0rVal {
     }
 
     /// Set **SEL0** `[2:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
@@ -40738,12 +44712,19 @@ impl Trceventctl0r {
 /// ## Fields
 ///
 /// - **LPOVERRIDE** `[12]` (RW)
+///
 ///   Low power state behavior override
+///
 /// - **ATB** `[11]` (RW)
+///
 ///   ATB enabled
+///
 /// - **INSTEN1** `[1]` (RW)
+///
 ///   One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
+///
 /// - **INSTEN0** `[0]` (RW)
+///
 ///   One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
 #[repr(transparent)]
 pub struct Trceventctl1r {
@@ -40762,28 +44743,36 @@ impl Trceventctl1r {
     // ======== Field Constants ========
 
     /// **LPOVERRIDE**
+    ///
     /// Low power state behavior override
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const LPOVERRIDE_OFFSET: u32 = 12;
     pub const LPOVERRIDE_MASK: u32 = 0x00001000;
     pub const LPOVERRIDE: u32 = 1 << 12;
 
     /// **ATB**
+    ///
     /// ATB enabled
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ATB_OFFSET: u32 = 11;
     pub const ATB_MASK: u32 = 0x00000800;
     pub const ATB: u32 = 1 << 11;
 
     /// **INSTEN1**
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const INSTEN1_OFFSET: u32 = 1;
     pub const INSTEN1_MASK: u32 = 0x00000002;
     pub const INSTEN1: u32 = 1 << 1;
 
     /// **INSTEN0**
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const INSTEN0_OFFSET: u32 = 0;
     pub const INSTEN0_MASK: u32 = 0x00000001;
@@ -40792,6 +44781,7 @@ impl Trceventctl1r {
     // ======== Field Accessors ========
 
     /// **LPOVERRIDE** `[12]` (RW)
+    ///
     /// Low power state behavior override
     #[inline(always)]
     pub fn lpoverride(&self) -> bool {
@@ -40811,6 +44801,7 @@ impl Trceventctl1r {
     }
 
     /// **ATB** `[11]` (RW)
+    ///
     /// ATB enabled
     #[inline(always)]
     pub fn atb(&self) -> bool {
@@ -40830,6 +44821,7 @@ impl Trceventctl1r {
     }
 
     /// **INSTEN1** `[1]` (RW)
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub fn insten1(&self) -> bool {
@@ -40849,6 +44841,7 @@ impl Trceventctl1r {
     }
 
     /// **INSTEN0** `[0]` (RW)
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub fn insten0(&self) -> bool {
@@ -40898,6 +44891,7 @@ impl Trceventctl1rVal {
     }
 
     /// Read **LPOVERRIDE** `[12:12]`
+    ///
     /// Low power state behavior override
     #[inline(always)]
     pub const fn lpoverride(&self) -> bool {
@@ -40905,6 +44899,7 @@ impl Trceventctl1rVal {
     }
 
     /// Read **ATB** `[11:11]`
+    ///
     /// ATB enabled
     #[inline(always)]
     pub const fn atb(&self) -> bool {
@@ -40912,6 +44907,7 @@ impl Trceventctl1rVal {
     }
 
     /// Read **INSTEN1** `[1:1]`
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub const fn insten1(&self) -> bool {
@@ -40919,6 +44915,7 @@ impl Trceventctl1rVal {
     }
 
     /// Read **INSTEN0** `[0:0]`
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub const fn insten0(&self) -> bool {
@@ -40926,6 +44923,7 @@ impl Trceventctl1rVal {
     }
 
     /// Set **LPOVERRIDE** `[12:12]`
+    ///
     /// Low power state behavior override
     #[inline(always)]
     pub const fn with_lpoverride(self, value: bool) -> Self {
@@ -40939,6 +44937,7 @@ impl Trceventctl1rVal {
     }
 
     /// Set **ATB** `[11:11]`
+    ///
     /// ATB enabled
     #[inline(always)]
     pub const fn with_atb(self, value: bool) -> Self {
@@ -40952,6 +44951,7 @@ impl Trceventctl1rVal {
     }
 
     /// Set **INSTEN1** `[1:1]`
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub const fn with_insten1(self, value: bool) -> Self {
@@ -40965,6 +44965,7 @@ impl Trceventctl1rVal {
     }
 
     /// Set **INSTEN0** `[0:0]`
+    ///
     /// One bit per event, to enable generation of an event element in the instruction trace stream when the selected event occurs
     #[inline(always)]
     pub const fn with_insten0(self, value: bool) -> Self {
@@ -41016,10 +45017,15 @@ impl Trceventctl1r {
 /// ## Fields
 ///
 /// - **INSTPRIORITY** `[10]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **ISTALL** `[8]` (RW)
+///
 ///   Stall processor based on instruction trace buffer space
+///
 /// - **LEVEL** `[3:2]` (RW)
+///
 ///   Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
 #[repr(transparent)]
 pub struct Trcstallctlr {
@@ -41038,21 +45044,27 @@ impl Trcstallctlr {
     // ======== Field Constants ========
 
     /// **INSTPRIORITY**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const INSTPRIORITY_OFFSET: u32 = 10;
     pub const INSTPRIORITY_MASK: u32 = 0x00000400;
     pub const INSTPRIORITY: u32 = 1 << 10;
 
     /// **ISTALL**
+    ///
     /// Stall processor based on instruction trace buffer space
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISTALL_OFFSET: u32 = 8;
     pub const ISTALL_MASK: u32 = 0x00000100;
     pub const ISTALL: u32 = 1 << 8;
 
     /// **LEVEL**
+    ///
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LEVEL_OFFSET: u32 = 2;
     pub const LEVEL_MASK: u32 = 0x0000000c;
@@ -41060,6 +45072,7 @@ impl Trcstallctlr {
     // ======== Field Accessors ========
 
     /// **INSTPRIORITY** `[10]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn instpriority(&self) -> bool {
@@ -41067,6 +45080,7 @@ impl Trcstallctlr {
     }
 
     /// **ISTALL** `[8]` (RW)
+    ///
     /// Stall processor based on instruction trace buffer space
     #[inline(always)]
     pub fn istall(&self) -> bool {
@@ -41086,6 +45100,7 @@ impl Trcstallctlr {
     }
 
     /// **LEVEL** `[3:2]` (RW)
+    ///
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
     #[inline(always)]
     pub fn level(&self) -> u32 {
@@ -41093,6 +45108,7 @@ impl Trcstallctlr {
     }
 
     /// Write **LEVEL** `[3:2]` (RW)
+    ///
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
     #[inline(always)]
     pub fn write_level(&self, value: u32) {
@@ -41130,6 +45146,7 @@ impl TrcstallctlrVal {
     }
 
     /// Read **INSTPRIORITY** `[10:10]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn instpriority(&self) -> bool {
@@ -41137,6 +45154,7 @@ impl TrcstallctlrVal {
     }
 
     /// Read **ISTALL** `[8:8]`
+    ///
     /// Stall processor based on instruction trace buffer space
     #[inline(always)]
     pub const fn istall(&self) -> bool {
@@ -41144,6 +45162,7 @@ impl TrcstallctlrVal {
     }
 
     /// Read **LEVEL** `[3:2]`
+    ///
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
     #[inline(always)]
     pub const fn level(&self) -> u32 {
@@ -41151,6 +45170,7 @@ impl TrcstallctlrVal {
     }
 
     /// Set **ISTALL** `[8:8]`
+    ///
     /// Stall processor based on instruction trace buffer space
     #[inline(always)]
     pub const fn with_istall(self, value: bool) -> Self {
@@ -41164,6 +45184,7 @@ impl TrcstallctlrVal {
     }
 
     /// Set **LEVEL** `[3:2]`
+    ///
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
     #[inline(always)]
     pub const fn with_level(self, value: u32) -> Self {
@@ -41211,8 +45232,11 @@ impl Trcstallctlr {
 /// ## Fields
 ///
 /// - **TYPE0** `[7]` (RW)
+///
 ///   Selects the resource type for event 0
+///
 /// - **SEL0** `[1:0]` (RW)
+///
 ///   Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
 #[repr(transparent)]
 pub struct Trctsctlr {
@@ -41231,14 +45255,18 @@ impl Trctsctlr {
     // ======== Field Constants ========
 
     /// **TYPE0**
+    ///
     /// Selects the resource type for event 0
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const TYPE0_OFFSET: u32 = 7;
     pub const TYPE0_MASK: u32 = 0x00000080;
     pub const TYPE0: u32 = 1 << 7;
 
     /// **SEL0**
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEL0_OFFSET: u32 = 0;
     pub const SEL0_MASK: u32 = 0x00000003;
@@ -41246,6 +45274,7 @@ impl Trctsctlr {
     // ======== Field Accessors ========
 
     /// **TYPE0** `[7]` (RW)
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub fn type0(&self) -> bool {
@@ -41265,6 +45294,7 @@ impl Trctsctlr {
     }
 
     /// **SEL0** `[1:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn sel0(&self) -> u32 {
@@ -41272,6 +45302,7 @@ impl Trctsctlr {
     }
 
     /// Write **SEL0** `[1:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
@@ -41309,6 +45340,7 @@ impl TrctsctlrVal {
     }
 
     /// Read **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn type0(&self) -> bool {
@@ -41316,6 +45348,7 @@ impl TrctsctlrVal {
     }
 
     /// Read **SEL0** `[1:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn sel0(&self) -> u32 {
@@ -41323,6 +45356,7 @@ impl TrctsctlrVal {
     }
 
     /// Set **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn with_type0(self, value: bool) -> Self {
@@ -41336,6 +45370,7 @@ impl TrctsctlrVal {
     }
 
     /// Set **SEL0** `[1:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
@@ -41383,6 +45418,7 @@ impl Trctsctlr {
 /// ## Fields
 ///
 /// - **PERIOD** `[4:0]` (RO)
+///
 ///   Defines the number of bytes of trace between trace synchronization requests as a total of the number of bytes generated by the instruction stream. The number of bytes is 2N where N is the value of this field: - A value of zero disables these periodic trace synchronization requests, but does not disable other trace synchronization requests. - The minimum value that can be programmed, other than zero, is 8, providing a minimum trace synchronization period of 256 bytes. - The maximum value is 20, providing a maximum trace synchronization period of 2^20 bytes
 #[repr(transparent)]
 pub struct Trcsyncpr {
@@ -41401,7 +45437,9 @@ impl Trcsyncpr {
     // ======== Field Constants ========
 
     /// **PERIOD**
+    ///
     /// Defines the number of bytes of trace between trace synchronization requests as a total of the number of bytes generated by the instruction stream. The number of bytes is 2N where N is the value of this field: - A value of zero disables these periodic trace synchronization requests, but does not disable other trace synchronization requests. - The minimum value that can be programmed, other than zero, is 8, providing a minimum trace synchronization period of 256 bytes. - The maximum value is 20, providing a maximum trace synchronization period of 2^20 bytes
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const PERIOD_OFFSET: u32 = 0;
     pub const PERIOD_MASK: u32 = 0x0000001f;
@@ -41409,6 +45447,7 @@ impl Trcsyncpr {
     // ======== Field Accessors ========
 
     /// **PERIOD** `[4:0]` (RO)
+    ///
     /// Defines the number of bytes of trace between trace synchronization requests as a total of the number of bytes generated by the instruction stream. The number of bytes is 2N where N is the value of this field: - A value of zero disables these periodic trace synchronization requests, but does not disable other trace synchronization requests. - The minimum value that can be programmed, other than zero, is 8, providing a minimum trace synchronization period of 256 bytes. - The maximum value is 20, providing a maximum trace synchronization period of 2^20 bytes
     #[inline(always)]
     pub fn period(&self) -> u32 {
@@ -41446,6 +45485,7 @@ impl TrcsyncprVal {
     }
 
     /// Read **PERIOD** `[4:0]`
+    ///
     /// Defines the number of bytes of trace between trace synchronization requests as a total of the number of bytes generated by the instruction stream. The number of bytes is 2N where N is the value of this field: - A value of zero disables these periodic trace synchronization requests, but does not disable other trace synchronization requests. - The minimum value that can be programmed, other than zero, is 8, providing a minimum trace synchronization period of 256 bytes. - The maximum value is 20, providing a maximum trace synchronization period of 2^20 bytes
     #[inline(always)]
     pub const fn period(&self) -> u32 {
@@ -41491,6 +45531,7 @@ impl Trcsyncpr {
 /// ## Fields
 ///
 /// - **THRESHOLD** `[11:0]` (RW)
+///
 ///   Instruction trace cycle count threshold
 #[repr(transparent)]
 pub struct Trcccctlr {
@@ -41509,7 +45550,9 @@ impl Trcccctlr {
     // ======== Field Constants ========
 
     /// **THRESHOLD**
+    ///
     /// Instruction trace cycle count threshold
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const THRESHOLD_OFFSET: u32 = 0;
     pub const THRESHOLD_MASK: u32 = 0x00000fff;
@@ -41517,6 +45560,7 @@ impl Trcccctlr {
     // ======== Field Accessors ========
 
     /// **THRESHOLD** `[11:0]` (RW)
+    ///
     /// Instruction trace cycle count threshold
     #[inline(always)]
     pub fn threshold(&self) -> u32 {
@@ -41524,6 +45568,7 @@ impl Trcccctlr {
     }
 
     /// Write **THRESHOLD** `[11:0]` (RW)
+    ///
     /// Instruction trace cycle count threshold
     #[inline(always)]
     pub fn write_threshold(&self, value: u32) {
@@ -41561,6 +45606,7 @@ impl TrcccctlrVal {
     }
 
     /// Read **THRESHOLD** `[11:0]`
+    ///
     /// Instruction trace cycle count threshold
     #[inline(always)]
     pub const fn threshold(&self) -> u32 {
@@ -41568,6 +45614,7 @@ impl TrcccctlrVal {
     }
 
     /// Set **THRESHOLD** `[11:0]`
+    ///
     /// Instruction trace cycle count threshold
     #[inline(always)]
     pub const fn with_threshold(self, value: u32) -> Self {
@@ -41615,18 +45662,31 @@ impl Trcccctlr {
 /// ## Fields
 ///
 /// - **EXLEVEL_S3** `[19]` (RW)
+///
 ///   In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
+///
 /// - **EXLEVEL_S0** `[16]` (RW)
+///
 ///   In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
+///
 /// - **TRCERR** `[11]` (RW)
+///
 ///   Selects whether a system error exception must always be traced
+///
 /// - **TRCRESET** `[10]` (RW)
+///
 ///   Selects whether a reset exception must always be traced
+///
 /// - **SSSTATUS** `[9]` (RW)
+///
 ///   Indicates the current status of the start/stop logic
+///
 /// - **TYPE0** `[7]` (RW)
+///
 ///   Selects the resource type for event 0
+///
 /// - **SEL0** `[1:0]` (RW)
+///
 ///   Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
 #[repr(transparent)]
 pub struct Trcvictlr {
@@ -41645,49 +45705,63 @@ impl Trcvictlr {
     // ======== Field Constants ========
 
     /// **EXLEVEL_S3**
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EXLEVEL_S3_OFFSET: u32 = 19;
     pub const EXLEVEL_S3_MASK: u32 = 0x00080000;
     pub const EXLEVEL_S3: u32 = 1 << 19;
 
     /// **EXLEVEL_S0**
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const EXLEVEL_S0_OFFSET: u32 = 16;
     pub const EXLEVEL_S0_MASK: u32 = 0x00010000;
     pub const EXLEVEL_S0: u32 = 1 << 16;
 
     /// **TRCERR**
+    ///
     /// Selects whether a system error exception must always be traced
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const TRCERR_OFFSET: u32 = 11;
     pub const TRCERR_MASK: u32 = 0x00000800;
     pub const TRCERR: u32 = 1 << 11;
 
     /// **TRCRESET**
+    ///
     /// Selects whether a reset exception must always be traced
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const TRCRESET_OFFSET: u32 = 10;
     pub const TRCRESET_MASK: u32 = 0x00000400;
     pub const TRCRESET: u32 = 1 << 10;
 
     /// **SSSTATUS**
+    ///
     /// Indicates the current status of the start/stop logic
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const SSSTATUS_OFFSET: u32 = 9;
     pub const SSSTATUS_MASK: u32 = 0x00000200;
     pub const SSSTATUS: u32 = 1 << 9;
 
     /// **TYPE0**
+    ///
     /// Selects the resource type for event 0
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const TYPE0_OFFSET: u32 = 7;
     pub const TYPE0_MASK: u32 = 0x00000080;
     pub const TYPE0: u32 = 1 << 7;
 
     /// **SEL0**
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEL0_OFFSET: u32 = 0;
     pub const SEL0_MASK: u32 = 0x00000003;
@@ -41695,6 +45769,7 @@ impl Trcvictlr {
     // ======== Field Accessors ========
 
     /// **EXLEVEL_S3** `[19]` (RW)
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub fn exlevel_s3(&self) -> bool {
@@ -41714,6 +45789,7 @@ impl Trcvictlr {
     }
 
     /// **EXLEVEL_S0** `[16]` (RW)
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub fn exlevel_s0(&self) -> bool {
@@ -41733,6 +45809,7 @@ impl Trcvictlr {
     }
 
     /// **TRCERR** `[11]` (RW)
+    ///
     /// Selects whether a system error exception must always be traced
     #[inline(always)]
     pub fn trcerr(&self) -> bool {
@@ -41752,6 +45829,7 @@ impl Trcvictlr {
     }
 
     /// **TRCRESET** `[10]` (RW)
+    ///
     /// Selects whether a reset exception must always be traced
     #[inline(always)]
     pub fn trcreset(&self) -> bool {
@@ -41771,6 +45849,7 @@ impl Trcvictlr {
     }
 
     /// **SSSTATUS** `[9]` (RW)
+    ///
     /// Indicates the current status of the start/stop logic
     #[inline(always)]
     pub fn ssstatus(&self) -> bool {
@@ -41790,6 +45869,7 @@ impl Trcvictlr {
     }
 
     /// **TYPE0** `[7]` (RW)
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub fn type0(&self) -> bool {
@@ -41809,6 +45889,7 @@ impl Trcvictlr {
     }
 
     /// **SEL0** `[1:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn sel0(&self) -> u32 {
@@ -41816,6 +45897,7 @@ impl Trcvictlr {
     }
 
     /// Write **SEL0** `[1:0]` (RW)
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
@@ -41853,6 +45935,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **EXLEVEL_S3** `[19:19]`
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub const fn exlevel_s3(&self) -> bool {
@@ -41860,6 +45943,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **EXLEVEL_S0** `[16:16]`
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub const fn exlevel_s0(&self) -> bool {
@@ -41867,6 +45951,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **TRCERR** `[11:11]`
+    ///
     /// Selects whether a system error exception must always be traced
     #[inline(always)]
     pub const fn trcerr(&self) -> bool {
@@ -41874,6 +45959,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **TRCRESET** `[10:10]`
+    ///
     /// Selects whether a reset exception must always be traced
     #[inline(always)]
     pub const fn trcreset(&self) -> bool {
@@ -41881,6 +45967,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **SSSTATUS** `[9:9]`
+    ///
     /// Indicates the current status of the start/stop logic
     #[inline(always)]
     pub const fn ssstatus(&self) -> bool {
@@ -41888,6 +45975,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn type0(&self) -> bool {
@@ -41895,6 +45983,7 @@ impl TrcvictlrVal {
     }
 
     /// Read **SEL0** `[1:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn sel0(&self) -> u32 {
@@ -41902,6 +45991,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **EXLEVEL_S3** `[19:19]`
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub const fn with_exlevel_s3(self, value: bool) -> Self {
@@ -41915,6 +46005,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **EXLEVEL_S0** `[16:16]`
+    ///
     /// In Secure state, each bit controls whether instruction tracing is enabled for the corresponding exception level
     #[inline(always)]
     pub const fn with_exlevel_s0(self, value: bool) -> Self {
@@ -41928,6 +46019,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **TRCERR** `[11:11]`
+    ///
     /// Selects whether a system error exception must always be traced
     #[inline(always)]
     pub const fn with_trcerr(self, value: bool) -> Self {
@@ -41941,6 +46033,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **TRCRESET** `[10:10]`
+    ///
     /// Selects whether a reset exception must always be traced
     #[inline(always)]
     pub const fn with_trcreset(self, value: bool) -> Self {
@@ -41954,6 +46047,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **SSSTATUS** `[9:9]`
+    ///
     /// Indicates the current status of the start/stop logic
     #[inline(always)]
     pub const fn with_ssstatus(self, value: bool) -> Self {
@@ -41967,6 +46061,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **TYPE0** `[7:7]`
+    ///
     /// Selects the resource type for event 0
     #[inline(always)]
     pub const fn with_type0(self, value: bool) -> Self {
@@ -41980,6 +46075,7 @@ impl TrcvictlrVal {
     }
 
     /// Set **SEL0** `[1:0]`
+    ///
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
@@ -42027,6 +46123,7 @@ impl Trcvictlr {
 /// ## Fields
 ///
 /// - **VALUE** `[15:0]` (RW)
+///
 ///   Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
 #[repr(transparent)]
 pub struct Trccntrldvr0 {
@@ -42045,7 +46142,9 @@ impl Trccntrldvr0 {
     // ======== Field Constants ========
 
     /// **VALUE**
+    ///
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const VALUE_OFFSET: u32 = 0;
     pub const VALUE_MASK: u32 = 0x0000ffff;
@@ -42053,6 +46152,7 @@ impl Trccntrldvr0 {
     // ======== Field Accessors ========
 
     /// **VALUE** `[15:0]` (RW)
+    ///
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
     #[inline(always)]
     pub fn value(&self) -> u32 {
@@ -42060,6 +46160,7 @@ impl Trccntrldvr0 {
     }
 
     /// Write **VALUE** `[15:0]` (RW)
+    ///
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
     #[inline(always)]
     pub fn write_value(&self, value: u32) {
@@ -42097,6 +46198,7 @@ impl Trccntrldvr0Val {
     }
 
     /// Read **VALUE** `[15:0]`
+    ///
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
     #[inline(always)]
     pub const fn value(&self) -> u32 {
@@ -42104,6 +46206,7 @@ impl Trccntrldvr0Val {
     }
 
     /// Set **VALUE** `[15:0]`
+    ///
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
     #[inline(always)]
     pub const fn with_value(self, value: u32) -> Self {
@@ -42151,6 +46254,7 @@ impl Trccntrldvr0 {
 /// ## Fields
 ///
 /// - **MAXSPEC** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr8 {
@@ -42169,7 +46273,9 @@ impl Trcidr8 {
     // ======== Field Constants ========
 
     /// **MAXSPEC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const MAXSPEC_OFFSET: u32 = 0;
     pub const MAXSPEC_MASK: u32 = 0xffffffff;
@@ -42177,6 +46283,7 @@ impl Trcidr8 {
     // ======== Field Accessors ========
 
     /// **MAXSPEC** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn maxspec(&self) -> u32 {
@@ -42214,6 +46321,7 @@ impl Trcidr8Val {
     }
 
     /// Read **MAXSPEC** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn maxspec(&self) -> u32 {
@@ -42259,6 +46367,7 @@ impl Trcidr8 {
 /// ## Fields
 ///
 /// - **NUMP0KEY** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr9 {
@@ -42277,7 +46386,9 @@ impl Trcidr9 {
     // ======== Field Constants ========
 
     /// **NUMP0KEY**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const NUMP0KEY_OFFSET: u32 = 0;
     pub const NUMP0KEY_MASK: u32 = 0xffffffff;
@@ -42285,6 +46396,7 @@ impl Trcidr9 {
     // ======== Field Accessors ========
 
     /// **NUMP0KEY** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn nump0key(&self) -> u32 {
@@ -42322,6 +46434,7 @@ impl Trcidr9Val {
     }
 
     /// Read **NUMP0KEY** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn nump0key(&self) -> u32 {
@@ -42367,6 +46480,7 @@ impl Trcidr9 {
 /// ## Fields
 ///
 /// - **NUMP1KEY** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr10 {
@@ -42385,7 +46499,9 @@ impl Trcidr10 {
     // ======== Field Constants ========
 
     /// **NUMP1KEY**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const NUMP1KEY_OFFSET: u32 = 0;
     pub const NUMP1KEY_MASK: u32 = 0xffffffff;
@@ -42393,6 +46509,7 @@ impl Trcidr10 {
     // ======== Field Accessors ========
 
     /// **NUMP1KEY** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn nump1key(&self) -> u32 {
@@ -42430,6 +46547,7 @@ impl Trcidr10Val {
     }
 
     /// Read **NUMP1KEY** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn nump1key(&self) -> u32 {
@@ -42475,6 +46593,7 @@ impl Trcidr10 {
 /// ## Fields
 ///
 /// - **NUMP1SPC** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr11 {
@@ -42493,7 +46612,9 @@ impl Trcidr11 {
     // ======== Field Constants ========
 
     /// **NUMP1SPC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const NUMP1SPC_OFFSET: u32 = 0;
     pub const NUMP1SPC_MASK: u32 = 0xffffffff;
@@ -42501,6 +46622,7 @@ impl Trcidr11 {
     // ======== Field Accessors ========
 
     /// **NUMP1SPC** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn nump1spc(&self) -> u32 {
@@ -42538,6 +46660,7 @@ impl Trcidr11Val {
     }
 
     /// Read **NUMP1SPC** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn nump1spc(&self) -> u32 {
@@ -42583,6 +46706,7 @@ impl Trcidr11 {
 /// ## Fields
 ///
 /// - **NUMCONDKEY** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr12 {
@@ -42601,7 +46725,9 @@ impl Trcidr12 {
     // ======== Field Constants ========
 
     /// **NUMCONDKEY**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const NUMCONDKEY_OFFSET: u32 = 0;
     pub const NUMCONDKEY_MASK: u32 = 0xffffffff;
@@ -42609,6 +46735,7 @@ impl Trcidr12 {
     // ======== Field Accessors ========
 
     /// **NUMCONDKEY** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numcondkey(&self) -> u32 {
@@ -42646,6 +46773,7 @@ impl Trcidr12Val {
     }
 
     /// Read **NUMCONDKEY** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numcondkey(&self) -> u32 {
@@ -42691,6 +46819,7 @@ impl Trcidr12 {
 /// ## Fields
 ///
 /// - **NUMCONDSPC** `[31:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr13 {
@@ -42709,7 +46838,9 @@ impl Trcidr13 {
     // ======== Field Constants ========
 
     /// **NUMCONDSPC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const NUMCONDSPC_OFFSET: u32 = 0;
     pub const NUMCONDSPC_MASK: u32 = 0xffffffff;
@@ -42717,6 +46848,7 @@ impl Trcidr13 {
     // ======== Field Accessors ========
 
     /// **NUMCONDSPC** `[31:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numcondspc(&self) -> u32 {
@@ -42754,6 +46886,7 @@ impl Trcidr13Val {
     }
 
     /// Read **NUMCONDSPC** `[31:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numcondspc(&self) -> u32 {
@@ -42799,6 +46932,7 @@ impl Trcidr13 {
 /// ## Fields
 ///
 /// - **SUPPORT** `[3:0]` (RO)
+///
 ///   Reserved, RES0
 #[repr(transparent)]
 pub struct Trcimspec {
@@ -42817,7 +46951,9 @@ impl Trcimspec {
     // ======== Field Constants ========
 
     /// **SUPPORT**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const SUPPORT_OFFSET: u32 = 0;
     pub const SUPPORT_MASK: u32 = 0x0000000f;
@@ -42825,6 +46961,7 @@ impl Trcimspec {
     // ======== Field Accessors ========
 
     /// **SUPPORT** `[3:0]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn support(&self) -> u32 {
@@ -42862,6 +46999,7 @@ impl TrcimspecVal {
     }
 
     /// Read **SUPPORT** `[3:0]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn support(&self) -> u32 {
@@ -42907,32 +47045,59 @@ impl Trcimspec {
 /// ## Fields
 ///
 /// - **COMMOPT** `[29]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TSSIZE** `[28:24]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCEXDATA** `[17]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **QSUPP** `[16:15]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **QFILT** `[14]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **CONDTYPE** `[13:12]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMEVENT** `[11:10]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **RETSTACK** `[9]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCCCI** `[7]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCCOND** `[6]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCBB** `[5]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCDATA** `[4:3]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **INSTP0** `[2:1]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **RES1** `[0]` (RO)
+///
 ///   Reserved, RES1
 #[repr(transparent)]
 pub struct Trcidr0 {
@@ -42951,92 +47116,120 @@ impl Trcidr0 {
     // ======== Field Constants ========
 
     /// **COMMOPT**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const COMMOPT_OFFSET: u32 = 29;
     pub const COMMOPT_MASK: u32 = 0x20000000;
     pub const COMMOPT: u32 = 1 << 29;
 
     /// **TSSIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[28:24]`, mask `0x1f000000`
     pub const TSSIZE_OFFSET: u32 = 24;
     pub const TSSIZE_MASK: u32 = 0x1f000000;
 
     /// **TRCEXDATA**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const TRCEXDATA_OFFSET: u32 = 17;
     pub const TRCEXDATA_MASK: u32 = 0x00020000;
     pub const TRCEXDATA: u32 = 1 << 17;
 
     /// **QSUPP**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[16:15]`, mask `0x00018000`
     pub const QSUPP_OFFSET: u32 = 15;
     pub const QSUPP_MASK: u32 = 0x00018000;
 
     /// **QFILT**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const QFILT_OFFSET: u32 = 14;
     pub const QFILT_MASK: u32 = 0x00004000;
     pub const QFILT: u32 = 1 << 14;
 
     /// **CONDTYPE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[13:12]`, mask `0x00003000`
     pub const CONDTYPE_OFFSET: u32 = 12;
     pub const CONDTYPE_MASK: u32 = 0x00003000;
 
     /// **NUMEVENT**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const NUMEVENT_OFFSET: u32 = 10;
     pub const NUMEVENT_MASK: u32 = 0x00000c00;
 
     /// **RETSTACK**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const RETSTACK_OFFSET: u32 = 9;
     pub const RETSTACK_MASK: u32 = 0x00000200;
     pub const RETSTACK: u32 = 1 << 9;
 
     /// **TRCCCI**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const TRCCCI_OFFSET: u32 = 7;
     pub const TRCCCI_MASK: u32 = 0x00000080;
     pub const TRCCCI: u32 = 1 << 7;
 
     /// **TRCCOND**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const TRCCOND_OFFSET: u32 = 6;
     pub const TRCCOND_MASK: u32 = 0x00000040;
     pub const TRCCOND: u32 = 1 << 6;
 
     /// **TRCBB**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TRCBB_OFFSET: u32 = 5;
     pub const TRCBB_MASK: u32 = 0x00000020;
     pub const TRCBB: u32 = 1 << 5;
 
     /// **TRCDATA**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[4:3]`, mask `0x00000018`
     pub const TRCDATA_OFFSET: u32 = 3;
     pub const TRCDATA_MASK: u32 = 0x00000018;
 
     /// **INSTP0**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[2:1]`, mask `0x00000006`
     pub const INSTP0_OFFSET: u32 = 1;
     pub const INSTP0_MASK: u32 = 0x00000006;
 
     /// **RES1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RES1_OFFSET: u32 = 0;
     pub const RES1_MASK: u32 = 0x00000001;
@@ -43045,6 +47238,7 @@ impl Trcidr0 {
     // ======== Field Accessors ========
 
     /// **COMMOPT** `[29]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn commopt(&self) -> bool {
@@ -43052,6 +47246,7 @@ impl Trcidr0 {
     }
 
     /// **TSSIZE** `[28:24]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn tssize(&self) -> u32 {
@@ -43059,6 +47254,7 @@ impl Trcidr0 {
     }
 
     /// **TRCEXDATA** `[17]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trcexdata(&self) -> bool {
@@ -43066,6 +47262,7 @@ impl Trcidr0 {
     }
 
     /// **QSUPP** `[16:15]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn qsupp(&self) -> u32 {
@@ -43073,6 +47270,7 @@ impl Trcidr0 {
     }
 
     /// **QFILT** `[14]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn qfilt(&self) -> bool {
@@ -43080,6 +47278,7 @@ impl Trcidr0 {
     }
 
     /// **CONDTYPE** `[13:12]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn condtype(&self) -> u32 {
@@ -43087,6 +47286,7 @@ impl Trcidr0 {
     }
 
     /// **NUMEVENT** `[11:10]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numevent(&self) -> u32 {
@@ -43094,6 +47294,7 @@ impl Trcidr0 {
     }
 
     /// **RETSTACK** `[9]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn retstack(&self) -> bool {
@@ -43101,6 +47302,7 @@ impl Trcidr0 {
     }
 
     /// **TRCCCI** `[7]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trccci(&self) -> bool {
@@ -43108,6 +47310,7 @@ impl Trcidr0 {
     }
 
     /// **TRCCOND** `[6]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trccond(&self) -> bool {
@@ -43115,6 +47318,7 @@ impl Trcidr0 {
     }
 
     /// **TRCBB** `[5]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trcbb(&self) -> bool {
@@ -43122,6 +47326,7 @@ impl Trcidr0 {
     }
 
     /// **TRCDATA** `[4:3]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trcdata(&self) -> u32 {
@@ -43129,6 +47334,7 @@ impl Trcidr0 {
     }
 
     /// **INSTP0** `[2:1]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn instp0(&self) -> u32 {
@@ -43136,6 +47342,7 @@ impl Trcidr0 {
     }
 
     /// **RES1** `[0]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1(&self) -> bool {
@@ -43173,6 +47380,7 @@ impl Trcidr0Val {
     }
 
     /// Read **COMMOPT** `[29:29]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn commopt(&self) -> bool {
@@ -43180,6 +47388,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TSSIZE** `[28:24]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn tssize(&self) -> u32 {
@@ -43187,6 +47396,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TRCEXDATA** `[17:17]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trcexdata(&self) -> bool {
@@ -43194,6 +47404,7 @@ impl Trcidr0Val {
     }
 
     /// Read **QSUPP** `[16:15]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn qsupp(&self) -> u32 {
@@ -43201,6 +47412,7 @@ impl Trcidr0Val {
     }
 
     /// Read **QFILT** `[14:14]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn qfilt(&self) -> bool {
@@ -43208,6 +47420,7 @@ impl Trcidr0Val {
     }
 
     /// Read **CONDTYPE** `[13:12]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn condtype(&self) -> u32 {
@@ -43215,6 +47428,7 @@ impl Trcidr0Val {
     }
 
     /// Read **NUMEVENT** `[11:10]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numevent(&self) -> u32 {
@@ -43222,6 +47436,7 @@ impl Trcidr0Val {
     }
 
     /// Read **RETSTACK** `[9:9]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn retstack(&self) -> bool {
@@ -43229,6 +47444,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TRCCCI** `[7:7]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trccci(&self) -> bool {
@@ -43236,6 +47452,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TRCCOND** `[6:6]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trccond(&self) -> bool {
@@ -43243,6 +47460,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TRCBB** `[5:5]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trcbb(&self) -> bool {
@@ -43250,6 +47468,7 @@ impl Trcidr0Val {
     }
 
     /// Read **TRCDATA** `[4:3]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trcdata(&self) -> u32 {
@@ -43257,6 +47476,7 @@ impl Trcidr0Val {
     }
 
     /// Read **INSTP0** `[2:1]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn instp0(&self) -> u32 {
@@ -43264,6 +47484,7 @@ impl Trcidr0Val {
     }
 
     /// Read **RES1** `[0:0]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1(&self) -> bool {
@@ -43309,14 +47530,23 @@ impl Trcidr0 {
 /// ## Fields
 ///
 /// - **DESIGNER** `[31:24]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **RES1** `[15:12]` (RO)
+///
 ///   Reserved, RES1
+///
 /// - **TRCARCHMAJ** `[11:8]` (RO)
+///
 ///   reads as 0b0100
+///
 /// - **TRCARCHMIN** `[7:4]` (RO)
+///
 ///   reads as 0b0000
+///
 /// - **REVISION** `[3:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr1 {
@@ -43335,31 +47565,41 @@ impl Trcidr1 {
     // ======== Field Constants ========
 
     /// **DESIGNER**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:24]`, mask `0xff000000`
     pub const DESIGNER_OFFSET: u32 = 24;
     pub const DESIGNER_MASK: u32 = 0xff000000;
 
     /// **RES1**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const RES1_OFFSET: u32 = 12;
     pub const RES1_MASK: u32 = 0x0000f000;
 
     /// **TRCARCHMAJ**
+    ///
     /// reads as 0b0100
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const TRCARCHMAJ_OFFSET: u32 = 8;
     pub const TRCARCHMAJ_MASK: u32 = 0x00000f00;
 
     /// **TRCARCHMIN**
+    ///
     /// reads as 0b0000
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const TRCARCHMIN_OFFSET: u32 = 4;
     pub const TRCARCHMIN_MASK: u32 = 0x000000f0;
 
     /// **REVISION**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const REVISION_OFFSET: u32 = 0;
     pub const REVISION_MASK: u32 = 0x0000000f;
@@ -43367,6 +47607,7 @@ impl Trcidr1 {
     // ======== Field Accessors ========
 
     /// **DESIGNER** `[31:24]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn designer(&self) -> u32 {
@@ -43374,6 +47615,7 @@ impl Trcidr1 {
     }
 
     /// **RES1** `[15:12]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn res1(&self) -> u32 {
@@ -43381,6 +47623,7 @@ impl Trcidr1 {
     }
 
     /// **TRCARCHMAJ** `[11:8]` (RO)
+    ///
     /// reads as 0b0100
     #[inline(always)]
     pub fn trcarchmaj(&self) -> u32 {
@@ -43388,6 +47631,7 @@ impl Trcidr1 {
     }
 
     /// **TRCARCHMIN** `[7:4]` (RO)
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub fn trcarchmin(&self) -> u32 {
@@ -43395,6 +47639,7 @@ impl Trcidr1 {
     }
 
     /// **REVISION** `[3:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -43432,6 +47677,7 @@ impl Trcidr1Val {
     }
 
     /// Read **DESIGNER** `[31:24]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn designer(&self) -> u32 {
@@ -43439,6 +47685,7 @@ impl Trcidr1Val {
     }
 
     /// Read **RES1** `[15:12]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn res1(&self) -> u32 {
@@ -43446,6 +47693,7 @@ impl Trcidr1Val {
     }
 
     /// Read **TRCARCHMAJ** `[11:8]`
+    ///
     /// reads as 0b0100
     #[inline(always)]
     pub const fn trcarchmaj(&self) -> u32 {
@@ -43453,6 +47701,7 @@ impl Trcidr1Val {
     }
 
     /// Read **TRCARCHMIN** `[7:4]`
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub const fn trcarchmin(&self) -> u32 {
@@ -43460,6 +47709,7 @@ impl Trcidr1Val {
     }
 
     /// Read **REVISION** `[3:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -43505,16 +47755,27 @@ impl Trcidr1 {
 /// ## Fields
 ///
 /// - **CCSIZE** `[28:25]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **DVSIZE** `[24:20]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **DASIZE** `[19:15]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **VMIDSIZE** `[14:10]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **CIDSIZE** `[9:5]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **IASIZE** `[4:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr2 {
@@ -43533,37 +47794,49 @@ impl Trcidr2 {
     // ======== Field Constants ========
 
     /// **CCSIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[28:25]`, mask `0x1e000000`
     pub const CCSIZE_OFFSET: u32 = 25;
     pub const CCSIZE_MASK: u32 = 0x1e000000;
 
     /// **DVSIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[24:20]`, mask `0x01f00000`
     pub const DVSIZE_OFFSET: u32 = 20;
     pub const DVSIZE_MASK: u32 = 0x01f00000;
 
     /// **DASIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[19:15]`, mask `0x000f8000`
     pub const DASIZE_OFFSET: u32 = 15;
     pub const DASIZE_MASK: u32 = 0x000f8000;
 
     /// **VMIDSIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const VMIDSIZE_OFFSET: u32 = 10;
     pub const VMIDSIZE_MASK: u32 = 0x00007c00;
 
     /// **CIDSIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const CIDSIZE_OFFSET: u32 = 5;
     pub const CIDSIZE_MASK: u32 = 0x000003e0;
 
     /// **IASIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const IASIZE_OFFSET: u32 = 0;
     pub const IASIZE_MASK: u32 = 0x0000001f;
@@ -43571,6 +47844,7 @@ impl Trcidr2 {
     // ======== Field Accessors ========
 
     /// **CCSIZE** `[28:25]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn ccsize(&self) -> u32 {
@@ -43578,6 +47852,7 @@ impl Trcidr2 {
     }
 
     /// **DVSIZE** `[24:20]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn dvsize(&self) -> u32 {
@@ -43585,6 +47860,7 @@ impl Trcidr2 {
     }
 
     /// **DASIZE** `[19:15]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn dasize(&self) -> u32 {
@@ -43592,6 +47868,7 @@ impl Trcidr2 {
     }
 
     /// **VMIDSIZE** `[14:10]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn vmidsize(&self) -> u32 {
@@ -43599,6 +47876,7 @@ impl Trcidr2 {
     }
 
     /// **CIDSIZE** `[9:5]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn cidsize(&self) -> u32 {
@@ -43606,6 +47884,7 @@ impl Trcidr2 {
     }
 
     /// **IASIZE** `[4:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn iasize(&self) -> u32 {
@@ -43643,6 +47922,7 @@ impl Trcidr2Val {
     }
 
     /// Read **CCSIZE** `[28:25]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn ccsize(&self) -> u32 {
@@ -43650,6 +47930,7 @@ impl Trcidr2Val {
     }
 
     /// Read **DVSIZE** `[24:20]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn dvsize(&self) -> u32 {
@@ -43657,6 +47938,7 @@ impl Trcidr2Val {
     }
 
     /// Read **DASIZE** `[19:15]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn dasize(&self) -> u32 {
@@ -43664,6 +47946,7 @@ impl Trcidr2Val {
     }
 
     /// Read **VMIDSIZE** `[14:10]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn vmidsize(&self) -> u32 {
@@ -43671,6 +47954,7 @@ impl Trcidr2Val {
     }
 
     /// Read **CIDSIZE** `[9:5]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn cidsize(&self) -> u32 {
@@ -43678,6 +47962,7 @@ impl Trcidr2Val {
     }
 
     /// Read **IASIZE** `[4:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn iasize(&self) -> u32 {
@@ -43723,22 +48008,39 @@ impl Trcidr2 {
 /// ## Fields
 ///
 /// - **NOOVERFLOW** `[31]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMPROC** `[30:28]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **SYSSTALL** `[27]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **STALLCTL** `[26]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **SYNCPR** `[25]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRCERR** `[24]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **EXLEVEL_NS** `[23:20]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **EXLEVEL_S** `[19:16]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **CCITMIN** `[11:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr3 {
@@ -43757,60 +48059,78 @@ impl Trcidr3 {
     // ======== Field Constants ========
 
     /// **NOOVERFLOW**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const NOOVERFLOW_OFFSET: u32 = 31;
     pub const NOOVERFLOW_MASK: u32 = 0x80000000;
     pub const NOOVERFLOW: u32 = 1 << 31;
 
     /// **NUMPROC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[30:28]`, mask `0x70000000`
     pub const NUMPROC_OFFSET: u32 = 28;
     pub const NUMPROC_MASK: u32 = 0x70000000;
 
     /// **SYSSTALL**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const SYSSTALL_OFFSET: u32 = 27;
     pub const SYSSTALL_MASK: u32 = 0x08000000;
     pub const SYSSTALL: u32 = 1 << 27;
 
     /// **STALLCTL**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const STALLCTL_OFFSET: u32 = 26;
     pub const STALLCTL_MASK: u32 = 0x04000000;
     pub const STALLCTL: u32 = 1 << 26;
 
     /// **SYNCPR**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const SYNCPR_OFFSET: u32 = 25;
     pub const SYNCPR_MASK: u32 = 0x02000000;
     pub const SYNCPR: u32 = 1 << 25;
 
     /// **TRCERR**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const TRCERR_OFFSET: u32 = 24;
     pub const TRCERR_MASK: u32 = 0x01000000;
     pub const TRCERR: u32 = 1 << 24;
 
     /// **EXLEVEL_NS**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const EXLEVEL_NS_OFFSET: u32 = 20;
     pub const EXLEVEL_NS_MASK: u32 = 0x00f00000;
 
     /// **EXLEVEL_S**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const EXLEVEL_S_OFFSET: u32 = 16;
     pub const EXLEVEL_S_MASK: u32 = 0x000f0000;
 
     /// **CCITMIN**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const CCITMIN_OFFSET: u32 = 0;
     pub const CCITMIN_MASK: u32 = 0x00000fff;
@@ -43818,6 +48138,7 @@ impl Trcidr3 {
     // ======== Field Accessors ========
 
     /// **NOOVERFLOW** `[31]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn nooverflow(&self) -> bool {
@@ -43825,6 +48146,7 @@ impl Trcidr3 {
     }
 
     /// **NUMPROC** `[30:28]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numproc(&self) -> u32 {
@@ -43832,6 +48154,7 @@ impl Trcidr3 {
     }
 
     /// **SYSSTALL** `[27]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn sysstall(&self) -> bool {
@@ -43839,6 +48162,7 @@ impl Trcidr3 {
     }
 
     /// **STALLCTL** `[26]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn stallctl(&self) -> bool {
@@ -43846,6 +48170,7 @@ impl Trcidr3 {
     }
 
     /// **SYNCPR** `[25]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn syncpr(&self) -> bool {
@@ -43853,6 +48178,7 @@ impl Trcidr3 {
     }
 
     /// **TRCERR** `[24]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn trcerr(&self) -> bool {
@@ -43860,6 +48186,7 @@ impl Trcidr3 {
     }
 
     /// **EXLEVEL_NS** `[23:20]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn exlevel_ns(&self) -> u32 {
@@ -43867,6 +48194,7 @@ impl Trcidr3 {
     }
 
     /// **EXLEVEL_S** `[19:16]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn exlevel_s(&self) -> u32 {
@@ -43874,6 +48202,7 @@ impl Trcidr3 {
     }
 
     /// **CCITMIN** `[11:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn ccitmin(&self) -> u32 {
@@ -43911,6 +48240,7 @@ impl Trcidr3Val {
     }
 
     /// Read **NOOVERFLOW** `[31:31]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn nooverflow(&self) -> bool {
@@ -43918,6 +48248,7 @@ impl Trcidr3Val {
     }
 
     /// Read **NUMPROC** `[30:28]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numproc(&self) -> u32 {
@@ -43925,6 +48256,7 @@ impl Trcidr3Val {
     }
 
     /// Read **SYSSTALL** `[27:27]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn sysstall(&self) -> bool {
@@ -43932,6 +48264,7 @@ impl Trcidr3Val {
     }
 
     /// Read **STALLCTL** `[26:26]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn stallctl(&self) -> bool {
@@ -43939,6 +48272,7 @@ impl Trcidr3Val {
     }
 
     /// Read **SYNCPR** `[25:25]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn syncpr(&self) -> bool {
@@ -43946,6 +48280,7 @@ impl Trcidr3Val {
     }
 
     /// Read **TRCERR** `[24:24]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn trcerr(&self) -> bool {
@@ -43953,6 +48288,7 @@ impl Trcidr3Val {
     }
 
     /// Read **EXLEVEL_NS** `[23:20]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn exlevel_ns(&self) -> u32 {
@@ -43960,6 +48296,7 @@ impl Trcidr3Val {
     }
 
     /// Read **EXLEVEL_S** `[19:16]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn exlevel_s(&self) -> u32 {
@@ -43967,6 +48304,7 @@ impl Trcidr3Val {
     }
 
     /// Read **CCITMIN** `[11:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn ccitmin(&self) -> u32 {
@@ -44012,20 +48350,35 @@ impl Trcidr3 {
 /// ## Fields
 ///
 /// - **NUMVMIDC** `[31:28]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMCIDC** `[27:24]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMSSCC** `[23:20]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMRSPAIR** `[19:16]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMPC** `[15:12]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **SUPPDAC** `[8]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMDVC** `[7:4]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMACPAIRS** `[3:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr4 {
@@ -44044,50 +48397,66 @@ impl Trcidr4 {
     // ======== Field Constants ========
 
     /// **NUMVMIDC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const NUMVMIDC_OFFSET: u32 = 28;
     pub const NUMVMIDC_MASK: u32 = 0xf0000000;
 
     /// **NUMCIDC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const NUMCIDC_OFFSET: u32 = 24;
     pub const NUMCIDC_MASK: u32 = 0x0f000000;
 
     /// **NUMSSCC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const NUMSSCC_OFFSET: u32 = 20;
     pub const NUMSSCC_MASK: u32 = 0x00f00000;
 
     /// **NUMRSPAIR**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const NUMRSPAIR_OFFSET: u32 = 16;
     pub const NUMRSPAIR_MASK: u32 = 0x000f0000;
 
     /// **NUMPC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const NUMPC_OFFSET: u32 = 12;
     pub const NUMPC_MASK: u32 = 0x0000f000;
 
     /// **SUPPDAC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const SUPPDAC_OFFSET: u32 = 8;
     pub const SUPPDAC_MASK: u32 = 0x00000100;
     pub const SUPPDAC: u32 = 1 << 8;
 
     /// **NUMDVC**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const NUMDVC_OFFSET: u32 = 4;
     pub const NUMDVC_MASK: u32 = 0x000000f0;
 
     /// **NUMACPAIRS**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const NUMACPAIRS_OFFSET: u32 = 0;
     pub const NUMACPAIRS_MASK: u32 = 0x0000000f;
@@ -44095,6 +48464,7 @@ impl Trcidr4 {
     // ======== Field Accessors ========
 
     /// **NUMVMIDC** `[31:28]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numvmidc(&self) -> u32 {
@@ -44102,6 +48472,7 @@ impl Trcidr4 {
     }
 
     /// **NUMCIDC** `[27:24]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numcidc(&self) -> u32 {
@@ -44109,6 +48480,7 @@ impl Trcidr4 {
     }
 
     /// **NUMSSCC** `[23:20]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numsscc(&self) -> u32 {
@@ -44116,6 +48488,7 @@ impl Trcidr4 {
     }
 
     /// **NUMRSPAIR** `[19:16]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numrspair(&self) -> u32 {
@@ -44123,6 +48496,7 @@ impl Trcidr4 {
     }
 
     /// **NUMPC** `[15:12]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numpc(&self) -> u32 {
@@ -44130,6 +48504,7 @@ impl Trcidr4 {
     }
 
     /// **SUPPDAC** `[8]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn suppdac(&self) -> bool {
@@ -44137,6 +48512,7 @@ impl Trcidr4 {
     }
 
     /// **NUMDVC** `[7:4]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numdvc(&self) -> u32 {
@@ -44144,6 +48520,7 @@ impl Trcidr4 {
     }
 
     /// **NUMACPAIRS** `[3:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numacpairs(&self) -> u32 {
@@ -44181,6 +48558,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMVMIDC** `[31:28]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numvmidc(&self) -> u32 {
@@ -44188,6 +48566,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMCIDC** `[27:24]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numcidc(&self) -> u32 {
@@ -44195,6 +48574,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMSSCC** `[23:20]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numsscc(&self) -> u32 {
@@ -44202,6 +48582,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMRSPAIR** `[19:16]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numrspair(&self) -> u32 {
@@ -44209,6 +48590,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMPC** `[15:12]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numpc(&self) -> u32 {
@@ -44216,6 +48598,7 @@ impl Trcidr4Val {
     }
 
     /// Read **SUPPDAC** `[8:8]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn suppdac(&self) -> bool {
@@ -44223,6 +48606,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMDVC** `[7:4]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numdvc(&self) -> u32 {
@@ -44230,6 +48614,7 @@ impl Trcidr4Val {
     }
 
     /// Read **NUMACPAIRS** `[3:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numacpairs(&self) -> u32 {
@@ -44275,20 +48660,35 @@ impl Trcidr4 {
 /// ## Fields
 ///
 /// - **REDFUNCNTR** `[31]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMCNTR** `[30:28]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMSEQSTATE** `[27:25]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **LPOVERRIDE** `[23]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **ATBTRIG** `[22]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **TRACEIDSIZE** `[21:16]` (RO)
+///
 ///   reads as 0x07
+///
 /// - **NUMEXTINSEL** `[11:9]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **NUMEXTIN** `[8:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcidr5 {
@@ -44307,52 +48707,68 @@ impl Trcidr5 {
     // ======== Field Constants ========
 
     /// **REDFUNCNTR**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const REDFUNCNTR_OFFSET: u32 = 31;
     pub const REDFUNCNTR_MASK: u32 = 0x80000000;
     pub const REDFUNCNTR: u32 = 1 << 31;
 
     /// **NUMCNTR**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[30:28]`, mask `0x70000000`
     pub const NUMCNTR_OFFSET: u32 = 28;
     pub const NUMCNTR_MASK: u32 = 0x70000000;
 
     /// **NUMSEQSTATE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[27:25]`, mask `0x0e000000`
     pub const NUMSEQSTATE_OFFSET: u32 = 25;
     pub const NUMSEQSTATE_MASK: u32 = 0x0e000000;
 
     /// **LPOVERRIDE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const LPOVERRIDE_OFFSET: u32 = 23;
     pub const LPOVERRIDE_MASK: u32 = 0x00800000;
     pub const LPOVERRIDE: u32 = 1 << 23;
 
     /// **ATBTRIG**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const ATBTRIG_OFFSET: u32 = 22;
     pub const ATBTRIG_MASK: u32 = 0x00400000;
     pub const ATBTRIG: u32 = 1 << 22;
 
     /// **TRACEIDSIZE**
+    ///
     /// reads as 0x07
+    ///
     /// Bits `[21:16]`, mask `0x003f0000`
     pub const TRACEIDSIZE_OFFSET: u32 = 16;
     pub const TRACEIDSIZE_MASK: u32 = 0x003f0000;
 
     /// **NUMEXTINSEL**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[11:9]`, mask `0x00000e00`
     pub const NUMEXTINSEL_OFFSET: u32 = 9;
     pub const NUMEXTINSEL_MASK: u32 = 0x00000e00;
 
     /// **NUMEXTIN**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const NUMEXTIN_OFFSET: u32 = 0;
     pub const NUMEXTIN_MASK: u32 = 0x000001ff;
@@ -44360,6 +48776,7 @@ impl Trcidr5 {
     // ======== Field Accessors ========
 
     /// **REDFUNCNTR** `[31]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn redfuncntr(&self) -> bool {
@@ -44367,6 +48784,7 @@ impl Trcidr5 {
     }
 
     /// **NUMCNTR** `[30:28]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numcntr(&self) -> u32 {
@@ -44374,6 +48792,7 @@ impl Trcidr5 {
     }
 
     /// **NUMSEQSTATE** `[27:25]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numseqstate(&self) -> u32 {
@@ -44381,6 +48800,7 @@ impl Trcidr5 {
     }
 
     /// **LPOVERRIDE** `[23]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn lpoverride(&self) -> bool {
@@ -44388,6 +48808,7 @@ impl Trcidr5 {
     }
 
     /// **ATBTRIG** `[22]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn atbtrig(&self) -> bool {
@@ -44395,6 +48816,7 @@ impl Trcidr5 {
     }
 
     /// **TRACEIDSIZE** `[21:16]` (RO)
+    ///
     /// reads as 0x07
     #[inline(always)]
     pub fn traceidsize(&self) -> u32 {
@@ -44402,6 +48824,7 @@ impl Trcidr5 {
     }
 
     /// **NUMEXTINSEL** `[11:9]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numextinsel(&self) -> u32 {
@@ -44409,6 +48832,7 @@ impl Trcidr5 {
     }
 
     /// **NUMEXTIN** `[8:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn numextin(&self) -> u32 {
@@ -44446,6 +48870,7 @@ impl Trcidr5Val {
     }
 
     /// Read **REDFUNCNTR** `[31:31]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn redfuncntr(&self) -> bool {
@@ -44453,6 +48878,7 @@ impl Trcidr5Val {
     }
 
     /// Read **NUMCNTR** `[30:28]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numcntr(&self) -> u32 {
@@ -44460,6 +48886,7 @@ impl Trcidr5Val {
     }
 
     /// Read **NUMSEQSTATE** `[27:25]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numseqstate(&self) -> u32 {
@@ -44467,6 +48894,7 @@ impl Trcidr5Val {
     }
 
     /// Read **LPOVERRIDE** `[23:23]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn lpoverride(&self) -> bool {
@@ -44474,6 +48902,7 @@ impl Trcidr5Val {
     }
 
     /// Read **ATBTRIG** `[22:22]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn atbtrig(&self) -> bool {
@@ -44481,6 +48910,7 @@ impl Trcidr5Val {
     }
 
     /// Read **TRACEIDSIZE** `[21:16]`
+    ///
     /// reads as 0x07
     #[inline(always)]
     pub const fn traceidsize(&self) -> u32 {
@@ -44488,6 +48918,7 @@ impl Trcidr5Val {
     }
 
     /// Read **NUMEXTINSEL** `[11:9]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numextinsel(&self) -> u32 {
@@ -44495,6 +48926,7 @@ impl Trcidr5Val {
     }
 
     /// Read **NUMEXTIN** `[8:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn numextin(&self) -> u32 {
@@ -44776,12 +49208,19 @@ impl Trcidr7 {
 /// ## Fields
 ///
 /// - **PAIRINV** `[21]` (RW)
+///
 ///   Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
+///
 /// - **INV** `[20]` (RW)
+///
 ///   Inverts the selected resources
+///
 /// - **GROUP** `[18:16]` (RW)
+///
 ///   Selects a group of resource
+///
 /// - **SELECT** `[7:0]` (RW)
+///
 ///   Selects one or more resources from the wanted group. One bit is provided per resource from the group
 #[repr(transparent)]
 pub struct Trcrsctlr2 {
@@ -44800,27 +49239,35 @@ impl Trcrsctlr2 {
     // ======== Field Constants ========
 
     /// **PAIRINV**
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const PAIRINV_OFFSET: u32 = 21;
     pub const PAIRINV_MASK: u32 = 0x00200000;
     pub const PAIRINV: u32 = 1 << 21;
 
     /// **INV**
+    ///
     /// Inverts the selected resources
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const INV_OFFSET: u32 = 20;
     pub const INV_MASK: u32 = 0x00100000;
     pub const INV: u32 = 1 << 20;
 
     /// **GROUP**
+    ///
     /// Selects a group of resource
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const GROUP_OFFSET: u32 = 16;
     pub const GROUP_MASK: u32 = 0x00070000;
 
     /// **SELECT**
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SELECT_OFFSET: u32 = 0;
     pub const SELECT_MASK: u32 = 0x000000ff;
@@ -44828,6 +49275,7 @@ impl Trcrsctlr2 {
     // ======== Field Accessors ========
 
     /// **PAIRINV** `[21]` (RW)
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub fn pairinv(&self) -> bool {
@@ -44847,6 +49295,7 @@ impl Trcrsctlr2 {
     }
 
     /// **INV** `[20]` (RW)
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub fn inv(&self) -> bool {
@@ -44866,6 +49315,7 @@ impl Trcrsctlr2 {
     }
 
     /// **GROUP** `[18:16]` (RW)
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub fn group(&self) -> u32 {
@@ -44873,6 +49323,7 @@ impl Trcrsctlr2 {
     }
 
     /// Write **GROUP** `[18:16]` (RW)
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub fn write_group(&self, value: u32) {
@@ -44880,6 +49331,7 @@ impl Trcrsctlr2 {
     }
 
     /// **SELECT** `[7:0]` (RW)
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn select(&self) -> u32 {
@@ -44887,6 +49339,7 @@ impl Trcrsctlr2 {
     }
 
     /// Write **SELECT** `[7:0]` (RW)
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn write_select(&self, value: u32) {
@@ -44924,6 +49377,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Read **PAIRINV** `[21:21]`
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub const fn pairinv(&self) -> bool {
@@ -44931,6 +49385,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Read **INV** `[20:20]`
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub const fn inv(&self) -> bool {
@@ -44938,6 +49393,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Read **GROUP** `[18:16]`
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub const fn group(&self) -> u32 {
@@ -44945,6 +49401,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Read **SELECT** `[7:0]`
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub const fn select(&self) -> u32 {
@@ -44952,6 +49409,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Set **PAIRINV** `[21:21]`
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub const fn with_pairinv(self, value: bool) -> Self {
@@ -44965,6 +49423,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Set **INV** `[20:20]`
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
@@ -44978,6 +49437,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Set **GROUP** `[18:16]`
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub const fn with_group(self, value: u32) -> Self {
@@ -44987,6 +49447,7 @@ impl Trcrsctlr2Val {
     }
 
     /// Set **SELECT** `[7:0]`
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub const fn with_select(self, value: u32) -> Self {
@@ -45034,12 +49495,19 @@ impl Trcrsctlr2 {
 /// ## Fields
 ///
 /// - **PAIRINV** `[21]` (RW)
+///
 ///   Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
+///
 /// - **INV** `[20]` (RW)
+///
 ///   Inverts the selected resources
+///
 /// - **GROUP** `[18:16]` (RW)
+///
 ///   Selects a group of resource
+///
 /// - **SELECT** `[7:0]` (RW)
+///
 ///   Selects one or more resources from the wanted group. One bit is provided per resource from the group
 #[repr(transparent)]
 pub struct Trcrsctlr3 {
@@ -45058,27 +49526,35 @@ impl Trcrsctlr3 {
     // ======== Field Constants ========
 
     /// **PAIRINV**
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const PAIRINV_OFFSET: u32 = 21;
     pub const PAIRINV_MASK: u32 = 0x00200000;
     pub const PAIRINV: u32 = 1 << 21;
 
     /// **INV**
+    ///
     /// Inverts the selected resources
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const INV_OFFSET: u32 = 20;
     pub const INV_MASK: u32 = 0x00100000;
     pub const INV: u32 = 1 << 20;
 
     /// **GROUP**
+    ///
     /// Selects a group of resource
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const GROUP_OFFSET: u32 = 16;
     pub const GROUP_MASK: u32 = 0x00070000;
 
     /// **SELECT**
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SELECT_OFFSET: u32 = 0;
     pub const SELECT_MASK: u32 = 0x000000ff;
@@ -45086,6 +49562,7 @@ impl Trcrsctlr3 {
     // ======== Field Accessors ========
 
     /// **PAIRINV** `[21]` (RW)
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub fn pairinv(&self) -> bool {
@@ -45105,6 +49582,7 @@ impl Trcrsctlr3 {
     }
 
     /// **INV** `[20]` (RW)
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub fn inv(&self) -> bool {
@@ -45124,6 +49602,7 @@ impl Trcrsctlr3 {
     }
 
     /// **GROUP** `[18:16]` (RW)
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub fn group(&self) -> u32 {
@@ -45131,6 +49610,7 @@ impl Trcrsctlr3 {
     }
 
     /// Write **GROUP** `[18:16]` (RW)
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub fn write_group(&self, value: u32) {
@@ -45138,6 +49618,7 @@ impl Trcrsctlr3 {
     }
 
     /// **SELECT** `[7:0]` (RW)
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn select(&self) -> u32 {
@@ -45145,6 +49626,7 @@ impl Trcrsctlr3 {
     }
 
     /// Write **SELECT** `[7:0]` (RW)
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn write_select(&self, value: u32) {
@@ -45182,6 +49664,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Read **PAIRINV** `[21:21]`
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub const fn pairinv(&self) -> bool {
@@ -45189,6 +49672,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Read **INV** `[20:20]`
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub const fn inv(&self) -> bool {
@@ -45196,6 +49680,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Read **GROUP** `[18:16]`
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub const fn group(&self) -> u32 {
@@ -45203,6 +49688,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Read **SELECT** `[7:0]`
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub const fn select(&self) -> u32 {
@@ -45210,6 +49696,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Set **PAIRINV** `[21:21]`
+    ///
     /// Inverts the result of a combined pair of resources. This bit is only implemented on the lower register for a pair of resource selectors
     #[inline(always)]
     pub const fn with_pairinv(self, value: bool) -> Self {
@@ -45223,6 +49710,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Set **INV** `[20:20]`
+    ///
     /// Inverts the selected resources
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
@@ -45236,6 +49724,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Set **GROUP** `[18:16]`
+    ///
     /// Selects a group of resource
     #[inline(always)]
     pub const fn with_group(self, value: u32) -> Self {
@@ -45245,6 +49734,7 @@ impl Trcrsctlr3Val {
     }
 
     /// Set **SELECT** `[7:0]`
+    ///
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub const fn with_select(self, value: u32) -> Self {
@@ -45292,14 +49782,23 @@ impl Trcrsctlr3 {
 /// ## Fields
 ///
 /// - **STATUS** `[31]` (RW)
+///
 ///   Single-shot status bit. Indicates if any of the comparators, that TRCSSCCRn.SAC or TRCSSCCRn.ARC selects, have matched
+///
 /// - **PC** `[3]` (RO)
+///
 ///   Reserved, RES1
+///
 /// - **DV** `[2]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **DA** `[1]` (RO)
+///
 ///   Reserved, RES0
+///
 /// - **INST** `[0]` (RO)
+///
 ///   Reserved, RES0
 #[repr(transparent)]
 pub struct Trcsscsr {
@@ -45318,35 +49817,45 @@ impl Trcsscsr {
     // ======== Field Constants ========
 
     /// **STATUS**
+    ///
     /// Single-shot status bit. Indicates if any of the comparators, that TRCSSCCRn.SAC or TRCSSCCRn.ARC selects, have matched
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const STATUS_OFFSET: u32 = 31;
     pub const STATUS_MASK: u32 = 0x80000000;
     pub const STATUS: u32 = 1 << 31;
 
     /// **PC**
+    ///
     /// Reserved, RES1
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PC_OFFSET: u32 = 3;
     pub const PC_MASK: u32 = 0x00000008;
     pub const PC: u32 = 1 << 3;
 
     /// **DV**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DV_OFFSET: u32 = 2;
     pub const DV_MASK: u32 = 0x00000004;
     pub const DV: u32 = 1 << 2;
 
     /// **DA**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const DA_OFFSET: u32 = 1;
     pub const DA_MASK: u32 = 0x00000002;
     pub const DA: u32 = 1 << 1;
 
     /// **INST**
+    ///
     /// Reserved, RES0
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const INST_OFFSET: u32 = 0;
     pub const INST_MASK: u32 = 0x00000001;
@@ -45355,6 +49864,7 @@ impl Trcsscsr {
     // ======== Field Accessors ========
 
     /// **STATUS** `[31]` (RW)
+    ///
     /// Single-shot status bit. Indicates if any of the comparators, that TRCSSCCRn.SAC or TRCSSCCRn.ARC selects, have matched
     #[inline(always)]
     pub fn status(&self) -> bool {
@@ -45374,6 +49884,7 @@ impl Trcsscsr {
     }
 
     /// **PC** `[3]` (RO)
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub fn pc(&self) -> bool {
@@ -45381,6 +49892,7 @@ impl Trcsscsr {
     }
 
     /// **DV** `[2]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn dv(&self) -> bool {
@@ -45388,6 +49900,7 @@ impl Trcsscsr {
     }
 
     /// **DA** `[1]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn da(&self) -> bool {
@@ -45395,6 +49908,7 @@ impl Trcsscsr {
     }
 
     /// **INST** `[0]` (RO)
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub fn inst(&self) -> bool {
@@ -45432,6 +49946,7 @@ impl TrcsscsrVal {
     }
 
     /// Read **STATUS** `[31:31]`
+    ///
     /// Single-shot status bit. Indicates if any of the comparators, that TRCSSCCRn.SAC or TRCSSCCRn.ARC selects, have matched
     #[inline(always)]
     pub const fn status(&self) -> bool {
@@ -45439,6 +49954,7 @@ impl TrcsscsrVal {
     }
 
     /// Read **PC** `[3:3]`
+    ///
     /// Reserved, RES1
     #[inline(always)]
     pub const fn pc(&self) -> bool {
@@ -45446,6 +49962,7 @@ impl TrcsscsrVal {
     }
 
     /// Read **DV** `[2:2]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn dv(&self) -> bool {
@@ -45453,6 +49970,7 @@ impl TrcsscsrVal {
     }
 
     /// Read **DA** `[1:1]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn da(&self) -> bool {
@@ -45460,6 +49978,7 @@ impl TrcsscsrVal {
     }
 
     /// Read **INST** `[0:0]`
+    ///
     /// Reserved, RES0
     #[inline(always)]
     pub const fn inst(&self) -> bool {
@@ -45467,6 +49986,7 @@ impl TrcsscsrVal {
     }
 
     /// Set **STATUS** `[31:31]`
+    ///
     /// Single-shot status bit. Indicates if any of the comparators, that TRCSSCCRn.SAC or TRCSSCCRn.ARC selects, have matched
     #[inline(always)]
     pub const fn with_status(self, value: bool) -> Self {
@@ -45518,6 +50038,7 @@ impl Trcsscsr {
 /// ## Fields
 ///
 /// - **PC** `[3:0]` (RW)
+///
 ///   Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
 #[repr(transparent)]
 pub struct Trcsspcicr {
@@ -45536,7 +50057,9 @@ impl Trcsspcicr {
     // ======== Field Constants ========
 
     /// **PC**
+    ///
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PC_OFFSET: u32 = 0;
     pub const PC_MASK: u32 = 0x0000000f;
@@ -45544,6 +50067,7 @@ impl Trcsspcicr {
     // ======== Field Accessors ========
 
     /// **PC** `[3:0]` (RW)
+    ///
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
     #[inline(always)]
     pub fn pc(&self) -> u32 {
@@ -45551,6 +50075,7 @@ impl Trcsspcicr {
     }
 
     /// Write **PC** `[3:0]` (RW)
+    ///
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
     #[inline(always)]
     pub fn write_pc(&self, value: u32) {
@@ -45588,6 +50113,7 @@ impl TrcsspcicrVal {
     }
 
     /// Read **PC** `[3:0]`
+    ///
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
     #[inline(always)]
     pub const fn pc(&self) -> u32 {
@@ -45595,6 +50121,7 @@ impl TrcsspcicrVal {
     }
 
     /// Set **PC** `[3:0]`
+    ///
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
     #[inline(always)]
     pub const fn with_pc(self, value: u32) -> Self {
@@ -45642,6 +50169,7 @@ impl Trcsspcicr {
 /// ## Fields
 ///
 /// - **PU** `[3]` (RW)
+///
 ///   Powerup request bit:
 #[repr(transparent)]
 pub struct Trcpdcr {
@@ -45660,7 +50188,9 @@ impl Trcpdcr {
     // ======== Field Constants ========
 
     /// **PU**
+    ///
     /// Powerup request bit:
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PU_OFFSET: u32 = 3;
     pub const PU_MASK: u32 = 0x00000008;
@@ -45669,6 +50199,7 @@ impl Trcpdcr {
     // ======== Field Accessors ========
 
     /// **PU** `[3]` (RW)
+    ///
     /// Powerup request bit:
     #[inline(always)]
     pub fn pu(&self) -> bool {
@@ -45718,6 +50249,7 @@ impl TrcpdcrVal {
     }
 
     /// Read **PU** `[3:3]`
+    ///
     /// Powerup request bit:
     #[inline(always)]
     pub const fn pu(&self) -> bool {
@@ -45725,6 +50257,7 @@ impl TrcpdcrVal {
     }
 
     /// Set **PU** `[3:3]`
+    ///
     /// Powerup request bit:
     #[inline(always)]
     pub const fn with_pu(self, value: bool) -> Self {
@@ -45776,10 +50309,15 @@ impl Trcpdcr {
 /// ## Fields
 ///
 /// - **OSLK** `[5]` (RO)
+///
 ///   OS Lock status bit:
+///
 /// - **STICKYPD** `[1]` (RO)
+///
 ///   Sticky powerdown status bit. Indicates whether the trace register state is valid:
+///
 /// - **POWER** `[0]` (RO)
+///
 ///   Power status bit:
 #[repr(transparent)]
 pub struct Trcpdsr {
@@ -45798,21 +50336,27 @@ impl Trcpdsr {
     // ======== Field Constants ========
 
     /// **OSLK**
+    ///
     /// OS Lock status bit:
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const OSLK_OFFSET: u32 = 5;
     pub const OSLK_MASK: u32 = 0x00000020;
     pub const OSLK: u32 = 1 << 5;
 
     /// **STICKYPD**
+    ///
     /// Sticky powerdown status bit. Indicates whether the trace register state is valid:
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const STICKYPD_OFFSET: u32 = 1;
     pub const STICKYPD_MASK: u32 = 0x00000002;
     pub const STICKYPD: u32 = 1 << 1;
 
     /// **POWER**
+    ///
     /// Power status bit:
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const POWER_OFFSET: u32 = 0;
     pub const POWER_MASK: u32 = 0x00000001;
@@ -45821,6 +50365,7 @@ impl Trcpdsr {
     // ======== Field Accessors ========
 
     /// **OSLK** `[5]` (RO)
+    ///
     /// OS Lock status bit:
     #[inline(always)]
     pub fn oslk(&self) -> bool {
@@ -45828,6 +50373,7 @@ impl Trcpdsr {
     }
 
     /// **STICKYPD** `[1]` (RO)
+    ///
     /// Sticky powerdown status bit. Indicates whether the trace register state is valid:
     #[inline(always)]
     pub fn stickypd(&self) -> bool {
@@ -45835,6 +50381,7 @@ impl Trcpdsr {
     }
 
     /// **POWER** `[0]` (RO)
+    ///
     /// Power status bit:
     #[inline(always)]
     pub fn power(&self) -> bool {
@@ -45872,6 +50419,7 @@ impl TrcpdsrVal {
     }
 
     /// Read **OSLK** `[5:5]`
+    ///
     /// OS Lock status bit:
     #[inline(always)]
     pub const fn oslk(&self) -> bool {
@@ -45879,6 +50427,7 @@ impl TrcpdsrVal {
     }
 
     /// Read **STICKYPD** `[1:1]`
+    ///
     /// Sticky powerdown status bit. Indicates whether the trace register state is valid:
     #[inline(always)]
     pub const fn stickypd(&self) -> bool {
@@ -45886,6 +50435,7 @@ impl TrcpdsrVal {
     }
 
     /// Read **POWER** `[0:0]`
+    ///
     /// Power status bit:
     #[inline(always)]
     pub const fn power(&self) -> bool {
@@ -45931,6 +50481,7 @@ impl Trcpdsr {
 /// ## Fields
 ///
 /// - **ID** `[6:0]` (RW)
+///
 ///   Trace ID
 #[repr(transparent)]
 pub struct Trcitatbidr {
@@ -45949,7 +50500,9 @@ impl Trcitatbidr {
     // ======== Field Constants ========
 
     /// **ID**
+    ///
     /// Trace ID
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ID_OFFSET: u32 = 0;
     pub const ID_MASK: u32 = 0x0000007f;
@@ -45957,6 +50510,7 @@ impl Trcitatbidr {
     // ======== Field Accessors ========
 
     /// **ID** `[6:0]` (RW)
+    ///
     /// Trace ID
     #[inline(always)]
     pub fn id(&self) -> u32 {
@@ -45964,6 +50518,7 @@ impl Trcitatbidr {
     }
 
     /// Write **ID** `[6:0]` (RW)
+    ///
     /// Trace ID
     #[inline(always)]
     pub fn write_id(&self, value: u32) {
@@ -46001,6 +50556,7 @@ impl TrcitatbidrVal {
     }
 
     /// Read **ID** `[6:0]`
+    ///
     /// Trace ID
     #[inline(always)]
     pub const fn id(&self) -> u32 {
@@ -46008,6 +50564,7 @@ impl TrcitatbidrVal {
     }
 
     /// Set **ID** `[6:0]`
+    ///
     /// Trace ID
     #[inline(always)]
     pub const fn with_id(self, value: u32) -> Self {
@@ -46055,8 +50612,11 @@ impl Trcitatbidr {
 /// ## Fields
 ///
 /// - **AFVALIDM** `[1]` (RW)
+///
 ///   Integration Mode instruction AFVALIDM in
+///
 /// - **ATREADYM** `[0]` (RW)
+///
 ///   Integration Mode instruction ATREADYM in
 #[repr(transparent)]
 pub struct Trcitiatbinr {
@@ -46075,14 +50635,18 @@ impl Trcitiatbinr {
     // ======== Field Constants ========
 
     /// **AFVALIDM**
+    ///
     /// Integration Mode instruction AFVALIDM in
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AFVALIDM_OFFSET: u32 = 1;
     pub const AFVALIDM_MASK: u32 = 0x00000002;
     pub const AFVALIDM: u32 = 1 << 1;
 
     /// **ATREADYM**
+    ///
     /// Integration Mode instruction ATREADYM in
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ATREADYM_OFFSET: u32 = 0;
     pub const ATREADYM_MASK: u32 = 0x00000001;
@@ -46091,6 +50655,7 @@ impl Trcitiatbinr {
     // ======== Field Accessors ========
 
     /// **AFVALIDM** `[1]` (RW)
+    ///
     /// Integration Mode instruction AFVALIDM in
     #[inline(always)]
     pub fn afvalidm(&self) -> bool {
@@ -46110,6 +50675,7 @@ impl Trcitiatbinr {
     }
 
     /// **ATREADYM** `[0]` (RW)
+    ///
     /// Integration Mode instruction ATREADYM in
     #[inline(always)]
     pub fn atreadym(&self) -> bool {
@@ -46159,6 +50725,7 @@ impl TrcitiatbinrVal {
     }
 
     /// Read **AFVALIDM** `[1:1]`
+    ///
     /// Integration Mode instruction AFVALIDM in
     #[inline(always)]
     pub const fn afvalidm(&self) -> bool {
@@ -46166,6 +50733,7 @@ impl TrcitiatbinrVal {
     }
 
     /// Read **ATREADYM** `[0:0]`
+    ///
     /// Integration Mode instruction ATREADYM in
     #[inline(always)]
     pub const fn atreadym(&self) -> bool {
@@ -46173,6 +50741,7 @@ impl TrcitiatbinrVal {
     }
 
     /// Set **AFVALIDM** `[1:1]`
+    ///
     /// Integration Mode instruction AFVALIDM in
     #[inline(always)]
     pub const fn with_afvalidm(self, value: bool) -> Self {
@@ -46186,6 +50755,7 @@ impl TrcitiatbinrVal {
     }
 
     /// Set **ATREADYM** `[0:0]`
+    ///
     /// Integration Mode instruction ATREADYM in
     #[inline(always)]
     pub const fn with_atreadym(self, value: bool) -> Self {
@@ -46237,8 +50807,11 @@ impl Trcitiatbinr {
 /// ## Fields
 ///
 /// - **AFREADY** `[1]` (RW)
+///
 ///   Integration Mode instruction AFREADY out
+///
 /// - **ATVALID** `[0]` (RW)
+///
 ///   Integration Mode instruction ATVALID out
 #[repr(transparent)]
 pub struct Trcitiatboutr {
@@ -46257,14 +50830,18 @@ impl Trcitiatboutr {
     // ======== Field Constants ========
 
     /// **AFREADY**
+    ///
     /// Integration Mode instruction AFREADY out
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const AFREADY_OFFSET: u32 = 1;
     pub const AFREADY_MASK: u32 = 0x00000002;
     pub const AFREADY: u32 = 1 << 1;
 
     /// **ATVALID**
+    ///
     /// Integration Mode instruction ATVALID out
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ATVALID_OFFSET: u32 = 0;
     pub const ATVALID_MASK: u32 = 0x00000001;
@@ -46273,6 +50850,7 @@ impl Trcitiatboutr {
     // ======== Field Accessors ========
 
     /// **AFREADY** `[1]` (RW)
+    ///
     /// Integration Mode instruction AFREADY out
     #[inline(always)]
     pub fn afready(&self) -> bool {
@@ -46292,6 +50870,7 @@ impl Trcitiatboutr {
     }
 
     /// **ATVALID** `[0]` (RW)
+    ///
     /// Integration Mode instruction ATVALID out
     #[inline(always)]
     pub fn atvalid(&self) -> bool {
@@ -46341,6 +50920,7 @@ impl TrcitiatboutrVal {
     }
 
     /// Read **AFREADY** `[1:1]`
+    ///
     /// Integration Mode instruction AFREADY out
     #[inline(always)]
     pub const fn afready(&self) -> bool {
@@ -46348,6 +50928,7 @@ impl TrcitiatboutrVal {
     }
 
     /// Read **ATVALID** `[0:0]`
+    ///
     /// Integration Mode instruction ATVALID out
     #[inline(always)]
     pub const fn atvalid(&self) -> bool {
@@ -46355,6 +50936,7 @@ impl TrcitiatboutrVal {
     }
 
     /// Set **AFREADY** `[1:1]`
+    ///
     /// Integration Mode instruction AFREADY out
     #[inline(always)]
     pub const fn with_afready(self, value: bool) -> Self {
@@ -46368,6 +50950,7 @@ impl TrcitiatboutrVal {
     }
 
     /// Set **ATVALID** `[0:0]`
+    ///
     /// Integration Mode instruction ATVALID out
     #[inline(always)]
     pub const fn with_atvalid(self, value: bool) -> Self {
@@ -46419,12 +51002,19 @@ impl Trcitiatboutr {
 /// ## Fields
 ///
 /// - **SET3** `[3]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **SET2** `[2]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **SET1** `[1]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **SET0** `[0]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
 #[repr(transparent)]
 pub struct Trcclaimset {
@@ -46443,28 +51033,36 @@ impl Trcclaimset {
     // ======== Field Constants ========
 
     /// **SET3**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SET3_OFFSET: u32 = 3;
     pub const SET3_MASK: u32 = 0x00000008;
     pub const SET3: u32 = 1 << 3;
 
     /// **SET2**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SET2_OFFSET: u32 = 2;
     pub const SET2_MASK: u32 = 0x00000004;
     pub const SET2: u32 = 1 << 2;
 
     /// **SET1**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SET1_OFFSET: u32 = 1;
     pub const SET1_MASK: u32 = 0x00000002;
     pub const SET1: u32 = 1 << 1;
 
     /// **SET0**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SET0_OFFSET: u32 = 0;
     pub const SET0_MASK: u32 = 0x00000001;
@@ -46473,6 +51071,7 @@ impl Trcclaimset {
     // ======== Field Accessors ========
 
     /// **SET3** `[3]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn set3(&self) -> bool {
@@ -46492,6 +51091,7 @@ impl Trcclaimset {
     }
 
     /// **SET2** `[2]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn set2(&self) -> bool {
@@ -46511,6 +51111,7 @@ impl Trcclaimset {
     }
 
     /// **SET1** `[1]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn set1(&self) -> bool {
@@ -46530,6 +51131,7 @@ impl Trcclaimset {
     }
 
     /// **SET0** `[0]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn set0(&self) -> bool {
@@ -46579,6 +51181,7 @@ impl TrcclaimsetVal {
     }
 
     /// Read **SET3** `[3:3]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn set3(&self) -> bool {
@@ -46586,6 +51189,7 @@ impl TrcclaimsetVal {
     }
 
     /// Read **SET2** `[2:2]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn set2(&self) -> bool {
@@ -46593,6 +51197,7 @@ impl TrcclaimsetVal {
     }
 
     /// Read **SET1** `[1:1]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn set1(&self) -> bool {
@@ -46600,6 +51205,7 @@ impl TrcclaimsetVal {
     }
 
     /// Read **SET0** `[0:0]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn set0(&self) -> bool {
@@ -46607,6 +51213,7 @@ impl TrcclaimsetVal {
     }
 
     /// Set **SET3** `[3:3]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_set3(self, value: bool) -> Self {
@@ -46620,6 +51227,7 @@ impl TrcclaimsetVal {
     }
 
     /// Set **SET2** `[2:2]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_set2(self, value: bool) -> Self {
@@ -46633,6 +51241,7 @@ impl TrcclaimsetVal {
     }
 
     /// Set **SET1** `[1:1]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_set1(self, value: bool) -> Self {
@@ -46646,6 +51255,7 @@ impl TrcclaimsetVal {
     }
 
     /// Set **SET0** `[0:0]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_set0(self, value: bool) -> Self {
@@ -46697,12 +51307,19 @@ impl Trcclaimset {
 /// ## Fields
 ///
 /// - **CLR3** `[3]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **CLR2** `[2]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **CLR1** `[1]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
+///
 /// - **CLR0** `[0]` (RW)
+///
 ///   When a write to one of these bits occurs, with the value:
 #[repr(transparent)]
 pub struct Trcclaimclr {
@@ -46721,28 +51338,36 @@ impl Trcclaimclr {
     // ======== Field Constants ========
 
     /// **CLR3**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const CLR3_OFFSET: u32 = 3;
     pub const CLR3_MASK: u32 = 0x00000008;
     pub const CLR3: u32 = 1 << 3;
 
     /// **CLR2**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CLR2_OFFSET: u32 = 2;
     pub const CLR2_MASK: u32 = 0x00000004;
     pub const CLR2: u32 = 1 << 2;
 
     /// **CLR1**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CLR1_OFFSET: u32 = 1;
     pub const CLR1_MASK: u32 = 0x00000002;
     pub const CLR1: u32 = 1 << 1;
 
     /// **CLR0**
+    ///
     /// When a write to one of these bits occurs, with the value:
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLR0_OFFSET: u32 = 0;
     pub const CLR0_MASK: u32 = 0x00000001;
@@ -46751,6 +51376,7 @@ impl Trcclaimclr {
     // ======== Field Accessors ========
 
     /// **CLR3** `[3]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn clr3(&self) -> bool {
@@ -46770,6 +51396,7 @@ impl Trcclaimclr {
     }
 
     /// **CLR2** `[2]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn clr2(&self) -> bool {
@@ -46789,6 +51416,7 @@ impl Trcclaimclr {
     }
 
     /// **CLR1** `[1]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn clr1(&self) -> bool {
@@ -46808,6 +51436,7 @@ impl Trcclaimclr {
     }
 
     /// **CLR0** `[0]` (RW)
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub fn clr0(&self) -> bool {
@@ -46857,6 +51486,7 @@ impl TrcclaimclrVal {
     }
 
     /// Read **CLR3** `[3:3]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn clr3(&self) -> bool {
@@ -46864,6 +51494,7 @@ impl TrcclaimclrVal {
     }
 
     /// Read **CLR2** `[2:2]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn clr2(&self) -> bool {
@@ -46871,6 +51502,7 @@ impl TrcclaimclrVal {
     }
 
     /// Read **CLR1** `[1:1]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn clr1(&self) -> bool {
@@ -46878,6 +51510,7 @@ impl TrcclaimclrVal {
     }
 
     /// Read **CLR0** `[0:0]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn clr0(&self) -> bool {
@@ -46885,6 +51518,7 @@ impl TrcclaimclrVal {
     }
 
     /// Set **CLR3** `[3:3]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_clr3(self, value: bool) -> Self {
@@ -46898,6 +51532,7 @@ impl TrcclaimclrVal {
     }
 
     /// Set **CLR2** `[2:2]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_clr2(self, value: bool) -> Self {
@@ -46911,6 +51546,7 @@ impl TrcclaimclrVal {
     }
 
     /// Set **CLR1** `[1:1]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_clr1(self, value: bool) -> Self {
@@ -46924,6 +51560,7 @@ impl TrcclaimclrVal {
     }
 
     /// Set **CLR0** `[0:0]`
+    ///
     /// When a write to one of these bits occurs, with the value:
     #[inline(always)]
     pub const fn with_clr0(self, value: bool) -> Self {
@@ -46975,12 +51612,19 @@ impl Trcclaimclr {
 /// ## Fields
 ///
 /// - **SNID** `[7:6]` (RO)
+///
 ///   Indicates whether the system enables the trace unit to support Secure non-invasive debug:
+///
 /// - **SID** `[5:4]` (RO)
+///
 ///   Indicates whether the trace unit supports Secure invasive debug:
+///
 /// - **NSNID** `[3:2]` (RO)
+///
 ///   Indicates whether the system enables the trace unit to support Non-secure non-invasive debug:
+///
 /// - **NSID** `[1:0]` (RO)
+///
 ///   Indicates whether the trace unit supports Non-secure invasive debug:
 #[repr(transparent)]
 pub struct Trcauthstatus {
@@ -46999,25 +51643,33 @@ impl Trcauthstatus {
     // ======== Field Constants ========
 
     /// **SNID**
+    ///
     /// Indicates whether the system enables the trace unit to support Secure non-invasive debug:
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const SNID_OFFSET: u32 = 6;
     pub const SNID_MASK: u32 = 0x000000c0;
 
     /// **SID**
+    ///
     /// Indicates whether the trace unit supports Secure invasive debug:
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const SID_OFFSET: u32 = 4;
     pub const SID_MASK: u32 = 0x00000030;
 
     /// **NSNID**
+    ///
     /// Indicates whether the system enables the trace unit to support Non-secure non-invasive debug:
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSNID_OFFSET: u32 = 2;
     pub const NSNID_MASK: u32 = 0x0000000c;
 
     /// **NSID**
+    ///
     /// Indicates whether the trace unit supports Non-secure invasive debug:
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const NSID_OFFSET: u32 = 0;
     pub const NSID_MASK: u32 = 0x00000003;
@@ -47025,6 +51677,7 @@ impl Trcauthstatus {
     // ======== Field Accessors ========
 
     /// **SNID** `[7:6]` (RO)
+    ///
     /// Indicates whether the system enables the trace unit to support Secure non-invasive debug:
     #[inline(always)]
     pub fn snid(&self) -> u32 {
@@ -47032,6 +51685,7 @@ impl Trcauthstatus {
     }
 
     /// **SID** `[5:4]` (RO)
+    ///
     /// Indicates whether the trace unit supports Secure invasive debug:
     #[inline(always)]
     pub fn sid(&self) -> u32 {
@@ -47039,6 +51693,7 @@ impl Trcauthstatus {
     }
 
     /// **NSNID** `[3:2]` (RO)
+    ///
     /// Indicates whether the system enables the trace unit to support Non-secure non-invasive debug:
     #[inline(always)]
     pub fn nsnid(&self) -> u32 {
@@ -47046,6 +51701,7 @@ impl Trcauthstatus {
     }
 
     /// **NSID** `[1:0]` (RO)
+    ///
     /// Indicates whether the trace unit supports Non-secure invasive debug:
     #[inline(always)]
     pub fn nsid(&self) -> u32 {
@@ -47083,6 +51739,7 @@ impl TrcauthstatusVal {
     }
 
     /// Read **SNID** `[7:6]`
+    ///
     /// Indicates whether the system enables the trace unit to support Secure non-invasive debug:
     #[inline(always)]
     pub const fn snid(&self) -> u32 {
@@ -47090,6 +51747,7 @@ impl TrcauthstatusVal {
     }
 
     /// Read **SID** `[5:4]`
+    ///
     /// Indicates whether the trace unit supports Secure invasive debug:
     #[inline(always)]
     pub const fn sid(&self) -> u32 {
@@ -47097,6 +51755,7 @@ impl TrcauthstatusVal {
     }
 
     /// Read **NSNID** `[3:2]`
+    ///
     /// Indicates whether the system enables the trace unit to support Non-secure non-invasive debug:
     #[inline(always)]
     pub const fn nsnid(&self) -> u32 {
@@ -47104,6 +51763,7 @@ impl TrcauthstatusVal {
     }
 
     /// Read **NSID** `[1:0]`
+    ///
     /// Indicates whether the trace unit supports Non-secure invasive debug:
     #[inline(always)]
     pub const fn nsid(&self) -> u32 {
@@ -47149,12 +51809,19 @@ impl Trcauthstatus {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   reads as 0b01000111011
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   reads as 0b1
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   reads as 0b0000
+///
 /// - **ARCHID** `[15:0]` (RO)
+///
 ///   reads as 0b0100101000010011
 #[repr(transparent)]
 pub struct Trcdevarch {
@@ -47173,26 +51840,34 @@ impl Trcdevarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// reads as 0b01000111011
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// reads as 0b1
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// reads as 0b0000
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHID**
+    ///
     /// reads as 0b0100101000010011
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ARCHID_OFFSET: u32 = 0;
     pub const ARCHID_MASK: u32 = 0x0000ffff;
@@ -47200,6 +51875,7 @@ impl Trcdevarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// reads as 0b01000111011
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -47207,6 +51883,7 @@ impl Trcdevarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// reads as 0b1
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -47214,6 +51891,7 @@ impl Trcdevarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -47221,6 +51899,7 @@ impl Trcdevarch {
     }
 
     /// **ARCHID** `[15:0]` (RO)
+    ///
     /// reads as 0b0100101000010011
     #[inline(always)]
     pub fn archid(&self) -> u32 {
@@ -47258,6 +51937,7 @@ impl TrcdevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// reads as 0b01000111011
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -47265,6 +51945,7 @@ impl TrcdevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// reads as 0b1
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -47272,6 +51953,7 @@ impl TrcdevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -47279,6 +51961,7 @@ impl TrcdevarchVal {
     }
 
     /// Read **ARCHID** `[15:0]`
+    ///
     /// reads as 0b0100101000010011
     #[inline(always)]
     pub const fn archid(&self) -> u32 {
@@ -47442,8 +52125,11 @@ impl Trcdevid {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   reads as 0b0001
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   reads as 0b0011
 #[repr(transparent)]
 pub struct Trcdevtype {
@@ -47462,13 +52148,17 @@ impl Trcdevtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// reads as 0b0001
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// reads as 0b0011
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -47476,6 +52166,7 @@ impl Trcdevtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// reads as 0b0001
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -47483,6 +52174,7 @@ impl Trcdevtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// reads as 0b0011
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -47520,6 +52212,7 @@ impl TrcdevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// reads as 0b0001
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -47527,6 +52220,7 @@ impl TrcdevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// reads as 0b0011
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -47572,8 +52266,11 @@ impl Trcdevtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcpidr4 {
@@ -47592,13 +52289,17 @@ impl Trcpidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -47606,6 +52307,7 @@ impl Trcpidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -47613,6 +52315,7 @@ impl Trcpidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -47650,6 +52353,7 @@ impl Trcpidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -47657,6 +52361,7 @@ impl Trcpidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -48056,6 +52761,7 @@ impl Trcpidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcpidr0 {
@@ -48074,7 +52780,9 @@ impl Trcpidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -48082,6 +52790,7 @@ impl Trcpidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -48119,6 +52828,7 @@ impl Trcpidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -48164,8 +52874,11 @@ impl Trcpidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **PART_0** `[3:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcpidr1 {
@@ -48184,13 +52897,17 @@ impl Trcpidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_0**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x0000000f;
@@ -48198,6 +52915,7 @@ impl Trcpidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -48205,6 +52923,7 @@ impl Trcpidr1 {
     }
 
     /// **PART_0** `[3:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -48242,6 +52961,7 @@ impl Trcpidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -48249,6 +52969,7 @@ impl Trcpidr1Val {
     }
 
     /// Read **PART_0** `[3:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -48294,10 +53015,15 @@ impl Trcpidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   reads as 0b1
+///
 /// - **DES_0** `[2:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcpidr2 {
@@ -48316,20 +53042,26 @@ impl Trcpidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// reads as 0b1
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_0**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_0_OFFSET: u32 = 0;
     pub const DES_0_MASK: u32 = 0x00000007;
@@ -48337,6 +53069,7 @@ impl Trcpidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -48344,6 +53077,7 @@ impl Trcpidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// reads as 0b1
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -48351,6 +53085,7 @@ impl Trcpidr2 {
     }
 
     /// **DES_0** `[2:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -48388,6 +53123,7 @@ impl Trcpidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -48395,6 +53131,7 @@ impl Trcpidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// reads as 0b1
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -48402,6 +53139,7 @@ impl Trcpidr2Val {
     }
 
     /// Read **DES_0** `[2:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -48447,8 +53185,11 @@ impl Trcpidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   reads as `ImpDef
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   reads as `ImpDef
 #[repr(transparent)]
 pub struct Trcpidr3 {
@@ -48467,13 +53208,17 @@ impl Trcpidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// reads as `ImpDef
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -48481,6 +53226,7 @@ impl Trcpidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -48488,6 +53234,7 @@ impl Trcpidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -48525,6 +53272,7 @@ impl Trcpidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -48532,6 +53280,7 @@ impl Trcpidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// reads as `ImpDef
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -48577,6 +53326,7 @@ impl Trcpidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   reads as 0b00001101
 #[repr(transparent)]
 pub struct Trccidr0 {
@@ -48595,7 +53345,9 @@ impl Trccidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// reads as 0b00001101
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -48603,6 +53355,7 @@ impl Trccidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// reads as 0b00001101
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -48640,6 +53393,7 @@ impl Trccidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// reads as 0b00001101
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -48685,8 +53439,11 @@ impl Trccidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   reads as 0b1001
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   reads as 0b0000
 #[repr(transparent)]
 pub struct Trccidr1 {
@@ -48705,13 +53462,17 @@ impl Trccidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// reads as 0b1001
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// reads as 0b0000
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -48719,6 +53480,7 @@ impl Trccidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// reads as 0b1001
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -48726,6 +53488,7 @@ impl Trccidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -48763,6 +53526,7 @@ impl Trccidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// reads as 0b1001
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -48770,6 +53534,7 @@ impl Trccidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// reads as 0b0000
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -48815,6 +53580,7 @@ impl Trccidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   reads as 0b00000101
 #[repr(transparent)]
 pub struct Trccidr2 {
@@ -48833,7 +53599,9 @@ impl Trccidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// reads as 0b00000101
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -48841,6 +53609,7 @@ impl Trccidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// reads as 0b00000101
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -48878,6 +53647,7 @@ impl Trccidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// reads as 0b00000101
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -48923,6 +53693,7 @@ impl Trccidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   reads as 0b10110001
 #[repr(transparent)]
 pub struct Trccidr3 {
@@ -48941,7 +53712,9 @@ impl Trccidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// reads as 0b10110001
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -48949,6 +53722,7 @@ impl Trccidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// reads as 0b10110001
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -48986,6 +53760,7 @@ impl Trccidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// reads as 0b10110001
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {
@@ -49031,6 +53806,7 @@ impl Trccidr3 {
 /// ## Fields
 ///
 /// - **GLBEN** `[0]` (RW)
+///
 ///   Enables or disables the CTI
 #[repr(transparent)]
 pub struct Cticontrol {
@@ -49049,7 +53825,9 @@ impl Cticontrol {
     // ======== Field Constants ========
 
     /// **GLBEN**
+    ///
     /// Enables or disables the CTI
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const GLBEN_OFFSET: u32 = 0;
     pub const GLBEN_MASK: u32 = 0x00000001;
@@ -49058,6 +53836,7 @@ impl Cticontrol {
     // ======== Field Accessors ========
 
     /// **GLBEN** `[0]` (RW)
+    ///
     /// Enables or disables the CTI
     #[inline(always)]
     pub fn glben(&self) -> bool {
@@ -49107,6 +53886,7 @@ impl CticontrolVal {
     }
 
     /// Read **GLBEN** `[0:0]`
+    ///
     /// Enables or disables the CTI
     #[inline(always)]
     pub const fn glben(&self) -> bool {
@@ -49114,6 +53894,7 @@ impl CticontrolVal {
     }
 
     /// Set **GLBEN** `[0:0]`
+    ///
     /// Enables or disables the CTI
     #[inline(always)]
     pub const fn with_glben(self, value: bool) -> Self {
@@ -49165,6 +53946,7 @@ impl Cticontrol {
 /// ## Fields
 ///
 /// - **INTACK** `[7:0]` (RW)
+///
 ///   Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
 #[repr(transparent)]
 pub struct Ctiintack {
@@ -49183,7 +53965,9 @@ impl Ctiintack {
     // ======== Field Constants ========
 
     /// **INTACK**
+    ///
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const INTACK_OFFSET: u32 = 0;
     pub const INTACK_MASK: u32 = 0x000000ff;
@@ -49191,6 +53975,7 @@ impl Ctiintack {
     // ======== Field Accessors ========
 
     /// **INTACK** `[7:0]` (RW)
+    ///
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
     #[inline(always)]
     pub fn intack(&self) -> u32 {
@@ -49198,6 +53983,7 @@ impl Ctiintack {
     }
 
     /// Write **INTACK** `[7:0]` (RW)
+    ///
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
     #[inline(always)]
     pub fn write_intack(&self, value: u32) {
@@ -49235,6 +54021,7 @@ impl CtiintackVal {
     }
 
     /// Read **INTACK** `[7:0]`
+    ///
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
     #[inline(always)]
     pub const fn intack(&self) -> u32 {
@@ -49242,6 +54029,7 @@ impl CtiintackVal {
     }
 
     /// Set **INTACK** `[7:0]`
+    ///
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
     #[inline(always)]
     pub const fn with_intack(self, value: u32) -> Self {
@@ -49289,6 +54077,7 @@ impl Ctiintack {
 /// ## Fields
 ///
 /// - **APPSET** `[3:0]` (RW)
+///
 ///   Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
 #[repr(transparent)]
 pub struct Ctiappset {
@@ -49307,7 +54096,9 @@ impl Ctiappset {
     // ======== Field Constants ========
 
     /// **APPSET**
+    ///
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const APPSET_OFFSET: u32 = 0;
     pub const APPSET_MASK: u32 = 0x0000000f;
@@ -49315,6 +54106,7 @@ impl Ctiappset {
     // ======== Field Accessors ========
 
     /// **APPSET** `[3:0]` (RW)
+    ///
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
     #[inline(always)]
     pub fn appset(&self) -> u32 {
@@ -49322,6 +54114,7 @@ impl Ctiappset {
     }
 
     /// Write **APPSET** `[3:0]` (RW)
+    ///
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
     #[inline(always)]
     pub fn write_appset(&self, value: u32) {
@@ -49359,6 +54152,7 @@ impl CtiappsetVal {
     }
 
     /// Read **APPSET** `[3:0]`
+    ///
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
     #[inline(always)]
     pub const fn appset(&self) -> u32 {
@@ -49366,6 +54160,7 @@ impl CtiappsetVal {
     }
 
     /// Set **APPSET** `[3:0]`
+    ///
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
     #[inline(always)]
     pub const fn with_appset(self, value: u32) -> Self {
@@ -49413,6 +54208,7 @@ impl Ctiappset {
 /// ## Fields
 ///
 /// - **APPCLEAR** `[3:0]` (RW)
+///
 ///   Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
 #[repr(transparent)]
 pub struct Ctiappclear {
@@ -49431,7 +54227,9 @@ impl Ctiappclear {
     // ======== Field Constants ========
 
     /// **APPCLEAR**
+    ///
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const APPCLEAR_OFFSET: u32 = 0;
     pub const APPCLEAR_MASK: u32 = 0x0000000f;
@@ -49439,6 +54237,7 @@ impl Ctiappclear {
     // ======== Field Accessors ========
 
     /// **APPCLEAR** `[3:0]` (RW)
+    ///
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn appclear(&self) -> u32 {
@@ -49446,6 +54245,7 @@ impl Ctiappclear {
     }
 
     /// Write **APPCLEAR** `[3:0]` (RW)
+    ///
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn write_appclear(&self, value: u32) {
@@ -49483,6 +54283,7 @@ impl CtiappclearVal {
     }
 
     /// Read **APPCLEAR** `[3:0]`
+    ///
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
     #[inline(always)]
     pub const fn appclear(&self) -> u32 {
@@ -49490,6 +54291,7 @@ impl CtiappclearVal {
     }
 
     /// Set **APPCLEAR** `[3:0]`
+    ///
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
     #[inline(always)]
     pub const fn with_appclear(self, value: u32) -> Self {
@@ -49537,6 +54339,7 @@ impl Ctiappclear {
 /// ## Fields
 ///
 /// - **APPULSE** `[3:0]` (RW)
+///
 ///   Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
 #[repr(transparent)]
 pub struct Ctiapppulse {
@@ -49555,7 +54358,9 @@ impl Ctiapppulse {
     // ======== Field Constants ========
 
     /// **APPULSE**
+    ///
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const APPULSE_OFFSET: u32 = 0;
     pub const APPULSE_MASK: u32 = 0x0000000f;
@@ -49563,6 +54368,7 @@ impl Ctiapppulse {
     // ======== Field Accessors ========
 
     /// **APPULSE** `[3:0]` (RW)
+    ///
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn appulse(&self) -> u32 {
@@ -49570,6 +54376,7 @@ impl Ctiapppulse {
     }
 
     /// Write **APPULSE** `[3:0]` (RW)
+    ///
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn write_appulse(&self, value: u32) {
@@ -49607,6 +54414,7 @@ impl CtiapppulseVal {
     }
 
     /// Read **APPULSE** `[3:0]`
+    ///
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
     #[inline(always)]
     pub const fn appulse(&self) -> u32 {
@@ -49614,6 +54422,7 @@ impl CtiapppulseVal {
     }
 
     /// Set **APPULSE** `[3:0]`
+    ///
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
     #[inline(always)]
     pub const fn with_appulse(self, value: u32) -> Self {
@@ -49661,6 +54470,7 @@ impl Ctiapppulse {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen0 {
@@ -49679,7 +54489,9 @@ impl Ctiinen0 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -49687,6 +54499,7 @@ impl Ctiinen0 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -49694,6 +54507,7 @@ impl Ctiinen0 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -49731,6 +54545,7 @@ impl Ctiinen0Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -49738,6 +54553,7 @@ impl Ctiinen0Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -49785,6 +54601,7 @@ impl Ctiinen0 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen1 {
@@ -49803,7 +54620,9 @@ impl Ctiinen1 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -49811,6 +54630,7 @@ impl Ctiinen1 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -49818,6 +54638,7 @@ impl Ctiinen1 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -49855,6 +54676,7 @@ impl Ctiinen1Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -49862,6 +54684,7 @@ impl Ctiinen1Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -49909,6 +54732,7 @@ impl Ctiinen1 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen2 {
@@ -49927,7 +54751,9 @@ impl Ctiinen2 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -49935,6 +54761,7 @@ impl Ctiinen2 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -49942,6 +54769,7 @@ impl Ctiinen2 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -49979,6 +54807,7 @@ impl Ctiinen2Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -49986,6 +54815,7 @@ impl Ctiinen2Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50033,6 +54863,7 @@ impl Ctiinen2 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen3 {
@@ -50051,7 +54882,9 @@ impl Ctiinen3 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -50059,6 +54892,7 @@ impl Ctiinen3 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -50066,6 +54900,7 @@ impl Ctiinen3 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -50103,6 +54938,7 @@ impl Ctiinen3Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -50110,6 +54946,7 @@ impl Ctiinen3Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50157,6 +54994,7 @@ impl Ctiinen3 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen4 {
@@ -50175,7 +55013,9 @@ impl Ctiinen4 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -50183,6 +55023,7 @@ impl Ctiinen4 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -50190,6 +55031,7 @@ impl Ctiinen4 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -50227,6 +55069,7 @@ impl Ctiinen4Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -50234,6 +55077,7 @@ impl Ctiinen4Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50281,6 +55125,7 @@ impl Ctiinen4 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen5 {
@@ -50299,7 +55144,9 @@ impl Ctiinen5 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -50307,6 +55154,7 @@ impl Ctiinen5 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -50314,6 +55162,7 @@ impl Ctiinen5 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -50351,6 +55200,7 @@ impl Ctiinen5Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -50358,6 +55208,7 @@ impl Ctiinen5Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50405,6 +55256,7 @@ impl Ctiinen5 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen6 {
@@ -50423,7 +55275,9 @@ impl Ctiinen6 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -50431,6 +55285,7 @@ impl Ctiinen6 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -50438,6 +55293,7 @@ impl Ctiinen6 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -50475,6 +55331,7 @@ impl Ctiinen6Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -50482,6 +55339,7 @@ impl Ctiinen6Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50529,6 +55387,7 @@ impl Ctiinen6 {
 /// ## Fields
 ///
 /// - **TRIGINEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
 #[repr(transparent)]
 pub struct Ctiinen7 {
@@ -50547,7 +55406,9 @@ impl Ctiinen7 {
     // ======== Field Constants ========
 
     /// **TRIGINEN**
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGINEN_OFFSET: u32 = 0;
     pub const TRIGINEN_MASK: u32 = 0x0000000f;
@@ -50555,6 +55416,7 @@ impl Ctiinen7 {
     // ======== Field Accessors ========
 
     /// **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn triginen(&self) -> u32 {
@@ -50562,6 +55424,7 @@ impl Ctiinen7 {
     }
 
     /// Write **TRIGINEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
@@ -50599,6 +55462,7 @@ impl Ctiinen7Val {
     }
 
     /// Read **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn triginen(&self) -> u32 {
@@ -50606,6 +55470,7 @@ impl Ctiinen7Val {
     }
 
     /// Set **TRIGINEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
@@ -50653,6 +55518,7 @@ impl Ctiinen7 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten0 {
@@ -50671,7 +55537,9 @@ impl Ctiouten0 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -50679,6 +55547,7 @@ impl Ctiouten0 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -50686,6 +55555,7 @@ impl Ctiouten0 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -50723,6 +55593,7 @@ impl Ctiouten0Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -50730,6 +55601,7 @@ impl Ctiouten0Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -50777,6 +55649,7 @@ impl Ctiouten0 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten1 {
@@ -50795,7 +55668,9 @@ impl Ctiouten1 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -50803,6 +55678,7 @@ impl Ctiouten1 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -50810,6 +55686,7 @@ impl Ctiouten1 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -50847,6 +55724,7 @@ impl Ctiouten1Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -50854,6 +55732,7 @@ impl Ctiouten1Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -50901,6 +55780,7 @@ impl Ctiouten1 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten2 {
@@ -50919,7 +55799,9 @@ impl Ctiouten2 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -50927,6 +55809,7 @@ impl Ctiouten2 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -50934,6 +55817,7 @@ impl Ctiouten2 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -50971,6 +55855,7 @@ impl Ctiouten2Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -50978,6 +55863,7 @@ impl Ctiouten2Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51025,6 +55911,7 @@ impl Ctiouten2 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten3 {
@@ -51043,7 +55930,9 @@ impl Ctiouten3 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -51051,6 +55940,7 @@ impl Ctiouten3 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -51058,6 +55948,7 @@ impl Ctiouten3 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -51095,6 +55986,7 @@ impl Ctiouten3Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -51102,6 +55994,7 @@ impl Ctiouten3Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51149,6 +56042,7 @@ impl Ctiouten3 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten4 {
@@ -51167,7 +56061,9 @@ impl Ctiouten4 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -51175,6 +56071,7 @@ impl Ctiouten4 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -51182,6 +56079,7 @@ impl Ctiouten4 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -51219,6 +56117,7 @@ impl Ctiouten4Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -51226,6 +56125,7 @@ impl Ctiouten4Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51273,6 +56173,7 @@ impl Ctiouten4 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten5 {
@@ -51291,7 +56192,9 @@ impl Ctiouten5 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -51299,6 +56202,7 @@ impl Ctiouten5 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -51306,6 +56210,7 @@ impl Ctiouten5 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -51343,6 +56248,7 @@ impl Ctiouten5Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -51350,6 +56256,7 @@ impl Ctiouten5Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51397,6 +56304,7 @@ impl Ctiouten5 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten6 {
@@ -51415,7 +56323,9 @@ impl Ctiouten6 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -51423,6 +56333,7 @@ impl Ctiouten6 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -51430,6 +56341,7 @@ impl Ctiouten6 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -51467,6 +56379,7 @@ impl Ctiouten6Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -51474,6 +56387,7 @@ impl Ctiouten6Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51521,6 +56435,7 @@ impl Ctiouten6 {
 /// ## Fields
 ///
 /// - **TRIGOUTEN** `[3:0]` (RW)
+///
 ///   Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
 #[repr(transparent)]
 pub struct Ctiouten7 {
@@ -51539,7 +56454,9 @@ impl Ctiouten7 {
     // ======== Field Constants ========
 
     /// **TRIGOUTEN**
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const TRIGOUTEN_OFFSET: u32 = 0;
     pub const TRIGOUTEN_MASK: u32 = 0x0000000f;
@@ -51547,6 +56464,7 @@ impl Ctiouten7 {
     // ======== Field Accessors ========
 
     /// **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn trigouten(&self) -> u32 {
@@ -51554,6 +56472,7 @@ impl Ctiouten7 {
     }
 
     /// Write **TRIGOUTEN** `[3:0]` (RW)
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
@@ -51591,6 +56510,7 @@ impl Ctiouten7Val {
     }
 
     /// Read **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn trigouten(&self) -> u32 {
@@ -51598,6 +56518,7 @@ impl Ctiouten7Val {
     }
 
     /// Set **TRIGOUTEN** `[3:0]`
+    ///
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
@@ -51645,6 +56566,7 @@ impl Ctiouten7 {
 /// ## Fields
 ///
 /// - **TRIGINSTATUS** `[7:0]` (RO)
+///
 ///   Shows the status of the ctitrigin inputs. There is one bit of the field for each trigger input.Because the register provides a view of the raw ctitrigin inputs, the reset value is UNKNOWN.
 #[repr(transparent)]
 pub struct Ctitriginstatus {
@@ -51663,7 +56585,9 @@ impl Ctitriginstatus {
     // ======== Field Constants ========
 
     /// **TRIGINSTATUS**
+    ///
     /// Shows the status of the ctitrigin inputs. There is one bit of the field for each trigger input.Because the register provides a view of the raw ctitrigin inputs, the reset value is UNKNOWN.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const TRIGINSTATUS_OFFSET: u32 = 0;
     pub const TRIGINSTATUS_MASK: u32 = 0x000000ff;
@@ -51671,6 +56595,7 @@ impl Ctitriginstatus {
     // ======== Field Accessors ========
 
     /// **TRIGINSTATUS** `[7:0]` (RO)
+    ///
     /// Shows the status of the ctitrigin inputs. There is one bit of the field for each trigger input.Because the register provides a view of the raw ctitrigin inputs, the reset value is UNKNOWN.
     #[inline(always)]
     pub fn triginstatus(&self) -> u32 {
@@ -51708,6 +56633,7 @@ impl CtitriginstatusVal {
     }
 
     /// Read **TRIGINSTATUS** `[7:0]`
+    ///
     /// Shows the status of the ctitrigin inputs. There is one bit of the field for each trigger input.Because the register provides a view of the raw ctitrigin inputs, the reset value is UNKNOWN.
     #[inline(always)]
     pub const fn triginstatus(&self) -> u32 {
@@ -51753,6 +56679,7 @@ impl Ctitriginstatus {
 /// ## Fields
 ///
 /// - **TRIGOUTSTATUS** `[7:0]` (RO)
+///
 ///   Shows the status of the ctitrigout outputs. There is one bit of the field for each trigger output.
 #[repr(transparent)]
 pub struct Ctitrigoutstatus {
@@ -51771,7 +56698,9 @@ impl Ctitrigoutstatus {
     // ======== Field Constants ========
 
     /// **TRIGOUTSTATUS**
+    ///
     /// Shows the status of the ctitrigout outputs. There is one bit of the field for each trigger output.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const TRIGOUTSTATUS_OFFSET: u32 = 0;
     pub const TRIGOUTSTATUS_MASK: u32 = 0x000000ff;
@@ -51779,6 +56708,7 @@ impl Ctitrigoutstatus {
     // ======== Field Accessors ========
 
     /// **TRIGOUTSTATUS** `[7:0]` (RO)
+    ///
     /// Shows the status of the ctitrigout outputs. There is one bit of the field for each trigger output.
     #[inline(always)]
     pub fn trigoutstatus(&self) -> u32 {
@@ -51816,6 +56746,7 @@ impl CtitrigoutstatusVal {
     }
 
     /// Read **TRIGOUTSTATUS** `[7:0]`
+    ///
     /// Shows the status of the ctitrigout outputs. There is one bit of the field for each trigger output.
     #[inline(always)]
     pub const fn trigoutstatus(&self) -> u32 {
@@ -51861,6 +56792,7 @@ impl Ctitrigoutstatus {
 /// ## Fields
 ///
 /// - **CTICHOUTSTATUS** `[3:0]` (RO)
+///
 ///   Shows the status of the ctichout outputs. There is one bit of the field for each channel output
 #[repr(transparent)]
 pub struct Ctichinstatus {
@@ -51879,7 +56811,9 @@ impl Ctichinstatus {
     // ======== Field Constants ========
 
     /// **CTICHOUTSTATUS**
+    ///
     /// Shows the status of the ctichout outputs. There is one bit of the field for each channel output
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CTICHOUTSTATUS_OFFSET: u32 = 0;
     pub const CTICHOUTSTATUS_MASK: u32 = 0x0000000f;
@@ -51887,6 +56821,7 @@ impl Ctichinstatus {
     // ======== Field Accessors ========
 
     /// **CTICHOUTSTATUS** `[3:0]` (RO)
+    ///
     /// Shows the status of the ctichout outputs. There is one bit of the field for each channel output
     #[inline(always)]
     pub fn ctichoutstatus(&self) -> u32 {
@@ -51924,6 +56859,7 @@ impl CtichinstatusVal {
     }
 
     /// Read **CTICHOUTSTATUS** `[3:0]`
+    ///
     /// Shows the status of the ctichout outputs. There is one bit of the field for each channel output
     #[inline(always)]
     pub const fn ctichoutstatus(&self) -> u32 {
@@ -51969,12 +56905,19 @@ impl Ctichinstatus {
 /// ## Fields
 ///
 /// - **CTIGATEEN3** `[3]` (RW)
+///
 ///   Enable ctichout3. Set to 0 to disable channel propagation.
+///
 /// - **CTIGATEEN2** `[2]` (RW)
+///
 ///   Enable ctichout2. Set to 0 to disable channel propagation.
+///
 /// - **CTIGATEEN1** `[1]` (RW)
+///
 ///   Enable ctichout1. Set to 0 to disable channel propagation.
+///
 /// - **CTIGATEEN0** `[0]` (RW)
+///
 ///   Enable ctichout0. Set to 0 to disable channel propagation.
 #[repr(transparent)]
 pub struct Ctigate {
@@ -51993,28 +56936,36 @@ impl Ctigate {
     // ======== Field Constants ========
 
     /// **CTIGATEEN3**
+    ///
     /// Enable ctichout3. Set to 0 to disable channel propagation.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const CTIGATEEN3_OFFSET: u32 = 3;
     pub const CTIGATEEN3_MASK: u32 = 0x00000008;
     pub const CTIGATEEN3: u32 = 1 << 3;
 
     /// **CTIGATEEN2**
+    ///
     /// Enable ctichout2. Set to 0 to disable channel propagation.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CTIGATEEN2_OFFSET: u32 = 2;
     pub const CTIGATEEN2_MASK: u32 = 0x00000004;
     pub const CTIGATEEN2: u32 = 1 << 2;
 
     /// **CTIGATEEN1**
+    ///
     /// Enable ctichout1. Set to 0 to disable channel propagation.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CTIGATEEN1_OFFSET: u32 = 1;
     pub const CTIGATEEN1_MASK: u32 = 0x00000002;
     pub const CTIGATEEN1: u32 = 1 << 1;
 
     /// **CTIGATEEN0**
+    ///
     /// Enable ctichout0. Set to 0 to disable channel propagation.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CTIGATEEN0_OFFSET: u32 = 0;
     pub const CTIGATEEN0_MASK: u32 = 0x00000001;
@@ -52023,6 +56974,7 @@ impl Ctigate {
     // ======== Field Accessors ========
 
     /// **CTIGATEEN3** `[3]` (RW)
+    ///
     /// Enable ctichout3. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub fn ctigateen3(&self) -> bool {
@@ -52042,6 +56994,7 @@ impl Ctigate {
     }
 
     /// **CTIGATEEN2** `[2]` (RW)
+    ///
     /// Enable ctichout2. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub fn ctigateen2(&self) -> bool {
@@ -52061,6 +57014,7 @@ impl Ctigate {
     }
 
     /// **CTIGATEEN1** `[1]` (RW)
+    ///
     /// Enable ctichout1. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub fn ctigateen1(&self) -> bool {
@@ -52080,6 +57034,7 @@ impl Ctigate {
     }
 
     /// **CTIGATEEN0** `[0]` (RW)
+    ///
     /// Enable ctichout0. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub fn ctigateen0(&self) -> bool {
@@ -52129,6 +57084,7 @@ impl CtigateVal {
     }
 
     /// Read **CTIGATEEN3** `[3:3]`
+    ///
     /// Enable ctichout3. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn ctigateen3(&self) -> bool {
@@ -52136,6 +57092,7 @@ impl CtigateVal {
     }
 
     /// Read **CTIGATEEN2** `[2:2]`
+    ///
     /// Enable ctichout2. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn ctigateen2(&self) -> bool {
@@ -52143,6 +57100,7 @@ impl CtigateVal {
     }
 
     /// Read **CTIGATEEN1** `[1:1]`
+    ///
     /// Enable ctichout1. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn ctigateen1(&self) -> bool {
@@ -52150,6 +57108,7 @@ impl CtigateVal {
     }
 
     /// Read **CTIGATEEN0** `[0:0]`
+    ///
     /// Enable ctichout0. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn ctigateen0(&self) -> bool {
@@ -52157,6 +57116,7 @@ impl CtigateVal {
     }
 
     /// Set **CTIGATEEN3** `[3:3]`
+    ///
     /// Enable ctichout3. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn with_ctigateen3(self, value: bool) -> Self {
@@ -52170,6 +57130,7 @@ impl CtigateVal {
     }
 
     /// Set **CTIGATEEN2** `[2:2]`
+    ///
     /// Enable ctichout2. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn with_ctigateen2(self, value: bool) -> Self {
@@ -52183,6 +57144,7 @@ impl CtigateVal {
     }
 
     /// Set **CTIGATEEN1** `[1:1]`
+    ///
     /// Enable ctichout1. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn with_ctigateen1(self, value: bool) -> Self {
@@ -52196,6 +57158,7 @@ impl CtigateVal {
     }
 
     /// Set **CTIGATEEN0** `[0:0]`
+    ///
     /// Enable ctichout0. Set to 0 to disable channel propagation.
     #[inline(always)]
     pub const fn with_ctigateen0(self, value: bool) -> Self {
@@ -52365,6 +57328,7 @@ impl Asicctl {
 /// ## Fields
 ///
 /// - **CTCHOUT** `[3:0]` (RW)
+///
 ///   Sets the value of the ctichout outputs
 #[repr(transparent)]
 pub struct Itchout {
@@ -52383,7 +57347,9 @@ impl Itchout {
     // ======== Field Constants ========
 
     /// **CTCHOUT**
+    ///
     /// Sets the value of the ctichout outputs
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CTCHOUT_OFFSET: u32 = 0;
     pub const CTCHOUT_MASK: u32 = 0x0000000f;
@@ -52391,6 +57357,7 @@ impl Itchout {
     // ======== Field Accessors ========
 
     /// **CTCHOUT** `[3:0]` (RW)
+    ///
     /// Sets the value of the ctichout outputs
     #[inline(always)]
     pub fn ctchout(&self) -> u32 {
@@ -52398,6 +57365,7 @@ impl Itchout {
     }
 
     /// Write **CTCHOUT** `[3:0]` (RW)
+    ///
     /// Sets the value of the ctichout outputs
     #[inline(always)]
     pub fn write_ctchout(&self, value: u32) {
@@ -52435,6 +57403,7 @@ impl ItchoutVal {
     }
 
     /// Read **CTCHOUT** `[3:0]`
+    ///
     /// Sets the value of the ctichout outputs
     #[inline(always)]
     pub const fn ctchout(&self) -> u32 {
@@ -52442,6 +57411,7 @@ impl ItchoutVal {
     }
 
     /// Set **CTCHOUT** `[3:0]`
+    ///
     /// Sets the value of the ctichout outputs
     #[inline(always)]
     pub const fn with_ctchout(self, value: u32) -> Self {
@@ -52489,6 +57459,7 @@ impl Itchout {
 /// ## Fields
 ///
 /// - **CTTRIGOUT** `[7:0]` (RW)
+///
 ///   Sets the value of the ctitrigout outputs
 #[repr(transparent)]
 pub struct Ittrigout {
@@ -52507,7 +57478,9 @@ impl Ittrigout {
     // ======== Field Constants ========
 
     /// **CTTRIGOUT**
+    ///
     /// Sets the value of the ctitrigout outputs
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CTTRIGOUT_OFFSET: u32 = 0;
     pub const CTTRIGOUT_MASK: u32 = 0x000000ff;
@@ -52515,6 +57488,7 @@ impl Ittrigout {
     // ======== Field Accessors ========
 
     /// **CTTRIGOUT** `[7:0]` (RW)
+    ///
     /// Sets the value of the ctitrigout outputs
     #[inline(always)]
     pub fn cttrigout(&self) -> u32 {
@@ -52522,6 +57496,7 @@ impl Ittrigout {
     }
 
     /// Write **CTTRIGOUT** `[7:0]` (RW)
+    ///
     /// Sets the value of the ctitrigout outputs
     #[inline(always)]
     pub fn write_cttrigout(&self, value: u32) {
@@ -52559,6 +57534,7 @@ impl IttrigoutVal {
     }
 
     /// Read **CTTRIGOUT** `[7:0]`
+    ///
     /// Sets the value of the ctitrigout outputs
     #[inline(always)]
     pub const fn cttrigout(&self) -> u32 {
@@ -52566,6 +57542,7 @@ impl IttrigoutVal {
     }
 
     /// Set **CTTRIGOUT** `[7:0]`
+    ///
     /// Sets the value of the ctitrigout outputs
     #[inline(always)]
     pub const fn with_cttrigout(self, value: u32) -> Self {
@@ -52613,6 +57590,7 @@ impl Ittrigout {
 /// ## Fields
 ///
 /// - **CTCHIN** `[3:0]` (RO)
+///
 ///   Reads the value of the ctichin inputs.
 #[repr(transparent)]
 pub struct Itchin {
@@ -52631,7 +57609,9 @@ impl Itchin {
     // ======== Field Constants ========
 
     /// **CTCHIN**
+    ///
     /// Reads the value of the ctichin inputs.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CTCHIN_OFFSET: u32 = 0;
     pub const CTCHIN_MASK: u32 = 0x0000000f;
@@ -52639,6 +57619,7 @@ impl Itchin {
     // ======== Field Accessors ========
 
     /// **CTCHIN** `[3:0]` (RO)
+    ///
     /// Reads the value of the ctichin inputs.
     #[inline(always)]
     pub fn ctchin(&self) -> u32 {
@@ -52676,6 +57657,7 @@ impl ItchinVal {
     }
 
     /// Read **CTCHIN** `[3:0]`
+    ///
     /// Reads the value of the ctichin inputs.
     #[inline(always)]
     pub const fn ctchin(&self) -> u32 {
@@ -52721,6 +57703,7 @@ impl Itchin {
 /// ## Fields
 ///
 /// - **IME** `[0]` (RW)
+///
 ///   Integration Mode Enable
 #[repr(transparent)]
 pub struct Itctrl {
@@ -52739,7 +57722,9 @@ impl Itctrl {
     // ======== Field Constants ========
 
     /// **IME**
+    ///
     /// Integration Mode Enable
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const IME_OFFSET: u32 = 0;
     pub const IME_MASK: u32 = 0x00000001;
@@ -52748,6 +57733,7 @@ impl Itctrl {
     // ======== Field Accessors ========
 
     /// **IME** `[0]` (RW)
+    ///
     /// Integration Mode Enable
     #[inline(always)]
     pub fn ime(&self) -> bool {
@@ -52797,6 +57783,7 @@ impl ItctrlVal {
     }
 
     /// Read **IME** `[0:0]`
+    ///
     /// Integration Mode Enable
     #[inline(always)]
     pub const fn ime(&self) -> bool {
@@ -52804,6 +57791,7 @@ impl ItctrlVal {
     }
 
     /// Set **IME** `[0:0]`
+    ///
     /// Integration Mode Enable
     #[inline(always)]
     pub const fn with_ime(self, value: bool) -> Self {
@@ -52855,12 +57843,19 @@ impl Itctrl {
 /// ## Fields
 ///
 /// - **ARCHITECT** `[31:21]` (RO)
+///
 ///   Indicates the component architect
+///
 /// - **PRESENT** `[20]` (RO)
+///
 ///   Indicates whether the DEVARCH register is present
+///
 /// - **REVISION** `[19:16]` (RO)
+///
 ///   Indicates the architecture revision
+///
 /// - **ARCHID** `[15:0]` (RO)
+///
 ///   Indicates the component
 #[repr(transparent)]
 pub struct Devarch {
@@ -52879,26 +57874,34 @@ impl Devarch {
     // ======== Field Constants ========
 
     /// **ARCHITECT**
+    ///
     /// Indicates the component architect
+    ///
     /// Bits `[31:21]`, mask `0xffe00000`
     pub const ARCHITECT_OFFSET: u32 = 21;
     pub const ARCHITECT_MASK: u32 = 0xffe00000;
 
     /// **PRESENT**
+    ///
     /// Indicates whether the DEVARCH register is present
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const PRESENT_OFFSET: u32 = 20;
     pub const PRESENT_MASK: u32 = 0x00100000;
     pub const PRESENT: u32 = 1 << 20;
 
     /// **REVISION**
+    ///
     /// Indicates the architecture revision
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const REVISION_OFFSET: u32 = 16;
     pub const REVISION_MASK: u32 = 0x000f0000;
 
     /// **ARCHID**
+    ///
     /// Indicates the component
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ARCHID_OFFSET: u32 = 0;
     pub const ARCHID_MASK: u32 = 0x0000ffff;
@@ -52906,6 +57909,7 @@ impl Devarch {
     // ======== Field Accessors ========
 
     /// **ARCHITECT** `[31:21]` (RO)
+    ///
     /// Indicates the component architect
     #[inline(always)]
     pub fn architect(&self) -> u32 {
@@ -52913,6 +57917,7 @@ impl Devarch {
     }
 
     /// **PRESENT** `[20]` (RO)
+    ///
     /// Indicates whether the DEVARCH register is present
     #[inline(always)]
     pub fn present(&self) -> bool {
@@ -52920,6 +57925,7 @@ impl Devarch {
     }
 
     /// **REVISION** `[19:16]` (RO)
+    ///
     /// Indicates the architecture revision
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -52927,6 +57933,7 @@ impl Devarch {
     }
 
     /// **ARCHID** `[15:0]` (RO)
+    ///
     /// Indicates the component
     #[inline(always)]
     pub fn archid(&self) -> u32 {
@@ -52964,6 +57971,7 @@ impl DevarchVal {
     }
 
     /// Read **ARCHITECT** `[31:21]`
+    ///
     /// Indicates the component architect
     #[inline(always)]
     pub const fn architect(&self) -> u32 {
@@ -52971,6 +57979,7 @@ impl DevarchVal {
     }
 
     /// Read **PRESENT** `[20:20]`
+    ///
     /// Indicates whether the DEVARCH register is present
     #[inline(always)]
     pub const fn present(&self) -> bool {
@@ -52978,6 +57987,7 @@ impl DevarchVal {
     }
 
     /// Read **REVISION** `[19:16]`
+    ///
     /// Indicates the architecture revision
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -52985,6 +57995,7 @@ impl DevarchVal {
     }
 
     /// Read **ARCHID** `[15:0]`
+    ///
     /// Indicates the component
     #[inline(always)]
     pub const fn archid(&self) -> u32 {
@@ -53030,10 +58041,15 @@ impl Devarch {
 /// ## Fields
 ///
 /// - **NUMCH** `[19:16]` (RO)
+///
 ///   Number of ECT channels available
+///
 /// - **NUMTRIG** `[15:8]` (RO)
+///
 ///   Number of ECT triggers available.
+///
 /// - **EXTMUXNUM** `[4:0]` (RO)
+///
 ///   Indicates the number of multiplexers available on Trigger Inputs and Trigger Outputs that are using asicctl. The default value of 0b00000 indicates that no multiplexing is present. This value of this bit depends on the Verilog define EXTMUXNUM that you must change accordingly.
 #[repr(transparent)]
 pub struct Devid {
@@ -53052,19 +58068,25 @@ impl Devid {
     // ======== Field Constants ========
 
     /// **NUMCH**
+    ///
     /// Number of ECT channels available
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const NUMCH_OFFSET: u32 = 16;
     pub const NUMCH_MASK: u32 = 0x000f0000;
 
     /// **NUMTRIG**
+    ///
     /// Number of ECT triggers available.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const NUMTRIG_OFFSET: u32 = 8;
     pub const NUMTRIG_MASK: u32 = 0x0000ff00;
 
     /// **EXTMUXNUM**
+    ///
     /// Indicates the number of multiplexers available on Trigger Inputs and Trigger Outputs that are using asicctl. The default value of 0b00000 indicates that no multiplexing is present. This value of this bit depends on the Verilog define EXTMUXNUM that you must change accordingly.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const EXTMUXNUM_OFFSET: u32 = 0;
     pub const EXTMUXNUM_MASK: u32 = 0x0000001f;
@@ -53072,6 +58094,7 @@ impl Devid {
     // ======== Field Accessors ========
 
     /// **NUMCH** `[19:16]` (RO)
+    ///
     /// Number of ECT channels available
     #[inline(always)]
     pub fn numch(&self) -> u32 {
@@ -53079,6 +58102,7 @@ impl Devid {
     }
 
     /// **NUMTRIG** `[15:8]` (RO)
+    ///
     /// Number of ECT triggers available.
     #[inline(always)]
     pub fn numtrig(&self) -> u32 {
@@ -53086,6 +58110,7 @@ impl Devid {
     }
 
     /// **EXTMUXNUM** `[4:0]` (RO)
+    ///
     /// Indicates the number of multiplexers available on Trigger Inputs and Trigger Outputs that are using asicctl. The default value of 0b00000 indicates that no multiplexing is present. This value of this bit depends on the Verilog define EXTMUXNUM that you must change accordingly.
     #[inline(always)]
     pub fn extmuxnum(&self) -> u32 {
@@ -53123,6 +58148,7 @@ impl DevidVal {
     }
 
     /// Read **NUMCH** `[19:16]`
+    ///
     /// Number of ECT channels available
     #[inline(always)]
     pub const fn numch(&self) -> u32 {
@@ -53130,6 +58156,7 @@ impl DevidVal {
     }
 
     /// Read **NUMTRIG** `[15:8]`
+    ///
     /// Number of ECT triggers available.
     #[inline(always)]
     pub const fn numtrig(&self) -> u32 {
@@ -53137,6 +58164,7 @@ impl DevidVal {
     }
 
     /// Read **EXTMUXNUM** `[4:0]`
+    ///
     /// Indicates the number of multiplexers available on Trigger Inputs and Trigger Outputs that are using asicctl. The default value of 0b00000 indicates that no multiplexing is present. This value of this bit depends on the Verilog define EXTMUXNUM that you must change accordingly.
     #[inline(always)]
     pub const fn extmuxnum(&self) -> u32 {
@@ -53182,8 +58210,11 @@ impl Devid {
 /// ## Fields
 ///
 /// - **SUB** `[7:4]` (RO)
+///
 ///   Sub-classification of the type of the debug component as specified in the ARM Architecture Specification within the major classification as specified in the MAJOR field.
+///
 /// - **MAJOR** `[3:0]` (RO)
+///
 ///   Major classification of the type of the debug component as specified in the ARM Architecture Specification for this debug and trace component.
 #[repr(transparent)]
 pub struct Devtype {
@@ -53202,13 +58233,17 @@ impl Devtype {
     // ======== Field Constants ========
 
     /// **SUB**
+    ///
     /// Sub-classification of the type of the debug component as specified in the ARM Architecture Specification within the major classification as specified in the MAJOR field.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SUB_OFFSET: u32 = 4;
     pub const SUB_MASK: u32 = 0x000000f0;
 
     /// **MAJOR**
+    ///
     /// Major classification of the type of the debug component as specified in the ARM Architecture Specification for this debug and trace component.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const MAJOR_OFFSET: u32 = 0;
     pub const MAJOR_MASK: u32 = 0x0000000f;
@@ -53216,6 +58251,7 @@ impl Devtype {
     // ======== Field Accessors ========
 
     /// **SUB** `[7:4]` (RO)
+    ///
     /// Sub-classification of the type of the debug component as specified in the ARM Architecture Specification within the major classification as specified in the MAJOR field.
     #[inline(always)]
     pub fn sub(&self) -> u32 {
@@ -53223,6 +58259,7 @@ impl Devtype {
     }
 
     /// **MAJOR** `[3:0]` (RO)
+    ///
     /// Major classification of the type of the debug component as specified in the ARM Architecture Specification for this debug and trace component.
     #[inline(always)]
     pub fn major(&self) -> u32 {
@@ -53260,6 +58297,7 @@ impl DevtypeVal {
     }
 
     /// Read **SUB** `[7:4]`
+    ///
     /// Sub-classification of the type of the debug component as specified in the ARM Architecture Specification within the major classification as specified in the MAJOR field.
     #[inline(always)]
     pub const fn sub(&self) -> u32 {
@@ -53267,6 +58305,7 @@ impl DevtypeVal {
     }
 
     /// Read **MAJOR** `[3:0]`
+    ///
     /// Major classification of the type of the debug component as specified in the ARM Architecture Specification for this debug and trace component.
     #[inline(always)]
     pub const fn major(&self) -> u32 {
@@ -53312,8 +58351,11 @@ impl Devtype {
 /// ## Fields
 ///
 /// - **SIZE** `[7:4]` (RO)
+///
 ///   Always 0b0000. Indicates that the device only occupies 4KB of memory
+///
 /// - **DES_2** `[3:0]` (RO)
+///
 ///   Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
 #[repr(transparent)]
 pub struct Pidr4 {
@@ -53332,13 +58374,17 @@ impl Pidr4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Always 0b0000. Indicates that the device only occupies 4KB of memory
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SIZE_OFFSET: u32 = 4;
     pub const SIZE_MASK: u32 = 0x000000f0;
 
     /// **DES_2**
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DES_2_OFFSET: u32 = 0;
     pub const DES_2_MASK: u32 = 0x0000000f;
@@ -53346,6 +58392,7 @@ impl Pidr4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[7:4]` (RO)
+    ///
     /// Always 0b0000. Indicates that the device only occupies 4KB of memory
     #[inline(always)]
     pub fn size(&self) -> u32 {
@@ -53353,6 +58400,7 @@ impl Pidr4 {
     }
 
     /// **DES_2** `[3:0]` (RO)
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub fn des_2(&self) -> u32 {
@@ -53390,6 +58438,7 @@ impl Pidr4Val {
     }
 
     /// Read **SIZE** `[7:4]`
+    ///
     /// Always 0b0000. Indicates that the device only occupies 4KB of memory
     #[inline(always)]
     pub const fn size(&self) -> u32 {
@@ -53397,6 +58446,7 @@ impl Pidr4Val {
     }
 
     /// Read **DES_2** `[3:0]`
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub const fn des_2(&self) -> u32 {
@@ -53796,6 +58846,7 @@ impl Pidr7 {
 /// ## Fields
 ///
 /// - **PART_0** `[7:0]` (RO)
+///
 ///   Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number.
 #[repr(transparent)]
 pub struct Pidr0 {
@@ -53814,7 +58865,9 @@ impl Pidr0 {
     // ======== Field Constants ========
 
     /// **PART_0**
+    ///
     /// Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PART_0_OFFSET: u32 = 0;
     pub const PART_0_MASK: u32 = 0x000000ff;
@@ -53822,6 +58875,7 @@ impl Pidr0 {
     // ======== Field Accessors ========
 
     /// **PART_0** `[7:0]` (RO)
+    ///
     /// Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number.
     #[inline(always)]
     pub fn part_0(&self) -> u32 {
@@ -53859,6 +58913,7 @@ impl Pidr0Val {
     }
 
     /// Read **PART_0** `[7:0]`
+    ///
     /// Bits[7:0] of the 12-bit part number of the component. The designer of the component assigns this part number.
     #[inline(always)]
     pub const fn part_0(&self) -> u32 {
@@ -53904,8 +58959,11 @@ impl Pidr0 {
 /// ## Fields
 ///
 /// - **DES_0** `[7:4]` (RO)
+///
 ///   Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
+///
 /// - **PART_1** `[3:0]` (RO)
+///
 ///   Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number.
 #[repr(transparent)]
 pub struct Pidr1 {
@@ -53924,13 +58982,17 @@ impl Pidr1 {
     // ======== Field Constants ========
 
     /// **DES_0**
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const DES_0_OFFSET: u32 = 4;
     pub const DES_0_MASK: u32 = 0x000000f0;
 
     /// **PART_1**
+    ///
     /// Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PART_1_OFFSET: u32 = 0;
     pub const PART_1_MASK: u32 = 0x0000000f;
@@ -53938,6 +59000,7 @@ impl Pidr1 {
     // ======== Field Accessors ========
 
     /// **DES_0** `[7:4]` (RO)
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub fn des_0(&self) -> u32 {
@@ -53945,6 +59008,7 @@ impl Pidr1 {
     }
 
     /// **PART_1** `[3:0]` (RO)
+    ///
     /// Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number.
     #[inline(always)]
     pub fn part_1(&self) -> u32 {
@@ -53982,6 +59046,7 @@ impl Pidr1Val {
     }
 
     /// Read **DES_0** `[7:4]`
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub const fn des_0(&self) -> u32 {
@@ -53989,6 +59054,7 @@ impl Pidr1Val {
     }
 
     /// Read **PART_1** `[3:0]`
+    ///
     /// Bits[11:8] of the 12-bit part number of the component. The designer of the component assigns this part number.
     #[inline(always)]
     pub const fn part_1(&self) -> u32 {
@@ -54034,10 +59100,15 @@ impl Pidr1 {
 /// ## Fields
 ///
 /// - **REVISION** `[7:4]` (RO)
+///
 ///   This device is at r1p0
+///
 /// - **JEDEC** `[3]` (RO)
+///
 ///   Always 1. Indicates that the JEDEC-assigned designer ID is used.
+///
 /// - **DES_1** `[2:0]` (RO)
+///
 ///   Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
 #[repr(transparent)]
 pub struct Pidr2 {
@@ -54056,20 +59127,26 @@ impl Pidr2 {
     // ======== Field Constants ========
 
     /// **REVISION**
+    ///
     /// This device is at r1p0
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVISION_OFFSET: u32 = 4;
     pub const REVISION_MASK: u32 = 0x000000f0;
 
     /// **JEDEC**
+    ///
     /// Always 1. Indicates that the JEDEC-assigned designer ID is used.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const JEDEC_OFFSET: u32 = 3;
     pub const JEDEC_MASK: u32 = 0x00000008;
     pub const JEDEC: u32 = 1 << 3;
 
     /// **DES_1**
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DES_1_OFFSET: u32 = 0;
     pub const DES_1_MASK: u32 = 0x00000007;
@@ -54077,6 +59154,7 @@ impl Pidr2 {
     // ======== Field Accessors ========
 
     /// **REVISION** `[7:4]` (RO)
+    ///
     /// This device is at r1p0
     #[inline(always)]
     pub fn revision(&self) -> u32 {
@@ -54084,6 +59162,7 @@ impl Pidr2 {
     }
 
     /// **JEDEC** `[3]` (RO)
+    ///
     /// Always 1. Indicates that the JEDEC-assigned designer ID is used.
     #[inline(always)]
     pub fn jedec(&self) -> bool {
@@ -54091,6 +59170,7 @@ impl Pidr2 {
     }
 
     /// **DES_1** `[2:0]` (RO)
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub fn des_1(&self) -> u32 {
@@ -54128,6 +59208,7 @@ impl Pidr2Val {
     }
 
     /// Read **REVISION** `[7:4]`
+    ///
     /// This device is at r1p0
     #[inline(always)]
     pub const fn revision(&self) -> u32 {
@@ -54135,6 +59216,7 @@ impl Pidr2Val {
     }
 
     /// Read **JEDEC** `[3:3]`
+    ///
     /// Always 1. Indicates that the JEDEC-assigned designer ID is used.
     #[inline(always)]
     pub const fn jedec(&self) -> bool {
@@ -54142,6 +59224,7 @@ impl Pidr2Val {
     }
 
     /// Read **DES_1** `[2:0]`
+    ///
     /// Together, PIDR1.DES_0, PIDR2.DES_1, and PIDR4.DES_2 identify the designer of the component.
     #[inline(always)]
     pub const fn des_1(&self) -> u32 {
@@ -54187,8 +59270,11 @@ impl Pidr2 {
 /// ## Fields
 ///
 /// - **REVAND** `[7:4]` (RO)
+///
 ///   Indicates minor errata fixes specific to the revision of the component being used, for example metal fixes after implementation. In most cases, this field is 0b0000. ARM recommends that the component designers ensure that a metal fix can change this field if required, for example, by driving it from registers that reset to 0b0000.
+///
 /// - **CMOD** `[3:0]` (RO)
+///
 ///   Customer Modified. Indicates whether the customer has modified the behavior of the component. In most cases, this field is 0b0000. Customers change this value when they make authorized modifications to this component.
 #[repr(transparent)]
 pub struct Pidr3 {
@@ -54207,13 +59293,17 @@ impl Pidr3 {
     // ======== Field Constants ========
 
     /// **REVAND**
+    ///
     /// Indicates minor errata fixes specific to the revision of the component being used, for example metal fixes after implementation. In most cases, this field is 0b0000. ARM recommends that the component designers ensure that a metal fix can change this field if required, for example, by driving it from registers that reset to 0b0000.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REVAND_OFFSET: u32 = 4;
     pub const REVAND_MASK: u32 = 0x000000f0;
 
     /// **CMOD**
+    ///
     /// Customer Modified. Indicates whether the customer has modified the behavior of the component. In most cases, this field is 0b0000. Customers change this value when they make authorized modifications to this component.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CMOD_OFFSET: u32 = 0;
     pub const CMOD_MASK: u32 = 0x0000000f;
@@ -54221,6 +59311,7 @@ impl Pidr3 {
     // ======== Field Accessors ========
 
     /// **REVAND** `[7:4]` (RO)
+    ///
     /// Indicates minor errata fixes specific to the revision of the component being used, for example metal fixes after implementation. In most cases, this field is 0b0000. ARM recommends that the component designers ensure that a metal fix can change this field if required, for example, by driving it from registers that reset to 0b0000.
     #[inline(always)]
     pub fn revand(&self) -> u32 {
@@ -54228,6 +59319,7 @@ impl Pidr3 {
     }
 
     /// **CMOD** `[3:0]` (RO)
+    ///
     /// Customer Modified. Indicates whether the customer has modified the behavior of the component. In most cases, this field is 0b0000. Customers change this value when they make authorized modifications to this component.
     #[inline(always)]
     pub fn cmod(&self) -> u32 {
@@ -54265,6 +59357,7 @@ impl Pidr3Val {
     }
 
     /// Read **REVAND** `[7:4]`
+    ///
     /// Indicates minor errata fixes specific to the revision of the component being used, for example metal fixes after implementation. In most cases, this field is 0b0000. ARM recommends that the component designers ensure that a metal fix can change this field if required, for example, by driving it from registers that reset to 0b0000.
     #[inline(always)]
     pub const fn revand(&self) -> u32 {
@@ -54272,6 +59365,7 @@ impl Pidr3Val {
     }
 
     /// Read **CMOD** `[3:0]`
+    ///
     /// Customer Modified. Indicates whether the customer has modified the behavior of the component. In most cases, this field is 0b0000. Customers change this value when they make authorized modifications to this component.
     #[inline(always)]
     pub const fn cmod(&self) -> u32 {
@@ -54317,6 +59411,7 @@ impl Pidr3 {
 /// ## Fields
 ///
 /// - **PRMBL_0** `[7:0]` (RO)
+///
 ///   Preamble[0]. Contains bits[7:0] of the component identification code
 #[repr(transparent)]
 pub struct Cidr0 {
@@ -54335,7 +59430,9 @@ impl Cidr0 {
     // ======== Field Constants ========
 
     /// **PRMBL_0**
+    ///
     /// Preamble[0]. Contains bits[7:0] of the component identification code
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_0_OFFSET: u32 = 0;
     pub const PRMBL_0_MASK: u32 = 0x000000ff;
@@ -54343,6 +59440,7 @@ impl Cidr0 {
     // ======== Field Accessors ========
 
     /// **PRMBL_0** `[7:0]` (RO)
+    ///
     /// Preamble[0]. Contains bits[7:0] of the component identification code
     #[inline(always)]
     pub fn prmbl_0(&self) -> u32 {
@@ -54380,6 +59478,7 @@ impl Cidr0Val {
     }
 
     /// Read **PRMBL_0** `[7:0]`
+    ///
     /// Preamble[0]. Contains bits[7:0] of the component identification code
     #[inline(always)]
     pub const fn prmbl_0(&self) -> u32 {
@@ -54425,8 +59524,11 @@ impl Cidr0 {
 /// ## Fields
 ///
 /// - **CLASS** `[7:4]` (RO)
+///
 ///   Class of the component, for example, whether the component is a ROM table or a generic CoreSight component. Contains bits[15:12] of the component identification code.
+///
 /// - **PRMBL_1** `[3:0]` (RO)
+///
 ///   Preamble[1]. Contains bits[11:8] of the component identification code.
 #[repr(transparent)]
 pub struct Cidr1 {
@@ -54445,13 +59547,17 @@ impl Cidr1 {
     // ======== Field Constants ========
 
     /// **CLASS**
+    ///
     /// Class of the component, for example, whether the component is a ROM table or a generic CoreSight component. Contains bits[15:12] of the component identification code.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const CLASS_OFFSET: u32 = 4;
     pub const CLASS_MASK: u32 = 0x000000f0;
 
     /// **PRMBL_1**
+    ///
     /// Preamble[1]. Contains bits[11:8] of the component identification code.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const PRMBL_1_OFFSET: u32 = 0;
     pub const PRMBL_1_MASK: u32 = 0x0000000f;
@@ -54459,6 +59565,7 @@ impl Cidr1 {
     // ======== Field Accessors ========
 
     /// **CLASS** `[7:4]` (RO)
+    ///
     /// Class of the component, for example, whether the component is a ROM table or a generic CoreSight component. Contains bits[15:12] of the component identification code.
     #[inline(always)]
     pub fn class(&self) -> u32 {
@@ -54466,6 +59573,7 @@ impl Cidr1 {
     }
 
     /// **PRMBL_1** `[3:0]` (RO)
+    ///
     /// Preamble[1]. Contains bits[11:8] of the component identification code.
     #[inline(always)]
     pub fn prmbl_1(&self) -> u32 {
@@ -54503,6 +59611,7 @@ impl Cidr1Val {
     }
 
     /// Read **CLASS** `[7:4]`
+    ///
     /// Class of the component, for example, whether the component is a ROM table or a generic CoreSight component. Contains bits[15:12] of the component identification code.
     #[inline(always)]
     pub const fn class(&self) -> u32 {
@@ -54510,6 +59619,7 @@ impl Cidr1Val {
     }
 
     /// Read **PRMBL_1** `[3:0]`
+    ///
     /// Preamble[1]. Contains bits[11:8] of the component identification code.
     #[inline(always)]
     pub const fn prmbl_1(&self) -> u32 {
@@ -54555,6 +59665,7 @@ impl Cidr1 {
 /// ## Fields
 ///
 /// - **PRMBL_2** `[7:0]` (RO)
+///
 ///   Preamble[2]. Contains bits[23:16] of the component identification code.
 #[repr(transparent)]
 pub struct Cidr2 {
@@ -54573,7 +59684,9 @@ impl Cidr2 {
     // ======== Field Constants ========
 
     /// **PRMBL_2**
+    ///
     /// Preamble[2]. Contains bits[23:16] of the component identification code.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_2_OFFSET: u32 = 0;
     pub const PRMBL_2_MASK: u32 = 0x000000ff;
@@ -54581,6 +59694,7 @@ impl Cidr2 {
     // ======== Field Accessors ========
 
     /// **PRMBL_2** `[7:0]` (RO)
+    ///
     /// Preamble[2]. Contains bits[23:16] of the component identification code.
     #[inline(always)]
     pub fn prmbl_2(&self) -> u32 {
@@ -54618,6 +59732,7 @@ impl Cidr2Val {
     }
 
     /// Read **PRMBL_2** `[7:0]`
+    ///
     /// Preamble[2]. Contains bits[23:16] of the component identification code.
     #[inline(always)]
     pub const fn prmbl_2(&self) -> u32 {
@@ -54663,6 +59778,7 @@ impl Cidr2 {
 /// ## Fields
 ///
 /// - **PRMBL_3** `[7:0]` (RO)
+///
 ///   Preamble[3]. Contains bits[31:24] of the component identification code.
 #[repr(transparent)]
 pub struct Cidr3 {
@@ -54681,7 +59797,9 @@ impl Cidr3 {
     // ======== Field Constants ========
 
     /// **PRMBL_3**
+    ///
     /// Preamble[3]. Contains bits[31:24] of the component identification code.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PRMBL_3_OFFSET: u32 = 0;
     pub const PRMBL_3_MASK: u32 = 0x000000ff;
@@ -54689,6 +59807,7 @@ impl Cidr3 {
     // ======== Field Accessors ========
 
     /// **PRMBL_3** `[7:0]` (RO)
+    ///
     /// Preamble[3]. Contains bits[31:24] of the component identification code.
     #[inline(always)]
     pub fn prmbl_3(&self) -> u32 {
@@ -54726,6 +59845,7 @@ impl Cidr3Val {
     }
 
     /// Read **PRMBL_3** `[7:0]`
+    ///
     /// Preamble[3]. Contains bits[31:24] of the component identification code.
     #[inline(always)]
     pub const fn prmbl_3(&self) -> u32 {

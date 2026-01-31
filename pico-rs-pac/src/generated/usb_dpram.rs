@@ -15,7 +15,9 @@ pub const BASE: u32 = 0x50100000;
 /// ## Fields
 ///
 /// - **WVALUE** `[31:16]` (RW)
+///
 /// - **BREQUEST** `[15:8]` (RW)
+///
 /// - **BMREQUESTTYPE** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct SetupPacketLow {
@@ -197,6 +199,7 @@ impl SetupPacketLow {
 /// ## Fields
 ///
 /// - **WLENGTH** `[31:16]` (RW)
+///
 /// - **WINDEX** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct SetupPacketHigh {
@@ -345,19 +348,33 @@ impl SetupPacketHigh {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep1InControl {
@@ -376,28 +393,36 @@ impl Ep1InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -417,21 +442,27 @@ impl Ep1InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -439,6 +470,7 @@ impl Ep1InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -458,6 +490,7 @@ impl Ep1InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -477,6 +510,7 @@ impl Ep1InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -496,6 +530,7 @@ impl Ep1InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -527,6 +562,7 @@ impl Ep1InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -546,6 +582,7 @@ impl Ep1InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -565,6 +602,7 @@ impl Ep1InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -572,6 +610,7 @@ impl Ep1InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -609,6 +648,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -616,6 +656,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -623,6 +664,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -630,6 +672,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -643,6 +686,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -650,6 +694,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -657,6 +702,7 @@ impl Ep1InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -664,6 +710,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -677,6 +724,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -690,6 +738,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -703,6 +752,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -724,6 +774,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -737,6 +788,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -750,6 +802,7 @@ impl Ep1InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -795,19 +848,33 @@ impl Ep1InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep1OutControl {
@@ -826,28 +893,36 @@ impl Ep1OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -867,21 +942,27 @@ impl Ep1OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -889,6 +970,7 @@ impl Ep1OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -908,6 +990,7 @@ impl Ep1OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -927,6 +1010,7 @@ impl Ep1OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -946,6 +1030,7 @@ impl Ep1OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -977,6 +1062,7 @@ impl Ep1OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -996,6 +1082,7 @@ impl Ep1OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -1015,6 +1102,7 @@ impl Ep1OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -1022,6 +1110,7 @@ impl Ep1OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -1059,6 +1148,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1066,6 +1156,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -1073,6 +1164,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -1080,6 +1172,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -1093,6 +1186,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -1100,6 +1194,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -1107,6 +1202,7 @@ impl Ep1OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -1114,6 +1210,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1127,6 +1224,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -1140,6 +1238,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -1153,6 +1252,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -1174,6 +1274,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -1187,6 +1288,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -1200,6 +1302,7 @@ impl Ep1OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -1245,19 +1348,33 @@ impl Ep1OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep2InControl {
@@ -1276,28 +1393,36 @@ impl Ep2InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -1317,21 +1442,27 @@ impl Ep2InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -1339,6 +1470,7 @@ impl Ep2InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1358,6 +1490,7 @@ impl Ep2InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -1377,6 +1510,7 @@ impl Ep2InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -1396,6 +1530,7 @@ impl Ep2InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -1427,6 +1562,7 @@ impl Ep2InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -1446,6 +1582,7 @@ impl Ep2InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -1465,6 +1602,7 @@ impl Ep2InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -1472,6 +1610,7 @@ impl Ep2InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -1509,6 +1648,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1516,6 +1656,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -1523,6 +1664,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -1530,6 +1672,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -1543,6 +1686,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -1550,6 +1694,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -1557,6 +1702,7 @@ impl Ep2InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -1564,6 +1710,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1577,6 +1724,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -1590,6 +1738,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -1603,6 +1752,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -1624,6 +1774,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -1637,6 +1788,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -1650,6 +1802,7 @@ impl Ep2InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -1695,19 +1848,33 @@ impl Ep2InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep2OutControl {
@@ -1726,28 +1893,36 @@ impl Ep2OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -1767,21 +1942,27 @@ impl Ep2OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -1789,6 +1970,7 @@ impl Ep2OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1808,6 +1990,7 @@ impl Ep2OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -1827,6 +2010,7 @@ impl Ep2OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -1846,6 +2030,7 @@ impl Ep2OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -1877,6 +2062,7 @@ impl Ep2OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -1896,6 +2082,7 @@ impl Ep2OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -1915,6 +2102,7 @@ impl Ep2OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -1922,6 +2110,7 @@ impl Ep2OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -1959,6 +2148,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1966,6 +2156,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -1973,6 +2164,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -1980,6 +2172,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -1993,6 +2186,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -2000,6 +2194,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -2007,6 +2202,7 @@ impl Ep2OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -2014,6 +2210,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -2027,6 +2224,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -2040,6 +2238,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -2053,6 +2252,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -2074,6 +2274,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -2087,6 +2288,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -2100,6 +2302,7 @@ impl Ep2OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -2145,19 +2348,33 @@ impl Ep2OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep3InControl {
@@ -2176,28 +2393,36 @@ impl Ep3InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -2217,21 +2442,27 @@ impl Ep3InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -2239,6 +2470,7 @@ impl Ep3InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -2258,6 +2490,7 @@ impl Ep3InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -2277,6 +2510,7 @@ impl Ep3InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -2296,6 +2530,7 @@ impl Ep3InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -2327,6 +2562,7 @@ impl Ep3InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -2346,6 +2582,7 @@ impl Ep3InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -2365,6 +2602,7 @@ impl Ep3InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -2372,6 +2610,7 @@ impl Ep3InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -2409,6 +2648,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -2416,6 +2656,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -2423,6 +2664,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -2430,6 +2672,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -2443,6 +2686,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -2450,6 +2694,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -2457,6 +2702,7 @@ impl Ep3InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -2464,6 +2710,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -2477,6 +2724,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -2490,6 +2738,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -2503,6 +2752,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -2524,6 +2774,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -2537,6 +2788,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -2550,6 +2802,7 @@ impl Ep3InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -2595,19 +2848,33 @@ impl Ep3InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep3OutControl {
@@ -2626,28 +2893,36 @@ impl Ep3OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -2667,21 +2942,27 @@ impl Ep3OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -2689,6 +2970,7 @@ impl Ep3OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -2708,6 +2990,7 @@ impl Ep3OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -2727,6 +3010,7 @@ impl Ep3OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -2746,6 +3030,7 @@ impl Ep3OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -2777,6 +3062,7 @@ impl Ep3OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -2796,6 +3082,7 @@ impl Ep3OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -2815,6 +3102,7 @@ impl Ep3OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -2822,6 +3110,7 @@ impl Ep3OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -2859,6 +3148,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -2866,6 +3156,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -2873,6 +3164,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -2880,6 +3172,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -2893,6 +3186,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -2900,6 +3194,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -2907,6 +3202,7 @@ impl Ep3OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -2914,6 +3210,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -2927,6 +3224,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -2940,6 +3238,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -2953,6 +3252,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -2974,6 +3274,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -2987,6 +3288,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -3000,6 +3302,7 @@ impl Ep3OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -3045,19 +3348,33 @@ impl Ep3OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep4InControl {
@@ -3076,28 +3393,36 @@ impl Ep4InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -3117,21 +3442,27 @@ impl Ep4InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -3139,6 +3470,7 @@ impl Ep4InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -3158,6 +3490,7 @@ impl Ep4InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -3177,6 +3510,7 @@ impl Ep4InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -3196,6 +3530,7 @@ impl Ep4InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -3227,6 +3562,7 @@ impl Ep4InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -3246,6 +3582,7 @@ impl Ep4InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -3265,6 +3602,7 @@ impl Ep4InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -3272,6 +3610,7 @@ impl Ep4InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -3309,6 +3648,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -3316,6 +3656,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -3323,6 +3664,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -3330,6 +3672,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -3343,6 +3686,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -3350,6 +3694,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -3357,6 +3702,7 @@ impl Ep4InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -3364,6 +3710,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -3377,6 +3724,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -3390,6 +3738,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -3403,6 +3752,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -3424,6 +3774,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -3437,6 +3788,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -3450,6 +3802,7 @@ impl Ep4InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -3495,19 +3848,33 @@ impl Ep4InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep4OutControl {
@@ -3526,28 +3893,36 @@ impl Ep4OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -3567,21 +3942,27 @@ impl Ep4OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -3589,6 +3970,7 @@ impl Ep4OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -3608,6 +3990,7 @@ impl Ep4OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -3627,6 +4010,7 @@ impl Ep4OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -3646,6 +4030,7 @@ impl Ep4OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -3677,6 +4062,7 @@ impl Ep4OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -3696,6 +4082,7 @@ impl Ep4OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -3715,6 +4102,7 @@ impl Ep4OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -3722,6 +4110,7 @@ impl Ep4OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -3759,6 +4148,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -3766,6 +4156,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -3773,6 +4164,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -3780,6 +4172,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -3793,6 +4186,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -3800,6 +4194,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -3807,6 +4202,7 @@ impl Ep4OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -3814,6 +4210,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -3827,6 +4224,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -3840,6 +4238,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -3853,6 +4252,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -3874,6 +4274,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -3887,6 +4288,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -3900,6 +4302,7 @@ impl Ep4OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -3945,19 +4348,33 @@ impl Ep4OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep5InControl {
@@ -3976,28 +4393,36 @@ impl Ep5InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -4017,21 +4442,27 @@ impl Ep5InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -4039,6 +4470,7 @@ impl Ep5InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -4058,6 +4490,7 @@ impl Ep5InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -4077,6 +4510,7 @@ impl Ep5InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -4096,6 +4530,7 @@ impl Ep5InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -4127,6 +4562,7 @@ impl Ep5InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -4146,6 +4582,7 @@ impl Ep5InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -4165,6 +4602,7 @@ impl Ep5InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -4172,6 +4610,7 @@ impl Ep5InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -4209,6 +4648,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -4216,6 +4656,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -4223,6 +4664,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -4230,6 +4672,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -4243,6 +4686,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -4250,6 +4694,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -4257,6 +4702,7 @@ impl Ep5InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -4264,6 +4710,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -4277,6 +4724,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -4290,6 +4738,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -4303,6 +4752,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -4324,6 +4774,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -4337,6 +4788,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -4350,6 +4802,7 @@ impl Ep5InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -4395,19 +4848,33 @@ impl Ep5InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep5OutControl {
@@ -4426,28 +4893,36 @@ impl Ep5OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -4467,21 +4942,27 @@ impl Ep5OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -4489,6 +4970,7 @@ impl Ep5OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -4508,6 +4990,7 @@ impl Ep5OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -4527,6 +5010,7 @@ impl Ep5OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -4546,6 +5030,7 @@ impl Ep5OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -4577,6 +5062,7 @@ impl Ep5OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -4596,6 +5082,7 @@ impl Ep5OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -4615,6 +5102,7 @@ impl Ep5OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -4622,6 +5110,7 @@ impl Ep5OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -4659,6 +5148,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -4666,6 +5156,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -4673,6 +5164,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -4680,6 +5172,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -4693,6 +5186,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -4700,6 +5194,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -4707,6 +5202,7 @@ impl Ep5OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -4714,6 +5210,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -4727,6 +5224,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -4740,6 +5238,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -4753,6 +5252,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -4774,6 +5274,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -4787,6 +5288,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -4800,6 +5302,7 @@ impl Ep5OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -4845,19 +5348,33 @@ impl Ep5OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep6InControl {
@@ -4876,28 +5393,36 @@ impl Ep6InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -4917,21 +5442,27 @@ impl Ep6InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -4939,6 +5470,7 @@ impl Ep6InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -4958,6 +5490,7 @@ impl Ep6InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -4977,6 +5510,7 @@ impl Ep6InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -4996,6 +5530,7 @@ impl Ep6InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -5027,6 +5562,7 @@ impl Ep6InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -5046,6 +5582,7 @@ impl Ep6InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -5065,6 +5602,7 @@ impl Ep6InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -5072,6 +5610,7 @@ impl Ep6InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -5109,6 +5648,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -5116,6 +5656,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -5123,6 +5664,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -5130,6 +5672,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -5143,6 +5686,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -5150,6 +5694,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -5157,6 +5702,7 @@ impl Ep6InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -5164,6 +5710,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -5177,6 +5724,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -5190,6 +5738,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -5203,6 +5752,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -5224,6 +5774,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -5237,6 +5788,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -5250,6 +5802,7 @@ impl Ep6InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -5295,19 +5848,33 @@ impl Ep6InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep6OutControl {
@@ -5326,28 +5893,36 @@ impl Ep6OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -5367,21 +5942,27 @@ impl Ep6OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -5389,6 +5970,7 @@ impl Ep6OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -5408,6 +5990,7 @@ impl Ep6OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -5427,6 +6010,7 @@ impl Ep6OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -5446,6 +6030,7 @@ impl Ep6OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -5477,6 +6062,7 @@ impl Ep6OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -5496,6 +6082,7 @@ impl Ep6OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -5515,6 +6102,7 @@ impl Ep6OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -5522,6 +6110,7 @@ impl Ep6OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -5559,6 +6148,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -5566,6 +6156,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -5573,6 +6164,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -5580,6 +6172,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -5593,6 +6186,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -5600,6 +6194,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -5607,6 +6202,7 @@ impl Ep6OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -5614,6 +6210,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -5627,6 +6224,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -5640,6 +6238,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -5653,6 +6252,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -5674,6 +6274,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -5687,6 +6288,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -5700,6 +6302,7 @@ impl Ep6OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -5745,19 +6348,33 @@ impl Ep6OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep7InControl {
@@ -5776,28 +6393,36 @@ impl Ep7InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -5817,21 +6442,27 @@ impl Ep7InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -5839,6 +6470,7 @@ impl Ep7InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -5858,6 +6490,7 @@ impl Ep7InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -5877,6 +6510,7 @@ impl Ep7InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -5896,6 +6530,7 @@ impl Ep7InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -5927,6 +6562,7 @@ impl Ep7InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -5946,6 +6582,7 @@ impl Ep7InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -5965,6 +6602,7 @@ impl Ep7InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -5972,6 +6610,7 @@ impl Ep7InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -6009,6 +6648,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -6016,6 +6656,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -6023,6 +6664,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -6030,6 +6672,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -6043,6 +6686,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -6050,6 +6694,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -6057,6 +6702,7 @@ impl Ep7InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -6064,6 +6710,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -6077,6 +6724,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -6090,6 +6738,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -6103,6 +6752,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -6124,6 +6774,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -6137,6 +6788,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -6150,6 +6802,7 @@ impl Ep7InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -6195,19 +6848,33 @@ impl Ep7InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep7OutControl {
@@ -6226,28 +6893,36 @@ impl Ep7OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -6267,21 +6942,27 @@ impl Ep7OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -6289,6 +6970,7 @@ impl Ep7OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -6308,6 +6990,7 @@ impl Ep7OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -6327,6 +7010,7 @@ impl Ep7OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -6346,6 +7030,7 @@ impl Ep7OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -6377,6 +7062,7 @@ impl Ep7OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -6396,6 +7082,7 @@ impl Ep7OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -6415,6 +7102,7 @@ impl Ep7OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -6422,6 +7110,7 @@ impl Ep7OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -6459,6 +7148,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -6466,6 +7156,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -6473,6 +7164,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -6480,6 +7172,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -6493,6 +7186,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -6500,6 +7194,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -6507,6 +7202,7 @@ impl Ep7OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -6514,6 +7210,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -6527,6 +7224,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -6540,6 +7238,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -6553,6 +7252,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -6574,6 +7274,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -6587,6 +7288,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -6600,6 +7302,7 @@ impl Ep7OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -6645,19 +7348,33 @@ impl Ep7OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep8InControl {
@@ -6676,28 +7393,36 @@ impl Ep8InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -6717,21 +7442,27 @@ impl Ep8InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -6739,6 +7470,7 @@ impl Ep8InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -6758,6 +7490,7 @@ impl Ep8InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -6777,6 +7510,7 @@ impl Ep8InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -6796,6 +7530,7 @@ impl Ep8InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -6827,6 +7562,7 @@ impl Ep8InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -6846,6 +7582,7 @@ impl Ep8InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -6865,6 +7602,7 @@ impl Ep8InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -6872,6 +7610,7 @@ impl Ep8InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -6909,6 +7648,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -6916,6 +7656,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -6923,6 +7664,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -6930,6 +7672,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -6943,6 +7686,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -6950,6 +7694,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -6957,6 +7702,7 @@ impl Ep8InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -6964,6 +7710,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -6977,6 +7724,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -6990,6 +7738,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -7003,6 +7752,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -7024,6 +7774,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -7037,6 +7788,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -7050,6 +7802,7 @@ impl Ep8InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -7095,19 +7848,33 @@ impl Ep8InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep8OutControl {
@@ -7126,28 +7893,36 @@ impl Ep8OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -7167,21 +7942,27 @@ impl Ep8OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -7189,6 +7970,7 @@ impl Ep8OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -7208,6 +7990,7 @@ impl Ep8OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -7227,6 +8010,7 @@ impl Ep8OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -7246,6 +8030,7 @@ impl Ep8OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -7277,6 +8062,7 @@ impl Ep8OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -7296,6 +8082,7 @@ impl Ep8OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -7315,6 +8102,7 @@ impl Ep8OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -7322,6 +8110,7 @@ impl Ep8OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -7359,6 +8148,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -7366,6 +8156,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -7373,6 +8164,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -7380,6 +8172,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -7393,6 +8186,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -7400,6 +8194,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -7407,6 +8202,7 @@ impl Ep8OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -7414,6 +8210,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -7427,6 +8224,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -7440,6 +8238,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -7453,6 +8252,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -7474,6 +8274,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -7487,6 +8288,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -7500,6 +8302,7 @@ impl Ep8OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -7545,19 +8348,33 @@ impl Ep8OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep9InControl {
@@ -7576,28 +8393,36 @@ impl Ep9InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -7617,21 +8442,27 @@ impl Ep9InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -7639,6 +8470,7 @@ impl Ep9InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -7658,6 +8490,7 @@ impl Ep9InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -7677,6 +8510,7 @@ impl Ep9InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -7696,6 +8530,7 @@ impl Ep9InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -7727,6 +8562,7 @@ impl Ep9InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -7746,6 +8582,7 @@ impl Ep9InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -7765,6 +8602,7 @@ impl Ep9InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -7772,6 +8610,7 @@ impl Ep9InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -7809,6 +8648,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -7816,6 +8656,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -7823,6 +8664,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -7830,6 +8672,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -7843,6 +8686,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -7850,6 +8694,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -7857,6 +8702,7 @@ impl Ep9InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -7864,6 +8710,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -7877,6 +8724,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -7890,6 +8738,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -7903,6 +8752,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -7924,6 +8774,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -7937,6 +8788,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -7950,6 +8802,7 @@ impl Ep9InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -7995,19 +8848,33 @@ impl Ep9InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep9OutControl {
@@ -8026,28 +8893,36 @@ impl Ep9OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -8067,21 +8942,27 @@ impl Ep9OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -8089,6 +8970,7 @@ impl Ep9OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -8108,6 +8990,7 @@ impl Ep9OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -8127,6 +9010,7 @@ impl Ep9OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -8146,6 +9030,7 @@ impl Ep9OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -8177,6 +9062,7 @@ impl Ep9OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -8196,6 +9082,7 @@ impl Ep9OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -8215,6 +9102,7 @@ impl Ep9OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -8222,6 +9110,7 @@ impl Ep9OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -8259,6 +9148,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -8266,6 +9156,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -8273,6 +9164,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -8280,6 +9172,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -8293,6 +9186,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -8300,6 +9194,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -8307,6 +9202,7 @@ impl Ep9OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -8314,6 +9210,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -8327,6 +9224,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -8340,6 +9238,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -8353,6 +9252,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -8374,6 +9274,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -8387,6 +9288,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -8400,6 +9302,7 @@ impl Ep9OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -8445,19 +9348,33 @@ impl Ep9OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep10InControl {
@@ -8476,28 +9393,36 @@ impl Ep10InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -8517,21 +9442,27 @@ impl Ep10InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -8539,6 +9470,7 @@ impl Ep10InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -8558,6 +9490,7 @@ impl Ep10InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -8577,6 +9510,7 @@ impl Ep10InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -8596,6 +9530,7 @@ impl Ep10InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -8627,6 +9562,7 @@ impl Ep10InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -8646,6 +9582,7 @@ impl Ep10InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -8665,6 +9602,7 @@ impl Ep10InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -8672,6 +9610,7 @@ impl Ep10InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -8709,6 +9648,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -8716,6 +9656,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -8723,6 +9664,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -8730,6 +9672,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -8743,6 +9686,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -8750,6 +9694,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -8757,6 +9702,7 @@ impl Ep10InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -8764,6 +9710,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -8777,6 +9724,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -8790,6 +9738,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -8803,6 +9752,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -8824,6 +9774,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -8837,6 +9788,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -8850,6 +9802,7 @@ impl Ep10InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -8895,19 +9848,33 @@ impl Ep10InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep10OutControl {
@@ -8926,28 +9893,36 @@ impl Ep10OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -8967,21 +9942,27 @@ impl Ep10OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -8989,6 +9970,7 @@ impl Ep10OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -9008,6 +9990,7 @@ impl Ep10OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -9027,6 +10010,7 @@ impl Ep10OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -9046,6 +10030,7 @@ impl Ep10OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -9077,6 +10062,7 @@ impl Ep10OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -9096,6 +10082,7 @@ impl Ep10OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -9115,6 +10102,7 @@ impl Ep10OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -9122,6 +10110,7 @@ impl Ep10OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -9159,6 +10148,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -9166,6 +10156,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -9173,6 +10164,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -9180,6 +10172,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -9193,6 +10186,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -9200,6 +10194,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -9207,6 +10202,7 @@ impl Ep10OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -9214,6 +10210,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -9227,6 +10224,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -9240,6 +10238,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -9253,6 +10252,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -9274,6 +10274,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -9287,6 +10288,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -9300,6 +10302,7 @@ impl Ep10OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -9345,19 +10348,33 @@ impl Ep10OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep11InControl {
@@ -9376,28 +10393,36 @@ impl Ep11InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -9417,21 +10442,27 @@ impl Ep11InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -9439,6 +10470,7 @@ impl Ep11InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -9458,6 +10490,7 @@ impl Ep11InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -9477,6 +10510,7 @@ impl Ep11InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -9496,6 +10530,7 @@ impl Ep11InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -9527,6 +10562,7 @@ impl Ep11InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -9546,6 +10582,7 @@ impl Ep11InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -9565,6 +10602,7 @@ impl Ep11InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -9572,6 +10610,7 @@ impl Ep11InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -9609,6 +10648,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -9616,6 +10656,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -9623,6 +10664,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -9630,6 +10672,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -9643,6 +10686,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -9650,6 +10694,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -9657,6 +10702,7 @@ impl Ep11InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -9664,6 +10710,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -9677,6 +10724,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -9690,6 +10738,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -9703,6 +10752,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -9724,6 +10774,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -9737,6 +10788,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -9750,6 +10802,7 @@ impl Ep11InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -9795,19 +10848,33 @@ impl Ep11InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep11OutControl {
@@ -9826,28 +10893,36 @@ impl Ep11OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -9867,21 +10942,27 @@ impl Ep11OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -9889,6 +10970,7 @@ impl Ep11OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -9908,6 +10990,7 @@ impl Ep11OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -9927,6 +11010,7 @@ impl Ep11OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -9946,6 +11030,7 @@ impl Ep11OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -9977,6 +11062,7 @@ impl Ep11OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -9996,6 +11082,7 @@ impl Ep11OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -10015,6 +11102,7 @@ impl Ep11OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -10022,6 +11110,7 @@ impl Ep11OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -10059,6 +11148,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -10066,6 +11156,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -10073,6 +11164,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -10080,6 +11172,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -10093,6 +11186,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -10100,6 +11194,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -10107,6 +11202,7 @@ impl Ep11OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -10114,6 +11210,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -10127,6 +11224,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -10140,6 +11238,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -10153,6 +11252,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -10174,6 +11274,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -10187,6 +11288,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -10200,6 +11302,7 @@ impl Ep11OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -10245,19 +11348,33 @@ impl Ep11OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep12InControl {
@@ -10276,28 +11393,36 @@ impl Ep12InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -10317,21 +11442,27 @@ impl Ep12InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -10339,6 +11470,7 @@ impl Ep12InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -10358,6 +11490,7 @@ impl Ep12InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -10377,6 +11510,7 @@ impl Ep12InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -10396,6 +11530,7 @@ impl Ep12InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -10427,6 +11562,7 @@ impl Ep12InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -10446,6 +11582,7 @@ impl Ep12InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -10465,6 +11602,7 @@ impl Ep12InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -10472,6 +11610,7 @@ impl Ep12InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -10509,6 +11648,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -10516,6 +11656,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -10523,6 +11664,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -10530,6 +11672,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -10543,6 +11686,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -10550,6 +11694,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -10557,6 +11702,7 @@ impl Ep12InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -10564,6 +11710,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -10577,6 +11724,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -10590,6 +11738,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -10603,6 +11752,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -10624,6 +11774,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -10637,6 +11788,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -10650,6 +11802,7 @@ impl Ep12InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -10695,19 +11848,33 @@ impl Ep12InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep12OutControl {
@@ -10726,28 +11893,36 @@ impl Ep12OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -10767,21 +11942,27 @@ impl Ep12OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -10789,6 +11970,7 @@ impl Ep12OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -10808,6 +11990,7 @@ impl Ep12OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -10827,6 +12010,7 @@ impl Ep12OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -10846,6 +12030,7 @@ impl Ep12OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -10877,6 +12062,7 @@ impl Ep12OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -10896,6 +12082,7 @@ impl Ep12OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -10915,6 +12102,7 @@ impl Ep12OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -10922,6 +12110,7 @@ impl Ep12OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -10959,6 +12148,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -10966,6 +12156,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -10973,6 +12164,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -10980,6 +12172,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -10993,6 +12186,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -11000,6 +12194,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -11007,6 +12202,7 @@ impl Ep12OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -11014,6 +12210,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -11027,6 +12224,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -11040,6 +12238,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -11053,6 +12252,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -11074,6 +12274,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -11087,6 +12288,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -11100,6 +12302,7 @@ impl Ep12OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -11145,19 +12348,33 @@ impl Ep12OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep13InControl {
@@ -11176,28 +12393,36 @@ impl Ep13InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -11217,21 +12442,27 @@ impl Ep13InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -11239,6 +12470,7 @@ impl Ep13InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -11258,6 +12490,7 @@ impl Ep13InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -11277,6 +12510,7 @@ impl Ep13InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -11296,6 +12530,7 @@ impl Ep13InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -11327,6 +12562,7 @@ impl Ep13InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -11346,6 +12582,7 @@ impl Ep13InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -11365,6 +12602,7 @@ impl Ep13InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -11372,6 +12610,7 @@ impl Ep13InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -11409,6 +12648,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -11416,6 +12656,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -11423,6 +12664,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -11430,6 +12672,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -11443,6 +12686,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -11450,6 +12694,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -11457,6 +12702,7 @@ impl Ep13InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -11464,6 +12710,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -11477,6 +12724,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -11490,6 +12738,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -11503,6 +12752,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -11524,6 +12774,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -11537,6 +12788,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -11550,6 +12802,7 @@ impl Ep13InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -11595,19 +12848,33 @@ impl Ep13InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep13OutControl {
@@ -11626,28 +12893,36 @@ impl Ep13OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -11667,21 +12942,27 @@ impl Ep13OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -11689,6 +12970,7 @@ impl Ep13OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -11708,6 +12990,7 @@ impl Ep13OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -11727,6 +13010,7 @@ impl Ep13OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -11746,6 +13030,7 @@ impl Ep13OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -11777,6 +13062,7 @@ impl Ep13OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -11796,6 +13082,7 @@ impl Ep13OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -11815,6 +13102,7 @@ impl Ep13OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -11822,6 +13110,7 @@ impl Ep13OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -11859,6 +13148,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -11866,6 +13156,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -11873,6 +13164,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -11880,6 +13172,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -11893,6 +13186,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -11900,6 +13194,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -11907,6 +13202,7 @@ impl Ep13OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -11914,6 +13210,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -11927,6 +13224,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -11940,6 +13238,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -11953,6 +13252,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -11974,6 +13274,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -11987,6 +13288,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -12000,6 +13302,7 @@ impl Ep13OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -12045,19 +13348,33 @@ impl Ep13OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep14InControl {
@@ -12076,28 +13393,36 @@ impl Ep14InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -12117,21 +13442,27 @@ impl Ep14InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -12139,6 +13470,7 @@ impl Ep14InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -12158,6 +13490,7 @@ impl Ep14InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -12177,6 +13510,7 @@ impl Ep14InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -12196,6 +13530,7 @@ impl Ep14InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -12227,6 +13562,7 @@ impl Ep14InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -12246,6 +13582,7 @@ impl Ep14InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -12265,6 +13602,7 @@ impl Ep14InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -12272,6 +13610,7 @@ impl Ep14InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -12309,6 +13648,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -12316,6 +13656,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -12323,6 +13664,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -12330,6 +13672,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -12343,6 +13686,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -12350,6 +13694,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -12357,6 +13702,7 @@ impl Ep14InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -12364,6 +13710,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -12377,6 +13724,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -12390,6 +13738,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -12403,6 +13752,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -12424,6 +13774,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -12437,6 +13788,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -12450,6 +13802,7 @@ impl Ep14InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -12495,19 +13848,33 @@ impl Ep14InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep14OutControl {
@@ -12526,28 +13893,36 @@ impl Ep14OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -12567,21 +13942,27 @@ impl Ep14OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -12589,6 +13970,7 @@ impl Ep14OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -12608,6 +13990,7 @@ impl Ep14OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -12627,6 +14010,7 @@ impl Ep14OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -12646,6 +14030,7 @@ impl Ep14OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -12677,6 +14062,7 @@ impl Ep14OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -12696,6 +14082,7 @@ impl Ep14OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -12715,6 +14102,7 @@ impl Ep14OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -12722,6 +14110,7 @@ impl Ep14OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -12759,6 +14148,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -12766,6 +14156,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -12773,6 +14164,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -12780,6 +14172,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -12793,6 +14186,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -12800,6 +14194,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -12807,6 +14202,7 @@ impl Ep14OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -12814,6 +14210,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -12827,6 +14224,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -12840,6 +14238,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -12853,6 +14252,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -12874,6 +14274,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -12887,6 +14288,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -12900,6 +14302,7 @@ impl Ep14OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -12945,19 +14348,33 @@ impl Ep14OutControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep15InControl {
@@ -12976,28 +14393,36 @@ impl Ep15InControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -13017,21 +14442,27 @@ impl Ep15InControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -13039,6 +14470,7 @@ impl Ep15InControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -13058,6 +14490,7 @@ impl Ep15InControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -13077,6 +14510,7 @@ impl Ep15InControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -13096,6 +14530,7 @@ impl Ep15InControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -13127,6 +14562,7 @@ impl Ep15InControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -13146,6 +14582,7 @@ impl Ep15InControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -13165,6 +14602,7 @@ impl Ep15InControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -13172,6 +14610,7 @@ impl Ep15InControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -13209,6 +14648,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -13216,6 +14656,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -13223,6 +14664,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -13230,6 +14672,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -13243,6 +14686,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -13250,6 +14694,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -13257,6 +14702,7 @@ impl Ep15InControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -13264,6 +14710,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -13277,6 +14724,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -13290,6 +14738,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -13303,6 +14752,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -13324,6 +14774,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -13337,6 +14788,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -13350,6 +14802,7 @@ impl Ep15InControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -13395,19 +14848,33 @@ impl Ep15InControl {
 /// ## Fields
 ///
 /// - **ENABLE** `[31]` (RW)
+///
 ///   Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+///
 /// - **DOUBLE_BUFFERED** `[30]` (RW)
+///
 ///   This endpoint is double buffered.
+///
 /// - **INTERRUPT_PER_BUFF** `[29]` (RW)
+///
 ///   Trigger an interrupt each time a buffer is done.
+///
 /// - **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+///
 ///   Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+///
 /// - **ENDPOINT_TYPE** `[27:26]` (RW)
+///
 /// - **INTERRUPT_ON_STALL** `[17]` (RW)
+///
 ///   Trigger an interrupt if a STALL is sent. Intended for debug only.
+///
 /// - **INTERRUPT_ON_NAK** `[16]` (RW)
+///
 ///   Trigger an interrupt if a NAK is sent. Intended for debug only.
+///
 /// - **BUFFER_ADDRESS** `[15:0]` (RW)
+///
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep15OutControl {
@@ -13426,28 +14893,36 @@ impl Ep15OutControl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const ENABLE_OFFSET: u32 = 31;
     pub const ENABLE_MASK: u32 = 0x80000000;
     pub const ENABLE: u32 = 1 << 31;
 
     /// **DOUBLE_BUFFERED**
+    ///
     /// This endpoint is double buffered.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const DOUBLE_BUFFERED_OFFSET: u32 = 30;
     pub const DOUBLE_BUFFERED_MASK: u32 = 0x40000000;
     pub const DOUBLE_BUFFERED: u32 = 1 << 30;
 
     /// **INTERRUPT_PER_BUFF**
+    ///
     /// Trigger an interrupt each time a buffer is done.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const INTERRUPT_PER_BUFF_OFFSET: u32 = 29;
     pub const INTERRUPT_PER_BUFF_MASK: u32 = 0x20000000;
     pub const INTERRUPT_PER_BUFF: u32 = 1 << 29;
 
     /// **INTERRUPT_PER_DOUBLE_BUFF**
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const INTERRUPT_PER_DOUBLE_BUFF_OFFSET: u32 = 28;
     pub const INTERRUPT_PER_DOUBLE_BUFF_MASK: u32 = 0x10000000;
@@ -13467,21 +14942,27 @@ impl Ep15OutControl {
     pub const ENDPOINT_TYPE_INTERRUPT_VAL: u32 = 3;
 
     /// **INTERRUPT_ON_STALL**
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INTERRUPT_ON_STALL_OFFSET: u32 = 17;
     pub const INTERRUPT_ON_STALL_MASK: u32 = 0x00020000;
     pub const INTERRUPT_ON_STALL: u32 = 1 << 17;
 
     /// **INTERRUPT_ON_NAK**
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const INTERRUPT_ON_NAK_OFFSET: u32 = 16;
     pub const INTERRUPT_ON_NAK_MASK: u32 = 0x00010000;
     pub const INTERRUPT_ON_NAK: u32 = 1 << 16;
 
     /// **BUFFER_ADDRESS**
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const BUFFER_ADDRESS_OFFSET: u32 = 0;
     pub const BUFFER_ADDRESS_MASK: u32 = 0x0000ffff;
@@ -13489,6 +14970,7 @@ impl Ep15OutControl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[31]` (RW)
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -13508,6 +14990,7 @@ impl Ep15OutControl {
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub fn double_buffered(&self) -> bool {
@@ -13527,6 +15010,7 @@ impl Ep15OutControl {
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub fn interrupt_per_buff(&self) -> bool {
@@ -13546,6 +15030,7 @@ impl Ep15OutControl {
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub fn interrupt_per_double_buff(&self) -> bool {
@@ -13577,6 +15062,7 @@ impl Ep15OutControl {
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_stall(&self) -> bool {
@@ -13596,6 +15082,7 @@ impl Ep15OutControl {
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub fn interrupt_on_nak(&self) -> bool {
@@ -13615,6 +15102,7 @@ impl Ep15OutControl {
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn buffer_address(&self) -> u32 {
@@ -13622,6 +15110,7 @@ impl Ep15OutControl {
     }
 
     /// Write **BUFFER_ADDRESS** `[15:0]` (RW)
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
@@ -13659,6 +15148,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -13666,6 +15156,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn double_buffered(&self) -> bool {
@@ -13673,6 +15164,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn interrupt_per_buff(&self) -> bool {
@@ -13680,6 +15172,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn interrupt_per_double_buff(&self) -> bool {
@@ -13693,6 +15186,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_stall(&self) -> bool {
@@ -13700,6 +15194,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn interrupt_on_nak(&self) -> bool {
@@ -13707,6 +15202,7 @@ impl Ep15OutControlVal {
     }
 
     /// Read **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn buffer_address(&self) -> u32 {
@@ -13714,6 +15210,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **ENABLE** `[31:31]`
+    ///
     /// Enable this endpoint. The device will not reply to any packets for this endpoint if this bit is not set.
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -13727,6 +15224,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **DOUBLE_BUFFERED** `[30:30]`
+    ///
     /// This endpoint is double buffered.
     #[inline(always)]
     pub const fn with_double_buffered(self, value: bool) -> Self {
@@ -13740,6 +15238,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_BUFF** `[29:29]`
+    ///
     /// Trigger an interrupt each time a buffer is done.
     #[inline(always)]
     pub const fn with_interrupt_per_buff(self, value: bool) -> Self {
@@ -13753,6 +15252,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **INTERRUPT_PER_DOUBLE_BUFF** `[28:28]`
+    ///
     /// Trigger an interrupt each time both buffers are done. Only valid in double buffered mode.
     #[inline(always)]
     pub const fn with_interrupt_per_double_buff(self, value: bool) -> Self {
@@ -13774,6 +15274,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_STALL** `[17:17]`
+    ///
     /// Trigger an interrupt if a STALL is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_stall(self, value: bool) -> Self {
@@ -13787,6 +15288,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **INTERRUPT_ON_NAK** `[16:16]`
+    ///
     /// Trigger an interrupt if a NAK is sent. Intended for debug only.
     #[inline(always)]
     pub const fn with_interrupt_on_nak(self, value: bool) -> Self {
@@ -13800,6 +15302,7 @@ impl Ep15OutControlVal {
     }
 
     /// Set **BUFFER_ADDRESS** `[15:0]`
+    ///
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
@@ -13848,31 +15351,56 @@ impl Ep15OutControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep0InBufferControl {
@@ -13891,29 +15419,37 @@ impl Ep0InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -13927,62 +15463,80 @@ impl Ep0InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -13990,6 +15544,7 @@ impl Ep0InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -14009,6 +15564,7 @@ impl Ep0InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -14028,6 +15584,7 @@ impl Ep0InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -14047,6 +15604,7 @@ impl Ep0InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14055,6 +15613,7 @@ impl Ep0InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14063,6 +15622,7 @@ impl Ep0InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -14082,6 +15642,7 @@ impl Ep0InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -14089,6 +15650,7 @@ impl Ep0InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -14096,6 +15658,7 @@ impl Ep0InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -14115,6 +15678,7 @@ impl Ep0InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -14134,6 +15698,7 @@ impl Ep0InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -14153,6 +15718,7 @@ impl Ep0InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -14172,6 +15738,7 @@ impl Ep0InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -14191,6 +15758,7 @@ impl Ep0InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -14210,6 +15778,7 @@ impl Ep0InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -14217,6 +15786,7 @@ impl Ep0InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -14248,6 +15818,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -14255,6 +15826,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -14262,6 +15834,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -14269,6 +15842,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14277,6 +15851,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -14284,6 +15859,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -14291,6 +15867,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -14298,6 +15875,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -14305,6 +15883,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -14312,6 +15891,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -14319,6 +15899,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -14326,6 +15907,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -14333,6 +15915,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -14340,6 +15923,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -14353,6 +15937,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -14366,6 +15951,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -14379,6 +15965,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14389,6 +15976,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -14402,6 +15990,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -14411,6 +16000,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -14424,6 +16014,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -14437,6 +16028,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -14450,6 +16042,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -14463,6 +16056,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -14476,6 +16070,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -14489,6 +16084,7 @@ impl Ep0InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -14537,31 +16133,56 @@ impl Ep0InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep0OutBufferControl {
@@ -14580,29 +16201,37 @@ impl Ep0OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -14616,62 +16245,80 @@ impl Ep0OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -14679,6 +16326,7 @@ impl Ep0OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -14698,6 +16346,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -14717,6 +16366,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -14736,6 +16386,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14744,6 +16395,7 @@ impl Ep0OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14752,6 +16404,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -14771,6 +16424,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -14778,6 +16432,7 @@ impl Ep0OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -14785,6 +16440,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -14804,6 +16460,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -14823,6 +16480,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -14842,6 +16500,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -14861,6 +16520,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -14880,6 +16540,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -14899,6 +16560,7 @@ impl Ep0OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -14906,6 +16568,7 @@ impl Ep0OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -14937,6 +16600,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -14944,6 +16608,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -14951,6 +16616,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -14958,6 +16624,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -14966,6 +16633,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -14973,6 +16641,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -14980,6 +16649,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -14987,6 +16657,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -14994,6 +16665,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -15001,6 +16673,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -15008,6 +16681,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -15015,6 +16689,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -15022,6 +16697,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -15029,6 +16705,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -15042,6 +16719,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -15055,6 +16733,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -15068,6 +16747,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -15078,6 +16758,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -15091,6 +16772,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -15100,6 +16782,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -15113,6 +16796,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -15126,6 +16810,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -15139,6 +16824,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -15152,6 +16838,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -15165,6 +16852,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -15178,6 +16866,7 @@ impl Ep0OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -15226,31 +16915,56 @@ impl Ep0OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep1InBufferControl {
@@ -15269,29 +16983,37 @@ impl Ep1InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -15305,62 +17027,80 @@ impl Ep1InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -15368,6 +17108,7 @@ impl Ep1InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -15387,6 +17128,7 @@ impl Ep1InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -15406,6 +17148,7 @@ impl Ep1InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -15425,6 +17168,7 @@ impl Ep1InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -15433,6 +17177,7 @@ impl Ep1InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -15441,6 +17186,7 @@ impl Ep1InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -15460,6 +17206,7 @@ impl Ep1InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -15467,6 +17214,7 @@ impl Ep1InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -15474,6 +17222,7 @@ impl Ep1InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -15493,6 +17242,7 @@ impl Ep1InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -15512,6 +17262,7 @@ impl Ep1InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -15531,6 +17282,7 @@ impl Ep1InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -15550,6 +17302,7 @@ impl Ep1InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -15569,6 +17322,7 @@ impl Ep1InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -15588,6 +17342,7 @@ impl Ep1InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -15595,6 +17350,7 @@ impl Ep1InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -15626,6 +17382,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -15633,6 +17390,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -15640,6 +17398,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -15647,6 +17406,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -15655,6 +17415,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -15662,6 +17423,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -15669,6 +17431,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -15676,6 +17439,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -15683,6 +17447,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -15690,6 +17455,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -15697,6 +17463,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -15704,6 +17471,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -15711,6 +17479,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -15718,6 +17487,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -15731,6 +17501,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -15744,6 +17515,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -15757,6 +17529,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -15767,6 +17540,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -15780,6 +17554,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -15789,6 +17564,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -15802,6 +17578,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -15815,6 +17592,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -15828,6 +17606,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -15841,6 +17620,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -15854,6 +17634,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -15867,6 +17648,7 @@ impl Ep1InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -15915,31 +17697,56 @@ impl Ep1InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep1OutBufferControl {
@@ -15958,29 +17765,37 @@ impl Ep1OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -15994,62 +17809,80 @@ impl Ep1OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -16057,6 +17890,7 @@ impl Ep1OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -16076,6 +17910,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -16095,6 +17930,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -16114,6 +17950,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16122,6 +17959,7 @@ impl Ep1OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16130,6 +17968,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -16149,6 +17988,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -16156,6 +17996,7 @@ impl Ep1OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -16163,6 +18004,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -16182,6 +18024,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -16201,6 +18044,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -16220,6 +18064,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -16239,6 +18084,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -16258,6 +18104,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -16277,6 +18124,7 @@ impl Ep1OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -16284,6 +18132,7 @@ impl Ep1OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -16315,6 +18164,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -16322,6 +18172,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -16329,6 +18180,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -16336,6 +18188,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16344,6 +18197,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -16351,6 +18205,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -16358,6 +18213,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -16365,6 +18221,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -16372,6 +18229,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -16379,6 +18237,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -16386,6 +18245,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -16393,6 +18253,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -16400,6 +18261,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -16407,6 +18269,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -16420,6 +18283,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -16433,6 +18297,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -16446,6 +18311,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16456,6 +18322,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -16469,6 +18336,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -16478,6 +18346,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -16491,6 +18360,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -16504,6 +18374,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -16517,6 +18388,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -16530,6 +18402,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -16543,6 +18416,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -16556,6 +18430,7 @@ impl Ep1OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -16604,31 +18479,56 @@ impl Ep1OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep2InBufferControl {
@@ -16647,29 +18547,37 @@ impl Ep2InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -16683,62 +18591,80 @@ impl Ep2InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -16746,6 +18672,7 @@ impl Ep2InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -16765,6 +18692,7 @@ impl Ep2InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -16784,6 +18712,7 @@ impl Ep2InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -16803,6 +18732,7 @@ impl Ep2InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16811,6 +18741,7 @@ impl Ep2InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -16819,6 +18750,7 @@ impl Ep2InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -16838,6 +18770,7 @@ impl Ep2InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -16845,6 +18778,7 @@ impl Ep2InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -16852,6 +18786,7 @@ impl Ep2InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -16871,6 +18806,7 @@ impl Ep2InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -16890,6 +18826,7 @@ impl Ep2InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -16909,6 +18846,7 @@ impl Ep2InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -16928,6 +18866,7 @@ impl Ep2InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -16947,6 +18886,7 @@ impl Ep2InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -16966,6 +18906,7 @@ impl Ep2InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -16973,6 +18914,7 @@ impl Ep2InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -17004,6 +18946,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -17011,6 +18954,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -17018,6 +18962,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -17025,6 +18970,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17033,6 +18979,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -17040,6 +18987,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -17047,6 +18995,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -17054,6 +19003,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -17061,6 +19011,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -17068,6 +19019,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -17075,6 +19027,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -17082,6 +19035,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -17089,6 +19043,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -17096,6 +19051,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -17109,6 +19065,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -17122,6 +19079,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -17135,6 +19093,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17145,6 +19104,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -17158,6 +19118,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -17167,6 +19128,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -17180,6 +19142,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -17193,6 +19156,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -17206,6 +19170,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -17219,6 +19184,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -17232,6 +19198,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -17245,6 +19212,7 @@ impl Ep2InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -17293,31 +19261,56 @@ impl Ep2InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep2OutBufferControl {
@@ -17336,29 +19329,37 @@ impl Ep2OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -17372,62 +19373,80 @@ impl Ep2OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -17435,6 +19454,7 @@ impl Ep2OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -17454,6 +19474,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -17473,6 +19494,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -17492,6 +19514,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17500,6 +19523,7 @@ impl Ep2OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17508,6 +19532,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -17527,6 +19552,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -17534,6 +19560,7 @@ impl Ep2OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -17541,6 +19568,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -17560,6 +19588,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -17579,6 +19608,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -17598,6 +19628,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -17617,6 +19648,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -17636,6 +19668,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -17655,6 +19688,7 @@ impl Ep2OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -17662,6 +19696,7 @@ impl Ep2OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -17693,6 +19728,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -17700,6 +19736,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -17707,6 +19744,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -17714,6 +19752,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17722,6 +19761,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -17729,6 +19769,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -17736,6 +19777,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -17743,6 +19785,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -17750,6 +19793,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -17757,6 +19801,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -17764,6 +19809,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -17771,6 +19817,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -17778,6 +19825,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -17785,6 +19833,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -17798,6 +19847,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -17811,6 +19861,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -17824,6 +19875,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -17834,6 +19886,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -17847,6 +19900,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -17856,6 +19910,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -17869,6 +19924,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -17882,6 +19938,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -17895,6 +19952,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -17908,6 +19966,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -17921,6 +19980,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -17934,6 +19994,7 @@ impl Ep2OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -17982,31 +20043,56 @@ impl Ep2OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep3InBufferControl {
@@ -18025,29 +20111,37 @@ impl Ep3InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -18061,62 +20155,80 @@ impl Ep3InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -18124,6 +20236,7 @@ impl Ep3InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -18143,6 +20256,7 @@ impl Ep3InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -18162,6 +20276,7 @@ impl Ep3InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -18181,6 +20296,7 @@ impl Ep3InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18189,6 +20305,7 @@ impl Ep3InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18197,6 +20314,7 @@ impl Ep3InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -18216,6 +20334,7 @@ impl Ep3InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -18223,6 +20342,7 @@ impl Ep3InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -18230,6 +20350,7 @@ impl Ep3InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -18249,6 +20370,7 @@ impl Ep3InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -18268,6 +20390,7 @@ impl Ep3InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -18287,6 +20410,7 @@ impl Ep3InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -18306,6 +20430,7 @@ impl Ep3InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -18325,6 +20450,7 @@ impl Ep3InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -18344,6 +20470,7 @@ impl Ep3InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -18351,6 +20478,7 @@ impl Ep3InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -18382,6 +20510,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -18389,6 +20518,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -18396,6 +20526,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -18403,6 +20534,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18411,6 +20543,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -18418,6 +20551,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -18425,6 +20559,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -18432,6 +20567,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -18439,6 +20575,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -18446,6 +20583,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -18453,6 +20591,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -18460,6 +20599,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -18467,6 +20607,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -18474,6 +20615,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -18487,6 +20629,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -18500,6 +20643,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -18513,6 +20657,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18523,6 +20668,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -18536,6 +20682,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -18545,6 +20692,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -18558,6 +20706,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -18571,6 +20720,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -18584,6 +20734,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -18597,6 +20748,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -18610,6 +20762,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -18623,6 +20776,7 @@ impl Ep3InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -18671,31 +20825,56 @@ impl Ep3InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep3OutBufferControl {
@@ -18714,29 +20893,37 @@ impl Ep3OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -18750,62 +20937,80 @@ impl Ep3OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -18813,6 +21018,7 @@ impl Ep3OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -18832,6 +21038,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -18851,6 +21058,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -18870,6 +21078,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18878,6 +21087,7 @@ impl Ep3OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -18886,6 +21096,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -18905,6 +21116,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -18912,6 +21124,7 @@ impl Ep3OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -18919,6 +21132,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -18938,6 +21152,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -18957,6 +21172,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -18976,6 +21192,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -18995,6 +21212,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -19014,6 +21232,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -19033,6 +21252,7 @@ impl Ep3OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -19040,6 +21260,7 @@ impl Ep3OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -19071,6 +21292,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -19078,6 +21300,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -19085,6 +21308,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -19092,6 +21316,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19100,6 +21325,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -19107,6 +21333,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -19114,6 +21341,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -19121,6 +21349,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -19128,6 +21357,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -19135,6 +21365,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -19142,6 +21373,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -19149,6 +21381,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -19156,6 +21389,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -19163,6 +21397,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -19176,6 +21411,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -19189,6 +21425,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -19202,6 +21439,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19212,6 +21450,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -19225,6 +21464,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -19234,6 +21474,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -19247,6 +21488,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -19260,6 +21502,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -19273,6 +21516,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -19286,6 +21530,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -19299,6 +21544,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -19312,6 +21558,7 @@ impl Ep3OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -19360,31 +21607,56 @@ impl Ep3OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep4InBufferControl {
@@ -19403,29 +21675,37 @@ impl Ep4InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -19439,62 +21719,80 @@ impl Ep4InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -19502,6 +21800,7 @@ impl Ep4InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -19521,6 +21820,7 @@ impl Ep4InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -19540,6 +21840,7 @@ impl Ep4InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -19559,6 +21860,7 @@ impl Ep4InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19567,6 +21869,7 @@ impl Ep4InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19575,6 +21878,7 @@ impl Ep4InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -19594,6 +21898,7 @@ impl Ep4InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -19601,6 +21906,7 @@ impl Ep4InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -19608,6 +21914,7 @@ impl Ep4InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -19627,6 +21934,7 @@ impl Ep4InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -19646,6 +21954,7 @@ impl Ep4InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -19665,6 +21974,7 @@ impl Ep4InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -19684,6 +21994,7 @@ impl Ep4InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -19703,6 +22014,7 @@ impl Ep4InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -19722,6 +22034,7 @@ impl Ep4InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -19729,6 +22042,7 @@ impl Ep4InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -19760,6 +22074,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -19767,6 +22082,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -19774,6 +22090,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -19781,6 +22098,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19789,6 +22107,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -19796,6 +22115,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -19803,6 +22123,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -19810,6 +22131,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -19817,6 +22139,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -19824,6 +22147,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -19831,6 +22155,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -19838,6 +22163,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -19845,6 +22171,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -19852,6 +22179,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -19865,6 +22193,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -19878,6 +22207,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -19891,6 +22221,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -19901,6 +22232,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -19914,6 +22246,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -19923,6 +22256,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -19936,6 +22270,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -19949,6 +22284,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -19962,6 +22298,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -19975,6 +22312,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -19988,6 +22326,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -20001,6 +22340,7 @@ impl Ep4InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -20049,31 +22389,56 @@ impl Ep4InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep4OutBufferControl {
@@ -20092,29 +22457,37 @@ impl Ep4OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -20128,62 +22501,80 @@ impl Ep4OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -20191,6 +22582,7 @@ impl Ep4OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -20210,6 +22602,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -20229,6 +22622,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -20248,6 +22642,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20256,6 +22651,7 @@ impl Ep4OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20264,6 +22660,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -20283,6 +22680,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -20290,6 +22688,7 @@ impl Ep4OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -20297,6 +22696,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -20316,6 +22716,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -20335,6 +22736,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -20354,6 +22756,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -20373,6 +22776,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -20392,6 +22796,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -20411,6 +22816,7 @@ impl Ep4OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -20418,6 +22824,7 @@ impl Ep4OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -20449,6 +22856,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -20456,6 +22864,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -20463,6 +22872,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -20470,6 +22880,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20478,6 +22889,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -20485,6 +22897,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -20492,6 +22905,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -20499,6 +22913,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -20506,6 +22921,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -20513,6 +22929,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -20520,6 +22937,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -20527,6 +22945,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -20534,6 +22953,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -20541,6 +22961,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -20554,6 +22975,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -20567,6 +22989,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -20580,6 +23003,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20590,6 +23014,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -20603,6 +23028,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -20612,6 +23038,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -20625,6 +23052,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -20638,6 +23066,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -20651,6 +23080,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -20664,6 +23094,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -20677,6 +23108,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -20690,6 +23122,7 @@ impl Ep4OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -20738,31 +23171,56 @@ impl Ep4OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep5InBufferControl {
@@ -20781,29 +23239,37 @@ impl Ep5InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -20817,62 +23283,80 @@ impl Ep5InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -20880,6 +23364,7 @@ impl Ep5InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -20899,6 +23384,7 @@ impl Ep5InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -20918,6 +23404,7 @@ impl Ep5InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -20937,6 +23424,7 @@ impl Ep5InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20945,6 +23433,7 @@ impl Ep5InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -20953,6 +23442,7 @@ impl Ep5InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -20972,6 +23462,7 @@ impl Ep5InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -20979,6 +23470,7 @@ impl Ep5InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -20986,6 +23478,7 @@ impl Ep5InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -21005,6 +23498,7 @@ impl Ep5InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -21024,6 +23518,7 @@ impl Ep5InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -21043,6 +23538,7 @@ impl Ep5InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -21062,6 +23558,7 @@ impl Ep5InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -21081,6 +23578,7 @@ impl Ep5InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -21100,6 +23598,7 @@ impl Ep5InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -21107,6 +23606,7 @@ impl Ep5InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -21138,6 +23638,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -21145,6 +23646,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -21152,6 +23654,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -21159,6 +23662,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21167,6 +23671,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -21174,6 +23679,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -21181,6 +23687,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -21188,6 +23695,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -21195,6 +23703,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -21202,6 +23711,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -21209,6 +23719,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -21216,6 +23727,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -21223,6 +23735,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -21230,6 +23743,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -21243,6 +23757,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -21256,6 +23771,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -21269,6 +23785,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21279,6 +23796,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -21292,6 +23810,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -21301,6 +23820,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -21314,6 +23834,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -21327,6 +23848,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -21340,6 +23862,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -21353,6 +23876,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -21366,6 +23890,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -21379,6 +23904,7 @@ impl Ep5InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -21427,31 +23953,56 @@ impl Ep5InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep5OutBufferControl {
@@ -21470,29 +24021,37 @@ impl Ep5OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -21506,62 +24065,80 @@ impl Ep5OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -21569,6 +24146,7 @@ impl Ep5OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -21588,6 +24166,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -21607,6 +24186,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -21626,6 +24206,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21634,6 +24215,7 @@ impl Ep5OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21642,6 +24224,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -21661,6 +24244,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -21668,6 +24252,7 @@ impl Ep5OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -21675,6 +24260,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -21694,6 +24280,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -21713,6 +24300,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -21732,6 +24320,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -21751,6 +24340,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -21770,6 +24360,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -21789,6 +24380,7 @@ impl Ep5OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -21796,6 +24388,7 @@ impl Ep5OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -21827,6 +24420,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -21834,6 +24428,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -21841,6 +24436,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -21848,6 +24444,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21856,6 +24453,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -21863,6 +24461,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -21870,6 +24469,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -21877,6 +24477,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -21884,6 +24485,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -21891,6 +24493,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -21898,6 +24501,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -21905,6 +24509,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -21912,6 +24517,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -21919,6 +24525,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -21932,6 +24539,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -21945,6 +24553,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -21958,6 +24567,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -21968,6 +24578,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -21981,6 +24592,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -21990,6 +24602,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -22003,6 +24616,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -22016,6 +24630,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -22029,6 +24644,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -22042,6 +24658,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -22055,6 +24672,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -22068,6 +24686,7 @@ impl Ep5OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -22116,31 +24735,56 @@ impl Ep5OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep6InBufferControl {
@@ -22159,29 +24803,37 @@ impl Ep6InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -22195,62 +24847,80 @@ impl Ep6InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -22258,6 +24928,7 @@ impl Ep6InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -22277,6 +24948,7 @@ impl Ep6InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -22296,6 +24968,7 @@ impl Ep6InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -22315,6 +24988,7 @@ impl Ep6InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -22323,6 +24997,7 @@ impl Ep6InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -22331,6 +25006,7 @@ impl Ep6InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -22350,6 +25026,7 @@ impl Ep6InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -22357,6 +25034,7 @@ impl Ep6InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -22364,6 +25042,7 @@ impl Ep6InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -22383,6 +25062,7 @@ impl Ep6InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -22402,6 +25082,7 @@ impl Ep6InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -22421,6 +25102,7 @@ impl Ep6InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -22440,6 +25122,7 @@ impl Ep6InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -22459,6 +25142,7 @@ impl Ep6InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -22478,6 +25162,7 @@ impl Ep6InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -22485,6 +25170,7 @@ impl Ep6InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -22516,6 +25202,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -22523,6 +25210,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -22530,6 +25218,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -22537,6 +25226,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -22545,6 +25235,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -22552,6 +25243,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -22559,6 +25251,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -22566,6 +25259,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -22573,6 +25267,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -22580,6 +25275,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -22587,6 +25283,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -22594,6 +25291,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -22601,6 +25299,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -22608,6 +25307,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -22621,6 +25321,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -22634,6 +25335,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -22647,6 +25349,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -22657,6 +25360,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -22670,6 +25374,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -22679,6 +25384,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -22692,6 +25398,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -22705,6 +25412,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -22718,6 +25426,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -22731,6 +25440,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -22744,6 +25454,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -22757,6 +25468,7 @@ impl Ep6InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -22805,31 +25517,56 @@ impl Ep6InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep6OutBufferControl {
@@ -22848,29 +25585,37 @@ impl Ep6OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -22884,62 +25629,80 @@ impl Ep6OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -22947,6 +25710,7 @@ impl Ep6OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -22966,6 +25730,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -22985,6 +25750,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -23004,6 +25770,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23012,6 +25779,7 @@ impl Ep6OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23020,6 +25788,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -23039,6 +25808,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -23046,6 +25816,7 @@ impl Ep6OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -23053,6 +25824,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -23072,6 +25844,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -23091,6 +25864,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -23110,6 +25884,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -23129,6 +25904,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -23148,6 +25924,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -23167,6 +25944,7 @@ impl Ep6OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -23174,6 +25952,7 @@ impl Ep6OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -23205,6 +25984,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -23212,6 +25992,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -23219,6 +26000,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -23226,6 +26008,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23234,6 +26017,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -23241,6 +26025,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -23248,6 +26033,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -23255,6 +26041,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -23262,6 +26049,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -23269,6 +26057,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -23276,6 +26065,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -23283,6 +26073,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -23290,6 +26081,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -23297,6 +26089,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -23310,6 +26103,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -23323,6 +26117,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -23336,6 +26131,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23346,6 +26142,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -23359,6 +26156,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -23368,6 +26166,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -23381,6 +26180,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -23394,6 +26194,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -23407,6 +26208,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -23420,6 +26222,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -23433,6 +26236,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -23446,6 +26250,7 @@ impl Ep6OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -23494,31 +26299,56 @@ impl Ep6OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep7InBufferControl {
@@ -23537,29 +26367,37 @@ impl Ep7InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -23573,62 +26411,80 @@ impl Ep7InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -23636,6 +26492,7 @@ impl Ep7InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -23655,6 +26512,7 @@ impl Ep7InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -23674,6 +26532,7 @@ impl Ep7InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -23693,6 +26552,7 @@ impl Ep7InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23701,6 +26561,7 @@ impl Ep7InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23709,6 +26570,7 @@ impl Ep7InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -23728,6 +26590,7 @@ impl Ep7InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -23735,6 +26598,7 @@ impl Ep7InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -23742,6 +26606,7 @@ impl Ep7InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -23761,6 +26626,7 @@ impl Ep7InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -23780,6 +26646,7 @@ impl Ep7InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -23799,6 +26666,7 @@ impl Ep7InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -23818,6 +26686,7 @@ impl Ep7InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -23837,6 +26706,7 @@ impl Ep7InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -23856,6 +26726,7 @@ impl Ep7InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -23863,6 +26734,7 @@ impl Ep7InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -23894,6 +26766,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -23901,6 +26774,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -23908,6 +26782,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -23915,6 +26790,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -23923,6 +26799,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -23930,6 +26807,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -23937,6 +26815,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -23944,6 +26823,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -23951,6 +26831,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -23958,6 +26839,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -23965,6 +26847,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -23972,6 +26855,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -23979,6 +26863,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -23986,6 +26871,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -23999,6 +26885,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -24012,6 +26899,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -24025,6 +26913,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -24035,6 +26924,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -24048,6 +26938,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -24057,6 +26948,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -24070,6 +26962,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -24083,6 +26976,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -24096,6 +26990,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -24109,6 +27004,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -24122,6 +27018,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -24135,6 +27032,7 @@ impl Ep7InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -24183,31 +27081,56 @@ impl Ep7InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep7OutBufferControl {
@@ -24226,29 +27149,37 @@ impl Ep7OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -24262,62 +27193,80 @@ impl Ep7OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -24325,6 +27274,7 @@ impl Ep7OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -24344,6 +27294,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -24363,6 +27314,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -24382,6 +27334,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -24390,6 +27343,7 @@ impl Ep7OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -24398,6 +27352,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -24417,6 +27372,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -24424,6 +27380,7 @@ impl Ep7OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -24431,6 +27388,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -24450,6 +27408,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -24469,6 +27428,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -24488,6 +27448,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -24507,6 +27468,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -24526,6 +27488,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -24545,6 +27508,7 @@ impl Ep7OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -24552,6 +27516,7 @@ impl Ep7OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -24583,6 +27548,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -24590,6 +27556,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -24597,6 +27564,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -24604,6 +27572,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -24612,6 +27581,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -24619,6 +27589,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -24626,6 +27597,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -24633,6 +27605,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -24640,6 +27613,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -24647,6 +27621,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -24654,6 +27629,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -24661,6 +27637,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -24668,6 +27645,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -24675,6 +27653,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -24688,6 +27667,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -24701,6 +27681,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -24714,6 +27695,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -24724,6 +27706,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -24737,6 +27720,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -24746,6 +27730,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -24759,6 +27744,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -24772,6 +27758,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -24785,6 +27772,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -24798,6 +27786,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -24811,6 +27800,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -24824,6 +27814,7 @@ impl Ep7OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -24872,31 +27863,56 @@ impl Ep7OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep8InBufferControl {
@@ -24915,29 +27931,37 @@ impl Ep8InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -24951,62 +27975,80 @@ impl Ep8InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -25014,6 +28056,7 @@ impl Ep8InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -25033,6 +28076,7 @@ impl Ep8InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -25052,6 +28096,7 @@ impl Ep8InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -25071,6 +28116,7 @@ impl Ep8InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25079,6 +28125,7 @@ impl Ep8InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25087,6 +28134,7 @@ impl Ep8InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -25106,6 +28154,7 @@ impl Ep8InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -25113,6 +28162,7 @@ impl Ep8InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -25120,6 +28170,7 @@ impl Ep8InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -25139,6 +28190,7 @@ impl Ep8InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -25158,6 +28210,7 @@ impl Ep8InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -25177,6 +28230,7 @@ impl Ep8InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -25196,6 +28250,7 @@ impl Ep8InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -25215,6 +28270,7 @@ impl Ep8InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -25234,6 +28290,7 @@ impl Ep8InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -25241,6 +28298,7 @@ impl Ep8InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -25272,6 +28330,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -25279,6 +28338,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -25286,6 +28346,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -25293,6 +28354,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25301,6 +28363,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -25308,6 +28371,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -25315,6 +28379,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -25322,6 +28387,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -25329,6 +28395,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -25336,6 +28403,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -25343,6 +28411,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -25350,6 +28419,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -25357,6 +28427,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -25364,6 +28435,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -25377,6 +28449,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -25390,6 +28463,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -25403,6 +28477,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25413,6 +28488,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -25426,6 +28502,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -25435,6 +28512,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -25448,6 +28526,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -25461,6 +28540,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -25474,6 +28554,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -25487,6 +28568,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -25500,6 +28582,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -25513,6 +28596,7 @@ impl Ep8InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -25561,31 +28645,56 @@ impl Ep8InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep8OutBufferControl {
@@ -25604,29 +28713,37 @@ impl Ep8OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -25640,62 +28757,80 @@ impl Ep8OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -25703,6 +28838,7 @@ impl Ep8OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -25722,6 +28858,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -25741,6 +28878,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -25760,6 +28898,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25768,6 +28907,7 @@ impl Ep8OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25776,6 +28916,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -25795,6 +28936,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -25802,6 +28944,7 @@ impl Ep8OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -25809,6 +28952,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -25828,6 +28972,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -25847,6 +28992,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -25866,6 +29012,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -25885,6 +29032,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -25904,6 +29052,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -25923,6 +29072,7 @@ impl Ep8OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -25930,6 +29080,7 @@ impl Ep8OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -25961,6 +29112,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -25968,6 +29120,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -25975,6 +29128,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -25982,6 +29136,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -25990,6 +29145,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -25997,6 +29153,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -26004,6 +29161,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -26011,6 +29169,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -26018,6 +29177,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -26025,6 +29185,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -26032,6 +29193,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -26039,6 +29201,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -26046,6 +29209,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -26053,6 +29217,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -26066,6 +29231,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -26079,6 +29245,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -26092,6 +29259,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -26102,6 +29270,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -26115,6 +29284,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -26124,6 +29294,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -26137,6 +29308,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -26150,6 +29322,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -26163,6 +29336,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -26176,6 +29350,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -26189,6 +29364,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -26202,6 +29378,7 @@ impl Ep8OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -26250,31 +29427,56 @@ impl Ep8OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep9InBufferControl {
@@ -26293,29 +29495,37 @@ impl Ep9InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -26329,62 +29539,80 @@ impl Ep9InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -26392,6 +29620,7 @@ impl Ep9InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -26411,6 +29640,7 @@ impl Ep9InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -26430,6 +29660,7 @@ impl Ep9InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -26449,6 +29680,7 @@ impl Ep9InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -26457,6 +29689,7 @@ impl Ep9InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -26465,6 +29698,7 @@ impl Ep9InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -26484,6 +29718,7 @@ impl Ep9InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -26491,6 +29726,7 @@ impl Ep9InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -26498,6 +29734,7 @@ impl Ep9InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -26517,6 +29754,7 @@ impl Ep9InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -26536,6 +29774,7 @@ impl Ep9InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -26555,6 +29794,7 @@ impl Ep9InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -26574,6 +29814,7 @@ impl Ep9InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -26593,6 +29834,7 @@ impl Ep9InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -26612,6 +29854,7 @@ impl Ep9InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -26619,6 +29862,7 @@ impl Ep9InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -26650,6 +29894,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -26657,6 +29902,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -26664,6 +29910,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -26671,6 +29918,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -26679,6 +29927,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -26686,6 +29935,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -26693,6 +29943,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -26700,6 +29951,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -26707,6 +29959,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -26714,6 +29967,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -26721,6 +29975,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -26728,6 +29983,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -26735,6 +29991,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -26742,6 +29999,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -26755,6 +30013,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -26768,6 +30027,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -26781,6 +30041,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -26791,6 +30052,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -26804,6 +30066,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -26813,6 +30076,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -26826,6 +30090,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -26839,6 +30104,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -26852,6 +30118,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -26865,6 +30132,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -26878,6 +30146,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -26891,6 +30160,7 @@ impl Ep9InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -26939,31 +30209,56 @@ impl Ep9InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep9OutBufferControl {
@@ -26982,29 +30277,37 @@ impl Ep9OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -27018,62 +30321,80 @@ impl Ep9OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -27081,6 +30402,7 @@ impl Ep9OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -27100,6 +30422,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -27119,6 +30442,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -27138,6 +30462,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27146,6 +30471,7 @@ impl Ep9OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27154,6 +30480,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -27173,6 +30500,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -27180,6 +30508,7 @@ impl Ep9OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -27187,6 +30516,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -27206,6 +30536,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -27225,6 +30556,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -27244,6 +30576,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -27263,6 +30596,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -27282,6 +30616,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -27301,6 +30636,7 @@ impl Ep9OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -27308,6 +30644,7 @@ impl Ep9OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -27339,6 +30676,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -27346,6 +30684,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -27353,6 +30692,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -27360,6 +30700,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27368,6 +30709,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -27375,6 +30717,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -27382,6 +30725,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -27389,6 +30733,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -27396,6 +30741,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -27403,6 +30749,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -27410,6 +30757,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -27417,6 +30765,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -27424,6 +30773,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -27431,6 +30781,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -27444,6 +30795,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -27457,6 +30809,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -27470,6 +30823,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27480,6 +30834,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -27493,6 +30848,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -27502,6 +30858,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -27515,6 +30872,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -27528,6 +30886,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -27541,6 +30900,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -27554,6 +30914,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -27567,6 +30928,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -27580,6 +30942,7 @@ impl Ep9OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -27628,31 +30991,56 @@ impl Ep9OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep10InBufferControl {
@@ -27671,29 +31059,37 @@ impl Ep10InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -27707,62 +31103,80 @@ impl Ep10InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -27770,6 +31184,7 @@ impl Ep10InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -27789,6 +31204,7 @@ impl Ep10InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -27808,6 +31224,7 @@ impl Ep10InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -27827,6 +31244,7 @@ impl Ep10InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27835,6 +31253,7 @@ impl Ep10InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -27843,6 +31262,7 @@ impl Ep10InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -27862,6 +31282,7 @@ impl Ep10InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -27869,6 +31290,7 @@ impl Ep10InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -27876,6 +31298,7 @@ impl Ep10InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -27895,6 +31318,7 @@ impl Ep10InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -27914,6 +31338,7 @@ impl Ep10InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -27933,6 +31358,7 @@ impl Ep10InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -27952,6 +31378,7 @@ impl Ep10InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -27971,6 +31398,7 @@ impl Ep10InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -27990,6 +31418,7 @@ impl Ep10InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -27997,6 +31426,7 @@ impl Ep10InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -28028,6 +31458,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -28035,6 +31466,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -28042,6 +31474,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -28049,6 +31482,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28057,6 +31491,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -28064,6 +31499,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -28071,6 +31507,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -28078,6 +31515,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -28085,6 +31523,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -28092,6 +31531,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -28099,6 +31539,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -28106,6 +31547,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -28113,6 +31555,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -28120,6 +31563,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -28133,6 +31577,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -28146,6 +31591,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -28159,6 +31605,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28169,6 +31616,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -28182,6 +31630,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -28191,6 +31640,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -28204,6 +31654,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -28217,6 +31668,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -28230,6 +31682,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -28243,6 +31696,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -28256,6 +31710,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -28269,6 +31724,7 @@ impl Ep10InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -28317,31 +31773,56 @@ impl Ep10InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep10OutBufferControl {
@@ -28360,29 +31841,37 @@ impl Ep10OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -28396,62 +31885,80 @@ impl Ep10OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -28459,6 +31966,7 @@ impl Ep10OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -28478,6 +31986,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -28497,6 +32006,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -28516,6 +32026,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28524,6 +32035,7 @@ impl Ep10OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28532,6 +32044,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -28551,6 +32064,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -28558,6 +32072,7 @@ impl Ep10OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -28565,6 +32080,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -28584,6 +32100,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -28603,6 +32120,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -28622,6 +32140,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -28641,6 +32160,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -28660,6 +32180,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -28679,6 +32200,7 @@ impl Ep10OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -28686,6 +32208,7 @@ impl Ep10OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -28717,6 +32240,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -28724,6 +32248,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -28731,6 +32256,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -28738,6 +32264,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28746,6 +32273,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -28753,6 +32281,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -28760,6 +32289,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -28767,6 +32297,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -28774,6 +32305,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -28781,6 +32313,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -28788,6 +32321,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -28795,6 +32329,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -28802,6 +32337,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -28809,6 +32345,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -28822,6 +32359,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -28835,6 +32373,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -28848,6 +32387,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -28858,6 +32398,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -28871,6 +32412,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -28880,6 +32422,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -28893,6 +32436,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -28906,6 +32450,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -28919,6 +32464,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -28932,6 +32478,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -28945,6 +32492,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -28958,6 +32506,7 @@ impl Ep10OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -29006,31 +32555,56 @@ impl Ep10OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep11InBufferControl {
@@ -29049,29 +32623,37 @@ impl Ep11InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -29085,62 +32667,80 @@ impl Ep11InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -29148,6 +32748,7 @@ impl Ep11InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -29167,6 +32768,7 @@ impl Ep11InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -29186,6 +32788,7 @@ impl Ep11InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -29205,6 +32808,7 @@ impl Ep11InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29213,6 +32817,7 @@ impl Ep11InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29221,6 +32826,7 @@ impl Ep11InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -29240,6 +32846,7 @@ impl Ep11InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -29247,6 +32854,7 @@ impl Ep11InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -29254,6 +32862,7 @@ impl Ep11InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -29273,6 +32882,7 @@ impl Ep11InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -29292,6 +32902,7 @@ impl Ep11InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -29311,6 +32922,7 @@ impl Ep11InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -29330,6 +32942,7 @@ impl Ep11InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -29349,6 +32962,7 @@ impl Ep11InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -29368,6 +32982,7 @@ impl Ep11InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -29375,6 +32990,7 @@ impl Ep11InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -29406,6 +33022,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -29413,6 +33030,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -29420,6 +33038,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -29427,6 +33046,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29435,6 +33055,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -29442,6 +33063,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -29449,6 +33071,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -29456,6 +33079,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -29463,6 +33087,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -29470,6 +33095,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -29477,6 +33103,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -29484,6 +33111,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -29491,6 +33119,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -29498,6 +33127,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -29511,6 +33141,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -29524,6 +33155,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -29537,6 +33169,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29547,6 +33180,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -29560,6 +33194,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -29569,6 +33204,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -29582,6 +33218,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -29595,6 +33232,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -29608,6 +33246,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -29621,6 +33260,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -29634,6 +33274,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -29647,6 +33288,7 @@ impl Ep11InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -29695,31 +33337,56 @@ impl Ep11InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep11OutBufferControl {
@@ -29738,29 +33405,37 @@ impl Ep11OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -29774,62 +33449,80 @@ impl Ep11OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -29837,6 +33530,7 @@ impl Ep11OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -29856,6 +33550,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -29875,6 +33570,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -29894,6 +33590,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29902,6 +33599,7 @@ impl Ep11OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -29910,6 +33608,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -29929,6 +33628,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -29936,6 +33636,7 @@ impl Ep11OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -29943,6 +33644,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -29962,6 +33664,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -29981,6 +33684,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -30000,6 +33704,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -30019,6 +33724,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -30038,6 +33744,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -30057,6 +33764,7 @@ impl Ep11OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -30064,6 +33772,7 @@ impl Ep11OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -30095,6 +33804,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -30102,6 +33812,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -30109,6 +33820,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -30116,6 +33828,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30124,6 +33837,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -30131,6 +33845,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -30138,6 +33853,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -30145,6 +33861,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -30152,6 +33869,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -30159,6 +33877,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -30166,6 +33885,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -30173,6 +33893,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -30180,6 +33901,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -30187,6 +33909,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -30200,6 +33923,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -30213,6 +33937,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -30226,6 +33951,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30236,6 +33962,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -30249,6 +33976,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -30258,6 +33986,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -30271,6 +34000,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -30284,6 +34014,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -30297,6 +34028,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -30310,6 +34042,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -30323,6 +34056,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -30336,6 +34070,7 @@ impl Ep11OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -30384,31 +34119,56 @@ impl Ep11OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep12InBufferControl {
@@ -30427,29 +34187,37 @@ impl Ep12InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -30463,62 +34231,80 @@ impl Ep12InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -30526,6 +34312,7 @@ impl Ep12InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -30545,6 +34332,7 @@ impl Ep12InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -30564,6 +34352,7 @@ impl Ep12InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -30583,6 +34372,7 @@ impl Ep12InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30591,6 +34381,7 @@ impl Ep12InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30599,6 +34390,7 @@ impl Ep12InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -30618,6 +34410,7 @@ impl Ep12InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -30625,6 +34418,7 @@ impl Ep12InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -30632,6 +34426,7 @@ impl Ep12InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -30651,6 +34446,7 @@ impl Ep12InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -30670,6 +34466,7 @@ impl Ep12InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -30689,6 +34486,7 @@ impl Ep12InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -30708,6 +34506,7 @@ impl Ep12InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -30727,6 +34526,7 @@ impl Ep12InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -30746,6 +34546,7 @@ impl Ep12InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -30753,6 +34554,7 @@ impl Ep12InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -30784,6 +34586,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -30791,6 +34594,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -30798,6 +34602,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -30805,6 +34610,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30813,6 +34619,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -30820,6 +34627,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -30827,6 +34635,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -30834,6 +34643,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -30841,6 +34651,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -30848,6 +34659,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -30855,6 +34667,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -30862,6 +34675,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -30869,6 +34683,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -30876,6 +34691,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -30889,6 +34705,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -30902,6 +34719,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -30915,6 +34733,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -30925,6 +34744,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -30938,6 +34758,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -30947,6 +34768,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -30960,6 +34782,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -30973,6 +34796,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -30986,6 +34810,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -30999,6 +34824,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -31012,6 +34838,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -31025,6 +34852,7 @@ impl Ep12InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -31073,31 +34901,56 @@ impl Ep12InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep12OutBufferControl {
@@ -31116,29 +34969,37 @@ impl Ep12OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -31152,62 +35013,80 @@ impl Ep12OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -31215,6 +35094,7 @@ impl Ep12OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -31234,6 +35114,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -31253,6 +35134,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -31272,6 +35154,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31280,6 +35163,7 @@ impl Ep12OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31288,6 +35172,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -31307,6 +35192,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -31314,6 +35200,7 @@ impl Ep12OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -31321,6 +35208,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -31340,6 +35228,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -31359,6 +35248,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -31378,6 +35268,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -31397,6 +35288,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -31416,6 +35308,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -31435,6 +35328,7 @@ impl Ep12OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -31442,6 +35336,7 @@ impl Ep12OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -31473,6 +35368,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -31480,6 +35376,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -31487,6 +35384,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -31494,6 +35392,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31502,6 +35401,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -31509,6 +35409,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -31516,6 +35417,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -31523,6 +35425,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -31530,6 +35433,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -31537,6 +35441,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -31544,6 +35449,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -31551,6 +35457,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -31558,6 +35465,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -31565,6 +35473,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -31578,6 +35487,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -31591,6 +35501,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -31604,6 +35515,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31614,6 +35526,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -31627,6 +35540,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -31636,6 +35550,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -31649,6 +35564,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -31662,6 +35578,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -31675,6 +35592,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -31688,6 +35606,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -31701,6 +35620,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -31714,6 +35634,7 @@ impl Ep12OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -31762,31 +35683,56 @@ impl Ep12OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep13InBufferControl {
@@ -31805,29 +35751,37 @@ impl Ep13InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -31841,62 +35795,80 @@ impl Ep13InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -31904,6 +35876,7 @@ impl Ep13InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -31923,6 +35896,7 @@ impl Ep13InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -31942,6 +35916,7 @@ impl Ep13InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -31961,6 +35936,7 @@ impl Ep13InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31969,6 +35945,7 @@ impl Ep13InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -31977,6 +35954,7 @@ impl Ep13InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -31996,6 +35974,7 @@ impl Ep13InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -32003,6 +35982,7 @@ impl Ep13InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -32010,6 +35990,7 @@ impl Ep13InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -32029,6 +36010,7 @@ impl Ep13InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -32048,6 +36030,7 @@ impl Ep13InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -32067,6 +36050,7 @@ impl Ep13InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -32086,6 +36070,7 @@ impl Ep13InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -32105,6 +36090,7 @@ impl Ep13InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -32124,6 +36110,7 @@ impl Ep13InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -32131,6 +36118,7 @@ impl Ep13InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -32162,6 +36150,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -32169,6 +36158,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -32176,6 +36166,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -32183,6 +36174,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32191,6 +36183,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -32198,6 +36191,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -32205,6 +36199,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -32212,6 +36207,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -32219,6 +36215,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -32226,6 +36223,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -32233,6 +36231,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -32240,6 +36239,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -32247,6 +36247,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -32254,6 +36255,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -32267,6 +36269,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -32280,6 +36283,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -32293,6 +36297,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32303,6 +36308,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -32316,6 +36322,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -32325,6 +36332,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -32338,6 +36346,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -32351,6 +36360,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -32364,6 +36374,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -32377,6 +36388,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -32390,6 +36402,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -32403,6 +36416,7 @@ impl Ep13InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -32451,31 +36465,56 @@ impl Ep13InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep13OutBufferControl {
@@ -32494,29 +36533,37 @@ impl Ep13OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -32530,62 +36577,80 @@ impl Ep13OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -32593,6 +36658,7 @@ impl Ep13OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -32612,6 +36678,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -32631,6 +36698,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -32650,6 +36718,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32658,6 +36727,7 @@ impl Ep13OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32666,6 +36736,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -32685,6 +36756,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -32692,6 +36764,7 @@ impl Ep13OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -32699,6 +36772,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -32718,6 +36792,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -32737,6 +36812,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -32756,6 +36832,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -32775,6 +36852,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -32794,6 +36872,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -32813,6 +36892,7 @@ impl Ep13OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -32820,6 +36900,7 @@ impl Ep13OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -32851,6 +36932,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -32858,6 +36940,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -32865,6 +36948,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -32872,6 +36956,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32880,6 +36965,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -32887,6 +36973,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -32894,6 +36981,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -32901,6 +36989,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -32908,6 +36997,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -32915,6 +37005,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -32922,6 +37013,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -32929,6 +37021,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -32936,6 +37029,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -32943,6 +37037,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -32956,6 +37051,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -32969,6 +37065,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -32982,6 +37079,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -32992,6 +37090,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -33005,6 +37104,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -33014,6 +37114,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -33027,6 +37128,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -33040,6 +37142,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -33053,6 +37156,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -33066,6 +37170,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -33079,6 +37184,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -33092,6 +37198,7 @@ impl Ep13OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -33140,31 +37247,56 @@ impl Ep13OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep14InBufferControl {
@@ -33183,29 +37315,37 @@ impl Ep14InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -33219,62 +37359,80 @@ impl Ep14InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -33282,6 +37440,7 @@ impl Ep14InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -33301,6 +37460,7 @@ impl Ep14InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -33320,6 +37480,7 @@ impl Ep14InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -33339,6 +37500,7 @@ impl Ep14InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -33347,6 +37509,7 @@ impl Ep14InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -33355,6 +37518,7 @@ impl Ep14InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -33374,6 +37538,7 @@ impl Ep14InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -33381,6 +37546,7 @@ impl Ep14InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -33388,6 +37554,7 @@ impl Ep14InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -33407,6 +37574,7 @@ impl Ep14InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -33426,6 +37594,7 @@ impl Ep14InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -33445,6 +37614,7 @@ impl Ep14InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -33464,6 +37634,7 @@ impl Ep14InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -33483,6 +37654,7 @@ impl Ep14InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -33502,6 +37674,7 @@ impl Ep14InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -33509,6 +37682,7 @@ impl Ep14InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -33540,6 +37714,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -33547,6 +37722,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -33554,6 +37730,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -33561,6 +37738,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -33569,6 +37747,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -33576,6 +37755,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -33583,6 +37763,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -33590,6 +37771,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -33597,6 +37779,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -33604,6 +37787,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -33611,6 +37795,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -33618,6 +37803,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -33625,6 +37811,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -33632,6 +37819,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -33645,6 +37833,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -33658,6 +37847,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -33671,6 +37861,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -33681,6 +37872,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -33694,6 +37886,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -33703,6 +37896,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -33716,6 +37910,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -33729,6 +37924,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -33742,6 +37938,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -33755,6 +37952,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -33768,6 +37966,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -33781,6 +37980,7 @@ impl Ep14InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -33829,31 +38029,56 @@ impl Ep14InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep14OutBufferControl {
@@ -33872,29 +38097,37 @@ impl Ep14OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -33908,62 +38141,80 @@ impl Ep14OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -33971,6 +38222,7 @@ impl Ep14OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -33990,6 +38242,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -34009,6 +38262,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -34028,6 +38282,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34036,6 +38291,7 @@ impl Ep14OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34044,6 +38300,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -34063,6 +38320,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -34070,6 +38328,7 @@ impl Ep14OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -34077,6 +38336,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -34096,6 +38356,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -34115,6 +38376,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -34134,6 +38396,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -34153,6 +38416,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -34172,6 +38436,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -34191,6 +38456,7 @@ impl Ep14OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -34198,6 +38464,7 @@ impl Ep14OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -34229,6 +38496,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -34236,6 +38504,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -34243,6 +38512,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -34250,6 +38520,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34258,6 +38529,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -34265,6 +38537,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -34272,6 +38545,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -34279,6 +38553,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -34286,6 +38561,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -34293,6 +38569,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -34300,6 +38577,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -34307,6 +38585,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -34314,6 +38593,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -34321,6 +38601,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -34334,6 +38615,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -34347,6 +38629,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -34360,6 +38643,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34370,6 +38654,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -34383,6 +38668,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -34392,6 +38678,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -34405,6 +38692,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -34418,6 +38706,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -34431,6 +38720,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -34444,6 +38734,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -34457,6 +38748,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -34470,6 +38762,7 @@ impl Ep14OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -34518,31 +38811,56 @@ impl Ep14OutBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep15InBufferControl {
@@ -34561,29 +38879,37 @@ impl Ep15InBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -34597,62 +38923,80 @@ impl Ep15InBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -34660,6 +39004,7 @@ impl Ep15InBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -34679,6 +39024,7 @@ impl Ep15InBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -34698,6 +39044,7 @@ impl Ep15InBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -34717,6 +39064,7 @@ impl Ep15InBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34725,6 +39073,7 @@ impl Ep15InBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34733,6 +39082,7 @@ impl Ep15InBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -34752,6 +39102,7 @@ impl Ep15InBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -34759,6 +39110,7 @@ impl Ep15InBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -34766,6 +39118,7 @@ impl Ep15InBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -34785,6 +39138,7 @@ impl Ep15InBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -34804,6 +39158,7 @@ impl Ep15InBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -34823,6 +39178,7 @@ impl Ep15InBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -34842,6 +39198,7 @@ impl Ep15InBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -34861,6 +39218,7 @@ impl Ep15InBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -34880,6 +39238,7 @@ impl Ep15InBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -34887,6 +39246,7 @@ impl Ep15InBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -34918,6 +39278,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -34925,6 +39286,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -34932,6 +39294,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -34939,6 +39302,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -34947,6 +39311,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -34954,6 +39319,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -34961,6 +39327,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -34968,6 +39335,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -34975,6 +39343,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -34982,6 +39351,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -34989,6 +39359,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -34996,6 +39367,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -35003,6 +39375,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -35010,6 +39383,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -35023,6 +39397,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -35036,6 +39411,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -35049,6 +39425,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -35059,6 +39436,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -35072,6 +39450,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -35081,6 +39460,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -35094,6 +39474,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -35107,6 +39488,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -35120,6 +39502,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -35133,6 +39516,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -35146,6 +39530,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -35159,6 +39544,7 @@ impl Ep15InBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
@@ -35207,31 +39593,56 @@ impl Ep15InBufferControl {
 /// ## Fields
 ///
 /// - **FULL_1** `[31]` (RW)
+///
 ///   Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_1** `[30]` (RW)
+///
 ///   Buffer 1 is the last buffer of the transfer.
+///
 /// - **PID_1** `[29]` (RW)
+///
 ///   The data pid of buffer 1.
+///
 /// - **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+///
 ///   The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
 ///   For a non Isochronous endpoint the offset is always 64 bytes.
+///
 /// - **AVAILABLE_1** `[26]` (RW)
+///
 ///   Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_1** `[25:16]` (RW)
+///
 ///   The length of the data in buffer 1.
+///
 /// - **FULL_0** `[15]` (RW)
+///
 ///   Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+///
 /// - **LAST_0** `[14]` (RW)
+///
 ///   Buffer 0 is the last buffer of the transfer.
+///
 /// - **PID_0** `[13]` (RW)
+///
 ///   The data pid of buffer 0.
+///
 /// - **RESET** `[12]` (RW)
+///
 ///   Reset the buffer selector to buffer 0.
+///
 /// - **STALL** `[11]` (RW)
+///
 ///   Reply with a stall (valid for both buffers).
+///
 /// - **AVAILABLE_0** `[10]` (RW)
+///
 ///   Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+///
 /// - **LENGTH_0** `[9:0]` (RW)
+///
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep15OutBufferControl {
@@ -35250,29 +39661,37 @@ impl Ep15OutBufferControl {
     // ======== Field Constants ========
 
     /// **FULL_1**
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FULL_1_OFFSET: u32 = 31;
     pub const FULL_1_MASK: u32 = 0x80000000;
     pub const FULL_1: u32 = 1 << 31;
 
     /// **LAST_1**
+    ///
     /// Buffer 1 is the last buffer of the transfer.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LAST_1_OFFSET: u32 = 30;
     pub const LAST_1_MASK: u32 = 0x40000000;
     pub const LAST_1: u32 = 1 << 30;
 
     /// **PID_1**
+    ///
     /// The data pid of buffer 1.
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const PID_1_OFFSET: u32 = 29;
     pub const PID_1_MASK: u32 = 0x20000000;
     pub const PID_1: u32 = 1 << 29;
 
     /// **DOUBLE_BUFFER_ISO_OFFSET**
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
+    ///
     /// Bits `[28:27]`, mask `0x18000000`
     pub const DOUBLE_BUFFER_ISO_OFFSET_OFFSET: u32 = 27;
     pub const DOUBLE_BUFFER_ISO_OFFSET_MASK: u32 = 0x18000000;
@@ -35286,62 +39705,80 @@ impl Ep15OutBufferControl {
     pub const DOUBLE_BUFFER_ISO_OFFSET_1024_VAL: u32 = 3;
 
     /// **AVAILABLE_1**
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const AVAILABLE_1_OFFSET: u32 = 26;
     pub const AVAILABLE_1_MASK: u32 = 0x04000000;
     pub const AVAILABLE_1: u32 = 1 << 26;
 
     /// **LENGTH_1**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const LENGTH_1_OFFSET: u32 = 16;
     pub const LENGTH_1_MASK: u32 = 0x03ff0000;
 
     /// **FULL_0**
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FULL_0_OFFSET: u32 = 15;
     pub const FULL_0_MASK: u32 = 0x00008000;
     pub const FULL_0: u32 = 1 << 15;
 
     /// **LAST_0**
+    ///
     /// Buffer 0 is the last buffer of the transfer.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LAST_0_OFFSET: u32 = 14;
     pub const LAST_0_MASK: u32 = 0x00004000;
     pub const LAST_0: u32 = 1 << 14;
 
     /// **PID_0**
+    ///
     /// The data pid of buffer 0.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const PID_0_OFFSET: u32 = 13;
     pub const PID_0_MASK: u32 = 0x00002000;
     pub const PID_0: u32 = 1 << 13;
 
     /// **RESET**
+    ///
     /// Reset the buffer selector to buffer 0.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_OFFSET: u32 = 12;
     pub const RESET_MASK: u32 = 0x00001000;
     pub const RESET: u32 = 1 << 12;
 
     /// **STALL**
+    ///
     /// Reply with a stall (valid for both buffers).
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const STALL_OFFSET: u32 = 11;
     pub const STALL_MASK: u32 = 0x00000800;
     pub const STALL: u32 = 1 << 11;
 
     /// **AVAILABLE_0**
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const AVAILABLE_0_OFFSET: u32 = 10;
     pub const AVAILABLE_0_MASK: u32 = 0x00000400;
     pub const AVAILABLE_0: u32 = 1 << 10;
 
     /// **LENGTH_0**
+    ///
     /// The length of the data in buffer 1.
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const LENGTH_0_OFFSET: u32 = 0;
     pub const LENGTH_0_MASK: u32 = 0x000003ff;
@@ -35349,6 +39786,7 @@ impl Ep15OutBufferControl {
     // ======== Field Accessors ========
 
     /// **FULL_1** `[31]` (RW)
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_1(&self) -> bool {
@@ -35368,6 +39806,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **LAST_1** `[30]` (RW)
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_1(&self) -> bool {
@@ -35387,6 +39826,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **PID_1** `[29]` (RW)
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub fn pid_1(&self) -> bool {
@@ -35406,6 +39846,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -35414,6 +39855,7 @@ impl Ep15OutBufferControl {
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -35422,6 +39864,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_1(&self) -> bool {
@@ -35441,6 +39884,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_1(&self) -> u32 {
@@ -35448,6 +39892,7 @@ impl Ep15OutBufferControl {
     }
 
     /// Write **LENGTH_1** `[25:16]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
@@ -35455,6 +39900,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **FULL_0** `[15]` (RW)
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub fn full_0(&self) -> bool {
@@ -35474,6 +39920,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **LAST_0** `[14]` (RW)
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub fn last_0(&self) -> bool {
@@ -35493,6 +39940,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **PID_0** `[13]` (RW)
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub fn pid_0(&self) -> bool {
@@ -35512,6 +39960,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **RESET** `[12]` (RW)
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -35531,6 +39980,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **STALL** `[11]` (RW)
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -35550,6 +40000,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub fn available_0(&self) -> bool {
@@ -35569,6 +40020,7 @@ impl Ep15OutBufferControl {
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn length_0(&self) -> u32 {
@@ -35576,6 +40028,7 @@ impl Ep15OutBufferControl {
     }
 
     /// Write **LENGTH_0** `[9:0]` (RW)
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
@@ -35607,6 +40060,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_1(&self) -> bool {
@@ -35614,6 +40068,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_1(&self) -> bool {
@@ -35621,6 +40076,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn pid_1(&self) -> bool {
@@ -35628,6 +40084,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -35636,6 +40093,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_1(&self) -> bool {
@@ -35643,6 +40101,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_1(&self) -> u32 {
@@ -35650,6 +40109,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn full_0(&self) -> bool {
@@ -35657,6 +40117,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn last_0(&self) -> bool {
@@ -35664,6 +40125,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn pid_0(&self) -> bool {
@@ -35671,6 +40133,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -35678,6 +40141,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -35685,6 +40149,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn available_0(&self) -> bool {
@@ -35692,6 +40157,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Read **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn length_0(&self) -> u32 {
@@ -35699,6 +40165,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **FULL_1** `[31:31]`
+    ///
     /// Buffer 1 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_1(self, value: bool) -> Self {
@@ -35712,6 +40179,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **LAST_1** `[30:30]`
+    ///
     /// Buffer 1 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_1(self, value: bool) -> Self {
@@ -35725,6 +40193,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **PID_1** `[29:29]`
+    ///
     /// The data pid of buffer 1.
     #[inline(always)]
     pub const fn with_pid_1(self, value: bool) -> Self {
@@ -35738,6 +40207,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]`
+    ///
     /// The number of bytes buffer 1 is offset from buffer 0 in Isochronous mode. Only valid in double buffered mode for an Isochronous endpoint.
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
@@ -35748,6 +40218,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_1** `[26:26]`
+    ///
     /// Buffer 1 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_1(self, value: bool) -> Self {
@@ -35761,6 +40232,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **LENGTH_1** `[25:16]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
@@ -35770,6 +40242,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **FULL_0** `[15:15]`
+    ///
     /// Buffer 0 is full. For an IN transfer (TX to the host) the bit is set to indicate the data is valid. For an OUT transfer (RX from the host) this bit should be left as a 0. The host will set it when it has filled the buffer with data.
     #[inline(always)]
     pub const fn with_full_0(self, value: bool) -> Self {
@@ -35783,6 +40256,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **LAST_0** `[14:14]`
+    ///
     /// Buffer 0 is the last buffer of the transfer.
     #[inline(always)]
     pub const fn with_last_0(self, value: bool) -> Self {
@@ -35796,6 +40270,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **PID_0** `[13:13]`
+    ///
     /// The data pid of buffer 0.
     #[inline(always)]
     pub const fn with_pid_0(self, value: bool) -> Self {
@@ -35809,6 +40284,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **RESET** `[12:12]`
+    ///
     /// Reset the buffer selector to buffer 0.
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {
@@ -35822,6 +40298,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **STALL** `[11:11]`
+    ///
     /// Reply with a stall (valid for both buffers).
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -35835,6 +40312,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **AVAILABLE_0** `[10:10]`
+    ///
     /// Buffer 0 is available. This bit is set to indicate the buffer can be used by the controller. The controller clears the available bit when writing the status back.
     #[inline(always)]
     pub const fn with_available_0(self, value: bool) -> Self {
@@ -35848,6 +40326,7 @@ impl Ep15OutBufferControlVal {
     }
 
     /// Set **LENGTH_0** `[9:0]`
+    ///
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {

@@ -16,8 +16,11 @@ pub const BASE: u32 = 0x40120000;
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock0 {
@@ -36,7 +39,9 @@ impl SwLock0 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -48,7 +53,9 @@ impl SwLock0 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -62,6 +69,7 @@ impl SwLock0 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -69,6 +77,7 @@ impl SwLock0 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -76,6 +85,7 @@ impl SwLock0 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -83,6 +93,7 @@ impl SwLock0 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -120,6 +131,7 @@ impl SwLock0Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -127,6 +139,7 @@ impl SwLock0Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -134,6 +147,7 @@ impl SwLock0Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -143,6 +157,7 @@ impl SwLock0Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -191,8 +206,11 @@ impl SwLock0 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock1 {
@@ -211,7 +229,9 @@ impl SwLock1 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -223,7 +243,9 @@ impl SwLock1 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -237,6 +259,7 @@ impl SwLock1 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -244,6 +267,7 @@ impl SwLock1 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -251,6 +275,7 @@ impl SwLock1 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -258,6 +283,7 @@ impl SwLock1 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -295,6 +321,7 @@ impl SwLock1Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -302,6 +329,7 @@ impl SwLock1Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -309,6 +337,7 @@ impl SwLock1Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -318,6 +347,7 @@ impl SwLock1Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -366,8 +396,11 @@ impl SwLock1 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock2 {
@@ -386,7 +419,9 @@ impl SwLock2 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -398,7 +433,9 @@ impl SwLock2 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -412,6 +449,7 @@ impl SwLock2 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -419,6 +457,7 @@ impl SwLock2 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -426,6 +465,7 @@ impl SwLock2 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -433,6 +473,7 @@ impl SwLock2 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -470,6 +511,7 @@ impl SwLock2Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -477,6 +519,7 @@ impl SwLock2Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -484,6 +527,7 @@ impl SwLock2Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -493,6 +537,7 @@ impl SwLock2Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -541,8 +586,11 @@ impl SwLock2 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock3 {
@@ -561,7 +609,9 @@ impl SwLock3 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -573,7 +623,9 @@ impl SwLock3 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -587,6 +639,7 @@ impl SwLock3 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -594,6 +647,7 @@ impl SwLock3 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -601,6 +655,7 @@ impl SwLock3 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -608,6 +663,7 @@ impl SwLock3 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -645,6 +701,7 @@ impl SwLock3Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -652,6 +709,7 @@ impl SwLock3Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -659,6 +717,7 @@ impl SwLock3Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -668,6 +727,7 @@ impl SwLock3Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -716,8 +776,11 @@ impl SwLock3 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock4 {
@@ -736,7 +799,9 @@ impl SwLock4 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -748,7 +813,9 @@ impl SwLock4 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -762,6 +829,7 @@ impl SwLock4 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -769,6 +837,7 @@ impl SwLock4 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -776,6 +845,7 @@ impl SwLock4 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -783,6 +853,7 @@ impl SwLock4 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -820,6 +891,7 @@ impl SwLock4Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -827,6 +899,7 @@ impl SwLock4Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -834,6 +907,7 @@ impl SwLock4Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -843,6 +917,7 @@ impl SwLock4Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -891,8 +966,11 @@ impl SwLock4 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock5 {
@@ -911,7 +989,9 @@ impl SwLock5 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -923,7 +1003,9 @@ impl SwLock5 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -937,6 +1019,7 @@ impl SwLock5 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -944,6 +1027,7 @@ impl SwLock5 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -951,6 +1035,7 @@ impl SwLock5 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -958,6 +1043,7 @@ impl SwLock5 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -995,6 +1081,7 @@ impl SwLock5Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1002,6 +1089,7 @@ impl SwLock5Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1009,6 +1097,7 @@ impl SwLock5Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1018,6 +1107,7 @@ impl SwLock5Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1066,8 +1156,11 @@ impl SwLock5 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock6 {
@@ -1086,7 +1179,9 @@ impl SwLock6 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1098,7 +1193,9 @@ impl SwLock6 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1112,6 +1209,7 @@ impl SwLock6 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1119,6 +1217,7 @@ impl SwLock6 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -1126,6 +1225,7 @@ impl SwLock6 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -1133,6 +1233,7 @@ impl SwLock6 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -1170,6 +1271,7 @@ impl SwLock6Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1177,6 +1279,7 @@ impl SwLock6Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1184,6 +1287,7 @@ impl SwLock6Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1193,6 +1297,7 @@ impl SwLock6Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1241,8 +1346,11 @@ impl SwLock6 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock7 {
@@ -1261,7 +1369,9 @@ impl SwLock7 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1273,7 +1383,9 @@ impl SwLock7 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1287,6 +1399,7 @@ impl SwLock7 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1294,6 +1407,7 @@ impl SwLock7 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -1301,6 +1415,7 @@ impl SwLock7 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -1308,6 +1423,7 @@ impl SwLock7 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -1345,6 +1461,7 @@ impl SwLock7Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1352,6 +1469,7 @@ impl SwLock7Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1359,6 +1477,7 @@ impl SwLock7Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1368,6 +1487,7 @@ impl SwLock7Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1416,8 +1536,11 @@ impl SwLock7 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock8 {
@@ -1436,7 +1559,9 @@ impl SwLock8 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1448,7 +1573,9 @@ impl SwLock8 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1462,6 +1589,7 @@ impl SwLock8 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1469,6 +1597,7 @@ impl SwLock8 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -1476,6 +1605,7 @@ impl SwLock8 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -1483,6 +1613,7 @@ impl SwLock8 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -1520,6 +1651,7 @@ impl SwLock8Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1527,6 +1659,7 @@ impl SwLock8Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1534,6 +1667,7 @@ impl SwLock8Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1543,6 +1677,7 @@ impl SwLock8Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1591,8 +1726,11 @@ impl SwLock8 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock9 {
@@ -1611,7 +1749,9 @@ impl SwLock9 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1623,7 +1763,9 @@ impl SwLock9 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1637,6 +1779,7 @@ impl SwLock9 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1644,6 +1787,7 @@ impl SwLock9 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -1651,6 +1795,7 @@ impl SwLock9 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -1658,6 +1803,7 @@ impl SwLock9 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -1695,6 +1841,7 @@ impl SwLock9Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1702,6 +1849,7 @@ impl SwLock9Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1709,6 +1857,7 @@ impl SwLock9Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1718,6 +1867,7 @@ impl SwLock9Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1766,8 +1916,11 @@ impl SwLock9 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock10 {
@@ -1786,7 +1939,9 @@ impl SwLock10 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1798,7 +1953,9 @@ impl SwLock10 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1812,6 +1969,7 @@ impl SwLock10 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1819,6 +1977,7 @@ impl SwLock10 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -1826,6 +1985,7 @@ impl SwLock10 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -1833,6 +1993,7 @@ impl SwLock10 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -1870,6 +2031,7 @@ impl SwLock10Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -1877,6 +2039,7 @@ impl SwLock10Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -1884,6 +2047,7 @@ impl SwLock10Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -1893,6 +2057,7 @@ impl SwLock10Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -1941,8 +2106,11 @@ impl SwLock10 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock11 {
@@ -1961,7 +2129,9 @@ impl SwLock11 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -1973,7 +2143,9 @@ impl SwLock11 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -1987,6 +2159,7 @@ impl SwLock11 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -1994,6 +2167,7 @@ impl SwLock11 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2001,6 +2175,7 @@ impl SwLock11 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2008,6 +2183,7 @@ impl SwLock11 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2045,6 +2221,7 @@ impl SwLock11Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2052,6 +2229,7 @@ impl SwLock11Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2059,6 +2237,7 @@ impl SwLock11Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2068,6 +2247,7 @@ impl SwLock11Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2116,8 +2296,11 @@ impl SwLock11 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock12 {
@@ -2136,7 +2319,9 @@ impl SwLock12 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -2148,7 +2333,9 @@ impl SwLock12 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -2162,6 +2349,7 @@ impl SwLock12 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -2169,6 +2357,7 @@ impl SwLock12 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2176,6 +2365,7 @@ impl SwLock12 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2183,6 +2373,7 @@ impl SwLock12 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2220,6 +2411,7 @@ impl SwLock12Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2227,6 +2419,7 @@ impl SwLock12Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2234,6 +2427,7 @@ impl SwLock12Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2243,6 +2437,7 @@ impl SwLock12Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2291,8 +2486,11 @@ impl SwLock12 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock13 {
@@ -2311,7 +2509,9 @@ impl SwLock13 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -2323,7 +2523,9 @@ impl SwLock13 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -2337,6 +2539,7 @@ impl SwLock13 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -2344,6 +2547,7 @@ impl SwLock13 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2351,6 +2555,7 @@ impl SwLock13 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2358,6 +2563,7 @@ impl SwLock13 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2395,6 +2601,7 @@ impl SwLock13Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2402,6 +2609,7 @@ impl SwLock13Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2409,6 +2617,7 @@ impl SwLock13Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2418,6 +2627,7 @@ impl SwLock13Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2466,8 +2676,11 @@ impl SwLock13 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock14 {
@@ -2486,7 +2699,9 @@ impl SwLock14 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -2498,7 +2713,9 @@ impl SwLock14 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -2512,6 +2729,7 @@ impl SwLock14 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -2519,6 +2737,7 @@ impl SwLock14 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2526,6 +2745,7 @@ impl SwLock14 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2533,6 +2753,7 @@ impl SwLock14 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2570,6 +2791,7 @@ impl SwLock14Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2577,6 +2799,7 @@ impl SwLock14Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2584,6 +2807,7 @@ impl SwLock14Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2593,6 +2817,7 @@ impl SwLock14Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2641,8 +2866,11 @@ impl SwLock14 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock15 {
@@ -2661,7 +2889,9 @@ impl SwLock15 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -2673,7 +2903,9 @@ impl SwLock15 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -2687,6 +2919,7 @@ impl SwLock15 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -2694,6 +2927,7 @@ impl SwLock15 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2701,6 +2935,7 @@ impl SwLock15 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2708,6 +2943,7 @@ impl SwLock15 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2745,6 +2981,7 @@ impl SwLock15Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2752,6 +2989,7 @@ impl SwLock15Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2759,6 +2997,7 @@ impl SwLock15Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2768,6 +3007,7 @@ impl SwLock15Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2816,8 +3056,11 @@ impl SwLock15 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock16 {
@@ -2836,7 +3079,9 @@ impl SwLock16 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -2848,7 +3093,9 @@ impl SwLock16 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -2862,6 +3109,7 @@ impl SwLock16 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -2869,6 +3117,7 @@ impl SwLock16 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -2876,6 +3125,7 @@ impl SwLock16 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -2883,6 +3133,7 @@ impl SwLock16 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -2920,6 +3171,7 @@ impl SwLock16Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -2927,6 +3179,7 @@ impl SwLock16Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -2934,6 +3187,7 @@ impl SwLock16Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -2943,6 +3197,7 @@ impl SwLock16Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -2991,8 +3246,11 @@ impl SwLock16 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock17 {
@@ -3011,7 +3269,9 @@ impl SwLock17 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3023,7 +3283,9 @@ impl SwLock17 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3037,6 +3299,7 @@ impl SwLock17 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3044,6 +3307,7 @@ impl SwLock17 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3051,6 +3315,7 @@ impl SwLock17 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3058,6 +3323,7 @@ impl SwLock17 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3095,6 +3361,7 @@ impl SwLock17Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3102,6 +3369,7 @@ impl SwLock17Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3109,6 +3377,7 @@ impl SwLock17Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3118,6 +3387,7 @@ impl SwLock17Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -3166,8 +3436,11 @@ impl SwLock17 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock18 {
@@ -3186,7 +3459,9 @@ impl SwLock18 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3198,7 +3473,9 @@ impl SwLock18 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3212,6 +3489,7 @@ impl SwLock18 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3219,6 +3497,7 @@ impl SwLock18 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3226,6 +3505,7 @@ impl SwLock18 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3233,6 +3513,7 @@ impl SwLock18 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3270,6 +3551,7 @@ impl SwLock18Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3277,6 +3559,7 @@ impl SwLock18Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3284,6 +3567,7 @@ impl SwLock18Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3293,6 +3577,7 @@ impl SwLock18Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -3341,8 +3626,11 @@ impl SwLock18 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock19 {
@@ -3361,7 +3649,9 @@ impl SwLock19 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3373,7 +3663,9 @@ impl SwLock19 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3387,6 +3679,7 @@ impl SwLock19 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3394,6 +3687,7 @@ impl SwLock19 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3401,6 +3695,7 @@ impl SwLock19 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3408,6 +3703,7 @@ impl SwLock19 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3445,6 +3741,7 @@ impl SwLock19Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3452,6 +3749,7 @@ impl SwLock19Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3459,6 +3757,7 @@ impl SwLock19Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3468,6 +3767,7 @@ impl SwLock19Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -3516,8 +3816,11 @@ impl SwLock19 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock20 {
@@ -3536,7 +3839,9 @@ impl SwLock20 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3548,7 +3853,9 @@ impl SwLock20 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3562,6 +3869,7 @@ impl SwLock20 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3569,6 +3877,7 @@ impl SwLock20 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3576,6 +3885,7 @@ impl SwLock20 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3583,6 +3893,7 @@ impl SwLock20 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3620,6 +3931,7 @@ impl SwLock20Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3627,6 +3939,7 @@ impl SwLock20Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3634,6 +3947,7 @@ impl SwLock20Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3643,6 +3957,7 @@ impl SwLock20Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -3691,8 +4006,11 @@ impl SwLock20 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock21 {
@@ -3711,7 +4029,9 @@ impl SwLock21 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3723,7 +4043,9 @@ impl SwLock21 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3737,6 +4059,7 @@ impl SwLock21 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3744,6 +4067,7 @@ impl SwLock21 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3751,6 +4075,7 @@ impl SwLock21 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3758,6 +4083,7 @@ impl SwLock21 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3795,6 +4121,7 @@ impl SwLock21Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3802,6 +4129,7 @@ impl SwLock21Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3809,6 +4137,7 @@ impl SwLock21Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3818,6 +4147,7 @@ impl SwLock21Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -3866,8 +4196,11 @@ impl SwLock21 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock22 {
@@ -3886,7 +4219,9 @@ impl SwLock22 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -3898,7 +4233,9 @@ impl SwLock22 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -3912,6 +4249,7 @@ impl SwLock22 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -3919,6 +4257,7 @@ impl SwLock22 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -3926,6 +4265,7 @@ impl SwLock22 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -3933,6 +4273,7 @@ impl SwLock22 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -3970,6 +4311,7 @@ impl SwLock22Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -3977,6 +4319,7 @@ impl SwLock22Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -3984,6 +4327,7 @@ impl SwLock22Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -3993,6 +4337,7 @@ impl SwLock22Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4041,8 +4386,11 @@ impl SwLock22 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock23 {
@@ -4061,7 +4409,9 @@ impl SwLock23 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4073,7 +4423,9 @@ impl SwLock23 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4087,6 +4439,7 @@ impl SwLock23 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4094,6 +4447,7 @@ impl SwLock23 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4101,6 +4455,7 @@ impl SwLock23 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4108,6 +4463,7 @@ impl SwLock23 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -4145,6 +4501,7 @@ impl SwLock23Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -4152,6 +4509,7 @@ impl SwLock23Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -4159,6 +4517,7 @@ impl SwLock23Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -4168,6 +4527,7 @@ impl SwLock23Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4216,8 +4576,11 @@ impl SwLock23 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock24 {
@@ -4236,7 +4599,9 @@ impl SwLock24 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4248,7 +4613,9 @@ impl SwLock24 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4262,6 +4629,7 @@ impl SwLock24 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4269,6 +4637,7 @@ impl SwLock24 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4276,6 +4645,7 @@ impl SwLock24 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4283,6 +4653,7 @@ impl SwLock24 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -4320,6 +4691,7 @@ impl SwLock24Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -4327,6 +4699,7 @@ impl SwLock24Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -4334,6 +4707,7 @@ impl SwLock24Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -4343,6 +4717,7 @@ impl SwLock24Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4391,8 +4766,11 @@ impl SwLock24 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock25 {
@@ -4411,7 +4789,9 @@ impl SwLock25 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4423,7 +4803,9 @@ impl SwLock25 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4437,6 +4819,7 @@ impl SwLock25 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4444,6 +4827,7 @@ impl SwLock25 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4451,6 +4835,7 @@ impl SwLock25 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4458,6 +4843,7 @@ impl SwLock25 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -4495,6 +4881,7 @@ impl SwLock25Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -4502,6 +4889,7 @@ impl SwLock25Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -4509,6 +4897,7 @@ impl SwLock25Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -4518,6 +4907,7 @@ impl SwLock25Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4566,8 +4956,11 @@ impl SwLock25 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock26 {
@@ -4586,7 +4979,9 @@ impl SwLock26 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4598,7 +4993,9 @@ impl SwLock26 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4612,6 +5009,7 @@ impl SwLock26 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4619,6 +5017,7 @@ impl SwLock26 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4626,6 +5025,7 @@ impl SwLock26 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4633,6 +5033,7 @@ impl SwLock26 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -4670,6 +5071,7 @@ impl SwLock26Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -4677,6 +5079,7 @@ impl SwLock26Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -4684,6 +5087,7 @@ impl SwLock26Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -4693,6 +5097,7 @@ impl SwLock26Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4741,8 +5146,11 @@ impl SwLock26 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock27 {
@@ -4761,7 +5169,9 @@ impl SwLock27 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4773,7 +5183,9 @@ impl SwLock27 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4787,6 +5199,7 @@ impl SwLock27 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4794,6 +5207,7 @@ impl SwLock27 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4801,6 +5215,7 @@ impl SwLock27 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4808,6 +5223,7 @@ impl SwLock27 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -4845,6 +5261,7 @@ impl SwLock27Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -4852,6 +5269,7 @@ impl SwLock27Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -4859,6 +5277,7 @@ impl SwLock27Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -4868,6 +5287,7 @@ impl SwLock27Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -4916,8 +5336,11 @@ impl SwLock27 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock28 {
@@ -4936,7 +5359,9 @@ impl SwLock28 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -4948,7 +5373,9 @@ impl SwLock28 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -4962,6 +5389,7 @@ impl SwLock28 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -4969,6 +5397,7 @@ impl SwLock28 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -4976,6 +5405,7 @@ impl SwLock28 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -4983,6 +5413,7 @@ impl SwLock28 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5020,6 +5451,7 @@ impl SwLock28Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5027,6 +5459,7 @@ impl SwLock28Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5034,6 +5467,7 @@ impl SwLock28Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5043,6 +5477,7 @@ impl SwLock28Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5091,8 +5526,11 @@ impl SwLock28 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock29 {
@@ -5111,7 +5549,9 @@ impl SwLock29 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5123,7 +5563,9 @@ impl SwLock29 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -5137,6 +5579,7 @@ impl SwLock29 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -5144,6 +5587,7 @@ impl SwLock29 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -5151,6 +5595,7 @@ impl SwLock29 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -5158,6 +5603,7 @@ impl SwLock29 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5195,6 +5641,7 @@ impl SwLock29Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5202,6 +5649,7 @@ impl SwLock29Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5209,6 +5657,7 @@ impl SwLock29Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5218,6 +5667,7 @@ impl SwLock29Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5266,8 +5716,11 @@ impl SwLock29 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock30 {
@@ -5286,7 +5739,9 @@ impl SwLock30 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5298,7 +5753,9 @@ impl SwLock30 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -5312,6 +5769,7 @@ impl SwLock30 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -5319,6 +5777,7 @@ impl SwLock30 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -5326,6 +5785,7 @@ impl SwLock30 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -5333,6 +5793,7 @@ impl SwLock30 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5370,6 +5831,7 @@ impl SwLock30Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5377,6 +5839,7 @@ impl SwLock30Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5384,6 +5847,7 @@ impl SwLock30Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5393,6 +5857,7 @@ impl SwLock30Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5441,8 +5906,11 @@ impl SwLock30 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock31 {
@@ -5461,7 +5929,9 @@ impl SwLock31 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5473,7 +5943,9 @@ impl SwLock31 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -5487,6 +5959,7 @@ impl SwLock31 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -5494,6 +5967,7 @@ impl SwLock31 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -5501,6 +5975,7 @@ impl SwLock31 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -5508,6 +5983,7 @@ impl SwLock31 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5545,6 +6021,7 @@ impl SwLock31Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5552,6 +6029,7 @@ impl SwLock31Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5559,6 +6037,7 @@ impl SwLock31Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5568,6 +6047,7 @@ impl SwLock31Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5616,8 +6096,11 @@ impl SwLock31 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock32 {
@@ -5636,7 +6119,9 @@ impl SwLock32 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5648,7 +6133,9 @@ impl SwLock32 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -5662,6 +6149,7 @@ impl SwLock32 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -5669,6 +6157,7 @@ impl SwLock32 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -5676,6 +6165,7 @@ impl SwLock32 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -5683,6 +6173,7 @@ impl SwLock32 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5720,6 +6211,7 @@ impl SwLock32Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5727,6 +6219,7 @@ impl SwLock32Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5734,6 +6227,7 @@ impl SwLock32Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5743,6 +6237,7 @@ impl SwLock32Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5791,8 +6286,11 @@ impl SwLock32 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock33 {
@@ -5811,7 +6309,9 @@ impl SwLock33 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5823,7 +6323,9 @@ impl SwLock33 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -5837,6 +6339,7 @@ impl SwLock33 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -5844,6 +6347,7 @@ impl SwLock33 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -5851,6 +6355,7 @@ impl SwLock33 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -5858,6 +6363,7 @@ impl SwLock33 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -5895,6 +6401,7 @@ impl SwLock33Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -5902,6 +6409,7 @@ impl SwLock33Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -5909,6 +6417,7 @@ impl SwLock33Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -5918,6 +6427,7 @@ impl SwLock33Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -5966,8 +6476,11 @@ impl SwLock33 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock34 {
@@ -5986,7 +6499,9 @@ impl SwLock34 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -5998,7 +6513,9 @@ impl SwLock34 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6012,6 +6529,7 @@ impl SwLock34 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6019,6 +6537,7 @@ impl SwLock34 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6026,6 +6545,7 @@ impl SwLock34 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6033,6 +6553,7 @@ impl SwLock34 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6070,6 +6591,7 @@ impl SwLock34Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6077,6 +6599,7 @@ impl SwLock34Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6084,6 +6607,7 @@ impl SwLock34Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6093,6 +6617,7 @@ impl SwLock34Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -6141,8 +6666,11 @@ impl SwLock34 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock35 {
@@ -6161,7 +6689,9 @@ impl SwLock35 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -6173,7 +6703,9 @@ impl SwLock35 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6187,6 +6719,7 @@ impl SwLock35 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6194,6 +6727,7 @@ impl SwLock35 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6201,6 +6735,7 @@ impl SwLock35 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6208,6 +6743,7 @@ impl SwLock35 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6245,6 +6781,7 @@ impl SwLock35Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6252,6 +6789,7 @@ impl SwLock35Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6259,6 +6797,7 @@ impl SwLock35Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6268,6 +6807,7 @@ impl SwLock35Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -6316,8 +6856,11 @@ impl SwLock35 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock36 {
@@ -6336,7 +6879,9 @@ impl SwLock36 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -6348,7 +6893,9 @@ impl SwLock36 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6362,6 +6909,7 @@ impl SwLock36 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6369,6 +6917,7 @@ impl SwLock36 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6376,6 +6925,7 @@ impl SwLock36 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6383,6 +6933,7 @@ impl SwLock36 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6420,6 +6971,7 @@ impl SwLock36Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6427,6 +6979,7 @@ impl SwLock36Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6434,6 +6987,7 @@ impl SwLock36Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6443,6 +6997,7 @@ impl SwLock36Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -6491,8 +7046,11 @@ impl SwLock36 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock37 {
@@ -6511,7 +7069,9 @@ impl SwLock37 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -6523,7 +7083,9 @@ impl SwLock37 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6537,6 +7099,7 @@ impl SwLock37 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6544,6 +7107,7 @@ impl SwLock37 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6551,6 +7115,7 @@ impl SwLock37 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6558,6 +7123,7 @@ impl SwLock37 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6595,6 +7161,7 @@ impl SwLock37Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6602,6 +7169,7 @@ impl SwLock37Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6609,6 +7177,7 @@ impl SwLock37Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6618,6 +7187,7 @@ impl SwLock37Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -6666,8 +7236,11 @@ impl SwLock37 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock38 {
@@ -6686,7 +7259,9 @@ impl SwLock38 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -6698,7 +7273,9 @@ impl SwLock38 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6712,6 +7289,7 @@ impl SwLock38 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6719,6 +7297,7 @@ impl SwLock38 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6726,6 +7305,7 @@ impl SwLock38 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6733,6 +7313,7 @@ impl SwLock38 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6770,6 +7351,7 @@ impl SwLock38Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6777,6 +7359,7 @@ impl SwLock38Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6784,6 +7367,7 @@ impl SwLock38Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6793,6 +7377,7 @@ impl SwLock38Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -6841,8 +7426,11 @@ impl SwLock38 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock39 {
@@ -6861,7 +7449,9 @@ impl SwLock39 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -6873,7 +7463,9 @@ impl SwLock39 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -6887,6 +7479,7 @@ impl SwLock39 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -6894,6 +7487,7 @@ impl SwLock39 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -6901,6 +7495,7 @@ impl SwLock39 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -6908,6 +7503,7 @@ impl SwLock39 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -6945,6 +7541,7 @@ impl SwLock39Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -6952,6 +7549,7 @@ impl SwLock39Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -6959,6 +7557,7 @@ impl SwLock39Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -6968,6 +7567,7 @@ impl SwLock39Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7016,8 +7616,11 @@ impl SwLock39 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock40 {
@@ -7036,7 +7639,9 @@ impl SwLock40 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7048,7 +7653,9 @@ impl SwLock40 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7062,6 +7669,7 @@ impl SwLock40 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7069,6 +7677,7 @@ impl SwLock40 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7076,6 +7685,7 @@ impl SwLock40 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7083,6 +7693,7 @@ impl SwLock40 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7120,6 +7731,7 @@ impl SwLock40Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -7127,6 +7739,7 @@ impl SwLock40Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -7134,6 +7747,7 @@ impl SwLock40Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -7143,6 +7757,7 @@ impl SwLock40Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7191,8 +7806,11 @@ impl SwLock40 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock41 {
@@ -7211,7 +7829,9 @@ impl SwLock41 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7223,7 +7843,9 @@ impl SwLock41 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7237,6 +7859,7 @@ impl SwLock41 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7244,6 +7867,7 @@ impl SwLock41 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7251,6 +7875,7 @@ impl SwLock41 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7258,6 +7883,7 @@ impl SwLock41 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7295,6 +7921,7 @@ impl SwLock41Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -7302,6 +7929,7 @@ impl SwLock41Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -7309,6 +7937,7 @@ impl SwLock41Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -7318,6 +7947,7 @@ impl SwLock41Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7366,8 +7996,11 @@ impl SwLock41 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock42 {
@@ -7386,7 +8019,9 @@ impl SwLock42 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7398,7 +8033,9 @@ impl SwLock42 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7412,6 +8049,7 @@ impl SwLock42 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7419,6 +8057,7 @@ impl SwLock42 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7426,6 +8065,7 @@ impl SwLock42 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7433,6 +8073,7 @@ impl SwLock42 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7470,6 +8111,7 @@ impl SwLock42Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -7477,6 +8119,7 @@ impl SwLock42Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -7484,6 +8127,7 @@ impl SwLock42Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -7493,6 +8137,7 @@ impl SwLock42Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7541,8 +8186,11 @@ impl SwLock42 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock43 {
@@ -7561,7 +8209,9 @@ impl SwLock43 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7573,7 +8223,9 @@ impl SwLock43 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7587,6 +8239,7 @@ impl SwLock43 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7594,6 +8247,7 @@ impl SwLock43 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7601,6 +8255,7 @@ impl SwLock43 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7608,6 +8263,7 @@ impl SwLock43 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7645,6 +8301,7 @@ impl SwLock43Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -7652,6 +8309,7 @@ impl SwLock43Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -7659,6 +8317,7 @@ impl SwLock43Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -7668,6 +8327,7 @@ impl SwLock43Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7716,8 +8376,11 @@ impl SwLock43 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock44 {
@@ -7736,7 +8399,9 @@ impl SwLock44 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7748,7 +8413,9 @@ impl SwLock44 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7762,6 +8429,7 @@ impl SwLock44 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7769,6 +8437,7 @@ impl SwLock44 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7776,6 +8445,7 @@ impl SwLock44 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7783,6 +8453,7 @@ impl SwLock44 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7820,6 +8491,7 @@ impl SwLock44Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -7827,6 +8499,7 @@ impl SwLock44Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -7834,6 +8507,7 @@ impl SwLock44Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -7843,6 +8517,7 @@ impl SwLock44Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -7891,8 +8566,11 @@ impl SwLock44 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock45 {
@@ -7911,7 +8589,9 @@ impl SwLock45 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -7923,7 +8603,9 @@ impl SwLock45 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -7937,6 +8619,7 @@ impl SwLock45 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -7944,6 +8627,7 @@ impl SwLock45 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -7951,6 +8635,7 @@ impl SwLock45 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -7958,6 +8643,7 @@ impl SwLock45 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -7995,6 +8681,7 @@ impl SwLock45Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8002,6 +8689,7 @@ impl SwLock45Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8009,6 +8697,7 @@ impl SwLock45Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8018,6 +8707,7 @@ impl SwLock45Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8066,8 +8756,11 @@ impl SwLock45 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock46 {
@@ -8086,7 +8779,9 @@ impl SwLock46 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8098,7 +8793,9 @@ impl SwLock46 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8112,6 +8809,7 @@ impl SwLock46 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8119,6 +8817,7 @@ impl SwLock46 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -8126,6 +8825,7 @@ impl SwLock46 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -8133,6 +8833,7 @@ impl SwLock46 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -8170,6 +8871,7 @@ impl SwLock46Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8177,6 +8879,7 @@ impl SwLock46Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8184,6 +8887,7 @@ impl SwLock46Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8193,6 +8897,7 @@ impl SwLock46Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8241,8 +8946,11 @@ impl SwLock46 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock47 {
@@ -8261,7 +8969,9 @@ impl SwLock47 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8273,7 +8983,9 @@ impl SwLock47 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8287,6 +8999,7 @@ impl SwLock47 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8294,6 +9007,7 @@ impl SwLock47 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -8301,6 +9015,7 @@ impl SwLock47 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -8308,6 +9023,7 @@ impl SwLock47 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -8345,6 +9061,7 @@ impl SwLock47Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8352,6 +9069,7 @@ impl SwLock47Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8359,6 +9077,7 @@ impl SwLock47Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8368,6 +9087,7 @@ impl SwLock47Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8416,8 +9136,11 @@ impl SwLock47 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock48 {
@@ -8436,7 +9159,9 @@ impl SwLock48 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8448,7 +9173,9 @@ impl SwLock48 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8462,6 +9189,7 @@ impl SwLock48 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8469,6 +9197,7 @@ impl SwLock48 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -8476,6 +9205,7 @@ impl SwLock48 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -8483,6 +9213,7 @@ impl SwLock48 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -8520,6 +9251,7 @@ impl SwLock48Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8527,6 +9259,7 @@ impl SwLock48Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8534,6 +9267,7 @@ impl SwLock48Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8543,6 +9277,7 @@ impl SwLock48Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8591,8 +9326,11 @@ impl SwLock48 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock49 {
@@ -8611,7 +9349,9 @@ impl SwLock49 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8623,7 +9363,9 @@ impl SwLock49 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8637,6 +9379,7 @@ impl SwLock49 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8644,6 +9387,7 @@ impl SwLock49 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -8651,6 +9395,7 @@ impl SwLock49 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -8658,6 +9403,7 @@ impl SwLock49 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -8695,6 +9441,7 @@ impl SwLock49Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8702,6 +9449,7 @@ impl SwLock49Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8709,6 +9457,7 @@ impl SwLock49Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8718,6 +9467,7 @@ impl SwLock49Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8766,8 +9516,11 @@ impl SwLock49 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock50 {
@@ -8786,7 +9539,9 @@ impl SwLock50 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8798,7 +9553,9 @@ impl SwLock50 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8812,6 +9569,7 @@ impl SwLock50 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8819,6 +9577,7 @@ impl SwLock50 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -8826,6 +9585,7 @@ impl SwLock50 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -8833,6 +9593,7 @@ impl SwLock50 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -8870,6 +9631,7 @@ impl SwLock50Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -8877,6 +9639,7 @@ impl SwLock50Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -8884,6 +9647,7 @@ impl SwLock50Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -8893,6 +9657,7 @@ impl SwLock50Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -8941,8 +9706,11 @@ impl SwLock50 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock51 {
@@ -8961,7 +9729,9 @@ impl SwLock51 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -8973,7 +9743,9 @@ impl SwLock51 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -8987,6 +9759,7 @@ impl SwLock51 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -8994,6 +9767,7 @@ impl SwLock51 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9001,6 +9775,7 @@ impl SwLock51 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9008,6 +9783,7 @@ impl SwLock51 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9045,6 +9821,7 @@ impl SwLock51Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9052,6 +9829,7 @@ impl SwLock51Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9059,6 +9837,7 @@ impl SwLock51Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9068,6 +9847,7 @@ impl SwLock51Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9116,8 +9896,11 @@ impl SwLock51 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock52 {
@@ -9136,7 +9919,9 @@ impl SwLock52 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -9148,7 +9933,9 @@ impl SwLock52 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -9162,6 +9949,7 @@ impl SwLock52 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -9169,6 +9957,7 @@ impl SwLock52 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9176,6 +9965,7 @@ impl SwLock52 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9183,6 +9973,7 @@ impl SwLock52 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9220,6 +10011,7 @@ impl SwLock52Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9227,6 +10019,7 @@ impl SwLock52Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9234,6 +10027,7 @@ impl SwLock52Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9243,6 +10037,7 @@ impl SwLock52Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9291,8 +10086,11 @@ impl SwLock52 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock53 {
@@ -9311,7 +10109,9 @@ impl SwLock53 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -9323,7 +10123,9 @@ impl SwLock53 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -9337,6 +10139,7 @@ impl SwLock53 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -9344,6 +10147,7 @@ impl SwLock53 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9351,6 +10155,7 @@ impl SwLock53 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9358,6 +10163,7 @@ impl SwLock53 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9395,6 +10201,7 @@ impl SwLock53Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9402,6 +10209,7 @@ impl SwLock53Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9409,6 +10217,7 @@ impl SwLock53Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9418,6 +10227,7 @@ impl SwLock53Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9466,8 +10276,11 @@ impl SwLock53 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock54 {
@@ -9486,7 +10299,9 @@ impl SwLock54 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -9498,7 +10313,9 @@ impl SwLock54 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -9512,6 +10329,7 @@ impl SwLock54 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -9519,6 +10337,7 @@ impl SwLock54 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9526,6 +10345,7 @@ impl SwLock54 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9533,6 +10353,7 @@ impl SwLock54 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9570,6 +10391,7 @@ impl SwLock54Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9577,6 +10399,7 @@ impl SwLock54Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9584,6 +10407,7 @@ impl SwLock54Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9593,6 +10417,7 @@ impl SwLock54Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9641,8 +10466,11 @@ impl SwLock54 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock55 {
@@ -9661,7 +10489,9 @@ impl SwLock55 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -9673,7 +10503,9 @@ impl SwLock55 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -9687,6 +10519,7 @@ impl SwLock55 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -9694,6 +10527,7 @@ impl SwLock55 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9701,6 +10535,7 @@ impl SwLock55 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9708,6 +10543,7 @@ impl SwLock55 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9745,6 +10581,7 @@ impl SwLock55Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9752,6 +10589,7 @@ impl SwLock55Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9759,6 +10597,7 @@ impl SwLock55Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9768,6 +10607,7 @@ impl SwLock55Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9816,8 +10656,11 @@ impl SwLock55 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock56 {
@@ -9836,7 +10679,9 @@ impl SwLock56 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -9848,7 +10693,9 @@ impl SwLock56 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -9862,6 +10709,7 @@ impl SwLock56 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -9869,6 +10717,7 @@ impl SwLock56 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -9876,6 +10725,7 @@ impl SwLock56 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -9883,6 +10733,7 @@ impl SwLock56 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -9920,6 +10771,7 @@ impl SwLock56Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -9927,6 +10779,7 @@ impl SwLock56Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -9934,6 +10787,7 @@ impl SwLock56Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -9943,6 +10797,7 @@ impl SwLock56Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -9991,8 +10846,11 @@ impl SwLock56 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock57 {
@@ -10011,7 +10869,9 @@ impl SwLock57 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10023,7 +10883,9 @@ impl SwLock57 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10037,6 +10899,7 @@ impl SwLock57 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10044,6 +10907,7 @@ impl SwLock57 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10051,6 +10915,7 @@ impl SwLock57 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10058,6 +10923,7 @@ impl SwLock57 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10095,6 +10961,7 @@ impl SwLock57Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10102,6 +10969,7 @@ impl SwLock57Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10109,6 +10977,7 @@ impl SwLock57Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10118,6 +10987,7 @@ impl SwLock57Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -10166,8 +11036,11 @@ impl SwLock57 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock58 {
@@ -10186,7 +11059,9 @@ impl SwLock58 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10198,7 +11073,9 @@ impl SwLock58 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10212,6 +11089,7 @@ impl SwLock58 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10219,6 +11097,7 @@ impl SwLock58 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10226,6 +11105,7 @@ impl SwLock58 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10233,6 +11113,7 @@ impl SwLock58 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10270,6 +11151,7 @@ impl SwLock58Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10277,6 +11159,7 @@ impl SwLock58Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10284,6 +11167,7 @@ impl SwLock58Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10293,6 +11177,7 @@ impl SwLock58Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -10341,8 +11226,11 @@ impl SwLock58 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock59 {
@@ -10361,7 +11249,9 @@ impl SwLock59 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10373,7 +11263,9 @@ impl SwLock59 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10387,6 +11279,7 @@ impl SwLock59 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10394,6 +11287,7 @@ impl SwLock59 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10401,6 +11295,7 @@ impl SwLock59 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10408,6 +11303,7 @@ impl SwLock59 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10445,6 +11341,7 @@ impl SwLock59Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10452,6 +11349,7 @@ impl SwLock59Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10459,6 +11357,7 @@ impl SwLock59Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10468,6 +11367,7 @@ impl SwLock59Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -10516,8 +11416,11 @@ impl SwLock59 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock60 {
@@ -10536,7 +11439,9 @@ impl SwLock60 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10548,7 +11453,9 @@ impl SwLock60 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10562,6 +11469,7 @@ impl SwLock60 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10569,6 +11477,7 @@ impl SwLock60 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10576,6 +11485,7 @@ impl SwLock60 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10583,6 +11493,7 @@ impl SwLock60 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10620,6 +11531,7 @@ impl SwLock60Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10627,6 +11539,7 @@ impl SwLock60Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10634,6 +11547,7 @@ impl SwLock60Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10643,6 +11557,7 @@ impl SwLock60Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -10691,8 +11606,11 @@ impl SwLock60 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock61 {
@@ -10711,7 +11629,9 @@ impl SwLock61 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10723,7 +11643,9 @@ impl SwLock61 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10737,6 +11659,7 @@ impl SwLock61 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10744,6 +11667,7 @@ impl SwLock61 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10751,6 +11675,7 @@ impl SwLock61 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10758,6 +11683,7 @@ impl SwLock61 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10795,6 +11721,7 @@ impl SwLock61Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10802,6 +11729,7 @@ impl SwLock61Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10809,6 +11737,7 @@ impl SwLock61Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10818,6 +11747,7 @@ impl SwLock61Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -10866,8 +11796,11 @@ impl SwLock61 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock62 {
@@ -10886,7 +11819,9 @@ impl SwLock62 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -10898,7 +11833,9 @@ impl SwLock62 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -10912,6 +11849,7 @@ impl SwLock62 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -10919,6 +11857,7 @@ impl SwLock62 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -10926,6 +11865,7 @@ impl SwLock62 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -10933,6 +11873,7 @@ impl SwLock62 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -10970,6 +11911,7 @@ impl SwLock62Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -10977,6 +11919,7 @@ impl SwLock62Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -10984,6 +11927,7 @@ impl SwLock62Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -10993,6 +11937,7 @@ impl SwLock62Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -11041,8 +11986,11 @@ impl SwLock62 {
 /// ## Fields
 ///
 /// - **NSEC** `[3:2]` (RW)
+///
 ///   Non-secure lock status. Writes are OR'd with the current value.
+///
 /// - **SEC** `[1:0]` (RW)
+///
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock63 {
@@ -11061,7 +12009,9 @@ impl SwLock63 {
     // ======== Field Constants ========
 
     /// **NSEC**
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const NSEC_OFFSET: u32 = 2;
     pub const NSEC_MASK: u32 = 0x0000000c;
@@ -11073,7 +12023,9 @@ impl SwLock63 {
     pub const NSEC_INACCESSIBLE_VAL: u32 = 3;
 
     /// **SEC**
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SEC_OFFSET: u32 = 0;
     pub const SEC_MASK: u32 = 0x00000003;
@@ -11087,6 +12039,7 @@ impl SwLock63 {
     // ======== Field Accessors ========
 
     /// **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn nsec(&self) -> u32 {
@@ -11094,6 +12047,7 @@ impl SwLock63 {
     }
 
     /// Write **NSEC** `[3:2]` (RW)
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
@@ -11101,6 +12055,7 @@ impl SwLock63 {
     }
 
     /// **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn sec(&self) -> u32 {
@@ -11108,6 +12063,7 @@ impl SwLock63 {
     }
 
     /// Write **SEC** `[1:0]` (RW)
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
@@ -11145,6 +12101,7 @@ impl SwLock63Val {
     }
 
     /// Read **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn nsec(&self) -> u32 {
@@ -11152,6 +12109,7 @@ impl SwLock63Val {
     }
 
     /// Read **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn sec(&self) -> u32 {
@@ -11159,6 +12117,7 @@ impl SwLock63Val {
     }
 
     /// Set **NSEC** `[3:2]`
+    ///
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
@@ -11168,6 +12127,7 @@ impl SwLock63Val {
     }
 
     /// Set **SEC** `[1:0]`
+    ///
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
@@ -11215,17 +12175,29 @@ impl SwLock63 {
 /// ## Fields
 ///
 /// - **EXEC** `[30]` (WO)
+///
 ///   Execute instruction
+///
 /// - **IS_WR** `[29]` (RW)
+///
 ///   Payload type is write
+///
 /// - **HAS_PAYLOAD** `[28]` (RW)
+///
 ///   Instruction has payload (data to be written or to be read)
+///
 /// - **PAYLOAD_SIZE_M1** `[27:24]` (RW)
+///
 ///   Instruction payload size in bytes minus 1
+///
 /// - **TARGET** `[23:16]` (RW)
+///
 ///   Instruction target, it can be PMC (0x3a) or DAP (0x02)
+///
 /// - **CMD** `[15:8]` (RW)
+///
 /// - **SHORT_WDATA** `[7:0]` (RW)
+///
 ///   wdata to be used only when payload_size_m1=0
 #[repr(transparent)]
 pub struct SbpiInstr {
@@ -11244,34 +12216,44 @@ impl SbpiInstr {
     // ======== Field Constants ========
 
     /// **EXEC**
+    ///
     /// Execute instruction
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const EXEC_OFFSET: u32 = 30;
     pub const EXEC_MASK: u32 = 0x40000000;
     pub const EXEC: u32 = 1 << 30;
 
     /// **IS_WR**
+    ///
     /// Payload type is write
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const IS_WR_OFFSET: u32 = 29;
     pub const IS_WR_MASK: u32 = 0x20000000;
     pub const IS_WR: u32 = 1 << 29;
 
     /// **HAS_PAYLOAD**
+    ///
     /// Instruction has payload (data to be written or to be read)
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const HAS_PAYLOAD_OFFSET: u32 = 28;
     pub const HAS_PAYLOAD_MASK: u32 = 0x10000000;
     pub const HAS_PAYLOAD: u32 = 1 << 28;
 
     /// **PAYLOAD_SIZE_M1**
+    ///
     /// Instruction payload size in bytes minus 1
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const PAYLOAD_SIZE_M1_OFFSET: u32 = 24;
     pub const PAYLOAD_SIZE_M1_MASK: u32 = 0x0f000000;
 
     /// **TARGET**
+    ///
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const TARGET_OFFSET: u32 = 16;
     pub const TARGET_MASK: u32 = 0x00ff0000;
@@ -11282,16 +12264,17 @@ impl SbpiInstr {
     pub const CMD_MASK: u32 = 0x0000ff00;
 
     /// **SHORT_WDATA**
+    ///
     /// wdata to be used only when payload_size_m1=0
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const SHORT_WDATA_OFFSET: u32 = 0;
     pub const SHORT_WDATA_MASK: u32 = 0x000000ff;
 
     // ======== Field Accessors ========
 
-    /// **EXEC** `[30]` (WO)
-    /// Execute instruction
     /// Trigger **EXEC** (WO)
+    ///
     /// Execute instruction
     #[inline(always)]
     pub fn trigger_exec(&self) {
@@ -11299,6 +12282,7 @@ impl SbpiInstr {
     }
 
     /// **IS_WR** `[29]` (RW)
+    ///
     /// Payload type is write
     #[inline(always)]
     pub fn is_wr(&self) -> bool {
@@ -11318,6 +12302,7 @@ impl SbpiInstr {
     }
 
     /// **HAS_PAYLOAD** `[28]` (RW)
+    ///
     /// Instruction has payload (data to be written or to be read)
     #[inline(always)]
     pub fn has_payload(&self) -> bool {
@@ -11337,6 +12322,7 @@ impl SbpiInstr {
     }
 
     /// **PAYLOAD_SIZE_M1** `[27:24]` (RW)
+    ///
     /// Instruction payload size in bytes minus 1
     #[inline(always)]
     pub fn payload_size_m1(&self) -> u32 {
@@ -11344,6 +12330,7 @@ impl SbpiInstr {
     }
 
     /// Write **PAYLOAD_SIZE_M1** `[27:24]` (RW)
+    ///
     /// Instruction payload size in bytes minus 1
     #[inline(always)]
     pub fn write_payload_size_m1(&self, value: u32) {
@@ -11351,6 +12338,7 @@ impl SbpiInstr {
     }
 
     /// **TARGET** `[23:16]` (RW)
+    ///
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
     #[inline(always)]
     pub fn target(&self) -> u32 {
@@ -11358,6 +12346,7 @@ impl SbpiInstr {
     }
 
     /// Write **TARGET** `[23:16]` (RW)
+    ///
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
     #[inline(always)]
     pub fn write_target(&self, value: u32) {
@@ -11377,6 +12366,7 @@ impl SbpiInstr {
     }
 
     /// **SHORT_WDATA** `[7:0]` (RW)
+    ///
     /// wdata to be used only when payload_size_m1=0
     #[inline(always)]
     pub fn short_wdata(&self) -> u32 {
@@ -11384,6 +12374,7 @@ impl SbpiInstr {
     }
 
     /// Write **SHORT_WDATA** `[7:0]` (RW)
+    ///
     /// wdata to be used only when payload_size_m1=0
     #[inline(always)]
     pub fn write_short_wdata(&self, value: u32) {
@@ -11421,6 +12412,7 @@ impl SbpiInstrVal {
     }
 
     /// Read **IS_WR** `[29:29]`
+    ///
     /// Payload type is write
     #[inline(always)]
     pub const fn is_wr(&self) -> bool {
@@ -11428,6 +12420,7 @@ impl SbpiInstrVal {
     }
 
     /// Read **HAS_PAYLOAD** `[28:28]`
+    ///
     /// Instruction has payload (data to be written or to be read)
     #[inline(always)]
     pub const fn has_payload(&self) -> bool {
@@ -11435,6 +12428,7 @@ impl SbpiInstrVal {
     }
 
     /// Read **PAYLOAD_SIZE_M1** `[27:24]`
+    ///
     /// Instruction payload size in bytes minus 1
     #[inline(always)]
     pub const fn payload_size_m1(&self) -> u32 {
@@ -11442,6 +12436,7 @@ impl SbpiInstrVal {
     }
 
     /// Read **TARGET** `[23:16]`
+    ///
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
     #[inline(always)]
     pub const fn target(&self) -> u32 {
@@ -11455,6 +12450,7 @@ impl SbpiInstrVal {
     }
 
     /// Read **SHORT_WDATA** `[7:0]`
+    ///
     /// wdata to be used only when payload_size_m1=0
     #[inline(always)]
     pub const fn short_wdata(&self) -> u32 {
@@ -11462,6 +12458,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **EXEC** `[30:30]`
+    ///
     /// Execute instruction
     #[inline(always)]
     pub const fn with_exec(self, value: bool) -> Self {
@@ -11475,6 +12472,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **IS_WR** `[29:29]`
+    ///
     /// Payload type is write
     #[inline(always)]
     pub const fn with_is_wr(self, value: bool) -> Self {
@@ -11488,6 +12486,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **HAS_PAYLOAD** `[28:28]`
+    ///
     /// Instruction has payload (data to be written or to be read)
     #[inline(always)]
     pub const fn with_has_payload(self, value: bool) -> Self {
@@ -11501,6 +12500,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **PAYLOAD_SIZE_M1** `[27:24]`
+    ///
     /// Instruction payload size in bytes minus 1
     #[inline(always)]
     pub const fn with_payload_size_m1(self, value: u32) -> Self {
@@ -11510,6 +12510,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **TARGET** `[23:16]`
+    ///
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
     #[inline(always)]
     pub const fn with_target(self, value: u32) -> Self {
@@ -11527,6 +12528,7 @@ impl SbpiInstrVal {
     }
 
     /// Set **SHORT_WDATA** `[7:0]`
+    ///
     /// wdata to be used only when payload_size_m1=0
     #[inline(always)]
     pub const fn with_short_wdata(self, value: u32) -> Self {
@@ -12460,14 +13462,23 @@ impl SbpiRdata3 {
 /// ## Fields
 ///
 /// - **MISO** `[23:16]` (RO)
+///
 ///   SBPI MISO (master in - slave out): response from SBPI
+///
 /// - **FLAG** `[12]` (RO)
+///
 ///   SBPI flag
+///
 /// - **INSTR_MISS** `[8]` (RW)
+///
 ///   Last instruction missed (dropped), as the previous has not finished running
+///
 /// - **INSTR_DONE** `[4]` (RW)
+///
 ///   Last instruction done
+///
 /// - **RDATA_VLD** `[0]` (RW)
+///
 ///   Read command has returned data
 #[repr(transparent)]
 pub struct SbpiStatus {
@@ -12486,34 +13497,44 @@ impl SbpiStatus {
     // ======== Field Constants ========
 
     /// **MISO**
+    ///
     /// SBPI MISO (master in - slave out): response from SBPI
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const MISO_OFFSET: u32 = 16;
     pub const MISO_MASK: u32 = 0x00ff0000;
 
     /// **FLAG**
+    ///
     /// SBPI flag
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const FLAG_OFFSET: u32 = 12;
     pub const FLAG_MASK: u32 = 0x00001000;
     pub const FLAG: u32 = 1 << 12;
 
     /// **INSTR_MISS**
+    ///
     /// Last instruction missed (dropped), as the previous has not finished running
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const INSTR_MISS_OFFSET: u32 = 8;
     pub const INSTR_MISS_MASK: u32 = 0x00000100;
     pub const INSTR_MISS: u32 = 1 << 8;
 
     /// **INSTR_DONE**
+    ///
     /// Last instruction done
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const INSTR_DONE_OFFSET: u32 = 4;
     pub const INSTR_DONE_MASK: u32 = 0x00000010;
     pub const INSTR_DONE: u32 = 1 << 4;
 
     /// **RDATA_VLD**
+    ///
     /// Read command has returned data
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RDATA_VLD_OFFSET: u32 = 0;
     pub const RDATA_VLD_MASK: u32 = 0x00000001;
@@ -12522,6 +13543,7 @@ impl SbpiStatus {
     // ======== Field Accessors ========
 
     /// **MISO** `[23:16]` (RO)
+    ///
     /// SBPI MISO (master in - slave out): response from SBPI
     #[inline(always)]
     pub fn miso(&self) -> u32 {
@@ -12529,6 +13551,7 @@ impl SbpiStatus {
     }
 
     /// **FLAG** `[12]` (RO)
+    ///
     /// SBPI flag
     #[inline(always)]
     pub fn flag(&self) -> bool {
@@ -12536,6 +13559,7 @@ impl SbpiStatus {
     }
 
     /// **INSTR_MISS** `[8]` (RW)
+    ///
     /// Last instruction missed (dropped), as the previous has not finished running
     #[inline(always)]
     pub fn instr_miss(&self) -> bool {
@@ -12555,6 +13579,7 @@ impl SbpiStatus {
     }
 
     /// **INSTR_DONE** `[4]` (RW)
+    ///
     /// Last instruction done
     #[inline(always)]
     pub fn instr_done(&self) -> bool {
@@ -12574,6 +13599,7 @@ impl SbpiStatus {
     }
 
     /// **RDATA_VLD** `[0]` (RW)
+    ///
     /// Read command has returned data
     #[inline(always)]
     pub fn rdata_vld(&self) -> bool {
@@ -12623,6 +13649,7 @@ impl SbpiStatusVal {
     }
 
     /// Read **MISO** `[23:16]`
+    ///
     /// SBPI MISO (master in - slave out): response from SBPI
     #[inline(always)]
     pub const fn miso(&self) -> u32 {
@@ -12630,6 +13657,7 @@ impl SbpiStatusVal {
     }
 
     /// Read **FLAG** `[12:12]`
+    ///
     /// SBPI flag
     #[inline(always)]
     pub const fn flag(&self) -> bool {
@@ -12637,6 +13665,7 @@ impl SbpiStatusVal {
     }
 
     /// Read **INSTR_MISS** `[8:8]`
+    ///
     /// Last instruction missed (dropped), as the previous has not finished running
     #[inline(always)]
     pub const fn instr_miss(&self) -> bool {
@@ -12644,6 +13673,7 @@ impl SbpiStatusVal {
     }
 
     /// Read **INSTR_DONE** `[4:4]`
+    ///
     /// Last instruction done
     #[inline(always)]
     pub const fn instr_done(&self) -> bool {
@@ -12651,6 +13681,7 @@ impl SbpiStatusVal {
     }
 
     /// Read **RDATA_VLD** `[0:0]`
+    ///
     /// Read command has returned data
     #[inline(always)]
     pub const fn rdata_vld(&self) -> bool {
@@ -12658,6 +13689,7 @@ impl SbpiStatusVal {
     }
 
     /// Set **INSTR_MISS** `[8:8]`
+    ///
     /// Last instruction missed (dropped), as the previous has not finished running
     #[inline(always)]
     pub const fn with_instr_miss(self, value: bool) -> Self {
@@ -12671,6 +13703,7 @@ impl SbpiStatusVal {
     }
 
     /// Set **INSTR_DONE** `[4:4]`
+    ///
     /// Last instruction done
     #[inline(always)]
     pub const fn with_instr_done(self, value: bool) -> Self {
@@ -12684,6 +13717,7 @@ impl SbpiStatusVal {
     }
 
     /// Set **RDATA_VLD** `[0:0]`
+    ///
     /// Read command has returned data
     #[inline(always)]
     pub const fn with_rdata_vld(self, value: bool) -> Self {
@@ -12735,8 +13769,11 @@ impl SbpiStatus {
 /// ## Fields
 ///
 /// - **PD** `[4]` (RW)
+///
 ///   Power-down; 1 disables current reference. Must be 0 to read data from the OTP.
+///
 /// - **DCTRL** `[0]` (RW)
+///
 ///   1 enables USER interface; 0 disables USER interface (enables SBPI).
 ///   This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
 #[repr(transparent)]
@@ -12756,15 +13793,19 @@ impl Usr {
     // ======== Field Constants ========
 
     /// **PD**
+    ///
     /// Power-down; 1 disables current reference. Must be 0 to read data from the OTP.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const PD_OFFSET: u32 = 4;
     pub const PD_MASK: u32 = 0x00000010;
     pub const PD: u32 = 1 << 4;
 
     /// **DCTRL**
+    ///
     /// 1 enables USER interface; 0 disables USER interface (enables SBPI).
     /// This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const DCTRL_OFFSET: u32 = 0;
     pub const DCTRL_MASK: u32 = 0x00000001;
@@ -12773,6 +13814,7 @@ impl Usr {
     // ======== Field Accessors ========
 
     /// **PD** `[4]` (RW)
+    ///
     /// Power-down; 1 disables current reference. Must be 0 to read data from the OTP.
     #[inline(always)]
     pub fn pd(&self) -> bool {
@@ -12792,6 +13834,7 @@ impl Usr {
     }
 
     /// **DCTRL** `[0]` (RW)
+    ///
     /// 1 enables USER interface; 0 disables USER interface (enables SBPI).
     /// This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
     #[inline(always)]
@@ -12842,6 +13885,7 @@ impl UsrVal {
     }
 
     /// Read **PD** `[4:4]`
+    ///
     /// Power-down; 1 disables current reference. Must be 0 to read data from the OTP.
     #[inline(always)]
     pub const fn pd(&self) -> bool {
@@ -12849,6 +13893,7 @@ impl UsrVal {
     }
 
     /// Read **DCTRL** `[0:0]`
+    ///
     /// 1 enables USER interface; 0 disables USER interface (enables SBPI).
     /// This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
     #[inline(always)]
@@ -12857,6 +13902,7 @@ impl UsrVal {
     }
 
     /// Set **PD** `[4:4]`
+    ///
     /// Power-down; 1 disables current reference. Must be 0 to read data from the OTP.
     #[inline(always)]
     pub const fn with_pd(self, value: bool) -> Self {
@@ -12870,6 +13916,7 @@ impl UsrVal {
     }
 
     /// Set **DCTRL** `[0:0]`
+    ///
     /// 1 enables USER interface; 0 disables USER interface (enables SBPI).
     /// This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
     #[inline(always)]
@@ -12922,16 +13969,27 @@ impl Usr {
 /// ## Fields
 ///
 /// - **CUSTOMER_RMA_FLAG** `[12]` (RO)
+///
 ///   The chip is in RMA mode
+///
 /// - **PSM_STATE** `[7:4]` (RO)
+///
 ///   Monitor the PSM FSM's state
+///
 /// - **ROSC_UP** `[3]` (RO)
+///
 ///   Ring oscillator is up and running
+///
 /// - **ROSC_UP_SEEN** `[2]` (RW)
+///
 ///   Ring oscillator was seen up and running
+///
 /// - **BOOT_DONE** `[1]` (RO)
+///
 ///   PSM boot done status flag
+///
 /// - **PSM_DONE** `[0]` (RO)
+///
 ///   PSM done status flag
 #[repr(transparent)]
 pub struct Dbg {
@@ -12950,41 +14008,53 @@ impl Dbg {
     // ======== Field Constants ========
 
     /// **CUSTOMER_RMA_FLAG**
+    ///
     /// The chip is in RMA mode
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const CUSTOMER_RMA_FLAG_OFFSET: u32 = 12;
     pub const CUSTOMER_RMA_FLAG_MASK: u32 = 0x00001000;
     pub const CUSTOMER_RMA_FLAG: u32 = 1 << 12;
 
     /// **PSM_STATE**
+    ///
     /// Monitor the PSM FSM's state
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const PSM_STATE_OFFSET: u32 = 4;
     pub const PSM_STATE_MASK: u32 = 0x000000f0;
 
     /// **ROSC_UP**
+    ///
     /// Ring oscillator is up and running
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const ROSC_UP_OFFSET: u32 = 3;
     pub const ROSC_UP_MASK: u32 = 0x00000008;
     pub const ROSC_UP: u32 = 1 << 3;
 
     /// **ROSC_UP_SEEN**
+    ///
     /// Ring oscillator was seen up and running
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const ROSC_UP_SEEN_OFFSET: u32 = 2;
     pub const ROSC_UP_SEEN_MASK: u32 = 0x00000004;
     pub const ROSC_UP_SEEN: u32 = 1 << 2;
 
     /// **BOOT_DONE**
+    ///
     /// PSM boot done status flag
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const BOOT_DONE_OFFSET: u32 = 1;
     pub const BOOT_DONE_MASK: u32 = 0x00000002;
     pub const BOOT_DONE: u32 = 1 << 1;
 
     /// **PSM_DONE**
+    ///
     /// PSM done status flag
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PSM_DONE_OFFSET: u32 = 0;
     pub const PSM_DONE_MASK: u32 = 0x00000001;
@@ -12993,6 +14063,7 @@ impl Dbg {
     // ======== Field Accessors ========
 
     /// **CUSTOMER_RMA_FLAG** `[12]` (RO)
+    ///
     /// The chip is in RMA mode
     #[inline(always)]
     pub fn customer_rma_flag(&self) -> bool {
@@ -13000,6 +14071,7 @@ impl Dbg {
     }
 
     /// **PSM_STATE** `[7:4]` (RO)
+    ///
     /// Monitor the PSM FSM's state
     #[inline(always)]
     pub fn psm_state(&self) -> u32 {
@@ -13007,6 +14079,7 @@ impl Dbg {
     }
 
     /// **ROSC_UP** `[3]` (RO)
+    ///
     /// Ring oscillator is up and running
     #[inline(always)]
     pub fn rosc_up(&self) -> bool {
@@ -13014,6 +14087,7 @@ impl Dbg {
     }
 
     /// **ROSC_UP_SEEN** `[2]` (RW)
+    ///
     /// Ring oscillator was seen up and running
     #[inline(always)]
     pub fn rosc_up_seen(&self) -> bool {
@@ -13033,6 +14107,7 @@ impl Dbg {
     }
 
     /// **BOOT_DONE** `[1]` (RO)
+    ///
     /// PSM boot done status flag
     #[inline(always)]
     pub fn boot_done(&self) -> bool {
@@ -13040,6 +14115,7 @@ impl Dbg {
     }
 
     /// **PSM_DONE** `[0]` (RO)
+    ///
     /// PSM done status flag
     #[inline(always)]
     pub fn psm_done(&self) -> bool {
@@ -13077,6 +14153,7 @@ impl DbgVal {
     }
 
     /// Read **CUSTOMER_RMA_FLAG** `[12:12]`
+    ///
     /// The chip is in RMA mode
     #[inline(always)]
     pub const fn customer_rma_flag(&self) -> bool {
@@ -13084,6 +14161,7 @@ impl DbgVal {
     }
 
     /// Read **PSM_STATE** `[7:4]`
+    ///
     /// Monitor the PSM FSM's state
     #[inline(always)]
     pub const fn psm_state(&self) -> u32 {
@@ -13091,6 +14169,7 @@ impl DbgVal {
     }
 
     /// Read **ROSC_UP** `[3:3]`
+    ///
     /// Ring oscillator is up and running
     #[inline(always)]
     pub const fn rosc_up(&self) -> bool {
@@ -13098,6 +14177,7 @@ impl DbgVal {
     }
 
     /// Read **ROSC_UP_SEEN** `[2:2]`
+    ///
     /// Ring oscillator was seen up and running
     #[inline(always)]
     pub const fn rosc_up_seen(&self) -> bool {
@@ -13105,6 +14185,7 @@ impl DbgVal {
     }
 
     /// Read **BOOT_DONE** `[1:1]`
+    ///
     /// PSM boot done status flag
     #[inline(always)]
     pub const fn boot_done(&self) -> bool {
@@ -13112,6 +14193,7 @@ impl DbgVal {
     }
 
     /// Read **PSM_DONE** `[0:0]`
+    ///
     /// PSM done status flag
     #[inline(always)]
     pub const fn psm_done(&self) -> bool {
@@ -13119,6 +14201,7 @@ impl DbgVal {
     }
 
     /// Set **ROSC_UP_SEEN** `[2:2]`
+    ///
     /// Ring oscillator was seen up and running
     #[inline(always)]
     pub const fn with_rosc_up_seen(self, value: bool) -> Self {
@@ -13170,14 +14253,23 @@ impl Dbg {
 /// ## Fields
 ///
 /// - **CNT_FAIL** `[30]` (RO)
+///
 ///   Flag if the count of address locations with at least one leaky bit exceeds cnt_max
+///
 /// - **CNT_CLR** `[29]` (WO)
+///
 ///   Clear counter before use
+///
 /// - **CNT_ENA** `[28]` (RW)
+///
 ///   Enable the counter before the BIST function is initiated
+///
 /// - **CNT_MAX** `[27:16]` (RW)
+///
 ///   The cnt_fail flag will be set if the number of leaky locations exceeds this number
+///
 /// - **CNT** `[12:0]` (RO)
+///
 ///   Number of locations that have at least one leaky bit. Note: This count is true only if the BIST was initiated without the fix option.
 #[repr(transparent)]
 pub struct Bist {
@@ -13196,34 +14288,44 @@ impl Bist {
     // ======== Field Constants ========
 
     /// **CNT_FAIL**
+    ///
     /// Flag if the count of address locations with at least one leaky bit exceeds cnt_max
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const CNT_FAIL_OFFSET: u32 = 30;
     pub const CNT_FAIL_MASK: u32 = 0x40000000;
     pub const CNT_FAIL: u32 = 1 << 30;
 
     /// **CNT_CLR**
+    ///
     /// Clear counter before use
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const CNT_CLR_OFFSET: u32 = 29;
     pub const CNT_CLR_MASK: u32 = 0x20000000;
     pub const CNT_CLR: u32 = 1 << 29;
 
     /// **CNT_ENA**
+    ///
     /// Enable the counter before the BIST function is initiated
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const CNT_ENA_OFFSET: u32 = 28;
     pub const CNT_ENA_MASK: u32 = 0x10000000;
     pub const CNT_ENA: u32 = 1 << 28;
 
     /// **CNT_MAX**
+    ///
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
+    ///
     /// Bits `[27:16]`, mask `0x0fff0000`
     pub const CNT_MAX_OFFSET: u32 = 16;
     pub const CNT_MAX_MASK: u32 = 0x0fff0000;
 
     /// **CNT**
+    ///
     /// Number of locations that have at least one leaky bit. Note: This count is true only if the BIST was initiated without the fix option.
+    ///
     /// Bits `[12:0]`, mask `0x00001fff`
     pub const CNT_OFFSET: u32 = 0;
     pub const CNT_MASK: u32 = 0x00001fff;
@@ -13231,15 +14333,15 @@ impl Bist {
     // ======== Field Accessors ========
 
     /// **CNT_FAIL** `[30]` (RO)
+    ///
     /// Flag if the count of address locations with at least one leaky bit exceeds cnt_max
     #[inline(always)]
     pub fn cnt_fail(&self) -> bool {
         (self.value.read_bits() & Self::CNT_FAIL_MASK) != 0
     }
 
-    /// **CNT_CLR** `[29]` (WO)
-    /// Clear counter before use
     /// Trigger **CNT_CLR** (WO)
+    ///
     /// Clear counter before use
     #[inline(always)]
     pub fn trigger_cnt_clr(&self) {
@@ -13247,6 +14349,7 @@ impl Bist {
     }
 
     /// **CNT_ENA** `[28]` (RW)
+    ///
     /// Enable the counter before the BIST function is initiated
     #[inline(always)]
     pub fn cnt_ena(&self) -> bool {
@@ -13266,6 +14369,7 @@ impl Bist {
     }
 
     /// **CNT_MAX** `[27:16]` (RW)
+    ///
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
     #[inline(always)]
     pub fn cnt_max(&self) -> u32 {
@@ -13273,6 +14377,7 @@ impl Bist {
     }
 
     /// Write **CNT_MAX** `[27:16]` (RW)
+    ///
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
     #[inline(always)]
     pub fn write_cnt_max(&self, value: u32) {
@@ -13280,6 +14385,7 @@ impl Bist {
     }
 
     /// **CNT** `[12:0]` (RO)
+    ///
     /// Number of locations that have at least one leaky bit. Note: This count is true only if the BIST was initiated without the fix option.
     #[inline(always)]
     pub fn cnt(&self) -> u32 {
@@ -13317,6 +14423,7 @@ impl BistVal {
     }
 
     /// Read **CNT_FAIL** `[30:30]`
+    ///
     /// Flag if the count of address locations with at least one leaky bit exceeds cnt_max
     #[inline(always)]
     pub const fn cnt_fail(&self) -> bool {
@@ -13324,6 +14431,7 @@ impl BistVal {
     }
 
     /// Read **CNT_ENA** `[28:28]`
+    ///
     /// Enable the counter before the BIST function is initiated
     #[inline(always)]
     pub const fn cnt_ena(&self) -> bool {
@@ -13331,6 +14439,7 @@ impl BistVal {
     }
 
     /// Read **CNT_MAX** `[27:16]`
+    ///
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
     #[inline(always)]
     pub const fn cnt_max(&self) -> u32 {
@@ -13338,6 +14447,7 @@ impl BistVal {
     }
 
     /// Read **CNT** `[12:0]`
+    ///
     /// Number of locations that have at least one leaky bit. Note: This count is true only if the BIST was initiated without the fix option.
     #[inline(always)]
     pub const fn cnt(&self) -> u32 {
@@ -13345,6 +14455,7 @@ impl BistVal {
     }
 
     /// Set **CNT_CLR** `[29:29]`
+    ///
     /// Clear counter before use
     #[inline(always)]
     pub const fn with_cnt_clr(self, value: bool) -> Self {
@@ -13358,6 +14469,7 @@ impl BistVal {
     }
 
     /// Set **CNT_ENA** `[28:28]`
+    ///
     /// Enable the counter before the BIST function is initiated
     #[inline(always)]
     pub const fn with_cnt_ena(self, value: bool) -> Self {
@@ -13371,6 +14483,7 @@ impl BistVal {
     }
 
     /// Set **CNT_MAX** `[27:16]`
+    ///
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
     #[inline(always)]
     pub const fn with_cnt_max(self, value: u32) -> Self {
@@ -13441,7 +14554,6 @@ impl CrtKeyW0 {
 
     // ======== Field Accessors ========
 
-    /// **CRT_KEY_W0** `[31:0]` (WO)
     /// Write **CRT_KEY_W0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w0(&self, value: u32) {
@@ -13548,7 +14660,6 @@ impl CrtKeyW1 {
 
     // ======== Field Accessors ========
 
-    /// **CRT_KEY_W1** `[31:0]` (WO)
     /// Write **CRT_KEY_W1** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w1(&self, value: u32) {
@@ -13655,7 +14766,6 @@ impl CrtKeyW2 {
 
     // ======== Field Accessors ========
 
-    /// **CRT_KEY_W2** `[31:0]` (WO)
     /// Write **CRT_KEY_W2** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w2(&self, value: u32) {
@@ -13762,7 +14872,6 @@ impl CrtKeyW3 {
 
     // ======== Field Accessors ========
 
-    /// **CRT_KEY_W3** `[31:0]` (WO)
     /// Write **CRT_KEY_W3** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w3(&self, value: u32) {
@@ -13846,12 +14955,19 @@ impl CrtKeyW3 {
 /// ## Fields
 ///
 /// - **RISCV_DISABLE** `[17]` (RO)
+///
 /// - **ARM_DISABLE** `[16]` (RO)
+///
 /// - **GLITCH_DETECTOR_SENS** `[6:5]` (RO)
+///
 /// - **GLITCH_DETECTOR_ENABLE** `[4]` (RO)
+///
 /// - **DEFAULT_ARCHSEL** `[3]` (RO)
+///
 /// - **DEBUG_DISABLE** `[2]` (RO)
+///
 /// - **SECURE_DEBUG_DISABLE** `[1]` (RO)
+///
 /// - **SECURE_BOOT_ENABLE** `[0]` (RO)
 #[repr(transparent)]
 pub struct Critical {
@@ -14193,19 +15309,28 @@ impl KeyValid {
 /// ## Fields
 ///
 /// - **MISC** `[8]` (RW)
+///
 ///   Enable other debug components. Specifically, the CTI, and the APB-AP used to access the RISC-V Debug Module.
 ///   These components are disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
+///
 /// - **PROC1_SECURE** `[3]` (RW)
+///
 ///   Permit core 1's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 1 (SPIDEN and SPNIDEN).
 ///   Secure debug of core 1 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
+///
 /// - **PROC1** `[2]` (RW)
+///
 ///   Enable core 1's Mem-AP if it is currently disabled.
 ///   The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
+///
 /// - **PROC0_SECURE** `[1]` (RW)
+///
 ///   Permit core 0's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 0 (SPIDEN and SPNIDEN).
 ///   Secure debug of core 0 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
 ///   Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
+///
 /// - **PROC0** `[0]` (RW)
+///
 ///   Enable core 0's Mem-AP if it is currently disabled.
 ///   The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
 ///   Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14226,42 +15351,52 @@ impl Debugen {
     // ======== Field Constants ========
 
     /// **MISC**
+    ///
     /// Enable other debug components. Specifically, the CTI, and the APB-AP used to access the RISC-V Debug Module.
     /// These components are disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MISC_OFFSET: u32 = 8;
     pub const MISC_MASK: u32 = 0x00000100;
     pub const MISC: u32 = 1 << 8;
 
     /// **PROC1_SECURE**
+    ///
     /// Permit core 1's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 1 (SPIDEN and SPNIDEN).
     /// Secure debug of core 1 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PROC1_SECURE_OFFSET: u32 = 3;
     pub const PROC1_SECURE_MASK: u32 = 0x00000008;
     pub const PROC1_SECURE: u32 = 1 << 3;
 
     /// **PROC1**
+    ///
     /// Enable core 1's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PROC1_OFFSET: u32 = 2;
     pub const PROC1_MASK: u32 = 0x00000004;
     pub const PROC1: u32 = 1 << 2;
 
     /// **PROC0_SECURE**
+    ///
     /// Permit core 0's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 0 (SPIDEN and SPNIDEN).
     /// Secure debug of core 0 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PROC0_SECURE_OFFSET: u32 = 1;
     pub const PROC0_SECURE_MASK: u32 = 0x00000002;
     pub const PROC0_SECURE: u32 = 1 << 1;
 
     /// **PROC0**
+    ///
     /// Enable core 0's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PROC0_OFFSET: u32 = 0;
     pub const PROC0_MASK: u32 = 0x00000001;
@@ -14270,6 +15405,7 @@ impl Debugen {
     // ======== Field Accessors ========
 
     /// **MISC** `[8]` (RW)
+    ///
     /// Enable other debug components. Specifically, the CTI, and the APB-AP used to access the RISC-V Debug Module.
     /// These components are disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14290,6 +15426,7 @@ impl Debugen {
     }
 
     /// **PROC1_SECURE** `[3]` (RW)
+    ///
     /// Permit core 1's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 1 (SPIDEN and SPNIDEN).
     /// Secure debug of core 1 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     #[inline(always)]
@@ -14310,6 +15447,7 @@ impl Debugen {
     }
 
     /// **PROC1** `[2]` (RW)
+    ///
     /// Enable core 1's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14330,6 +15468,7 @@ impl Debugen {
     }
 
     /// **PROC0_SECURE** `[1]` (RW)
+    ///
     /// Permit core 0's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 0 (SPIDEN and SPNIDEN).
     /// Secure debug of core 0 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14351,6 +15490,7 @@ impl Debugen {
     }
 
     /// **PROC0** `[0]` (RW)
+    ///
     /// Enable core 0's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14402,6 +15542,7 @@ impl DebugenVal {
     }
 
     /// Read **MISC** `[8:8]`
+    ///
     /// Enable other debug components. Specifically, the CTI, and the APB-AP used to access the RISC-V Debug Module.
     /// These components are disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14410,6 +15551,7 @@ impl DebugenVal {
     }
 
     /// Read **PROC1_SECURE** `[3:3]`
+    ///
     /// Permit core 1's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 1 (SPIDEN and SPNIDEN).
     /// Secure debug of core 1 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     #[inline(always)]
@@ -14418,6 +15560,7 @@ impl DebugenVal {
     }
 
     /// Read **PROC1** `[2:2]`
+    ///
     /// Enable core 1's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14426,6 +15569,7 @@ impl DebugenVal {
     }
 
     /// Read **PROC0_SECURE** `[1:1]`
+    ///
     /// Permit core 0's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 0 (SPIDEN and SPNIDEN).
     /// Secure debug of core 0 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14435,6 +15579,7 @@ impl DebugenVal {
     }
 
     /// Read **PROC0** `[0:0]`
+    ///
     /// Enable core 0's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14444,6 +15589,7 @@ impl DebugenVal {
     }
 
     /// Set **MISC** `[8:8]`
+    ///
     /// Enable other debug components. Specifically, the CTI, and the APB-AP used to access the RISC-V Debug Module.
     /// These components are disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14458,6 +15604,7 @@ impl DebugenVal {
     }
 
     /// Set **PROC1_SECURE** `[3:3]`
+    ///
     /// Permit core 1's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 1 (SPIDEN and SPNIDEN).
     /// Secure debug of core 1 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     #[inline(always)]
@@ -14472,6 +15619,7 @@ impl DebugenVal {
     }
 
     /// Set **PROC1** `[2:2]`
+    ///
     /// Enable core 1's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     #[inline(always)]
@@ -14486,6 +15634,7 @@ impl DebugenVal {
     }
 
     /// Set **PROC0_SECURE** `[1:1]`
+    ///
     /// Permit core 0's Mem-AP to generate Secure accesses, assuming it is enabled at all. Also enable secure debug of core 0 (SPIDEN and SPNIDEN).
     /// Secure debug of core 0 is disabled by default if the secure debug disable critical flag is set, or if at least one debug key has been enrolled and the most secure of these enrolled key values not yet provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14501,6 +15650,7 @@ impl DebugenVal {
     }
 
     /// Set **PROC0** `[0:0]`
+    ///
     /// Enable core 0's Mem-AP if it is currently disabled.
     /// The Mem-AP is disabled by default if either of the debug disable critical flags is set, or if at least one debug key has been enrolled and the least secure of these enrolled key values has not been provided over SWD.
     /// Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
@@ -14554,14 +15704,23 @@ impl Debugen {
 /// ## Fields
 ///
 /// - **MISC** `[8]` (RW)
+///
 ///   Write 1 to lock the MISC bit of DEBUGEN. Can't be cleared once set.
+///
 /// - **PROC1_SECURE** `[3]` (RW)
+///
 ///   Write 1 to lock the PROC1_SECURE bit of DEBUGEN. Can't be cleared once set.
+///
 /// - **PROC1** `[2]` (RW)
+///
 ///   Write 1 to lock the PROC1 bit of DEBUGEN. Can't be cleared once set.
+///
 /// - **PROC0_SECURE** `[1]` (RW)
+///
 ///   Write 1 to lock the PROC0_SECURE bit of DEBUGEN. Can't be cleared once set.
+///
 /// - **PROC0** `[0]` (RW)
+///
 ///   Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
 #[repr(transparent)]
 pub struct DebugenLock {
@@ -14580,35 +15739,45 @@ impl DebugenLock {
     // ======== Field Constants ========
 
     /// **MISC**
+    ///
     /// Write 1 to lock the MISC bit of DEBUGEN. Can't be cleared once set.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MISC_OFFSET: u32 = 8;
     pub const MISC_MASK: u32 = 0x00000100;
     pub const MISC: u32 = 1 << 8;
 
     /// **PROC1_SECURE**
+    ///
     /// Write 1 to lock the PROC1_SECURE bit of DEBUGEN. Can't be cleared once set.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PROC1_SECURE_OFFSET: u32 = 3;
     pub const PROC1_SECURE_MASK: u32 = 0x00000008;
     pub const PROC1_SECURE: u32 = 1 << 3;
 
     /// **PROC1**
+    ///
     /// Write 1 to lock the PROC1 bit of DEBUGEN. Can't be cleared once set.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PROC1_OFFSET: u32 = 2;
     pub const PROC1_MASK: u32 = 0x00000004;
     pub const PROC1: u32 = 1 << 2;
 
     /// **PROC0_SECURE**
+    ///
     /// Write 1 to lock the PROC0_SECURE bit of DEBUGEN. Can't be cleared once set.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PROC0_SECURE_OFFSET: u32 = 1;
     pub const PROC0_SECURE_MASK: u32 = 0x00000002;
     pub const PROC0_SECURE: u32 = 1 << 1;
 
     /// **PROC0**
+    ///
     /// Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PROC0_OFFSET: u32 = 0;
     pub const PROC0_MASK: u32 = 0x00000001;
@@ -14617,6 +15786,7 @@ impl DebugenLock {
     // ======== Field Accessors ========
 
     /// **MISC** `[8]` (RW)
+    ///
     /// Write 1 to lock the MISC bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub fn misc(&self) -> bool {
@@ -14636,6 +15806,7 @@ impl DebugenLock {
     }
 
     /// **PROC1_SECURE** `[3]` (RW)
+    ///
     /// Write 1 to lock the PROC1_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub fn proc1_secure(&self) -> bool {
@@ -14655,6 +15826,7 @@ impl DebugenLock {
     }
 
     /// **PROC1** `[2]` (RW)
+    ///
     /// Write 1 to lock the PROC1 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub fn proc1(&self) -> bool {
@@ -14674,6 +15846,7 @@ impl DebugenLock {
     }
 
     /// **PROC0_SECURE** `[1]` (RW)
+    ///
     /// Write 1 to lock the PROC0_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub fn proc0_secure(&self) -> bool {
@@ -14693,6 +15866,7 @@ impl DebugenLock {
     }
 
     /// **PROC0** `[0]` (RW)
+    ///
     /// Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub fn proc0(&self) -> bool {
@@ -14742,6 +15916,7 @@ impl DebugenLockVal {
     }
 
     /// Read **MISC** `[8:8]`
+    ///
     /// Write 1 to lock the MISC bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn misc(&self) -> bool {
@@ -14749,6 +15924,7 @@ impl DebugenLockVal {
     }
 
     /// Read **PROC1_SECURE** `[3:3]`
+    ///
     /// Write 1 to lock the PROC1_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn proc1_secure(&self) -> bool {
@@ -14756,6 +15932,7 @@ impl DebugenLockVal {
     }
 
     /// Read **PROC1** `[2:2]`
+    ///
     /// Write 1 to lock the PROC1 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn proc1(&self) -> bool {
@@ -14763,6 +15940,7 @@ impl DebugenLockVal {
     }
 
     /// Read **PROC0_SECURE** `[1:1]`
+    ///
     /// Write 1 to lock the PROC0_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn proc0_secure(&self) -> bool {
@@ -14770,6 +15948,7 @@ impl DebugenLockVal {
     }
 
     /// Read **PROC0** `[0:0]`
+    ///
     /// Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn proc0(&self) -> bool {
@@ -14777,6 +15956,7 @@ impl DebugenLockVal {
     }
 
     /// Set **MISC** `[8:8]`
+    ///
     /// Write 1 to lock the MISC bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn with_misc(self, value: bool) -> Self {
@@ -14790,6 +15970,7 @@ impl DebugenLockVal {
     }
 
     /// Set **PROC1_SECURE** `[3:3]`
+    ///
     /// Write 1 to lock the PROC1_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn with_proc1_secure(self, value: bool) -> Self {
@@ -14803,6 +15984,7 @@ impl DebugenLockVal {
     }
 
     /// Set **PROC1** `[2:2]`
+    ///
     /// Write 1 to lock the PROC1 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn with_proc1(self, value: bool) -> Self {
@@ -14816,6 +15998,7 @@ impl DebugenLockVal {
     }
 
     /// Set **PROC0_SECURE** `[1:1]`
+    ///
     /// Write 1 to lock the PROC0_SECURE bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn with_proc0_secure(self, value: bool) -> Self {
@@ -14829,6 +16012,7 @@ impl DebugenLockVal {
     }
 
     /// Set **PROC0** `[0:0]`
+    ///
     /// Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
     #[inline(always)]
     pub const fn with_proc0(self, value: bool) -> Self {
@@ -14883,8 +16067,11 @@ impl DebugenLock {
 /// ## Fields
 ///
 /// - **CORE1** `[1]` (RW)
+///
 ///   Select architecture for core 1.
+///
 /// - **CORE0** `[0]` (RW)
+///
 ///   Select architecture for core 0.
 #[repr(transparent)]
 pub struct Archsel {
@@ -14903,7 +16090,9 @@ impl Archsel {
     // ======== Field Constants ========
 
     /// **CORE1**
+    ///
     /// Select architecture for core 1.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CORE1_OFFSET: u32 = 1;
     pub const CORE1_MASK: u32 = 0x00000002;
@@ -14918,7 +16107,9 @@ impl Archsel {
     pub const CORE1_RISCV_VAL: u32 = 1;
 
     /// **CORE0**
+    ///
     /// Select architecture for core 0.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CORE0_OFFSET: u32 = 0;
     pub const CORE0_MASK: u32 = 0x00000001;
@@ -14935,6 +16126,7 @@ impl Archsel {
     // ======== Field Accessors ========
 
     /// **CORE1** `[1]` (RW)
+    ///
     /// Select architecture for core 1.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -14954,6 +16146,7 @@ impl Archsel {
     }
 
     /// **CORE0** `[0]` (RW)
+    ///
     /// Select architecture for core 0.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -15003,6 +16196,7 @@ impl ArchselVal {
     }
 
     /// Read **CORE1** `[1:1]`
+    ///
     /// Select architecture for core 1.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -15010,6 +16204,7 @@ impl ArchselVal {
     }
 
     /// Read **CORE0** `[0:0]`
+    ///
     /// Select architecture for core 0.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -15017,6 +16212,7 @@ impl ArchselVal {
     }
 
     /// Set **CORE1** `[1:1]`
+    ///
     /// Select architecture for core 1.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -15030,6 +16226,7 @@ impl ArchselVal {
     }
 
     /// Set **CORE0** `[0:0]`
+    ///
     /// Select architecture for core 0.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -15081,8 +16278,11 @@ impl Archsel {
 /// ## Fields
 ///
 /// - **CORE1** `[1]` (RO)
+///
 ///   Current architecture for core 0. Updated on processor warm reset.
+///
 /// - **CORE0** `[0]` (RO)
+///
 ///   Current architecture for core 0. Updated on processor warm reset.
 #[repr(transparent)]
 pub struct ArchselStatus {
@@ -15101,7 +16301,9 @@ impl ArchselStatus {
     // ======== Field Constants ========
 
     /// **CORE1**
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CORE1_OFFSET: u32 = 1;
     pub const CORE1_MASK: u32 = 0x00000002;
@@ -15116,7 +16318,9 @@ impl ArchselStatus {
     pub const CORE1_RISCV_VAL: u32 = 1;
 
     /// **CORE0**
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CORE0_OFFSET: u32 = 0;
     pub const CORE0_MASK: u32 = 0x00000001;
@@ -15133,6 +16337,7 @@ impl ArchselStatus {
     // ======== Field Accessors ========
 
     /// **CORE1** `[1]` (RO)
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -15140,6 +16345,7 @@ impl ArchselStatus {
     }
 
     /// **CORE0** `[0]` (RO)
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -15177,6 +16383,7 @@ impl ArchselStatusVal {
     }
 
     /// Read **CORE1** `[1:1]`
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -15184,6 +16391,7 @@ impl ArchselStatusVal {
     }
 
     /// Read **CORE0** `[0:0]`
+    ///
     /// Current architecture for core 0. Updated on processor warm reset.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -15232,10 +16440,13 @@ impl ArchselStatus {
 /// ## Fields
 ///
 /// - **NEXT** `[1]` (RW)
+///
 ///   This flag always ORs writes into its current contents. It can be set but not cleared by software.
 ///   The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the boot scratch registers will be ignored following the next core power down.
 ///   This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it via watchdog reset.
+///
 /// - **NOW** `[0]` (RW)
+///
 ///   When the core is powered down, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
 ///   The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
 #[repr(transparent)]
@@ -15255,17 +16466,21 @@ impl Bootdis {
     // ======== Field Constants ========
 
     /// **NEXT**
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the boot scratch registers will be ignored following the next core power down.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it via watchdog reset.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NEXT_OFFSET: u32 = 1;
     pub const NEXT_MASK: u32 = 0x00000002;
     pub const NEXT: u32 = 1 << 1;
 
     /// **NOW**
+    ///
     /// When the core is powered down, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NOW_OFFSET: u32 = 0;
     pub const NOW_MASK: u32 = 0x00000001;
@@ -15274,6 +16489,7 @@ impl Bootdis {
     // ======== Field Accessors ========
 
     /// **NEXT** `[1]` (RW)
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the boot scratch registers will be ignored following the next core power down.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it via watchdog reset.
@@ -15295,6 +16511,7 @@ impl Bootdis {
     }
 
     /// **NOW** `[0]` (RW)
+    ///
     /// When the core is powered down, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -15345,6 +16562,7 @@ impl BootdisVal {
     }
 
     /// Read **NEXT** `[1:1]`
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the boot scratch registers will be ignored following the next core power down.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it via watchdog reset.
@@ -15354,6 +16572,7 @@ impl BootdisVal {
     }
 
     /// Read **NOW** `[0:0]`
+    ///
     /// When the core is powered down, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -15362,6 +16581,7 @@ impl BootdisVal {
     }
 
     /// Set **NEXT** `[1:1]`
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the boot scratch registers will be ignored following the next core power down.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it via watchdog reset.
@@ -15377,6 +16597,7 @@ impl BootdisVal {
     }
 
     /// Set **NOW** `[0:0]`
+    ///
     /// When the core is powered down, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -15429,9 +16650,13 @@ impl Bootdis {
 /// ## Fields
 ///
 /// - **APB_RD_NSEC_FAIL** `[4]` (RW)
+///
 /// - **APB_RD_SEC_FAIL** `[3]` (RW)
+///
 /// - **APB_DCTRL_FAIL** `[2]` (RW)
+///
 /// - **SBPI_WR_FAIL** `[1]` (RW)
+///
 /// - **SBPI_FLAG_N** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
@@ -15706,9 +16931,13 @@ impl Intr {
 /// ## Fields
 ///
 /// - **APB_RD_NSEC_FAIL** `[4]` (RW)
+///
 /// - **APB_RD_SEC_FAIL** `[3]` (RW)
+///
 /// - **APB_DCTRL_FAIL** `[2]` (RW)
+///
 /// - **SBPI_WR_FAIL** `[1]` (RW)
+///
 /// - **SBPI_FLAG_N** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
@@ -16007,9 +17236,13 @@ impl Inte {
 /// ## Fields
 ///
 /// - **APB_RD_NSEC_FAIL** `[4]` (RW)
+///
 /// - **APB_RD_SEC_FAIL** `[3]` (RW)
+///
 /// - **APB_DCTRL_FAIL** `[2]` (RW)
+///
 /// - **SBPI_WR_FAIL** `[1]` (RW)
+///
 /// - **SBPI_FLAG_N** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
@@ -16308,9 +17541,13 @@ impl Intf {
 /// ## Fields
 ///
 /// - **APB_RD_NSEC_FAIL** `[4]` (RO)
+///
 /// - **APB_RD_SEC_FAIL** `[3]` (RO)
+///
 /// - **APB_DCTRL_FAIL** `[2]` (RO)
+///
 /// - **SBPI_WR_FAIL** `[1]` (RO)
+///
 /// - **SBPI_FLAG_N** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {

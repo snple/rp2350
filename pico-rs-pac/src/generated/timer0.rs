@@ -41,7 +41,6 @@ impl Timehw {
 
     // ======== Field Accessors ========
 
-    /// **TIMEHW** `[31:0]` (WO)
     /// Write **TIMEHW** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_timehw(&self, value: u32) {
@@ -148,7 +147,6 @@ impl Timelw {
 
     // ======== Field Accessors ========
 
-    /// **TIMELW** `[31:0]` (WO)
     /// Write **TIMELW** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_timelw(&self, value: u32) {
@@ -1238,8 +1236,11 @@ impl Timerawl {
 /// ## Fields
 ///
 /// - **DBG1** `[2]` (RW)
+///
 ///   Pause when processor 1 is in debug mode
+///
 /// - **DBG0** `[1]` (RW)
+///
 ///   Pause when processor 0 is in debug mode
 #[repr(transparent)]
 pub struct Dbgpause {
@@ -1258,14 +1259,18 @@ impl Dbgpause {
     // ======== Field Constants ========
 
     /// **DBG1**
+    ///
     /// Pause when processor 1 is in debug mode
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DBG1_OFFSET: u32 = 2;
     pub const DBG1_MASK: u32 = 0x00000004;
     pub const DBG1: u32 = 1 << 2;
 
     /// **DBG0**
+    ///
     /// Pause when processor 0 is in debug mode
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const DBG0_OFFSET: u32 = 1;
     pub const DBG0_MASK: u32 = 0x00000002;
@@ -1274,6 +1279,7 @@ impl Dbgpause {
     // ======== Field Accessors ========
 
     /// **DBG1** `[2]` (RW)
+    ///
     /// Pause when processor 1 is in debug mode
     #[inline(always)]
     pub fn dbg1(&self) -> bool {
@@ -1293,6 +1299,7 @@ impl Dbgpause {
     }
 
     /// **DBG0** `[1]` (RW)
+    ///
     /// Pause when processor 0 is in debug mode
     #[inline(always)]
     pub fn dbg0(&self) -> bool {
@@ -1342,6 +1349,7 @@ impl DbgpauseVal {
     }
 
     /// Read **DBG1** `[2:2]`
+    ///
     /// Pause when processor 1 is in debug mode
     #[inline(always)]
     pub const fn dbg1(&self) -> bool {
@@ -1349,6 +1357,7 @@ impl DbgpauseVal {
     }
 
     /// Read **DBG0** `[1:1]`
+    ///
     /// Pause when processor 0 is in debug mode
     #[inline(always)]
     pub const fn dbg0(&self) -> bool {
@@ -1356,6 +1365,7 @@ impl DbgpauseVal {
     }
 
     /// Set **DBG1** `[2:2]`
+    ///
     /// Pause when processor 1 is in debug mode
     #[inline(always)]
     pub const fn with_dbg1(self, value: bool) -> Self {
@@ -1369,6 +1379,7 @@ impl DbgpauseVal {
     }
 
     /// Set **DBG0** `[1:1]`
+    ///
     /// Pause when processor 0 is in debug mode
     #[inline(always)]
     pub const fn with_dbg0(self, value: bool) -> Self {
@@ -1811,8 +1822,11 @@ impl Source {
 /// ## Fields
 ///
 /// - **ALARM_3** `[3]` (RW)
+///
 /// - **ALARM_2** `[2]` (RW)
+///
 /// - **ALARM_1** `[1]` (RW)
+///
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
@@ -2069,8 +2083,11 @@ impl Intr {
 /// ## Fields
 ///
 /// - **ALARM_3** `[3]` (RW)
+///
 /// - **ALARM_2** `[2]` (RW)
+///
 /// - **ALARM_1** `[1]` (RW)
+///
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
@@ -2327,8 +2344,11 @@ impl Inte {
 /// ## Fields
 ///
 /// - **ALARM_3** `[3]` (RW)
+///
 /// - **ALARM_2** `[2]` (RW)
+///
 /// - **ALARM_1** `[1]` (RW)
+///
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
@@ -2585,8 +2605,11 @@ impl Intf {
 /// ## Fields
 ///
 /// - **ALARM_3** `[3]` (RO)
+///
 /// - **ALARM_2** `[2]` (RO)
+///
 /// - **ALARM_1** `[1]` (RO)
+///
 /// - **ALARM_0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {

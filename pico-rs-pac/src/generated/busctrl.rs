@@ -15,12 +15,19 @@ pub const BASE: u32 = 0x40068000;
 /// ## Fields
 ///
 /// - **DMA_W** `[12]` (RW)
+///
 ///   0 - low priority, 1 - high priority
+///
 /// - **DMA_R** `[8]` (RW)
+///
 ///   0 - low priority, 1 - high priority
+///
 /// - **PROC1** `[4]` (RW)
+///
 ///   0 - low priority, 1 - high priority
+///
 /// - **PROC0** `[0]` (RW)
+///
 ///   0 - low priority, 1 - high priority
 #[repr(transparent)]
 pub struct BusPriority {
@@ -39,28 +46,36 @@ impl BusPriority {
     // ======== Field Constants ========
 
     /// **DMA_W**
+    ///
     /// 0 - low priority, 1 - high priority
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DMA_W_OFFSET: u32 = 12;
     pub const DMA_W_MASK: u32 = 0x00001000;
     pub const DMA_W: u32 = 1 << 12;
 
     /// **DMA_R**
+    ///
     /// 0 - low priority, 1 - high priority
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const DMA_R_OFFSET: u32 = 8;
     pub const DMA_R_MASK: u32 = 0x00000100;
     pub const DMA_R: u32 = 1 << 8;
 
     /// **PROC1**
+    ///
     /// 0 - low priority, 1 - high priority
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const PROC1_OFFSET: u32 = 4;
     pub const PROC1_MASK: u32 = 0x00000010;
     pub const PROC1: u32 = 1 << 4;
 
     /// **PROC0**
+    ///
     /// 0 - low priority, 1 - high priority
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PROC0_OFFSET: u32 = 0;
     pub const PROC0_MASK: u32 = 0x00000001;
@@ -69,6 +84,7 @@ impl BusPriority {
     // ======== Field Accessors ========
 
     /// **DMA_W** `[12]` (RW)
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn dma_w(&self) -> bool {
@@ -88,6 +104,7 @@ impl BusPriority {
     }
 
     /// **DMA_R** `[8]` (RW)
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn dma_r(&self) -> bool {
@@ -107,6 +124,7 @@ impl BusPriority {
     }
 
     /// **PROC1** `[4]` (RW)
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn proc1(&self) -> bool {
@@ -126,6 +144,7 @@ impl BusPriority {
     }
 
     /// **PROC0** `[0]` (RW)
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn proc0(&self) -> bool {
@@ -175,6 +194,7 @@ impl BusPriorityVal {
     }
 
     /// Read **DMA_W** `[12:12]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn dma_w(&self) -> bool {
@@ -182,6 +202,7 @@ impl BusPriorityVal {
     }
 
     /// Read **DMA_R** `[8:8]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn dma_r(&self) -> bool {
@@ -189,6 +210,7 @@ impl BusPriorityVal {
     }
 
     /// Read **PROC1** `[4:4]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn proc1(&self) -> bool {
@@ -196,6 +218,7 @@ impl BusPriorityVal {
     }
 
     /// Read **PROC0** `[0:0]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn proc0(&self) -> bool {
@@ -203,6 +226,7 @@ impl BusPriorityVal {
     }
 
     /// Set **DMA_W** `[12:12]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_dma_w(self, value: bool) -> Self {
@@ -216,6 +240,7 @@ impl BusPriorityVal {
     }
 
     /// Set **DMA_R** `[8:8]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_dma_r(self, value: bool) -> Self {
@@ -229,6 +254,7 @@ impl BusPriorityVal {
     }
 
     /// Set **PROC1** `[4:4]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_proc1(self, value: bool) -> Self {
@@ -242,6 +268,7 @@ impl BusPriorityVal {
     }
 
     /// Set **PROC0** `[0:0]`
+    ///
     /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_proc0(self, value: bool) -> Self {
@@ -293,6 +320,7 @@ impl BusPriority {
 /// ## Fields
 ///
 /// - **BUS_PRIORITY_ACK** `[0]` (RO)
+///
 ///   Goes to 1 once all arbiters have registered the new global priority levels.
 ///   Arbiters update their local priority when servicing a new nonsequential access.
 ///   In normal circumstances this will happen almost immediately.
@@ -313,9 +341,11 @@ impl BusPriorityAck {
     // ======== Field Constants ========
 
     /// **BUS_PRIORITY_ACK**
+    ///
     /// Goes to 1 once all arbiters have registered the new global priority levels.
     /// Arbiters update their local priority when servicing a new nonsequential access.
     /// In normal circumstances this will happen almost immediately.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const BUS_PRIORITY_ACK_OFFSET: u32 = 0;
     pub const BUS_PRIORITY_ACK_MASK: u32 = 0x00000001;
@@ -324,6 +354,7 @@ impl BusPriorityAck {
     // ======== Field Accessors ========
 
     /// **BUS_PRIORITY_ACK** `[0]` (RO)
+    ///
     /// Goes to 1 once all arbiters have registered the new global priority levels.
     /// Arbiters update their local priority when servicing a new nonsequential access.
     /// In normal circumstances this will happen almost immediately.
@@ -363,6 +394,7 @@ impl BusPriorityAckVal {
     }
 
     /// Read **BUS_PRIORITY_ACK** `[0:0]`
+    ///
     /// Goes to 1 once all arbiters have registered the new global priority levels.
     /// Arbiters update their local priority when servicing a new nonsequential access.
     /// In normal circumstances this will happen almost immediately.
@@ -540,6 +572,7 @@ impl PerfctrEn {
 /// ## Fields
 ///
 /// - **PERFCTR0** `[23:0]` (RW)
+///
 ///   Busfabric saturating performance counter 0
 ///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
 ///   Write any value to clear. Select an event to count using PERFSEL0
@@ -560,9 +593,11 @@ impl Perfctr0 {
     // ======== Field Constants ========
 
     /// **PERFCTR0**
+    ///
     /// Busfabric saturating performance counter 0
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL0
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR0_OFFSET: u32 = 0;
     pub const PERFCTR0_MASK: u32 = 0x00ffffff;
@@ -570,6 +605,7 @@ impl Perfctr0 {
     // ======== Field Accessors ========
 
     /// **PERFCTR0** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 0
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL0
@@ -579,6 +615,7 @@ impl Perfctr0 {
     }
 
     /// Write **PERFCTR0** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 0
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL0
@@ -618,6 +655,7 @@ impl Perfctr0Val {
     }
 
     /// Read **PERFCTR0** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 0
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL0
@@ -627,6 +665,7 @@ impl Perfctr0Val {
     }
 
     /// Set **PERFCTR0** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 0
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL0
@@ -676,6 +715,7 @@ impl Perfctr0 {
 /// ## Fields
 ///
 /// - **PERFSEL0** `[6:0]` (RW)
+///
 ///   Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel0 {
@@ -694,7 +734,9 @@ impl Perfsel0 {
     // ======== Field Constants ========
 
     /// **PERFSEL0**
+    ///
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL0_OFFSET: u32 = 0;
     pub const PERFSEL0_MASK: u32 = 0x0000007f;
@@ -838,6 +880,7 @@ impl Perfsel0 {
     // ======== Field Accessors ========
 
     /// **PERFSEL0** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel0(&self) -> u32 {
@@ -845,6 +888,7 @@ impl Perfsel0 {
     }
 
     /// Write **PERFSEL0** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel0(&self, value: u32) {
@@ -882,6 +926,7 @@ impl Perfsel0Val {
     }
 
     /// Read **PERFSEL0** `[6:0]`
+    ///
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel0(&self) -> u32 {
@@ -889,6 +934,7 @@ impl Perfsel0Val {
     }
 
     /// Set **PERFSEL0** `[6:0]`
+    ///
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel0(self, value: u32) -> Self {
@@ -936,6 +982,7 @@ impl Perfsel0 {
 /// ## Fields
 ///
 /// - **PERFCTR1** `[23:0]` (RW)
+///
 ///   Busfabric saturating performance counter 1
 ///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
 ///   Write any value to clear. Select an event to count using PERFSEL1
@@ -956,9 +1003,11 @@ impl Perfctr1 {
     // ======== Field Constants ========
 
     /// **PERFCTR1**
+    ///
     /// Busfabric saturating performance counter 1
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL1
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR1_OFFSET: u32 = 0;
     pub const PERFCTR1_MASK: u32 = 0x00ffffff;
@@ -966,6 +1015,7 @@ impl Perfctr1 {
     // ======== Field Accessors ========
 
     /// **PERFCTR1** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 1
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL1
@@ -975,6 +1025,7 @@ impl Perfctr1 {
     }
 
     /// Write **PERFCTR1** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 1
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL1
@@ -1014,6 +1065,7 @@ impl Perfctr1Val {
     }
 
     /// Read **PERFCTR1** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 1
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL1
@@ -1023,6 +1075,7 @@ impl Perfctr1Val {
     }
 
     /// Set **PERFCTR1** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 1
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL1
@@ -1072,6 +1125,7 @@ impl Perfctr1 {
 /// ## Fields
 ///
 /// - **PERFSEL1** `[6:0]` (RW)
+///
 ///   Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel1 {
@@ -1090,7 +1144,9 @@ impl Perfsel1 {
     // ======== Field Constants ========
 
     /// **PERFSEL1**
+    ///
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL1_OFFSET: u32 = 0;
     pub const PERFSEL1_MASK: u32 = 0x0000007f;
@@ -1234,6 +1290,7 @@ impl Perfsel1 {
     // ======== Field Accessors ========
 
     /// **PERFSEL1** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel1(&self) -> u32 {
@@ -1241,6 +1298,7 @@ impl Perfsel1 {
     }
 
     /// Write **PERFSEL1** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel1(&self, value: u32) {
@@ -1278,6 +1336,7 @@ impl Perfsel1Val {
     }
 
     /// Read **PERFSEL1** `[6:0]`
+    ///
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel1(&self) -> u32 {
@@ -1285,6 +1344,7 @@ impl Perfsel1Val {
     }
 
     /// Set **PERFSEL1** `[6:0]`
+    ///
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel1(self, value: u32) -> Self {
@@ -1332,6 +1392,7 @@ impl Perfsel1 {
 /// ## Fields
 ///
 /// - **PERFCTR2** `[23:0]` (RW)
+///
 ///   Busfabric saturating performance counter 2
 ///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
 ///   Write any value to clear. Select an event to count using PERFSEL2
@@ -1352,9 +1413,11 @@ impl Perfctr2 {
     // ======== Field Constants ========
 
     /// **PERFCTR2**
+    ///
     /// Busfabric saturating performance counter 2
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL2
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR2_OFFSET: u32 = 0;
     pub const PERFCTR2_MASK: u32 = 0x00ffffff;
@@ -1362,6 +1425,7 @@ impl Perfctr2 {
     // ======== Field Accessors ========
 
     /// **PERFCTR2** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 2
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL2
@@ -1371,6 +1435,7 @@ impl Perfctr2 {
     }
 
     /// Write **PERFCTR2** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 2
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL2
@@ -1410,6 +1475,7 @@ impl Perfctr2Val {
     }
 
     /// Read **PERFCTR2** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 2
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL2
@@ -1419,6 +1485,7 @@ impl Perfctr2Val {
     }
 
     /// Set **PERFCTR2** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 2
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL2
@@ -1468,6 +1535,7 @@ impl Perfctr2 {
 /// ## Fields
 ///
 /// - **PERFSEL2** `[6:0]` (RW)
+///
 ///   Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel2 {
@@ -1486,7 +1554,9 @@ impl Perfsel2 {
     // ======== Field Constants ========
 
     /// **PERFSEL2**
+    ///
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL2_OFFSET: u32 = 0;
     pub const PERFSEL2_MASK: u32 = 0x0000007f;
@@ -1630,6 +1700,7 @@ impl Perfsel2 {
     // ======== Field Accessors ========
 
     /// **PERFSEL2** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel2(&self) -> u32 {
@@ -1637,6 +1708,7 @@ impl Perfsel2 {
     }
 
     /// Write **PERFSEL2** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel2(&self, value: u32) {
@@ -1674,6 +1746,7 @@ impl Perfsel2Val {
     }
 
     /// Read **PERFSEL2** `[6:0]`
+    ///
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel2(&self) -> u32 {
@@ -1681,6 +1754,7 @@ impl Perfsel2Val {
     }
 
     /// Set **PERFSEL2** `[6:0]`
+    ///
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel2(self, value: u32) -> Self {
@@ -1728,6 +1802,7 @@ impl Perfsel2 {
 /// ## Fields
 ///
 /// - **PERFCTR3** `[23:0]` (RW)
+///
 ///   Busfabric saturating performance counter 3
 ///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
 ///   Write any value to clear. Select an event to count using PERFSEL3
@@ -1748,9 +1823,11 @@ impl Perfctr3 {
     // ======== Field Constants ========
 
     /// **PERFCTR3**
+    ///
     /// Busfabric saturating performance counter 3
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL3
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR3_OFFSET: u32 = 0;
     pub const PERFCTR3_MASK: u32 = 0x00ffffff;
@@ -1758,6 +1835,7 @@ impl Perfctr3 {
     // ======== Field Accessors ========
 
     /// **PERFCTR3** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 3
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL3
@@ -1767,6 +1845,7 @@ impl Perfctr3 {
     }
 
     /// Write **PERFCTR3** `[23:0]` (RW)
+    ///
     /// Busfabric saturating performance counter 3
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL3
@@ -1806,6 +1885,7 @@ impl Perfctr3Val {
     }
 
     /// Read **PERFCTR3** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 3
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL3
@@ -1815,6 +1895,7 @@ impl Perfctr3Val {
     }
 
     /// Set **PERFCTR3** `[23:0]`
+    ///
     /// Busfabric saturating performance counter 3
     /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
     /// Write any value to clear. Select an event to count using PERFSEL3
@@ -1864,6 +1945,7 @@ impl Perfctr3 {
 /// ## Fields
 ///
 /// - **PERFSEL3** `[6:0]` (RW)
+///
 ///   Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel3 {
@@ -1882,7 +1964,9 @@ impl Perfsel3 {
     // ======== Field Constants ========
 
     /// **PERFSEL3**
+    ///
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL3_OFFSET: u32 = 0;
     pub const PERFSEL3_MASK: u32 = 0x0000007f;
@@ -2026,6 +2110,7 @@ impl Perfsel3 {
     // ======== Field Accessors ========
 
     /// **PERFSEL3** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel3(&self) -> u32 {
@@ -2033,6 +2118,7 @@ impl Perfsel3 {
     }
 
     /// Write **PERFSEL3** `[6:0]` (RW)
+    ///
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel3(&self, value: u32) {
@@ -2070,6 +2156,7 @@ impl Perfsel3Val {
     }
 
     /// Read **PERFSEL3** `[6:0]`
+    ///
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel3(&self) -> u32 {
@@ -2077,6 +2164,7 @@ impl Perfsel3Val {
     }
 
     /// Set **PERFSEL3** `[6:0]`
+    ///
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel3(self, value: u32) -> Self {

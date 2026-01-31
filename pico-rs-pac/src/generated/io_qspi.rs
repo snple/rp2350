@@ -12,12 +12,19 @@ pub const BASE: u32 = 0x40030000;
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDpStatus {
@@ -36,28 +43,36 @@ impl UsbphyDpStatus {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -66,6 +81,7 @@ impl UsbphyDpStatus {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -73,6 +89,7 @@ impl UsbphyDpStatus {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -80,6 +97,7 @@ impl UsbphyDpStatus {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -87,6 +105,7 @@ impl UsbphyDpStatus {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -124,6 +143,7 @@ impl UsbphyDpStatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -131,6 +151,7 @@ impl UsbphyDpStatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -138,6 +159,7 @@ impl UsbphyDpStatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -145,6 +167,7 @@ impl UsbphyDpStatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -188,10 +211,15 @@ impl UsbphyDpStatus {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -295,8 +323,10 @@ impl UsbphyDpCtrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -360,6 +390,7 @@ impl UsbphyDpCtrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -368,6 +399,7 @@ impl UsbphyDpCtrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -430,6 +462,7 @@ impl UsbphyDpCtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -470,6 +503,7 @@ impl UsbphyDpCtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -516,12 +550,19 @@ impl UsbphyDpCtrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDmStatus {
@@ -540,28 +581,36 @@ impl UsbphyDmStatus {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -570,6 +619,7 @@ impl UsbphyDmStatus {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -577,6 +627,7 @@ impl UsbphyDmStatus {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -584,6 +635,7 @@ impl UsbphyDmStatus {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -591,6 +643,7 @@ impl UsbphyDmStatus {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -628,6 +681,7 @@ impl UsbphyDmStatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -635,6 +689,7 @@ impl UsbphyDmStatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -642,6 +697,7 @@ impl UsbphyDmStatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -649,6 +705,7 @@ impl UsbphyDmStatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -692,10 +749,15 @@ impl UsbphyDmStatus {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -799,8 +861,10 @@ impl UsbphyDmCtrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -864,6 +928,7 @@ impl UsbphyDmCtrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -872,6 +937,7 @@ impl UsbphyDmCtrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -934,6 +1000,7 @@ impl UsbphyDmCtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -974,6 +1041,7 @@ impl UsbphyDmCtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1020,12 +1088,19 @@ impl UsbphyDmCtrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSclkStatus {
@@ -1044,28 +1119,36 @@ impl GpioQspiSclkStatus {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -1074,6 +1157,7 @@ impl GpioQspiSclkStatus {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -1081,6 +1165,7 @@ impl GpioQspiSclkStatus {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -1088,6 +1173,7 @@ impl GpioQspiSclkStatus {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -1095,6 +1181,7 @@ impl GpioQspiSclkStatus {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -1132,6 +1219,7 @@ impl GpioQspiSclkStatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -1139,6 +1227,7 @@ impl GpioQspiSclkStatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -1146,6 +1235,7 @@ impl GpioQspiSclkStatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -1153,6 +1243,7 @@ impl GpioQspiSclkStatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -1196,10 +1287,15 @@ impl GpioQspiSclkStatus {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -1303,8 +1399,10 @@ impl GpioQspiSclkCtrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -1372,6 +1470,7 @@ impl GpioQspiSclkCtrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1380,6 +1479,7 @@ impl GpioQspiSclkCtrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1442,6 +1542,7 @@ impl GpioQspiSclkCtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1482,6 +1583,7 @@ impl GpioQspiSclkCtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1528,12 +1630,19 @@ impl GpioQspiSclkCtrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSsStatus {
@@ -1552,28 +1661,36 @@ impl GpioQspiSsStatus {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -1582,6 +1699,7 @@ impl GpioQspiSsStatus {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -1589,6 +1707,7 @@ impl GpioQspiSsStatus {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -1596,6 +1715,7 @@ impl GpioQspiSsStatus {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -1603,6 +1723,7 @@ impl GpioQspiSsStatus {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -1640,6 +1761,7 @@ impl GpioQspiSsStatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -1647,6 +1769,7 @@ impl GpioQspiSsStatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -1654,6 +1777,7 @@ impl GpioQspiSsStatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -1661,6 +1785,7 @@ impl GpioQspiSsStatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -1704,10 +1829,15 @@ impl GpioQspiSsStatus {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -1811,8 +1941,10 @@ impl GpioQspiSsCtrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -1880,6 +2012,7 @@ impl GpioQspiSsCtrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1888,6 +2021,7 @@ impl GpioQspiSsCtrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1950,6 +2084,7 @@ impl GpioQspiSsCtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1990,6 +2125,7 @@ impl GpioQspiSsCtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2036,12 +2172,19 @@ impl GpioQspiSsCtrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd0Status {
@@ -2060,28 +2203,36 @@ impl GpioQspiSd0Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -2090,6 +2241,7 @@ impl GpioQspiSd0Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -2097,6 +2249,7 @@ impl GpioQspiSd0Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -2104,6 +2257,7 @@ impl GpioQspiSd0Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -2111,6 +2265,7 @@ impl GpioQspiSd0Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -2148,6 +2303,7 @@ impl GpioQspiSd0StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -2155,6 +2311,7 @@ impl GpioQspiSd0StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -2162,6 +2319,7 @@ impl GpioQspiSd0StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -2169,6 +2327,7 @@ impl GpioQspiSd0StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -2212,10 +2371,15 @@ impl GpioQspiSd0Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -2319,8 +2483,10 @@ impl GpioQspiSd0Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -2386,6 +2552,7 @@ impl GpioQspiSd0Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2394,6 +2561,7 @@ impl GpioQspiSd0Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2456,6 +2624,7 @@ impl GpioQspiSd0CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2496,6 +2665,7 @@ impl GpioQspiSd0CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2542,12 +2712,19 @@ impl GpioQspiSd0Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd1Status {
@@ -2566,28 +2743,36 @@ impl GpioQspiSd1Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -2596,6 +2781,7 @@ impl GpioQspiSd1Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -2603,6 +2789,7 @@ impl GpioQspiSd1Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -2610,6 +2797,7 @@ impl GpioQspiSd1Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -2617,6 +2805,7 @@ impl GpioQspiSd1Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -2654,6 +2843,7 @@ impl GpioQspiSd1StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -2661,6 +2851,7 @@ impl GpioQspiSd1StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -2668,6 +2859,7 @@ impl GpioQspiSd1StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -2675,6 +2867,7 @@ impl GpioQspiSd1StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -2718,10 +2911,15 @@ impl GpioQspiSd1Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -2825,8 +3023,10 @@ impl GpioQspiSd1Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -2892,6 +3092,7 @@ impl GpioQspiSd1Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2900,6 +3101,7 @@ impl GpioQspiSd1Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2962,6 +3164,7 @@ impl GpioQspiSd1CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3002,6 +3205,7 @@ impl GpioQspiSd1CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3048,12 +3252,19 @@ impl GpioQspiSd1Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd2Status {
@@ -3072,28 +3283,36 @@ impl GpioQspiSd2Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -3102,6 +3321,7 @@ impl GpioQspiSd2Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -3109,6 +3329,7 @@ impl GpioQspiSd2Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -3116,6 +3337,7 @@ impl GpioQspiSd2Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -3123,6 +3345,7 @@ impl GpioQspiSd2Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -3160,6 +3383,7 @@ impl GpioQspiSd2StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -3167,6 +3391,7 @@ impl GpioQspiSd2StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -3174,6 +3399,7 @@ impl GpioQspiSd2StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -3181,6 +3407,7 @@ impl GpioQspiSd2StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -3224,10 +3451,15 @@ impl GpioQspiSd2Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -3331,8 +3563,10 @@ impl GpioQspiSd2Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -3400,6 +3634,7 @@ impl GpioQspiSd2Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3408,6 +3643,7 @@ impl GpioQspiSd2Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3470,6 +3706,7 @@ impl GpioQspiSd2CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3510,6 +3747,7 @@ impl GpioQspiSd2CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3556,12 +3794,19 @@ impl GpioQspiSd2Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd3Status {
@@ -3580,28 +3825,36 @@ impl GpioQspiSd3Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -3610,6 +3863,7 @@ impl GpioQspiSd3Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -3617,6 +3871,7 @@ impl GpioQspiSd3Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -3624,6 +3879,7 @@ impl GpioQspiSd3Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -3631,6 +3887,7 @@ impl GpioQspiSd3Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -3668,6 +3925,7 @@ impl GpioQspiSd3StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -3675,6 +3933,7 @@ impl GpioQspiSd3StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -3682,6 +3941,7 @@ impl GpioQspiSd3StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -3689,6 +3949,7 @@ impl GpioQspiSd3StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -3732,10 +3993,15 @@ impl GpioQspiSd3Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -3839,8 +4105,10 @@ impl GpioQspiSd3Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -3908,6 +4176,7 @@ impl GpioQspiSd3Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3916,6 +4185,7 @@ impl GpioQspiSd3Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3978,6 +4248,7 @@ impl GpioQspiSd3CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4018,6 +4289,7 @@ impl GpioQspiSd3CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4064,12 +4336,19 @@ impl GpioQspiSd3Ctrl {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure {
@@ -4300,12 +4579,19 @@ impl IrqsummaryProc0Secure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure {
@@ -4536,12 +4822,19 @@ impl IrqsummaryProc0Nonsecure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure {
@@ -4772,12 +5065,19 @@ impl IrqsummaryProc1Secure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure {
@@ -5008,12 +5308,19 @@ impl IrqsummaryProc1Nonsecure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure {
@@ -5244,12 +5551,19 @@ impl IrqsummaryDormantWakeSecure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3** `[7]` (RO)
+///
 /// - **GPIO_QSPI_SD2** `[6]` (RO)
+///
 /// - **GPIO_QSPI_SD1** `[5]` (RO)
+///
 /// - **GPIO_QSPI_SD0** `[4]` (RO)
+///
 /// - **GPIO_QSPI_SS** `[3]` (RO)
+///
 /// - **GPIO_QSPI_SCLK** `[2]` (RO)
+///
 /// - **USBPHY_DM** `[1]` (RO)
+///
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure {
@@ -5482,36 +5796,67 @@ impl IrqsummaryDormantWakeNonsecure {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RO)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RO)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
@@ -6560,36 +6905,67 @@ impl Intr {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte {
@@ -8022,36 +8398,67 @@ impl Proc0Inte {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf {
@@ -9484,36 +9891,67 @@ impl Proc0Intf {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RO)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RO)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RO)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RO)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints {
@@ -10178,36 +10616,67 @@ impl Proc0Ints {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte {
@@ -11640,36 +12109,67 @@ impl Proc1Inte {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf {
@@ -13102,36 +13602,67 @@ impl Proc1Intf {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RO)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RO)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RO)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RO)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints {
@@ -13796,36 +14327,67 @@ impl Proc1Ints {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte {
@@ -15258,36 +15820,67 @@ impl DormantWakeInte {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf {
@@ -16720,36 +17313,67 @@ impl DormantWakeIntf {
 /// ## Fields
 ///
 /// - **GPIO_QSPI_SD3_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RO)
+///
 /// - **USBPHY_DM_EDGE_HIGH** `[7]` (RO)
+///
 /// - **USBPHY_DM_EDGE_LOW** `[6]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **USBPHY_DM_LEVEL_LOW** `[4]` (RO)
+///
 /// - **USBPHY_DP_EDGE_HIGH** `[3]` (RO)
+///
 /// - **USBPHY_DP_EDGE_LOW** `[2]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts {

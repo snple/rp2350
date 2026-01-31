@@ -149,20 +149,35 @@ impl VoltageSelect {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSclk {
@@ -181,28 +196,36 @@ impl GpioQspiSclk {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -216,28 +239,36 @@ impl GpioQspiSclk {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -246,6 +277,7 @@ impl GpioQspiSclk {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -265,6 +297,7 @@ impl GpioQspiSclk {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -284,6 +317,7 @@ impl GpioQspiSclk {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -303,6 +337,7 @@ impl GpioQspiSclk {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -310,6 +345,7 @@ impl GpioQspiSclk {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -317,6 +353,7 @@ impl GpioQspiSclk {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -336,6 +373,7 @@ impl GpioQspiSclk {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -355,6 +393,7 @@ impl GpioQspiSclk {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -374,6 +413,7 @@ impl GpioQspiSclk {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -423,6 +463,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -430,6 +471,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -437,6 +479,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -444,6 +487,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -451,6 +495,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -458,6 +503,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -465,6 +511,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -472,6 +519,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -479,6 +527,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -492,6 +541,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -505,6 +555,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -518,6 +569,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -527,6 +579,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -540,6 +593,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -553,6 +607,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -566,6 +621,7 @@ impl GpioQspiSclkVal {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
@@ -615,20 +671,35 @@ impl GpioQspiSclk {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd0 {
@@ -647,28 +718,36 @@ impl GpioQspiSd0 {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -682,28 +761,36 @@ impl GpioQspiSd0 {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -712,6 +799,7 @@ impl GpioQspiSd0 {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -731,6 +819,7 @@ impl GpioQspiSd0 {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -750,6 +839,7 @@ impl GpioQspiSd0 {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -769,6 +859,7 @@ impl GpioQspiSd0 {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -776,6 +867,7 @@ impl GpioQspiSd0 {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -783,6 +875,7 @@ impl GpioQspiSd0 {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -802,6 +895,7 @@ impl GpioQspiSd0 {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -821,6 +915,7 @@ impl GpioQspiSd0 {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -840,6 +935,7 @@ impl GpioQspiSd0 {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -889,6 +985,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -896,6 +993,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -903,6 +1001,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -910,6 +1009,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -917,6 +1017,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -924,6 +1025,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -931,6 +1033,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -938,6 +1041,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -945,6 +1049,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -958,6 +1063,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -971,6 +1077,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -984,6 +1091,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -993,6 +1101,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -1006,6 +1115,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -1019,6 +1129,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -1032,6 +1143,7 @@ impl GpioQspiSd0Val {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
@@ -1081,20 +1193,35 @@ impl GpioQspiSd0 {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd1 {
@@ -1113,28 +1240,36 @@ impl GpioQspiSd1 {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -1148,28 +1283,36 @@ impl GpioQspiSd1 {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -1178,6 +1321,7 @@ impl GpioQspiSd1 {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -1197,6 +1341,7 @@ impl GpioQspiSd1 {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -1216,6 +1361,7 @@ impl GpioQspiSd1 {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -1235,6 +1381,7 @@ impl GpioQspiSd1 {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -1242,6 +1389,7 @@ impl GpioQspiSd1 {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -1249,6 +1397,7 @@ impl GpioQspiSd1 {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -1268,6 +1417,7 @@ impl GpioQspiSd1 {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -1287,6 +1437,7 @@ impl GpioQspiSd1 {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -1306,6 +1457,7 @@ impl GpioQspiSd1 {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -1355,6 +1507,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -1362,6 +1515,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -1369,6 +1523,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -1376,6 +1531,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -1383,6 +1539,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -1390,6 +1547,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -1397,6 +1555,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -1404,6 +1563,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -1411,6 +1571,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -1424,6 +1585,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -1437,6 +1599,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -1450,6 +1613,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -1459,6 +1623,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -1472,6 +1637,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -1485,6 +1651,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -1498,6 +1665,7 @@ impl GpioQspiSd1Val {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
@@ -1547,20 +1715,35 @@ impl GpioQspiSd1 {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd2 {
@@ -1579,28 +1762,36 @@ impl GpioQspiSd2 {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -1614,28 +1805,36 @@ impl GpioQspiSd2 {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -1644,6 +1843,7 @@ impl GpioQspiSd2 {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -1663,6 +1863,7 @@ impl GpioQspiSd2 {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -1682,6 +1883,7 @@ impl GpioQspiSd2 {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -1701,6 +1903,7 @@ impl GpioQspiSd2 {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -1708,6 +1911,7 @@ impl GpioQspiSd2 {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -1715,6 +1919,7 @@ impl GpioQspiSd2 {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -1734,6 +1939,7 @@ impl GpioQspiSd2 {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -1753,6 +1959,7 @@ impl GpioQspiSd2 {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -1772,6 +1979,7 @@ impl GpioQspiSd2 {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -1821,6 +2029,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -1828,6 +2037,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -1835,6 +2045,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -1842,6 +2053,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -1849,6 +2061,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -1856,6 +2069,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -1863,6 +2077,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -1870,6 +2085,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -1877,6 +2093,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -1890,6 +2107,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -1903,6 +2121,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -1916,6 +2135,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -1925,6 +2145,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -1938,6 +2159,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -1951,6 +2173,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -1964,6 +2187,7 @@ impl GpioQspiSd2Val {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
@@ -2013,20 +2237,35 @@ impl GpioQspiSd2 {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd3 {
@@ -2045,28 +2284,36 @@ impl GpioQspiSd3 {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -2080,28 +2327,36 @@ impl GpioQspiSd3 {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -2110,6 +2365,7 @@ impl GpioQspiSd3 {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -2129,6 +2385,7 @@ impl GpioQspiSd3 {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -2148,6 +2405,7 @@ impl GpioQspiSd3 {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -2167,6 +2425,7 @@ impl GpioQspiSd3 {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -2174,6 +2433,7 @@ impl GpioQspiSd3 {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -2181,6 +2441,7 @@ impl GpioQspiSd3 {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -2200,6 +2461,7 @@ impl GpioQspiSd3 {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -2219,6 +2481,7 @@ impl GpioQspiSd3 {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -2238,6 +2501,7 @@ impl GpioQspiSd3 {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -2287,6 +2551,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -2294,6 +2559,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -2301,6 +2567,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -2308,6 +2575,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -2315,6 +2583,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -2322,6 +2591,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -2329,6 +2599,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -2336,6 +2607,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -2343,6 +2615,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -2356,6 +2629,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -2369,6 +2643,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -2382,6 +2657,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -2391,6 +2667,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -2404,6 +2681,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -2417,6 +2695,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -2430,6 +2709,7 @@ impl GpioQspiSd3Val {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
@@ -2479,20 +2759,35 @@ impl GpioQspiSd3 {
 /// ## Fields
 ///
 /// - **ISO** `[8]` (RW)
+///
 ///   Pad isolation control. Remove this once the pad is configured by software.
+///
 /// - **OD** `[7]` (RW)
+///
 ///   Output disable. Has priority over output enable from peripherals
+///
 /// - **IE** `[6]` (RW)
+///
 ///   Input enable
+///
 /// - **DRIVE** `[5:4]` (RW)
+///
 ///   Drive strength.
+///
 /// - **PUE** `[3]` (RW)
+///
 ///   Pull up enable
+///
 /// - **PDE** `[2]` (RW)
+///
 ///   Pull down enable
+///
 /// - **SCHMITT** `[1]` (RW)
+///
 ///   Enable schmitt trigger
+///
 /// - **SLEWFAST** `[0]` (RW)
+///
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSs {
@@ -2511,28 +2806,36 @@ impl GpioQspiSs {
     // ======== Field Constants ========
 
     /// **ISO**
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
     /// **OD**
+    ///
     /// Output disable. Has priority over output enable from peripherals
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
     /// **IE**
+    ///
     /// Input enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
     /// **DRIVE**
+    ///
     /// Drive strength.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
@@ -2546,28 +2849,36 @@ impl GpioQspiSs {
     pub const DRIVE_12M_A_VAL: u32 = 3;
 
     /// **PUE**
+    ///
     /// Pull up enable
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
     /// **PDE**
+    ///
     /// Pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
     /// **SCHMITT**
+    ///
     /// Enable schmitt trigger
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
     /// **SLEWFAST**
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
@@ -2576,6 +2887,7 @@ impl GpioQspiSs {
     // ======== Field Accessors ========
 
     /// **ISO** `[8]` (RW)
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
@@ -2595,6 +2907,7 @@ impl GpioQspiSs {
     }
 
     /// **OD** `[7]` (RW)
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
@@ -2614,6 +2927,7 @@ impl GpioQspiSs {
     }
 
     /// **IE** `[6]` (RW)
+    ///
     /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
@@ -2633,6 +2947,7 @@ impl GpioQspiSs {
     }
 
     /// **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
@@ -2640,6 +2955,7 @@ impl GpioQspiSs {
     }
 
     /// Write **DRIVE** `[5:4]` (RW)
+    ///
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
@@ -2647,6 +2963,7 @@ impl GpioQspiSs {
     }
 
     /// **PUE** `[3]` (RW)
+    ///
     /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
@@ -2666,6 +2983,7 @@ impl GpioQspiSs {
     }
 
     /// **PDE** `[2]` (RW)
+    ///
     /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
@@ -2685,6 +3003,7 @@ impl GpioQspiSs {
     }
 
     /// **SCHMITT** `[1]` (RW)
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
@@ -2704,6 +3023,7 @@ impl GpioQspiSs {
     }
 
     /// **SLEWFAST** `[0]` (RW)
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
@@ -2753,6 +3073,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
@@ -2760,6 +3081,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
@@ -2767,6 +3089,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
@@ -2774,6 +3097,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
@@ -2781,6 +3105,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
@@ -2788,6 +3113,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
@@ -2795,6 +3121,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
@@ -2802,6 +3129,7 @@ impl GpioQspiSsVal {
     }
 
     /// Read **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
@@ -2809,6 +3137,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **ISO** `[8:8]`
+    ///
     /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
@@ -2822,6 +3151,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **OD** `[7:7]`
+    ///
     /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
@@ -2835,6 +3165,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **IE** `[6:6]`
+    ///
     /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
@@ -2848,6 +3179,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **DRIVE** `[5:4]`
+    ///
     /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
@@ -2857,6 +3189,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **PUE** `[3:3]`
+    ///
     /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
@@ -2870,6 +3203,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **PDE** `[2:2]`
+    ///
     /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
@@ -2883,6 +3217,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **SCHMITT** `[1:1]`
+    ///
     /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
@@ -2896,6 +3231,7 @@ impl GpioQspiSsVal {
     }
 
     /// Set **SLEWFAST** `[0:0]`
+    ///
     /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {

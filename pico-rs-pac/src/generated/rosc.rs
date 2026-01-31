@@ -14,10 +14,13 @@ pub const BASE: u32 = 0x400e8000;
 /// ## Fields
 ///
 /// - **ENABLE** `[23:12]` (RW)
+///
 ///   On power-up this field is initialised to ENABLE
 ///   The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
 ///   The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
+///
 /// - **FREQ_RANGE** `[11:0]` (RW)
+///
 ///   Controls the number of delay stages in the ROSC ring
 ///   LOW uses stages 0 to 7
 ///   MEDIUM uses stages 0 to 5
@@ -43,9 +46,11 @@ impl Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// On power-up this field is initialised to ENABLE
     /// The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
+    ///
     /// Bits `[23:12]`, mask `0x00fff000`
     pub const ENABLE_OFFSET: u32 = 12;
     pub const ENABLE_MASK: u32 = 0x00fff000;
@@ -55,6 +60,7 @@ impl Ctrl {
     pub const ENABLE_ENABLE_VAL: u32 = 4011;
 
     /// **FREQ_RANGE**
+    ///
     /// Controls the number of delay stages in the ROSC ring
     /// LOW uses stages 0 to 7
     /// MEDIUM uses stages 0 to 5
@@ -63,6 +69,7 @@ impl Ctrl {
     /// The clock output will not glitch when changing the range up one step at a time
     /// The clock output will glitch when changing the range down
     /// Note: the values here are gray coded which is why HIGH comes before TOOHIGH
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const FREQ_RANGE_OFFSET: u32 = 0;
     pub const FREQ_RANGE_MASK: u32 = 0x00000fff;
@@ -78,6 +85,7 @@ impl Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[23:12]` (RW)
+    ///
     /// On power-up this field is initialised to ENABLE
     /// The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
@@ -87,6 +95,7 @@ impl Ctrl {
     }
 
     /// Write **ENABLE** `[23:12]` (RW)
+    ///
     /// On power-up this field is initialised to ENABLE
     /// The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
@@ -96,6 +105,7 @@ impl Ctrl {
     }
 
     /// **FREQ_RANGE** `[11:0]` (RW)
+    ///
     /// Controls the number of delay stages in the ROSC ring
     /// LOW uses stages 0 to 7
     /// MEDIUM uses stages 0 to 5
@@ -110,6 +120,7 @@ impl Ctrl {
     }
 
     /// Write **FREQ_RANGE** `[11:0]` (RW)
+    ///
     /// Controls the number of delay stages in the ROSC ring
     /// LOW uses stages 0 to 7
     /// MEDIUM uses stages 0 to 5
@@ -154,6 +165,7 @@ impl CtrlVal {
     }
 
     /// Read **ENABLE** `[23:12]`
+    ///
     /// On power-up this field is initialised to ENABLE
     /// The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
@@ -163,6 +175,7 @@ impl CtrlVal {
     }
 
     /// Read **FREQ_RANGE** `[11:0]`
+    ///
     /// Controls the number of delay stages in the ROSC ring
     /// LOW uses stages 0 to 7
     /// MEDIUM uses stages 0 to 5
@@ -177,6 +190,7 @@ impl CtrlVal {
     }
 
     /// Set **ENABLE** `[23:12]`
+    ///
     /// On power-up this field is initialised to ENABLE
     /// The system clock must be switched to another source before setting this field to DISABLE otherwise the chip will lock up
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
@@ -188,6 +202,7 @@ impl CtrlVal {
     }
 
     /// Set **FREQ_RANGE** `[11:0]`
+    ///
     /// Controls the number of delay stages in the ROSC ring
     /// LOW uses stages 0 to 7
     /// MEDIUM uses stages 0 to 5
@@ -249,19 +264,32 @@ impl Ctrl {
 /// ## Fields
 ///
 /// - **PASSWD** `[31:16]` (RW)
+///
 ///   Set to 0x9696 to apply the settings
 ///   Any other value in this field will set all drive strengths to 0
+///
 /// - **DS3** `[14:12]` (RW)
+///
 ///   Stage 3 drive strength
+///
 /// - **DS2** `[10:8]` (RW)
+///
 ///   Stage 2 drive strength
+///
 /// - **DS1_RANDOM** `[7]` (RW)
+///
 ///   Randomises the stage 1 drive strength
+///
 /// - **DS1** `[6:4]` (RW)
+///
 ///   Stage 1 drive strength
+///
 /// - **DS0_RANDOM** `[3]` (RW)
+///
 ///   Randomises the stage 0 drive strength
+///
 /// - **DS0** `[2:0]` (RW)
+///
 ///   Stage 0 drive strength
 #[repr(transparent)]
 pub struct Freqa {
@@ -280,8 +308,10 @@ impl Freqa {
     // ======== Field Constants ========
 
     /// **PASSWD**
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const PASSWD_OFFSET: u32 = 16;
     pub const PASSWD_MASK: u32 = 0xffff0000;
@@ -289,39 +319,51 @@ impl Freqa {
     pub const PASSWD_PASS_VAL: u32 = 38550;
 
     /// **DS3**
+    ///
     /// Stage 3 drive strength
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const DS3_OFFSET: u32 = 12;
     pub const DS3_MASK: u32 = 0x00007000;
 
     /// **DS2**
+    ///
     /// Stage 2 drive strength
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const DS2_OFFSET: u32 = 8;
     pub const DS2_MASK: u32 = 0x00000700;
 
     /// **DS1_RANDOM**
+    ///
     /// Randomises the stage 1 drive strength
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DS1_RANDOM_OFFSET: u32 = 7;
     pub const DS1_RANDOM_MASK: u32 = 0x00000080;
     pub const DS1_RANDOM: u32 = 1 << 7;
 
     /// **DS1**
+    ///
     /// Stage 1 drive strength
+    ///
     /// Bits `[6:4]`, mask `0x00000070`
     pub const DS1_OFFSET: u32 = 4;
     pub const DS1_MASK: u32 = 0x00000070;
 
     /// **DS0_RANDOM**
+    ///
     /// Randomises the stage 0 drive strength
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DS0_RANDOM_OFFSET: u32 = 3;
     pub const DS0_RANDOM_MASK: u32 = 0x00000008;
     pub const DS0_RANDOM: u32 = 1 << 3;
 
     /// **DS0**
+    ///
     /// Stage 0 drive strength
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DS0_OFFSET: u32 = 0;
     pub const DS0_MASK: u32 = 0x00000007;
@@ -329,6 +371,7 @@ impl Freqa {
     // ======== Field Accessors ========
 
     /// **PASSWD** `[31:16]` (RW)
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -337,6 +380,7 @@ impl Freqa {
     }
 
     /// Write **PASSWD** `[31:16]` (RW)
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -345,6 +389,7 @@ impl Freqa {
     }
 
     /// **DS3** `[14:12]` (RW)
+    ///
     /// Stage 3 drive strength
     #[inline(always)]
     pub fn ds3(&self) -> u32 {
@@ -352,6 +397,7 @@ impl Freqa {
     }
 
     /// Write **DS3** `[14:12]` (RW)
+    ///
     /// Stage 3 drive strength
     #[inline(always)]
     pub fn write_ds3(&self, value: u32) {
@@ -359,6 +405,7 @@ impl Freqa {
     }
 
     /// **DS2** `[10:8]` (RW)
+    ///
     /// Stage 2 drive strength
     #[inline(always)]
     pub fn ds2(&self) -> u32 {
@@ -366,6 +413,7 @@ impl Freqa {
     }
 
     /// Write **DS2** `[10:8]` (RW)
+    ///
     /// Stage 2 drive strength
     #[inline(always)]
     pub fn write_ds2(&self, value: u32) {
@@ -373,6 +421,7 @@ impl Freqa {
     }
 
     /// **DS1_RANDOM** `[7]` (RW)
+    ///
     /// Randomises the stage 1 drive strength
     #[inline(always)]
     pub fn ds1_random(&self) -> bool {
@@ -392,6 +441,7 @@ impl Freqa {
     }
 
     /// **DS1** `[6:4]` (RW)
+    ///
     /// Stage 1 drive strength
     #[inline(always)]
     pub fn ds1(&self) -> u32 {
@@ -399,6 +449,7 @@ impl Freqa {
     }
 
     /// Write **DS1** `[6:4]` (RW)
+    ///
     /// Stage 1 drive strength
     #[inline(always)]
     pub fn write_ds1(&self, value: u32) {
@@ -406,6 +457,7 @@ impl Freqa {
     }
 
     /// **DS0_RANDOM** `[3]` (RW)
+    ///
     /// Randomises the stage 0 drive strength
     #[inline(always)]
     pub fn ds0_random(&self) -> bool {
@@ -425,6 +477,7 @@ impl Freqa {
     }
 
     /// **DS0** `[2:0]` (RW)
+    ///
     /// Stage 0 drive strength
     #[inline(always)]
     pub fn ds0(&self) -> u32 {
@@ -432,6 +485,7 @@ impl Freqa {
     }
 
     /// Write **DS0** `[2:0]` (RW)
+    ///
     /// Stage 0 drive strength
     #[inline(always)]
     pub fn write_ds0(&self, value: u32) {
@@ -469,6 +523,7 @@ impl FreqaVal {
     }
 
     /// Read **PASSWD** `[31:16]`
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -477,6 +532,7 @@ impl FreqaVal {
     }
 
     /// Read **DS3** `[14:12]`
+    ///
     /// Stage 3 drive strength
     #[inline(always)]
     pub const fn ds3(&self) -> u32 {
@@ -484,6 +540,7 @@ impl FreqaVal {
     }
 
     /// Read **DS2** `[10:8]`
+    ///
     /// Stage 2 drive strength
     #[inline(always)]
     pub const fn ds2(&self) -> u32 {
@@ -491,6 +548,7 @@ impl FreqaVal {
     }
 
     /// Read **DS1_RANDOM** `[7:7]`
+    ///
     /// Randomises the stage 1 drive strength
     #[inline(always)]
     pub const fn ds1_random(&self) -> bool {
@@ -498,6 +556,7 @@ impl FreqaVal {
     }
 
     /// Read **DS1** `[6:4]`
+    ///
     /// Stage 1 drive strength
     #[inline(always)]
     pub const fn ds1(&self) -> u32 {
@@ -505,6 +564,7 @@ impl FreqaVal {
     }
 
     /// Read **DS0_RANDOM** `[3:3]`
+    ///
     /// Randomises the stage 0 drive strength
     #[inline(always)]
     pub const fn ds0_random(&self) -> bool {
@@ -512,6 +572,7 @@ impl FreqaVal {
     }
 
     /// Read **DS0** `[2:0]`
+    ///
     /// Stage 0 drive strength
     #[inline(always)]
     pub const fn ds0(&self) -> u32 {
@@ -519,6 +580,7 @@ impl FreqaVal {
     }
 
     /// Set **PASSWD** `[31:16]`
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -529,6 +591,7 @@ impl FreqaVal {
     }
 
     /// Set **DS3** `[14:12]`
+    ///
     /// Stage 3 drive strength
     #[inline(always)]
     pub const fn with_ds3(self, value: u32) -> Self {
@@ -538,6 +601,7 @@ impl FreqaVal {
     }
 
     /// Set **DS2** `[10:8]`
+    ///
     /// Stage 2 drive strength
     #[inline(always)]
     pub const fn with_ds2(self, value: u32) -> Self {
@@ -547,6 +611,7 @@ impl FreqaVal {
     }
 
     /// Set **DS1_RANDOM** `[7:7]`
+    ///
     /// Randomises the stage 1 drive strength
     #[inline(always)]
     pub const fn with_ds1_random(self, value: bool) -> Self {
@@ -560,6 +625,7 @@ impl FreqaVal {
     }
 
     /// Set **DS1** `[6:4]`
+    ///
     /// Stage 1 drive strength
     #[inline(always)]
     pub const fn with_ds1(self, value: u32) -> Self {
@@ -569,6 +635,7 @@ impl FreqaVal {
     }
 
     /// Set **DS0_RANDOM** `[3:3]`
+    ///
     /// Randomises the stage 0 drive strength
     #[inline(always)]
     pub const fn with_ds0_random(self, value: bool) -> Self {
@@ -582,6 +649,7 @@ impl FreqaVal {
     }
 
     /// Set **DS0** `[2:0]`
+    ///
     /// Stage 0 drive strength
     #[inline(always)]
     pub const fn with_ds0(self, value: u32) -> Self {
@@ -629,15 +697,24 @@ impl Freqa {
 /// ## Fields
 ///
 /// - **PASSWD** `[31:16]` (RW)
+///
 ///   Set to 0x9696 to apply the settings
 ///   Any other value in this field will set all drive strengths to 0
+///
 /// - **DS7** `[14:12]` (RW)
+///
 ///   Stage 7 drive strength
+///
 /// - **DS6** `[10:8]` (RW)
+///
 ///   Stage 6 drive strength
+///
 /// - **DS5** `[6:4]` (RW)
+///
 ///   Stage 5 drive strength
+///
 /// - **DS4** `[2:0]` (RW)
+///
 ///   Stage 4 drive strength
 #[repr(transparent)]
 pub struct Freqb {
@@ -656,8 +733,10 @@ impl Freqb {
     // ======== Field Constants ========
 
     /// **PASSWD**
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const PASSWD_OFFSET: u32 = 16;
     pub const PASSWD_MASK: u32 = 0xffff0000;
@@ -665,25 +744,33 @@ impl Freqb {
     pub const PASSWD_PASS_VAL: u32 = 38550;
 
     /// **DS7**
+    ///
     /// Stage 7 drive strength
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const DS7_OFFSET: u32 = 12;
     pub const DS7_MASK: u32 = 0x00007000;
 
     /// **DS6**
+    ///
     /// Stage 6 drive strength
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const DS6_OFFSET: u32 = 8;
     pub const DS6_MASK: u32 = 0x00000700;
 
     /// **DS5**
+    ///
     /// Stage 5 drive strength
+    ///
     /// Bits `[6:4]`, mask `0x00000070`
     pub const DS5_OFFSET: u32 = 4;
     pub const DS5_MASK: u32 = 0x00000070;
 
     /// **DS4**
+    ///
     /// Stage 4 drive strength
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const DS4_OFFSET: u32 = 0;
     pub const DS4_MASK: u32 = 0x00000007;
@@ -691,6 +778,7 @@ impl Freqb {
     // ======== Field Accessors ========
 
     /// **PASSWD** `[31:16]` (RW)
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -699,6 +787,7 @@ impl Freqb {
     }
 
     /// Write **PASSWD** `[31:16]` (RW)
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -707,6 +796,7 @@ impl Freqb {
     }
 
     /// **DS7** `[14:12]` (RW)
+    ///
     /// Stage 7 drive strength
     #[inline(always)]
     pub fn ds7(&self) -> u32 {
@@ -714,6 +804,7 @@ impl Freqb {
     }
 
     /// Write **DS7** `[14:12]` (RW)
+    ///
     /// Stage 7 drive strength
     #[inline(always)]
     pub fn write_ds7(&self, value: u32) {
@@ -721,6 +812,7 @@ impl Freqb {
     }
 
     /// **DS6** `[10:8]` (RW)
+    ///
     /// Stage 6 drive strength
     #[inline(always)]
     pub fn ds6(&self) -> u32 {
@@ -728,6 +820,7 @@ impl Freqb {
     }
 
     /// Write **DS6** `[10:8]` (RW)
+    ///
     /// Stage 6 drive strength
     #[inline(always)]
     pub fn write_ds6(&self, value: u32) {
@@ -735,6 +828,7 @@ impl Freqb {
     }
 
     /// **DS5** `[6:4]` (RW)
+    ///
     /// Stage 5 drive strength
     #[inline(always)]
     pub fn ds5(&self) -> u32 {
@@ -742,6 +836,7 @@ impl Freqb {
     }
 
     /// Write **DS5** `[6:4]` (RW)
+    ///
     /// Stage 5 drive strength
     #[inline(always)]
     pub fn write_ds5(&self, value: u32) {
@@ -749,6 +844,7 @@ impl Freqb {
     }
 
     /// **DS4** `[2:0]` (RW)
+    ///
     /// Stage 4 drive strength
     #[inline(always)]
     pub fn ds4(&self) -> u32 {
@@ -756,6 +852,7 @@ impl Freqb {
     }
 
     /// Write **DS4** `[2:0]` (RW)
+    ///
     /// Stage 4 drive strength
     #[inline(always)]
     pub fn write_ds4(&self, value: u32) {
@@ -793,6 +890,7 @@ impl FreqbVal {
     }
 
     /// Read **PASSWD** `[31:16]`
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -801,6 +899,7 @@ impl FreqbVal {
     }
 
     /// Read **DS7** `[14:12]`
+    ///
     /// Stage 7 drive strength
     #[inline(always)]
     pub const fn ds7(&self) -> u32 {
@@ -808,6 +907,7 @@ impl FreqbVal {
     }
 
     /// Read **DS6** `[10:8]`
+    ///
     /// Stage 6 drive strength
     #[inline(always)]
     pub const fn ds6(&self) -> u32 {
@@ -815,6 +915,7 @@ impl FreqbVal {
     }
 
     /// Read **DS5** `[6:4]`
+    ///
     /// Stage 5 drive strength
     #[inline(always)]
     pub const fn ds5(&self) -> u32 {
@@ -822,6 +923,7 @@ impl FreqbVal {
     }
 
     /// Read **DS4** `[2:0]`
+    ///
     /// Stage 4 drive strength
     #[inline(always)]
     pub const fn ds4(&self) -> u32 {
@@ -829,6 +931,7 @@ impl FreqbVal {
     }
 
     /// Set **PASSWD** `[31:16]`
+    ///
     /// Set to 0x9696 to apply the settings
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
@@ -839,6 +942,7 @@ impl FreqbVal {
     }
 
     /// Set **DS7** `[14:12]`
+    ///
     /// Stage 7 drive strength
     #[inline(always)]
     pub const fn with_ds7(self, value: u32) -> Self {
@@ -848,6 +952,7 @@ impl FreqbVal {
     }
 
     /// Set **DS6** `[10:8]`
+    ///
     /// Stage 6 drive strength
     #[inline(always)]
     pub const fn with_ds6(self, value: u32) -> Self {
@@ -857,6 +962,7 @@ impl FreqbVal {
     }
 
     /// Set **DS5** `[6:4]`
+    ///
     /// Stage 5 drive strength
     #[inline(always)]
     pub const fn with_ds5(self, value: u32) -> Self {
@@ -866,6 +972,7 @@ impl FreqbVal {
     }
 
     /// Set **DS4** `[2:0]`
+    ///
     /// Stage 4 drive strength
     #[inline(always)]
     pub const fn with_ds4(self, value: u32) -> Self {
@@ -1030,6 +1137,7 @@ impl Random {
 /// ## Fields
 ///
 /// - **DORMANT** `[31:0]` (RW)
+///
 ///   This is used to save power by pausing the ROSC
 ///   On power-up this field is initialised to WAKE
 ///   An invalid write will also select WAKE
@@ -1051,10 +1159,12 @@ impl Dormant {
     // ======== Field Constants ========
 
     /// **DORMANT**
+    ///
     /// This is used to save power by pausing the ROSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
     /// Warning: setup the irq before selecting dormant mode
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const DORMANT_OFFSET: u32 = 0;
     pub const DORMANT_MASK: u32 = 0xffffffff;
@@ -1066,6 +1176,7 @@ impl Dormant {
     // ======== Field Accessors ========
 
     /// **DORMANT** `[31:0]` (RW)
+    ///
     /// This is used to save power by pausing the ROSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -1076,6 +1187,7 @@ impl Dormant {
     }
 
     /// Write **DORMANT** `[31:0]` (RW)
+    ///
     /// This is used to save power by pausing the ROSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -1110,6 +1222,7 @@ impl DormantVal {
     }
 
     /// Read **DORMANT** `[31:0]`
+    ///
     /// This is used to save power by pausing the ROSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -1120,6 +1233,7 @@ impl DormantVal {
     }
 
     /// Set **DORMANT** `[31:0]`
+    ///
     /// This is used to save power by pausing the ROSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -1169,6 +1283,7 @@ impl Dormant {
 /// ## Fields
 ///
 /// - **DIV** `[15:0]` (RW)
+///
 ///   set to 0xaa00 + div where
 ///   div = 0 divides by 128
 ///   div = 1-127 divides by div
@@ -1191,11 +1306,13 @@ impl Div {
     // ======== Field Constants ========
 
     /// **DIV**
+    ///
     /// set to 0xaa00 + div where
     /// div = 0 divides by 128
     /// div = 1-127 divides by div
     /// any other value sets div=128
     /// this register resets to div=32
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DIV_OFFSET: u32 = 0;
     pub const DIV_MASK: u32 = 0x0000ffff;
@@ -1205,6 +1322,7 @@ impl Div {
     // ======== Field Accessors ========
 
     /// **DIV** `[15:0]` (RW)
+    ///
     /// set to 0xaa00 + div where
     /// div = 0 divides by 128
     /// div = 1-127 divides by div
@@ -1216,6 +1334,7 @@ impl Div {
     }
 
     /// Write **DIV** `[15:0]` (RW)
+    ///
     /// set to 0xaa00 + div where
     /// div = 0 divides by 128
     /// div = 1-127 divides by div
@@ -1251,6 +1370,7 @@ impl DivVal {
     }
 
     /// Read **DIV** `[15:0]`
+    ///
     /// set to 0xaa00 + div where
     /// div = 0 divides by 128
     /// div = 1-127 divides by div
@@ -1262,6 +1382,7 @@ impl DivVal {
     }
 
     /// Set **DIV** `[15:0]`
+    ///
     /// set to 0xaa00 + div where
     /// div = 0 divides by 128
     /// div = 1-127 divides by div
@@ -1313,15 +1434,22 @@ impl Div {
 /// ## Fields
 ///
 /// - **PASSWD** `[11:4]` (RW)
+///
 ///   set to 0xaa
 ///   any other value enables the output with shift=0
+///
 /// - **ENABLE** `[3]` (RW)
+///
 ///   enable the phase-shifted output
 ///   this can be changed on-the-fly
+///
 /// - **FLIP** `[2]` (RW)
+///
 ///   invert the phase-shifted output
 ///   this is ignored when div=1
+///
 /// - **SHIFT** `[1:0]` (RW)
+///
 ///   phase shift the phase-shifted output by SHIFT input clocks
 ///   this can be changed on-the-fly
 ///   must be set to 0 before setting div=1
@@ -1342,32 +1470,40 @@ impl Phase {
     // ======== Field Constants ========
 
     /// **PASSWD**
+    ///
     /// set to 0xaa
     /// any other value enables the output with shift=0
+    ///
     /// Bits `[11:4]`, mask `0x00000ff0`
     pub const PASSWD_OFFSET: u32 = 4;
     pub const PASSWD_MASK: u32 = 0x00000ff0;
 
     /// **ENABLE**
+    ///
     /// enable the phase-shifted output
     /// this can be changed on-the-fly
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const ENABLE_OFFSET: u32 = 3;
     pub const ENABLE_MASK: u32 = 0x00000008;
     pub const ENABLE: u32 = 1 << 3;
 
     /// **FLIP**
+    ///
     /// invert the phase-shifted output
     /// this is ignored when div=1
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const FLIP_OFFSET: u32 = 2;
     pub const FLIP_MASK: u32 = 0x00000004;
     pub const FLIP: u32 = 1 << 2;
 
     /// **SHIFT**
+    ///
     /// phase shift the phase-shifted output by SHIFT input clocks
     /// this can be changed on-the-fly
     /// must be set to 0 before setting div=1
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x00000003;
@@ -1375,6 +1511,7 @@ impl Phase {
     // ======== Field Accessors ========
 
     /// **PASSWD** `[11:4]` (RW)
+    ///
     /// set to 0xaa
     /// any other value enables the output with shift=0
     #[inline(always)]
@@ -1383,6 +1520,7 @@ impl Phase {
     }
 
     /// Write **PASSWD** `[11:4]` (RW)
+    ///
     /// set to 0xaa
     /// any other value enables the output with shift=0
     #[inline(always)]
@@ -1391,6 +1529,7 @@ impl Phase {
     }
 
     /// **ENABLE** `[3]` (RW)
+    ///
     /// enable the phase-shifted output
     /// this can be changed on-the-fly
     #[inline(always)]
@@ -1411,6 +1550,7 @@ impl Phase {
     }
 
     /// **FLIP** `[2]` (RW)
+    ///
     /// invert the phase-shifted output
     /// this is ignored when div=1
     #[inline(always)]
@@ -1431,6 +1571,7 @@ impl Phase {
     }
 
     /// **SHIFT** `[1:0]` (RW)
+    ///
     /// phase shift the phase-shifted output by SHIFT input clocks
     /// this can be changed on-the-fly
     /// must be set to 0 before setting div=1
@@ -1440,6 +1581,7 @@ impl Phase {
     }
 
     /// Write **SHIFT** `[1:0]` (RW)
+    ///
     /// phase shift the phase-shifted output by SHIFT input clocks
     /// this can be changed on-the-fly
     /// must be set to 0 before setting div=1
@@ -1479,6 +1621,7 @@ impl PhaseVal {
     }
 
     /// Read **PASSWD** `[11:4]`
+    ///
     /// set to 0xaa
     /// any other value enables the output with shift=0
     #[inline(always)]
@@ -1487,6 +1630,7 @@ impl PhaseVal {
     }
 
     /// Read **ENABLE** `[3:3]`
+    ///
     /// enable the phase-shifted output
     /// this can be changed on-the-fly
     #[inline(always)]
@@ -1495,6 +1639,7 @@ impl PhaseVal {
     }
 
     /// Read **FLIP** `[2:2]`
+    ///
     /// invert the phase-shifted output
     /// this is ignored when div=1
     #[inline(always)]
@@ -1503,6 +1648,7 @@ impl PhaseVal {
     }
 
     /// Read **SHIFT** `[1:0]`
+    ///
     /// phase shift the phase-shifted output by SHIFT input clocks
     /// this can be changed on-the-fly
     /// must be set to 0 before setting div=1
@@ -1512,6 +1658,7 @@ impl PhaseVal {
     }
 
     /// Set **PASSWD** `[11:4]`
+    ///
     /// set to 0xaa
     /// any other value enables the output with shift=0
     #[inline(always)]
@@ -1522,6 +1669,7 @@ impl PhaseVal {
     }
 
     /// Set **ENABLE** `[3:3]`
+    ///
     /// enable the phase-shifted output
     /// this can be changed on-the-fly
     #[inline(always)]
@@ -1536,6 +1684,7 @@ impl PhaseVal {
     }
 
     /// Set **FLIP** `[2:2]`
+    ///
     /// invert the phase-shifted output
     /// this is ignored when div=1
     #[inline(always)]
@@ -1550,6 +1699,7 @@ impl PhaseVal {
     }
 
     /// Set **SHIFT** `[1:0]`
+    ///
     /// phase shift the phase-shifted output by SHIFT input clocks
     /// this can be changed on-the-fly
     /// must be set to 0 before setting div=1
@@ -1599,13 +1749,20 @@ impl Phase {
 /// ## Fields
 ///
 /// - **STABLE** `[31]` (RO)
+///
 ///   Oscillator is running and stable
+///
 /// - **BADWRITE** `[24]` (RW)
+///
 ///   An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or FREQA or FREQB or DIV or PHASE or DORMANT
+///
 /// - **DIV_RUNNING** `[16]` (RO)
+///
 ///   post-divider is running
 ///   this resets to 0 but transitions to 1 during chip startup
+///
 /// - **ENABLED** `[12]` (RO)
+///
 ///   Oscillator is enabled but not necessarily running and stable
 ///   this resets to 0 but transitions to 1 during chip startup
 #[repr(transparent)]
@@ -1625,30 +1782,38 @@ impl Status {
     // ======== Field Constants ========
 
     /// **STABLE**
+    ///
     /// Oscillator is running and stable
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const STABLE_OFFSET: u32 = 31;
     pub const STABLE_MASK: u32 = 0x80000000;
     pub const STABLE: u32 = 1 << 31;
 
     /// **BADWRITE**
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or FREQA or FREQB or DIV or PHASE or DORMANT
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const BADWRITE_OFFSET: u32 = 24;
     pub const BADWRITE_MASK: u32 = 0x01000000;
     pub const BADWRITE: u32 = 1 << 24;
 
     /// **DIV_RUNNING**
+    ///
     /// post-divider is running
     /// this resets to 0 but transitions to 1 during chip startup
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const DIV_RUNNING_OFFSET: u32 = 16;
     pub const DIV_RUNNING_MASK: u32 = 0x00010000;
     pub const DIV_RUNNING: u32 = 1 << 16;
 
     /// **ENABLED**
+    ///
     /// Oscillator is enabled but not necessarily running and stable
     /// this resets to 0 but transitions to 1 during chip startup
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const ENABLED_OFFSET: u32 = 12;
     pub const ENABLED_MASK: u32 = 0x00001000;
@@ -1657,6 +1822,7 @@ impl Status {
     // ======== Field Accessors ========
 
     /// **STABLE** `[31]` (RO)
+    ///
     /// Oscillator is running and stable
     #[inline(always)]
     pub fn stable(&self) -> bool {
@@ -1664,6 +1830,7 @@ impl Status {
     }
 
     /// **BADWRITE** `[24]` (RW)
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or FREQA or FREQB or DIV or PHASE or DORMANT
     #[inline(always)]
     pub fn badwrite(&self) -> bool {
@@ -1683,6 +1850,7 @@ impl Status {
     }
 
     /// **DIV_RUNNING** `[16]` (RO)
+    ///
     /// post-divider is running
     /// this resets to 0 but transitions to 1 during chip startup
     #[inline(always)]
@@ -1691,6 +1859,7 @@ impl Status {
     }
 
     /// **ENABLED** `[12]` (RO)
+    ///
     /// Oscillator is enabled but not necessarily running and stable
     /// this resets to 0 but transitions to 1 during chip startup
     #[inline(always)]
@@ -1729,6 +1898,7 @@ impl StatusVal {
     }
 
     /// Read **STABLE** `[31:31]`
+    ///
     /// Oscillator is running and stable
     #[inline(always)]
     pub const fn stable(&self) -> bool {
@@ -1736,6 +1906,7 @@ impl StatusVal {
     }
 
     /// Read **BADWRITE** `[24:24]`
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or FREQA or FREQB or DIV or PHASE or DORMANT
     #[inline(always)]
     pub const fn badwrite(&self) -> bool {
@@ -1743,6 +1914,7 @@ impl StatusVal {
     }
 
     /// Read **DIV_RUNNING** `[16:16]`
+    ///
     /// post-divider is running
     /// this resets to 0 but transitions to 1 during chip startup
     #[inline(always)]
@@ -1751,6 +1923,7 @@ impl StatusVal {
     }
 
     /// Read **ENABLED** `[12:12]`
+    ///
     /// Oscillator is enabled but not necessarily running and stable
     /// this resets to 0 but transitions to 1 during chip startup
     #[inline(always)]
@@ -1759,6 +1932,7 @@ impl StatusVal {
     }
 
     /// Set **BADWRITE** `[24:24]`
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or FREQA or FREQB or DIV or PHASE or DORMANT
     #[inline(always)]
     pub const fn with_badwrite(self, value: bool) -> Self {

@@ -119,16 +119,25 @@ impl Stream {
 /// ## Fields
 ///
 /// - **NOPUSH** `[20]` (WO)
+///
 ///   Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
 ///   Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
+///
 /// - **OE** `[19]` (WO)
+///
 ///   Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
 ///   For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
+///
 /// - **DWIDTH** `[18]` (WO)
+///
 ///   Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
+///
 /// - **IWIDTH** `[17:16]` (WO)
+///
 ///   Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
+///
 /// - **DATA** `[15:0]` (WO)
+///
 ///   Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
 ///   For 16-bit data, the least-significant byte is transmitted first.
 #[repr(transparent)]
@@ -148,30 +157,38 @@ impl QmiDirectTx {
     // ======== Field Constants ========
 
     /// **NOPUSH**
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NOPUSH_OFFSET: u32 = 20;
     pub const NOPUSH_MASK: u32 = 0x00100000;
     pub const NOPUSH: u32 = 1 << 20;
 
     /// **OE**
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OE_OFFSET: u32 = 19;
     pub const OE_MASK: u32 = 0x00080000;
     pub const OE: u32 = 1 << 19;
 
     /// **DWIDTH**
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const DWIDTH_OFFSET: u32 = 18;
     pub const DWIDTH_MASK: u32 = 0x00040000;
     pub const DWIDTH: u32 = 1 << 18;
 
     /// **IWIDTH**
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const IWIDTH_OFFSET: u32 = 16;
     pub const IWIDTH_MASK: u32 = 0x00030000;
@@ -189,18 +206,18 @@ impl QmiDirectTx {
     pub const IWIDTH_Q_VAL: u32 = 2;
 
     /// **DATA**
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DATA_OFFSET: u32 = 0;
     pub const DATA_MASK: u32 = 0x0000ffff;
 
     // ======== Field Accessors ========
 
-    /// **NOPUSH** `[20]` (WO)
-    /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
-    /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     /// Trigger **NOPUSH** (WO)
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
@@ -208,10 +225,8 @@ impl QmiDirectTx {
         self.value.write_bits(Self::NOPUSH_MASK);
     }
 
-    /// **OE** `[19]` (WO)
-    /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
-    /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     /// Trigger **OE** (WO)
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
@@ -219,28 +234,24 @@ impl QmiDirectTx {
         self.value.write_bits(Self::OE_MASK);
     }
 
-    /// **DWIDTH** `[18]` (WO)
-    /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     /// Trigger **DWIDTH** (WO)
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub fn trigger_dwidth(&self) {
         self.value.write_bits(Self::DWIDTH_MASK);
     }
 
-    /// **IWIDTH** `[17:16]` (WO)
-    /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     /// Write **IWIDTH** `[17:16]` (WO)
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub fn write_iwidth(&self, value: u32) {
         self.value.write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
     }
 
-    /// **DATA** `[15:0]` (WO)
-    /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
-    /// For 16-bit data, the least-significant byte is transmitted first.
     /// Write **DATA** `[15:0]` (WO)
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
@@ -279,6 +290,7 @@ impl QmiDirectTxVal {
     }
 
     /// Set **NOPUSH** `[20:20]`
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
@@ -293,6 +305,7 @@ impl QmiDirectTxVal {
     }
 
     /// Set **OE** `[19:19]`
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
@@ -307,6 +320,7 @@ impl QmiDirectTxVal {
     }
 
     /// Set **DWIDTH** `[18:18]`
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub const fn with_dwidth(self, value: bool) -> Self {
@@ -320,6 +334,7 @@ impl QmiDirectTxVal {
     }
 
     /// Set **IWIDTH** `[17:16]`
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub const fn with_iwidth(self, value: u32) -> Self {
@@ -329,6 +344,7 @@ impl QmiDirectTxVal {
     }
 
     /// Set **DATA** `[15:0]`
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
@@ -377,6 +393,7 @@ impl QmiDirectTx {
 /// ## Fields
 ///
 /// - **QMI_DIRECT_RX** `[15:0]` (RO)
+///
 ///   With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
 ///   When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
 #[repr(transparent)]
@@ -396,8 +413,10 @@ impl QmiDirectRx {
     // ======== Field Constants ========
 
     /// **QMI_DIRECT_RX**
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const QMI_DIRECT_RX_OFFSET: u32 = 0;
     pub const QMI_DIRECT_RX_MASK: u32 = 0x0000ffff;
@@ -405,6 +424,7 @@ impl QmiDirectRx {
     // ======== Field Accessors ========
 
     /// **QMI_DIRECT_RX** `[15:0]` (RO)
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
     #[inline(always)]
@@ -443,6 +463,7 @@ impl QmiDirectRxVal {
     }
 
     /// Read **QMI_DIRECT_RX** `[15:0]`
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
     #[inline(always)]

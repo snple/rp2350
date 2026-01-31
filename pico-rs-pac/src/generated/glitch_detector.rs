@@ -141,6 +141,7 @@ impl Arm {
 /// ## Fields
 ///
 /// - **DISARM** `[15:0]` (RW)
+///
 ///   Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
 ///   This register is Secure read/write only.
 #[repr(transparent)]
@@ -160,8 +161,10 @@ impl Disarm {
     // ======== Field Constants ========
 
     /// **DISARM**
+    ///
     /// Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
     /// This register is Secure read/write only.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DISARM_OFFSET: u32 = 0;
     pub const DISARM_MASK: u32 = 0x0000ffff;
@@ -177,6 +180,7 @@ impl Disarm {
     // ======== Field Accessors ========
 
     /// **DISARM** `[15:0]` (RW)
+    ///
     /// Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
     /// This register is Secure read/write only.
     #[inline(always)]
@@ -185,6 +189,7 @@ impl Disarm {
     }
 
     /// Write **DISARM** `[15:0]` (RW)
+    ///
     /// Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
     /// This register is Secure read/write only.
     #[inline(always)]
@@ -223,6 +228,7 @@ impl DisarmVal {
     }
 
     /// Read **DISARM** `[15:0]`
+    ///
     /// Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
     /// This register is Secure read/write only.
     #[inline(always)]
@@ -231,6 +237,7 @@ impl DisarmVal {
     }
 
     /// Set **DISARM** `[15:0]`
+    ///
     /// Forcibly disarm the glitch detectors, if they are armed by OTP. Ignored if ARM is YES.
     /// This register is Secure read/write only.
     #[inline(always)]
@@ -280,21 +287,37 @@ impl Disarm {
 /// ## Fields
 ///
 /// - **DEFAULT** `[31:24]` (RW)
+///
 /// - **DET3_INV** `[15:14]` (RW)
+///
 ///   Must be the inverse of DET3, else the default value is used.
+///
 /// - **DET2_INV** `[13:12]` (RW)
+///
 ///   Must be the inverse of DET2, else the default value is used.
+///
 /// - **DET1_INV** `[11:10]` (RW)
+///
 ///   Must be the inverse of DET1, else the default value is used.
+///
 /// - **DET0_INV** `[9:8]` (RW)
+///
 ///   Must be the inverse of DET0, else the default value is used.
+///
 /// - **DET3** `[7:6]` (RW)
+///
 ///   Set sensitivity for detector 3. Higher values are more sensitive.
+///
 /// - **DET2** `[5:4]` (RW)
+///
 ///   Set sensitivity for detector 2. Higher values are more sensitive.
+///
 /// - **DET1** `[3:2]` (RW)
+///
 ///   Set sensitivity for detector 1. Higher values are more sensitive.
+///
 /// - **DET0** `[1:0]` (RW)
+///
 ///   Set sensitivity for detector 0. Higher values are more sensitive.
 #[repr(transparent)]
 pub struct Sensitivity {
@@ -326,49 +349,65 @@ impl Sensitivity {
     pub const DEFAULT_NO_VAL: u32 = 222;
 
     /// **DET3_INV**
+    ///
     /// Must be the inverse of DET3, else the default value is used.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const DET3_INV_OFFSET: u32 = 14;
     pub const DET3_INV_MASK: u32 = 0x0000c000;
 
     /// **DET2_INV**
+    ///
     /// Must be the inverse of DET2, else the default value is used.
+    ///
     /// Bits `[13:12]`, mask `0x00003000`
     pub const DET2_INV_OFFSET: u32 = 12;
     pub const DET2_INV_MASK: u32 = 0x00003000;
 
     /// **DET1_INV**
+    ///
     /// Must be the inverse of DET1, else the default value is used.
+    ///
     /// Bits `[11:10]`, mask `0x00000c00`
     pub const DET1_INV_OFFSET: u32 = 10;
     pub const DET1_INV_MASK: u32 = 0x00000c00;
 
     /// **DET0_INV**
+    ///
     /// Must be the inverse of DET0, else the default value is used.
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DET0_INV_OFFSET: u32 = 8;
     pub const DET0_INV_MASK: u32 = 0x00000300;
 
     /// **DET3**
+    ///
     /// Set sensitivity for detector 3. Higher values are more sensitive.
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const DET3_OFFSET: u32 = 6;
     pub const DET3_MASK: u32 = 0x000000c0;
 
     /// **DET2**
+    ///
     /// Set sensitivity for detector 2. Higher values are more sensitive.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const DET2_OFFSET: u32 = 4;
     pub const DET2_MASK: u32 = 0x00000030;
 
     /// **DET1**
+    ///
     /// Set sensitivity for detector 1. Higher values are more sensitive.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const DET1_OFFSET: u32 = 2;
     pub const DET1_MASK: u32 = 0x0000000c;
 
     /// **DET0**
+    ///
     /// Set sensitivity for detector 0. Higher values are more sensitive.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const DET0_OFFSET: u32 = 0;
     pub const DET0_MASK: u32 = 0x00000003;
@@ -388,6 +427,7 @@ impl Sensitivity {
     }
 
     /// **DET3_INV** `[15:14]` (RW)
+    ///
     /// Must be the inverse of DET3, else the default value is used.
     #[inline(always)]
     pub fn det3_inv(&self) -> u32 {
@@ -395,6 +435,7 @@ impl Sensitivity {
     }
 
     /// Write **DET3_INV** `[15:14]` (RW)
+    ///
     /// Must be the inverse of DET3, else the default value is used.
     #[inline(always)]
     pub fn write_det3_inv(&self, value: u32) {
@@ -402,6 +443,7 @@ impl Sensitivity {
     }
 
     /// **DET2_INV** `[13:12]` (RW)
+    ///
     /// Must be the inverse of DET2, else the default value is used.
     #[inline(always)]
     pub fn det2_inv(&self) -> u32 {
@@ -409,6 +451,7 @@ impl Sensitivity {
     }
 
     /// Write **DET2_INV** `[13:12]` (RW)
+    ///
     /// Must be the inverse of DET2, else the default value is used.
     #[inline(always)]
     pub fn write_det2_inv(&self, value: u32) {
@@ -416,6 +459,7 @@ impl Sensitivity {
     }
 
     /// **DET1_INV** `[11:10]` (RW)
+    ///
     /// Must be the inverse of DET1, else the default value is used.
     #[inline(always)]
     pub fn det1_inv(&self) -> u32 {
@@ -423,6 +467,7 @@ impl Sensitivity {
     }
 
     /// Write **DET1_INV** `[11:10]` (RW)
+    ///
     /// Must be the inverse of DET1, else the default value is used.
     #[inline(always)]
     pub fn write_det1_inv(&self, value: u32) {
@@ -430,6 +475,7 @@ impl Sensitivity {
     }
 
     /// **DET0_INV** `[9:8]` (RW)
+    ///
     /// Must be the inverse of DET0, else the default value is used.
     #[inline(always)]
     pub fn det0_inv(&self) -> u32 {
@@ -437,6 +483,7 @@ impl Sensitivity {
     }
 
     /// Write **DET0_INV** `[9:8]` (RW)
+    ///
     /// Must be the inverse of DET0, else the default value is used.
     #[inline(always)]
     pub fn write_det0_inv(&self, value: u32) {
@@ -444,6 +491,7 @@ impl Sensitivity {
     }
 
     /// **DET3** `[7:6]` (RW)
+    ///
     /// Set sensitivity for detector 3. Higher values are more sensitive.
     #[inline(always)]
     pub fn det3(&self) -> u32 {
@@ -451,6 +499,7 @@ impl Sensitivity {
     }
 
     /// Write **DET3** `[7:6]` (RW)
+    ///
     /// Set sensitivity for detector 3. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det3(&self, value: u32) {
@@ -458,6 +507,7 @@ impl Sensitivity {
     }
 
     /// **DET2** `[5:4]` (RW)
+    ///
     /// Set sensitivity for detector 2. Higher values are more sensitive.
     #[inline(always)]
     pub fn det2(&self) -> u32 {
@@ -465,6 +515,7 @@ impl Sensitivity {
     }
 
     /// Write **DET2** `[5:4]` (RW)
+    ///
     /// Set sensitivity for detector 2. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det2(&self, value: u32) {
@@ -472,6 +523,7 @@ impl Sensitivity {
     }
 
     /// **DET1** `[3:2]` (RW)
+    ///
     /// Set sensitivity for detector 1. Higher values are more sensitive.
     #[inline(always)]
     pub fn det1(&self) -> u32 {
@@ -479,6 +531,7 @@ impl Sensitivity {
     }
 
     /// Write **DET1** `[3:2]` (RW)
+    ///
     /// Set sensitivity for detector 1. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det1(&self, value: u32) {
@@ -486,6 +539,7 @@ impl Sensitivity {
     }
 
     /// **DET0** `[1:0]` (RW)
+    ///
     /// Set sensitivity for detector 0. Higher values are more sensitive.
     #[inline(always)]
     pub fn det0(&self) -> u32 {
@@ -493,6 +547,7 @@ impl Sensitivity {
     }
 
     /// Write **DET0** `[1:0]` (RW)
+    ///
     /// Set sensitivity for detector 0. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det0(&self, value: u32) {
@@ -536,6 +591,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET3_INV** `[15:14]`
+    ///
     /// Must be the inverse of DET3, else the default value is used.
     #[inline(always)]
     pub const fn det3_inv(&self) -> u32 {
@@ -543,6 +599,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET2_INV** `[13:12]`
+    ///
     /// Must be the inverse of DET2, else the default value is used.
     #[inline(always)]
     pub const fn det2_inv(&self) -> u32 {
@@ -550,6 +607,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET1_INV** `[11:10]`
+    ///
     /// Must be the inverse of DET1, else the default value is used.
     #[inline(always)]
     pub const fn det1_inv(&self) -> u32 {
@@ -557,6 +615,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET0_INV** `[9:8]`
+    ///
     /// Must be the inverse of DET0, else the default value is used.
     #[inline(always)]
     pub const fn det0_inv(&self) -> u32 {
@@ -564,6 +623,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET3** `[7:6]`
+    ///
     /// Set sensitivity for detector 3. Higher values are more sensitive.
     #[inline(always)]
     pub const fn det3(&self) -> u32 {
@@ -571,6 +631,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET2** `[5:4]`
+    ///
     /// Set sensitivity for detector 2. Higher values are more sensitive.
     #[inline(always)]
     pub const fn det2(&self) -> u32 {
@@ -578,6 +639,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET1** `[3:2]`
+    ///
     /// Set sensitivity for detector 1. Higher values are more sensitive.
     #[inline(always)]
     pub const fn det1(&self) -> u32 {
@@ -585,6 +647,7 @@ impl SensitivityVal {
     }
 
     /// Read **DET0** `[1:0]`
+    ///
     /// Set sensitivity for detector 0. Higher values are more sensitive.
     #[inline(always)]
     pub const fn det0(&self) -> u32 {
@@ -600,6 +663,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET3_INV** `[15:14]`
+    ///
     /// Must be the inverse of DET3, else the default value is used.
     #[inline(always)]
     pub const fn with_det3_inv(self, value: u32) -> Self {
@@ -609,6 +673,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET2_INV** `[13:12]`
+    ///
     /// Must be the inverse of DET2, else the default value is used.
     #[inline(always)]
     pub const fn with_det2_inv(self, value: u32) -> Self {
@@ -618,6 +683,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET1_INV** `[11:10]`
+    ///
     /// Must be the inverse of DET1, else the default value is used.
     #[inline(always)]
     pub const fn with_det1_inv(self, value: u32) -> Self {
@@ -627,6 +693,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET0_INV** `[9:8]`
+    ///
     /// Must be the inverse of DET0, else the default value is used.
     #[inline(always)]
     pub const fn with_det0_inv(self, value: u32) -> Self {
@@ -636,6 +703,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET3** `[7:6]`
+    ///
     /// Set sensitivity for detector 3. Higher values are more sensitive.
     #[inline(always)]
     pub const fn with_det3(self, value: u32) -> Self {
@@ -645,6 +713,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET2** `[5:4]`
+    ///
     /// Set sensitivity for detector 2. Higher values are more sensitive.
     #[inline(always)]
     pub const fn with_det2(self, value: u32) -> Self {
@@ -654,6 +723,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET1** `[3:2]`
+    ///
     /// Set sensitivity for detector 1. Higher values are more sensitive.
     #[inline(always)]
     pub const fn with_det1(self, value: u32) -> Self {
@@ -663,6 +733,7 @@ impl SensitivityVal {
     }
 
     /// Set **DET0** `[1:0]`
+    ///
     /// Set sensitivity for detector 0. Higher values are more sensitive.
     #[inline(always)]
     pub const fn with_det0(self, value: u32) -> Self {
@@ -708,6 +779,7 @@ impl Sensitivity {
 /// ## Fields
 ///
 /// - **LOCK** `[7:0]` (RW)
+///
 ///   Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
 #[repr(transparent)]
 pub struct Lock {
@@ -726,7 +798,9 @@ impl Lock {
     // ======== Field Constants ========
 
     /// **LOCK**
+    ///
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const LOCK_OFFSET: u32 = 0;
     pub const LOCK_MASK: u32 = 0x000000ff;
@@ -734,6 +808,7 @@ impl Lock {
     // ======== Field Accessors ========
 
     /// **LOCK** `[7:0]` (RW)
+    ///
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
     #[inline(always)]
     pub fn lock(&self) -> u32 {
@@ -741,6 +816,7 @@ impl Lock {
     }
 
     /// Write **LOCK** `[7:0]` (RW)
+    ///
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
     #[inline(always)]
     pub fn write_lock(&self, value: u32) {
@@ -778,6 +854,7 @@ impl LockVal {
     }
 
     /// Read **LOCK** `[7:0]`
+    ///
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
     #[inline(always)]
     pub const fn lock(&self) -> u32 {
@@ -785,6 +862,7 @@ impl LockVal {
     }
 
     /// Set **LOCK** `[7:0]`
+    ///
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
     #[inline(always)]
     pub const fn with_lock(self, value: u32) -> Self {
@@ -834,8 +912,11 @@ impl Lock {
 /// ## Fields
 ///
 /// - **DET3** `[3]` (RW)
+///
 /// - **DET2** `[2]` (RW)
+///
 /// - **DET1** `[1]` (RW)
+///
 /// - **DET0** `[0]` (RW)
 #[repr(transparent)]
 pub struct TrigStatus {
@@ -1117,7 +1198,6 @@ impl TrigForce {
 
     // ======== Field Accessors ========
 
-    /// **TRIG_FORCE** `[3:0]` (WO)
     /// Write **TRIG_FORCE** `[3:0]` (WO)
     #[inline(always)]
     pub fn write_trig_force(&self, value: u32) {

@@ -15,8 +15,11 @@ pub const BASE: u32 = 0x50110000;
 /// ## Fields
 ///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Device endpoint to send data to. Only valid for HOST mode.
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
 #[repr(transparent)]
 pub struct AddrEndp {
@@ -35,13 +38,17 @@ impl AddrEndp {
     // ======== Field Constants ========
 
     /// **ENDPOINT**
+    ///
     /// Device endpoint to send data to. Only valid for HOST mode.
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -49,6 +56,7 @@ impl AddrEndp {
     // ======== Field Accessors ========
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Device endpoint to send data to. Only valid for HOST mode.
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -56,6 +64,7 @@ impl AddrEndp {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Device endpoint to send data to. Only valid for HOST mode.
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -63,6 +72,7 @@ impl AddrEndp {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -70,6 +80,7 @@ impl AddrEndp {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -107,6 +118,7 @@ impl AddrEndpVal {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Device endpoint to send data to. Only valid for HOST mode.
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -114,6 +126,7 @@ impl AddrEndpVal {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -121,6 +134,7 @@ impl AddrEndpVal {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Device endpoint to send data to. Only valid for HOST mode.
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -130,6 +144,7 @@ impl AddrEndpVal {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -177,12 +192,19 @@ impl AddrEndp {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp1 {
@@ -201,27 +223,35 @@ impl AddrEndp1 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -229,6 +259,7 @@ impl AddrEndp1 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -248,6 +279,7 @@ impl AddrEndp1 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -267,6 +299,7 @@ impl AddrEndp1 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -274,6 +307,7 @@ impl AddrEndp1 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -281,6 +315,7 @@ impl AddrEndp1 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -288,6 +323,7 @@ impl AddrEndp1 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -325,6 +361,7 @@ impl AddrEndp1Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -332,6 +369,7 @@ impl AddrEndp1Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -339,6 +377,7 @@ impl AddrEndp1Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -346,6 +385,7 @@ impl AddrEndp1Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -353,6 +393,7 @@ impl AddrEndp1Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -366,6 +407,7 @@ impl AddrEndp1Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -379,6 +421,7 @@ impl AddrEndp1Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -388,6 +431,7 @@ impl AddrEndp1Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -435,12 +479,19 @@ impl AddrEndp1 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp2 {
@@ -459,27 +510,35 @@ impl AddrEndp2 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -487,6 +546,7 @@ impl AddrEndp2 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -506,6 +566,7 @@ impl AddrEndp2 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -525,6 +586,7 @@ impl AddrEndp2 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -532,6 +594,7 @@ impl AddrEndp2 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -539,6 +602,7 @@ impl AddrEndp2 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -546,6 +610,7 @@ impl AddrEndp2 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -583,6 +648,7 @@ impl AddrEndp2Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -590,6 +656,7 @@ impl AddrEndp2Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -597,6 +664,7 @@ impl AddrEndp2Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -604,6 +672,7 @@ impl AddrEndp2Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -611,6 +680,7 @@ impl AddrEndp2Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -624,6 +694,7 @@ impl AddrEndp2Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -637,6 +708,7 @@ impl AddrEndp2Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -646,6 +718,7 @@ impl AddrEndp2Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -693,12 +766,19 @@ impl AddrEndp2 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp3 {
@@ -717,27 +797,35 @@ impl AddrEndp3 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -745,6 +833,7 @@ impl AddrEndp3 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -764,6 +853,7 @@ impl AddrEndp3 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -783,6 +873,7 @@ impl AddrEndp3 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -790,6 +881,7 @@ impl AddrEndp3 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -797,6 +889,7 @@ impl AddrEndp3 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -804,6 +897,7 @@ impl AddrEndp3 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -841,6 +935,7 @@ impl AddrEndp3Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -848,6 +943,7 @@ impl AddrEndp3Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -855,6 +951,7 @@ impl AddrEndp3Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -862,6 +959,7 @@ impl AddrEndp3Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -869,6 +967,7 @@ impl AddrEndp3Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -882,6 +981,7 @@ impl AddrEndp3Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -895,6 +995,7 @@ impl AddrEndp3Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -904,6 +1005,7 @@ impl AddrEndp3Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -951,12 +1053,19 @@ impl AddrEndp3 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp4 {
@@ -975,27 +1084,35 @@ impl AddrEndp4 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -1003,6 +1120,7 @@ impl AddrEndp4 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -1022,6 +1140,7 @@ impl AddrEndp4 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -1041,6 +1160,7 @@ impl AddrEndp4 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -1048,6 +1168,7 @@ impl AddrEndp4 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -1055,6 +1176,7 @@ impl AddrEndp4 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -1062,6 +1184,7 @@ impl AddrEndp4 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -1099,6 +1222,7 @@ impl AddrEndp4Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -1106,6 +1230,7 @@ impl AddrEndp4Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -1113,6 +1238,7 @@ impl AddrEndp4Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -1120,6 +1246,7 @@ impl AddrEndp4Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -1127,6 +1254,7 @@ impl AddrEndp4Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -1140,6 +1268,7 @@ impl AddrEndp4Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -1153,6 +1282,7 @@ impl AddrEndp4Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -1162,6 +1292,7 @@ impl AddrEndp4Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -1209,12 +1340,19 @@ impl AddrEndp4 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp5 {
@@ -1233,27 +1371,35 @@ impl AddrEndp5 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -1261,6 +1407,7 @@ impl AddrEndp5 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -1280,6 +1427,7 @@ impl AddrEndp5 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -1299,6 +1447,7 @@ impl AddrEndp5 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -1306,6 +1455,7 @@ impl AddrEndp5 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -1313,6 +1463,7 @@ impl AddrEndp5 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -1320,6 +1471,7 @@ impl AddrEndp5 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -1357,6 +1509,7 @@ impl AddrEndp5Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -1364,6 +1517,7 @@ impl AddrEndp5Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -1371,6 +1525,7 @@ impl AddrEndp5Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -1378,6 +1533,7 @@ impl AddrEndp5Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -1385,6 +1541,7 @@ impl AddrEndp5Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -1398,6 +1555,7 @@ impl AddrEndp5Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -1411,6 +1569,7 @@ impl AddrEndp5Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -1420,6 +1579,7 @@ impl AddrEndp5Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -1467,12 +1627,19 @@ impl AddrEndp5 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp6 {
@@ -1491,27 +1658,35 @@ impl AddrEndp6 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -1519,6 +1694,7 @@ impl AddrEndp6 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -1538,6 +1714,7 @@ impl AddrEndp6 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -1557,6 +1734,7 @@ impl AddrEndp6 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -1564,6 +1742,7 @@ impl AddrEndp6 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -1571,6 +1750,7 @@ impl AddrEndp6 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -1578,6 +1758,7 @@ impl AddrEndp6 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -1615,6 +1796,7 @@ impl AddrEndp6Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -1622,6 +1804,7 @@ impl AddrEndp6Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -1629,6 +1812,7 @@ impl AddrEndp6Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -1636,6 +1820,7 @@ impl AddrEndp6Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -1643,6 +1828,7 @@ impl AddrEndp6Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -1656,6 +1842,7 @@ impl AddrEndp6Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -1669,6 +1856,7 @@ impl AddrEndp6Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -1678,6 +1866,7 @@ impl AddrEndp6Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -1725,12 +1914,19 @@ impl AddrEndp6 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp7 {
@@ -1749,27 +1945,35 @@ impl AddrEndp7 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -1777,6 +1981,7 @@ impl AddrEndp7 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -1796,6 +2001,7 @@ impl AddrEndp7 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -1815,6 +2021,7 @@ impl AddrEndp7 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -1822,6 +2029,7 @@ impl AddrEndp7 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -1829,6 +2037,7 @@ impl AddrEndp7 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -1836,6 +2045,7 @@ impl AddrEndp7 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -1873,6 +2083,7 @@ impl AddrEndp7Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -1880,6 +2091,7 @@ impl AddrEndp7Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -1887,6 +2099,7 @@ impl AddrEndp7Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -1894,6 +2107,7 @@ impl AddrEndp7Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -1901,6 +2115,7 @@ impl AddrEndp7Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -1914,6 +2129,7 @@ impl AddrEndp7Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -1927,6 +2143,7 @@ impl AddrEndp7Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -1936,6 +2153,7 @@ impl AddrEndp7Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -1983,12 +2201,19 @@ impl AddrEndp7 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp8 {
@@ -2007,27 +2232,35 @@ impl AddrEndp8 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -2035,6 +2268,7 @@ impl AddrEndp8 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -2054,6 +2288,7 @@ impl AddrEndp8 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -2073,6 +2308,7 @@ impl AddrEndp8 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -2080,6 +2316,7 @@ impl AddrEndp8 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -2087,6 +2324,7 @@ impl AddrEndp8 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -2094,6 +2332,7 @@ impl AddrEndp8 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -2131,6 +2370,7 @@ impl AddrEndp8Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -2138,6 +2378,7 @@ impl AddrEndp8Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -2145,6 +2386,7 @@ impl AddrEndp8Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -2152,6 +2394,7 @@ impl AddrEndp8Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -2159,6 +2402,7 @@ impl AddrEndp8Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -2172,6 +2416,7 @@ impl AddrEndp8Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -2185,6 +2430,7 @@ impl AddrEndp8Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -2194,6 +2440,7 @@ impl AddrEndp8Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -2241,12 +2488,19 @@ impl AddrEndp8 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp9 {
@@ -2265,27 +2519,35 @@ impl AddrEndp9 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -2293,6 +2555,7 @@ impl AddrEndp9 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -2312,6 +2575,7 @@ impl AddrEndp9 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -2331,6 +2595,7 @@ impl AddrEndp9 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -2338,6 +2603,7 @@ impl AddrEndp9 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -2345,6 +2611,7 @@ impl AddrEndp9 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -2352,6 +2619,7 @@ impl AddrEndp9 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -2389,6 +2657,7 @@ impl AddrEndp9Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -2396,6 +2665,7 @@ impl AddrEndp9Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -2403,6 +2673,7 @@ impl AddrEndp9Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -2410,6 +2681,7 @@ impl AddrEndp9Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -2417,6 +2689,7 @@ impl AddrEndp9Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -2430,6 +2703,7 @@ impl AddrEndp9Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -2443,6 +2717,7 @@ impl AddrEndp9Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -2452,6 +2727,7 @@ impl AddrEndp9Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -2499,12 +2775,19 @@ impl AddrEndp9 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp10 {
@@ -2523,27 +2806,35 @@ impl AddrEndp10 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -2551,6 +2842,7 @@ impl AddrEndp10 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -2570,6 +2862,7 @@ impl AddrEndp10 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -2589,6 +2882,7 @@ impl AddrEndp10 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -2596,6 +2890,7 @@ impl AddrEndp10 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -2603,6 +2898,7 @@ impl AddrEndp10 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -2610,6 +2906,7 @@ impl AddrEndp10 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -2647,6 +2944,7 @@ impl AddrEndp10Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -2654,6 +2952,7 @@ impl AddrEndp10Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -2661,6 +2960,7 @@ impl AddrEndp10Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -2668,6 +2968,7 @@ impl AddrEndp10Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -2675,6 +2976,7 @@ impl AddrEndp10Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -2688,6 +2990,7 @@ impl AddrEndp10Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -2701,6 +3004,7 @@ impl AddrEndp10Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -2710,6 +3014,7 @@ impl AddrEndp10Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -2757,12 +3062,19 @@ impl AddrEndp10 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp11 {
@@ -2781,27 +3093,35 @@ impl AddrEndp11 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -2809,6 +3129,7 @@ impl AddrEndp11 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -2828,6 +3149,7 @@ impl AddrEndp11 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -2847,6 +3169,7 @@ impl AddrEndp11 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -2854,6 +3177,7 @@ impl AddrEndp11 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -2861,6 +3185,7 @@ impl AddrEndp11 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -2868,6 +3193,7 @@ impl AddrEndp11 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -2905,6 +3231,7 @@ impl AddrEndp11Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -2912,6 +3239,7 @@ impl AddrEndp11Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -2919,6 +3247,7 @@ impl AddrEndp11Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -2926,6 +3255,7 @@ impl AddrEndp11Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -2933,6 +3263,7 @@ impl AddrEndp11Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -2946,6 +3277,7 @@ impl AddrEndp11Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -2959,6 +3291,7 @@ impl AddrEndp11Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -2968,6 +3301,7 @@ impl AddrEndp11Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -3015,12 +3349,19 @@ impl AddrEndp11 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp12 {
@@ -3039,27 +3380,35 @@ impl AddrEndp12 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -3067,6 +3416,7 @@ impl AddrEndp12 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -3086,6 +3436,7 @@ impl AddrEndp12 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -3105,6 +3456,7 @@ impl AddrEndp12 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -3112,6 +3464,7 @@ impl AddrEndp12 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -3119,6 +3472,7 @@ impl AddrEndp12 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -3126,6 +3480,7 @@ impl AddrEndp12 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -3163,6 +3518,7 @@ impl AddrEndp12Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -3170,6 +3526,7 @@ impl AddrEndp12Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -3177,6 +3534,7 @@ impl AddrEndp12Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -3184,6 +3542,7 @@ impl AddrEndp12Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -3191,6 +3550,7 @@ impl AddrEndp12Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -3204,6 +3564,7 @@ impl AddrEndp12Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -3217,6 +3578,7 @@ impl AddrEndp12Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -3226,6 +3588,7 @@ impl AddrEndp12Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -3273,12 +3636,19 @@ impl AddrEndp12 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp13 {
@@ -3297,27 +3667,35 @@ impl AddrEndp13 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -3325,6 +3703,7 @@ impl AddrEndp13 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -3344,6 +3723,7 @@ impl AddrEndp13 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -3363,6 +3743,7 @@ impl AddrEndp13 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -3370,6 +3751,7 @@ impl AddrEndp13 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -3377,6 +3759,7 @@ impl AddrEndp13 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -3384,6 +3767,7 @@ impl AddrEndp13 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -3421,6 +3805,7 @@ impl AddrEndp13Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -3428,6 +3813,7 @@ impl AddrEndp13Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -3435,6 +3821,7 @@ impl AddrEndp13Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -3442,6 +3829,7 @@ impl AddrEndp13Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -3449,6 +3837,7 @@ impl AddrEndp13Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -3462,6 +3851,7 @@ impl AddrEndp13Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -3475,6 +3865,7 @@ impl AddrEndp13Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -3484,6 +3875,7 @@ impl AddrEndp13Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -3531,12 +3923,19 @@ impl AddrEndp13 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp14 {
@@ -3555,27 +3954,35 @@ impl AddrEndp14 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -3583,6 +3990,7 @@ impl AddrEndp14 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -3602,6 +4010,7 @@ impl AddrEndp14 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -3621,6 +4030,7 @@ impl AddrEndp14 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -3628,6 +4038,7 @@ impl AddrEndp14 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -3635,6 +4046,7 @@ impl AddrEndp14 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -3642,6 +4054,7 @@ impl AddrEndp14 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -3679,6 +4092,7 @@ impl AddrEndp14Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -3686,6 +4100,7 @@ impl AddrEndp14Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -3693,6 +4108,7 @@ impl AddrEndp14Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -3700,6 +4116,7 @@ impl AddrEndp14Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -3707,6 +4124,7 @@ impl AddrEndp14Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -3720,6 +4138,7 @@ impl AddrEndp14Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -3733,6 +4152,7 @@ impl AddrEndp14Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -3742,6 +4162,7 @@ impl AddrEndp14Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -3789,12 +4210,19 @@ impl AddrEndp14 {
 /// ## Fields
 ///
 /// - **INTEP_PREAMBLE** `[26]` (RW)
+///
 ///   Interrupt EP requires preamble (is a low speed device on a full speed hub)
+///
 /// - **INTEP_DIR** `[25]` (RW)
+///
 ///   Direction of the interrupt endpoint. In=0, Out=1
+///
 /// - **ENDPOINT** `[19:16]` (RW)
+///
 ///   Endpoint number of the interrupt endpoint
+///
 /// - **ADDRESS** `[6:0]` (RW)
+///
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp15 {
@@ -3813,27 +4241,35 @@ impl AddrEndp15 {
     // ======== Field Constants ========
 
     /// **INTEP_PREAMBLE**
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const INTEP_PREAMBLE_OFFSET: u32 = 26;
     pub const INTEP_PREAMBLE_MASK: u32 = 0x04000000;
     pub const INTEP_PREAMBLE: u32 = 1 << 26;
 
     /// **INTEP_DIR**
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const INTEP_DIR_OFFSET: u32 = 25;
     pub const INTEP_DIR_MASK: u32 = 0x02000000;
     pub const INTEP_DIR: u32 = 1 << 25;
 
     /// **ENDPOINT**
+    ///
     /// Endpoint number of the interrupt endpoint
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const ENDPOINT_OFFSET: u32 = 16;
     pub const ENDPOINT_MASK: u32 = 0x000f0000;
 
     /// **ADDRESS**
+    ///
     /// Device address
+    ///
     /// Bits `[6:0]`, mask `0x0000007f`
     pub const ADDRESS_OFFSET: u32 = 0;
     pub const ADDRESS_MASK: u32 = 0x0000007f;
@@ -3841,6 +4277,7 @@ impl AddrEndp15 {
     // ======== Field Accessors ========
 
     /// **INTEP_PREAMBLE** `[26]` (RW)
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub fn intep_preamble(&self) -> bool {
@@ -3860,6 +4297,7 @@ impl AddrEndp15 {
     }
 
     /// **INTEP_DIR** `[25]` (RW)
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub fn intep_dir(&self) -> bool {
@@ -3879,6 +4317,7 @@ impl AddrEndp15 {
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn endpoint(&self) -> u32 {
@@ -3886,6 +4325,7 @@ impl AddrEndp15 {
     }
 
     /// Write **ENDPOINT** `[19:16]` (RW)
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
@@ -3893,6 +4333,7 @@ impl AddrEndp15 {
     }
 
     /// **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn address(&self) -> u32 {
@@ -3900,6 +4341,7 @@ impl AddrEndp15 {
     }
 
     /// Write **ADDRESS** `[6:0]` (RW)
+    ///
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
@@ -3937,6 +4379,7 @@ impl AddrEndp15Val {
     }
 
     /// Read **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn intep_preamble(&self) -> bool {
@@ -3944,6 +4387,7 @@ impl AddrEndp15Val {
     }
 
     /// Read **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn intep_dir(&self) -> bool {
@@ -3951,6 +4395,7 @@ impl AddrEndp15Val {
     }
 
     /// Read **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn endpoint(&self) -> u32 {
@@ -3958,6 +4403,7 @@ impl AddrEndp15Val {
     }
 
     /// Read **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn address(&self) -> u32 {
@@ -3965,6 +4411,7 @@ impl AddrEndp15Val {
     }
 
     /// Set **INTEP_PREAMBLE** `[26:26]`
+    ///
     /// Interrupt EP requires preamble (is a low speed device on a full speed hub)
     #[inline(always)]
     pub const fn with_intep_preamble(self, value: bool) -> Self {
@@ -3978,6 +4425,7 @@ impl AddrEndp15Val {
     }
 
     /// Set **INTEP_DIR** `[25:25]`
+    ///
     /// Direction of the interrupt endpoint. In=0, Out=1
     #[inline(always)]
     pub const fn with_intep_dir(self, value: bool) -> Self {
@@ -3991,6 +4439,7 @@ impl AddrEndp15Val {
     }
 
     /// Set **ENDPOINT** `[19:16]`
+    ///
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
@@ -4000,6 +4449,7 @@ impl AddrEndp15Val {
     }
 
     /// Set **ADDRESS** `[6:0]`
+    ///
     /// Device address
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
@@ -4047,14 +4497,21 @@ impl AddrEndp15 {
 /// ## Fields
 ///
 /// - **SIM_TIMING** `[31]` (RW)
+///
 ///   Reduced timings for simulation
+///
 /// - **PHY_ISO** `[2]` (RW)
+///
 ///   Isolates USB phy after controller power-up
 ///   Remove isolation once software has configured the controller
 ///   Not isolated = 0, Isolated = 1
+///
 /// - **HOST_NDEVICE** `[1]` (RW)
+///
 ///   Device mode = 0, Host mode = 1
+///
 /// - **CONTROLLER_EN** `[0]` (RW)
+///
 ///   Enable controller
 #[repr(transparent)]
 pub struct MainCtrl {
@@ -4073,30 +4530,38 @@ impl MainCtrl {
     // ======== Field Constants ========
 
     /// **SIM_TIMING**
+    ///
     /// Reduced timings for simulation
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const SIM_TIMING_OFFSET: u32 = 31;
     pub const SIM_TIMING_MASK: u32 = 0x80000000;
     pub const SIM_TIMING: u32 = 1 << 31;
 
     /// **PHY_ISO**
+    ///
     /// Isolates USB phy after controller power-up
     /// Remove isolation once software has configured the controller
     /// Not isolated = 0, Isolated = 1
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const PHY_ISO_OFFSET: u32 = 2;
     pub const PHY_ISO_MASK: u32 = 0x00000004;
     pub const PHY_ISO: u32 = 1 << 2;
 
     /// **HOST_NDEVICE**
+    ///
     /// Device mode = 0, Host mode = 1
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HOST_NDEVICE_OFFSET: u32 = 1;
     pub const HOST_NDEVICE_MASK: u32 = 0x00000002;
     pub const HOST_NDEVICE: u32 = 1 << 1;
 
     /// **CONTROLLER_EN**
+    ///
     /// Enable controller
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CONTROLLER_EN_OFFSET: u32 = 0;
     pub const CONTROLLER_EN_MASK: u32 = 0x00000001;
@@ -4105,6 +4570,7 @@ impl MainCtrl {
     // ======== Field Accessors ========
 
     /// **SIM_TIMING** `[31]` (RW)
+    ///
     /// Reduced timings for simulation
     #[inline(always)]
     pub fn sim_timing(&self) -> bool {
@@ -4124,6 +4590,7 @@ impl MainCtrl {
     }
 
     /// **PHY_ISO** `[2]` (RW)
+    ///
     /// Isolates USB phy after controller power-up
     /// Remove isolation once software has configured the controller
     /// Not isolated = 0, Isolated = 1
@@ -4145,6 +4612,7 @@ impl MainCtrl {
     }
 
     /// **HOST_NDEVICE** `[1]` (RW)
+    ///
     /// Device mode = 0, Host mode = 1
     #[inline(always)]
     pub fn host_ndevice(&self) -> bool {
@@ -4164,6 +4632,7 @@ impl MainCtrl {
     }
 
     /// **CONTROLLER_EN** `[0]` (RW)
+    ///
     /// Enable controller
     #[inline(always)]
     pub fn controller_en(&self) -> bool {
@@ -4213,6 +4682,7 @@ impl MainCtrlVal {
     }
 
     /// Read **SIM_TIMING** `[31:31]`
+    ///
     /// Reduced timings for simulation
     #[inline(always)]
     pub const fn sim_timing(&self) -> bool {
@@ -4220,6 +4690,7 @@ impl MainCtrlVal {
     }
 
     /// Read **PHY_ISO** `[2:2]`
+    ///
     /// Isolates USB phy after controller power-up
     /// Remove isolation once software has configured the controller
     /// Not isolated = 0, Isolated = 1
@@ -4229,6 +4700,7 @@ impl MainCtrlVal {
     }
 
     /// Read **HOST_NDEVICE** `[1:1]`
+    ///
     /// Device mode = 0, Host mode = 1
     #[inline(always)]
     pub const fn host_ndevice(&self) -> bool {
@@ -4236,6 +4708,7 @@ impl MainCtrlVal {
     }
 
     /// Read **CONTROLLER_EN** `[0:0]`
+    ///
     /// Enable controller
     #[inline(always)]
     pub const fn controller_en(&self) -> bool {
@@ -4243,6 +4716,7 @@ impl MainCtrlVal {
     }
 
     /// Set **SIM_TIMING** `[31:31]`
+    ///
     /// Reduced timings for simulation
     #[inline(always)]
     pub const fn with_sim_timing(self, value: bool) -> Self {
@@ -4256,6 +4730,7 @@ impl MainCtrlVal {
     }
 
     /// Set **PHY_ISO** `[2:2]`
+    ///
     /// Isolates USB phy after controller power-up
     /// Remove isolation once software has configured the controller
     /// Not isolated = 0, Isolated = 1
@@ -4271,6 +4746,7 @@ impl MainCtrlVal {
     }
 
     /// Set **HOST_NDEVICE** `[1:1]`
+    ///
     /// Device mode = 0, Host mode = 1
     #[inline(always)]
     pub const fn with_host_ndevice(self, value: bool) -> Self {
@@ -4284,6 +4760,7 @@ impl MainCtrlVal {
     }
 
     /// Set **CONTROLLER_EN** `[0:0]`
+    ///
     /// Enable controller
     #[inline(always)]
     pub const fn with_controller_en(self, value: bool) -> Self {
@@ -4358,7 +4835,6 @@ impl SofWr {
 
     // ======== Field Accessors ========
 
-    /// **COUNT** `[10:0]` (WO)
     /// Write **COUNT** `[10:0]` (WO)
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
@@ -4546,54 +5022,103 @@ impl SofRd {
 /// ## Fields
 ///
 /// - **EP0_INT_STALL** `[31]` (RW)
+///
 ///   Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a STALL
+///
 /// - **EP0_DOUBLE_BUF** `[30]` (RW)
+///
 ///   Device: EP0 single buffered = 0, double buffered = 1
+///
 /// - **EP0_INT_1BUF** `[29]` (RW)
+///
 ///   Device: Set bit in BUFF_STATUS for every buffer completed on EP0
+///
 /// - **EP0_INT_2BUF** `[28]` (RW)
+///
 ///   Device: Set bit in BUFF_STATUS for every 2 buffers completed on EP0
+///
 /// - **EP0_INT_NAK** `[27]` (RW)
+///
 ///   Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a NAK
+///
 /// - **DIRECT_EN** `[26]` (RW)
+///
 ///   Direct bus drive enable
+///
 /// - **DIRECT_DP** `[25]` (RW)
+///
 ///   Direct control of DP
+///
 /// - **DIRECT_DM** `[24]` (RW)
+///
 ///   Direct control of DM
+///
 /// - **EP0_STOP_ON_SHORT_PACKET** `[19]` (RW)
+///
 ///   Device: Stop EP0 on a short packet.
+///
 /// - **TRANSCEIVER_PD** `[18]` (RW)
+///
 ///   Power down bus transceiver
+///
 /// - **RPU_OPT** `[17]` (RW)
+///
 ///   Device: Pull-up strength (0=1K2, 1=2k3)
+///
 /// - **PULLUP_EN** `[16]` (RW)
+///
 ///   Device: Enable pull up resistor
+///
 /// - **PULLDOWN_EN** `[15]` (RW)
+///
 ///   Host: Enable pull down resistors
+///
 /// - **RESET_BUS** `[13]` (WO)
+///
 ///   Host: Reset bus
+///
 /// - **RESUME** `[12]` (WO)
+///
 ///   Device: Remote wakeup. Device can initiate its own resume after suspend.
+///
 /// - **VBUS_EN** `[11]` (RW)
+///
 ///   Host: Enable VBUS
+///
 /// - **KEEP_ALIVE_EN** `[10]` (RW)
+///
 ///   Host: Enable keep alive packet (for low speed bus)
+///
 /// - **SOF_EN** `[9]` (RW)
+///
 ///   Host: Enable SOF generation (for full speed bus)
+///
 /// - **SOF_SYNC** `[8]` (RW)
+///
 ///   Host: Delay packet(s) until after SOF
+///
 /// - **PREAMBLE_EN** `[6]` (RW)
+///
 ///   Host: Preable enable for LS device on FS hub
+///
 /// - **STOP_TRANS** `[4]` (WO)
+///
 ///   Host: Stop transaction
+///
 /// - **RECEIVE_DATA** `[3]` (RW)
+///
 ///   Host: Receive transaction (IN to host)
+///
 /// - **SEND_DATA** `[2]` (RW)
+///
 ///   Host: Send transaction (OUT from host)
+///
 /// - **SEND_SETUP** `[1]` (RW)
+///
 ///   Host: Send Setup packet
+///
 /// - **START_TRANS** `[0]` (WO)
+///
 ///   Host: Start transaction
 #[repr(transparent)]
 pub struct SieCtrl {
@@ -4612,175 +5137,225 @@ impl SieCtrl {
     // ======== Field Constants ========
 
     /// **EP0_INT_STALL**
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a STALL
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const EP0_INT_STALL_OFFSET: u32 = 31;
     pub const EP0_INT_STALL_MASK: u32 = 0x80000000;
     pub const EP0_INT_STALL: u32 = 1 << 31;
 
     /// **EP0_DOUBLE_BUF**
+    ///
     /// Device: EP0 single buffered = 0, double buffered = 1
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const EP0_DOUBLE_BUF_OFFSET: u32 = 30;
     pub const EP0_DOUBLE_BUF_MASK: u32 = 0x40000000;
     pub const EP0_DOUBLE_BUF: u32 = 1 << 30;
 
     /// **EP0_INT_1BUF**
+    ///
     /// Device: Set bit in BUFF_STATUS for every buffer completed on EP0
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const EP0_INT_1BUF_OFFSET: u32 = 29;
     pub const EP0_INT_1BUF_MASK: u32 = 0x20000000;
     pub const EP0_INT_1BUF: u32 = 1 << 29;
 
     /// **EP0_INT_2BUF**
+    ///
     /// Device: Set bit in BUFF_STATUS for every 2 buffers completed on EP0
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const EP0_INT_2BUF_OFFSET: u32 = 28;
     pub const EP0_INT_2BUF_MASK: u32 = 0x10000000;
     pub const EP0_INT_2BUF: u32 = 1 << 28;
 
     /// **EP0_INT_NAK**
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a NAK
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const EP0_INT_NAK_OFFSET: u32 = 27;
     pub const EP0_INT_NAK_MASK: u32 = 0x08000000;
     pub const EP0_INT_NAK: u32 = 1 << 27;
 
     /// **DIRECT_EN**
+    ///
     /// Direct bus drive enable
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const DIRECT_EN_OFFSET: u32 = 26;
     pub const DIRECT_EN_MASK: u32 = 0x04000000;
     pub const DIRECT_EN: u32 = 1 << 26;
 
     /// **DIRECT_DP**
+    ///
     /// Direct control of DP
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const DIRECT_DP_OFFSET: u32 = 25;
     pub const DIRECT_DP_MASK: u32 = 0x02000000;
     pub const DIRECT_DP: u32 = 1 << 25;
 
     /// **DIRECT_DM**
+    ///
     /// Direct control of DM
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const DIRECT_DM_OFFSET: u32 = 24;
     pub const DIRECT_DM_MASK: u32 = 0x01000000;
     pub const DIRECT_DM: u32 = 1 << 24;
 
     /// **EP0_STOP_ON_SHORT_PACKET**
+    ///
     /// Device: Stop EP0 on a short packet.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EP0_STOP_ON_SHORT_PACKET_OFFSET: u32 = 19;
     pub const EP0_STOP_ON_SHORT_PACKET_MASK: u32 = 0x00080000;
     pub const EP0_STOP_ON_SHORT_PACKET: u32 = 1 << 19;
 
     /// **TRANSCEIVER_PD**
+    ///
     /// Power down bus transceiver
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const TRANSCEIVER_PD_OFFSET: u32 = 18;
     pub const TRANSCEIVER_PD_MASK: u32 = 0x00040000;
     pub const TRANSCEIVER_PD: u32 = 1 << 18;
 
     /// **RPU_OPT**
+    ///
     /// Device: Pull-up strength (0=1K2, 1=2k3)
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const RPU_OPT_OFFSET: u32 = 17;
     pub const RPU_OPT_MASK: u32 = 0x00020000;
     pub const RPU_OPT: u32 = 1 << 17;
 
     /// **PULLUP_EN**
+    ///
     /// Device: Enable pull up resistor
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const PULLUP_EN_OFFSET: u32 = 16;
     pub const PULLUP_EN_MASK: u32 = 0x00010000;
     pub const PULLUP_EN: u32 = 1 << 16;
 
     /// **PULLDOWN_EN**
+    ///
     /// Host: Enable pull down resistors
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const PULLDOWN_EN_OFFSET: u32 = 15;
     pub const PULLDOWN_EN_MASK: u32 = 0x00008000;
     pub const PULLDOWN_EN: u32 = 1 << 15;
 
     /// **RESET_BUS**
+    ///
     /// Host: Reset bus
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const RESET_BUS_OFFSET: u32 = 13;
     pub const RESET_BUS_MASK: u32 = 0x00002000;
     pub const RESET_BUS: u32 = 1 << 13;
 
     /// **RESUME**
+    ///
     /// Device: Remote wakeup. Device can initiate its own resume after suspend.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESUME_OFFSET: u32 = 12;
     pub const RESUME_MASK: u32 = 0x00001000;
     pub const RESUME: u32 = 1 << 12;
 
     /// **VBUS_EN**
+    ///
     /// Host: Enable VBUS
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VBUS_EN_OFFSET: u32 = 11;
     pub const VBUS_EN_MASK: u32 = 0x00000800;
     pub const VBUS_EN: u32 = 1 << 11;
 
     /// **KEEP_ALIVE_EN**
+    ///
     /// Host: Enable keep alive packet (for low speed bus)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KEEP_ALIVE_EN_OFFSET: u32 = 10;
     pub const KEEP_ALIVE_EN_MASK: u32 = 0x00000400;
     pub const KEEP_ALIVE_EN: u32 = 1 << 10;
 
     /// **SOF_EN**
+    ///
     /// Host: Enable SOF generation (for full speed bus)
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const SOF_EN_OFFSET: u32 = 9;
     pub const SOF_EN_MASK: u32 = 0x00000200;
     pub const SOF_EN: u32 = 1 << 9;
 
     /// **SOF_SYNC**
+    ///
     /// Host: Delay packet(s) until after SOF
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const SOF_SYNC_OFFSET: u32 = 8;
     pub const SOF_SYNC_MASK: u32 = 0x00000100;
     pub const SOF_SYNC: u32 = 1 << 8;
 
     /// **PREAMBLE_EN**
+    ///
     /// Host: Preable enable for LS device on FS hub
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const PREAMBLE_EN_OFFSET: u32 = 6;
     pub const PREAMBLE_EN_MASK: u32 = 0x00000040;
     pub const PREAMBLE_EN: u32 = 1 << 6;
 
     /// **STOP_TRANS**
+    ///
     /// Host: Stop transaction
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const STOP_TRANS_OFFSET: u32 = 4;
     pub const STOP_TRANS_MASK: u32 = 0x00000010;
     pub const STOP_TRANS: u32 = 1 << 4;
 
     /// **RECEIVE_DATA**
+    ///
     /// Host: Receive transaction (IN to host)
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const RECEIVE_DATA_OFFSET: u32 = 3;
     pub const RECEIVE_DATA_MASK: u32 = 0x00000008;
     pub const RECEIVE_DATA: u32 = 1 << 3;
 
     /// **SEND_DATA**
+    ///
     /// Host: Send transaction (OUT from host)
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SEND_DATA_OFFSET: u32 = 2;
     pub const SEND_DATA_MASK: u32 = 0x00000004;
     pub const SEND_DATA: u32 = 1 << 2;
 
     /// **SEND_SETUP**
+    ///
     /// Host: Send Setup packet
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SEND_SETUP_OFFSET: u32 = 1;
     pub const SEND_SETUP_MASK: u32 = 0x00000002;
     pub const SEND_SETUP: u32 = 1 << 1;
 
     /// **START_TRANS**
+    ///
     /// Host: Start transaction
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const START_TRANS_OFFSET: u32 = 0;
     pub const START_TRANS_MASK: u32 = 0x00000001;
@@ -4789,6 +5364,7 @@ impl SieCtrl {
     // ======== Field Accessors ========
 
     /// **EP0_INT_STALL** `[31]` (RW)
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a STALL
     #[inline(always)]
     pub fn ep0_int_stall(&self) -> bool {
@@ -4808,6 +5384,7 @@ impl SieCtrl {
     }
 
     /// **EP0_DOUBLE_BUF** `[30]` (RW)
+    ///
     /// Device: EP0 single buffered = 0, double buffered = 1
     #[inline(always)]
     pub fn ep0_double_buf(&self) -> bool {
@@ -4827,6 +5404,7 @@ impl SieCtrl {
     }
 
     /// **EP0_INT_1BUF** `[29]` (RW)
+    ///
     /// Device: Set bit in BUFF_STATUS for every buffer completed on EP0
     #[inline(always)]
     pub fn ep0_int_1buf(&self) -> bool {
@@ -4846,6 +5424,7 @@ impl SieCtrl {
     }
 
     /// **EP0_INT_2BUF** `[28]` (RW)
+    ///
     /// Device: Set bit in BUFF_STATUS for every 2 buffers completed on EP0
     #[inline(always)]
     pub fn ep0_int_2buf(&self) -> bool {
@@ -4865,6 +5444,7 @@ impl SieCtrl {
     }
 
     /// **EP0_INT_NAK** `[27]` (RW)
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a NAK
     #[inline(always)]
     pub fn ep0_int_nak(&self) -> bool {
@@ -4884,6 +5464,7 @@ impl SieCtrl {
     }
 
     /// **DIRECT_EN** `[26]` (RW)
+    ///
     /// Direct bus drive enable
     #[inline(always)]
     pub fn direct_en(&self) -> bool {
@@ -4903,6 +5484,7 @@ impl SieCtrl {
     }
 
     /// **DIRECT_DP** `[25]` (RW)
+    ///
     /// Direct control of DP
     #[inline(always)]
     pub fn direct_dp(&self) -> bool {
@@ -4922,6 +5504,7 @@ impl SieCtrl {
     }
 
     /// **DIRECT_DM** `[24]` (RW)
+    ///
     /// Direct control of DM
     #[inline(always)]
     pub fn direct_dm(&self) -> bool {
@@ -4941,6 +5524,7 @@ impl SieCtrl {
     }
 
     /// **EP0_STOP_ON_SHORT_PACKET** `[19]` (RW)
+    ///
     /// Device: Stop EP0 on a short packet.
     #[inline(always)]
     pub fn ep0_stop_on_short_packet(&self) -> bool {
@@ -4960,6 +5544,7 @@ impl SieCtrl {
     }
 
     /// **TRANSCEIVER_PD** `[18]` (RW)
+    ///
     /// Power down bus transceiver
     #[inline(always)]
     pub fn transceiver_pd(&self) -> bool {
@@ -4979,6 +5564,7 @@ impl SieCtrl {
     }
 
     /// **RPU_OPT** `[17]` (RW)
+    ///
     /// Device: Pull-up strength (0=1K2, 1=2k3)
     #[inline(always)]
     pub fn rpu_opt(&self) -> bool {
@@ -4998,6 +5584,7 @@ impl SieCtrl {
     }
 
     /// **PULLUP_EN** `[16]` (RW)
+    ///
     /// Device: Enable pull up resistor
     #[inline(always)]
     pub fn pullup_en(&self) -> bool {
@@ -5017,6 +5604,7 @@ impl SieCtrl {
     }
 
     /// **PULLDOWN_EN** `[15]` (RW)
+    ///
     /// Host: Enable pull down resistors
     #[inline(always)]
     pub fn pulldown_en(&self) -> bool {
@@ -5035,18 +5623,16 @@ impl SieCtrl {
         self.value.clr_bits(Self::PULLDOWN_EN_MASK);
     }
 
-    /// **RESET_BUS** `[13]` (WO)
-    /// Host: Reset bus
     /// Trigger **RESET_BUS** (WO)
+    ///
     /// Host: Reset bus
     #[inline(always)]
     pub fn trigger_reset_bus(&self) {
         self.value.write_bits(Self::RESET_BUS_MASK);
     }
 
-    /// **RESUME** `[12]` (WO)
-    /// Device: Remote wakeup. Device can initiate its own resume after suspend.
     /// Trigger **RESUME** (WO)
+    ///
     /// Device: Remote wakeup. Device can initiate its own resume after suspend.
     #[inline(always)]
     pub fn trigger_resume(&self) {
@@ -5054,6 +5640,7 @@ impl SieCtrl {
     }
 
     /// **VBUS_EN** `[11]` (RW)
+    ///
     /// Host: Enable VBUS
     #[inline(always)]
     pub fn vbus_en(&self) -> bool {
@@ -5073,6 +5660,7 @@ impl SieCtrl {
     }
 
     /// **KEEP_ALIVE_EN** `[10]` (RW)
+    ///
     /// Host: Enable keep alive packet (for low speed bus)
     #[inline(always)]
     pub fn keep_alive_en(&self) -> bool {
@@ -5092,6 +5680,7 @@ impl SieCtrl {
     }
 
     /// **SOF_EN** `[9]` (RW)
+    ///
     /// Host: Enable SOF generation (for full speed bus)
     #[inline(always)]
     pub fn sof_en(&self) -> bool {
@@ -5111,6 +5700,7 @@ impl SieCtrl {
     }
 
     /// **SOF_SYNC** `[8]` (RW)
+    ///
     /// Host: Delay packet(s) until after SOF
     #[inline(always)]
     pub fn sof_sync(&self) -> bool {
@@ -5130,6 +5720,7 @@ impl SieCtrl {
     }
 
     /// **PREAMBLE_EN** `[6]` (RW)
+    ///
     /// Host: Preable enable for LS device on FS hub
     #[inline(always)]
     pub fn preamble_en(&self) -> bool {
@@ -5148,9 +5739,8 @@ impl SieCtrl {
         self.value.clr_bits(Self::PREAMBLE_EN_MASK);
     }
 
-    /// **STOP_TRANS** `[4]` (WO)
-    /// Host: Stop transaction
     /// Trigger **STOP_TRANS** (WO)
+    ///
     /// Host: Stop transaction
     #[inline(always)]
     pub fn trigger_stop_trans(&self) {
@@ -5158,6 +5748,7 @@ impl SieCtrl {
     }
 
     /// **RECEIVE_DATA** `[3]` (RW)
+    ///
     /// Host: Receive transaction (IN to host)
     #[inline(always)]
     pub fn receive_data(&self) -> bool {
@@ -5177,6 +5768,7 @@ impl SieCtrl {
     }
 
     /// **SEND_DATA** `[2]` (RW)
+    ///
     /// Host: Send transaction (OUT from host)
     #[inline(always)]
     pub fn send_data(&self) -> bool {
@@ -5196,6 +5788,7 @@ impl SieCtrl {
     }
 
     /// **SEND_SETUP** `[1]` (RW)
+    ///
     /// Host: Send Setup packet
     #[inline(always)]
     pub fn send_setup(&self) -> bool {
@@ -5214,9 +5807,8 @@ impl SieCtrl {
         self.value.clr_bits(Self::SEND_SETUP_MASK);
     }
 
-    /// **START_TRANS** `[0]` (WO)
-    /// Host: Start transaction
     /// Trigger **START_TRANS** (WO)
+    ///
     /// Host: Start transaction
     #[inline(always)]
     pub fn trigger_start_trans(&self) {
@@ -5254,6 +5846,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_INT_STALL** `[31:31]`
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a STALL
     #[inline(always)]
     pub const fn ep0_int_stall(&self) -> bool {
@@ -5261,6 +5854,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_DOUBLE_BUF** `[30:30]`
+    ///
     /// Device: EP0 single buffered = 0, double buffered = 1
     #[inline(always)]
     pub const fn ep0_double_buf(&self) -> bool {
@@ -5268,6 +5862,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_INT_1BUF** `[29:29]`
+    ///
     /// Device: Set bit in BUFF_STATUS for every buffer completed on EP0
     #[inline(always)]
     pub const fn ep0_int_1buf(&self) -> bool {
@@ -5275,6 +5870,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_INT_2BUF** `[28:28]`
+    ///
     /// Device: Set bit in BUFF_STATUS for every 2 buffers completed on EP0
     #[inline(always)]
     pub const fn ep0_int_2buf(&self) -> bool {
@@ -5282,6 +5878,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_INT_NAK** `[27:27]`
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a NAK
     #[inline(always)]
     pub const fn ep0_int_nak(&self) -> bool {
@@ -5289,6 +5886,7 @@ impl SieCtrlVal {
     }
 
     /// Read **DIRECT_EN** `[26:26]`
+    ///
     /// Direct bus drive enable
     #[inline(always)]
     pub const fn direct_en(&self) -> bool {
@@ -5296,6 +5894,7 @@ impl SieCtrlVal {
     }
 
     /// Read **DIRECT_DP** `[25:25]`
+    ///
     /// Direct control of DP
     #[inline(always)]
     pub const fn direct_dp(&self) -> bool {
@@ -5303,6 +5902,7 @@ impl SieCtrlVal {
     }
 
     /// Read **DIRECT_DM** `[24:24]`
+    ///
     /// Direct control of DM
     #[inline(always)]
     pub const fn direct_dm(&self) -> bool {
@@ -5310,6 +5910,7 @@ impl SieCtrlVal {
     }
 
     /// Read **EP0_STOP_ON_SHORT_PACKET** `[19:19]`
+    ///
     /// Device: Stop EP0 on a short packet.
     #[inline(always)]
     pub const fn ep0_stop_on_short_packet(&self) -> bool {
@@ -5317,6 +5918,7 @@ impl SieCtrlVal {
     }
 
     /// Read **TRANSCEIVER_PD** `[18:18]`
+    ///
     /// Power down bus transceiver
     #[inline(always)]
     pub const fn transceiver_pd(&self) -> bool {
@@ -5324,6 +5926,7 @@ impl SieCtrlVal {
     }
 
     /// Read **RPU_OPT** `[17:17]`
+    ///
     /// Device: Pull-up strength (0=1K2, 1=2k3)
     #[inline(always)]
     pub const fn rpu_opt(&self) -> bool {
@@ -5331,6 +5934,7 @@ impl SieCtrlVal {
     }
 
     /// Read **PULLUP_EN** `[16:16]`
+    ///
     /// Device: Enable pull up resistor
     #[inline(always)]
     pub const fn pullup_en(&self) -> bool {
@@ -5338,6 +5942,7 @@ impl SieCtrlVal {
     }
 
     /// Read **PULLDOWN_EN** `[15:15]`
+    ///
     /// Host: Enable pull down resistors
     #[inline(always)]
     pub const fn pulldown_en(&self) -> bool {
@@ -5345,6 +5950,7 @@ impl SieCtrlVal {
     }
 
     /// Read **VBUS_EN** `[11:11]`
+    ///
     /// Host: Enable VBUS
     #[inline(always)]
     pub const fn vbus_en(&self) -> bool {
@@ -5352,6 +5958,7 @@ impl SieCtrlVal {
     }
 
     /// Read **KEEP_ALIVE_EN** `[10:10]`
+    ///
     /// Host: Enable keep alive packet (for low speed bus)
     #[inline(always)]
     pub const fn keep_alive_en(&self) -> bool {
@@ -5359,6 +5966,7 @@ impl SieCtrlVal {
     }
 
     /// Read **SOF_EN** `[9:9]`
+    ///
     /// Host: Enable SOF generation (for full speed bus)
     #[inline(always)]
     pub const fn sof_en(&self) -> bool {
@@ -5366,6 +5974,7 @@ impl SieCtrlVal {
     }
 
     /// Read **SOF_SYNC** `[8:8]`
+    ///
     /// Host: Delay packet(s) until after SOF
     #[inline(always)]
     pub const fn sof_sync(&self) -> bool {
@@ -5373,6 +5982,7 @@ impl SieCtrlVal {
     }
 
     /// Read **PREAMBLE_EN** `[6:6]`
+    ///
     /// Host: Preable enable for LS device on FS hub
     #[inline(always)]
     pub const fn preamble_en(&self) -> bool {
@@ -5380,6 +5990,7 @@ impl SieCtrlVal {
     }
 
     /// Read **RECEIVE_DATA** `[3:3]`
+    ///
     /// Host: Receive transaction (IN to host)
     #[inline(always)]
     pub const fn receive_data(&self) -> bool {
@@ -5387,6 +5998,7 @@ impl SieCtrlVal {
     }
 
     /// Read **SEND_DATA** `[2:2]`
+    ///
     /// Host: Send transaction (OUT from host)
     #[inline(always)]
     pub const fn send_data(&self) -> bool {
@@ -5394,6 +6006,7 @@ impl SieCtrlVal {
     }
 
     /// Read **SEND_SETUP** `[1:1]`
+    ///
     /// Host: Send Setup packet
     #[inline(always)]
     pub const fn send_setup(&self) -> bool {
@@ -5401,6 +6014,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_INT_STALL** `[31:31]`
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a STALL
     #[inline(always)]
     pub const fn with_ep0_int_stall(self, value: bool) -> Self {
@@ -5414,6 +6028,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_DOUBLE_BUF** `[30:30]`
+    ///
     /// Device: EP0 single buffered = 0, double buffered = 1
     #[inline(always)]
     pub const fn with_ep0_double_buf(self, value: bool) -> Self {
@@ -5427,6 +6042,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_INT_1BUF** `[29:29]`
+    ///
     /// Device: Set bit in BUFF_STATUS for every buffer completed on EP0
     #[inline(always)]
     pub const fn with_ep0_int_1buf(self, value: bool) -> Self {
@@ -5440,6 +6056,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_INT_2BUF** `[28:28]`
+    ///
     /// Device: Set bit in BUFF_STATUS for every 2 buffers completed on EP0
     #[inline(always)]
     pub const fn with_ep0_int_2buf(self, value: bool) -> Self {
@@ -5453,6 +6070,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_INT_NAK** `[27:27]`
+    ///
     /// Device: Set bit in EP_STATUS_STALL_NAK when EP0 sends a NAK
     #[inline(always)]
     pub const fn with_ep0_int_nak(self, value: bool) -> Self {
@@ -5466,6 +6084,7 @@ impl SieCtrlVal {
     }
 
     /// Set **DIRECT_EN** `[26:26]`
+    ///
     /// Direct bus drive enable
     #[inline(always)]
     pub const fn with_direct_en(self, value: bool) -> Self {
@@ -5479,6 +6098,7 @@ impl SieCtrlVal {
     }
 
     /// Set **DIRECT_DP** `[25:25]`
+    ///
     /// Direct control of DP
     #[inline(always)]
     pub const fn with_direct_dp(self, value: bool) -> Self {
@@ -5492,6 +6112,7 @@ impl SieCtrlVal {
     }
 
     /// Set **DIRECT_DM** `[24:24]`
+    ///
     /// Direct control of DM
     #[inline(always)]
     pub const fn with_direct_dm(self, value: bool) -> Self {
@@ -5505,6 +6126,7 @@ impl SieCtrlVal {
     }
 
     /// Set **EP0_STOP_ON_SHORT_PACKET** `[19:19]`
+    ///
     /// Device: Stop EP0 on a short packet.
     #[inline(always)]
     pub const fn with_ep0_stop_on_short_packet(self, value: bool) -> Self {
@@ -5518,6 +6140,7 @@ impl SieCtrlVal {
     }
 
     /// Set **TRANSCEIVER_PD** `[18:18]`
+    ///
     /// Power down bus transceiver
     #[inline(always)]
     pub const fn with_transceiver_pd(self, value: bool) -> Self {
@@ -5531,6 +6154,7 @@ impl SieCtrlVal {
     }
 
     /// Set **RPU_OPT** `[17:17]`
+    ///
     /// Device: Pull-up strength (0=1K2, 1=2k3)
     #[inline(always)]
     pub const fn with_rpu_opt(self, value: bool) -> Self {
@@ -5544,6 +6168,7 @@ impl SieCtrlVal {
     }
 
     /// Set **PULLUP_EN** `[16:16]`
+    ///
     /// Device: Enable pull up resistor
     #[inline(always)]
     pub const fn with_pullup_en(self, value: bool) -> Self {
@@ -5557,6 +6182,7 @@ impl SieCtrlVal {
     }
 
     /// Set **PULLDOWN_EN** `[15:15]`
+    ///
     /// Host: Enable pull down resistors
     #[inline(always)]
     pub const fn with_pulldown_en(self, value: bool) -> Self {
@@ -5570,6 +6196,7 @@ impl SieCtrlVal {
     }
 
     /// Set **RESET_BUS** `[13:13]`
+    ///
     /// Host: Reset bus
     #[inline(always)]
     pub const fn with_reset_bus(self, value: bool) -> Self {
@@ -5583,6 +6210,7 @@ impl SieCtrlVal {
     }
 
     /// Set **RESUME** `[12:12]`
+    ///
     /// Device: Remote wakeup. Device can initiate its own resume after suspend.
     #[inline(always)]
     pub const fn with_resume(self, value: bool) -> Self {
@@ -5596,6 +6224,7 @@ impl SieCtrlVal {
     }
 
     /// Set **VBUS_EN** `[11:11]`
+    ///
     /// Host: Enable VBUS
     #[inline(always)]
     pub const fn with_vbus_en(self, value: bool) -> Self {
@@ -5609,6 +6238,7 @@ impl SieCtrlVal {
     }
 
     /// Set **KEEP_ALIVE_EN** `[10:10]`
+    ///
     /// Host: Enable keep alive packet (for low speed bus)
     #[inline(always)]
     pub const fn with_keep_alive_en(self, value: bool) -> Self {
@@ -5622,6 +6252,7 @@ impl SieCtrlVal {
     }
 
     /// Set **SOF_EN** `[9:9]`
+    ///
     /// Host: Enable SOF generation (for full speed bus)
     #[inline(always)]
     pub const fn with_sof_en(self, value: bool) -> Self {
@@ -5635,6 +6266,7 @@ impl SieCtrlVal {
     }
 
     /// Set **SOF_SYNC** `[8:8]`
+    ///
     /// Host: Delay packet(s) until after SOF
     #[inline(always)]
     pub const fn with_sof_sync(self, value: bool) -> Self {
@@ -5648,6 +6280,7 @@ impl SieCtrlVal {
     }
 
     /// Set **PREAMBLE_EN** `[6:6]`
+    ///
     /// Host: Preable enable for LS device on FS hub
     #[inline(always)]
     pub const fn with_preamble_en(self, value: bool) -> Self {
@@ -5661,6 +6294,7 @@ impl SieCtrlVal {
     }
 
     /// Set **STOP_TRANS** `[4:4]`
+    ///
     /// Host: Stop transaction
     #[inline(always)]
     pub const fn with_stop_trans(self, value: bool) -> Self {
@@ -5674,6 +6308,7 @@ impl SieCtrlVal {
     }
 
     /// Set **RECEIVE_DATA** `[3:3]`
+    ///
     /// Host: Receive transaction (IN to host)
     #[inline(always)]
     pub const fn with_receive_data(self, value: bool) -> Self {
@@ -5687,6 +6322,7 @@ impl SieCtrlVal {
     }
 
     /// Set **SEND_DATA** `[2:2]`
+    ///
     /// Host: Send transaction (OUT from host)
     #[inline(always)]
     pub const fn with_send_data(self, value: bool) -> Self {
@@ -5700,6 +6336,7 @@ impl SieCtrlVal {
     }
 
     /// Set **SEND_SETUP** `[1:1]`
+    ///
     /// Host: Send Setup packet
     #[inline(always)]
     pub const fn with_send_setup(self, value: bool) -> Self {
@@ -5713,6 +6350,7 @@ impl SieCtrlVal {
     }
 
     /// Set **START_TRANS** `[0:0]`
+    ///
     /// Host: Start transaction
     #[inline(always)]
     pub const fn with_start_trans(self, value: bool) -> Self {
@@ -5764,52 +6402,91 @@ impl SieCtrl {
 /// ## Fields
 ///
 /// - **DATA_SEQ_ERROR** `[31]` (RW)
+///
 ///   Data Sequence Error.
 ///   The device can raise a sequence error in the following conditions:
 ///   * A SETUP packet is received followed by a DATA1 packet (data phase should always be DATA0) * An OUT packet is received from the host but doesn't match the data pid in the buffer control register read from DPSRAM
 ///   The host can raise a data sequence error in the following conditions:
 ///   * An IN packet from the device has the wrong data PID
+///
 /// - **ACK_REC** `[30]` (RW)
+///
 ///   ACK received. Raised by both host and device.
+///
 /// - **STALL_REC** `[29]` (RW)
+///
 ///   Host: STALL received
+///
 /// - **NAK_REC** `[28]` (RW)
+///
 ///   Host: NAK received
+///
 /// - **RX_TIMEOUT** `[27]` (RW)
+///
 ///   RX timeout is raised by both the host and device if an ACK is not received in the maximum time specified by the USB spec.
+///
 /// - **RX_OVERFLOW** `[26]` (RW)
+///
 ///   RX overflow is raised by the Serial RX engine if the incoming data is too fast.
+///
 /// - **BIT_STUFF_ERROR** `[25]` (RW)
+///
 ///   Bit Stuff Error. Raised by the Serial RX engine.
+///
 /// - **CRC_ERROR** `[24]` (RW)
+///
 ///   CRC Error. Raised by the Serial RX engine.
+///
 /// - **ENDPOINT_ERROR** `[23]` (RW)
+///
 ///   An endpoint has encountered an error. Read the ep_rx_error and ep_tx_error registers to find out which endpoint had an error.
+///
 /// - **BUS_RESET** `[19]` (RW)
+///
 ///   Device: bus reset received
+///
 /// - **TRANS_COMPLETE** `[18]` (RW)
+///
 ///   Transaction complete.
 ///   Raised by device if:
 ///   * An IN or OUT packet is sent with the `LAST_BUFF` bit set in the buffer control register
 ///   Raised by host if:
 ///   * A setup packet is sent when no data in or data out transaction follows * An IN packet is received and the `LAST_BUFF` bit is set in the buffer control register * An IN packet is received with zero length * An OUT packet is sent and the `LAST_BUFF` bit is set
+///
 /// - **SETUP_REC** `[17]` (RW)
+///
 ///   Device: Setup packet received
+///
 /// - **CONNECTED** `[16]` (RO)
+///
 ///   Device: connected
+///
 /// - **RX_SHORT_PACKET** `[12]` (RW)
+///
 ///   Device or Host has received a short packet. This is when the data received is less than configured in the buffer control register. Device: If using double buffered mode on device the buffer select will not be toggled after writing status back to the buffer control register. This is to prevent any further transactions on that endpoint until the user has reset the buffer control registers. Host: the current transfer will be stopped early.
+///
 /// - **RESUME** `[11]` (RW)
+///
 ///   Host: Device has initiated a remote resume. Device: host has initiated a resume.
+///
 /// - **VBUS_OVER_CURR** `[10]` (RO)
+///
 ///   VBUS over current detected
+///
 /// - **SPEED** `[9:8]` (RO)
+///
 ///   Host: device speed. Disconnected = 00, LS = 01, FS = 10
+///
 /// - **SUSPENDED** `[4]` (RW)
+///
 ///   Bus in suspended state. Valid for device and host. Host and device will go into suspend if neither Keep Alive / SOF frames are enabled.
+///
 /// - **LINE_STATE** `[3:2]` (RO)
+///
 ///   USB bus line state
+///
 /// - **VBUS_DETECTED** `[0]` (RO)
+///
 ///   Device: VBUS Detected
 #[repr(transparent)]
 pub struct SieStatus {
@@ -5828,146 +6505,186 @@ impl SieStatus {
     // ======== Field Constants ========
 
     /// **DATA_SEQ_ERROR**
+    ///
     /// Data Sequence Error.
     /// The device can raise a sequence error in the following conditions:
     /// * A SETUP packet is received followed by a DATA1 packet (data phase should always be DATA0) * An OUT packet is received from the host but doesn't match the data pid in the buffer control register read from DPSRAM
     /// The host can raise a data sequence error in the following conditions:
     /// * An IN packet from the device has the wrong data PID
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const DATA_SEQ_ERROR_OFFSET: u32 = 31;
     pub const DATA_SEQ_ERROR_MASK: u32 = 0x80000000;
     pub const DATA_SEQ_ERROR: u32 = 1 << 31;
 
     /// **ACK_REC**
+    ///
     /// ACK received. Raised by both host and device.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const ACK_REC_OFFSET: u32 = 30;
     pub const ACK_REC_MASK: u32 = 0x40000000;
     pub const ACK_REC: u32 = 1 << 30;
 
     /// **STALL_REC**
+    ///
     /// Host: STALL received
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const STALL_REC_OFFSET: u32 = 29;
     pub const STALL_REC_MASK: u32 = 0x20000000;
     pub const STALL_REC: u32 = 1 << 29;
 
     /// **NAK_REC**
+    ///
     /// Host: NAK received
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const NAK_REC_OFFSET: u32 = 28;
     pub const NAK_REC_MASK: u32 = 0x10000000;
     pub const NAK_REC: u32 = 1 << 28;
 
     /// **RX_TIMEOUT**
+    ///
     /// RX timeout is raised by both the host and device if an ACK is not received in the maximum time specified by the USB spec.
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const RX_TIMEOUT_OFFSET: u32 = 27;
     pub const RX_TIMEOUT_MASK: u32 = 0x08000000;
     pub const RX_TIMEOUT: u32 = 1 << 27;
 
     /// **RX_OVERFLOW**
+    ///
     /// RX overflow is raised by the Serial RX engine if the incoming data is too fast.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const RX_OVERFLOW_OFFSET: u32 = 26;
     pub const RX_OVERFLOW_MASK: u32 = 0x04000000;
     pub const RX_OVERFLOW: u32 = 1 << 26;
 
     /// **BIT_STUFF_ERROR**
+    ///
     /// Bit Stuff Error. Raised by the Serial RX engine.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const BIT_STUFF_ERROR_OFFSET: u32 = 25;
     pub const BIT_STUFF_ERROR_MASK: u32 = 0x02000000;
     pub const BIT_STUFF_ERROR: u32 = 1 << 25;
 
     /// **CRC_ERROR**
+    ///
     /// CRC Error. Raised by the Serial RX engine.
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const CRC_ERROR_OFFSET: u32 = 24;
     pub const CRC_ERROR_MASK: u32 = 0x01000000;
     pub const CRC_ERROR: u32 = 1 << 24;
 
     /// **ENDPOINT_ERROR**
+    ///
     /// An endpoint has encountered an error. Read the ep_rx_error and ep_tx_error registers to find out which endpoint had an error.
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const ENDPOINT_ERROR_OFFSET: u32 = 23;
     pub const ENDPOINT_ERROR_MASK: u32 = 0x00800000;
     pub const ENDPOINT_ERROR: u32 = 1 << 23;
 
     /// **BUS_RESET**
+    ///
     /// Device: bus reset received
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const BUS_RESET_OFFSET: u32 = 19;
     pub const BUS_RESET_MASK: u32 = 0x00080000;
     pub const BUS_RESET: u32 = 1 << 19;
 
     /// **TRANS_COMPLETE**
+    ///
     /// Transaction complete.
     /// Raised by device if:
     /// * An IN or OUT packet is sent with the `LAST_BUFF` bit set in the buffer control register
     /// Raised by host if:
     /// * A setup packet is sent when no data in or data out transaction follows * An IN packet is received and the `LAST_BUFF` bit is set in the buffer control register * An IN packet is received with zero length * An OUT packet is sent and the `LAST_BUFF` bit is set
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const TRANS_COMPLETE_OFFSET: u32 = 18;
     pub const TRANS_COMPLETE_MASK: u32 = 0x00040000;
     pub const TRANS_COMPLETE: u32 = 1 << 18;
 
     /// **SETUP_REC**
+    ///
     /// Device: Setup packet received
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const SETUP_REC_OFFSET: u32 = 17;
     pub const SETUP_REC_MASK: u32 = 0x00020000;
     pub const SETUP_REC: u32 = 1 << 17;
 
     /// **CONNECTED**
+    ///
     /// Device: connected
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CONNECTED_OFFSET: u32 = 16;
     pub const CONNECTED_MASK: u32 = 0x00010000;
     pub const CONNECTED: u32 = 1 << 16;
 
     /// **RX_SHORT_PACKET**
+    ///
     /// Device or Host has received a short packet. This is when the data received is less than configured in the buffer control register. Device: If using double buffered mode on device the buffer select will not be toggled after writing status back to the buffer control register. This is to prevent any further transactions on that endpoint until the user has reset the buffer control registers. Host: the current transfer will be stopped early.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RX_SHORT_PACKET_OFFSET: u32 = 12;
     pub const RX_SHORT_PACKET_MASK: u32 = 0x00001000;
     pub const RX_SHORT_PACKET: u32 = 1 << 12;
 
     /// **RESUME**
+    ///
     /// Host: Device has initiated a remote resume. Device: host has initiated a resume.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const RESUME_OFFSET: u32 = 11;
     pub const RESUME_MASK: u32 = 0x00000800;
     pub const RESUME: u32 = 1 << 11;
 
     /// **VBUS_OVER_CURR**
+    ///
     /// VBUS over current detected
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const VBUS_OVER_CURR_OFFSET: u32 = 10;
     pub const VBUS_OVER_CURR_MASK: u32 = 0x00000400;
     pub const VBUS_OVER_CURR: u32 = 1 << 10;
 
     /// **SPEED**
+    ///
     /// Host: device speed. Disconnected = 00, LS = 01, FS = 10
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const SPEED_OFFSET: u32 = 8;
     pub const SPEED_MASK: u32 = 0x00000300;
 
     /// **SUSPENDED**
+    ///
     /// Bus in suspended state. Valid for device and host. Host and device will go into suspend if neither Keep Alive / SOF frames are enabled.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const SUSPENDED_OFFSET: u32 = 4;
     pub const SUSPENDED_MASK: u32 = 0x00000010;
     pub const SUSPENDED: u32 = 1 << 4;
 
     /// **LINE_STATE**
+    ///
     /// USB bus line state
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LINE_STATE_OFFSET: u32 = 2;
     pub const LINE_STATE_MASK: u32 = 0x0000000c;
 
     /// **VBUS_DETECTED**
+    ///
     /// Device: VBUS Detected
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const VBUS_DETECTED_OFFSET: u32 = 0;
     pub const VBUS_DETECTED_MASK: u32 = 0x00000001;
@@ -5976,6 +6693,7 @@ impl SieStatus {
     // ======== Field Accessors ========
 
     /// **DATA_SEQ_ERROR** `[31]` (RW)
+    ///
     /// Data Sequence Error.
     /// The device can raise a sequence error in the following conditions:
     /// * A SETUP packet is received followed by a DATA1 packet (data phase should always be DATA0) * An OUT packet is received from the host but doesn't match the data pid in the buffer control register read from DPSRAM
@@ -5999,6 +6717,7 @@ impl SieStatus {
     }
 
     /// **ACK_REC** `[30]` (RW)
+    ///
     /// ACK received. Raised by both host and device.
     #[inline(always)]
     pub fn ack_rec(&self) -> bool {
@@ -6018,6 +6737,7 @@ impl SieStatus {
     }
 
     /// **STALL_REC** `[29]` (RW)
+    ///
     /// Host: STALL received
     #[inline(always)]
     pub fn stall_rec(&self) -> bool {
@@ -6037,6 +6757,7 @@ impl SieStatus {
     }
 
     /// **NAK_REC** `[28]` (RW)
+    ///
     /// Host: NAK received
     #[inline(always)]
     pub fn nak_rec(&self) -> bool {
@@ -6056,6 +6777,7 @@ impl SieStatus {
     }
 
     /// **RX_TIMEOUT** `[27]` (RW)
+    ///
     /// RX timeout is raised by both the host and device if an ACK is not received in the maximum time specified by the USB spec.
     #[inline(always)]
     pub fn rx_timeout(&self) -> bool {
@@ -6075,6 +6797,7 @@ impl SieStatus {
     }
 
     /// **RX_OVERFLOW** `[26]` (RW)
+    ///
     /// RX overflow is raised by the Serial RX engine if the incoming data is too fast.
     #[inline(always)]
     pub fn rx_overflow(&self) -> bool {
@@ -6094,6 +6817,7 @@ impl SieStatus {
     }
 
     /// **BIT_STUFF_ERROR** `[25]` (RW)
+    ///
     /// Bit Stuff Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub fn bit_stuff_error(&self) -> bool {
@@ -6113,6 +6837,7 @@ impl SieStatus {
     }
 
     /// **CRC_ERROR** `[24]` (RW)
+    ///
     /// CRC Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub fn crc_error(&self) -> bool {
@@ -6132,6 +6857,7 @@ impl SieStatus {
     }
 
     /// **ENDPOINT_ERROR** `[23]` (RW)
+    ///
     /// An endpoint has encountered an error. Read the ep_rx_error and ep_tx_error registers to find out which endpoint had an error.
     #[inline(always)]
     pub fn endpoint_error(&self) -> bool {
@@ -6151,6 +6877,7 @@ impl SieStatus {
     }
 
     /// **BUS_RESET** `[19]` (RW)
+    ///
     /// Device: bus reset received
     #[inline(always)]
     pub fn bus_reset(&self) -> bool {
@@ -6170,6 +6897,7 @@ impl SieStatus {
     }
 
     /// **TRANS_COMPLETE** `[18]` (RW)
+    ///
     /// Transaction complete.
     /// Raised by device if:
     /// * An IN or OUT packet is sent with the `LAST_BUFF` bit set in the buffer control register
@@ -6193,6 +6921,7 @@ impl SieStatus {
     }
 
     /// **SETUP_REC** `[17]` (RW)
+    ///
     /// Device: Setup packet received
     #[inline(always)]
     pub fn setup_rec(&self) -> bool {
@@ -6212,6 +6941,7 @@ impl SieStatus {
     }
 
     /// **CONNECTED** `[16]` (RO)
+    ///
     /// Device: connected
     #[inline(always)]
     pub fn connected(&self) -> bool {
@@ -6219,6 +6949,7 @@ impl SieStatus {
     }
 
     /// **RX_SHORT_PACKET** `[12]` (RW)
+    ///
     /// Device or Host has received a short packet. This is when the data received is less than configured in the buffer control register. Device: If using double buffered mode on device the buffer select will not be toggled after writing status back to the buffer control register. This is to prevent any further transactions on that endpoint until the user has reset the buffer control registers. Host: the current transfer will be stopped early.
     #[inline(always)]
     pub fn rx_short_packet(&self) -> bool {
@@ -6238,6 +6969,7 @@ impl SieStatus {
     }
 
     /// **RESUME** `[11]` (RW)
+    ///
     /// Host: Device has initiated a remote resume. Device: host has initiated a resume.
     #[inline(always)]
     pub fn resume(&self) -> bool {
@@ -6257,6 +6989,7 @@ impl SieStatus {
     }
 
     /// **VBUS_OVER_CURR** `[10]` (RO)
+    ///
     /// VBUS over current detected
     #[inline(always)]
     pub fn vbus_over_curr(&self) -> bool {
@@ -6264,6 +6997,7 @@ impl SieStatus {
     }
 
     /// **SPEED** `[9:8]` (RO)
+    ///
     /// Host: device speed. Disconnected = 00, LS = 01, FS = 10
     #[inline(always)]
     pub fn speed(&self) -> u32 {
@@ -6271,6 +7005,7 @@ impl SieStatus {
     }
 
     /// **SUSPENDED** `[4]` (RW)
+    ///
     /// Bus in suspended state. Valid for device and host. Host and device will go into suspend if neither Keep Alive / SOF frames are enabled.
     #[inline(always)]
     pub fn suspended(&self) -> bool {
@@ -6290,6 +7025,7 @@ impl SieStatus {
     }
 
     /// **LINE_STATE** `[3:2]` (RO)
+    ///
     /// USB bus line state
     #[inline(always)]
     pub fn line_state(&self) -> u32 {
@@ -6297,6 +7033,7 @@ impl SieStatus {
     }
 
     /// **VBUS_DETECTED** `[0]` (RO)
+    ///
     /// Device: VBUS Detected
     #[inline(always)]
     pub fn vbus_detected(&self) -> bool {
@@ -6334,6 +7071,7 @@ impl SieStatusVal {
     }
 
     /// Read **DATA_SEQ_ERROR** `[31:31]`
+    ///
     /// Data Sequence Error.
     /// The device can raise a sequence error in the following conditions:
     /// * A SETUP packet is received followed by a DATA1 packet (data phase should always be DATA0) * An OUT packet is received from the host but doesn't match the data pid in the buffer control register read from DPSRAM
@@ -6345,6 +7083,7 @@ impl SieStatusVal {
     }
 
     /// Read **ACK_REC** `[30:30]`
+    ///
     /// ACK received. Raised by both host and device.
     #[inline(always)]
     pub const fn ack_rec(&self) -> bool {
@@ -6352,6 +7091,7 @@ impl SieStatusVal {
     }
 
     /// Read **STALL_REC** `[29:29]`
+    ///
     /// Host: STALL received
     #[inline(always)]
     pub const fn stall_rec(&self) -> bool {
@@ -6359,6 +7099,7 @@ impl SieStatusVal {
     }
 
     /// Read **NAK_REC** `[28:28]`
+    ///
     /// Host: NAK received
     #[inline(always)]
     pub const fn nak_rec(&self) -> bool {
@@ -6366,6 +7107,7 @@ impl SieStatusVal {
     }
 
     /// Read **RX_TIMEOUT** `[27:27]`
+    ///
     /// RX timeout is raised by both the host and device if an ACK is not received in the maximum time specified by the USB spec.
     #[inline(always)]
     pub const fn rx_timeout(&self) -> bool {
@@ -6373,6 +7115,7 @@ impl SieStatusVal {
     }
 
     /// Read **RX_OVERFLOW** `[26:26]`
+    ///
     /// RX overflow is raised by the Serial RX engine if the incoming data is too fast.
     #[inline(always)]
     pub const fn rx_overflow(&self) -> bool {
@@ -6380,6 +7123,7 @@ impl SieStatusVal {
     }
 
     /// Read **BIT_STUFF_ERROR** `[25:25]`
+    ///
     /// Bit Stuff Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub const fn bit_stuff_error(&self) -> bool {
@@ -6387,6 +7131,7 @@ impl SieStatusVal {
     }
 
     /// Read **CRC_ERROR** `[24:24]`
+    ///
     /// CRC Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub const fn crc_error(&self) -> bool {
@@ -6394,6 +7139,7 @@ impl SieStatusVal {
     }
 
     /// Read **ENDPOINT_ERROR** `[23:23]`
+    ///
     /// An endpoint has encountered an error. Read the ep_rx_error and ep_tx_error registers to find out which endpoint had an error.
     #[inline(always)]
     pub const fn endpoint_error(&self) -> bool {
@@ -6401,6 +7147,7 @@ impl SieStatusVal {
     }
 
     /// Read **BUS_RESET** `[19:19]`
+    ///
     /// Device: bus reset received
     #[inline(always)]
     pub const fn bus_reset(&self) -> bool {
@@ -6408,6 +7155,7 @@ impl SieStatusVal {
     }
 
     /// Read **TRANS_COMPLETE** `[18:18]`
+    ///
     /// Transaction complete.
     /// Raised by device if:
     /// * An IN or OUT packet is sent with the `LAST_BUFF` bit set in the buffer control register
@@ -6419,6 +7167,7 @@ impl SieStatusVal {
     }
 
     /// Read **SETUP_REC** `[17:17]`
+    ///
     /// Device: Setup packet received
     #[inline(always)]
     pub const fn setup_rec(&self) -> bool {
@@ -6426,6 +7175,7 @@ impl SieStatusVal {
     }
 
     /// Read **CONNECTED** `[16:16]`
+    ///
     /// Device: connected
     #[inline(always)]
     pub const fn connected(&self) -> bool {
@@ -6433,6 +7183,7 @@ impl SieStatusVal {
     }
 
     /// Read **RX_SHORT_PACKET** `[12:12]`
+    ///
     /// Device or Host has received a short packet. This is when the data received is less than configured in the buffer control register. Device: If using double buffered mode on device the buffer select will not be toggled after writing status back to the buffer control register. This is to prevent any further transactions on that endpoint until the user has reset the buffer control registers. Host: the current transfer will be stopped early.
     #[inline(always)]
     pub const fn rx_short_packet(&self) -> bool {
@@ -6440,6 +7191,7 @@ impl SieStatusVal {
     }
 
     /// Read **RESUME** `[11:11]`
+    ///
     /// Host: Device has initiated a remote resume. Device: host has initiated a resume.
     #[inline(always)]
     pub const fn resume(&self) -> bool {
@@ -6447,6 +7199,7 @@ impl SieStatusVal {
     }
 
     /// Read **VBUS_OVER_CURR** `[10:10]`
+    ///
     /// VBUS over current detected
     #[inline(always)]
     pub const fn vbus_over_curr(&self) -> bool {
@@ -6454,6 +7207,7 @@ impl SieStatusVal {
     }
 
     /// Read **SPEED** `[9:8]`
+    ///
     /// Host: device speed. Disconnected = 00, LS = 01, FS = 10
     #[inline(always)]
     pub const fn speed(&self) -> u32 {
@@ -6461,6 +7215,7 @@ impl SieStatusVal {
     }
 
     /// Read **SUSPENDED** `[4:4]`
+    ///
     /// Bus in suspended state. Valid for device and host. Host and device will go into suspend if neither Keep Alive / SOF frames are enabled.
     #[inline(always)]
     pub const fn suspended(&self) -> bool {
@@ -6468,6 +7223,7 @@ impl SieStatusVal {
     }
 
     /// Read **LINE_STATE** `[3:2]`
+    ///
     /// USB bus line state
     #[inline(always)]
     pub const fn line_state(&self) -> u32 {
@@ -6475,6 +7231,7 @@ impl SieStatusVal {
     }
 
     /// Read **VBUS_DETECTED** `[0:0]`
+    ///
     /// Device: VBUS Detected
     #[inline(always)]
     pub const fn vbus_detected(&self) -> bool {
@@ -6482,6 +7239,7 @@ impl SieStatusVal {
     }
 
     /// Set **DATA_SEQ_ERROR** `[31:31]`
+    ///
     /// Data Sequence Error.
     /// The device can raise a sequence error in the following conditions:
     /// * A SETUP packet is received followed by a DATA1 packet (data phase should always be DATA0) * An OUT packet is received from the host but doesn't match the data pid in the buffer control register read from DPSRAM
@@ -6499,6 +7257,7 @@ impl SieStatusVal {
     }
 
     /// Set **ACK_REC** `[30:30]`
+    ///
     /// ACK received. Raised by both host and device.
     #[inline(always)]
     pub const fn with_ack_rec(self, value: bool) -> Self {
@@ -6512,6 +7271,7 @@ impl SieStatusVal {
     }
 
     /// Set **STALL_REC** `[29:29]`
+    ///
     /// Host: STALL received
     #[inline(always)]
     pub const fn with_stall_rec(self, value: bool) -> Self {
@@ -6525,6 +7285,7 @@ impl SieStatusVal {
     }
 
     /// Set **NAK_REC** `[28:28]`
+    ///
     /// Host: NAK received
     #[inline(always)]
     pub const fn with_nak_rec(self, value: bool) -> Self {
@@ -6538,6 +7299,7 @@ impl SieStatusVal {
     }
 
     /// Set **RX_TIMEOUT** `[27:27]`
+    ///
     /// RX timeout is raised by both the host and device if an ACK is not received in the maximum time specified by the USB spec.
     #[inline(always)]
     pub const fn with_rx_timeout(self, value: bool) -> Self {
@@ -6551,6 +7313,7 @@ impl SieStatusVal {
     }
 
     /// Set **RX_OVERFLOW** `[26:26]`
+    ///
     /// RX overflow is raised by the Serial RX engine if the incoming data is too fast.
     #[inline(always)]
     pub const fn with_rx_overflow(self, value: bool) -> Self {
@@ -6564,6 +7327,7 @@ impl SieStatusVal {
     }
 
     /// Set **BIT_STUFF_ERROR** `[25:25]`
+    ///
     /// Bit Stuff Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub const fn with_bit_stuff_error(self, value: bool) -> Self {
@@ -6577,6 +7341,7 @@ impl SieStatusVal {
     }
 
     /// Set **CRC_ERROR** `[24:24]`
+    ///
     /// CRC Error. Raised by the Serial RX engine.
     #[inline(always)]
     pub const fn with_crc_error(self, value: bool) -> Self {
@@ -6590,6 +7355,7 @@ impl SieStatusVal {
     }
 
     /// Set **ENDPOINT_ERROR** `[23:23]`
+    ///
     /// An endpoint has encountered an error. Read the ep_rx_error and ep_tx_error registers to find out which endpoint had an error.
     #[inline(always)]
     pub const fn with_endpoint_error(self, value: bool) -> Self {
@@ -6603,6 +7369,7 @@ impl SieStatusVal {
     }
 
     /// Set **BUS_RESET** `[19:19]`
+    ///
     /// Device: bus reset received
     #[inline(always)]
     pub const fn with_bus_reset(self, value: bool) -> Self {
@@ -6616,6 +7383,7 @@ impl SieStatusVal {
     }
 
     /// Set **TRANS_COMPLETE** `[18:18]`
+    ///
     /// Transaction complete.
     /// Raised by device if:
     /// * An IN or OUT packet is sent with the `LAST_BUFF` bit set in the buffer control register
@@ -6633,6 +7401,7 @@ impl SieStatusVal {
     }
 
     /// Set **SETUP_REC** `[17:17]`
+    ///
     /// Device: Setup packet received
     #[inline(always)]
     pub const fn with_setup_rec(self, value: bool) -> Self {
@@ -6646,6 +7415,7 @@ impl SieStatusVal {
     }
 
     /// Set **RX_SHORT_PACKET** `[12:12]`
+    ///
     /// Device or Host has received a short packet. This is when the data received is less than configured in the buffer control register. Device: If using double buffered mode on device the buffer select will not be toggled after writing status back to the buffer control register. This is to prevent any further transactions on that endpoint until the user has reset the buffer control registers. Host: the current transfer will be stopped early.
     #[inline(always)]
     pub const fn with_rx_short_packet(self, value: bool) -> Self {
@@ -6659,6 +7429,7 @@ impl SieStatusVal {
     }
 
     /// Set **RESUME** `[11:11]`
+    ///
     /// Host: Device has initiated a remote resume. Device: host has initiated a resume.
     #[inline(always)]
     pub const fn with_resume(self, value: bool) -> Self {
@@ -6672,6 +7443,7 @@ impl SieStatusVal {
     }
 
     /// Set **SUSPENDED** `[4:4]`
+    ///
     /// Bus in suspended state. Valid for device and host. Host and device will go into suspend if neither Keep Alive / SOF frames are enabled.
     #[inline(always)]
     pub const fn with_suspended(self, value: bool) -> Self {
@@ -6723,6 +7495,7 @@ impl SieStatus {
 /// ## Fields
 ///
 /// - **INT_EP_ACTIVE** `[15:1]` (RW)
+///
 ///   Host: Enable interrupt endpoint 1 -> 15
 #[repr(transparent)]
 pub struct IntEpCtrl {
@@ -6741,7 +7514,9 @@ impl IntEpCtrl {
     // ======== Field Constants ========
 
     /// **INT_EP_ACTIVE**
+    ///
     /// Host: Enable interrupt endpoint 1 -> 15
+    ///
     /// Bits `[15:1]`, mask `0x0000fffe`
     pub const INT_EP_ACTIVE_OFFSET: u32 = 1;
     pub const INT_EP_ACTIVE_MASK: u32 = 0x0000fffe;
@@ -6749,6 +7524,7 @@ impl IntEpCtrl {
     // ======== Field Accessors ========
 
     /// **INT_EP_ACTIVE** `[15:1]` (RW)
+    ///
     /// Host: Enable interrupt endpoint 1 -> 15
     #[inline(always)]
     pub fn int_ep_active(&self) -> u32 {
@@ -6756,6 +7532,7 @@ impl IntEpCtrl {
     }
 
     /// Write **INT_EP_ACTIVE** `[15:1]` (RW)
+    ///
     /// Host: Enable interrupt endpoint 1 -> 15
     #[inline(always)]
     pub fn write_int_ep_active(&self, value: u32) {
@@ -6793,6 +7570,7 @@ impl IntEpCtrlVal {
     }
 
     /// Read **INT_EP_ACTIVE** `[15:1]`
+    ///
     /// Host: Enable interrupt endpoint 1 -> 15
     #[inline(always)]
     pub const fn int_ep_active(&self) -> u32 {
@@ -6800,6 +7578,7 @@ impl IntEpCtrlVal {
     }
 
     /// Set **INT_EP_ACTIVE** `[15:1]`
+    ///
     /// Host: Enable interrupt endpoint 1 -> 15
     #[inline(always)]
     pub const fn with_int_ep_active(self, value: u32) -> Self {
@@ -6847,36 +7626,67 @@ impl IntEpCtrl {
 /// ## Fields
 ///
 /// - **EP15_OUT** `[31]` (RW)
+///
 /// - **EP15_IN** `[30]` (RW)
+///
 /// - **EP14_OUT** `[29]` (RW)
+///
 /// - **EP14_IN** `[28]` (RW)
+///
 /// - **EP13_OUT** `[27]` (RW)
+///
 /// - **EP13_IN** `[26]` (RW)
+///
 /// - **EP12_OUT** `[25]` (RW)
+///
 /// - **EP12_IN** `[24]` (RW)
+///
 /// - **EP11_OUT** `[23]` (RW)
+///
 /// - **EP11_IN** `[22]` (RW)
+///
 /// - **EP10_OUT** `[21]` (RW)
+///
 /// - **EP10_IN** `[20]` (RW)
+///
 /// - **EP9_OUT** `[19]` (RW)
+///
 /// - **EP9_IN** `[18]` (RW)
+///
 /// - **EP8_OUT** `[17]` (RW)
+///
 /// - **EP8_IN** `[16]` (RW)
+///
 /// - **EP7_OUT** `[15]` (RW)
+///
 /// - **EP7_IN** `[14]` (RW)
+///
 /// - **EP6_OUT** `[13]` (RW)
+///
 /// - **EP6_IN** `[12]` (RW)
+///
 /// - **EP5_OUT** `[11]` (RW)
+///
 /// - **EP5_IN** `[10]` (RW)
+///
 /// - **EP4_OUT** `[9]` (RW)
+///
 /// - **EP4_IN** `[8]` (RW)
+///
 /// - **EP3_OUT** `[7]` (RW)
+///
 /// - **EP3_IN** `[6]` (RW)
+///
 /// - **EP2_OUT** `[5]` (RW)
+///
 /// - **EP2_IN** `[4]` (RW)
+///
 /// - **EP1_OUT** `[3]` (RW)
+///
 /// - **EP1_IN** `[2]` (RW)
+///
 /// - **EP0_OUT** `[1]` (RW)
+///
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct BuffStatus {
@@ -8309,36 +9119,67 @@ impl BuffStatus {
 /// ## Fields
 ///
 /// - **EP15_OUT** `[31]` (RO)
+///
 /// - **EP15_IN** `[30]` (RO)
+///
 /// - **EP14_OUT** `[29]` (RO)
+///
 /// - **EP14_IN** `[28]` (RO)
+///
 /// - **EP13_OUT** `[27]` (RO)
+///
 /// - **EP13_IN** `[26]` (RO)
+///
 /// - **EP12_OUT** `[25]` (RO)
+///
 /// - **EP12_IN** `[24]` (RO)
+///
 /// - **EP11_OUT** `[23]` (RO)
+///
 /// - **EP11_IN** `[22]` (RO)
+///
 /// - **EP10_OUT** `[21]` (RO)
+///
 /// - **EP10_IN** `[20]` (RO)
+///
 /// - **EP9_OUT** `[19]` (RO)
+///
 /// - **EP9_IN** `[18]` (RO)
+///
 /// - **EP8_OUT** `[17]` (RO)
+///
 /// - **EP8_IN** `[16]` (RO)
+///
 /// - **EP7_OUT** `[15]` (RO)
+///
 /// - **EP7_IN** `[14]` (RO)
+///
 /// - **EP6_OUT** `[13]` (RO)
+///
 /// - **EP6_IN** `[12]` (RO)
+///
 /// - **EP5_OUT** `[11]` (RO)
+///
 /// - **EP5_IN** `[10]` (RO)
+///
 /// - **EP4_OUT** `[9]` (RO)
+///
 /// - **EP4_IN** `[8]` (RO)
+///
 /// - **EP3_OUT** `[7]` (RO)
+///
 /// - **EP3_IN** `[6]` (RO)
+///
 /// - **EP2_OUT** `[5]` (RO)
+///
 /// - **EP2_IN** `[4]` (RO)
+///
 /// - **EP1_OUT** `[3]` (RO)
+///
 /// - **EP1_IN** `[2]` (RO)
+///
 /// - **EP0_OUT** `[1]` (RO)
+///
 /// - **EP0_IN** `[0]` (RO)
 #[repr(transparent)]
 pub struct BuffCpuShouldHandle {
@@ -9003,36 +9844,67 @@ impl BuffCpuShouldHandle {
 /// ## Fields
 ///
 /// - **EP15_OUT** `[31]` (RW)
+///
 /// - **EP15_IN** `[30]` (RW)
+///
 /// - **EP14_OUT** `[29]` (RW)
+///
 /// - **EP14_IN** `[28]` (RW)
+///
 /// - **EP13_OUT** `[27]` (RW)
+///
 /// - **EP13_IN** `[26]` (RW)
+///
 /// - **EP12_OUT** `[25]` (RW)
+///
 /// - **EP12_IN** `[24]` (RW)
+///
 /// - **EP11_OUT** `[23]` (RW)
+///
 /// - **EP11_IN** `[22]` (RW)
+///
 /// - **EP10_OUT** `[21]` (RW)
+///
 /// - **EP10_IN** `[20]` (RW)
+///
 /// - **EP9_OUT** `[19]` (RW)
+///
 /// - **EP9_IN** `[18]` (RW)
+///
 /// - **EP8_OUT** `[17]` (RW)
+///
 /// - **EP8_IN** `[16]` (RW)
+///
 /// - **EP7_OUT** `[15]` (RW)
+///
 /// - **EP7_IN** `[14]` (RW)
+///
 /// - **EP6_OUT** `[13]` (RW)
+///
 /// - **EP6_IN** `[12]` (RW)
+///
 /// - **EP5_OUT** `[11]` (RW)
+///
 /// - **EP5_IN** `[10]` (RW)
+///
 /// - **EP4_OUT** `[9]` (RW)
+///
 /// - **EP4_IN** `[8]` (RW)
+///
 /// - **EP3_OUT** `[7]` (RW)
+///
 /// - **EP3_IN** `[6]` (RW)
+///
 /// - **EP2_OUT** `[5]` (RW)
+///
 /// - **EP2_IN** `[4]` (RW)
+///
 /// - **EP1_OUT** `[3]` (RW)
+///
 /// - **EP1_IN** `[2]` (RW)
+///
 /// - **EP0_OUT** `[1]` (RW)
+///
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpAbort {
@@ -10465,36 +11337,67 @@ impl EpAbort {
 /// ## Fields
 ///
 /// - **EP15_OUT** `[31]` (RW)
+///
 /// - **EP15_IN** `[30]` (RW)
+///
 /// - **EP14_OUT** `[29]` (RW)
+///
 /// - **EP14_IN** `[28]` (RW)
+///
 /// - **EP13_OUT** `[27]` (RW)
+///
 /// - **EP13_IN** `[26]` (RW)
+///
 /// - **EP12_OUT** `[25]` (RW)
+///
 /// - **EP12_IN** `[24]` (RW)
+///
 /// - **EP11_OUT** `[23]` (RW)
+///
 /// - **EP11_IN** `[22]` (RW)
+///
 /// - **EP10_OUT** `[21]` (RW)
+///
 /// - **EP10_IN** `[20]` (RW)
+///
 /// - **EP9_OUT** `[19]` (RW)
+///
 /// - **EP9_IN** `[18]` (RW)
+///
 /// - **EP8_OUT** `[17]` (RW)
+///
 /// - **EP8_IN** `[16]` (RW)
+///
 /// - **EP7_OUT** `[15]` (RW)
+///
 /// - **EP7_IN** `[14]` (RW)
+///
 /// - **EP6_OUT** `[13]` (RW)
+///
 /// - **EP6_IN** `[12]` (RW)
+///
 /// - **EP5_OUT** `[11]` (RW)
+///
 /// - **EP5_IN** `[10]` (RW)
+///
 /// - **EP4_OUT** `[9]` (RW)
+///
 /// - **EP4_IN** `[8]` (RW)
+///
 /// - **EP3_OUT** `[7]` (RW)
+///
 /// - **EP3_IN** `[6]` (RW)
+///
 /// - **EP2_OUT** `[5]` (RW)
+///
 /// - **EP2_IN** `[4]` (RW)
+///
 /// - **EP1_OUT** `[3]` (RW)
+///
 /// - **EP1_IN** `[2]` (RW)
+///
 /// - **EP0_OUT** `[1]` (RW)
+///
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpAbortDone {
@@ -11927,6 +12830,7 @@ impl EpAbortDone {
 /// ## Fields
 ///
 /// - **EP0_OUT** `[1]` (RW)
+///
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpStallArm {
@@ -12099,16 +13003,27 @@ impl EpStallArm {
 /// ## Fields
 ///
 /// - **RETRY_COUNT_HI** `[31:28]` (RO)
+///
 ///   Bits 9:6 of nak_retry count
+///
 /// - **EPX_STOPPED_ON_NAK** `[27]` (RW)
+///
 ///   EPX polling has stopped because a nak was received
+///
 /// - **STOP_EPX_ON_NAK** `[26]` (RW)
+///
 ///   Stop polling epx when a nak is received
+///
 /// - **DELAY_FS** `[25:16]` (RW)
+///
 ///   NAK polling interval for a full speed device
+///
 /// - **RETRY_COUNT_LO** `[15:10]` (RO)
+///
 ///   Bits 5:0 of nak_retry_count
+///
 /// - **DELAY_LS** `[9:0]` (RW)
+///
 ///   NAK polling interval for a low speed device
 #[repr(transparent)]
 pub struct NakPoll {
@@ -12127,39 +13042,51 @@ impl NakPoll {
     // ======== Field Constants ========
 
     /// **RETRY_COUNT_HI**
+    ///
     /// Bits 9:6 of nak_retry count
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const RETRY_COUNT_HI_OFFSET: u32 = 28;
     pub const RETRY_COUNT_HI_MASK: u32 = 0xf0000000;
 
     /// **EPX_STOPPED_ON_NAK**
+    ///
     /// EPX polling has stopped because a nak was received
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const EPX_STOPPED_ON_NAK_OFFSET: u32 = 27;
     pub const EPX_STOPPED_ON_NAK_MASK: u32 = 0x08000000;
     pub const EPX_STOPPED_ON_NAK: u32 = 1 << 27;
 
     /// **STOP_EPX_ON_NAK**
+    ///
     /// Stop polling epx when a nak is received
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const STOP_EPX_ON_NAK_OFFSET: u32 = 26;
     pub const STOP_EPX_ON_NAK_MASK: u32 = 0x04000000;
     pub const STOP_EPX_ON_NAK: u32 = 1 << 26;
 
     /// **DELAY_FS**
+    ///
     /// NAK polling interval for a full speed device
+    ///
     /// Bits `[25:16]`, mask `0x03ff0000`
     pub const DELAY_FS_OFFSET: u32 = 16;
     pub const DELAY_FS_MASK: u32 = 0x03ff0000;
 
     /// **RETRY_COUNT_LO**
+    ///
     /// Bits 5:0 of nak_retry_count
+    ///
     /// Bits `[15:10]`, mask `0x0000fc00`
     pub const RETRY_COUNT_LO_OFFSET: u32 = 10;
     pub const RETRY_COUNT_LO_MASK: u32 = 0x0000fc00;
 
     /// **DELAY_LS**
+    ///
     /// NAK polling interval for a low speed device
+    ///
     /// Bits `[9:0]`, mask `0x000003ff`
     pub const DELAY_LS_OFFSET: u32 = 0;
     pub const DELAY_LS_MASK: u32 = 0x000003ff;
@@ -12167,6 +13094,7 @@ impl NakPoll {
     // ======== Field Accessors ========
 
     /// **RETRY_COUNT_HI** `[31:28]` (RO)
+    ///
     /// Bits 9:6 of nak_retry count
     #[inline(always)]
     pub fn retry_count_hi(&self) -> u32 {
@@ -12174,6 +13102,7 @@ impl NakPoll {
     }
 
     /// **EPX_STOPPED_ON_NAK** `[27]` (RW)
+    ///
     /// EPX polling has stopped because a nak was received
     #[inline(always)]
     pub fn epx_stopped_on_nak(&self) -> bool {
@@ -12193,6 +13122,7 @@ impl NakPoll {
     }
 
     /// **STOP_EPX_ON_NAK** `[26]` (RW)
+    ///
     /// Stop polling epx when a nak is received
     #[inline(always)]
     pub fn stop_epx_on_nak(&self) -> bool {
@@ -12212,6 +13142,7 @@ impl NakPoll {
     }
 
     /// **DELAY_FS** `[25:16]` (RW)
+    ///
     /// NAK polling interval for a full speed device
     #[inline(always)]
     pub fn delay_fs(&self) -> u32 {
@@ -12219,6 +13150,7 @@ impl NakPoll {
     }
 
     /// Write **DELAY_FS** `[25:16]` (RW)
+    ///
     /// NAK polling interval for a full speed device
     #[inline(always)]
     pub fn write_delay_fs(&self, value: u32) {
@@ -12226,6 +13158,7 @@ impl NakPoll {
     }
 
     /// **RETRY_COUNT_LO** `[15:10]` (RO)
+    ///
     /// Bits 5:0 of nak_retry_count
     #[inline(always)]
     pub fn retry_count_lo(&self) -> u32 {
@@ -12233,6 +13166,7 @@ impl NakPoll {
     }
 
     /// **DELAY_LS** `[9:0]` (RW)
+    ///
     /// NAK polling interval for a low speed device
     #[inline(always)]
     pub fn delay_ls(&self) -> u32 {
@@ -12240,6 +13174,7 @@ impl NakPoll {
     }
 
     /// Write **DELAY_LS** `[9:0]` (RW)
+    ///
     /// NAK polling interval for a low speed device
     #[inline(always)]
     pub fn write_delay_ls(&self, value: u32) {
@@ -12277,6 +13212,7 @@ impl NakPollVal {
     }
 
     /// Read **RETRY_COUNT_HI** `[31:28]`
+    ///
     /// Bits 9:6 of nak_retry count
     #[inline(always)]
     pub const fn retry_count_hi(&self) -> u32 {
@@ -12284,6 +13220,7 @@ impl NakPollVal {
     }
 
     /// Read **EPX_STOPPED_ON_NAK** `[27:27]`
+    ///
     /// EPX polling has stopped because a nak was received
     #[inline(always)]
     pub const fn epx_stopped_on_nak(&self) -> bool {
@@ -12291,6 +13228,7 @@ impl NakPollVal {
     }
 
     /// Read **STOP_EPX_ON_NAK** `[26:26]`
+    ///
     /// Stop polling epx when a nak is received
     #[inline(always)]
     pub const fn stop_epx_on_nak(&self) -> bool {
@@ -12298,6 +13236,7 @@ impl NakPollVal {
     }
 
     /// Read **DELAY_FS** `[25:16]`
+    ///
     /// NAK polling interval for a full speed device
     #[inline(always)]
     pub const fn delay_fs(&self) -> u32 {
@@ -12305,6 +13244,7 @@ impl NakPollVal {
     }
 
     /// Read **RETRY_COUNT_LO** `[15:10]`
+    ///
     /// Bits 5:0 of nak_retry_count
     #[inline(always)]
     pub const fn retry_count_lo(&self) -> u32 {
@@ -12312,6 +13252,7 @@ impl NakPollVal {
     }
 
     /// Read **DELAY_LS** `[9:0]`
+    ///
     /// NAK polling interval for a low speed device
     #[inline(always)]
     pub const fn delay_ls(&self) -> u32 {
@@ -12319,6 +13260,7 @@ impl NakPollVal {
     }
 
     /// Set **EPX_STOPPED_ON_NAK** `[27:27]`
+    ///
     /// EPX polling has stopped because a nak was received
     #[inline(always)]
     pub const fn with_epx_stopped_on_nak(self, value: bool) -> Self {
@@ -12332,6 +13274,7 @@ impl NakPollVal {
     }
 
     /// Set **STOP_EPX_ON_NAK** `[26:26]`
+    ///
     /// Stop polling epx when a nak is received
     #[inline(always)]
     pub const fn with_stop_epx_on_nak(self, value: bool) -> Self {
@@ -12345,6 +13288,7 @@ impl NakPollVal {
     }
 
     /// Set **DELAY_FS** `[25:16]`
+    ///
     /// NAK polling interval for a full speed device
     #[inline(always)]
     pub const fn with_delay_fs(self, value: u32) -> Self {
@@ -12354,6 +13298,7 @@ impl NakPollVal {
     }
 
     /// Set **DELAY_LS** `[9:0]`
+    ///
     /// NAK polling interval for a low speed device
     #[inline(always)]
     pub const fn with_delay_ls(self, value: u32) -> Self {
@@ -12401,36 +13346,67 @@ impl NakPoll {
 /// ## Fields
 ///
 /// - **EP15_OUT** `[31]` (RW)
+///
 /// - **EP15_IN** `[30]` (RW)
+///
 /// - **EP14_OUT** `[29]` (RW)
+///
 /// - **EP14_IN** `[28]` (RW)
+///
 /// - **EP13_OUT** `[27]` (RW)
+///
 /// - **EP13_IN** `[26]` (RW)
+///
 /// - **EP12_OUT** `[25]` (RW)
+///
 /// - **EP12_IN** `[24]` (RW)
+///
 /// - **EP11_OUT** `[23]` (RW)
+///
 /// - **EP11_IN** `[22]` (RW)
+///
 /// - **EP10_OUT** `[21]` (RW)
+///
 /// - **EP10_IN** `[20]` (RW)
+///
 /// - **EP9_OUT** `[19]` (RW)
+///
 /// - **EP9_IN** `[18]` (RW)
+///
 /// - **EP8_OUT** `[17]` (RW)
+///
 /// - **EP8_IN** `[16]` (RW)
+///
 /// - **EP7_OUT** `[15]` (RW)
+///
 /// - **EP7_IN** `[14]` (RW)
+///
 /// - **EP6_OUT** `[13]` (RW)
+///
 /// - **EP6_IN** `[12]` (RW)
+///
 /// - **EP5_OUT** `[11]` (RW)
+///
 /// - **EP5_IN** `[10]` (RW)
+///
 /// - **EP4_OUT** `[9]` (RW)
+///
 /// - **EP4_IN** `[8]` (RW)
+///
 /// - **EP3_OUT** `[7]` (RW)
+///
 /// - **EP3_IN** `[6]` (RW)
+///
 /// - **EP2_OUT** `[5]` (RW)
+///
 /// - **EP2_IN** `[4]` (RW)
+///
 /// - **EP1_OUT** `[3]` (RW)
+///
 /// - **EP1_IN** `[2]` (RW)
+///
 /// - **EP0_OUT** `[1]` (RW)
+///
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpStatusStallNak {
@@ -13863,13 +14839,20 @@ impl EpStatusStallNak {
 /// ## Fields
 ///
 /// - **SWAP_DPDM** `[31]` (RW)
+///
 ///   Swap the USB PHY DP and DM pins and all related controls and flip receive differential data. Can be used to switch USB DP/DP on the PCB.
 ///   This is done at a low level so overrides all other controls.
+///
 /// - **USBPHY_AS_GPIO** `[4]` (RW)
+///
 ///   Use the usb DP and DM pins as GPIO pins instead of connecting them to the USB controller.
+///
 /// - **SOFTCON** `[3]` (RW)
+///
 /// - **TO_DIGITAL_PAD** `[2]` (RW)
+///
 /// - **TO_EXTPHY** `[1]` (RW)
+///
 /// - **TO_PHY** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbMuxing {
@@ -13888,15 +14871,19 @@ impl UsbMuxing {
     // ======== Field Constants ========
 
     /// **SWAP_DPDM**
+    ///
     /// Swap the USB PHY DP and DM pins and all related controls and flip receive differential data. Can be used to switch USB DP/DP on the PCB.
     /// This is done at a low level so overrides all other controls.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const SWAP_DPDM_OFFSET: u32 = 31;
     pub const SWAP_DPDM_MASK: u32 = 0x80000000;
     pub const SWAP_DPDM: u32 = 1 << 31;
 
     /// **USBPHY_AS_GPIO**
+    ///
     /// Use the usb DP and DM pins as GPIO pins instead of connecting them to the USB controller.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const USBPHY_AS_GPIO_OFFSET: u32 = 4;
     pub const USBPHY_AS_GPIO_MASK: u32 = 0x00000010;
@@ -13929,6 +14916,7 @@ impl UsbMuxing {
     // ======== Field Accessors ========
 
     /// **SWAP_DPDM** `[31]` (RW)
+    ///
     /// Swap the USB PHY DP and DM pins and all related controls and flip receive differential data. Can be used to switch USB DP/DP on the PCB.
     /// This is done at a low level so overrides all other controls.
     #[inline(always)]
@@ -13949,6 +14937,7 @@ impl UsbMuxing {
     }
 
     /// **USBPHY_AS_GPIO** `[4]` (RW)
+    ///
     /// Use the usb DP and DM pins as GPIO pins instead of connecting them to the USB controller.
     #[inline(always)]
     pub fn usbphy_as_gpio(&self) -> bool {
@@ -14070,6 +15059,7 @@ impl UsbMuxingVal {
     }
 
     /// Read **SWAP_DPDM** `[31:31]`
+    ///
     /// Swap the USB PHY DP and DM pins and all related controls and flip receive differential data. Can be used to switch USB DP/DP on the PCB.
     /// This is done at a low level so overrides all other controls.
     #[inline(always)]
@@ -14078,6 +15068,7 @@ impl UsbMuxingVal {
     }
 
     /// Read **USBPHY_AS_GPIO** `[4:4]`
+    ///
     /// Use the usb DP and DM pins as GPIO pins instead of connecting them to the USB controller.
     #[inline(always)]
     pub const fn usbphy_as_gpio(&self) -> bool {
@@ -14109,6 +15100,7 @@ impl UsbMuxingVal {
     }
 
     /// Set **SWAP_DPDM** `[31:31]`
+    ///
     /// Swap the USB PHY DP and DM pins and all related controls and flip receive differential data. Can be used to switch USB DP/DP on the PCB.
     /// This is done at a low level so overrides all other controls.
     #[inline(always)]
@@ -14123,6 +15115,7 @@ impl UsbMuxingVal {
     }
 
     /// Set **USBPHY_AS_GPIO** `[4:4]`
+    ///
     /// Use the usb DP and DM pins as GPIO pins instead of connecting them to the USB controller.
     #[inline(always)]
     pub const fn with_usbphy_as_gpio(self, value: bool) -> Self {
@@ -14222,10 +15215,15 @@ impl UsbMuxing {
 /// ## Fields
 ///
 /// - **OVERCURR_DETECT_EN** `[5]` (RW)
+///
 /// - **OVERCURR_DETECT** `[4]` (RW)
+///
 /// - **VBUS_DETECT_OVERRIDE_EN** `[3]` (RW)
+///
 /// - **VBUS_DETECT** `[2]` (RW)
+///
 /// - **VBUS_EN_OVERRIDE_EN** `[1]` (RW)
+///
 /// - **VBUS_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbPwr {
@@ -14566,58 +15564,105 @@ impl UsbPwr {
 /// ## Fields
 ///
 /// - **RX_DM_OVERRIDE** `[25]` (RW)
+///
 ///   Override rx_dm value into controller
+///
 /// - **RX_DP_OVERRIDE** `[24]` (RW)
+///
 ///   Override rx_dp value into controller
+///
 /// - **RX_DD_OVERRIDE** `[23]` (RW)
+///
 ///   Override rx_dd value into controller
+///
 /// - **DM_OVV** `[22]` (RO)
+///
 ///   DM over voltage
+///
 /// - **DP_OVV** `[21]` (RO)
+///
 ///   DP over voltage
+///
 /// - **DM_OVCN** `[20]` (RO)
+///
 ///   DM overcurrent
+///
 /// - **DP_OVCN** `[19]` (RO)
+///
 ///   DP overcurrent
+///
 /// - **RX_DM** `[18]` (RO)
+///
 ///   DPM pin state
+///
 /// - **RX_DP** `[17]` (RO)
+///
 ///   DPP pin state
+///
 /// - **RX_DD** `[16]` (RO)
+///
 ///   Differential RX
+///
 /// - **TX_DIFFMODE** `[15]` (RW)
+///
 ///   TX_DIFFMODE=0: Single ended mode
 ///   TX_DIFFMODE=1: Differential drive mode (TX_DM, TX_DM_OE ignored)
+///
 /// - **TX_FSSLEW** `[14]` (RW)
+///
 ///   TX_FSSLEW=0: Low speed slew rate
 ///   TX_FSSLEW=1: Full speed slew rate
+///
 /// - **TX_PD** `[13]` (RW)
+///
 ///   TX power down override (if override enable is set). 1 = powered down.
+///
 /// - **RX_PD** `[12]` (RW)
+///
 ///   RX power down override (if override enable is set). 1 = powered down.
+///
 /// - **TX_DM** `[11]` (RW)
+///
 ///   Output data. TX_DIFFMODE=1, Ignored
 ///   TX_DIFFMODE=0, Drives DPM only. TX_DM_OE=1 to enable drive. DPM=TX_DM
+///
 /// - **TX_DP** `[10]` (RW)
+///
 ///   Output data. If TX_DIFFMODE=1, Drives DPP/DPM diff pair. TX_DP_OE=1 to enable drive. DPP=TX_DP, DPM=~TX_DP
 ///   If TX_DIFFMODE=0, Drives DPP only. TX_DP_OE=1 to enable drive. DPP=TX_DP
+///
 /// - **TX_DM_OE** `[9]` (RW)
+///
 ///   Output enable. If TX_DIFFMODE=1, Ignored.
 ///   If TX_DIFFMODE=0, OE for DPM only. 0 - DPM in Hi-Z state; 1 - DPM driving
+///
 /// - **TX_DP_OE** `[8]` (RW)
+///
 ///   Output enable. If TX_DIFFMODE=1, OE for DPP/DPM diff pair. 0 - DPP/DPM in Hi-Z state; 1 - DPP/DPM driving
 ///   If TX_DIFFMODE=0, OE for DPP only. 0 - DPP in Hi-Z state; 1 - DPP driving
+///
 /// - **DM_PULLDN_EN** `[6]` (RW)
+///
 ///   DM pull down enable
+///
 /// - **DM_PULLUP_EN** `[5]` (RW)
+///
 ///   DM pull up enable
+///
 /// - **DM_PULLUP_HISEL** `[4]` (RW)
+///
 ///   Enable the second DM pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
+///
 /// - **DP_PULLDN_EN** `[2]` (RW)
+///
 ///   DP pull down enable
+///
 /// - **DP_PULLUP_EN** `[1]` (RW)
+///
 ///   DP pull up enable
+///
 /// - **DP_PULLUP_HISEL** `[0]` (RW)
+///
 ///   Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
 #[repr(transparent)]
 pub struct UsbphyDirect {
@@ -14636,174 +15681,222 @@ impl UsbphyDirect {
     // ======== Field Constants ========
 
     /// **RX_DM_OVERRIDE**
+    ///
     /// Override rx_dm value into controller
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const RX_DM_OVERRIDE_OFFSET: u32 = 25;
     pub const RX_DM_OVERRIDE_MASK: u32 = 0x02000000;
     pub const RX_DM_OVERRIDE: u32 = 1 << 25;
 
     /// **RX_DP_OVERRIDE**
+    ///
     /// Override rx_dp value into controller
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const RX_DP_OVERRIDE_OFFSET: u32 = 24;
     pub const RX_DP_OVERRIDE_MASK: u32 = 0x01000000;
     pub const RX_DP_OVERRIDE: u32 = 1 << 24;
 
     /// **RX_DD_OVERRIDE**
+    ///
     /// Override rx_dd value into controller
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const RX_DD_OVERRIDE_OFFSET: u32 = 23;
     pub const RX_DD_OVERRIDE_MASK: u32 = 0x00800000;
     pub const RX_DD_OVERRIDE: u32 = 1 << 23;
 
     /// **DM_OVV**
+    ///
     /// DM over voltage
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const DM_OVV_OFFSET: u32 = 22;
     pub const DM_OVV_MASK: u32 = 0x00400000;
     pub const DM_OVV: u32 = 1 << 22;
 
     /// **DP_OVV**
+    ///
     /// DP over voltage
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const DP_OVV_OFFSET: u32 = 21;
     pub const DP_OVV_MASK: u32 = 0x00200000;
     pub const DP_OVV: u32 = 1 << 21;
 
     /// **DM_OVCN**
+    ///
     /// DM overcurrent
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const DM_OVCN_OFFSET: u32 = 20;
     pub const DM_OVCN_MASK: u32 = 0x00100000;
     pub const DM_OVCN: u32 = 1 << 20;
 
     /// **DP_OVCN**
+    ///
     /// DP overcurrent
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const DP_OVCN_OFFSET: u32 = 19;
     pub const DP_OVCN_MASK: u32 = 0x00080000;
     pub const DP_OVCN: u32 = 1 << 19;
 
     /// **RX_DM**
+    ///
     /// DPM pin state
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const RX_DM_OFFSET: u32 = 18;
     pub const RX_DM_MASK: u32 = 0x00040000;
     pub const RX_DM: u32 = 1 << 18;
 
     /// **RX_DP**
+    ///
     /// DPP pin state
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const RX_DP_OFFSET: u32 = 17;
     pub const RX_DP_MASK: u32 = 0x00020000;
     pub const RX_DP: u32 = 1 << 17;
 
     /// **RX_DD**
+    ///
     /// Differential RX
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const RX_DD_OFFSET: u32 = 16;
     pub const RX_DD_MASK: u32 = 0x00010000;
     pub const RX_DD: u32 = 1 << 16;
 
     /// **TX_DIFFMODE**
+    ///
     /// TX_DIFFMODE=0: Single ended mode
     /// TX_DIFFMODE=1: Differential drive mode (TX_DM, TX_DM_OE ignored)
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const TX_DIFFMODE_OFFSET: u32 = 15;
     pub const TX_DIFFMODE_MASK: u32 = 0x00008000;
     pub const TX_DIFFMODE: u32 = 1 << 15;
 
     /// **TX_FSSLEW**
+    ///
     /// TX_FSSLEW=0: Low speed slew rate
     /// TX_FSSLEW=1: Full speed slew rate
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const TX_FSSLEW_OFFSET: u32 = 14;
     pub const TX_FSSLEW_MASK: u32 = 0x00004000;
     pub const TX_FSSLEW: u32 = 1 << 14;
 
     /// **TX_PD**
+    ///
     /// TX power down override (if override enable is set). 1 = powered down.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const TX_PD_OFFSET: u32 = 13;
     pub const TX_PD_MASK: u32 = 0x00002000;
     pub const TX_PD: u32 = 1 << 13;
 
     /// **RX_PD**
+    ///
     /// RX power down override (if override enable is set). 1 = powered down.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RX_PD_OFFSET: u32 = 12;
     pub const RX_PD_MASK: u32 = 0x00001000;
     pub const RX_PD: u32 = 1 << 12;
 
     /// **TX_DM**
+    ///
     /// Output data. TX_DIFFMODE=1, Ignored
     /// TX_DIFFMODE=0, Drives DPM only. TX_DM_OE=1 to enable drive. DPM=TX_DM
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const TX_DM_OFFSET: u32 = 11;
     pub const TX_DM_MASK: u32 = 0x00000800;
     pub const TX_DM: u32 = 1 << 11;
 
     /// **TX_DP**
+    ///
     /// Output data. If TX_DIFFMODE=1, Drives DPP/DPM diff pair. TX_DP_OE=1 to enable drive. DPP=TX_DP, DPM=~TX_DP
     /// If TX_DIFFMODE=0, Drives DPP only. TX_DP_OE=1 to enable drive. DPP=TX_DP
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const TX_DP_OFFSET: u32 = 10;
     pub const TX_DP_MASK: u32 = 0x00000400;
     pub const TX_DP: u32 = 1 << 10;
 
     /// **TX_DM_OE**
+    ///
     /// Output enable. If TX_DIFFMODE=1, Ignored.
     /// If TX_DIFFMODE=0, OE for DPM only. 0 - DPM in Hi-Z state; 1 - DPM driving
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const TX_DM_OE_OFFSET: u32 = 9;
     pub const TX_DM_OE_MASK: u32 = 0x00000200;
     pub const TX_DM_OE: u32 = 1 << 9;
 
     /// **TX_DP_OE**
+    ///
     /// Output enable. If TX_DIFFMODE=1, OE for DPP/DPM diff pair. 0 - DPP/DPM in Hi-Z state; 1 - DPP/DPM driving
     /// If TX_DIFFMODE=0, OE for DPP only. 0 - DPP in Hi-Z state; 1 - DPP driving
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const TX_DP_OE_OFFSET: u32 = 8;
     pub const TX_DP_OE_MASK: u32 = 0x00000100;
     pub const TX_DP_OE: u32 = 1 << 8;
 
     /// **DM_PULLDN_EN**
+    ///
     /// DM pull down enable
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DM_PULLDN_EN_OFFSET: u32 = 6;
     pub const DM_PULLDN_EN_MASK: u32 = 0x00000040;
     pub const DM_PULLDN_EN: u32 = 1 << 6;
 
     /// **DM_PULLUP_EN**
+    ///
     /// DM pull up enable
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const DM_PULLUP_EN_OFFSET: u32 = 5;
     pub const DM_PULLUP_EN_MASK: u32 = 0x00000020;
     pub const DM_PULLUP_EN: u32 = 1 << 5;
 
     /// **DM_PULLUP_HISEL**
+    ///
     /// Enable the second DM pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const DM_PULLUP_HISEL_OFFSET: u32 = 4;
     pub const DM_PULLUP_HISEL_MASK: u32 = 0x00000010;
     pub const DM_PULLUP_HISEL: u32 = 1 << 4;
 
     /// **DP_PULLDN_EN**
+    ///
     /// DP pull down enable
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DP_PULLDN_EN_OFFSET: u32 = 2;
     pub const DP_PULLDN_EN_MASK: u32 = 0x00000004;
     pub const DP_PULLDN_EN: u32 = 1 << 2;
 
     /// **DP_PULLUP_EN**
+    ///
     /// DP pull up enable
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const DP_PULLUP_EN_OFFSET: u32 = 1;
     pub const DP_PULLUP_EN_MASK: u32 = 0x00000002;
     pub const DP_PULLUP_EN: u32 = 1 << 1;
 
     /// **DP_PULLUP_HISEL**
+    ///
     /// Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const DP_PULLUP_HISEL_OFFSET: u32 = 0;
     pub const DP_PULLUP_HISEL_MASK: u32 = 0x00000001;
@@ -14812,6 +15905,7 @@ impl UsbphyDirect {
     // ======== Field Accessors ========
 
     /// **RX_DM_OVERRIDE** `[25]` (RW)
+    ///
     /// Override rx_dm value into controller
     #[inline(always)]
     pub fn rx_dm_override(&self) -> bool {
@@ -14831,6 +15925,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_DP_OVERRIDE** `[24]` (RW)
+    ///
     /// Override rx_dp value into controller
     #[inline(always)]
     pub fn rx_dp_override(&self) -> bool {
@@ -14850,6 +15945,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_DD_OVERRIDE** `[23]` (RW)
+    ///
     /// Override rx_dd value into controller
     #[inline(always)]
     pub fn rx_dd_override(&self) -> bool {
@@ -14869,6 +15965,7 @@ impl UsbphyDirect {
     }
 
     /// **DM_OVV** `[22]` (RO)
+    ///
     /// DM over voltage
     #[inline(always)]
     pub fn dm_ovv(&self) -> bool {
@@ -14876,6 +15973,7 @@ impl UsbphyDirect {
     }
 
     /// **DP_OVV** `[21]` (RO)
+    ///
     /// DP over voltage
     #[inline(always)]
     pub fn dp_ovv(&self) -> bool {
@@ -14883,6 +15981,7 @@ impl UsbphyDirect {
     }
 
     /// **DM_OVCN** `[20]` (RO)
+    ///
     /// DM overcurrent
     #[inline(always)]
     pub fn dm_ovcn(&self) -> bool {
@@ -14890,6 +15989,7 @@ impl UsbphyDirect {
     }
 
     /// **DP_OVCN** `[19]` (RO)
+    ///
     /// DP overcurrent
     #[inline(always)]
     pub fn dp_ovcn(&self) -> bool {
@@ -14897,6 +15997,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_DM** `[18]` (RO)
+    ///
     /// DPM pin state
     #[inline(always)]
     pub fn rx_dm(&self) -> bool {
@@ -14904,6 +16005,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_DP** `[17]` (RO)
+    ///
     /// DPP pin state
     #[inline(always)]
     pub fn rx_dp(&self) -> bool {
@@ -14911,6 +16013,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_DD** `[16]` (RO)
+    ///
     /// Differential RX
     #[inline(always)]
     pub fn rx_dd(&self) -> bool {
@@ -14918,6 +16021,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_DIFFMODE** `[15]` (RW)
+    ///
     /// TX_DIFFMODE=0: Single ended mode
     /// TX_DIFFMODE=1: Differential drive mode (TX_DM, TX_DM_OE ignored)
     #[inline(always)]
@@ -14938,6 +16042,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_FSSLEW** `[14]` (RW)
+    ///
     /// TX_FSSLEW=0: Low speed slew rate
     /// TX_FSSLEW=1: Full speed slew rate
     #[inline(always)]
@@ -14958,6 +16063,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_PD** `[13]` (RW)
+    ///
     /// TX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub fn tx_pd(&self) -> bool {
@@ -14977,6 +16083,7 @@ impl UsbphyDirect {
     }
 
     /// **RX_PD** `[12]` (RW)
+    ///
     /// RX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub fn rx_pd(&self) -> bool {
@@ -14996,6 +16103,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_DM** `[11]` (RW)
+    ///
     /// Output data. TX_DIFFMODE=1, Ignored
     /// TX_DIFFMODE=0, Drives DPM only. TX_DM_OE=1 to enable drive. DPM=TX_DM
     #[inline(always)]
@@ -15016,6 +16124,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_DP** `[10]` (RW)
+    ///
     /// Output data. If TX_DIFFMODE=1, Drives DPP/DPM diff pair. TX_DP_OE=1 to enable drive. DPP=TX_DP, DPM=~TX_DP
     /// If TX_DIFFMODE=0, Drives DPP only. TX_DP_OE=1 to enable drive. DPP=TX_DP
     #[inline(always)]
@@ -15036,6 +16145,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_DM_OE** `[9]` (RW)
+    ///
     /// Output enable. If TX_DIFFMODE=1, Ignored.
     /// If TX_DIFFMODE=0, OE for DPM only. 0 - DPM in Hi-Z state; 1 - DPM driving
     #[inline(always)]
@@ -15056,6 +16166,7 @@ impl UsbphyDirect {
     }
 
     /// **TX_DP_OE** `[8]` (RW)
+    ///
     /// Output enable. If TX_DIFFMODE=1, OE for DPP/DPM diff pair. 0 - DPP/DPM in Hi-Z state; 1 - DPP/DPM driving
     /// If TX_DIFFMODE=0, OE for DPP only. 0 - DPP in Hi-Z state; 1 - DPP driving
     #[inline(always)]
@@ -15076,6 +16187,7 @@ impl UsbphyDirect {
     }
 
     /// **DM_PULLDN_EN** `[6]` (RW)
+    ///
     /// DM pull down enable
     #[inline(always)]
     pub fn dm_pulldn_en(&self) -> bool {
@@ -15095,6 +16207,7 @@ impl UsbphyDirect {
     }
 
     /// **DM_PULLUP_EN** `[5]` (RW)
+    ///
     /// DM pull up enable
     #[inline(always)]
     pub fn dm_pullup_en(&self) -> bool {
@@ -15114,6 +16227,7 @@ impl UsbphyDirect {
     }
 
     /// **DM_PULLUP_HISEL** `[4]` (RW)
+    ///
     /// Enable the second DM pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub fn dm_pullup_hisel(&self) -> bool {
@@ -15133,6 +16247,7 @@ impl UsbphyDirect {
     }
 
     /// **DP_PULLDN_EN** `[2]` (RW)
+    ///
     /// DP pull down enable
     #[inline(always)]
     pub fn dp_pulldn_en(&self) -> bool {
@@ -15152,6 +16267,7 @@ impl UsbphyDirect {
     }
 
     /// **DP_PULLUP_EN** `[1]` (RW)
+    ///
     /// DP pull up enable
     #[inline(always)]
     pub fn dp_pullup_en(&self) -> bool {
@@ -15171,6 +16287,7 @@ impl UsbphyDirect {
     }
 
     /// **DP_PULLUP_HISEL** `[0]` (RW)
+    ///
     /// Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub fn dp_pullup_hisel(&self) -> bool {
@@ -15220,6 +16337,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DM_OVERRIDE** `[25:25]`
+    ///
     /// Override rx_dm value into controller
     #[inline(always)]
     pub const fn rx_dm_override(&self) -> bool {
@@ -15227,6 +16345,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DP_OVERRIDE** `[24:24]`
+    ///
     /// Override rx_dp value into controller
     #[inline(always)]
     pub const fn rx_dp_override(&self) -> bool {
@@ -15234,6 +16353,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DD_OVERRIDE** `[23:23]`
+    ///
     /// Override rx_dd value into controller
     #[inline(always)]
     pub const fn rx_dd_override(&self) -> bool {
@@ -15241,6 +16361,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DM_OVV** `[22:22]`
+    ///
     /// DM over voltage
     #[inline(always)]
     pub const fn dm_ovv(&self) -> bool {
@@ -15248,6 +16369,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DP_OVV** `[21:21]`
+    ///
     /// DP over voltage
     #[inline(always)]
     pub const fn dp_ovv(&self) -> bool {
@@ -15255,6 +16377,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DM_OVCN** `[20:20]`
+    ///
     /// DM overcurrent
     #[inline(always)]
     pub const fn dm_ovcn(&self) -> bool {
@@ -15262,6 +16385,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DP_OVCN** `[19:19]`
+    ///
     /// DP overcurrent
     #[inline(always)]
     pub const fn dp_ovcn(&self) -> bool {
@@ -15269,6 +16393,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DM** `[18:18]`
+    ///
     /// DPM pin state
     #[inline(always)]
     pub const fn rx_dm(&self) -> bool {
@@ -15276,6 +16401,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DP** `[17:17]`
+    ///
     /// DPP pin state
     #[inline(always)]
     pub const fn rx_dp(&self) -> bool {
@@ -15283,6 +16409,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_DD** `[16:16]`
+    ///
     /// Differential RX
     #[inline(always)]
     pub const fn rx_dd(&self) -> bool {
@@ -15290,6 +16417,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_DIFFMODE** `[15:15]`
+    ///
     /// TX_DIFFMODE=0: Single ended mode
     /// TX_DIFFMODE=1: Differential drive mode (TX_DM, TX_DM_OE ignored)
     #[inline(always)]
@@ -15298,6 +16426,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_FSSLEW** `[14:14]`
+    ///
     /// TX_FSSLEW=0: Low speed slew rate
     /// TX_FSSLEW=1: Full speed slew rate
     #[inline(always)]
@@ -15306,6 +16435,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_PD** `[13:13]`
+    ///
     /// TX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub const fn tx_pd(&self) -> bool {
@@ -15313,6 +16443,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **RX_PD** `[12:12]`
+    ///
     /// RX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub const fn rx_pd(&self) -> bool {
@@ -15320,6 +16451,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_DM** `[11:11]`
+    ///
     /// Output data. TX_DIFFMODE=1, Ignored
     /// TX_DIFFMODE=0, Drives DPM only. TX_DM_OE=1 to enable drive. DPM=TX_DM
     #[inline(always)]
@@ -15328,6 +16460,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_DP** `[10:10]`
+    ///
     /// Output data. If TX_DIFFMODE=1, Drives DPP/DPM diff pair. TX_DP_OE=1 to enable drive. DPP=TX_DP, DPM=~TX_DP
     /// If TX_DIFFMODE=0, Drives DPP only. TX_DP_OE=1 to enable drive. DPP=TX_DP
     #[inline(always)]
@@ -15336,6 +16469,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_DM_OE** `[9:9]`
+    ///
     /// Output enable. If TX_DIFFMODE=1, Ignored.
     /// If TX_DIFFMODE=0, OE for DPM only. 0 - DPM in Hi-Z state; 1 - DPM driving
     #[inline(always)]
@@ -15344,6 +16478,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **TX_DP_OE** `[8:8]`
+    ///
     /// Output enable. If TX_DIFFMODE=1, OE for DPP/DPM diff pair. 0 - DPP/DPM in Hi-Z state; 1 - DPP/DPM driving
     /// If TX_DIFFMODE=0, OE for DPP only. 0 - DPP in Hi-Z state; 1 - DPP driving
     #[inline(always)]
@@ -15352,6 +16487,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DM_PULLDN_EN** `[6:6]`
+    ///
     /// DM pull down enable
     #[inline(always)]
     pub const fn dm_pulldn_en(&self) -> bool {
@@ -15359,6 +16495,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DM_PULLUP_EN** `[5:5]`
+    ///
     /// DM pull up enable
     #[inline(always)]
     pub const fn dm_pullup_en(&self) -> bool {
@@ -15366,6 +16503,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DM_PULLUP_HISEL** `[4:4]`
+    ///
     /// Enable the second DM pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub const fn dm_pullup_hisel(&self) -> bool {
@@ -15373,6 +16511,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DP_PULLDN_EN** `[2:2]`
+    ///
     /// DP pull down enable
     #[inline(always)]
     pub const fn dp_pulldn_en(&self) -> bool {
@@ -15380,6 +16519,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DP_PULLUP_EN** `[1:1]`
+    ///
     /// DP pull up enable
     #[inline(always)]
     pub const fn dp_pullup_en(&self) -> bool {
@@ -15387,6 +16527,7 @@ impl UsbphyDirectVal {
     }
 
     /// Read **DP_PULLUP_HISEL** `[0:0]`
+    ///
     /// Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub const fn dp_pullup_hisel(&self) -> bool {
@@ -15394,6 +16535,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **RX_DM_OVERRIDE** `[25:25]`
+    ///
     /// Override rx_dm value into controller
     #[inline(always)]
     pub const fn with_rx_dm_override(self, value: bool) -> Self {
@@ -15407,6 +16549,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **RX_DP_OVERRIDE** `[24:24]`
+    ///
     /// Override rx_dp value into controller
     #[inline(always)]
     pub const fn with_rx_dp_override(self, value: bool) -> Self {
@@ -15420,6 +16563,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **RX_DD_OVERRIDE** `[23:23]`
+    ///
     /// Override rx_dd value into controller
     #[inline(always)]
     pub const fn with_rx_dd_override(self, value: bool) -> Self {
@@ -15433,6 +16577,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_DIFFMODE** `[15:15]`
+    ///
     /// TX_DIFFMODE=0: Single ended mode
     /// TX_DIFFMODE=1: Differential drive mode (TX_DM, TX_DM_OE ignored)
     #[inline(always)]
@@ -15447,6 +16592,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_FSSLEW** `[14:14]`
+    ///
     /// TX_FSSLEW=0: Low speed slew rate
     /// TX_FSSLEW=1: Full speed slew rate
     #[inline(always)]
@@ -15461,6 +16607,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_PD** `[13:13]`
+    ///
     /// TX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub const fn with_tx_pd(self, value: bool) -> Self {
@@ -15474,6 +16621,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **RX_PD** `[12:12]`
+    ///
     /// RX power down override (if override enable is set). 1 = powered down.
     #[inline(always)]
     pub const fn with_rx_pd(self, value: bool) -> Self {
@@ -15487,6 +16635,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_DM** `[11:11]`
+    ///
     /// Output data. TX_DIFFMODE=1, Ignored
     /// TX_DIFFMODE=0, Drives DPM only. TX_DM_OE=1 to enable drive. DPM=TX_DM
     #[inline(always)]
@@ -15501,6 +16650,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_DP** `[10:10]`
+    ///
     /// Output data. If TX_DIFFMODE=1, Drives DPP/DPM diff pair. TX_DP_OE=1 to enable drive. DPP=TX_DP, DPM=~TX_DP
     /// If TX_DIFFMODE=0, Drives DPP only. TX_DP_OE=1 to enable drive. DPP=TX_DP
     #[inline(always)]
@@ -15515,6 +16665,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_DM_OE** `[9:9]`
+    ///
     /// Output enable. If TX_DIFFMODE=1, Ignored.
     /// If TX_DIFFMODE=0, OE for DPM only. 0 - DPM in Hi-Z state; 1 - DPM driving
     #[inline(always)]
@@ -15529,6 +16680,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **TX_DP_OE** `[8:8]`
+    ///
     /// Output enable. If TX_DIFFMODE=1, OE for DPP/DPM diff pair. 0 - DPP/DPM in Hi-Z state; 1 - DPP/DPM driving
     /// If TX_DIFFMODE=0, OE for DPP only. 0 - DPP in Hi-Z state; 1 - DPP driving
     #[inline(always)]
@@ -15543,6 +16695,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DM_PULLDN_EN** `[6:6]`
+    ///
     /// DM pull down enable
     #[inline(always)]
     pub const fn with_dm_pulldn_en(self, value: bool) -> Self {
@@ -15556,6 +16709,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DM_PULLUP_EN** `[5:5]`
+    ///
     /// DM pull up enable
     #[inline(always)]
     pub const fn with_dm_pullup_en(self, value: bool) -> Self {
@@ -15569,6 +16723,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DM_PULLUP_HISEL** `[4:4]`
+    ///
     /// Enable the second DM pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub const fn with_dm_pullup_hisel(self, value: bool) -> Self {
@@ -15582,6 +16737,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DP_PULLDN_EN** `[2:2]`
+    ///
     /// DP pull down enable
     #[inline(always)]
     pub const fn with_dp_pulldn_en(self, value: bool) -> Self {
@@ -15595,6 +16751,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DP_PULLUP_EN** `[1:1]`
+    ///
     /// DP pull up enable
     #[inline(always)]
     pub const fn with_dp_pullup_en(self, value: bool) -> Self {
@@ -15608,6 +16765,7 @@ impl UsbphyDirectVal {
     }
 
     /// Set **DP_PULLUP_HISEL** `[0:0]`
+    ///
     /// Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
     #[inline(always)]
     pub const fn with_dp_pullup_hisel(self, value: bool) -> Self {
@@ -15659,21 +16817,37 @@ impl UsbphyDirect {
 /// ## Fields
 ///
 /// - **RX_DM_OVERRIDE_EN** `[18]` (RW)
+///
 /// - **RX_DP_OVERRIDE_EN** `[17]` (RW)
+///
 /// - **RX_DD_OVERRIDE_EN** `[16]` (RW)
+///
 /// - **TX_DIFFMODE_OVERRIDE_EN** `[15]` (RW)
+///
 /// - **DM_PULLUP_OVERRIDE_EN** `[12]` (RW)
+///
 /// - **TX_FSSLEW_OVERRIDE_EN** `[11]` (RW)
+///
 /// - **TX_PD_OVERRIDE_EN** `[10]` (RW)
+///
 /// - **RX_PD_OVERRIDE_EN** `[9]` (RW)
+///
 /// - **TX_DM_OVERRIDE_EN** `[8]` (RW)
+///
 /// - **TX_DP_OVERRIDE_EN** `[7]` (RW)
+///
 /// - **TX_DM_OE_OVERRIDE_EN** `[6]` (RW)
+///
 /// - **TX_DP_OE_OVERRIDE_EN** `[5]` (RW)
+///
 /// - **DM_PULLDN_EN_OVERRIDE_EN** `[4]` (RW)
+///
 /// - **DP_PULLDN_EN_OVERRIDE_EN** `[3]` (RW)
+///
 /// - **DP_PULLUP_EN_OVERRIDE_EN** `[2]` (RW)
+///
 /// - **DM_PULLUP_HISEL_OVERRIDE_EN** `[1]` (RW)
+///
 /// - **DP_PULLUP_HISEL_OVERRIDE_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbphyDirectOverride {
@@ -16476,10 +17650,13 @@ impl UsbphyDirectOverride {
 /// ## Fields
 ///
 /// - **DM_PULLDN_TRIM** `[12:8]` (RW)
+///
 ///   Value to drive to USB PHY
 ///   DM pulldown resistor trim control
 ///   Experimental data suggests that the reset value will work, but this register allows adjustment if required
+///
 /// - **DP_PULLDN_TRIM** `[4:0]` (RW)
+///
 ///   Value to drive to USB PHY
 ///   DP pulldown resistor trim control
 ///   Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16500,17 +17677,21 @@ impl UsbphyTrim {
     // ======== Field Constants ========
 
     /// **DM_PULLDN_TRIM**
+    ///
     /// Value to drive to USB PHY
     /// DM pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
+    ///
     /// Bits `[12:8]`, mask `0x00001f00`
     pub const DM_PULLDN_TRIM_OFFSET: u32 = 8;
     pub const DM_PULLDN_TRIM_MASK: u32 = 0x00001f00;
 
     /// **DP_PULLDN_TRIM**
+    ///
     /// Value to drive to USB PHY
     /// DP pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const DP_PULLDN_TRIM_OFFSET: u32 = 0;
     pub const DP_PULLDN_TRIM_MASK: u32 = 0x0000001f;
@@ -16518,6 +17699,7 @@ impl UsbphyTrim {
     // ======== Field Accessors ========
 
     /// **DM_PULLDN_TRIM** `[12:8]` (RW)
+    ///
     /// Value to drive to USB PHY
     /// DM pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16527,6 +17709,7 @@ impl UsbphyTrim {
     }
 
     /// Write **DM_PULLDN_TRIM** `[12:8]` (RW)
+    ///
     /// Value to drive to USB PHY
     /// DM pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16536,6 +17719,7 @@ impl UsbphyTrim {
     }
 
     /// **DP_PULLDN_TRIM** `[4:0]` (RW)
+    ///
     /// Value to drive to USB PHY
     /// DP pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16545,6 +17729,7 @@ impl UsbphyTrim {
     }
 
     /// Write **DP_PULLDN_TRIM** `[4:0]` (RW)
+    ///
     /// Value to drive to USB PHY
     /// DP pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16584,6 +17769,7 @@ impl UsbphyTrimVal {
     }
 
     /// Read **DM_PULLDN_TRIM** `[12:8]`
+    ///
     /// Value to drive to USB PHY
     /// DM pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16593,6 +17779,7 @@ impl UsbphyTrimVal {
     }
 
     /// Read **DP_PULLDN_TRIM** `[4:0]`
+    ///
     /// Value to drive to USB PHY
     /// DP pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16602,6 +17789,7 @@ impl UsbphyTrimVal {
     }
 
     /// Set **DM_PULLDN_TRIM** `[12:8]`
+    ///
     /// Value to drive to USB PHY
     /// DM pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16613,6 +17801,7 @@ impl UsbphyTrimVal {
     }
 
     /// Set **DP_PULLDN_TRIM** `[4:0]`
+    ///
     /// Value to drive to USB PHY
     /// DP pulldown resistor trim control
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
@@ -16662,24 +17851,40 @@ impl UsbphyTrim {
 /// ## Fields
 ///
 /// - **SPARE_FIX** `[11:8]` (RW)
+///
 /// - **DEV_LS_WAKE_FIX** `[7]` (RW)
+///
 ///   Device - exit suspend on any non-idle signalling, not qualified with a 1ms timer
+///
 /// - **DEV_RX_ERR_QUIESCE** `[6]` (RW)
+///
 ///   Device - suppress repeated errors until the device FSM is next in the process of decoding an inbound packet.
+///
 /// - **SIE_RX_CHATTER_SE0_FIX** `[5]` (RW)
+///
 ///   RX - when recovering from line chatter or bitstuff errors, treat SE0 as the end of chatter as well as
 ///   8 consecutive idle bits.
+///
 /// - **SIE_RX_BITSTUFF_FIX** `[4]` (RW)
+///
 ///   RX - when a bitstuff error is signalled by rx_dasm, unconditionally terminate RX decode to
 ///   avoid a hang during certain packet phases.
+///
 /// - **DEV_BUFF_CONTROL_DOUBLE_READ_FIX** `[3]` (RW)
+///
 ///   Device - the controller FSM performs two reads of the buffer status memory address to
 ///   avoid sampling metastable data. An enabled buffer is only used if both reads match.
+///
 /// - **MULTI_HUB_FIX** `[2]` (RW)
+///
 ///   Host - increase inter-packet and turnaround timeouts to accommodate worst-case hub delays.
+///
 /// - **LINESTATE_DELAY** `[1]` (RW)
+///
 ///   Device/Host - add an extra 1-bit debounce of linestate sampling.
+///
 /// - **RCV_DELAY** `[0]` (RW)
+///
 ///   Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
 #[repr(transparent)]
 pub struct LinestateTuning {
@@ -16703,59 +17908,75 @@ impl LinestateTuning {
     pub const SPARE_FIX_MASK: u32 = 0x00000f00;
 
     /// **DEV_LS_WAKE_FIX**
+    ///
     /// Device - exit suspend on any non-idle signalling, not qualified with a 1ms timer
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DEV_LS_WAKE_FIX_OFFSET: u32 = 7;
     pub const DEV_LS_WAKE_FIX_MASK: u32 = 0x00000080;
     pub const DEV_LS_WAKE_FIX: u32 = 1 << 7;
 
     /// **DEV_RX_ERR_QUIESCE**
+    ///
     /// Device - suppress repeated errors until the device FSM is next in the process of decoding an inbound packet.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DEV_RX_ERR_QUIESCE_OFFSET: u32 = 6;
     pub const DEV_RX_ERR_QUIESCE_MASK: u32 = 0x00000040;
     pub const DEV_RX_ERR_QUIESCE: u32 = 1 << 6;
 
     /// **SIE_RX_CHATTER_SE0_FIX**
+    ///
     /// RX - when recovering from line chatter or bitstuff errors, treat SE0 as the end of chatter as well as
     /// 8 consecutive idle bits.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const SIE_RX_CHATTER_SE0_FIX_OFFSET: u32 = 5;
     pub const SIE_RX_CHATTER_SE0_FIX_MASK: u32 = 0x00000020;
     pub const SIE_RX_CHATTER_SE0_FIX: u32 = 1 << 5;
 
     /// **SIE_RX_BITSTUFF_FIX**
+    ///
     /// RX - when a bitstuff error is signalled by rx_dasm, unconditionally terminate RX decode to
     /// avoid a hang during certain packet phases.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const SIE_RX_BITSTUFF_FIX_OFFSET: u32 = 4;
     pub const SIE_RX_BITSTUFF_FIX_MASK: u32 = 0x00000010;
     pub const SIE_RX_BITSTUFF_FIX: u32 = 1 << 4;
 
     /// **DEV_BUFF_CONTROL_DOUBLE_READ_FIX**
+    ///
     /// Device - the controller FSM performs two reads of the buffer status memory address to
     /// avoid sampling metastable data. An enabled buffer is only used if both reads match.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DEV_BUFF_CONTROL_DOUBLE_READ_FIX_OFFSET: u32 = 3;
     pub const DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK: u32 = 0x00000008;
     pub const DEV_BUFF_CONTROL_DOUBLE_READ_FIX: u32 = 1 << 3;
 
     /// **MULTI_HUB_FIX**
+    ///
     /// Host - increase inter-packet and turnaround timeouts to accommodate worst-case hub delays.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const MULTI_HUB_FIX_OFFSET: u32 = 2;
     pub const MULTI_HUB_FIX_MASK: u32 = 0x00000004;
     pub const MULTI_HUB_FIX: u32 = 1 << 2;
 
     /// **LINESTATE_DELAY**
+    ///
     /// Device/Host - add an extra 1-bit debounce of linestate sampling.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const LINESTATE_DELAY_OFFSET: u32 = 1;
     pub const LINESTATE_DELAY_MASK: u32 = 0x00000002;
     pub const LINESTATE_DELAY: u32 = 1 << 1;
 
     /// **RCV_DELAY**
+    ///
     /// Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RCV_DELAY_OFFSET: u32 = 0;
     pub const RCV_DELAY_MASK: u32 = 0x00000001;
@@ -16776,6 +17997,7 @@ impl LinestateTuning {
     }
 
     /// **DEV_LS_WAKE_FIX** `[7]` (RW)
+    ///
     /// Device - exit suspend on any non-idle signalling, not qualified with a 1ms timer
     #[inline(always)]
     pub fn dev_ls_wake_fix(&self) -> bool {
@@ -16795,6 +18017,7 @@ impl LinestateTuning {
     }
 
     /// **DEV_RX_ERR_QUIESCE** `[6]` (RW)
+    ///
     /// Device - suppress repeated errors until the device FSM is next in the process of decoding an inbound packet.
     #[inline(always)]
     pub fn dev_rx_err_quiesce(&self) -> bool {
@@ -16814,6 +18037,7 @@ impl LinestateTuning {
     }
 
     /// **SIE_RX_CHATTER_SE0_FIX** `[5]` (RW)
+    ///
     /// RX - when recovering from line chatter or bitstuff errors, treat SE0 as the end of chatter as well as
     /// 8 consecutive idle bits.
     #[inline(always)]
@@ -16834,6 +18058,7 @@ impl LinestateTuning {
     }
 
     /// **SIE_RX_BITSTUFF_FIX** `[4]` (RW)
+    ///
     /// RX - when a bitstuff error is signalled by rx_dasm, unconditionally terminate RX decode to
     /// avoid a hang during certain packet phases.
     #[inline(always)]
@@ -16854,6 +18079,7 @@ impl LinestateTuning {
     }
 
     /// **DEV_BUFF_CONTROL_DOUBLE_READ_FIX** `[3]` (RW)
+    ///
     /// Device - the controller FSM performs two reads of the buffer status memory address to
     /// avoid sampling metastable data. An enabled buffer is only used if both reads match.
     #[inline(always)]
@@ -16874,6 +18100,7 @@ impl LinestateTuning {
     }
 
     /// **MULTI_HUB_FIX** `[2]` (RW)
+    ///
     /// Host - increase inter-packet and turnaround timeouts to accommodate worst-case hub delays.
     #[inline(always)]
     pub fn multi_hub_fix(&self) -> bool {
@@ -16893,6 +18120,7 @@ impl LinestateTuning {
     }
 
     /// **LINESTATE_DELAY** `[1]` (RW)
+    ///
     /// Device/Host - add an extra 1-bit debounce of linestate sampling.
     #[inline(always)]
     pub fn linestate_delay(&self) -> bool {
@@ -16912,6 +18140,7 @@ impl LinestateTuning {
     }
 
     /// **RCV_DELAY** `[0]` (RW)
+    ///
     /// Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
     #[inline(always)]
     pub fn rcv_delay(&self) -> bool {
@@ -16967,6 +18196,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **DEV_LS_WAKE_FIX** `[7:7]`
+    ///
     /// Device - exit suspend on any non-idle signalling, not qualified with a 1ms timer
     #[inline(always)]
     pub const fn dev_ls_wake_fix(&self) -> bool {
@@ -16974,6 +18204,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **DEV_RX_ERR_QUIESCE** `[6:6]`
+    ///
     /// Device - suppress repeated errors until the device FSM is next in the process of decoding an inbound packet.
     #[inline(always)]
     pub const fn dev_rx_err_quiesce(&self) -> bool {
@@ -16981,6 +18212,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **SIE_RX_CHATTER_SE0_FIX** `[5:5]`
+    ///
     /// RX - when recovering from line chatter or bitstuff errors, treat SE0 as the end of chatter as well as
     /// 8 consecutive idle bits.
     #[inline(always)]
@@ -16989,6 +18221,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **SIE_RX_BITSTUFF_FIX** `[4:4]`
+    ///
     /// RX - when a bitstuff error is signalled by rx_dasm, unconditionally terminate RX decode to
     /// avoid a hang during certain packet phases.
     #[inline(always)]
@@ -16997,6 +18230,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **DEV_BUFF_CONTROL_DOUBLE_READ_FIX** `[3:3]`
+    ///
     /// Device - the controller FSM performs two reads of the buffer status memory address to
     /// avoid sampling metastable data. An enabled buffer is only used if both reads match.
     #[inline(always)]
@@ -17005,6 +18239,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **MULTI_HUB_FIX** `[2:2]`
+    ///
     /// Host - increase inter-packet and turnaround timeouts to accommodate worst-case hub delays.
     #[inline(always)]
     pub const fn multi_hub_fix(&self) -> bool {
@@ -17012,6 +18247,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **LINESTATE_DELAY** `[1:1]`
+    ///
     /// Device/Host - add an extra 1-bit debounce of linestate sampling.
     #[inline(always)]
     pub const fn linestate_delay(&self) -> bool {
@@ -17019,6 +18255,7 @@ impl LinestateTuningVal {
     }
 
     /// Read **RCV_DELAY** `[0:0]`
+    ///
     /// Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
     #[inline(always)]
     pub const fn rcv_delay(&self) -> bool {
@@ -17034,6 +18271,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **DEV_LS_WAKE_FIX** `[7:7]`
+    ///
     /// Device - exit suspend on any non-idle signalling, not qualified with a 1ms timer
     #[inline(always)]
     pub const fn with_dev_ls_wake_fix(self, value: bool) -> Self {
@@ -17047,6 +18285,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **DEV_RX_ERR_QUIESCE** `[6:6]`
+    ///
     /// Device - suppress repeated errors until the device FSM is next in the process of decoding an inbound packet.
     #[inline(always)]
     pub const fn with_dev_rx_err_quiesce(self, value: bool) -> Self {
@@ -17060,6 +18299,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **SIE_RX_CHATTER_SE0_FIX** `[5:5]`
+    ///
     /// RX - when recovering from line chatter or bitstuff errors, treat SE0 as the end of chatter as well as
     /// 8 consecutive idle bits.
     #[inline(always)]
@@ -17074,6 +18314,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **SIE_RX_BITSTUFF_FIX** `[4:4]`
+    ///
     /// RX - when a bitstuff error is signalled by rx_dasm, unconditionally terminate RX decode to
     /// avoid a hang during certain packet phases.
     #[inline(always)]
@@ -17088,6 +18329,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **DEV_BUFF_CONTROL_DOUBLE_READ_FIX** `[3:3]`
+    ///
     /// Device - the controller FSM performs two reads of the buffer status memory address to
     /// avoid sampling metastable data. An enabled buffer is only used if both reads match.
     #[inline(always)]
@@ -17102,6 +18344,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **MULTI_HUB_FIX** `[2:2]`
+    ///
     /// Host - increase inter-packet and turnaround timeouts to accommodate worst-case hub delays.
     #[inline(always)]
     pub const fn with_multi_hub_fix(self, value: bool) -> Self {
@@ -17115,6 +18358,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **LINESTATE_DELAY** `[1:1]`
+    ///
     /// Device/Host - add an extra 1-bit debounce of linestate sampling.
     #[inline(always)]
     pub const fn with_linestate_delay(self, value: bool) -> Self {
@@ -17128,6 +18372,7 @@ impl LinestateTuningVal {
     }
 
     /// Set **RCV_DELAY** `[0:0]`
+    ///
     /// Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
     #[inline(always)]
     pub const fn with_rcv_delay(self, value: bool) -> Self {
@@ -17179,52 +18424,99 @@ impl LinestateTuning {
 /// ## Fields
 ///
 /// - **EPX_STOPPED_ON_NAK** `[23]` (RO)
+///
 ///   Source: NAK_POLL.EPX_STOPPED_ON_NAK
+///
 /// - **DEV_SM_WATCHDOG_FIRED** `[22]` (RO)
+///
 ///   Source: DEV_SM_WATCHDOG.FIRED
+///
 /// - **ENDPOINT_ERROR** `[21]` (RO)
+///
 ///   Source: SIE_STATUS.ENDPOINT_ERROR
+///
 /// - **RX_SHORT_PACKET** `[20]` (RO)
+///
 ///   Source: SIE_STATUS.RX_SHORT_PACKET
+///
 /// - **EP_STALL_NAK** `[19]` (RO)
+///
 ///   Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+///
 /// - **ABORT_DONE** `[18]` (RO)
+///
 ///   Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+///
 /// - **DEV_SOF** `[17]` (RO)
+///
 ///   Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+///
 /// - **SETUP_REQ** `[16]` (RO)
+///
 ///   Device. Source: SIE_STATUS.SETUP_REC
+///
 /// - **DEV_RESUME_FROM_HOST** `[15]` (RO)
+///
 ///   Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **DEV_SUSPEND** `[14]` (RO)
+///
 ///   Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+///
 /// - **DEV_CONN_DIS** `[13]` (RO)
+///
 ///   Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+///
 /// - **BUS_RESET** `[12]` (RO)
+///
 ///   Source: SIE_STATUS.BUS_RESET
+///
 /// - **VBUS_DETECT** `[11]` (RO)
+///
 ///   Source: SIE_STATUS.VBUS_DETECTED
+///
 /// - **STALL** `[10]` (RO)
+///
 ///   Source: SIE_STATUS.STALL_REC
+///
 /// - **ERROR_CRC** `[9]` (RO)
+///
 ///   Source: SIE_STATUS.CRC_ERROR
+///
 /// - **ERROR_BIT_STUFF** `[8]` (RO)
+///
 ///   Source: SIE_STATUS.BIT_STUFF_ERROR
+///
 /// - **ERROR_RX_OVERFLOW** `[7]` (RO)
+///
 ///   Source: SIE_STATUS.RX_OVERFLOW
+///
 /// - **ERROR_RX_TIMEOUT** `[6]` (RO)
+///
 ///   Source: SIE_STATUS.RX_TIMEOUT
+///
 /// - **ERROR_DATA_SEQ** `[5]` (RO)
+///
 ///   Source: SIE_STATUS.DATA_SEQ_ERROR
+///
 /// - **BUFF_STATUS** `[4]` (RO)
+///
 ///   Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+///
 /// - **TRANS_COMPLETE** `[3]` (RO)
+///
 ///   Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+///
 /// - **HOST_SOF** `[2]` (RO)
+///
 ///   Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+///
 /// - **HOST_RESUME** `[1]` (RO)
+///
 ///   Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **HOST_CONN_DIS** `[0]` (RO)
+///
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Intr {
@@ -17243,168 +18535,216 @@ impl Intr {
     // ======== Field Constants ========
 
     /// **EPX_STOPPED_ON_NAK**
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const EPX_STOPPED_ON_NAK_OFFSET: u32 = 23;
     pub const EPX_STOPPED_ON_NAK_MASK: u32 = 0x00800000;
     pub const EPX_STOPPED_ON_NAK: u32 = 1 << 23;
 
     /// **DEV_SM_WATCHDOG_FIRED**
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const DEV_SM_WATCHDOG_FIRED_OFFSET: u32 = 22;
     pub const DEV_SM_WATCHDOG_FIRED_MASK: u32 = 0x00400000;
     pub const DEV_SM_WATCHDOG_FIRED: u32 = 1 << 22;
 
     /// **ENDPOINT_ERROR**
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const ENDPOINT_ERROR_OFFSET: u32 = 21;
     pub const ENDPOINT_ERROR_MASK: u32 = 0x00200000;
     pub const ENDPOINT_ERROR: u32 = 1 << 21;
 
     /// **RX_SHORT_PACKET**
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const RX_SHORT_PACKET_OFFSET: u32 = 20;
     pub const RX_SHORT_PACKET_MASK: u32 = 0x00100000;
     pub const RX_SHORT_PACKET: u32 = 1 << 20;
 
     /// **EP_STALL_NAK**
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EP_STALL_NAK_OFFSET: u32 = 19;
     pub const EP_STALL_NAK_MASK: u32 = 0x00080000;
     pub const EP_STALL_NAK: u32 = 1 << 19;
 
     /// **ABORT_DONE**
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ABORT_DONE_OFFSET: u32 = 18;
     pub const ABORT_DONE_MASK: u32 = 0x00040000;
     pub const ABORT_DONE: u32 = 1 << 18;
 
     /// **DEV_SOF**
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const DEV_SOF_OFFSET: u32 = 17;
     pub const DEV_SOF_MASK: u32 = 0x00020000;
     pub const DEV_SOF: u32 = 1 << 17;
 
     /// **SETUP_REQ**
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const SETUP_REQ_OFFSET: u32 = 16;
     pub const SETUP_REQ_MASK: u32 = 0x00010000;
     pub const SETUP_REQ: u32 = 1 << 16;
 
     /// **DEV_RESUME_FROM_HOST**
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const DEV_RESUME_FROM_HOST_OFFSET: u32 = 15;
     pub const DEV_RESUME_FROM_HOST_MASK: u32 = 0x00008000;
     pub const DEV_RESUME_FROM_HOST: u32 = 1 << 15;
 
     /// **DEV_SUSPEND**
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const DEV_SUSPEND_OFFSET: u32 = 14;
     pub const DEV_SUSPEND_MASK: u32 = 0x00004000;
     pub const DEV_SUSPEND: u32 = 1 << 14;
 
     /// **DEV_CONN_DIS**
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const DEV_CONN_DIS_OFFSET: u32 = 13;
     pub const DEV_CONN_DIS_MASK: u32 = 0x00002000;
     pub const DEV_CONN_DIS: u32 = 1 << 13;
 
     /// **BUS_RESET**
+    ///
     /// Source: SIE_STATUS.BUS_RESET
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BUS_RESET_OFFSET: u32 = 12;
     pub const BUS_RESET_MASK: u32 = 0x00001000;
     pub const BUS_RESET: u32 = 1 << 12;
 
     /// **VBUS_DETECT**
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VBUS_DETECT_OFFSET: u32 = 11;
     pub const VBUS_DETECT_MASK: u32 = 0x00000800;
     pub const VBUS_DETECT: u32 = 1 << 11;
 
     /// **STALL**
+    ///
     /// Source: SIE_STATUS.STALL_REC
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const STALL_OFFSET: u32 = 10;
     pub const STALL_MASK: u32 = 0x00000400;
     pub const STALL: u32 = 1 << 10;
 
     /// **ERROR_CRC**
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const ERROR_CRC_OFFSET: u32 = 9;
     pub const ERROR_CRC_MASK: u32 = 0x00000200;
     pub const ERROR_CRC: u32 = 1 << 9;
 
     /// **ERROR_BIT_STUFF**
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ERROR_BIT_STUFF_OFFSET: u32 = 8;
     pub const ERROR_BIT_STUFF_MASK: u32 = 0x00000100;
     pub const ERROR_BIT_STUFF: u32 = 1 << 8;
 
     /// **ERROR_RX_OVERFLOW**
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const ERROR_RX_OVERFLOW_OFFSET: u32 = 7;
     pub const ERROR_RX_OVERFLOW_MASK: u32 = 0x00000080;
     pub const ERROR_RX_OVERFLOW: u32 = 1 << 7;
 
     /// **ERROR_RX_TIMEOUT**
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ERROR_RX_TIMEOUT_OFFSET: u32 = 6;
     pub const ERROR_RX_TIMEOUT_MASK: u32 = 0x00000040;
     pub const ERROR_RX_TIMEOUT: u32 = 1 << 6;
 
     /// **ERROR_DATA_SEQ**
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const ERROR_DATA_SEQ_OFFSET: u32 = 5;
     pub const ERROR_DATA_SEQ_MASK: u32 = 0x00000020;
     pub const ERROR_DATA_SEQ: u32 = 1 << 5;
 
     /// **BUFF_STATUS**
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const BUFF_STATUS_OFFSET: u32 = 4;
     pub const BUFF_STATUS_MASK: u32 = 0x00000010;
     pub const BUFF_STATUS: u32 = 1 << 4;
 
     /// **TRANS_COMPLETE**
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TRANS_COMPLETE_OFFSET: u32 = 3;
     pub const TRANS_COMPLETE_MASK: u32 = 0x00000008;
     pub const TRANS_COMPLETE: u32 = 1 << 3;
 
     /// **HOST_SOF**
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HOST_SOF_OFFSET: u32 = 2;
     pub const HOST_SOF_MASK: u32 = 0x00000004;
     pub const HOST_SOF: u32 = 1 << 2;
 
     /// **HOST_RESUME**
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HOST_RESUME_OFFSET: u32 = 1;
     pub const HOST_RESUME_MASK: u32 = 0x00000002;
     pub const HOST_RESUME: u32 = 1 << 1;
 
     /// **HOST_CONN_DIS**
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HOST_CONN_DIS_OFFSET: u32 = 0;
     pub const HOST_CONN_DIS_MASK: u32 = 0x00000001;
@@ -17413,6 +18753,7 @@ impl Intr {
     // ======== Field Accessors ========
 
     /// **EPX_STOPPED_ON_NAK** `[23]` (RO)
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub fn epx_stopped_on_nak(&self) -> bool {
@@ -17420,6 +18761,7 @@ impl Intr {
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RO)
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub fn dev_sm_watchdog_fired(&self) -> bool {
@@ -17427,6 +18769,7 @@ impl Intr {
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RO)
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub fn endpoint_error(&self) -> bool {
@@ -17434,6 +18777,7 @@ impl Intr {
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub fn rx_short_packet(&self) -> bool {
@@ -17441,6 +18785,7 @@ impl Intr {
     }
 
     /// **EP_STALL_NAK** `[19]` (RO)
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub fn ep_stall_nak(&self) -> bool {
@@ -17448,6 +18793,7 @@ impl Intr {
     }
 
     /// **ABORT_DONE** `[18]` (RO)
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub fn abort_done(&self) -> bool {
@@ -17455,6 +18801,7 @@ impl Intr {
     }
 
     /// **DEV_SOF** `[17]` (RO)
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub fn dev_sof(&self) -> bool {
@@ -17462,6 +18809,7 @@ impl Intr {
     }
 
     /// **SETUP_REQ** `[16]` (RO)
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub fn setup_req(&self) -> bool {
@@ -17469,6 +18817,7 @@ impl Intr {
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RO)
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn dev_resume_from_host(&self) -> bool {
@@ -17476,6 +18825,7 @@ impl Intr {
     }
 
     /// **DEV_SUSPEND** `[14]` (RO)
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub fn dev_suspend(&self) -> bool {
@@ -17483,6 +18833,7 @@ impl Intr {
     }
 
     /// **DEV_CONN_DIS** `[13]` (RO)
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub fn dev_conn_dis(&self) -> bool {
@@ -17490,6 +18841,7 @@ impl Intr {
     }
 
     /// **BUS_RESET** `[12]` (RO)
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub fn bus_reset(&self) -> bool {
@@ -17497,6 +18849,7 @@ impl Intr {
     }
 
     /// **VBUS_DETECT** `[11]` (RO)
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub fn vbus_detect(&self) -> bool {
@@ -17504,6 +18857,7 @@ impl Intr {
     }
 
     /// **STALL** `[10]` (RO)
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -17511,6 +18865,7 @@ impl Intr {
     }
 
     /// **ERROR_CRC** `[9]` (RO)
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub fn error_crc(&self) -> bool {
@@ -17518,6 +18873,7 @@ impl Intr {
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RO)
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub fn error_bit_stuff(&self) -> bool {
@@ -17525,6 +18881,7 @@ impl Intr {
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub fn error_rx_overflow(&self) -> bool {
@@ -17532,6 +18889,7 @@ impl Intr {
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub fn error_rx_timeout(&self) -> bool {
@@ -17539,6 +18897,7 @@ impl Intr {
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RO)
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub fn error_data_seq(&self) -> bool {
@@ -17546,6 +18905,7 @@ impl Intr {
     }
 
     /// **BUFF_STATUS** `[4]` (RO)
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub fn buff_status(&self) -> bool {
@@ -17553,6 +18913,7 @@ impl Intr {
     }
 
     /// **TRANS_COMPLETE** `[3]` (RO)
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub fn trans_complete(&self) -> bool {
@@ -17560,6 +18921,7 @@ impl Intr {
     }
 
     /// **HOST_SOF** `[2]` (RO)
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub fn host_sof(&self) -> bool {
@@ -17567,6 +18929,7 @@ impl Intr {
     }
 
     /// **HOST_RESUME** `[1]` (RO)
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn host_resume(&self) -> bool {
@@ -17574,6 +18937,7 @@ impl Intr {
     }
 
     /// **HOST_CONN_DIS** `[0]` (RO)
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub fn host_conn_dis(&self) -> bool {
@@ -17611,6 +18975,7 @@ impl IntrVal {
     }
 
     /// Read **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn epx_stopped_on_nak(&self) -> bool {
@@ -17618,6 +18983,7 @@ impl IntrVal {
     }
 
     /// Read **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn dev_sm_watchdog_fired(&self) -> bool {
@@ -17625,6 +18991,7 @@ impl IntrVal {
     }
 
     /// Read **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn endpoint_error(&self) -> bool {
@@ -17632,6 +18999,7 @@ impl IntrVal {
     }
 
     /// Read **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn rx_short_packet(&self) -> bool {
@@ -17639,6 +19007,7 @@ impl IntrVal {
     }
 
     /// Read **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn ep_stall_nak(&self) -> bool {
@@ -17646,6 +19015,7 @@ impl IntrVal {
     }
 
     /// Read **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn abort_done(&self) -> bool {
@@ -17653,6 +19023,7 @@ impl IntrVal {
     }
 
     /// Read **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn dev_sof(&self) -> bool {
@@ -17660,6 +19031,7 @@ impl IntrVal {
     }
 
     /// Read **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn setup_req(&self) -> bool {
@@ -17667,6 +19039,7 @@ impl IntrVal {
     }
 
     /// Read **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn dev_resume_from_host(&self) -> bool {
@@ -17674,6 +19047,7 @@ impl IntrVal {
     }
 
     /// Read **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn dev_suspend(&self) -> bool {
@@ -17681,6 +19055,7 @@ impl IntrVal {
     }
 
     /// Read **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn dev_conn_dis(&self) -> bool {
@@ -17688,6 +19063,7 @@ impl IntrVal {
     }
 
     /// Read **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn bus_reset(&self) -> bool {
@@ -17695,6 +19071,7 @@ impl IntrVal {
     }
 
     /// Read **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn vbus_detect(&self) -> bool {
@@ -17702,6 +19079,7 @@ impl IntrVal {
     }
 
     /// Read **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -17709,6 +19087,7 @@ impl IntrVal {
     }
 
     /// Read **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn error_crc(&self) -> bool {
@@ -17716,6 +19095,7 @@ impl IntrVal {
     }
 
     /// Read **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn error_bit_stuff(&self) -> bool {
@@ -17723,6 +19103,7 @@ impl IntrVal {
     }
 
     /// Read **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn error_rx_overflow(&self) -> bool {
@@ -17730,6 +19111,7 @@ impl IntrVal {
     }
 
     /// Read **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn error_rx_timeout(&self) -> bool {
@@ -17737,6 +19119,7 @@ impl IntrVal {
     }
 
     /// Read **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn error_data_seq(&self) -> bool {
@@ -17744,6 +19127,7 @@ impl IntrVal {
     }
 
     /// Read **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn buff_status(&self) -> bool {
@@ -17751,6 +19135,7 @@ impl IntrVal {
     }
 
     /// Read **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn trans_complete(&self) -> bool {
@@ -17758,6 +19143,7 @@ impl IntrVal {
     }
 
     /// Read **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn host_sof(&self) -> bool {
@@ -17765,6 +19151,7 @@ impl IntrVal {
     }
 
     /// Read **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn host_resume(&self) -> bool {
@@ -17772,6 +19159,7 @@ impl IntrVal {
     }
 
     /// Read **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn host_conn_dis(&self) -> bool {
@@ -17817,52 +19205,99 @@ impl Intr {
 /// ## Fields
 ///
 /// - **EPX_STOPPED_ON_NAK** `[23]` (RW)
+///
 ///   Source: NAK_POLL.EPX_STOPPED_ON_NAK
+///
 /// - **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
+///
 ///   Source: DEV_SM_WATCHDOG.FIRED
+///
 /// - **ENDPOINT_ERROR** `[21]` (RW)
+///
 ///   Source: SIE_STATUS.ENDPOINT_ERROR
+///
 /// - **RX_SHORT_PACKET** `[20]` (RW)
+///
 ///   Source: SIE_STATUS.RX_SHORT_PACKET
+///
 /// - **EP_STALL_NAK** `[19]` (RW)
+///
 ///   Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+///
 /// - **ABORT_DONE** `[18]` (RW)
+///
 ///   Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+///
 /// - **DEV_SOF** `[17]` (RW)
+///
 ///   Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+///
 /// - **SETUP_REQ** `[16]` (RW)
+///
 ///   Device. Source: SIE_STATUS.SETUP_REC
+///
 /// - **DEV_RESUME_FROM_HOST** `[15]` (RW)
+///
 ///   Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **DEV_SUSPEND** `[14]` (RW)
+///
 ///   Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+///
 /// - **DEV_CONN_DIS** `[13]` (RW)
+///
 ///   Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+///
 /// - **BUS_RESET** `[12]` (RW)
+///
 ///   Source: SIE_STATUS.BUS_RESET
+///
 /// - **VBUS_DETECT** `[11]` (RW)
+///
 ///   Source: SIE_STATUS.VBUS_DETECTED
+///
 /// - **STALL** `[10]` (RW)
+///
 ///   Source: SIE_STATUS.STALL_REC
+///
 /// - **ERROR_CRC** `[9]` (RW)
+///
 ///   Source: SIE_STATUS.CRC_ERROR
+///
 /// - **ERROR_BIT_STUFF** `[8]` (RW)
+///
 ///   Source: SIE_STATUS.BIT_STUFF_ERROR
+///
 /// - **ERROR_RX_OVERFLOW** `[7]` (RW)
+///
 ///   Source: SIE_STATUS.RX_OVERFLOW
+///
 /// - **ERROR_RX_TIMEOUT** `[6]` (RW)
+///
 ///   Source: SIE_STATUS.RX_TIMEOUT
+///
 /// - **ERROR_DATA_SEQ** `[5]` (RW)
+///
 ///   Source: SIE_STATUS.DATA_SEQ_ERROR
+///
 /// - **BUFF_STATUS** `[4]` (RW)
+///
 ///   Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+///
 /// - **TRANS_COMPLETE** `[3]` (RW)
+///
 ///   Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+///
 /// - **HOST_SOF** `[2]` (RW)
+///
 ///   Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+///
 /// - **HOST_RESUME** `[1]` (RW)
+///
 ///   Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **HOST_CONN_DIS** `[0]` (RW)
+///
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Inte {
@@ -17881,168 +19316,216 @@ impl Inte {
     // ======== Field Constants ========
 
     /// **EPX_STOPPED_ON_NAK**
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const EPX_STOPPED_ON_NAK_OFFSET: u32 = 23;
     pub const EPX_STOPPED_ON_NAK_MASK: u32 = 0x00800000;
     pub const EPX_STOPPED_ON_NAK: u32 = 1 << 23;
 
     /// **DEV_SM_WATCHDOG_FIRED**
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const DEV_SM_WATCHDOG_FIRED_OFFSET: u32 = 22;
     pub const DEV_SM_WATCHDOG_FIRED_MASK: u32 = 0x00400000;
     pub const DEV_SM_WATCHDOG_FIRED: u32 = 1 << 22;
 
     /// **ENDPOINT_ERROR**
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const ENDPOINT_ERROR_OFFSET: u32 = 21;
     pub const ENDPOINT_ERROR_MASK: u32 = 0x00200000;
     pub const ENDPOINT_ERROR: u32 = 1 << 21;
 
     /// **RX_SHORT_PACKET**
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const RX_SHORT_PACKET_OFFSET: u32 = 20;
     pub const RX_SHORT_PACKET_MASK: u32 = 0x00100000;
     pub const RX_SHORT_PACKET: u32 = 1 << 20;
 
     /// **EP_STALL_NAK**
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EP_STALL_NAK_OFFSET: u32 = 19;
     pub const EP_STALL_NAK_MASK: u32 = 0x00080000;
     pub const EP_STALL_NAK: u32 = 1 << 19;
 
     /// **ABORT_DONE**
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ABORT_DONE_OFFSET: u32 = 18;
     pub const ABORT_DONE_MASK: u32 = 0x00040000;
     pub const ABORT_DONE: u32 = 1 << 18;
 
     /// **DEV_SOF**
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const DEV_SOF_OFFSET: u32 = 17;
     pub const DEV_SOF_MASK: u32 = 0x00020000;
     pub const DEV_SOF: u32 = 1 << 17;
 
     /// **SETUP_REQ**
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const SETUP_REQ_OFFSET: u32 = 16;
     pub const SETUP_REQ_MASK: u32 = 0x00010000;
     pub const SETUP_REQ: u32 = 1 << 16;
 
     /// **DEV_RESUME_FROM_HOST**
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const DEV_RESUME_FROM_HOST_OFFSET: u32 = 15;
     pub const DEV_RESUME_FROM_HOST_MASK: u32 = 0x00008000;
     pub const DEV_RESUME_FROM_HOST: u32 = 1 << 15;
 
     /// **DEV_SUSPEND**
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const DEV_SUSPEND_OFFSET: u32 = 14;
     pub const DEV_SUSPEND_MASK: u32 = 0x00004000;
     pub const DEV_SUSPEND: u32 = 1 << 14;
 
     /// **DEV_CONN_DIS**
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const DEV_CONN_DIS_OFFSET: u32 = 13;
     pub const DEV_CONN_DIS_MASK: u32 = 0x00002000;
     pub const DEV_CONN_DIS: u32 = 1 << 13;
 
     /// **BUS_RESET**
+    ///
     /// Source: SIE_STATUS.BUS_RESET
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BUS_RESET_OFFSET: u32 = 12;
     pub const BUS_RESET_MASK: u32 = 0x00001000;
     pub const BUS_RESET: u32 = 1 << 12;
 
     /// **VBUS_DETECT**
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VBUS_DETECT_OFFSET: u32 = 11;
     pub const VBUS_DETECT_MASK: u32 = 0x00000800;
     pub const VBUS_DETECT: u32 = 1 << 11;
 
     /// **STALL**
+    ///
     /// Source: SIE_STATUS.STALL_REC
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const STALL_OFFSET: u32 = 10;
     pub const STALL_MASK: u32 = 0x00000400;
     pub const STALL: u32 = 1 << 10;
 
     /// **ERROR_CRC**
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const ERROR_CRC_OFFSET: u32 = 9;
     pub const ERROR_CRC_MASK: u32 = 0x00000200;
     pub const ERROR_CRC: u32 = 1 << 9;
 
     /// **ERROR_BIT_STUFF**
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ERROR_BIT_STUFF_OFFSET: u32 = 8;
     pub const ERROR_BIT_STUFF_MASK: u32 = 0x00000100;
     pub const ERROR_BIT_STUFF: u32 = 1 << 8;
 
     /// **ERROR_RX_OVERFLOW**
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const ERROR_RX_OVERFLOW_OFFSET: u32 = 7;
     pub const ERROR_RX_OVERFLOW_MASK: u32 = 0x00000080;
     pub const ERROR_RX_OVERFLOW: u32 = 1 << 7;
 
     /// **ERROR_RX_TIMEOUT**
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ERROR_RX_TIMEOUT_OFFSET: u32 = 6;
     pub const ERROR_RX_TIMEOUT_MASK: u32 = 0x00000040;
     pub const ERROR_RX_TIMEOUT: u32 = 1 << 6;
 
     /// **ERROR_DATA_SEQ**
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const ERROR_DATA_SEQ_OFFSET: u32 = 5;
     pub const ERROR_DATA_SEQ_MASK: u32 = 0x00000020;
     pub const ERROR_DATA_SEQ: u32 = 1 << 5;
 
     /// **BUFF_STATUS**
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const BUFF_STATUS_OFFSET: u32 = 4;
     pub const BUFF_STATUS_MASK: u32 = 0x00000010;
     pub const BUFF_STATUS: u32 = 1 << 4;
 
     /// **TRANS_COMPLETE**
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TRANS_COMPLETE_OFFSET: u32 = 3;
     pub const TRANS_COMPLETE_MASK: u32 = 0x00000008;
     pub const TRANS_COMPLETE: u32 = 1 << 3;
 
     /// **HOST_SOF**
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HOST_SOF_OFFSET: u32 = 2;
     pub const HOST_SOF_MASK: u32 = 0x00000004;
     pub const HOST_SOF: u32 = 1 << 2;
 
     /// **HOST_RESUME**
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HOST_RESUME_OFFSET: u32 = 1;
     pub const HOST_RESUME_MASK: u32 = 0x00000002;
     pub const HOST_RESUME: u32 = 1 << 1;
 
     /// **HOST_CONN_DIS**
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HOST_CONN_DIS_OFFSET: u32 = 0;
     pub const HOST_CONN_DIS_MASK: u32 = 0x00000001;
@@ -18051,6 +19534,7 @@ impl Inte {
     // ======== Field Accessors ========
 
     /// **EPX_STOPPED_ON_NAK** `[23]` (RW)
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub fn epx_stopped_on_nak(&self) -> bool {
@@ -18070,6 +19554,7 @@ impl Inte {
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub fn dev_sm_watchdog_fired(&self) -> bool {
@@ -18089,6 +19574,7 @@ impl Inte {
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RW)
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub fn endpoint_error(&self) -> bool {
@@ -18108,6 +19594,7 @@ impl Inte {
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub fn rx_short_packet(&self) -> bool {
@@ -18127,6 +19614,7 @@ impl Inte {
     }
 
     /// **EP_STALL_NAK** `[19]` (RW)
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub fn ep_stall_nak(&self) -> bool {
@@ -18146,6 +19634,7 @@ impl Inte {
     }
 
     /// **ABORT_DONE** `[18]` (RW)
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub fn abort_done(&self) -> bool {
@@ -18165,6 +19654,7 @@ impl Inte {
     }
 
     /// **DEV_SOF** `[17]` (RW)
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub fn dev_sof(&self) -> bool {
@@ -18184,6 +19674,7 @@ impl Inte {
     }
 
     /// **SETUP_REQ** `[16]` (RW)
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub fn setup_req(&self) -> bool {
@@ -18203,6 +19694,7 @@ impl Inte {
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RW)
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn dev_resume_from_host(&self) -> bool {
@@ -18222,6 +19714,7 @@ impl Inte {
     }
 
     /// **DEV_SUSPEND** `[14]` (RW)
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub fn dev_suspend(&self) -> bool {
@@ -18241,6 +19734,7 @@ impl Inte {
     }
 
     /// **DEV_CONN_DIS** `[13]` (RW)
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub fn dev_conn_dis(&self) -> bool {
@@ -18260,6 +19754,7 @@ impl Inte {
     }
 
     /// **BUS_RESET** `[12]` (RW)
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub fn bus_reset(&self) -> bool {
@@ -18279,6 +19774,7 @@ impl Inte {
     }
 
     /// **VBUS_DETECT** `[11]` (RW)
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub fn vbus_detect(&self) -> bool {
@@ -18298,6 +19794,7 @@ impl Inte {
     }
 
     /// **STALL** `[10]` (RW)
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -18317,6 +19814,7 @@ impl Inte {
     }
 
     /// **ERROR_CRC** `[9]` (RW)
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub fn error_crc(&self) -> bool {
@@ -18336,6 +19834,7 @@ impl Inte {
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RW)
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub fn error_bit_stuff(&self) -> bool {
@@ -18355,6 +19854,7 @@ impl Inte {
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub fn error_rx_overflow(&self) -> bool {
@@ -18374,6 +19874,7 @@ impl Inte {
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub fn error_rx_timeout(&self) -> bool {
@@ -18393,6 +19894,7 @@ impl Inte {
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RW)
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub fn error_data_seq(&self) -> bool {
@@ -18412,6 +19914,7 @@ impl Inte {
     }
 
     /// **BUFF_STATUS** `[4]` (RW)
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub fn buff_status(&self) -> bool {
@@ -18431,6 +19934,7 @@ impl Inte {
     }
 
     /// **TRANS_COMPLETE** `[3]` (RW)
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub fn trans_complete(&self) -> bool {
@@ -18450,6 +19954,7 @@ impl Inte {
     }
 
     /// **HOST_SOF** `[2]` (RW)
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub fn host_sof(&self) -> bool {
@@ -18469,6 +19974,7 @@ impl Inte {
     }
 
     /// **HOST_RESUME** `[1]` (RW)
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn host_resume(&self) -> bool {
@@ -18488,6 +19994,7 @@ impl Inte {
     }
 
     /// **HOST_CONN_DIS** `[0]` (RW)
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub fn host_conn_dis(&self) -> bool {
@@ -18537,6 +20044,7 @@ impl InteVal {
     }
 
     /// Read **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn epx_stopped_on_nak(&self) -> bool {
@@ -18544,6 +20052,7 @@ impl InteVal {
     }
 
     /// Read **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn dev_sm_watchdog_fired(&self) -> bool {
@@ -18551,6 +20060,7 @@ impl InteVal {
     }
 
     /// Read **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn endpoint_error(&self) -> bool {
@@ -18558,6 +20068,7 @@ impl InteVal {
     }
 
     /// Read **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn rx_short_packet(&self) -> bool {
@@ -18565,6 +20076,7 @@ impl InteVal {
     }
 
     /// Read **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn ep_stall_nak(&self) -> bool {
@@ -18572,6 +20084,7 @@ impl InteVal {
     }
 
     /// Read **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn abort_done(&self) -> bool {
@@ -18579,6 +20092,7 @@ impl InteVal {
     }
 
     /// Read **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn dev_sof(&self) -> bool {
@@ -18586,6 +20100,7 @@ impl InteVal {
     }
 
     /// Read **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn setup_req(&self) -> bool {
@@ -18593,6 +20108,7 @@ impl InteVal {
     }
 
     /// Read **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn dev_resume_from_host(&self) -> bool {
@@ -18600,6 +20116,7 @@ impl InteVal {
     }
 
     /// Read **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn dev_suspend(&self) -> bool {
@@ -18607,6 +20124,7 @@ impl InteVal {
     }
 
     /// Read **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn dev_conn_dis(&self) -> bool {
@@ -18614,6 +20132,7 @@ impl InteVal {
     }
 
     /// Read **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn bus_reset(&self) -> bool {
@@ -18621,6 +20140,7 @@ impl InteVal {
     }
 
     /// Read **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn vbus_detect(&self) -> bool {
@@ -18628,6 +20148,7 @@ impl InteVal {
     }
 
     /// Read **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -18635,6 +20156,7 @@ impl InteVal {
     }
 
     /// Read **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn error_crc(&self) -> bool {
@@ -18642,6 +20164,7 @@ impl InteVal {
     }
 
     /// Read **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn error_bit_stuff(&self) -> bool {
@@ -18649,6 +20172,7 @@ impl InteVal {
     }
 
     /// Read **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn error_rx_overflow(&self) -> bool {
@@ -18656,6 +20180,7 @@ impl InteVal {
     }
 
     /// Read **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn error_rx_timeout(&self) -> bool {
@@ -18663,6 +20188,7 @@ impl InteVal {
     }
 
     /// Read **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn error_data_seq(&self) -> bool {
@@ -18670,6 +20196,7 @@ impl InteVal {
     }
 
     /// Read **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn buff_status(&self) -> bool {
@@ -18677,6 +20204,7 @@ impl InteVal {
     }
 
     /// Read **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn trans_complete(&self) -> bool {
@@ -18684,6 +20212,7 @@ impl InteVal {
     }
 
     /// Read **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn host_sof(&self) -> bool {
@@ -18691,6 +20220,7 @@ impl InteVal {
     }
 
     /// Read **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn host_resume(&self) -> bool {
@@ -18698,6 +20228,7 @@ impl InteVal {
     }
 
     /// Read **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn host_conn_dis(&self) -> bool {
@@ -18705,6 +20236,7 @@ impl InteVal {
     }
 
     /// Set **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn with_epx_stopped_on_nak(self, value: bool) -> Self {
@@ -18718,6 +20250,7 @@ impl InteVal {
     }
 
     /// Set **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn with_dev_sm_watchdog_fired(self, value: bool) -> Self {
@@ -18731,6 +20264,7 @@ impl InteVal {
     }
 
     /// Set **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn with_endpoint_error(self, value: bool) -> Self {
@@ -18744,6 +20278,7 @@ impl InteVal {
     }
 
     /// Set **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn with_rx_short_packet(self, value: bool) -> Self {
@@ -18757,6 +20292,7 @@ impl InteVal {
     }
 
     /// Set **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn with_ep_stall_nak(self, value: bool) -> Self {
@@ -18770,6 +20306,7 @@ impl InteVal {
     }
 
     /// Set **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn with_abort_done(self, value: bool) -> Self {
@@ -18783,6 +20320,7 @@ impl InteVal {
     }
 
     /// Set **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn with_dev_sof(self, value: bool) -> Self {
@@ -18796,6 +20334,7 @@ impl InteVal {
     }
 
     /// Set **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn with_setup_req(self, value: bool) -> Self {
@@ -18809,6 +20348,7 @@ impl InteVal {
     }
 
     /// Set **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn with_dev_resume_from_host(self, value: bool) -> Self {
@@ -18822,6 +20362,7 @@ impl InteVal {
     }
 
     /// Set **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn with_dev_suspend(self, value: bool) -> Self {
@@ -18835,6 +20376,7 @@ impl InteVal {
     }
 
     /// Set **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn with_dev_conn_dis(self, value: bool) -> Self {
@@ -18848,6 +20390,7 @@ impl InteVal {
     }
 
     /// Set **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn with_bus_reset(self, value: bool) -> Self {
@@ -18861,6 +20404,7 @@ impl InteVal {
     }
 
     /// Set **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn with_vbus_detect(self, value: bool) -> Self {
@@ -18874,6 +20418,7 @@ impl InteVal {
     }
 
     /// Set **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -18887,6 +20432,7 @@ impl InteVal {
     }
 
     /// Set **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn with_error_crc(self, value: bool) -> Self {
@@ -18900,6 +20446,7 @@ impl InteVal {
     }
 
     /// Set **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn with_error_bit_stuff(self, value: bool) -> Self {
@@ -18913,6 +20460,7 @@ impl InteVal {
     }
 
     /// Set **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn with_error_rx_overflow(self, value: bool) -> Self {
@@ -18926,6 +20474,7 @@ impl InteVal {
     }
 
     /// Set **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn with_error_rx_timeout(self, value: bool) -> Self {
@@ -18939,6 +20488,7 @@ impl InteVal {
     }
 
     /// Set **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn with_error_data_seq(self, value: bool) -> Self {
@@ -18952,6 +20502,7 @@ impl InteVal {
     }
 
     /// Set **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn with_buff_status(self, value: bool) -> Self {
@@ -18965,6 +20516,7 @@ impl InteVal {
     }
 
     /// Set **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn with_trans_complete(self, value: bool) -> Self {
@@ -18978,6 +20530,7 @@ impl InteVal {
     }
 
     /// Set **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn with_host_sof(self, value: bool) -> Self {
@@ -18991,6 +20544,7 @@ impl InteVal {
     }
 
     /// Set **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn with_host_resume(self, value: bool) -> Self {
@@ -19004,6 +20558,7 @@ impl InteVal {
     }
 
     /// Set **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn with_host_conn_dis(self, value: bool) -> Self {
@@ -19055,52 +20610,99 @@ impl Inte {
 /// ## Fields
 ///
 /// - **EPX_STOPPED_ON_NAK** `[23]` (RW)
+///
 ///   Source: NAK_POLL.EPX_STOPPED_ON_NAK
+///
 /// - **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
+///
 ///   Source: DEV_SM_WATCHDOG.FIRED
+///
 /// - **ENDPOINT_ERROR** `[21]` (RW)
+///
 ///   Source: SIE_STATUS.ENDPOINT_ERROR
+///
 /// - **RX_SHORT_PACKET** `[20]` (RW)
+///
 ///   Source: SIE_STATUS.RX_SHORT_PACKET
+///
 /// - **EP_STALL_NAK** `[19]` (RW)
+///
 ///   Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+///
 /// - **ABORT_DONE** `[18]` (RW)
+///
 ///   Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+///
 /// - **DEV_SOF** `[17]` (RW)
+///
 ///   Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+///
 /// - **SETUP_REQ** `[16]` (RW)
+///
 ///   Device. Source: SIE_STATUS.SETUP_REC
+///
 /// - **DEV_RESUME_FROM_HOST** `[15]` (RW)
+///
 ///   Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **DEV_SUSPEND** `[14]` (RW)
+///
 ///   Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+///
 /// - **DEV_CONN_DIS** `[13]` (RW)
+///
 ///   Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+///
 /// - **BUS_RESET** `[12]` (RW)
+///
 ///   Source: SIE_STATUS.BUS_RESET
+///
 /// - **VBUS_DETECT** `[11]` (RW)
+///
 ///   Source: SIE_STATUS.VBUS_DETECTED
+///
 /// - **STALL** `[10]` (RW)
+///
 ///   Source: SIE_STATUS.STALL_REC
+///
 /// - **ERROR_CRC** `[9]` (RW)
+///
 ///   Source: SIE_STATUS.CRC_ERROR
+///
 /// - **ERROR_BIT_STUFF** `[8]` (RW)
+///
 ///   Source: SIE_STATUS.BIT_STUFF_ERROR
+///
 /// - **ERROR_RX_OVERFLOW** `[7]` (RW)
+///
 ///   Source: SIE_STATUS.RX_OVERFLOW
+///
 /// - **ERROR_RX_TIMEOUT** `[6]` (RW)
+///
 ///   Source: SIE_STATUS.RX_TIMEOUT
+///
 /// - **ERROR_DATA_SEQ** `[5]` (RW)
+///
 ///   Source: SIE_STATUS.DATA_SEQ_ERROR
+///
 /// - **BUFF_STATUS** `[4]` (RW)
+///
 ///   Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+///
 /// - **TRANS_COMPLETE** `[3]` (RW)
+///
 ///   Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+///
 /// - **HOST_SOF** `[2]` (RW)
+///
 ///   Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+///
 /// - **HOST_RESUME** `[1]` (RW)
+///
 ///   Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **HOST_CONN_DIS** `[0]` (RW)
+///
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Intf {
@@ -19119,168 +20721,216 @@ impl Intf {
     // ======== Field Constants ========
 
     /// **EPX_STOPPED_ON_NAK**
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const EPX_STOPPED_ON_NAK_OFFSET: u32 = 23;
     pub const EPX_STOPPED_ON_NAK_MASK: u32 = 0x00800000;
     pub const EPX_STOPPED_ON_NAK: u32 = 1 << 23;
 
     /// **DEV_SM_WATCHDOG_FIRED**
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const DEV_SM_WATCHDOG_FIRED_OFFSET: u32 = 22;
     pub const DEV_SM_WATCHDOG_FIRED_MASK: u32 = 0x00400000;
     pub const DEV_SM_WATCHDOG_FIRED: u32 = 1 << 22;
 
     /// **ENDPOINT_ERROR**
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const ENDPOINT_ERROR_OFFSET: u32 = 21;
     pub const ENDPOINT_ERROR_MASK: u32 = 0x00200000;
     pub const ENDPOINT_ERROR: u32 = 1 << 21;
 
     /// **RX_SHORT_PACKET**
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const RX_SHORT_PACKET_OFFSET: u32 = 20;
     pub const RX_SHORT_PACKET_MASK: u32 = 0x00100000;
     pub const RX_SHORT_PACKET: u32 = 1 << 20;
 
     /// **EP_STALL_NAK**
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EP_STALL_NAK_OFFSET: u32 = 19;
     pub const EP_STALL_NAK_MASK: u32 = 0x00080000;
     pub const EP_STALL_NAK: u32 = 1 << 19;
 
     /// **ABORT_DONE**
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ABORT_DONE_OFFSET: u32 = 18;
     pub const ABORT_DONE_MASK: u32 = 0x00040000;
     pub const ABORT_DONE: u32 = 1 << 18;
 
     /// **DEV_SOF**
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const DEV_SOF_OFFSET: u32 = 17;
     pub const DEV_SOF_MASK: u32 = 0x00020000;
     pub const DEV_SOF: u32 = 1 << 17;
 
     /// **SETUP_REQ**
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const SETUP_REQ_OFFSET: u32 = 16;
     pub const SETUP_REQ_MASK: u32 = 0x00010000;
     pub const SETUP_REQ: u32 = 1 << 16;
 
     /// **DEV_RESUME_FROM_HOST**
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const DEV_RESUME_FROM_HOST_OFFSET: u32 = 15;
     pub const DEV_RESUME_FROM_HOST_MASK: u32 = 0x00008000;
     pub const DEV_RESUME_FROM_HOST: u32 = 1 << 15;
 
     /// **DEV_SUSPEND**
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const DEV_SUSPEND_OFFSET: u32 = 14;
     pub const DEV_SUSPEND_MASK: u32 = 0x00004000;
     pub const DEV_SUSPEND: u32 = 1 << 14;
 
     /// **DEV_CONN_DIS**
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const DEV_CONN_DIS_OFFSET: u32 = 13;
     pub const DEV_CONN_DIS_MASK: u32 = 0x00002000;
     pub const DEV_CONN_DIS: u32 = 1 << 13;
 
     /// **BUS_RESET**
+    ///
     /// Source: SIE_STATUS.BUS_RESET
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BUS_RESET_OFFSET: u32 = 12;
     pub const BUS_RESET_MASK: u32 = 0x00001000;
     pub const BUS_RESET: u32 = 1 << 12;
 
     /// **VBUS_DETECT**
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VBUS_DETECT_OFFSET: u32 = 11;
     pub const VBUS_DETECT_MASK: u32 = 0x00000800;
     pub const VBUS_DETECT: u32 = 1 << 11;
 
     /// **STALL**
+    ///
     /// Source: SIE_STATUS.STALL_REC
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const STALL_OFFSET: u32 = 10;
     pub const STALL_MASK: u32 = 0x00000400;
     pub const STALL: u32 = 1 << 10;
 
     /// **ERROR_CRC**
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const ERROR_CRC_OFFSET: u32 = 9;
     pub const ERROR_CRC_MASK: u32 = 0x00000200;
     pub const ERROR_CRC: u32 = 1 << 9;
 
     /// **ERROR_BIT_STUFF**
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ERROR_BIT_STUFF_OFFSET: u32 = 8;
     pub const ERROR_BIT_STUFF_MASK: u32 = 0x00000100;
     pub const ERROR_BIT_STUFF: u32 = 1 << 8;
 
     /// **ERROR_RX_OVERFLOW**
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const ERROR_RX_OVERFLOW_OFFSET: u32 = 7;
     pub const ERROR_RX_OVERFLOW_MASK: u32 = 0x00000080;
     pub const ERROR_RX_OVERFLOW: u32 = 1 << 7;
 
     /// **ERROR_RX_TIMEOUT**
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ERROR_RX_TIMEOUT_OFFSET: u32 = 6;
     pub const ERROR_RX_TIMEOUT_MASK: u32 = 0x00000040;
     pub const ERROR_RX_TIMEOUT: u32 = 1 << 6;
 
     /// **ERROR_DATA_SEQ**
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const ERROR_DATA_SEQ_OFFSET: u32 = 5;
     pub const ERROR_DATA_SEQ_MASK: u32 = 0x00000020;
     pub const ERROR_DATA_SEQ: u32 = 1 << 5;
 
     /// **BUFF_STATUS**
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const BUFF_STATUS_OFFSET: u32 = 4;
     pub const BUFF_STATUS_MASK: u32 = 0x00000010;
     pub const BUFF_STATUS: u32 = 1 << 4;
 
     /// **TRANS_COMPLETE**
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TRANS_COMPLETE_OFFSET: u32 = 3;
     pub const TRANS_COMPLETE_MASK: u32 = 0x00000008;
     pub const TRANS_COMPLETE: u32 = 1 << 3;
 
     /// **HOST_SOF**
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HOST_SOF_OFFSET: u32 = 2;
     pub const HOST_SOF_MASK: u32 = 0x00000004;
     pub const HOST_SOF: u32 = 1 << 2;
 
     /// **HOST_RESUME**
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HOST_RESUME_OFFSET: u32 = 1;
     pub const HOST_RESUME_MASK: u32 = 0x00000002;
     pub const HOST_RESUME: u32 = 1 << 1;
 
     /// **HOST_CONN_DIS**
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HOST_CONN_DIS_OFFSET: u32 = 0;
     pub const HOST_CONN_DIS_MASK: u32 = 0x00000001;
@@ -19289,6 +20939,7 @@ impl Intf {
     // ======== Field Accessors ========
 
     /// **EPX_STOPPED_ON_NAK** `[23]` (RW)
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub fn epx_stopped_on_nak(&self) -> bool {
@@ -19308,6 +20959,7 @@ impl Intf {
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub fn dev_sm_watchdog_fired(&self) -> bool {
@@ -19327,6 +20979,7 @@ impl Intf {
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RW)
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub fn endpoint_error(&self) -> bool {
@@ -19346,6 +20999,7 @@ impl Intf {
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub fn rx_short_packet(&self) -> bool {
@@ -19365,6 +21019,7 @@ impl Intf {
     }
 
     /// **EP_STALL_NAK** `[19]` (RW)
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub fn ep_stall_nak(&self) -> bool {
@@ -19384,6 +21039,7 @@ impl Intf {
     }
 
     /// **ABORT_DONE** `[18]` (RW)
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub fn abort_done(&self) -> bool {
@@ -19403,6 +21059,7 @@ impl Intf {
     }
 
     /// **DEV_SOF** `[17]` (RW)
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub fn dev_sof(&self) -> bool {
@@ -19422,6 +21079,7 @@ impl Intf {
     }
 
     /// **SETUP_REQ** `[16]` (RW)
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub fn setup_req(&self) -> bool {
@@ -19441,6 +21099,7 @@ impl Intf {
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RW)
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn dev_resume_from_host(&self) -> bool {
@@ -19460,6 +21119,7 @@ impl Intf {
     }
 
     /// **DEV_SUSPEND** `[14]` (RW)
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub fn dev_suspend(&self) -> bool {
@@ -19479,6 +21139,7 @@ impl Intf {
     }
 
     /// **DEV_CONN_DIS** `[13]` (RW)
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub fn dev_conn_dis(&self) -> bool {
@@ -19498,6 +21159,7 @@ impl Intf {
     }
 
     /// **BUS_RESET** `[12]` (RW)
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub fn bus_reset(&self) -> bool {
@@ -19517,6 +21179,7 @@ impl Intf {
     }
 
     /// **VBUS_DETECT** `[11]` (RW)
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub fn vbus_detect(&self) -> bool {
@@ -19536,6 +21199,7 @@ impl Intf {
     }
 
     /// **STALL** `[10]` (RW)
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -19555,6 +21219,7 @@ impl Intf {
     }
 
     /// **ERROR_CRC** `[9]` (RW)
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub fn error_crc(&self) -> bool {
@@ -19574,6 +21239,7 @@ impl Intf {
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RW)
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub fn error_bit_stuff(&self) -> bool {
@@ -19593,6 +21259,7 @@ impl Intf {
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub fn error_rx_overflow(&self) -> bool {
@@ -19612,6 +21279,7 @@ impl Intf {
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RW)
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub fn error_rx_timeout(&self) -> bool {
@@ -19631,6 +21299,7 @@ impl Intf {
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RW)
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub fn error_data_seq(&self) -> bool {
@@ -19650,6 +21319,7 @@ impl Intf {
     }
 
     /// **BUFF_STATUS** `[4]` (RW)
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub fn buff_status(&self) -> bool {
@@ -19669,6 +21339,7 @@ impl Intf {
     }
 
     /// **TRANS_COMPLETE** `[3]` (RW)
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub fn trans_complete(&self) -> bool {
@@ -19688,6 +21359,7 @@ impl Intf {
     }
 
     /// **HOST_SOF** `[2]` (RW)
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub fn host_sof(&self) -> bool {
@@ -19707,6 +21379,7 @@ impl Intf {
     }
 
     /// **HOST_RESUME** `[1]` (RW)
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn host_resume(&self) -> bool {
@@ -19726,6 +21399,7 @@ impl Intf {
     }
 
     /// **HOST_CONN_DIS** `[0]` (RW)
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub fn host_conn_dis(&self) -> bool {
@@ -19775,6 +21449,7 @@ impl IntfVal {
     }
 
     /// Read **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn epx_stopped_on_nak(&self) -> bool {
@@ -19782,6 +21457,7 @@ impl IntfVal {
     }
 
     /// Read **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn dev_sm_watchdog_fired(&self) -> bool {
@@ -19789,6 +21465,7 @@ impl IntfVal {
     }
 
     /// Read **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn endpoint_error(&self) -> bool {
@@ -19796,6 +21473,7 @@ impl IntfVal {
     }
 
     /// Read **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn rx_short_packet(&self) -> bool {
@@ -19803,6 +21481,7 @@ impl IntfVal {
     }
 
     /// Read **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn ep_stall_nak(&self) -> bool {
@@ -19810,6 +21489,7 @@ impl IntfVal {
     }
 
     /// Read **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn abort_done(&self) -> bool {
@@ -19817,6 +21497,7 @@ impl IntfVal {
     }
 
     /// Read **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn dev_sof(&self) -> bool {
@@ -19824,6 +21505,7 @@ impl IntfVal {
     }
 
     /// Read **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn setup_req(&self) -> bool {
@@ -19831,6 +21513,7 @@ impl IntfVal {
     }
 
     /// Read **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn dev_resume_from_host(&self) -> bool {
@@ -19838,6 +21521,7 @@ impl IntfVal {
     }
 
     /// Read **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn dev_suspend(&self) -> bool {
@@ -19845,6 +21529,7 @@ impl IntfVal {
     }
 
     /// Read **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn dev_conn_dis(&self) -> bool {
@@ -19852,6 +21537,7 @@ impl IntfVal {
     }
 
     /// Read **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn bus_reset(&self) -> bool {
@@ -19859,6 +21545,7 @@ impl IntfVal {
     }
 
     /// Read **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn vbus_detect(&self) -> bool {
@@ -19866,6 +21553,7 @@ impl IntfVal {
     }
 
     /// Read **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -19873,6 +21561,7 @@ impl IntfVal {
     }
 
     /// Read **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn error_crc(&self) -> bool {
@@ -19880,6 +21569,7 @@ impl IntfVal {
     }
 
     /// Read **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn error_bit_stuff(&self) -> bool {
@@ -19887,6 +21577,7 @@ impl IntfVal {
     }
 
     /// Read **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn error_rx_overflow(&self) -> bool {
@@ -19894,6 +21585,7 @@ impl IntfVal {
     }
 
     /// Read **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn error_rx_timeout(&self) -> bool {
@@ -19901,6 +21593,7 @@ impl IntfVal {
     }
 
     /// Read **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn error_data_seq(&self) -> bool {
@@ -19908,6 +21601,7 @@ impl IntfVal {
     }
 
     /// Read **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn buff_status(&self) -> bool {
@@ -19915,6 +21609,7 @@ impl IntfVal {
     }
 
     /// Read **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn trans_complete(&self) -> bool {
@@ -19922,6 +21617,7 @@ impl IntfVal {
     }
 
     /// Read **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn host_sof(&self) -> bool {
@@ -19929,6 +21625,7 @@ impl IntfVal {
     }
 
     /// Read **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn host_resume(&self) -> bool {
@@ -19936,6 +21633,7 @@ impl IntfVal {
     }
 
     /// Read **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn host_conn_dis(&self) -> bool {
@@ -19943,6 +21641,7 @@ impl IntfVal {
     }
 
     /// Set **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn with_epx_stopped_on_nak(self, value: bool) -> Self {
@@ -19956,6 +21655,7 @@ impl IntfVal {
     }
 
     /// Set **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn with_dev_sm_watchdog_fired(self, value: bool) -> Self {
@@ -19969,6 +21669,7 @@ impl IntfVal {
     }
 
     /// Set **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn with_endpoint_error(self, value: bool) -> Self {
@@ -19982,6 +21683,7 @@ impl IntfVal {
     }
 
     /// Set **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn with_rx_short_packet(self, value: bool) -> Self {
@@ -19995,6 +21697,7 @@ impl IntfVal {
     }
 
     /// Set **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn with_ep_stall_nak(self, value: bool) -> Self {
@@ -20008,6 +21711,7 @@ impl IntfVal {
     }
 
     /// Set **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn with_abort_done(self, value: bool) -> Self {
@@ -20021,6 +21725,7 @@ impl IntfVal {
     }
 
     /// Set **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn with_dev_sof(self, value: bool) -> Self {
@@ -20034,6 +21739,7 @@ impl IntfVal {
     }
 
     /// Set **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn with_setup_req(self, value: bool) -> Self {
@@ -20047,6 +21753,7 @@ impl IntfVal {
     }
 
     /// Set **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn with_dev_resume_from_host(self, value: bool) -> Self {
@@ -20060,6 +21767,7 @@ impl IntfVal {
     }
 
     /// Set **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn with_dev_suspend(self, value: bool) -> Self {
@@ -20073,6 +21781,7 @@ impl IntfVal {
     }
 
     /// Set **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn with_dev_conn_dis(self, value: bool) -> Self {
@@ -20086,6 +21795,7 @@ impl IntfVal {
     }
 
     /// Set **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn with_bus_reset(self, value: bool) -> Self {
@@ -20099,6 +21809,7 @@ impl IntfVal {
     }
 
     /// Set **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn with_vbus_detect(self, value: bool) -> Self {
@@ -20112,6 +21823,7 @@ impl IntfVal {
     }
 
     /// Set **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn with_stall(self, value: bool) -> Self {
@@ -20125,6 +21837,7 @@ impl IntfVal {
     }
 
     /// Set **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn with_error_crc(self, value: bool) -> Self {
@@ -20138,6 +21851,7 @@ impl IntfVal {
     }
 
     /// Set **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn with_error_bit_stuff(self, value: bool) -> Self {
@@ -20151,6 +21865,7 @@ impl IntfVal {
     }
 
     /// Set **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn with_error_rx_overflow(self, value: bool) -> Self {
@@ -20164,6 +21879,7 @@ impl IntfVal {
     }
 
     /// Set **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn with_error_rx_timeout(self, value: bool) -> Self {
@@ -20177,6 +21893,7 @@ impl IntfVal {
     }
 
     /// Set **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn with_error_data_seq(self, value: bool) -> Self {
@@ -20190,6 +21907,7 @@ impl IntfVal {
     }
 
     /// Set **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn with_buff_status(self, value: bool) -> Self {
@@ -20203,6 +21921,7 @@ impl IntfVal {
     }
 
     /// Set **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn with_trans_complete(self, value: bool) -> Self {
@@ -20216,6 +21935,7 @@ impl IntfVal {
     }
 
     /// Set **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn with_host_sof(self, value: bool) -> Self {
@@ -20229,6 +21949,7 @@ impl IntfVal {
     }
 
     /// Set **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn with_host_resume(self, value: bool) -> Self {
@@ -20242,6 +21963,7 @@ impl IntfVal {
     }
 
     /// Set **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn with_host_conn_dis(self, value: bool) -> Self {
@@ -20293,52 +22015,99 @@ impl Intf {
 /// ## Fields
 ///
 /// - **EPX_STOPPED_ON_NAK** `[23]` (RO)
+///
 ///   Source: NAK_POLL.EPX_STOPPED_ON_NAK
+///
 /// - **DEV_SM_WATCHDOG_FIRED** `[22]` (RO)
+///
 ///   Source: DEV_SM_WATCHDOG.FIRED
+///
 /// - **ENDPOINT_ERROR** `[21]` (RO)
+///
 ///   Source: SIE_STATUS.ENDPOINT_ERROR
+///
 /// - **RX_SHORT_PACKET** `[20]` (RO)
+///
 ///   Source: SIE_STATUS.RX_SHORT_PACKET
+///
 /// - **EP_STALL_NAK** `[19]` (RO)
+///
 ///   Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+///
 /// - **ABORT_DONE** `[18]` (RO)
+///
 ///   Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+///
 /// - **DEV_SOF** `[17]` (RO)
+///
 ///   Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+///
 /// - **SETUP_REQ** `[16]` (RO)
+///
 ///   Device. Source: SIE_STATUS.SETUP_REC
+///
 /// - **DEV_RESUME_FROM_HOST** `[15]` (RO)
+///
 ///   Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **DEV_SUSPEND** `[14]` (RO)
+///
 ///   Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+///
 /// - **DEV_CONN_DIS** `[13]` (RO)
+///
 ///   Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+///
 /// - **BUS_RESET** `[12]` (RO)
+///
 ///   Source: SIE_STATUS.BUS_RESET
+///
 /// - **VBUS_DETECT** `[11]` (RO)
+///
 ///   Source: SIE_STATUS.VBUS_DETECTED
+///
 /// - **STALL** `[10]` (RO)
+///
 ///   Source: SIE_STATUS.STALL_REC
+///
 /// - **ERROR_CRC** `[9]` (RO)
+///
 ///   Source: SIE_STATUS.CRC_ERROR
+///
 /// - **ERROR_BIT_STUFF** `[8]` (RO)
+///
 ///   Source: SIE_STATUS.BIT_STUFF_ERROR
+///
 /// - **ERROR_RX_OVERFLOW** `[7]` (RO)
+///
 ///   Source: SIE_STATUS.RX_OVERFLOW
+///
 /// - **ERROR_RX_TIMEOUT** `[6]` (RO)
+///
 ///   Source: SIE_STATUS.RX_TIMEOUT
+///
 /// - **ERROR_DATA_SEQ** `[5]` (RO)
+///
 ///   Source: SIE_STATUS.DATA_SEQ_ERROR
+///
 /// - **BUFF_STATUS** `[4]` (RO)
+///
 ///   Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+///
 /// - **TRANS_COMPLETE** `[3]` (RO)
+///
 ///   Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+///
 /// - **HOST_SOF** `[2]` (RO)
+///
 ///   Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+///
 /// - **HOST_RESUME** `[1]` (RO)
+///
 ///   Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+///
 /// - **HOST_CONN_DIS** `[0]` (RO)
+///
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Ints {
@@ -20357,168 +22126,216 @@ impl Ints {
     // ======== Field Constants ========
 
     /// **EPX_STOPPED_ON_NAK**
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const EPX_STOPPED_ON_NAK_OFFSET: u32 = 23;
     pub const EPX_STOPPED_ON_NAK_MASK: u32 = 0x00800000;
     pub const EPX_STOPPED_ON_NAK: u32 = 1 << 23;
 
     /// **DEV_SM_WATCHDOG_FIRED**
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const DEV_SM_WATCHDOG_FIRED_OFFSET: u32 = 22;
     pub const DEV_SM_WATCHDOG_FIRED_MASK: u32 = 0x00400000;
     pub const DEV_SM_WATCHDOG_FIRED: u32 = 1 << 22;
 
     /// **ENDPOINT_ERROR**
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const ENDPOINT_ERROR_OFFSET: u32 = 21;
     pub const ENDPOINT_ERROR_MASK: u32 = 0x00200000;
     pub const ENDPOINT_ERROR: u32 = 1 << 21;
 
     /// **RX_SHORT_PACKET**
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const RX_SHORT_PACKET_OFFSET: u32 = 20;
     pub const RX_SHORT_PACKET_MASK: u32 = 0x00100000;
     pub const RX_SHORT_PACKET: u32 = 1 << 20;
 
     /// **EP_STALL_NAK**
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const EP_STALL_NAK_OFFSET: u32 = 19;
     pub const EP_STALL_NAK_MASK: u32 = 0x00080000;
     pub const EP_STALL_NAK: u32 = 1 << 19;
 
     /// **ABORT_DONE**
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ABORT_DONE_OFFSET: u32 = 18;
     pub const ABORT_DONE_MASK: u32 = 0x00040000;
     pub const ABORT_DONE: u32 = 1 << 18;
 
     /// **DEV_SOF**
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const DEV_SOF_OFFSET: u32 = 17;
     pub const DEV_SOF_MASK: u32 = 0x00020000;
     pub const DEV_SOF: u32 = 1 << 17;
 
     /// **SETUP_REQ**
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const SETUP_REQ_OFFSET: u32 = 16;
     pub const SETUP_REQ_MASK: u32 = 0x00010000;
     pub const SETUP_REQ: u32 = 1 << 16;
 
     /// **DEV_RESUME_FROM_HOST**
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const DEV_RESUME_FROM_HOST_OFFSET: u32 = 15;
     pub const DEV_RESUME_FROM_HOST_MASK: u32 = 0x00008000;
     pub const DEV_RESUME_FROM_HOST: u32 = 1 << 15;
 
     /// **DEV_SUSPEND**
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const DEV_SUSPEND_OFFSET: u32 = 14;
     pub const DEV_SUSPEND_MASK: u32 = 0x00004000;
     pub const DEV_SUSPEND: u32 = 1 << 14;
 
     /// **DEV_CONN_DIS**
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const DEV_CONN_DIS_OFFSET: u32 = 13;
     pub const DEV_CONN_DIS_MASK: u32 = 0x00002000;
     pub const DEV_CONN_DIS: u32 = 1 << 13;
 
     /// **BUS_RESET**
+    ///
     /// Source: SIE_STATUS.BUS_RESET
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BUS_RESET_OFFSET: u32 = 12;
     pub const BUS_RESET_MASK: u32 = 0x00001000;
     pub const BUS_RESET: u32 = 1 << 12;
 
     /// **VBUS_DETECT**
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const VBUS_DETECT_OFFSET: u32 = 11;
     pub const VBUS_DETECT_MASK: u32 = 0x00000800;
     pub const VBUS_DETECT: u32 = 1 << 11;
 
     /// **STALL**
+    ///
     /// Source: SIE_STATUS.STALL_REC
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const STALL_OFFSET: u32 = 10;
     pub const STALL_MASK: u32 = 0x00000400;
     pub const STALL: u32 = 1 << 10;
 
     /// **ERROR_CRC**
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const ERROR_CRC_OFFSET: u32 = 9;
     pub const ERROR_CRC_MASK: u32 = 0x00000200;
     pub const ERROR_CRC: u32 = 1 << 9;
 
     /// **ERROR_BIT_STUFF**
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ERROR_BIT_STUFF_OFFSET: u32 = 8;
     pub const ERROR_BIT_STUFF_MASK: u32 = 0x00000100;
     pub const ERROR_BIT_STUFF: u32 = 1 << 8;
 
     /// **ERROR_RX_OVERFLOW**
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const ERROR_RX_OVERFLOW_OFFSET: u32 = 7;
     pub const ERROR_RX_OVERFLOW_MASK: u32 = 0x00000080;
     pub const ERROR_RX_OVERFLOW: u32 = 1 << 7;
 
     /// **ERROR_RX_TIMEOUT**
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ERROR_RX_TIMEOUT_OFFSET: u32 = 6;
     pub const ERROR_RX_TIMEOUT_MASK: u32 = 0x00000040;
     pub const ERROR_RX_TIMEOUT: u32 = 1 << 6;
 
     /// **ERROR_DATA_SEQ**
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const ERROR_DATA_SEQ_OFFSET: u32 = 5;
     pub const ERROR_DATA_SEQ_MASK: u32 = 0x00000020;
     pub const ERROR_DATA_SEQ: u32 = 1 << 5;
 
     /// **BUFF_STATUS**
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const BUFF_STATUS_OFFSET: u32 = 4;
     pub const BUFF_STATUS_MASK: u32 = 0x00000010;
     pub const BUFF_STATUS: u32 = 1 << 4;
 
     /// **TRANS_COMPLETE**
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const TRANS_COMPLETE_OFFSET: u32 = 3;
     pub const TRANS_COMPLETE_MASK: u32 = 0x00000008;
     pub const TRANS_COMPLETE: u32 = 1 << 3;
 
     /// **HOST_SOF**
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HOST_SOF_OFFSET: u32 = 2;
     pub const HOST_SOF_MASK: u32 = 0x00000004;
     pub const HOST_SOF: u32 = 1 << 2;
 
     /// **HOST_RESUME**
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HOST_RESUME_OFFSET: u32 = 1;
     pub const HOST_RESUME_MASK: u32 = 0x00000002;
     pub const HOST_RESUME: u32 = 1 << 1;
 
     /// **HOST_CONN_DIS**
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HOST_CONN_DIS_OFFSET: u32 = 0;
     pub const HOST_CONN_DIS_MASK: u32 = 0x00000001;
@@ -20527,6 +22344,7 @@ impl Ints {
     // ======== Field Accessors ========
 
     /// **EPX_STOPPED_ON_NAK** `[23]` (RO)
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub fn epx_stopped_on_nak(&self) -> bool {
@@ -20534,6 +22352,7 @@ impl Ints {
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RO)
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub fn dev_sm_watchdog_fired(&self) -> bool {
@@ -20541,6 +22360,7 @@ impl Ints {
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RO)
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub fn endpoint_error(&self) -> bool {
@@ -20548,6 +22368,7 @@ impl Ints {
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub fn rx_short_packet(&self) -> bool {
@@ -20555,6 +22376,7 @@ impl Ints {
     }
 
     /// **EP_STALL_NAK** `[19]` (RO)
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub fn ep_stall_nak(&self) -> bool {
@@ -20562,6 +22384,7 @@ impl Ints {
     }
 
     /// **ABORT_DONE** `[18]` (RO)
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub fn abort_done(&self) -> bool {
@@ -20569,6 +22392,7 @@ impl Ints {
     }
 
     /// **DEV_SOF** `[17]` (RO)
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub fn dev_sof(&self) -> bool {
@@ -20576,6 +22400,7 @@ impl Ints {
     }
 
     /// **SETUP_REQ** `[16]` (RO)
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub fn setup_req(&self) -> bool {
@@ -20583,6 +22408,7 @@ impl Ints {
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RO)
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn dev_resume_from_host(&self) -> bool {
@@ -20590,6 +22416,7 @@ impl Ints {
     }
 
     /// **DEV_SUSPEND** `[14]` (RO)
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub fn dev_suspend(&self) -> bool {
@@ -20597,6 +22424,7 @@ impl Ints {
     }
 
     /// **DEV_CONN_DIS** `[13]` (RO)
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub fn dev_conn_dis(&self) -> bool {
@@ -20604,6 +22432,7 @@ impl Ints {
     }
 
     /// **BUS_RESET** `[12]` (RO)
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub fn bus_reset(&self) -> bool {
@@ -20611,6 +22440,7 @@ impl Ints {
     }
 
     /// **VBUS_DETECT** `[11]` (RO)
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub fn vbus_detect(&self) -> bool {
@@ -20618,6 +22448,7 @@ impl Ints {
     }
 
     /// **STALL** `[10]` (RO)
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub fn stall(&self) -> bool {
@@ -20625,6 +22456,7 @@ impl Ints {
     }
 
     /// **ERROR_CRC** `[9]` (RO)
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub fn error_crc(&self) -> bool {
@@ -20632,6 +22464,7 @@ impl Ints {
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RO)
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub fn error_bit_stuff(&self) -> bool {
@@ -20639,6 +22472,7 @@ impl Ints {
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub fn error_rx_overflow(&self) -> bool {
@@ -20646,6 +22480,7 @@ impl Ints {
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RO)
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub fn error_rx_timeout(&self) -> bool {
@@ -20653,6 +22488,7 @@ impl Ints {
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RO)
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub fn error_data_seq(&self) -> bool {
@@ -20660,6 +22496,7 @@ impl Ints {
     }
 
     /// **BUFF_STATUS** `[4]` (RO)
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub fn buff_status(&self) -> bool {
@@ -20667,6 +22504,7 @@ impl Ints {
     }
 
     /// **TRANS_COMPLETE** `[3]` (RO)
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub fn trans_complete(&self) -> bool {
@@ -20674,6 +22512,7 @@ impl Ints {
     }
 
     /// **HOST_SOF** `[2]` (RO)
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub fn host_sof(&self) -> bool {
@@ -20681,6 +22520,7 @@ impl Ints {
     }
 
     /// **HOST_RESUME** `[1]` (RO)
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub fn host_resume(&self) -> bool {
@@ -20688,6 +22528,7 @@ impl Ints {
     }
 
     /// **HOST_CONN_DIS** `[0]` (RO)
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub fn host_conn_dis(&self) -> bool {
@@ -20725,6 +22566,7 @@ impl IntsVal {
     }
 
     /// Read **EPX_STOPPED_ON_NAK** `[23:23]`
+    ///
     /// Source: NAK_POLL.EPX_STOPPED_ON_NAK
     #[inline(always)]
     pub const fn epx_stopped_on_nak(&self) -> bool {
@@ -20732,6 +22574,7 @@ impl IntsVal {
     }
 
     /// Read **DEV_SM_WATCHDOG_FIRED** `[22:22]`
+    ///
     /// Source: DEV_SM_WATCHDOG.FIRED
     #[inline(always)]
     pub const fn dev_sm_watchdog_fired(&self) -> bool {
@@ -20739,6 +22582,7 @@ impl IntsVal {
     }
 
     /// Read **ENDPOINT_ERROR** `[21:21]`
+    ///
     /// Source: SIE_STATUS.ENDPOINT_ERROR
     #[inline(always)]
     pub const fn endpoint_error(&self) -> bool {
@@ -20746,6 +22590,7 @@ impl IntsVal {
     }
 
     /// Read **RX_SHORT_PACKET** `[20:20]`
+    ///
     /// Source: SIE_STATUS.RX_SHORT_PACKET
     #[inline(always)]
     pub const fn rx_short_packet(&self) -> bool {
@@ -20753,6 +22598,7 @@ impl IntsVal {
     }
 
     /// Read **EP_STALL_NAK** `[19:19]`
+    ///
     /// Raised when any bit in EP_STATUS_STALL_NAK is set. Clear by clearing all bits in EP_STATUS_STALL_NAK.
     #[inline(always)]
     pub const fn ep_stall_nak(&self) -> bool {
@@ -20760,6 +22606,7 @@ impl IntsVal {
     }
 
     /// Read **ABORT_DONE** `[18:18]`
+    ///
     /// Raised when any bit in ABORT_DONE is set. Clear by clearing all bits in ABORT_DONE.
     #[inline(always)]
     pub const fn abort_done(&self) -> bool {
@@ -20767,6 +22614,7 @@ impl IntsVal {
     }
 
     /// Read **DEV_SOF** `[17:17]`
+    ///
     /// Set every time the device receives a SOF (Start of Frame) packet. Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn dev_sof(&self) -> bool {
@@ -20774,6 +22622,7 @@ impl IntsVal {
     }
 
     /// Read **SETUP_REQ** `[16:16]`
+    ///
     /// Device. Source: SIE_STATUS.SETUP_REC
     #[inline(always)]
     pub const fn setup_req(&self) -> bool {
@@ -20781,6 +22630,7 @@ impl IntsVal {
     }
 
     /// Read **DEV_RESUME_FROM_HOST** `[15:15]`
+    ///
     /// Set when the device receives a resume from the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn dev_resume_from_host(&self) -> bool {
@@ -20788,6 +22638,7 @@ impl IntsVal {
     }
 
     /// Read **DEV_SUSPEND** `[14:14]`
+    ///
     /// Set when the device suspend state changes. Cleared by writing to SIE_STATUS.SUSPENDED
     #[inline(always)]
     pub const fn dev_suspend(&self) -> bool {
@@ -20795,6 +22646,7 @@ impl IntsVal {
     }
 
     /// Read **DEV_CONN_DIS** `[13:13]`
+    ///
     /// Set when the device connection state changes. Cleared by writing to SIE_STATUS.CONNECTED
     #[inline(always)]
     pub const fn dev_conn_dis(&self) -> bool {
@@ -20802,6 +22654,7 @@ impl IntsVal {
     }
 
     /// Read **BUS_RESET** `[12:12]`
+    ///
     /// Source: SIE_STATUS.BUS_RESET
     #[inline(always)]
     pub const fn bus_reset(&self) -> bool {
@@ -20809,6 +22662,7 @@ impl IntsVal {
     }
 
     /// Read **VBUS_DETECT** `[11:11]`
+    ///
     /// Source: SIE_STATUS.VBUS_DETECTED
     #[inline(always)]
     pub const fn vbus_detect(&self) -> bool {
@@ -20816,6 +22670,7 @@ impl IntsVal {
     }
 
     /// Read **STALL** `[10:10]`
+    ///
     /// Source: SIE_STATUS.STALL_REC
     #[inline(always)]
     pub const fn stall(&self) -> bool {
@@ -20823,6 +22678,7 @@ impl IntsVal {
     }
 
     /// Read **ERROR_CRC** `[9:9]`
+    ///
     /// Source: SIE_STATUS.CRC_ERROR
     #[inline(always)]
     pub const fn error_crc(&self) -> bool {
@@ -20830,6 +22686,7 @@ impl IntsVal {
     }
 
     /// Read **ERROR_BIT_STUFF** `[8:8]`
+    ///
     /// Source: SIE_STATUS.BIT_STUFF_ERROR
     #[inline(always)]
     pub const fn error_bit_stuff(&self) -> bool {
@@ -20837,6 +22694,7 @@ impl IntsVal {
     }
 
     /// Read **ERROR_RX_OVERFLOW** `[7:7]`
+    ///
     /// Source: SIE_STATUS.RX_OVERFLOW
     #[inline(always)]
     pub const fn error_rx_overflow(&self) -> bool {
@@ -20844,6 +22702,7 @@ impl IntsVal {
     }
 
     /// Read **ERROR_RX_TIMEOUT** `[6:6]`
+    ///
     /// Source: SIE_STATUS.RX_TIMEOUT
     #[inline(always)]
     pub const fn error_rx_timeout(&self) -> bool {
@@ -20851,6 +22710,7 @@ impl IntsVal {
     }
 
     /// Read **ERROR_DATA_SEQ** `[5:5]`
+    ///
     /// Source: SIE_STATUS.DATA_SEQ_ERROR
     #[inline(always)]
     pub const fn error_data_seq(&self) -> bool {
@@ -20858,6 +22718,7 @@ impl IntsVal {
     }
 
     /// Read **BUFF_STATUS** `[4:4]`
+    ///
     /// Raised when any bit in BUFF_STATUS is set. Clear by clearing all bits in BUFF_STATUS.
     #[inline(always)]
     pub const fn buff_status(&self) -> bool {
@@ -20865,6 +22726,7 @@ impl IntsVal {
     }
 
     /// Read **TRANS_COMPLETE** `[3:3]`
+    ///
     /// Raised every time SIE_STATUS.TRANS_COMPLETE is set. Clear by writing to this bit.
     #[inline(always)]
     pub const fn trans_complete(&self) -> bool {
@@ -20872,6 +22734,7 @@ impl IntsVal {
     }
 
     /// Read **HOST_SOF** `[2:2]`
+    ///
     /// Host: raised every time the host sends a SOF (Start of Frame). Cleared by reading SOF_RD
     #[inline(always)]
     pub const fn host_sof(&self) -> bool {
@@ -20879,6 +22742,7 @@ impl IntsVal {
     }
 
     /// Read **HOST_RESUME** `[1:1]`
+    ///
     /// Host: raised when a device wakes up the host. Cleared by writing to SIE_STATUS.RESUME
     #[inline(always)]
     pub const fn host_resume(&self) -> bool {
@@ -20886,6 +22750,7 @@ impl IntsVal {
     }
 
     /// Read **HOST_CONN_DIS** `[0:0]`
+    ///
     /// Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
     #[inline(always)]
     pub const fn host_conn_dis(&self) -> bool {
@@ -21137,7 +23002,9 @@ impl SofTimestampLast {
 /// ## Fields
 ///
 /// - **RX_DASM** `[11:8]` (RO)
+///
 /// - **BC_STATE** `[7:5]` (RO)
+///
 /// - **STATE** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct SmState {
@@ -21277,20 +23144,35 @@ impl SmState {
 /// ## Fields
 ///
 /// - **EP15** `[31:30]` (RW)
+///
 /// - **EP14** `[29:28]` (RW)
+///
 /// - **EP13** `[27:26]` (RW)
+///
 /// - **EP12** `[25:24]` (RW)
+///
 /// - **EP11** `[23:22]` (RW)
+///
 /// - **EP10** `[21:20]` (RW)
+///
 /// - **EP9** `[19:18]` (RW)
+///
 /// - **EP8** `[17:16]` (RW)
+///
 /// - **EP7** `[15:14]` (RW)
+///
 /// - **EP6** `[13:12]` (RW)
+///
 /// - **EP5** `[11:10]` (RW)
+///
 /// - **EP4** `[9:8]` (RW)
+///
 /// - **EP3** `[7:6]` (RW)
+///
 /// - **EP2** `[5:4]` (RW)
+///
 /// - **EP1** `[3:2]` (RW)
+///
 /// - **EP0** `[1:0]` (RW)
 #[repr(transparent)]
 pub struct EpTxError {
@@ -21875,36 +23757,67 @@ impl EpTxError {
 /// ## Fields
 ///
 /// - **EP15_SEQ** `[31]` (RW)
+///
 /// - **EP15_TRANSACTION** `[30]` (RW)
+///
 /// - **EP14_SEQ** `[29]` (RW)
+///
 /// - **EP14_TRANSACTION** `[28]` (RW)
+///
 /// - **EP13_SEQ** `[27]` (RW)
+///
 /// - **EP13_TRANSACTION** `[26]` (RW)
+///
 /// - **EP12_SEQ** `[25]` (RW)
+///
 /// - **EP12_TRANSACTION** `[24]` (RW)
+///
 /// - **EP11_SEQ** `[23]` (RW)
+///
 /// - **EP11_TRANSACTION** `[22]` (RW)
+///
 /// - **EP10_SEQ** `[21]` (RW)
+///
 /// - **EP10_TRANSACTION** `[20]` (RW)
+///
 /// - **EP9_SEQ** `[19]` (RW)
+///
 /// - **EP9_TRANSACTION** `[18]` (RW)
+///
 /// - **EP8_SEQ** `[17]` (RW)
+///
 /// - **EP8_TRANSACTION** `[16]` (RW)
+///
 /// - **EP7_SEQ** `[15]` (RW)
+///
 /// - **EP7_TRANSACTION** `[14]` (RW)
+///
 /// - **EP6_SEQ** `[13]` (RW)
+///
 /// - **EP6_TRANSACTION** `[12]` (RW)
+///
 /// - **EP5_SEQ** `[11]` (RW)
+///
 /// - **EP5_TRANSACTION** `[10]` (RW)
+///
 /// - **EP4_SEQ** `[9]` (RW)
+///
 /// - **EP4_TRANSACTION** `[8]` (RW)
+///
 /// - **EP3_SEQ** `[7]` (RW)
+///
 /// - **EP3_TRANSACTION** `[6]` (RW)
+///
 /// - **EP2_SEQ** `[5]` (RW)
+///
 /// - **EP2_TRANSACTION** `[4]` (RW)
+///
 /// - **EP1_SEQ** `[3]` (RW)
+///
 /// - **EP1_TRANSACTION** `[2]` (RW)
+///
 /// - **EP0_SEQ** `[1]` (RW)
+///
 /// - **EP0_TRANSACTION** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpRxError {
@@ -23338,9 +25251,13 @@ impl EpRxError {
 /// ## Fields
 ///
 /// - **FIRED** `[20]` (RW)
+///
 /// - **RESET** `[19]` (RW)
+///
 ///   Set to 1 to forcibly reset the device state machine on watchdog expiry
+///
 /// - **ENABLE** `[18]` (RW)
+///
 /// - **LIMIT** `[17:0]` (RW)
 #[repr(transparent)]
 pub struct DevSmWatchdog {
@@ -23365,7 +25282,9 @@ impl DevSmWatchdog {
     pub const FIRED: u32 = 1 << 20;
 
     /// **RESET**
+    ///
     /// Set to 1 to forcibly reset the device state machine on watchdog expiry
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const RESET_OFFSET: u32 = 19;
     pub const RESET_MASK: u32 = 0x00080000;
@@ -23403,6 +25322,7 @@ impl DevSmWatchdog {
     }
 
     /// **RESET** `[19]` (RW)
+    ///
     /// Set to 1 to forcibly reset the device state machine on watchdog expiry
     #[inline(always)]
     pub fn reset(&self) -> bool {
@@ -23482,6 +25402,7 @@ impl DevSmWatchdogVal {
     }
 
     /// Read **RESET** `[19:19]`
+    ///
     /// Set to 1 to forcibly reset the device state machine on watchdog expiry
     #[inline(always)]
     pub const fn reset(&self) -> bool {
@@ -23513,6 +25434,7 @@ impl DevSmWatchdogVal {
     }
 
     /// Set **RESET** `[19:19]`
+    ///
     /// Set to 1 to forcibly reset the device state machine on watchdog expiry
     #[inline(always)]
     pub const fn with_reset(self, value: bool) -> Self {

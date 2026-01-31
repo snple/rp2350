@@ -16,16 +16,27 @@ pub const BASE: u32 = 0x400d8000;
 /// ## Fields
 ///
 /// - **TRIGGER** `[31]` (WO)
+///
 ///   Trigger a watchdog reset
+///
 /// - **ENABLE** `[30]` (RW)
+///
 ///   When not enabled the watchdog timer is paused
+///
 /// - **PAUSE_DBG1** `[26]` (RW)
+///
 ///   Pause the watchdog timer when processor 1 is in debug mode
+///
 /// - **PAUSE_DBG0** `[25]` (RW)
+///
 ///   Pause the watchdog timer when processor 0 is in debug mode
+///
 /// - **PAUSE_JTAG** `[24]` (RW)
+///
 ///   Pause the watchdog timer when JTAG is accessing the bus fabric
+///
 /// - **TIME** `[23:0]` (RO)
+///
 ///   Indicates the time in usec before a watchdog reset will be triggered
 #[repr(transparent)]
 pub struct Ctrl {
@@ -44,51 +55,62 @@ impl Ctrl {
     // ======== Field Constants ========
 
     /// **TRIGGER**
+    ///
     /// Trigger a watchdog reset
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const TRIGGER_OFFSET: u32 = 31;
     pub const TRIGGER_MASK: u32 = 0x80000000;
     pub const TRIGGER: u32 = 1 << 31;
 
     /// **ENABLE**
+    ///
     /// When not enabled the watchdog timer is paused
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const ENABLE_OFFSET: u32 = 30;
     pub const ENABLE_MASK: u32 = 0x40000000;
     pub const ENABLE: u32 = 1 << 30;
 
     /// **PAUSE_DBG1**
+    ///
     /// Pause the watchdog timer when processor 1 is in debug mode
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const PAUSE_DBG1_OFFSET: u32 = 26;
     pub const PAUSE_DBG1_MASK: u32 = 0x04000000;
     pub const PAUSE_DBG1: u32 = 1 << 26;
 
     /// **PAUSE_DBG0**
+    ///
     /// Pause the watchdog timer when processor 0 is in debug mode
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const PAUSE_DBG0_OFFSET: u32 = 25;
     pub const PAUSE_DBG0_MASK: u32 = 0x02000000;
     pub const PAUSE_DBG0: u32 = 1 << 25;
 
     /// **PAUSE_JTAG**
+    ///
     /// Pause the watchdog timer when JTAG is accessing the bus fabric
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const PAUSE_JTAG_OFFSET: u32 = 24;
     pub const PAUSE_JTAG_MASK: u32 = 0x01000000;
     pub const PAUSE_JTAG: u32 = 1 << 24;
 
     /// **TIME**
+    ///
     /// Indicates the time in usec before a watchdog reset will be triggered
+    ///
     /// Bits `[23:0]`, mask `0x00ffffff`
     pub const TIME_OFFSET: u32 = 0;
     pub const TIME_MASK: u32 = 0x00ffffff;
 
     // ======== Field Accessors ========
 
-    /// **TRIGGER** `[31]` (WO)
-    /// Trigger a watchdog reset
     /// Trigger **TRIGGER** (WO)
+    ///
     /// Trigger a watchdog reset
     #[inline(always)]
     pub fn trigger_trigger(&self) {
@@ -96,6 +118,7 @@ impl Ctrl {
     }
 
     /// **ENABLE** `[30]` (RW)
+    ///
     /// When not enabled the watchdog timer is paused
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -115,6 +138,7 @@ impl Ctrl {
     }
 
     /// **PAUSE_DBG1** `[26]` (RW)
+    ///
     /// Pause the watchdog timer when processor 1 is in debug mode
     #[inline(always)]
     pub fn pause_dbg1(&self) -> bool {
@@ -134,6 +158,7 @@ impl Ctrl {
     }
 
     /// **PAUSE_DBG0** `[25]` (RW)
+    ///
     /// Pause the watchdog timer when processor 0 is in debug mode
     #[inline(always)]
     pub fn pause_dbg0(&self) -> bool {
@@ -153,6 +178,7 @@ impl Ctrl {
     }
 
     /// **PAUSE_JTAG** `[24]` (RW)
+    ///
     /// Pause the watchdog timer when JTAG is accessing the bus fabric
     #[inline(always)]
     pub fn pause_jtag(&self) -> bool {
@@ -172,6 +198,7 @@ impl Ctrl {
     }
 
     /// **TIME** `[23:0]` (RO)
+    ///
     /// Indicates the time in usec before a watchdog reset will be triggered
     #[inline(always)]
     pub fn time(&self) -> u32 {
@@ -209,6 +236,7 @@ impl CtrlVal {
     }
 
     /// Read **ENABLE** `[30:30]`
+    ///
     /// When not enabled the watchdog timer is paused
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -216,6 +244,7 @@ impl CtrlVal {
     }
 
     /// Read **PAUSE_DBG1** `[26:26]`
+    ///
     /// Pause the watchdog timer when processor 1 is in debug mode
     #[inline(always)]
     pub const fn pause_dbg1(&self) -> bool {
@@ -223,6 +252,7 @@ impl CtrlVal {
     }
 
     /// Read **PAUSE_DBG0** `[25:25]`
+    ///
     /// Pause the watchdog timer when processor 0 is in debug mode
     #[inline(always)]
     pub const fn pause_dbg0(&self) -> bool {
@@ -230,6 +260,7 @@ impl CtrlVal {
     }
 
     /// Read **PAUSE_JTAG** `[24:24]`
+    ///
     /// Pause the watchdog timer when JTAG is accessing the bus fabric
     #[inline(always)]
     pub const fn pause_jtag(&self) -> bool {
@@ -237,6 +268,7 @@ impl CtrlVal {
     }
 
     /// Read **TIME** `[23:0]`
+    ///
     /// Indicates the time in usec before a watchdog reset will be triggered
     #[inline(always)]
     pub const fn time(&self) -> u32 {
@@ -244,6 +276,7 @@ impl CtrlVal {
     }
 
     /// Set **TRIGGER** `[31:31]`
+    ///
     /// Trigger a watchdog reset
     #[inline(always)]
     pub const fn with_trigger(self, value: bool) -> Self {
@@ -257,6 +290,7 @@ impl CtrlVal {
     }
 
     /// Set **ENABLE** `[30:30]`
+    ///
     /// When not enabled the watchdog timer is paused
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -270,6 +304,7 @@ impl CtrlVal {
     }
 
     /// Set **PAUSE_DBG1** `[26:26]`
+    ///
     /// Pause the watchdog timer when processor 1 is in debug mode
     #[inline(always)]
     pub const fn with_pause_dbg1(self, value: bool) -> Self {
@@ -283,6 +318,7 @@ impl CtrlVal {
     }
 
     /// Set **PAUSE_DBG0** `[25:25]`
+    ///
     /// Pause the watchdog timer when processor 0 is in debug mode
     #[inline(always)]
     pub const fn with_pause_dbg0(self, value: bool) -> Self {
@@ -296,6 +332,7 @@ impl CtrlVal {
     }
 
     /// Set **PAUSE_JTAG** `[24:24]`
+    ///
     /// Pause the watchdog timer when JTAG is accessing the bus fabric
     #[inline(always)]
     pub const fn with_pause_jtag(self, value: bool) -> Self {
@@ -370,7 +407,6 @@ impl Load {
 
     // ======== Field Accessors ========
 
-    /// **LOAD** `[23:0]` (WO)
     /// Write **LOAD** `[23:0]` (WO)
     #[inline(always)]
     pub fn write_load(&self, value: u32) {
@@ -455,6 +491,7 @@ impl Load {
 /// ## Fields
 ///
 /// - **FORCE** `[1]` (RO)
+///
 /// - **TIMER** `[0]` (RO)
 #[repr(transparent)]
 pub struct Reason {

@@ -17,8 +17,11 @@ pub const BASE: u32 = 0x40060000;
 /// ## Fields
 ///
 /// - **DEBUG** `[3]` (RW)
+///
 /// - **DMA** `[2]` (RO)
+///
 /// - **CORE1** `[1]` (RW)
+///
 /// - **CORE0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Lock {
@@ -407,7 +410,6 @@ impl Cfgreset {
 
     // ======== Field Accessors ========
 
-    /// **CFGRESET** `[0]` (WO)
     /// Trigger **CFGRESET** (WO)
     #[inline(always)]
     pub fn trigger_cfgreset(&self) {
@@ -615,10 +617,15 @@ impl GpioNsmask0 {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (RW)
+///
 /// - **QSPI_CSN** `[27]` (RW)
+///
 /// - **QSPI_SCK** `[26]` (RW)
+///
 /// - **USB_DM** `[25]` (RW)
+///
 /// - **USB_DP** `[24]` (RW)
+///
 /// - **GPIO** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct GpioNsmask1 {
@@ -939,20 +946,35 @@ impl GpioNsmask1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, ROM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, ROM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, ROM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, ROM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, ROM can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, ROM can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, ROM can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, ROM can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -972,57 +994,73 @@ impl Rom {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, ROM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, ROM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, ROM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, ROM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, ROM can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, ROM can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, ROM can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, ROM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -1031,6 +1069,7 @@ impl Rom {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, ROM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -1050,6 +1089,7 @@ impl Rom {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, ROM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -1069,6 +1109,7 @@ impl Rom {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, ROM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -1088,6 +1129,7 @@ impl Rom {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, ROM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -1107,6 +1149,7 @@ impl Rom {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, ROM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -1126,6 +1169,7 @@ impl Rom {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, ROM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -1145,6 +1189,7 @@ impl Rom {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, ROM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -1164,6 +1209,7 @@ impl Rom {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, ROM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1214,6 +1260,7 @@ impl RomVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, ROM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -1221,6 +1268,7 @@ impl RomVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, ROM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -1228,6 +1276,7 @@ impl RomVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, ROM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -1235,6 +1284,7 @@ impl RomVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, ROM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -1242,6 +1292,7 @@ impl RomVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, ROM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -1249,6 +1300,7 @@ impl RomVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ROM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -1256,6 +1308,7 @@ impl RomVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, ROM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -1263,6 +1316,7 @@ impl RomVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ROM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1271,6 +1325,7 @@ impl RomVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, ROM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -1284,6 +1339,7 @@ impl RomVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, ROM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -1297,6 +1353,7 @@ impl RomVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, ROM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -1310,6 +1367,7 @@ impl RomVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, ROM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -1323,6 +1381,7 @@ impl RomVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, ROM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -1336,6 +1395,7 @@ impl RomVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ROM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -1349,6 +1409,7 @@ impl RomVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, ROM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -1362,6 +1423,7 @@ impl RomVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ROM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1416,20 +1478,35 @@ impl Rom {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, XIP_MAIN can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, XIP_MAIN can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, XIP_MAIN can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -1449,57 +1526,73 @@ impl XipMain {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, XIP_MAIN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, XIP_MAIN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, XIP_MAIN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, XIP_MAIN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, XIP_MAIN can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, XIP_MAIN can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, XIP_MAIN can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, XIP_MAIN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -1508,6 +1601,7 @@ impl XipMain {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -1527,6 +1621,7 @@ impl XipMain {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -1546,6 +1641,7 @@ impl XipMain {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -1565,6 +1661,7 @@ impl XipMain {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -1584,6 +1681,7 @@ impl XipMain {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -1603,6 +1701,7 @@ impl XipMain {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, XIP_MAIN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -1622,6 +1721,7 @@ impl XipMain {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, XIP_MAIN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -1641,6 +1741,7 @@ impl XipMain {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, XIP_MAIN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1691,6 +1792,7 @@ impl XipMainVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, XIP_MAIN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -1698,6 +1800,7 @@ impl XipMainVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, XIP_MAIN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -1705,6 +1808,7 @@ impl XipMainVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_MAIN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -1712,6 +1816,7 @@ impl XipMainVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_MAIN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -1719,6 +1824,7 @@ impl XipMainVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, XIP_MAIN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -1726,6 +1832,7 @@ impl XipMainVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_MAIN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -1733,6 +1840,7 @@ impl XipMainVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, XIP_MAIN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -1740,6 +1848,7 @@ impl XipMainVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_MAIN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1748,6 +1857,7 @@ impl XipMainVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, XIP_MAIN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -1761,6 +1871,7 @@ impl XipMainVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, XIP_MAIN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -1774,6 +1885,7 @@ impl XipMainVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_MAIN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -1787,6 +1899,7 @@ impl XipMainVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_MAIN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -1800,6 +1913,7 @@ impl XipMainVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, XIP_MAIN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -1813,6 +1927,7 @@ impl XipMainVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_MAIN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -1826,6 +1941,7 @@ impl XipMainVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, XIP_MAIN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -1839,6 +1955,7 @@ impl XipMainVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_MAIN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -1893,20 +2010,35 @@ impl XipMain {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -1926,57 +2058,73 @@ impl Sram0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -1985,6 +2133,7 @@ impl Sram0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -2004,6 +2153,7 @@ impl Sram0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -2023,6 +2173,7 @@ impl Sram0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -2042,6 +2193,7 @@ impl Sram0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -2061,6 +2213,7 @@ impl Sram0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -2080,6 +2233,7 @@ impl Sram0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -2099,6 +2253,7 @@ impl Sram0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -2118,6 +2273,7 @@ impl Sram0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2168,6 +2324,7 @@ impl Sram0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -2175,6 +2332,7 @@ impl Sram0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -2182,6 +2340,7 @@ impl Sram0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -2189,6 +2348,7 @@ impl Sram0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -2196,6 +2356,7 @@ impl Sram0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -2203,6 +2364,7 @@ impl Sram0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -2210,6 +2372,7 @@ impl Sram0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -2217,6 +2380,7 @@ impl Sram0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2225,6 +2389,7 @@ impl Sram0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -2238,6 +2403,7 @@ impl Sram0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -2251,6 +2417,7 @@ impl Sram0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -2264,6 +2431,7 @@ impl Sram0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -2277,6 +2445,7 @@ impl Sram0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -2290,6 +2459,7 @@ impl Sram0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -2303,6 +2473,7 @@ impl Sram0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -2316,6 +2487,7 @@ impl Sram0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2370,20 +2542,35 @@ impl Sram0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -2403,57 +2590,73 @@ impl Sram1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -2462,6 +2665,7 @@ impl Sram1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -2481,6 +2685,7 @@ impl Sram1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -2500,6 +2705,7 @@ impl Sram1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -2519,6 +2725,7 @@ impl Sram1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -2538,6 +2745,7 @@ impl Sram1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -2557,6 +2765,7 @@ impl Sram1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -2576,6 +2785,7 @@ impl Sram1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -2595,6 +2805,7 @@ impl Sram1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2645,6 +2856,7 @@ impl Sram1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -2652,6 +2864,7 @@ impl Sram1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -2659,6 +2872,7 @@ impl Sram1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -2666,6 +2880,7 @@ impl Sram1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -2673,6 +2888,7 @@ impl Sram1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -2680,6 +2896,7 @@ impl Sram1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -2687,6 +2904,7 @@ impl Sram1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -2694,6 +2912,7 @@ impl Sram1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2702,6 +2921,7 @@ impl Sram1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -2715,6 +2935,7 @@ impl Sram1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -2728,6 +2949,7 @@ impl Sram1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -2741,6 +2963,7 @@ impl Sram1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -2754,6 +2977,7 @@ impl Sram1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -2767,6 +2991,7 @@ impl Sram1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -2780,6 +3005,7 @@ impl Sram1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -2793,6 +3019,7 @@ impl Sram1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -2847,20 +3074,35 @@ impl Sram1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM2 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM2 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM2 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM2 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -2880,57 +3122,73 @@ impl Sram2 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM2 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM2 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM2 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -2939,6 +3197,7 @@ impl Sram2 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -2958,6 +3217,7 @@ impl Sram2 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -2977,6 +3237,7 @@ impl Sram2 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -2996,6 +3257,7 @@ impl Sram2 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -3015,6 +3277,7 @@ impl Sram2 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -3034,6 +3297,7 @@ impl Sram2 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -3053,6 +3317,7 @@ impl Sram2 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -3072,6 +3337,7 @@ impl Sram2 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3122,6 +3388,7 @@ impl Sram2Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -3129,6 +3396,7 @@ impl Sram2Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -3136,6 +3404,7 @@ impl Sram2Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -3143,6 +3412,7 @@ impl Sram2Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -3150,6 +3420,7 @@ impl Sram2Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -3157,6 +3428,7 @@ impl Sram2Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -3164,6 +3436,7 @@ impl Sram2Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -3171,6 +3444,7 @@ impl Sram2Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3179,6 +3453,7 @@ impl Sram2Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -3192,6 +3467,7 @@ impl Sram2Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -3205,6 +3481,7 @@ impl Sram2Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -3218,6 +3495,7 @@ impl Sram2Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -3231,6 +3509,7 @@ impl Sram2Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -3244,6 +3523,7 @@ impl Sram2Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -3257,6 +3537,7 @@ impl Sram2Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -3270,6 +3551,7 @@ impl Sram2Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3324,20 +3606,35 @@ impl Sram2 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM3 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM3 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM3 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM3 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM3 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM3 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM3 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM3 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -3357,57 +3654,73 @@ impl Sram3 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM3 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM3 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM3 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM3 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM3 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM3 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM3 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM3 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -3416,6 +3729,7 @@ impl Sram3 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -3435,6 +3749,7 @@ impl Sram3 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -3454,6 +3769,7 @@ impl Sram3 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -3473,6 +3789,7 @@ impl Sram3 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -3492,6 +3809,7 @@ impl Sram3 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -3511,6 +3829,7 @@ impl Sram3 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM3 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -3530,6 +3849,7 @@ impl Sram3 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM3 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -3549,6 +3869,7 @@ impl Sram3 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM3 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3599,6 +3920,7 @@ impl Sram3Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM3 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -3606,6 +3928,7 @@ impl Sram3Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM3 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -3613,6 +3936,7 @@ impl Sram3Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM3 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -3620,6 +3944,7 @@ impl Sram3Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM3 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -3627,6 +3952,7 @@ impl Sram3Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM3 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -3634,6 +3960,7 @@ impl Sram3Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM3 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -3641,6 +3968,7 @@ impl Sram3Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM3 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -3648,6 +3976,7 @@ impl Sram3Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM3 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3656,6 +3985,7 @@ impl Sram3Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM3 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -3669,6 +3999,7 @@ impl Sram3Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM3 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -3682,6 +4013,7 @@ impl Sram3Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM3 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -3695,6 +4027,7 @@ impl Sram3Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM3 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -3708,6 +4041,7 @@ impl Sram3Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM3 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -3721,6 +4055,7 @@ impl Sram3Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM3 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -3734,6 +4069,7 @@ impl Sram3Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM3 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -3747,6 +4083,7 @@ impl Sram3Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM3 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -3801,20 +4138,35 @@ impl Sram3 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM4 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM4 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM4 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM4 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM4 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM4 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM4 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM4 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -3834,57 +4186,73 @@ impl Sram4 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM4 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM4 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM4 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM4 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM4 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM4 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM4 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM4 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -3893,6 +4261,7 @@ impl Sram4 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -3912,6 +4281,7 @@ impl Sram4 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -3931,6 +4301,7 @@ impl Sram4 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -3950,6 +4321,7 @@ impl Sram4 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -3969,6 +4341,7 @@ impl Sram4 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -3988,6 +4361,7 @@ impl Sram4 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM4 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -4007,6 +4381,7 @@ impl Sram4 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM4 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -4026,6 +4401,7 @@ impl Sram4 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM4 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4076,6 +4452,7 @@ impl Sram4Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM4 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -4083,6 +4460,7 @@ impl Sram4Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM4 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -4090,6 +4468,7 @@ impl Sram4Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM4 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -4097,6 +4476,7 @@ impl Sram4Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM4 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -4104,6 +4484,7 @@ impl Sram4Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM4 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -4111,6 +4492,7 @@ impl Sram4Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM4 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -4118,6 +4500,7 @@ impl Sram4Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM4 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -4125,6 +4508,7 @@ impl Sram4Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM4 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4133,6 +4517,7 @@ impl Sram4Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM4 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -4146,6 +4531,7 @@ impl Sram4Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM4 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -4159,6 +4545,7 @@ impl Sram4Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM4 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -4172,6 +4559,7 @@ impl Sram4Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM4 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -4185,6 +4573,7 @@ impl Sram4Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM4 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -4198,6 +4587,7 @@ impl Sram4Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM4 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -4211,6 +4601,7 @@ impl Sram4Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM4 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -4224,6 +4615,7 @@ impl Sram4Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM4 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4278,20 +4670,35 @@ impl Sram4 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM5 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM5 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM5 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM5 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM5 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM5 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM5 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM5 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -4311,57 +4718,73 @@ impl Sram5 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM5 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM5 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM5 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM5 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM5 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM5 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM5 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM5 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -4370,6 +4793,7 @@ impl Sram5 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -4389,6 +4813,7 @@ impl Sram5 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -4408,6 +4833,7 @@ impl Sram5 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -4427,6 +4853,7 @@ impl Sram5 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -4446,6 +4873,7 @@ impl Sram5 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -4465,6 +4893,7 @@ impl Sram5 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM5 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -4484,6 +4913,7 @@ impl Sram5 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM5 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -4503,6 +4933,7 @@ impl Sram5 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM5 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4553,6 +4984,7 @@ impl Sram5Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM5 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -4560,6 +4992,7 @@ impl Sram5Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM5 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -4567,6 +5000,7 @@ impl Sram5Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM5 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -4574,6 +5008,7 @@ impl Sram5Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM5 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -4581,6 +5016,7 @@ impl Sram5Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM5 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -4588,6 +5024,7 @@ impl Sram5Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM5 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -4595,6 +5032,7 @@ impl Sram5Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM5 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -4602,6 +5040,7 @@ impl Sram5Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM5 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4610,6 +5049,7 @@ impl Sram5Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM5 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -4623,6 +5063,7 @@ impl Sram5Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM5 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -4636,6 +5077,7 @@ impl Sram5Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM5 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -4649,6 +5091,7 @@ impl Sram5Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM5 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -4662,6 +5105,7 @@ impl Sram5Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM5 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -4675,6 +5119,7 @@ impl Sram5Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM5 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -4688,6 +5133,7 @@ impl Sram5Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM5 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -4701,6 +5147,7 @@ impl Sram5Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM5 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -4755,20 +5202,35 @@ impl Sram5 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM6 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM6 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM6 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM6 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM6 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM6 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM6 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM6 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -4788,57 +5250,73 @@ impl Sram6 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM6 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM6 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM6 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM6 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM6 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM6 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM6 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM6 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -4847,6 +5325,7 @@ impl Sram6 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -4866,6 +5345,7 @@ impl Sram6 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -4885,6 +5365,7 @@ impl Sram6 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -4904,6 +5385,7 @@ impl Sram6 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -4923,6 +5405,7 @@ impl Sram6 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -4942,6 +5425,7 @@ impl Sram6 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM6 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -4961,6 +5445,7 @@ impl Sram6 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM6 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -4980,6 +5465,7 @@ impl Sram6 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM6 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5030,6 +5516,7 @@ impl Sram6Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM6 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -5037,6 +5524,7 @@ impl Sram6Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM6 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -5044,6 +5532,7 @@ impl Sram6Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM6 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -5051,6 +5540,7 @@ impl Sram6Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM6 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -5058,6 +5548,7 @@ impl Sram6Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM6 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -5065,6 +5556,7 @@ impl Sram6Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM6 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -5072,6 +5564,7 @@ impl Sram6Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM6 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -5079,6 +5572,7 @@ impl Sram6Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM6 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5087,6 +5581,7 @@ impl Sram6Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM6 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -5100,6 +5595,7 @@ impl Sram6Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM6 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -5113,6 +5609,7 @@ impl Sram6Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM6 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -5126,6 +5623,7 @@ impl Sram6Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM6 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -5139,6 +5637,7 @@ impl Sram6Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM6 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -5152,6 +5651,7 @@ impl Sram6Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM6 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -5165,6 +5665,7 @@ impl Sram6Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM6 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -5178,6 +5679,7 @@ impl Sram6Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM6 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5232,20 +5734,35 @@ impl Sram6 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM7 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM7 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM7 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM7 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM7 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM7 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM7 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM7 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -5265,57 +5782,73 @@ impl Sram7 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM7 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM7 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM7 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM7 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM7 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM7 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM7 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM7 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -5324,6 +5857,7 @@ impl Sram7 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -5343,6 +5877,7 @@ impl Sram7 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -5362,6 +5897,7 @@ impl Sram7 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -5381,6 +5917,7 @@ impl Sram7 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -5400,6 +5937,7 @@ impl Sram7 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -5419,6 +5957,7 @@ impl Sram7 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM7 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -5438,6 +5977,7 @@ impl Sram7 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM7 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -5457,6 +5997,7 @@ impl Sram7 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM7 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5507,6 +6048,7 @@ impl Sram7Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM7 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -5514,6 +6056,7 @@ impl Sram7Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM7 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -5521,6 +6064,7 @@ impl Sram7Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM7 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -5528,6 +6072,7 @@ impl Sram7Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM7 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -5535,6 +6080,7 @@ impl Sram7Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM7 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -5542,6 +6088,7 @@ impl Sram7Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM7 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -5549,6 +6096,7 @@ impl Sram7Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM7 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -5556,6 +6104,7 @@ impl Sram7Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM7 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5564,6 +6113,7 @@ impl Sram7Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM7 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -5577,6 +6127,7 @@ impl Sram7Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM7 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -5590,6 +6141,7 @@ impl Sram7Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM7 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -5603,6 +6155,7 @@ impl Sram7Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM7 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -5616,6 +6169,7 @@ impl Sram7Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM7 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -5629,6 +6183,7 @@ impl Sram7Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM7 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -5642,6 +6197,7 @@ impl Sram7Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM7 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -5655,6 +6211,7 @@ impl Sram7Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM7 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5709,20 +6266,35 @@ impl Sram7 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM8 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM8 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM8 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM8 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM8 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM8 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM8 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM8 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -5742,57 +6314,73 @@ impl Sram8 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM8 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM8 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM8 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM8 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM8 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM8 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM8 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM8 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -5801,6 +6389,7 @@ impl Sram8 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -5820,6 +6409,7 @@ impl Sram8 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -5839,6 +6429,7 @@ impl Sram8 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -5858,6 +6449,7 @@ impl Sram8 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -5877,6 +6469,7 @@ impl Sram8 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -5896,6 +6489,7 @@ impl Sram8 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM8 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -5915,6 +6509,7 @@ impl Sram8 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM8 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -5934,6 +6529,7 @@ impl Sram8 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM8 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -5984,6 +6580,7 @@ impl Sram8Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM8 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -5991,6 +6588,7 @@ impl Sram8Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM8 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -5998,6 +6596,7 @@ impl Sram8Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM8 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -6005,6 +6604,7 @@ impl Sram8Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM8 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -6012,6 +6612,7 @@ impl Sram8Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM8 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -6019,6 +6620,7 @@ impl Sram8Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM8 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -6026,6 +6628,7 @@ impl Sram8Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM8 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -6033,6 +6636,7 @@ impl Sram8Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM8 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6041,6 +6645,7 @@ impl Sram8Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM8 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -6054,6 +6659,7 @@ impl Sram8Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM8 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -6067,6 +6673,7 @@ impl Sram8Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM8 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -6080,6 +6687,7 @@ impl Sram8Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM8 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -6093,6 +6701,7 @@ impl Sram8Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM8 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -6106,6 +6715,7 @@ impl Sram8Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM8 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -6119,6 +6729,7 @@ impl Sram8Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM8 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -6132,6 +6743,7 @@ impl Sram8Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM8 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6186,20 +6798,35 @@ impl Sram8 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SRAM9 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SRAM9 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SRAM9 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SRAM9 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SRAM9 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SRAM9 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SRAM9 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SRAM9 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -6219,57 +6846,73 @@ impl Sram9 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SRAM9 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SRAM9 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SRAM9 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SRAM9 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SRAM9 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SRAM9 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SRAM9 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SRAM9 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -6278,6 +6921,7 @@ impl Sram9 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -6297,6 +6941,7 @@ impl Sram9 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -6316,6 +6961,7 @@ impl Sram9 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -6335,6 +6981,7 @@ impl Sram9 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -6354,6 +7001,7 @@ impl Sram9 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -6373,6 +7021,7 @@ impl Sram9 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SRAM9 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -6392,6 +7041,7 @@ impl Sram9 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SRAM9 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -6411,6 +7061,7 @@ impl Sram9 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SRAM9 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6461,6 +7112,7 @@ impl Sram9Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SRAM9 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -6468,6 +7120,7 @@ impl Sram9Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SRAM9 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -6475,6 +7128,7 @@ impl Sram9Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM9 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -6482,6 +7136,7 @@ impl Sram9Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM9 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -6489,6 +7144,7 @@ impl Sram9Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SRAM9 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -6496,6 +7152,7 @@ impl Sram9Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM9 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -6503,6 +7160,7 @@ impl Sram9Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SRAM9 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -6510,6 +7168,7 @@ impl Sram9Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM9 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6518,6 +7177,7 @@ impl Sram9Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SRAM9 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -6531,6 +7191,7 @@ impl Sram9Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SRAM9 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -6544,6 +7205,7 @@ impl Sram9Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SRAM9 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -6557,6 +7219,7 @@ impl Sram9Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SRAM9 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -6570,6 +7233,7 @@ impl Sram9Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SRAM9 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -6583,6 +7247,7 @@ impl Sram9Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SRAM9 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -6596,6 +7261,7 @@ impl Sram9Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SRAM9 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -6609,6 +7275,7 @@ impl Sram9Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SRAM9 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6663,20 +7330,35 @@ impl Sram9 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, DMA can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, DMA can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, DMA can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, DMA can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, DMA can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, DMA can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, DMA can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, DMA can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -6696,57 +7378,73 @@ impl Dma {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, DMA can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, DMA can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, DMA can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, DMA can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, DMA can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, DMA can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, DMA can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, DMA can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -6755,6 +7453,7 @@ impl Dma {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, DMA can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -6774,6 +7473,7 @@ impl Dma {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, DMA can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -6793,6 +7493,7 @@ impl Dma {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, DMA can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -6812,6 +7513,7 @@ impl Dma {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, DMA can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -6831,6 +7533,7 @@ impl Dma {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, DMA can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -6850,6 +7553,7 @@ impl Dma {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, DMA can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -6869,6 +7573,7 @@ impl Dma {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, DMA can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -6888,6 +7593,7 @@ impl Dma {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, DMA can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6938,6 +7644,7 @@ impl DmaVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, DMA can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -6945,6 +7652,7 @@ impl DmaVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, DMA can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -6952,6 +7660,7 @@ impl DmaVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, DMA can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -6959,6 +7668,7 @@ impl DmaVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, DMA can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -6966,6 +7676,7 @@ impl DmaVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, DMA can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -6973,6 +7684,7 @@ impl DmaVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, DMA can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -6980,6 +7692,7 @@ impl DmaVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, DMA can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -6987,6 +7700,7 @@ impl DmaVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, DMA can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -6995,6 +7709,7 @@ impl DmaVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, DMA can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -7008,6 +7723,7 @@ impl DmaVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, DMA can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -7021,6 +7737,7 @@ impl DmaVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, DMA can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -7034,6 +7751,7 @@ impl DmaVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, DMA can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -7047,6 +7765,7 @@ impl DmaVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, DMA can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -7060,6 +7779,7 @@ impl DmaVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, DMA can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -7073,6 +7793,7 @@ impl DmaVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, DMA can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -7086,6 +7807,7 @@ impl DmaVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, DMA can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7140,20 +7862,35 @@ impl Dma {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, USBCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, USBCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, USBCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, USBCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, USBCTRL can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, USBCTRL can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, USBCTRL can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, USBCTRL can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -7173,57 +7910,73 @@ impl Usbctrl {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, USBCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, USBCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, USBCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, USBCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, USBCTRL can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, USBCTRL can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, USBCTRL can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, USBCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -7232,6 +7985,7 @@ impl Usbctrl {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -7251,6 +8005,7 @@ impl Usbctrl {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -7270,6 +8025,7 @@ impl Usbctrl {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -7289,6 +8045,7 @@ impl Usbctrl {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -7308,6 +8065,7 @@ impl Usbctrl {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -7327,6 +8085,7 @@ impl Usbctrl {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, USBCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -7346,6 +8105,7 @@ impl Usbctrl {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, USBCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -7365,6 +8125,7 @@ impl Usbctrl {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, USBCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7415,6 +8176,7 @@ impl UsbctrlVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, USBCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -7422,6 +8184,7 @@ impl UsbctrlVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, USBCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -7429,6 +8192,7 @@ impl UsbctrlVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, USBCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -7436,6 +8200,7 @@ impl UsbctrlVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, USBCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -7443,6 +8208,7 @@ impl UsbctrlVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, USBCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -7450,6 +8216,7 @@ impl UsbctrlVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, USBCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -7457,6 +8224,7 @@ impl UsbctrlVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, USBCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -7464,6 +8232,7 @@ impl UsbctrlVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, USBCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7472,6 +8241,7 @@ impl UsbctrlVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, USBCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -7485,6 +8255,7 @@ impl UsbctrlVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, USBCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -7498,6 +8269,7 @@ impl UsbctrlVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, USBCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -7511,6 +8283,7 @@ impl UsbctrlVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, USBCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -7524,6 +8297,7 @@ impl UsbctrlVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, USBCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -7537,6 +8311,7 @@ impl UsbctrlVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, USBCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -7550,6 +8325,7 @@ impl UsbctrlVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, USBCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -7563,6 +8339,7 @@ impl UsbctrlVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, USBCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7617,20 +8394,35 @@ impl Usbctrl {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PIO0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PIO0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PIO0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PIO0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PIO0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PIO0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PIO0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PIO0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -7650,57 +8442,73 @@ impl Pio0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PIO0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PIO0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PIO0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PIO0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PIO0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PIO0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PIO0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PIO0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -7709,6 +8517,7 @@ impl Pio0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PIO0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -7728,6 +8537,7 @@ impl Pio0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PIO0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -7747,6 +8557,7 @@ impl Pio0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PIO0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -7766,6 +8577,7 @@ impl Pio0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PIO0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -7785,6 +8597,7 @@ impl Pio0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PIO0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -7804,6 +8617,7 @@ impl Pio0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PIO0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -7823,6 +8637,7 @@ impl Pio0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PIO0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -7842,6 +8657,7 @@ impl Pio0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PIO0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7892,6 +8708,7 @@ impl Pio0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PIO0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -7899,6 +8716,7 @@ impl Pio0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PIO0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -7906,6 +8724,7 @@ impl Pio0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PIO0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -7913,6 +8732,7 @@ impl Pio0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PIO0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -7920,6 +8740,7 @@ impl Pio0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PIO0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -7927,6 +8748,7 @@ impl Pio0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -7934,6 +8756,7 @@ impl Pio0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PIO0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -7941,6 +8764,7 @@ impl Pio0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -7949,6 +8773,7 @@ impl Pio0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PIO0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -7962,6 +8787,7 @@ impl Pio0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PIO0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -7975,6 +8801,7 @@ impl Pio0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PIO0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -7988,6 +8815,7 @@ impl Pio0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PIO0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -8001,6 +8829,7 @@ impl Pio0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PIO0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -8014,6 +8843,7 @@ impl Pio0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -8027,6 +8857,7 @@ impl Pio0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PIO0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -8040,6 +8871,7 @@ impl Pio0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8094,20 +8926,35 @@ impl Pio0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PIO1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PIO1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PIO1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PIO1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PIO1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PIO1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PIO1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PIO1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -8127,57 +8974,73 @@ impl Pio1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PIO1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PIO1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PIO1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PIO1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PIO1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PIO1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PIO1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PIO1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -8186,6 +9049,7 @@ impl Pio1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PIO1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -8205,6 +9069,7 @@ impl Pio1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PIO1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -8224,6 +9089,7 @@ impl Pio1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PIO1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -8243,6 +9109,7 @@ impl Pio1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PIO1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -8262,6 +9129,7 @@ impl Pio1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PIO1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -8281,6 +9149,7 @@ impl Pio1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PIO1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -8300,6 +9169,7 @@ impl Pio1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PIO1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -8319,6 +9189,7 @@ impl Pio1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PIO1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8369,6 +9240,7 @@ impl Pio1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PIO1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -8376,6 +9248,7 @@ impl Pio1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PIO1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -8383,6 +9256,7 @@ impl Pio1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PIO1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -8390,6 +9264,7 @@ impl Pio1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PIO1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -8397,6 +9272,7 @@ impl Pio1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PIO1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -8404,6 +9280,7 @@ impl Pio1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -8411,6 +9288,7 @@ impl Pio1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PIO1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -8418,6 +9296,7 @@ impl Pio1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8426,6 +9305,7 @@ impl Pio1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PIO1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -8439,6 +9319,7 @@ impl Pio1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PIO1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -8452,6 +9333,7 @@ impl Pio1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PIO1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -8465,6 +9347,7 @@ impl Pio1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PIO1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -8478,6 +9361,7 @@ impl Pio1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PIO1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -8491,6 +9375,7 @@ impl Pio1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -8504,6 +9389,7 @@ impl Pio1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PIO1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -8517,6 +9403,7 @@ impl Pio1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8571,20 +9458,35 @@ impl Pio1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PIO2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PIO2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PIO2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PIO2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PIO2 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PIO2 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PIO2 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PIO2 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -8604,57 +9506,73 @@ impl Pio2 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PIO2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PIO2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PIO2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PIO2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PIO2 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PIO2 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PIO2 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PIO2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -8663,6 +9581,7 @@ impl Pio2 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PIO2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -8682,6 +9601,7 @@ impl Pio2 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PIO2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -8701,6 +9621,7 @@ impl Pio2 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PIO2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -8720,6 +9641,7 @@ impl Pio2 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PIO2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -8739,6 +9661,7 @@ impl Pio2 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PIO2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -8758,6 +9681,7 @@ impl Pio2 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PIO2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -8777,6 +9701,7 @@ impl Pio2 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PIO2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -8796,6 +9721,7 @@ impl Pio2 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PIO2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8846,6 +9772,7 @@ impl Pio2Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PIO2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -8853,6 +9780,7 @@ impl Pio2Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PIO2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -8860,6 +9788,7 @@ impl Pio2Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PIO2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -8867,6 +9796,7 @@ impl Pio2Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PIO2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -8874,6 +9804,7 @@ impl Pio2Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PIO2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -8881,6 +9812,7 @@ impl Pio2Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -8888,6 +9820,7 @@ impl Pio2Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PIO2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -8895,6 +9828,7 @@ impl Pio2Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -8903,6 +9837,7 @@ impl Pio2Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PIO2 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -8916,6 +9851,7 @@ impl Pio2Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PIO2 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -8929,6 +9865,7 @@ impl Pio2Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PIO2 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -8942,6 +9879,7 @@ impl Pio2Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PIO2 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -8955,6 +9893,7 @@ impl Pio2Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PIO2 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -8968,6 +9907,7 @@ impl Pio2Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PIO2 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -8981,6 +9921,7 @@ impl Pio2Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PIO2 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -8994,6 +9935,7 @@ impl Pio2Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PIO2 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9048,20 +9990,35 @@ impl Pio2 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, CORESIGHT_TRACE can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, CORESIGHT_TRACE can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, CORESIGHT_TRACE can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -9081,57 +10038,73 @@ impl CoresightTrace {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, CORESIGHT_TRACE can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, CORESIGHT_TRACE can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -9140,6 +10113,7 @@ impl CoresightTrace {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -9159,6 +10133,7 @@ impl CoresightTrace {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -9178,6 +10153,7 @@ impl CoresightTrace {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -9197,6 +10173,7 @@ impl CoresightTrace {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -9216,6 +10193,7 @@ impl CoresightTrace {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -9235,6 +10213,7 @@ impl CoresightTrace {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, CORESIGHT_TRACE can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -9254,6 +10233,7 @@ impl CoresightTrace {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -9273,6 +10253,7 @@ impl CoresightTrace {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, CORESIGHT_TRACE can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9323,6 +10304,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -9330,6 +10312,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -9337,6 +10320,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -9344,6 +10328,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -9351,6 +10336,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -9358,6 +10344,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CORESIGHT_TRACE can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -9365,6 +10352,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -9372,6 +10360,7 @@ impl CoresightTraceVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CORESIGHT_TRACE can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9380,6 +10369,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -9393,6 +10383,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -9406,6 +10397,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -9419,6 +10411,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -9432,6 +10425,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -9445,6 +10439,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CORESIGHT_TRACE can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -9458,6 +10453,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, CORESIGHT_TRACE can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -9471,6 +10467,7 @@ impl CoresightTraceVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CORESIGHT_TRACE can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9525,20 +10522,35 @@ impl CoresightTrace {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, CORESIGHT_PERIPH can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, CORESIGHT_PERIPH can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, CORESIGHT_PERIPH can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -9558,57 +10570,73 @@ impl CoresightPeriph {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, CORESIGHT_PERIPH can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, CORESIGHT_PERIPH can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -9617,6 +10645,7 @@ impl CoresightPeriph {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -9636,6 +10665,7 @@ impl CoresightPeriph {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -9655,6 +10685,7 @@ impl CoresightPeriph {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -9674,6 +10705,7 @@ impl CoresightPeriph {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -9693,6 +10725,7 @@ impl CoresightPeriph {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -9712,6 +10745,7 @@ impl CoresightPeriph {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, CORESIGHT_PERIPH can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -9731,6 +10765,7 @@ impl CoresightPeriph {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -9750,6 +10785,7 @@ impl CoresightPeriph {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, CORESIGHT_PERIPH can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9800,6 +10836,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -9807,6 +10844,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -9814,6 +10852,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -9821,6 +10860,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -9828,6 +10868,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -9835,6 +10876,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CORESIGHT_PERIPH can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -9842,6 +10884,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -9849,6 +10892,7 @@ impl CoresightPeriphVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CORESIGHT_PERIPH can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -9857,6 +10901,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -9870,6 +10915,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -9883,6 +10929,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -9896,6 +10943,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -9909,6 +10957,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -9922,6 +10971,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CORESIGHT_PERIPH can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -9935,6 +10985,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, CORESIGHT_PERIPH can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -9948,6 +10999,7 @@ impl CoresightPeriphVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CORESIGHT_PERIPH can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10002,20 +11054,35 @@ impl CoresightPeriph {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SYSINFO can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SYSINFO can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SYSINFO can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SYSINFO can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SYSINFO can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SYSINFO can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SYSINFO can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SYSINFO can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -10035,57 +11102,73 @@ impl Sysinfo {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SYSINFO can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SYSINFO can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SYSINFO can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SYSINFO can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SYSINFO can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SYSINFO can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SYSINFO can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SYSINFO can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -10094,6 +11177,7 @@ impl Sysinfo {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -10113,6 +11197,7 @@ impl Sysinfo {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -10132,6 +11217,7 @@ impl Sysinfo {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -10151,6 +11237,7 @@ impl Sysinfo {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -10170,6 +11257,7 @@ impl Sysinfo {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -10189,6 +11277,7 @@ impl Sysinfo {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SYSINFO can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -10208,6 +11297,7 @@ impl Sysinfo {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SYSINFO can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -10227,6 +11317,7 @@ impl Sysinfo {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SYSINFO can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10277,6 +11368,7 @@ impl SysinfoVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SYSINFO can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -10284,6 +11376,7 @@ impl SysinfoVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SYSINFO can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -10291,6 +11384,7 @@ impl SysinfoVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SYSINFO can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -10298,6 +11392,7 @@ impl SysinfoVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SYSINFO can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -10305,6 +11400,7 @@ impl SysinfoVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SYSINFO can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -10312,6 +11408,7 @@ impl SysinfoVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SYSINFO can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -10319,6 +11416,7 @@ impl SysinfoVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SYSINFO can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -10326,6 +11424,7 @@ impl SysinfoVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SYSINFO can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10334,6 +11433,7 @@ impl SysinfoVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SYSINFO can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -10347,6 +11447,7 @@ impl SysinfoVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SYSINFO can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -10360,6 +11461,7 @@ impl SysinfoVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SYSINFO can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -10373,6 +11475,7 @@ impl SysinfoVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SYSINFO can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -10386,6 +11489,7 @@ impl SysinfoVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SYSINFO can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -10399,6 +11503,7 @@ impl SysinfoVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SYSINFO can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -10412,6 +11517,7 @@ impl SysinfoVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SYSINFO can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -10425,6 +11531,7 @@ impl SysinfoVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SYSINFO can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10479,20 +11586,35 @@ impl Sysinfo {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, RESETS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, RESETS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, RESETS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, RESETS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, RESETS can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, RESETS can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, RESETS can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, RESETS can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -10512,57 +11634,73 @@ impl Resets {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, RESETS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, RESETS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, RESETS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, RESETS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, RESETS can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, RESETS can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, RESETS can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, RESETS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -10571,6 +11709,7 @@ impl Resets {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, RESETS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -10590,6 +11729,7 @@ impl Resets {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, RESETS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -10609,6 +11749,7 @@ impl Resets {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, RESETS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -10628,6 +11769,7 @@ impl Resets {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, RESETS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -10647,6 +11789,7 @@ impl Resets {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, RESETS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -10666,6 +11809,7 @@ impl Resets {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, RESETS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -10685,6 +11829,7 @@ impl Resets {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, RESETS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -10704,6 +11849,7 @@ impl Resets {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, RESETS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10754,6 +11900,7 @@ impl ResetsVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, RESETS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -10761,6 +11908,7 @@ impl ResetsVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, RESETS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -10768,6 +11916,7 @@ impl ResetsVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, RESETS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -10775,6 +11924,7 @@ impl ResetsVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, RESETS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -10782,6 +11932,7 @@ impl ResetsVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, RESETS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -10789,6 +11940,7 @@ impl ResetsVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, RESETS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -10796,6 +11948,7 @@ impl ResetsVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, RESETS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -10803,6 +11956,7 @@ impl ResetsVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, RESETS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10811,6 +11965,7 @@ impl ResetsVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, RESETS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -10824,6 +11979,7 @@ impl ResetsVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, RESETS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -10837,6 +11993,7 @@ impl ResetsVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, RESETS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -10850,6 +12007,7 @@ impl ResetsVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, RESETS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -10863,6 +12021,7 @@ impl ResetsVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, RESETS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -10876,6 +12035,7 @@ impl ResetsVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, RESETS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -10889,6 +12049,7 @@ impl ResetsVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, RESETS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -10902,6 +12063,7 @@ impl ResetsVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, RESETS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -10956,20 +12118,35 @@ impl Resets {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, IO_BANK0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, IO_BANK0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, IO_BANK0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -10989,57 +12166,73 @@ impl IoBank0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, IO_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, IO_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, IO_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, IO_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, IO_BANK0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, IO_BANK0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, IO_BANK0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, IO_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -11048,6 +12241,7 @@ impl IoBank0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -11067,6 +12261,7 @@ impl IoBank0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -11086,6 +12281,7 @@ impl IoBank0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -11105,6 +12301,7 @@ impl IoBank0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -11124,6 +12321,7 @@ impl IoBank0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -11143,6 +12341,7 @@ impl IoBank0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, IO_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -11162,6 +12361,7 @@ impl IoBank0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, IO_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -11181,6 +12381,7 @@ impl IoBank0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, IO_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11231,6 +12432,7 @@ impl IoBank0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, IO_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -11238,6 +12440,7 @@ impl IoBank0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, IO_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -11245,6 +12448,7 @@ impl IoBank0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, IO_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -11252,6 +12456,7 @@ impl IoBank0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, IO_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -11259,6 +12464,7 @@ impl IoBank0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, IO_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -11266,6 +12472,7 @@ impl IoBank0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, IO_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -11273,6 +12480,7 @@ impl IoBank0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, IO_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -11280,6 +12488,7 @@ impl IoBank0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, IO_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11288,6 +12497,7 @@ impl IoBank0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, IO_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -11301,6 +12511,7 @@ impl IoBank0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, IO_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -11314,6 +12525,7 @@ impl IoBank0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, IO_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -11327,6 +12539,7 @@ impl IoBank0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, IO_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -11340,6 +12553,7 @@ impl IoBank0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, IO_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -11353,6 +12567,7 @@ impl IoBank0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, IO_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -11366,6 +12581,7 @@ impl IoBank0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, IO_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -11379,6 +12595,7 @@ impl IoBank0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, IO_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11433,20 +12650,35 @@ impl IoBank0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, IO_BANK1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, IO_BANK1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, IO_BANK1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -11466,57 +12698,73 @@ impl IoBank1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, IO_BANK1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, IO_BANK1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, IO_BANK1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, IO_BANK1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, IO_BANK1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, IO_BANK1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, IO_BANK1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, IO_BANK1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -11525,6 +12773,7 @@ impl IoBank1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -11544,6 +12793,7 @@ impl IoBank1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -11563,6 +12813,7 @@ impl IoBank1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -11582,6 +12833,7 @@ impl IoBank1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -11601,6 +12853,7 @@ impl IoBank1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -11620,6 +12873,7 @@ impl IoBank1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, IO_BANK1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -11639,6 +12893,7 @@ impl IoBank1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, IO_BANK1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -11658,6 +12913,7 @@ impl IoBank1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, IO_BANK1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11708,6 +12964,7 @@ impl IoBank1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, IO_BANK1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -11715,6 +12972,7 @@ impl IoBank1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, IO_BANK1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -11722,6 +12980,7 @@ impl IoBank1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, IO_BANK1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -11729,6 +12988,7 @@ impl IoBank1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, IO_BANK1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -11736,6 +12996,7 @@ impl IoBank1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, IO_BANK1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -11743,6 +13004,7 @@ impl IoBank1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, IO_BANK1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -11750,6 +13012,7 @@ impl IoBank1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, IO_BANK1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -11757,6 +13020,7 @@ impl IoBank1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, IO_BANK1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11765,6 +13029,7 @@ impl IoBank1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, IO_BANK1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -11778,6 +13043,7 @@ impl IoBank1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, IO_BANK1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -11791,6 +13057,7 @@ impl IoBank1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, IO_BANK1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -11804,6 +13071,7 @@ impl IoBank1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, IO_BANK1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -11817,6 +13085,7 @@ impl IoBank1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, IO_BANK1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -11830,6 +13099,7 @@ impl IoBank1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, IO_BANK1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -11843,6 +13113,7 @@ impl IoBank1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, IO_BANK1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -11856,6 +13127,7 @@ impl IoBank1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, IO_BANK1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -11910,20 +13182,35 @@ impl IoBank1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PADS_BANK0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PADS_BANK0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PADS_BANK0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -11943,57 +13230,73 @@ impl PadsBank0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PADS_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PADS_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PADS_BANK0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PADS_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -12002,6 +13305,7 @@ impl PadsBank0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -12021,6 +13325,7 @@ impl PadsBank0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -12040,6 +13345,7 @@ impl PadsBank0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -12059,6 +13365,7 @@ impl PadsBank0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -12078,6 +13385,7 @@ impl PadsBank0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -12097,6 +13405,7 @@ impl PadsBank0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PADS_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -12116,6 +13425,7 @@ impl PadsBank0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -12135,6 +13445,7 @@ impl PadsBank0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PADS_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12185,6 +13496,7 @@ impl PadsBank0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -12192,6 +13504,7 @@ impl PadsBank0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -12199,6 +13512,7 @@ impl PadsBank0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -12206,6 +13520,7 @@ impl PadsBank0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -12213,6 +13528,7 @@ impl PadsBank0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -12220,6 +13536,7 @@ impl PadsBank0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PADS_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -12227,6 +13544,7 @@ impl PadsBank0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -12234,6 +13552,7 @@ impl PadsBank0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PADS_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12242,6 +13561,7 @@ impl PadsBank0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -12255,6 +13575,7 @@ impl PadsBank0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -12268,6 +13589,7 @@ impl PadsBank0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -12281,6 +13603,7 @@ impl PadsBank0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PADS_BANK0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -12294,6 +13617,7 @@ impl PadsBank0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -12307,6 +13631,7 @@ impl PadsBank0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PADS_BANK0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -12320,6 +13645,7 @@ impl PadsBank0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PADS_BANK0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -12333,6 +13659,7 @@ impl PadsBank0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PADS_BANK0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12387,20 +13714,35 @@ impl PadsBank0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PADS_QSPI can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PADS_QSPI can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PADS_QSPI can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -12420,57 +13762,73 @@ impl PadsQspi {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PADS_QSPI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PADS_QSPI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PADS_QSPI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PADS_QSPI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PADS_QSPI can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PADS_QSPI can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PADS_QSPI can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PADS_QSPI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -12479,6 +13837,7 @@ impl PadsQspi {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -12498,6 +13857,7 @@ impl PadsQspi {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -12517,6 +13877,7 @@ impl PadsQspi {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -12536,6 +13897,7 @@ impl PadsQspi {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -12555,6 +13917,7 @@ impl PadsQspi {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -12574,6 +13937,7 @@ impl PadsQspi {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PADS_QSPI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -12593,6 +13957,7 @@ impl PadsQspi {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PADS_QSPI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -12612,6 +13977,7 @@ impl PadsQspi {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PADS_QSPI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12662,6 +14028,7 @@ impl PadsQspiVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PADS_QSPI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -12669,6 +14036,7 @@ impl PadsQspiVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PADS_QSPI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -12676,6 +14044,7 @@ impl PadsQspiVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PADS_QSPI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -12683,6 +14052,7 @@ impl PadsQspiVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PADS_QSPI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -12690,6 +14060,7 @@ impl PadsQspiVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PADS_QSPI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -12697,6 +14068,7 @@ impl PadsQspiVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PADS_QSPI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -12704,6 +14076,7 @@ impl PadsQspiVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PADS_QSPI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -12711,6 +14084,7 @@ impl PadsQspiVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PADS_QSPI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12719,6 +14093,7 @@ impl PadsQspiVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PADS_QSPI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -12732,6 +14107,7 @@ impl PadsQspiVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PADS_QSPI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -12745,6 +14121,7 @@ impl PadsQspiVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PADS_QSPI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -12758,6 +14135,7 @@ impl PadsQspiVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PADS_QSPI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -12771,6 +14149,7 @@ impl PadsQspiVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PADS_QSPI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -12784,6 +14163,7 @@ impl PadsQspiVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PADS_QSPI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -12797,6 +14177,7 @@ impl PadsQspiVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PADS_QSPI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -12810,6 +14191,7 @@ impl PadsQspiVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PADS_QSPI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -12864,20 +14246,35 @@ impl PadsQspi {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, BUSCTRL can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, BUSCTRL can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, BUSCTRL can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -12897,57 +14294,73 @@ impl Busctrl {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, BUSCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, BUSCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, BUSCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, BUSCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, BUSCTRL can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, BUSCTRL can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, BUSCTRL can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, BUSCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -12956,6 +14369,7 @@ impl Busctrl {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -12975,6 +14389,7 @@ impl Busctrl {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -12994,6 +14409,7 @@ impl Busctrl {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -13013,6 +14429,7 @@ impl Busctrl {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -13032,6 +14449,7 @@ impl Busctrl {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -13051,6 +14469,7 @@ impl Busctrl {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, BUSCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -13070,6 +14489,7 @@ impl Busctrl {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, BUSCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -13089,6 +14509,7 @@ impl Busctrl {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, BUSCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13139,6 +14560,7 @@ impl BusctrlVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, BUSCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -13146,6 +14568,7 @@ impl BusctrlVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, BUSCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -13153,6 +14576,7 @@ impl BusctrlVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, BUSCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -13160,6 +14584,7 @@ impl BusctrlVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, BUSCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -13167,6 +14592,7 @@ impl BusctrlVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, BUSCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -13174,6 +14600,7 @@ impl BusctrlVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, BUSCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -13181,6 +14608,7 @@ impl BusctrlVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, BUSCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -13188,6 +14616,7 @@ impl BusctrlVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, BUSCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13196,6 +14625,7 @@ impl BusctrlVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, BUSCTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -13209,6 +14639,7 @@ impl BusctrlVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, BUSCTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -13222,6 +14653,7 @@ impl BusctrlVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, BUSCTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -13235,6 +14667,7 @@ impl BusctrlVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, BUSCTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -13248,6 +14681,7 @@ impl BusctrlVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, BUSCTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -13261,6 +14695,7 @@ impl BusctrlVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, BUSCTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -13274,6 +14709,7 @@ impl BusctrlVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, BUSCTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -13287,6 +14723,7 @@ impl BusctrlVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, BUSCTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13341,20 +14778,35 @@ impl Busctrl {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, ADC0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, ADC0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, ADC0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, ADC0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, ADC0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, ADC0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, ADC0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, ADC0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -13374,57 +14826,73 @@ impl Adc0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, ADC0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, ADC0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, ADC0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, ADC0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, ADC0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, ADC0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, ADC0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, ADC0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -13433,6 +14901,7 @@ impl Adc0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, ADC0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -13452,6 +14921,7 @@ impl Adc0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, ADC0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -13471,6 +14941,7 @@ impl Adc0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, ADC0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -13490,6 +14961,7 @@ impl Adc0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, ADC0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -13509,6 +14981,7 @@ impl Adc0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, ADC0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -13528,6 +15001,7 @@ impl Adc0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, ADC0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -13547,6 +15021,7 @@ impl Adc0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, ADC0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -13566,6 +15041,7 @@ impl Adc0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, ADC0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13616,6 +15092,7 @@ impl Adc0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, ADC0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -13623,6 +15100,7 @@ impl Adc0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, ADC0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -13630,6 +15108,7 @@ impl Adc0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, ADC0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -13637,6 +15116,7 @@ impl Adc0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, ADC0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -13644,6 +15124,7 @@ impl Adc0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, ADC0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -13651,6 +15132,7 @@ impl Adc0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ADC0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -13658,6 +15140,7 @@ impl Adc0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, ADC0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -13665,6 +15148,7 @@ impl Adc0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ADC0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13673,6 +15157,7 @@ impl Adc0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, ADC0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -13686,6 +15171,7 @@ impl Adc0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, ADC0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -13699,6 +15185,7 @@ impl Adc0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, ADC0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -13712,6 +15199,7 @@ impl Adc0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, ADC0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -13725,6 +15213,7 @@ impl Adc0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, ADC0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -13738,6 +15227,7 @@ impl Adc0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ADC0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -13751,6 +15241,7 @@ impl Adc0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, ADC0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -13764,6 +15255,7 @@ impl Adc0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ADC0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -13818,20 +15310,35 @@ impl Adc0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, HSTX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, HSTX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, HSTX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, HSTX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, HSTX can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, HSTX can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, HSTX can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, HSTX can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -13851,57 +15358,73 @@ impl Hstx {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, HSTX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, HSTX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, HSTX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, HSTX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, HSTX can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, HSTX can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, HSTX can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, HSTX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -13910,6 +15433,7 @@ impl Hstx {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, HSTX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -13929,6 +15453,7 @@ impl Hstx {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, HSTX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -13948,6 +15473,7 @@ impl Hstx {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, HSTX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -13967,6 +15493,7 @@ impl Hstx {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, HSTX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -13986,6 +15513,7 @@ impl Hstx {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, HSTX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -14005,6 +15533,7 @@ impl Hstx {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, HSTX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -14024,6 +15553,7 @@ impl Hstx {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, HSTX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -14043,6 +15573,7 @@ impl Hstx {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, HSTX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14093,6 +15624,7 @@ impl HstxVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, HSTX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -14100,6 +15632,7 @@ impl HstxVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, HSTX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -14107,6 +15640,7 @@ impl HstxVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, HSTX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -14114,6 +15648,7 @@ impl HstxVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, HSTX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -14121,6 +15656,7 @@ impl HstxVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, HSTX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -14128,6 +15664,7 @@ impl HstxVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, HSTX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -14135,6 +15672,7 @@ impl HstxVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, HSTX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -14142,6 +15680,7 @@ impl HstxVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, HSTX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14150,6 +15689,7 @@ impl HstxVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, HSTX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -14163,6 +15703,7 @@ impl HstxVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, HSTX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -14176,6 +15717,7 @@ impl HstxVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, HSTX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -14189,6 +15731,7 @@ impl HstxVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, HSTX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -14202,6 +15745,7 @@ impl HstxVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, HSTX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -14215,6 +15759,7 @@ impl HstxVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, HSTX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -14228,6 +15773,7 @@ impl HstxVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, HSTX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -14241,6 +15787,7 @@ impl HstxVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, HSTX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14295,20 +15842,35 @@ impl Hstx {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, I2C0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, I2C0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, I2C0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, I2C0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, I2C0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, I2C0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, I2C0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, I2C0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -14328,57 +15890,73 @@ impl I2c0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, I2C0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, I2C0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, I2C0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, I2C0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, I2C0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, I2C0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, I2C0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, I2C0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -14387,6 +15965,7 @@ impl I2c0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, I2C0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -14406,6 +15985,7 @@ impl I2c0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, I2C0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -14425,6 +16005,7 @@ impl I2c0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, I2C0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -14444,6 +16025,7 @@ impl I2c0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, I2C0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -14463,6 +16045,7 @@ impl I2c0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, I2C0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -14482,6 +16065,7 @@ impl I2c0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, I2C0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -14501,6 +16085,7 @@ impl I2c0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, I2C0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -14520,6 +16105,7 @@ impl I2c0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, I2C0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14570,6 +16156,7 @@ impl I2c0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, I2C0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -14577,6 +16164,7 @@ impl I2c0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, I2C0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -14584,6 +16172,7 @@ impl I2c0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, I2C0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -14591,6 +16180,7 @@ impl I2c0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, I2C0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -14598,6 +16188,7 @@ impl I2c0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, I2C0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -14605,6 +16196,7 @@ impl I2c0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, I2C0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -14612,6 +16204,7 @@ impl I2c0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, I2C0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -14619,6 +16212,7 @@ impl I2c0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, I2C0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14627,6 +16221,7 @@ impl I2c0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, I2C0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -14640,6 +16235,7 @@ impl I2c0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, I2C0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -14653,6 +16249,7 @@ impl I2c0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, I2C0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -14666,6 +16263,7 @@ impl I2c0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, I2C0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -14679,6 +16277,7 @@ impl I2c0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, I2C0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -14692,6 +16291,7 @@ impl I2c0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, I2C0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -14705,6 +16305,7 @@ impl I2c0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, I2C0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -14718,6 +16319,7 @@ impl I2c0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, I2C0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -14772,20 +16374,35 @@ impl I2c0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, I2C1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, I2C1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, I2C1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, I2C1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, I2C1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, I2C1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, I2C1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, I2C1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -14805,57 +16422,73 @@ impl I2c1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, I2C1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, I2C1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, I2C1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, I2C1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, I2C1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, I2C1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, I2C1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, I2C1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -14864,6 +16497,7 @@ impl I2c1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, I2C1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -14883,6 +16517,7 @@ impl I2c1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, I2C1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -14902,6 +16537,7 @@ impl I2c1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, I2C1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -14921,6 +16557,7 @@ impl I2c1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, I2C1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -14940,6 +16577,7 @@ impl I2c1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, I2C1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -14959,6 +16597,7 @@ impl I2c1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, I2C1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -14978,6 +16617,7 @@ impl I2c1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, I2C1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -14997,6 +16637,7 @@ impl I2c1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, I2C1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15047,6 +16688,7 @@ impl I2c1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, I2C1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -15054,6 +16696,7 @@ impl I2c1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, I2C1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -15061,6 +16704,7 @@ impl I2c1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, I2C1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -15068,6 +16712,7 @@ impl I2c1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, I2C1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -15075,6 +16720,7 @@ impl I2c1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, I2C1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -15082,6 +16728,7 @@ impl I2c1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, I2C1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -15089,6 +16736,7 @@ impl I2c1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, I2C1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -15096,6 +16744,7 @@ impl I2c1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, I2C1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15104,6 +16753,7 @@ impl I2c1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, I2C1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -15117,6 +16767,7 @@ impl I2c1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, I2C1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -15130,6 +16781,7 @@ impl I2c1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, I2C1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -15143,6 +16795,7 @@ impl I2c1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, I2C1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -15156,6 +16809,7 @@ impl I2c1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, I2C1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -15169,6 +16823,7 @@ impl I2c1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, I2C1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -15182,6 +16837,7 @@ impl I2c1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, I2C1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -15195,6 +16851,7 @@ impl I2c1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, I2C1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15249,20 +16906,35 @@ impl I2c1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PWM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PWM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PWM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PWM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PWM can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PWM can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PWM can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PWM can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -15282,57 +16954,73 @@ impl Pwm {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PWM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PWM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PWM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PWM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PWM can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PWM can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PWM can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PWM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -15341,6 +17029,7 @@ impl Pwm {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PWM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -15360,6 +17049,7 @@ impl Pwm {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PWM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -15379,6 +17069,7 @@ impl Pwm {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PWM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -15398,6 +17089,7 @@ impl Pwm {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PWM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -15417,6 +17109,7 @@ impl Pwm {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PWM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -15436,6 +17129,7 @@ impl Pwm {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PWM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -15455,6 +17149,7 @@ impl Pwm {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PWM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -15474,6 +17169,7 @@ impl Pwm {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PWM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15524,6 +17220,7 @@ impl PwmVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PWM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -15531,6 +17228,7 @@ impl PwmVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PWM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -15538,6 +17236,7 @@ impl PwmVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PWM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -15545,6 +17244,7 @@ impl PwmVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PWM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -15552,6 +17252,7 @@ impl PwmVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PWM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -15559,6 +17260,7 @@ impl PwmVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PWM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -15566,6 +17268,7 @@ impl PwmVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PWM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -15573,6 +17276,7 @@ impl PwmVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PWM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15581,6 +17285,7 @@ impl PwmVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PWM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -15594,6 +17299,7 @@ impl PwmVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PWM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -15607,6 +17313,7 @@ impl PwmVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PWM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -15620,6 +17327,7 @@ impl PwmVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PWM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -15633,6 +17341,7 @@ impl PwmVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PWM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -15646,6 +17355,7 @@ impl PwmVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PWM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -15659,6 +17369,7 @@ impl PwmVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PWM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -15672,6 +17383,7 @@ impl PwmVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PWM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -15726,20 +17438,35 @@ impl Pwm {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SPI0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SPI0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SPI0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SPI0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SPI0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SPI0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SPI0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SPI0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -15759,57 +17486,73 @@ impl Spi0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SPI0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SPI0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SPI0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SPI0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SPI0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SPI0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SPI0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SPI0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -15818,6 +17561,7 @@ impl Spi0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SPI0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -15837,6 +17581,7 @@ impl Spi0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SPI0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -15856,6 +17601,7 @@ impl Spi0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SPI0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -15875,6 +17621,7 @@ impl Spi0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SPI0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -15894,6 +17641,7 @@ impl Spi0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SPI0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -15913,6 +17661,7 @@ impl Spi0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SPI0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -15932,6 +17681,7 @@ impl Spi0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SPI0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -15951,6 +17701,7 @@ impl Spi0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SPI0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16001,6 +17752,7 @@ impl Spi0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SPI0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -16008,6 +17760,7 @@ impl Spi0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SPI0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -16015,6 +17768,7 @@ impl Spi0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SPI0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -16022,6 +17776,7 @@ impl Spi0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SPI0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -16029,6 +17784,7 @@ impl Spi0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SPI0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -16036,6 +17792,7 @@ impl Spi0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SPI0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -16043,6 +17800,7 @@ impl Spi0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SPI0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -16050,6 +17808,7 @@ impl Spi0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SPI0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16058,6 +17817,7 @@ impl Spi0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SPI0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -16071,6 +17831,7 @@ impl Spi0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SPI0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -16084,6 +17845,7 @@ impl Spi0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SPI0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -16097,6 +17859,7 @@ impl Spi0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SPI0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -16110,6 +17873,7 @@ impl Spi0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SPI0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -16123,6 +17887,7 @@ impl Spi0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SPI0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -16136,6 +17901,7 @@ impl Spi0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SPI0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -16149,6 +17915,7 @@ impl Spi0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SPI0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16203,20 +17970,35 @@ impl Spi0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SPI1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SPI1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SPI1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SPI1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SPI1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SPI1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SPI1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SPI1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -16236,57 +18018,73 @@ impl Spi1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SPI1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SPI1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SPI1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SPI1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SPI1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SPI1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SPI1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SPI1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -16295,6 +18093,7 @@ impl Spi1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SPI1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -16314,6 +18113,7 @@ impl Spi1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SPI1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -16333,6 +18133,7 @@ impl Spi1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SPI1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -16352,6 +18153,7 @@ impl Spi1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SPI1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -16371,6 +18173,7 @@ impl Spi1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SPI1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -16390,6 +18193,7 @@ impl Spi1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SPI1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -16409,6 +18213,7 @@ impl Spi1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SPI1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -16428,6 +18233,7 @@ impl Spi1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SPI1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16478,6 +18284,7 @@ impl Spi1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SPI1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -16485,6 +18292,7 @@ impl Spi1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SPI1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -16492,6 +18300,7 @@ impl Spi1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SPI1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -16499,6 +18308,7 @@ impl Spi1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SPI1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -16506,6 +18316,7 @@ impl Spi1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SPI1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -16513,6 +18324,7 @@ impl Spi1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SPI1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -16520,6 +18332,7 @@ impl Spi1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SPI1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -16527,6 +18340,7 @@ impl Spi1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SPI1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16535,6 +18349,7 @@ impl Spi1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SPI1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -16548,6 +18363,7 @@ impl Spi1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SPI1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -16561,6 +18377,7 @@ impl Spi1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SPI1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -16574,6 +18391,7 @@ impl Spi1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SPI1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -16587,6 +18405,7 @@ impl Spi1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SPI1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -16600,6 +18419,7 @@ impl Spi1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SPI1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -16613,6 +18433,7 @@ impl Spi1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SPI1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -16626,6 +18447,7 @@ impl Spi1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SPI1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16680,20 +18502,35 @@ impl Spi1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, TIMER0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, TIMER0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, TIMER0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, TIMER0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, TIMER0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, TIMER0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, TIMER0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, TIMER0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -16713,57 +18550,73 @@ impl Timer0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, TIMER0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, TIMER0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, TIMER0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, TIMER0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, TIMER0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, TIMER0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, TIMER0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, TIMER0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -16772,6 +18625,7 @@ impl Timer0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -16791,6 +18645,7 @@ impl Timer0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -16810,6 +18665,7 @@ impl Timer0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -16829,6 +18685,7 @@ impl Timer0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -16848,6 +18705,7 @@ impl Timer0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -16867,6 +18725,7 @@ impl Timer0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, TIMER0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -16886,6 +18745,7 @@ impl Timer0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, TIMER0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -16905,6 +18765,7 @@ impl Timer0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, TIMER0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -16955,6 +18816,7 @@ impl Timer0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, TIMER0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -16962,6 +18824,7 @@ impl Timer0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, TIMER0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -16969,6 +18832,7 @@ impl Timer0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, TIMER0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -16976,6 +18840,7 @@ impl Timer0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, TIMER0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -16983,6 +18848,7 @@ impl Timer0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, TIMER0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -16990,6 +18856,7 @@ impl Timer0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TIMER0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -16997,6 +18864,7 @@ impl Timer0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, TIMER0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -17004,6 +18872,7 @@ impl Timer0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TIMER0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17012,6 +18881,7 @@ impl Timer0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, TIMER0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -17025,6 +18895,7 @@ impl Timer0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, TIMER0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -17038,6 +18909,7 @@ impl Timer0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, TIMER0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -17051,6 +18923,7 @@ impl Timer0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, TIMER0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -17064,6 +18937,7 @@ impl Timer0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, TIMER0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -17077,6 +18951,7 @@ impl Timer0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TIMER0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -17090,6 +18965,7 @@ impl Timer0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, TIMER0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -17103,6 +18979,7 @@ impl Timer0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TIMER0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17157,20 +19034,35 @@ impl Timer0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, TIMER1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, TIMER1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, TIMER1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, TIMER1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, TIMER1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, TIMER1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, TIMER1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, TIMER1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -17190,57 +19082,73 @@ impl Timer1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, TIMER1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, TIMER1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, TIMER1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, TIMER1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, TIMER1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, TIMER1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, TIMER1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, TIMER1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -17249,6 +19157,7 @@ impl Timer1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -17268,6 +19177,7 @@ impl Timer1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -17287,6 +19197,7 @@ impl Timer1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -17306,6 +19217,7 @@ impl Timer1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -17325,6 +19237,7 @@ impl Timer1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -17344,6 +19257,7 @@ impl Timer1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, TIMER1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -17363,6 +19277,7 @@ impl Timer1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, TIMER1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -17382,6 +19297,7 @@ impl Timer1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, TIMER1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17432,6 +19348,7 @@ impl Timer1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, TIMER1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -17439,6 +19356,7 @@ impl Timer1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, TIMER1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -17446,6 +19364,7 @@ impl Timer1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, TIMER1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -17453,6 +19372,7 @@ impl Timer1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, TIMER1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -17460,6 +19380,7 @@ impl Timer1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, TIMER1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -17467,6 +19388,7 @@ impl Timer1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TIMER1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -17474,6 +19396,7 @@ impl Timer1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, TIMER1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -17481,6 +19404,7 @@ impl Timer1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TIMER1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17489,6 +19413,7 @@ impl Timer1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, TIMER1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -17502,6 +19427,7 @@ impl Timer1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, TIMER1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -17515,6 +19441,7 @@ impl Timer1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, TIMER1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -17528,6 +19455,7 @@ impl Timer1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, TIMER1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -17541,6 +19469,7 @@ impl Timer1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, TIMER1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -17554,6 +19483,7 @@ impl Timer1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TIMER1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -17567,6 +19497,7 @@ impl Timer1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, TIMER1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -17580,6 +19511,7 @@ impl Timer1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TIMER1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17634,20 +19566,35 @@ impl Timer1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, UART0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, UART0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, UART0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, UART0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, UART0 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, UART0 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, UART0 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, UART0 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -17667,57 +19614,73 @@ impl Uart0 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, UART0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, UART0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, UART0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, UART0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, UART0 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, UART0 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, UART0 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, UART0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -17726,6 +19689,7 @@ impl Uart0 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, UART0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -17745,6 +19709,7 @@ impl Uart0 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, UART0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -17764,6 +19729,7 @@ impl Uart0 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, UART0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -17783,6 +19749,7 @@ impl Uart0 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, UART0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -17802,6 +19769,7 @@ impl Uart0 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, UART0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -17821,6 +19789,7 @@ impl Uart0 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, UART0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -17840,6 +19809,7 @@ impl Uart0 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, UART0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -17859,6 +19829,7 @@ impl Uart0 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, UART0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17909,6 +19880,7 @@ impl Uart0Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, UART0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -17916,6 +19888,7 @@ impl Uart0Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, UART0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -17923,6 +19896,7 @@ impl Uart0Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, UART0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -17930,6 +19904,7 @@ impl Uart0Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, UART0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -17937,6 +19912,7 @@ impl Uart0Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, UART0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -17944,6 +19920,7 @@ impl Uart0Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, UART0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -17951,6 +19928,7 @@ impl Uart0Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, UART0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -17958,6 +19936,7 @@ impl Uart0Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, UART0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -17966,6 +19945,7 @@ impl Uart0Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, UART0 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -17979,6 +19959,7 @@ impl Uart0Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, UART0 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -17992,6 +19973,7 @@ impl Uart0Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, UART0 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -18005,6 +19987,7 @@ impl Uart0Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, UART0 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -18018,6 +20001,7 @@ impl Uart0Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, UART0 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -18031,6 +20015,7 @@ impl Uart0Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, UART0 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -18044,6 +20029,7 @@ impl Uart0Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, UART0 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -18057,6 +20043,7 @@ impl Uart0Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, UART0 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18111,20 +20098,35 @@ impl Uart0 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, UART1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, UART1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, UART1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, UART1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, UART1 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, UART1 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, UART1 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, UART1 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -18144,57 +20146,73 @@ impl Uart1 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, UART1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, UART1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, UART1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, UART1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, UART1 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, UART1 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, UART1 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, UART1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -18203,6 +20221,7 @@ impl Uart1 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, UART1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -18222,6 +20241,7 @@ impl Uart1 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, UART1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -18241,6 +20261,7 @@ impl Uart1 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, UART1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -18260,6 +20281,7 @@ impl Uart1 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, UART1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -18279,6 +20301,7 @@ impl Uart1 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, UART1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -18298,6 +20321,7 @@ impl Uart1 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, UART1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -18317,6 +20341,7 @@ impl Uart1 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, UART1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -18336,6 +20361,7 @@ impl Uart1 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, UART1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18386,6 +20412,7 @@ impl Uart1Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, UART1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -18393,6 +20420,7 @@ impl Uart1Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, UART1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -18400,6 +20428,7 @@ impl Uart1Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, UART1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -18407,6 +20436,7 @@ impl Uart1Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, UART1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -18414,6 +20444,7 @@ impl Uart1Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, UART1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -18421,6 +20452,7 @@ impl Uart1Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, UART1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -18428,6 +20460,7 @@ impl Uart1Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, UART1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -18435,6 +20468,7 @@ impl Uart1Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, UART1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18443,6 +20477,7 @@ impl Uart1Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, UART1 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -18456,6 +20491,7 @@ impl Uart1Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, UART1 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -18469,6 +20505,7 @@ impl Uart1Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, UART1 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -18482,6 +20519,7 @@ impl Uart1Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, UART1 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -18495,6 +20533,7 @@ impl Uart1Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, UART1 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -18508,6 +20547,7 @@ impl Uart1Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, UART1 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -18521,6 +20561,7 @@ impl Uart1Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, UART1 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -18534,6 +20575,7 @@ impl Uart1Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, UART1 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18588,20 +20630,35 @@ impl Uart1 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, OTP can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, OTP can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, OTP can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, OTP can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, OTP can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, OTP can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, OTP can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, OTP can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -18621,57 +20678,73 @@ impl Otp {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, OTP can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, OTP can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, OTP can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, OTP can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, OTP can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, OTP can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, OTP can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, OTP can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -18680,6 +20753,7 @@ impl Otp {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, OTP can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -18699,6 +20773,7 @@ impl Otp {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, OTP can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -18718,6 +20793,7 @@ impl Otp {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, OTP can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -18737,6 +20813,7 @@ impl Otp {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, OTP can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -18756,6 +20833,7 @@ impl Otp {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, OTP can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -18775,6 +20853,7 @@ impl Otp {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, OTP can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -18794,6 +20873,7 @@ impl Otp {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, OTP can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -18813,6 +20893,7 @@ impl Otp {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, OTP can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18863,6 +20944,7 @@ impl OtpVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, OTP can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -18870,6 +20952,7 @@ impl OtpVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, OTP can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -18877,6 +20960,7 @@ impl OtpVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, OTP can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -18884,6 +20968,7 @@ impl OtpVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, OTP can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -18891,6 +20976,7 @@ impl OtpVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, OTP can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -18898,6 +20984,7 @@ impl OtpVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, OTP can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -18905,6 +20992,7 @@ impl OtpVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, OTP can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -18912,6 +21000,7 @@ impl OtpVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, OTP can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -18920,6 +21009,7 @@ impl OtpVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, OTP can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -18933,6 +21023,7 @@ impl OtpVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, OTP can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -18946,6 +21037,7 @@ impl OtpVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, OTP can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -18959,6 +21051,7 @@ impl OtpVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, OTP can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -18972,6 +21065,7 @@ impl OtpVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, OTP can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -18985,6 +21079,7 @@ impl OtpVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, OTP can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -18998,6 +21093,7 @@ impl OtpVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, OTP can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -19011,6 +21107,7 @@ impl OtpVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, OTP can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19065,20 +21162,35 @@ impl Otp {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, TBMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, TBMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, TBMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, TBMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, TBMAN can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, TBMAN can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, TBMAN can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, TBMAN can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -19098,57 +21210,73 @@ impl Tbman {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, TBMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, TBMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, TBMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, TBMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, TBMAN can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, TBMAN can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, TBMAN can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, TBMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -19157,6 +21285,7 @@ impl Tbman {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, TBMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -19176,6 +21305,7 @@ impl Tbman {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, TBMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -19195,6 +21325,7 @@ impl Tbman {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, TBMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -19214,6 +21345,7 @@ impl Tbman {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, TBMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -19233,6 +21365,7 @@ impl Tbman {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, TBMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -19252,6 +21385,7 @@ impl Tbman {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, TBMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -19271,6 +21405,7 @@ impl Tbman {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, TBMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -19290,6 +21425,7 @@ impl Tbman {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, TBMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19340,6 +21476,7 @@ impl TbmanVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, TBMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -19347,6 +21484,7 @@ impl TbmanVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, TBMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -19354,6 +21492,7 @@ impl TbmanVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, TBMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -19361,6 +21500,7 @@ impl TbmanVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, TBMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -19368,6 +21508,7 @@ impl TbmanVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, TBMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -19375,6 +21516,7 @@ impl TbmanVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TBMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -19382,6 +21524,7 @@ impl TbmanVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, TBMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -19389,6 +21532,7 @@ impl TbmanVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TBMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19397,6 +21541,7 @@ impl TbmanVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, TBMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -19410,6 +21555,7 @@ impl TbmanVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, TBMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -19423,6 +21569,7 @@ impl TbmanVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, TBMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -19436,6 +21583,7 @@ impl TbmanVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, TBMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -19449,6 +21597,7 @@ impl TbmanVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, TBMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -19462,6 +21611,7 @@ impl TbmanVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TBMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -19475,6 +21625,7 @@ impl TbmanVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, TBMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -19488,6 +21639,7 @@ impl TbmanVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TBMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19542,20 +21694,35 @@ impl Tbman {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, POWMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, POWMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, POWMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, POWMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, POWMAN can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, POWMAN can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, POWMAN can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, POWMAN can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -19575,57 +21742,73 @@ impl Powman {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, POWMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, POWMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, POWMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, POWMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, POWMAN can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, POWMAN can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, POWMAN can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, POWMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -19634,6 +21817,7 @@ impl Powman {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, POWMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -19653,6 +21837,7 @@ impl Powman {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, POWMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -19672,6 +21857,7 @@ impl Powman {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, POWMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -19691,6 +21877,7 @@ impl Powman {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, POWMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -19710,6 +21897,7 @@ impl Powman {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, POWMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -19729,6 +21917,7 @@ impl Powman {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, POWMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -19748,6 +21937,7 @@ impl Powman {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, POWMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -19767,6 +21957,7 @@ impl Powman {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, POWMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19817,6 +22008,7 @@ impl PowmanVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, POWMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -19824,6 +22016,7 @@ impl PowmanVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, POWMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -19831,6 +22024,7 @@ impl PowmanVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, POWMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -19838,6 +22032,7 @@ impl PowmanVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, POWMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -19845,6 +22040,7 @@ impl PowmanVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, POWMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -19852,6 +22048,7 @@ impl PowmanVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, POWMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -19859,6 +22056,7 @@ impl PowmanVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, POWMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -19866,6 +22064,7 @@ impl PowmanVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, POWMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -19874,6 +22073,7 @@ impl PowmanVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, POWMAN can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -19887,6 +22087,7 @@ impl PowmanVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, POWMAN can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -19900,6 +22101,7 @@ impl PowmanVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, POWMAN can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -19913,6 +22115,7 @@ impl PowmanVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, POWMAN can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -19926,6 +22129,7 @@ impl PowmanVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, POWMAN can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -19939,6 +22143,7 @@ impl PowmanVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, POWMAN can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -19952,6 +22157,7 @@ impl PowmanVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, POWMAN can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -19965,6 +22171,7 @@ impl PowmanVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, POWMAN can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20019,20 +22226,35 @@ impl Powman {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, TRNG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, TRNG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, TRNG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, TRNG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, TRNG can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, TRNG can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, TRNG can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, TRNG can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -20052,57 +22274,73 @@ impl Trng {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, TRNG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, TRNG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, TRNG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, TRNG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, TRNG can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, TRNG can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, TRNG can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, TRNG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -20111,6 +22349,7 @@ impl Trng {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, TRNG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -20130,6 +22369,7 @@ impl Trng {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, TRNG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -20149,6 +22389,7 @@ impl Trng {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, TRNG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -20168,6 +22409,7 @@ impl Trng {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, TRNG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -20187,6 +22429,7 @@ impl Trng {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, TRNG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -20206,6 +22449,7 @@ impl Trng {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, TRNG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -20225,6 +22469,7 @@ impl Trng {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, TRNG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -20244,6 +22489,7 @@ impl Trng {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, TRNG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20294,6 +22540,7 @@ impl TrngVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, TRNG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -20301,6 +22548,7 @@ impl TrngVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, TRNG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -20308,6 +22556,7 @@ impl TrngVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, TRNG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -20315,6 +22564,7 @@ impl TrngVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, TRNG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -20322,6 +22572,7 @@ impl TrngVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, TRNG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -20329,6 +22580,7 @@ impl TrngVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TRNG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -20336,6 +22588,7 @@ impl TrngVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, TRNG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -20343,6 +22596,7 @@ impl TrngVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TRNG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20351,6 +22605,7 @@ impl TrngVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, TRNG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -20364,6 +22619,7 @@ impl TrngVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, TRNG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -20377,6 +22633,7 @@ impl TrngVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, TRNG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -20390,6 +22647,7 @@ impl TrngVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, TRNG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -20403,6 +22661,7 @@ impl TrngVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, TRNG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -20416,6 +22675,7 @@ impl TrngVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TRNG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -20429,6 +22689,7 @@ impl TrngVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, TRNG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -20442,6 +22703,7 @@ impl TrngVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TRNG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20496,20 +22758,35 @@ impl Trng {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SHA256 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SHA256 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SHA256 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SHA256 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SHA256 can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SHA256 can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SHA256 can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SHA256 can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -20529,57 +22806,73 @@ impl Sha256 {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SHA256 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SHA256 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SHA256 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SHA256 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SHA256 can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SHA256 can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SHA256 can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SHA256 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -20588,6 +22881,7 @@ impl Sha256 {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SHA256 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -20607,6 +22901,7 @@ impl Sha256 {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SHA256 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -20626,6 +22921,7 @@ impl Sha256 {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SHA256 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -20645,6 +22941,7 @@ impl Sha256 {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SHA256 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -20664,6 +22961,7 @@ impl Sha256 {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SHA256 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -20683,6 +22981,7 @@ impl Sha256 {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SHA256 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -20702,6 +23001,7 @@ impl Sha256 {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SHA256 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -20721,6 +23021,7 @@ impl Sha256 {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SHA256 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20771,6 +23072,7 @@ impl Sha256Val {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SHA256 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -20778,6 +23080,7 @@ impl Sha256Val {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SHA256 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -20785,6 +23088,7 @@ impl Sha256Val {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SHA256 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -20792,6 +23096,7 @@ impl Sha256Val {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SHA256 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -20799,6 +23104,7 @@ impl Sha256Val {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SHA256 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -20806,6 +23112,7 @@ impl Sha256Val {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SHA256 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -20813,6 +23120,7 @@ impl Sha256Val {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SHA256 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -20820,6 +23128,7 @@ impl Sha256Val {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SHA256 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20828,6 +23137,7 @@ impl Sha256Val {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SHA256 can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -20841,6 +23151,7 @@ impl Sha256Val {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SHA256 can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -20854,6 +23165,7 @@ impl Sha256Val {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SHA256 can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -20867,6 +23179,7 @@ impl Sha256Val {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SHA256 can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -20880,6 +23193,7 @@ impl Sha256Val {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SHA256 can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -20893,6 +23207,7 @@ impl Sha256Val {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SHA256 can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -20906,6 +23221,7 @@ impl Sha256Val {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SHA256 can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -20919,6 +23235,7 @@ impl Sha256Val {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SHA256 can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -20973,20 +23290,35 @@ impl Sha256 {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, SYSCFG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, SYSCFG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, SYSCFG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, SYSCFG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, SYSCFG can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, SYSCFG can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, SYSCFG can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, SYSCFG can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -21006,57 +23338,73 @@ impl Syscfg {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, SYSCFG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, SYSCFG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, SYSCFG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, SYSCFG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, SYSCFG can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, SYSCFG can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, SYSCFG can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, SYSCFG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -21065,6 +23413,7 @@ impl Syscfg {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -21084,6 +23433,7 @@ impl Syscfg {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -21103,6 +23453,7 @@ impl Syscfg {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -21122,6 +23473,7 @@ impl Syscfg {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -21141,6 +23493,7 @@ impl Syscfg {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -21160,6 +23513,7 @@ impl Syscfg {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, SYSCFG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -21179,6 +23533,7 @@ impl Syscfg {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, SYSCFG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -21198,6 +23553,7 @@ impl Syscfg {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, SYSCFG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21248,6 +23604,7 @@ impl SyscfgVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, SYSCFG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -21255,6 +23612,7 @@ impl SyscfgVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, SYSCFG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -21262,6 +23620,7 @@ impl SyscfgVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, SYSCFG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -21269,6 +23628,7 @@ impl SyscfgVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, SYSCFG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -21276,6 +23636,7 @@ impl SyscfgVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, SYSCFG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -21283,6 +23644,7 @@ impl SyscfgVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SYSCFG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -21290,6 +23652,7 @@ impl SyscfgVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, SYSCFG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -21297,6 +23660,7 @@ impl SyscfgVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SYSCFG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21305,6 +23669,7 @@ impl SyscfgVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, SYSCFG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -21318,6 +23683,7 @@ impl SyscfgVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, SYSCFG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -21331,6 +23697,7 @@ impl SyscfgVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, SYSCFG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -21344,6 +23711,7 @@ impl SyscfgVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, SYSCFG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -21357,6 +23725,7 @@ impl SyscfgVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, SYSCFG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -21370,6 +23739,7 @@ impl SyscfgVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, SYSCFG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -21383,6 +23753,7 @@ impl SyscfgVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, SYSCFG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -21396,6 +23767,7 @@ impl SyscfgVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, SYSCFG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21450,20 +23822,35 @@ impl Syscfg {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, CLOCKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, CLOCKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, CLOCKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, CLOCKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, CLOCKS can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, CLOCKS can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, CLOCKS can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, CLOCKS can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -21483,57 +23870,73 @@ impl Clocks {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, CLOCKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, CLOCKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, CLOCKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, CLOCKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, CLOCKS can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, CLOCKS can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, CLOCKS can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, CLOCKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -21542,6 +23945,7 @@ impl Clocks {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -21561,6 +23965,7 @@ impl Clocks {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -21580,6 +23985,7 @@ impl Clocks {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -21599,6 +24005,7 @@ impl Clocks {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -21618,6 +24025,7 @@ impl Clocks {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -21637,6 +24045,7 @@ impl Clocks {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, CLOCKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -21656,6 +24065,7 @@ impl Clocks {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, CLOCKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -21675,6 +24085,7 @@ impl Clocks {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, CLOCKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21725,6 +24136,7 @@ impl ClocksVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, CLOCKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -21732,6 +24144,7 @@ impl ClocksVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, CLOCKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -21739,6 +24152,7 @@ impl ClocksVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, CLOCKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -21746,6 +24160,7 @@ impl ClocksVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, CLOCKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -21753,6 +24168,7 @@ impl ClocksVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, CLOCKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -21760,6 +24176,7 @@ impl ClocksVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CLOCKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -21767,6 +24184,7 @@ impl ClocksVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, CLOCKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -21774,6 +24192,7 @@ impl ClocksVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CLOCKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21782,6 +24201,7 @@ impl ClocksVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, CLOCKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -21795,6 +24215,7 @@ impl ClocksVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, CLOCKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -21808,6 +24229,7 @@ impl ClocksVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, CLOCKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -21821,6 +24243,7 @@ impl ClocksVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, CLOCKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -21834,6 +24257,7 @@ impl ClocksVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, CLOCKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -21847,6 +24271,7 @@ impl ClocksVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, CLOCKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -21860,6 +24285,7 @@ impl ClocksVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, CLOCKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -21873,6 +24299,7 @@ impl ClocksVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, CLOCKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -21927,20 +24354,35 @@ impl Clocks {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, XOSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, XOSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, XOSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, XOSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, XOSC can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, XOSC can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, XOSC can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, XOSC can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -21960,57 +24402,73 @@ impl Xosc {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, XOSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, XOSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, XOSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, XOSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, XOSC can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, XOSC can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, XOSC can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, XOSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -22019,6 +24477,7 @@ impl Xosc {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, XOSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -22038,6 +24497,7 @@ impl Xosc {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, XOSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -22057,6 +24517,7 @@ impl Xosc {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, XOSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -22076,6 +24537,7 @@ impl Xosc {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, XOSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -22095,6 +24557,7 @@ impl Xosc {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, XOSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -22114,6 +24577,7 @@ impl Xosc {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, XOSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -22133,6 +24597,7 @@ impl Xosc {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, XOSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -22152,6 +24617,7 @@ impl Xosc {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, XOSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22202,6 +24668,7 @@ impl XoscVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, XOSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -22209,6 +24676,7 @@ impl XoscVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, XOSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -22216,6 +24684,7 @@ impl XoscVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, XOSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -22223,6 +24692,7 @@ impl XoscVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, XOSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -22230,6 +24700,7 @@ impl XoscVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, XOSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -22237,6 +24708,7 @@ impl XoscVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XOSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -22244,6 +24716,7 @@ impl XoscVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, XOSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -22251,6 +24724,7 @@ impl XoscVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XOSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22259,6 +24733,7 @@ impl XoscVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, XOSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -22272,6 +24747,7 @@ impl XoscVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, XOSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -22285,6 +24761,7 @@ impl XoscVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, XOSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -22298,6 +24775,7 @@ impl XoscVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, XOSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -22311,6 +24789,7 @@ impl XoscVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, XOSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -22324,6 +24803,7 @@ impl XoscVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XOSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -22337,6 +24817,7 @@ impl XoscVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, XOSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -22350,6 +24831,7 @@ impl XoscVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XOSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22404,20 +24886,35 @@ impl Xosc {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, ROSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, ROSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, ROSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, ROSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, ROSC can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, ROSC can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, ROSC can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, ROSC can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -22437,57 +24934,73 @@ impl Rosc {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, ROSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, ROSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, ROSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, ROSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, ROSC can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, ROSC can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, ROSC can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, ROSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -22496,6 +25009,7 @@ impl Rosc {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, ROSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -22515,6 +25029,7 @@ impl Rosc {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, ROSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -22534,6 +25049,7 @@ impl Rosc {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, ROSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -22553,6 +25069,7 @@ impl Rosc {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, ROSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -22572,6 +25089,7 @@ impl Rosc {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, ROSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -22591,6 +25109,7 @@ impl Rosc {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, ROSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -22610,6 +25129,7 @@ impl Rosc {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, ROSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -22629,6 +25149,7 @@ impl Rosc {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, ROSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22679,6 +25200,7 @@ impl RoscVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, ROSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -22686,6 +25208,7 @@ impl RoscVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, ROSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -22693,6 +25216,7 @@ impl RoscVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, ROSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -22700,6 +25224,7 @@ impl RoscVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, ROSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -22707,6 +25232,7 @@ impl RoscVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, ROSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -22714,6 +25240,7 @@ impl RoscVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ROSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -22721,6 +25248,7 @@ impl RoscVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, ROSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -22728,6 +25256,7 @@ impl RoscVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ROSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22736,6 +25265,7 @@ impl RoscVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, ROSC can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -22749,6 +25279,7 @@ impl RoscVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, ROSC can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -22762,6 +25293,7 @@ impl RoscVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, ROSC can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -22775,6 +25307,7 @@ impl RoscVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, ROSC can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -22788,6 +25321,7 @@ impl RoscVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, ROSC can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -22801,6 +25335,7 @@ impl RoscVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, ROSC can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -22814,6 +25349,7 @@ impl RoscVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, ROSC can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -22827,6 +25363,7 @@ impl RoscVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, ROSC can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -22881,20 +25418,35 @@ impl Rosc {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PLL_SYS can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PLL_SYS can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PLL_SYS can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -22914,57 +25466,73 @@ impl PllSys {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PLL_SYS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PLL_SYS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PLL_SYS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PLL_SYS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PLL_SYS can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PLL_SYS can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PLL_SYS can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PLL_SYS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -22973,6 +25541,7 @@ impl PllSys {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -22992,6 +25561,7 @@ impl PllSys {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -23011,6 +25581,7 @@ impl PllSys {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -23030,6 +25601,7 @@ impl PllSys {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -23049,6 +25621,7 @@ impl PllSys {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -23068,6 +25641,7 @@ impl PllSys {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PLL_SYS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -23087,6 +25661,7 @@ impl PllSys {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PLL_SYS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -23106,6 +25681,7 @@ impl PllSys {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PLL_SYS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23156,6 +25732,7 @@ impl PllSysVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PLL_SYS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -23163,6 +25740,7 @@ impl PllSysVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PLL_SYS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -23170,6 +25748,7 @@ impl PllSysVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PLL_SYS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -23177,6 +25756,7 @@ impl PllSysVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PLL_SYS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -23184,6 +25764,7 @@ impl PllSysVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PLL_SYS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -23191,6 +25772,7 @@ impl PllSysVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PLL_SYS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -23198,6 +25780,7 @@ impl PllSysVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PLL_SYS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -23205,6 +25788,7 @@ impl PllSysVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PLL_SYS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23213,6 +25797,7 @@ impl PllSysVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PLL_SYS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -23226,6 +25811,7 @@ impl PllSysVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PLL_SYS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -23239,6 +25825,7 @@ impl PllSysVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PLL_SYS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -23252,6 +25839,7 @@ impl PllSysVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PLL_SYS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -23265,6 +25853,7 @@ impl PllSysVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PLL_SYS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -23278,6 +25867,7 @@ impl PllSysVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PLL_SYS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -23291,6 +25881,7 @@ impl PllSysVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PLL_SYS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -23304,6 +25895,7 @@ impl PllSysVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PLL_SYS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23358,20 +25950,35 @@ impl PllSys {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, PLL_USB can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, PLL_USB can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, PLL_USB can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, PLL_USB can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, PLL_USB can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, PLL_USB can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, PLL_USB can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, PLL_USB can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -23391,57 +25998,73 @@ impl PllUsb {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, PLL_USB can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, PLL_USB can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, PLL_USB can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, PLL_USB can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, PLL_USB can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, PLL_USB can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, PLL_USB can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, PLL_USB can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -23450,6 +26073,7 @@ impl PllUsb {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -23469,6 +26093,7 @@ impl PllUsb {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -23488,6 +26113,7 @@ impl PllUsb {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -23507,6 +26133,7 @@ impl PllUsb {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -23526,6 +26153,7 @@ impl PllUsb {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -23545,6 +26173,7 @@ impl PllUsb {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, PLL_USB can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -23564,6 +26193,7 @@ impl PllUsb {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, PLL_USB can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -23583,6 +26213,7 @@ impl PllUsb {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, PLL_USB can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23633,6 +26264,7 @@ impl PllUsbVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, PLL_USB can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -23640,6 +26272,7 @@ impl PllUsbVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, PLL_USB can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -23647,6 +26280,7 @@ impl PllUsbVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, PLL_USB can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -23654,6 +26288,7 @@ impl PllUsbVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, PLL_USB can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -23661,6 +26296,7 @@ impl PllUsbVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, PLL_USB can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -23668,6 +26304,7 @@ impl PllUsbVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PLL_USB can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -23675,6 +26312,7 @@ impl PllUsbVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, PLL_USB can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -23682,6 +26320,7 @@ impl PllUsbVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PLL_USB can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23690,6 +26329,7 @@ impl PllUsbVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, PLL_USB can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -23703,6 +26343,7 @@ impl PllUsbVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, PLL_USB can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -23716,6 +26357,7 @@ impl PllUsbVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, PLL_USB can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -23729,6 +26371,7 @@ impl PllUsbVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, PLL_USB can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -23742,6 +26385,7 @@ impl PllUsbVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, PLL_USB can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -23755,6 +26399,7 @@ impl PllUsbVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, PLL_USB can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -23768,6 +26413,7 @@ impl PllUsbVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, PLL_USB can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -23781,6 +26427,7 @@ impl PllUsbVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, PLL_USB can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -23835,20 +26482,35 @@ impl PllUsb {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, TICKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, TICKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, TICKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, TICKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, TICKS can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, TICKS can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, TICKS can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, TICKS can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -23868,57 +26530,73 @@ impl Ticks {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, TICKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, TICKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, TICKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, TICKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, TICKS can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, TICKS can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, TICKS can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, TICKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -23927,6 +26605,7 @@ impl Ticks {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, TICKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -23946,6 +26625,7 @@ impl Ticks {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, TICKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -23965,6 +26645,7 @@ impl Ticks {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, TICKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -23984,6 +26665,7 @@ impl Ticks {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, TICKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -24003,6 +26685,7 @@ impl Ticks {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, TICKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -24022,6 +26705,7 @@ impl Ticks {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, TICKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -24041,6 +26725,7 @@ impl Ticks {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, TICKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -24060,6 +26745,7 @@ impl Ticks {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, TICKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24110,6 +26796,7 @@ impl TicksVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, TICKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -24117,6 +26804,7 @@ impl TicksVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, TICKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -24124,6 +26812,7 @@ impl TicksVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, TICKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -24131,6 +26820,7 @@ impl TicksVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, TICKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -24138,6 +26828,7 @@ impl TicksVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, TICKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -24145,6 +26836,7 @@ impl TicksVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TICKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -24152,6 +26844,7 @@ impl TicksVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, TICKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -24159,6 +26852,7 @@ impl TicksVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TICKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24167,6 +26861,7 @@ impl TicksVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, TICKS can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -24180,6 +26875,7 @@ impl TicksVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, TICKS can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -24193,6 +26889,7 @@ impl TicksVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, TICKS can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -24206,6 +26903,7 @@ impl TicksVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, TICKS can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -24219,6 +26917,7 @@ impl TicksVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, TICKS can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -24232,6 +26931,7 @@ impl TicksVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, TICKS can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -24245,6 +26945,7 @@ impl TicksVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, TICKS can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -24258,6 +26959,7 @@ impl TicksVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, TICKS can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24312,20 +27014,35 @@ impl Ticks {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, WATCHDOG can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, WATCHDOG can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, WATCHDOG can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -24345,57 +27062,73 @@ impl Watchdog {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, WATCHDOG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, WATCHDOG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, WATCHDOG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, WATCHDOG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, WATCHDOG can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, WATCHDOG can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, WATCHDOG can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, WATCHDOG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -24404,6 +27137,7 @@ impl Watchdog {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -24423,6 +27157,7 @@ impl Watchdog {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -24442,6 +27177,7 @@ impl Watchdog {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -24461,6 +27197,7 @@ impl Watchdog {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -24480,6 +27217,7 @@ impl Watchdog {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -24499,6 +27237,7 @@ impl Watchdog {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, WATCHDOG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -24518,6 +27257,7 @@ impl Watchdog {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, WATCHDOG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -24537,6 +27277,7 @@ impl Watchdog {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, WATCHDOG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24587,6 +27328,7 @@ impl WatchdogVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, WATCHDOG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -24594,6 +27336,7 @@ impl WatchdogVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, WATCHDOG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -24601,6 +27344,7 @@ impl WatchdogVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, WATCHDOG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -24608,6 +27352,7 @@ impl WatchdogVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, WATCHDOG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -24615,6 +27360,7 @@ impl WatchdogVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, WATCHDOG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -24622,6 +27368,7 @@ impl WatchdogVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, WATCHDOG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -24629,6 +27376,7 @@ impl WatchdogVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, WATCHDOG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -24636,6 +27384,7 @@ impl WatchdogVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, WATCHDOG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24644,6 +27393,7 @@ impl WatchdogVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, WATCHDOG can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -24657,6 +27407,7 @@ impl WatchdogVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, WATCHDOG can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -24670,6 +27421,7 @@ impl WatchdogVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, WATCHDOG can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -24683,6 +27435,7 @@ impl WatchdogVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, WATCHDOG can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -24696,6 +27449,7 @@ impl WatchdogVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, WATCHDOG can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -24709,6 +27463,7 @@ impl WatchdogVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, WATCHDOG can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -24722,6 +27477,7 @@ impl WatchdogVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, WATCHDOG can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -24735,6 +27491,7 @@ impl WatchdogVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, WATCHDOG can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -24789,20 +27546,35 @@ impl Watchdog {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, RSM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, RSM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, RSM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, RSM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, RSM can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, RSM can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, RSM can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, RSM can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -24822,57 +27594,73 @@ impl Rsm {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, RSM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, RSM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, RSM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, RSM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, RSM can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, RSM can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, RSM can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, RSM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -24881,6 +27669,7 @@ impl Rsm {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, RSM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -24900,6 +27689,7 @@ impl Rsm {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, RSM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -24919,6 +27709,7 @@ impl Rsm {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, RSM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -24938,6 +27729,7 @@ impl Rsm {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, RSM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -24957,6 +27749,7 @@ impl Rsm {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, RSM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -24976,6 +27769,7 @@ impl Rsm {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, RSM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -24995,6 +27789,7 @@ impl Rsm {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, RSM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -25014,6 +27809,7 @@ impl Rsm {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, RSM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25064,6 +27860,7 @@ impl RsmVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, RSM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -25071,6 +27868,7 @@ impl RsmVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, RSM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -25078,6 +27876,7 @@ impl RsmVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, RSM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -25085,6 +27884,7 @@ impl RsmVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, RSM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -25092,6 +27892,7 @@ impl RsmVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, RSM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -25099,6 +27900,7 @@ impl RsmVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, RSM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -25106,6 +27908,7 @@ impl RsmVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, RSM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -25113,6 +27916,7 @@ impl RsmVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, RSM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25121,6 +27925,7 @@ impl RsmVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, RSM can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -25134,6 +27939,7 @@ impl RsmVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, RSM can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -25147,6 +27953,7 @@ impl RsmVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, RSM can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -25160,6 +27967,7 @@ impl RsmVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, RSM can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -25173,6 +27981,7 @@ impl RsmVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, RSM can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -25186,6 +27995,7 @@ impl RsmVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, RSM can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -25199,6 +28009,7 @@ impl RsmVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, RSM can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -25212,6 +28023,7 @@ impl RsmVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, RSM can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25266,20 +28078,35 @@ impl Rsm {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, XIP_CTRL can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, XIP_CTRL can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, XIP_CTRL can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -25299,57 +28126,73 @@ impl XipCtrl {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, XIP_CTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, XIP_CTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, XIP_CTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, XIP_CTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, XIP_CTRL can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, XIP_CTRL can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, XIP_CTRL can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, XIP_CTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -25358,6 +28201,7 @@ impl XipCtrl {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -25377,6 +28221,7 @@ impl XipCtrl {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -25396,6 +28241,7 @@ impl XipCtrl {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -25415,6 +28261,7 @@ impl XipCtrl {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -25434,6 +28281,7 @@ impl XipCtrl {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -25453,6 +28301,7 @@ impl XipCtrl {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, XIP_CTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -25472,6 +28321,7 @@ impl XipCtrl {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, XIP_CTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -25491,6 +28341,7 @@ impl XipCtrl {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, XIP_CTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25541,6 +28392,7 @@ impl XipCtrlVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, XIP_CTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -25548,6 +28400,7 @@ impl XipCtrlVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, XIP_CTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -25555,6 +28408,7 @@ impl XipCtrlVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_CTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -25562,6 +28416,7 @@ impl XipCtrlVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_CTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -25569,6 +28424,7 @@ impl XipCtrlVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, XIP_CTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -25576,6 +28432,7 @@ impl XipCtrlVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_CTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -25583,6 +28440,7 @@ impl XipCtrlVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, XIP_CTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -25590,6 +28448,7 @@ impl XipCtrlVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_CTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25598,6 +28457,7 @@ impl XipCtrlVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, XIP_CTRL can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -25611,6 +28471,7 @@ impl XipCtrlVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, XIP_CTRL can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -25624,6 +28485,7 @@ impl XipCtrlVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_CTRL can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -25637,6 +28499,7 @@ impl XipCtrlVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_CTRL can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -25650,6 +28513,7 @@ impl XipCtrlVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, XIP_CTRL can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -25663,6 +28527,7 @@ impl XipCtrlVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_CTRL can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -25676,6 +28541,7 @@ impl XipCtrlVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, XIP_CTRL can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -25689,6 +28555,7 @@ impl XipCtrlVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_CTRL can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -25743,20 +28610,35 @@ impl XipCtrl {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, XIP_QMI can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, XIP_QMI can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, XIP_QMI can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -25776,57 +28658,73 @@ impl XipQmi {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, XIP_QMI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, XIP_QMI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, XIP_QMI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, XIP_QMI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, XIP_QMI can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, XIP_QMI can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, XIP_QMI can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, XIP_QMI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -25835,6 +28733,7 @@ impl XipQmi {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -25854,6 +28753,7 @@ impl XipQmi {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -25873,6 +28773,7 @@ impl XipQmi {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -25892,6 +28793,7 @@ impl XipQmi {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -25911,6 +28813,7 @@ impl XipQmi {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -25930,6 +28833,7 @@ impl XipQmi {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, XIP_QMI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -25949,6 +28853,7 @@ impl XipQmi {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, XIP_QMI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -25968,6 +28873,7 @@ impl XipQmi {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, XIP_QMI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -26018,6 +28924,7 @@ impl XipQmiVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, XIP_QMI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -26025,6 +28932,7 @@ impl XipQmiVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, XIP_QMI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -26032,6 +28940,7 @@ impl XipQmiVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_QMI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -26039,6 +28948,7 @@ impl XipQmiVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_QMI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -26046,6 +28956,7 @@ impl XipQmiVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, XIP_QMI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -26053,6 +28964,7 @@ impl XipQmiVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_QMI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -26060,6 +28972,7 @@ impl XipQmiVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, XIP_QMI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -26067,6 +28980,7 @@ impl XipQmiVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_QMI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -26075,6 +28989,7 @@ impl XipQmiVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, XIP_QMI can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -26088,6 +29003,7 @@ impl XipQmiVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, XIP_QMI can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -26101,6 +29017,7 @@ impl XipQmiVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_QMI can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -26114,6 +29031,7 @@ impl XipQmiVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_QMI can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -26127,6 +29045,7 @@ impl XipQmiVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, XIP_QMI can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -26140,6 +29059,7 @@ impl XipQmiVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_QMI can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -26153,6 +29073,7 @@ impl XipQmiVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, XIP_QMI can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -26166,6 +29087,7 @@ impl XipQmiVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_QMI can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -26220,20 +29142,35 @@ impl XipQmi {
 /// ## Fields
 ///
 /// - **DBG** `[7]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **DMA** `[6]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE1** `[5]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **CORE0** `[4]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+///
 /// - **SP** `[3]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed from a Secure, Privileged context.
+///
 /// - **SU** `[2]` (RW)
+///
 ///   If 1, and SP is also set, XIP_AUX can be accessed from a Secure, Unprivileged context.
+///
 /// - **NSP** `[1]` (RW)
+///
 ///   If 1, XIP_AUX can be accessed from a Non-secure, Privileged context.
+///
 /// - **NSU** `[0]` (RW)
+///
 ///   If 1, and NSP is also set, XIP_AUX can be accessed from a Non-secure, Unprivileged context.
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
@@ -26253,57 +29190,73 @@ impl XipAux {
     // ======== Field Constants ========
 
     /// **DBG**
+    ///
     /// If 1, XIP_AUX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const DBG_OFFSET: u32 = 7;
     pub const DBG_MASK: u32 = 0x00000080;
     pub const DBG: u32 = 1 << 7;
 
     /// **DMA**
+    ///
     /// If 1, XIP_AUX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const DMA_OFFSET: u32 = 6;
     pub const DMA_MASK: u32 = 0x00000040;
     pub const DMA: u32 = 1 << 6;
 
     /// **CORE1**
+    ///
     /// If 1, XIP_AUX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const CORE1_OFFSET: u32 = 5;
     pub const CORE1_MASK: u32 = 0x00000020;
     pub const CORE1: u32 = 1 << 5;
 
     /// **CORE0**
+    ///
     /// If 1, XIP_AUX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const CORE0_OFFSET: u32 = 4;
     pub const CORE0_MASK: u32 = 0x00000010;
     pub const CORE0: u32 = 1 << 4;
 
     /// **SP**
+    ///
     /// If 1, XIP_AUX can be accessed from a Secure, Privileged context.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const SP_OFFSET: u32 = 3;
     pub const SP_MASK: u32 = 0x00000008;
     pub const SP: u32 = 1 << 3;
 
     /// **SU**
+    ///
     /// If 1, and SP is also set, XIP_AUX can be accessed from a Secure, Unprivileged context.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SU_OFFSET: u32 = 2;
     pub const SU_MASK: u32 = 0x00000004;
     pub const SU: u32 = 1 << 2;
 
     /// **NSP**
+    ///
     /// If 1, XIP_AUX can be accessed from a Non-secure, Privileged context.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NSP_OFFSET: u32 = 1;
     pub const NSP_MASK: u32 = 0x00000002;
     pub const NSP: u32 = 1 << 1;
 
     /// **NSU**
+    ///
     /// If 1, and NSP is also set, XIP_AUX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NSU_OFFSET: u32 = 0;
     pub const NSU_MASK: u32 = 0x00000001;
@@ -26312,6 +29265,7 @@ impl XipAux {
     // ======== Field Accessors ========
 
     /// **DBG** `[7]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dbg(&self) -> bool {
@@ -26331,6 +29285,7 @@ impl XipAux {
     }
 
     /// **DMA** `[6]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn dma(&self) -> bool {
@@ -26350,6 +29305,7 @@ impl XipAux {
     }
 
     /// **CORE1** `[5]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core1(&self) -> bool {
@@ -26369,6 +29325,7 @@ impl XipAux {
     }
 
     /// **CORE0** `[4]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub fn core0(&self) -> bool {
@@ -26388,6 +29345,7 @@ impl XipAux {
     }
 
     /// **SP** `[3]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub fn sp(&self) -> bool {
@@ -26407,6 +29365,7 @@ impl XipAux {
     }
 
     /// **SU** `[2]` (RW)
+    ///
     /// If 1, and SP is also set, XIP_AUX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub fn su(&self) -> bool {
@@ -26426,6 +29385,7 @@ impl XipAux {
     }
 
     /// **NSP** `[1]` (RW)
+    ///
     /// If 1, XIP_AUX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub fn nsp(&self) -> bool {
@@ -26445,6 +29405,7 @@ impl XipAux {
     }
 
     /// **NSU** `[0]` (RW)
+    ///
     /// If 1, and NSP is also set, XIP_AUX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -26495,6 +29456,7 @@ impl XipAuxVal {
     }
 
     /// Read **DBG** `[7:7]`
+    ///
     /// If 1, XIP_AUX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dbg(&self) -> bool {
@@ -26502,6 +29464,7 @@ impl XipAuxVal {
     }
 
     /// Read **DMA** `[6:6]`
+    ///
     /// If 1, XIP_AUX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn dma(&self) -> bool {
@@ -26509,6 +29472,7 @@ impl XipAuxVal {
     }
 
     /// Read **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_AUX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core1(&self) -> bool {
@@ -26516,6 +29480,7 @@ impl XipAuxVal {
     }
 
     /// Read **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_AUX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn core0(&self) -> bool {
@@ -26523,6 +29488,7 @@ impl XipAuxVal {
     }
 
     /// Read **SP** `[3:3]`
+    ///
     /// If 1, XIP_AUX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn sp(&self) -> bool {
@@ -26530,6 +29496,7 @@ impl XipAuxVal {
     }
 
     /// Read **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_AUX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn su(&self) -> bool {
@@ -26537,6 +29504,7 @@ impl XipAuxVal {
     }
 
     /// Read **NSP** `[1:1]`
+    ///
     /// If 1, XIP_AUX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn nsp(&self) -> bool {
@@ -26544,6 +29512,7 @@ impl XipAuxVal {
     }
 
     /// Read **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_AUX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]
@@ -26552,6 +29521,7 @@ impl XipAuxVal {
     }
 
     /// Set **DBG** `[7:7]`
+    ///
     /// If 1, XIP_AUX can be accessed by the debugger, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dbg(self, value: bool) -> Self {
@@ -26565,6 +29535,7 @@ impl XipAuxVal {
     }
 
     /// Set **DMA** `[6:6]`
+    ///
     /// If 1, XIP_AUX can be accessed by the DMA, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_dma(self, value: bool) -> Self {
@@ -26578,6 +29549,7 @@ impl XipAuxVal {
     }
 
     /// Set **CORE1** `[5:5]`
+    ///
     /// If 1, XIP_AUX can be accessed by core 1, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core1(self, value: bool) -> Self {
@@ -26591,6 +29563,7 @@ impl XipAuxVal {
     }
 
     /// Set **CORE0** `[4:4]`
+    ///
     /// If 1, XIP_AUX can be accessed by core 0, at security/privilege levels permitted by SP/NSP/SU/NSU in this register.
     #[inline(always)]
     pub const fn with_core0(self, value: bool) -> Self {
@@ -26604,6 +29577,7 @@ impl XipAuxVal {
     }
 
     /// Set **SP** `[3:3]`
+    ///
     /// If 1, XIP_AUX can be accessed from a Secure, Privileged context.
     #[inline(always)]
     pub const fn with_sp(self, value: bool) -> Self {
@@ -26617,6 +29591,7 @@ impl XipAuxVal {
     }
 
     /// Set **SU** `[2:2]`
+    ///
     /// If 1, and SP is also set, XIP_AUX can be accessed from a Secure, Unprivileged context.
     #[inline(always)]
     pub const fn with_su(self, value: bool) -> Self {
@@ -26630,6 +29605,7 @@ impl XipAuxVal {
     }
 
     /// Set **NSP** `[1:1]`
+    ///
     /// If 1, XIP_AUX can be accessed from a Non-secure, Privileged context.
     #[inline(always)]
     pub const fn with_nsp(self, value: bool) -> Self {
@@ -26643,6 +29619,7 @@ impl XipAuxVal {
     }
 
     /// Set **NSU** `[0:0]`
+    ///
     /// If 1, and NSP is also set, XIP_AUX can be accessed from a Non-secure, Unprivileged context.
     /// This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
     #[inline(always)]

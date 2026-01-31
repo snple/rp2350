@@ -15,22 +15,33 @@ pub const BASE: u32 = 0x400f8000;
 /// ## Fields
 ///
 /// - **BSWAP** `[12]` (RW)
+///
 ///   Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
 ///   This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
 ///   However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
 ///   This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
+///
 /// - **DMA_SIZE** `[9:8]` (RW)
+///
 ///   Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
 ///   The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
+///
 /// - **ERR_WDATA_NOT_RDY** `[4]` (RW)
+///
 ///   Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
+///
 /// - **SUM_VLD** `[2]` (RO)
+///
 ///   If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
 ///   Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
+///
 /// - **WDATA_RDY** `[1]` (RO)
+///
 ///   If 1, the SHA-256 core is ready to accept more data through the WDATA register.
 ///   After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
+///
 /// - **START** `[0]` (WO)
+///
 ///   Write 1 to prepare the SHA-256 core for a new checksum.
 ///   The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
 ///   START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
@@ -51,18 +62,22 @@ impl Csr {
     // ======== Field Constants ========
 
     /// **BSWAP**
+    ///
     /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
     /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
     /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
     /// This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const BSWAP_OFFSET: u32 = 12;
     pub const BSWAP_MASK: u32 = 0x00001000;
     pub const BSWAP: u32 = 1 << 12;
 
     /// **DMA_SIZE**
+    ///
     /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DMA_SIZE_OFFSET: u32 = 8;
     pub const DMA_SIZE_MASK: u32 = 0x00000300;
@@ -74,32 +89,40 @@ impl Csr {
     pub const DMA_SIZE_32BIT_VAL: u32 = 2;
 
     /// **ERR_WDATA_NOT_RDY**
+    ///
     /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const ERR_WDATA_NOT_RDY_OFFSET: u32 = 4;
     pub const ERR_WDATA_NOT_RDY_MASK: u32 = 0x00000010;
     pub const ERR_WDATA_NOT_RDY: u32 = 1 << 4;
 
     /// **SUM_VLD**
+    ///
     /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
     /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SUM_VLD_OFFSET: u32 = 2;
     pub const SUM_VLD_MASK: u32 = 0x00000004;
     pub const SUM_VLD: u32 = 1 << 2;
 
     /// **WDATA_RDY**
+    ///
     /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
     /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const WDATA_RDY_OFFSET: u32 = 1;
     pub const WDATA_RDY_MASK: u32 = 0x00000002;
     pub const WDATA_RDY: u32 = 1 << 1;
 
     /// **START**
+    ///
     /// Write 1 to prepare the SHA-256 core for a new checksum.
     /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
     /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const START_OFFSET: u32 = 0;
     pub const START_MASK: u32 = 0x00000001;
@@ -108,6 +131,7 @@ impl Csr {
     // ======== Field Accessors ========
 
     /// **BSWAP** `[12]` (RW)
+    ///
     /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
     /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
     /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
@@ -130,6 +154,7 @@ impl Csr {
     }
 
     /// **DMA_SIZE** `[9:8]` (RW)
+    ///
     /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
@@ -138,6 +163,7 @@ impl Csr {
     }
 
     /// Write **DMA_SIZE** `[9:8]` (RW)
+    ///
     /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
@@ -146,6 +172,7 @@ impl Csr {
     }
 
     /// **ERR_WDATA_NOT_RDY** `[4]` (RW)
+    ///
     /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub fn err_wdata_not_rdy(&self) -> bool {
@@ -165,6 +192,7 @@ impl Csr {
     }
 
     /// **SUM_VLD** `[2]` (RO)
+    ///
     /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
     /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
     #[inline(always)]
@@ -173,6 +201,7 @@ impl Csr {
     }
 
     /// **WDATA_RDY** `[1]` (RO)
+    ///
     /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
     /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
     #[inline(always)]
@@ -180,11 +209,8 @@ impl Csr {
         (self.value.read_bits() & Self::WDATA_RDY_MASK) != 0
     }
 
-    /// **START** `[0]` (WO)
-    /// Write 1 to prepare the SHA-256 core for a new checksum.
-    /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
-    /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
     /// Trigger **START** (WO)
+    ///
     /// Write 1 to prepare the SHA-256 core for a new checksum.
     /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
     /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
@@ -224,6 +250,7 @@ impl CsrVal {
     }
 
     /// Read **BSWAP** `[12:12]`
+    ///
     /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
     /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
     /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
@@ -234,6 +261,7 @@ impl CsrVal {
     }
 
     /// Read **DMA_SIZE** `[9:8]`
+    ///
     /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
@@ -242,6 +270,7 @@ impl CsrVal {
     }
 
     /// Read **ERR_WDATA_NOT_RDY** `[4:4]`
+    ///
     /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub const fn err_wdata_not_rdy(&self) -> bool {
@@ -249,6 +278,7 @@ impl CsrVal {
     }
 
     /// Read **SUM_VLD** `[2:2]`
+    ///
     /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
     /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
     #[inline(always)]
@@ -257,6 +287,7 @@ impl CsrVal {
     }
 
     /// Read **WDATA_RDY** `[1:1]`
+    ///
     /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
     /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
     #[inline(always)]
@@ -265,6 +296,7 @@ impl CsrVal {
     }
 
     /// Set **BSWAP** `[12:12]`
+    ///
     /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
     /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
     /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
@@ -281,6 +313,7 @@ impl CsrVal {
     }
 
     /// Set **DMA_SIZE** `[9:8]`
+    ///
     /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
@@ -291,6 +324,7 @@ impl CsrVal {
     }
 
     /// Set **ERR_WDATA_NOT_RDY** `[4:4]`
+    ///
     /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub const fn with_err_wdata_not_rdy(self, value: bool) -> Self {
@@ -304,6 +338,7 @@ impl CsrVal {
     }
 
     /// Set **START** `[0:0]`
+    ///
     /// Write 1 to prepare the SHA-256 core for a new checksum.
     /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
     /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
@@ -357,6 +392,7 @@ impl Csr {
 /// ## Fields
 ///
 /// - **WDATA** `[31:0]` (WO)
+///
 ///   After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
 ///   Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
 ///   After this, WDATA_RDY will return high, and more data can be written (if any).
@@ -378,22 +414,20 @@ impl Wdata {
     // ======== Field Constants ========
 
     /// **WDATA**
+    ///
     /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
     /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
     /// After this, WDATA_RDY will return high, and more data can be written (if any).
     /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const WDATA_OFFSET: u32 = 0;
     pub const WDATA_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **WDATA** `[31:0]` (WO)
-    /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
-    /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
-    /// After this, WDATA_RDY will return high, and more data can be written (if any).
-    /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
     /// Write **WDATA** `[31:0]` (WO)
+    ///
     /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
     /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
     /// After this, WDATA_RDY will return high, and more data can be written (if any).
@@ -434,6 +468,7 @@ impl WdataVal {
     }
 
     /// Set **WDATA** `[31:0]`
+    ///
     /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
     /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
     /// After this, WDATA_RDY will return high, and more data can be written (if any).

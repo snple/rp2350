@@ -15,10 +15,15 @@ pub const BASE: u32 = 0x40160000;
 /// ## Fields
 ///
 /// - **HDLSIM** `[2]` (RO)
+///
 ///   Indicates the platform is a simulation
+///
 /// - **FPGA** `[1]` (RO)
+///
 ///   Indicates the platform is an FPGA
+///
 /// - **ASIC** `[0]` (RO)
+///
 ///   Indicates the platform is an ASIC
 #[repr(transparent)]
 pub struct Platform {
@@ -37,21 +42,27 @@ impl Platform {
     // ======== Field Constants ========
 
     /// **HDLSIM**
+    ///
     /// Indicates the platform is a simulation
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const HDLSIM_OFFSET: u32 = 2;
     pub const HDLSIM_MASK: u32 = 0x00000004;
     pub const HDLSIM: u32 = 1 << 2;
 
     /// **FPGA**
+    ///
     /// Indicates the platform is an FPGA
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const FPGA_OFFSET: u32 = 1;
     pub const FPGA_MASK: u32 = 0x00000002;
     pub const FPGA: u32 = 1 << 1;
 
     /// **ASIC**
+    ///
     /// Indicates the platform is an ASIC
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ASIC_OFFSET: u32 = 0;
     pub const ASIC_MASK: u32 = 0x00000001;
@@ -60,6 +71,7 @@ impl Platform {
     // ======== Field Accessors ========
 
     /// **HDLSIM** `[2]` (RO)
+    ///
     /// Indicates the platform is a simulation
     #[inline(always)]
     pub fn hdlsim(&self) -> bool {
@@ -67,6 +79,7 @@ impl Platform {
     }
 
     /// **FPGA** `[1]` (RO)
+    ///
     /// Indicates the platform is an FPGA
     #[inline(always)]
     pub fn fpga(&self) -> bool {
@@ -74,6 +87,7 @@ impl Platform {
     }
 
     /// **ASIC** `[0]` (RO)
+    ///
     /// Indicates the platform is an ASIC
     #[inline(always)]
     pub fn asic(&self) -> bool {
@@ -111,6 +125,7 @@ impl PlatformVal {
     }
 
     /// Read **HDLSIM** `[2:2]`
+    ///
     /// Indicates the platform is a simulation
     #[inline(always)]
     pub const fn hdlsim(&self) -> bool {
@@ -118,6 +133,7 @@ impl PlatformVal {
     }
 
     /// Read **FPGA** `[1:1]`
+    ///
     /// Indicates the platform is an FPGA
     #[inline(always)]
     pub const fn fpga(&self) -> bool {
@@ -125,6 +141,7 @@ impl PlatformVal {
     }
 
     /// Read **ASIC** `[0:0]`
+    ///
     /// Indicates the platform is an ASIC
     #[inline(always)]
     pub const fn asic(&self) -> bool {

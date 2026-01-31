@@ -14,8 +14,11 @@ pub const BASE: u32 = 0x40108000;
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc0Ctrl {
@@ -34,14 +37,18 @@ impl Proc0Ctrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -50,6 +57,7 @@ impl Proc0Ctrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -57,6 +65,7 @@ impl Proc0Ctrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -106,6 +115,7 @@ impl Proc0CtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -113,6 +123,7 @@ impl Proc0CtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -120,6 +131,7 @@ impl Proc0CtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -169,6 +181,7 @@ impl Proc0Ctrl {
 /// ## Fields
 ///
 /// - **PROC0_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc0Cycles {
@@ -187,7 +200,9 @@ impl Proc0Cycles {
     // ======== Field Constants ========
 
     /// **PROC0_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC0_CYCLES_OFFSET: u32 = 0;
     pub const PROC0_CYCLES_MASK: u32 = 0x000001ff;
@@ -195,6 +210,7 @@ impl Proc0Cycles {
     // ======== Field Accessors ========
 
     /// **PROC0_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn proc0_cycles(&self) -> u32 {
@@ -202,6 +218,7 @@ impl Proc0Cycles {
     }
 
     /// Write **PROC0_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc0_cycles(&self, value: u32) {
@@ -239,6 +256,7 @@ impl Proc0CyclesVal {
     }
 
     /// Read **PROC0_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn proc0_cycles(&self) -> u32 {
@@ -246,6 +264,7 @@ impl Proc0CyclesVal {
     }
 
     /// Set **PROC0_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_proc0_cycles(self, value: u32) -> Self {
@@ -290,6 +309,7 @@ impl Proc0Cycles {
 /// ## Fields
 ///
 /// - **PROC0_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc0Count {
@@ -308,7 +328,9 @@ impl Proc0Count {
     // ======== Field Constants ========
 
     /// **PROC0_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC0_COUNT_OFFSET: u32 = 0;
     pub const PROC0_COUNT_MASK: u32 = 0x000001ff;
@@ -316,6 +338,7 @@ impl Proc0Count {
     // ======== Field Accessors ========
 
     /// **PROC0_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn proc0_count(&self) -> u32 {
@@ -347,6 +370,7 @@ impl Proc0CountVal {
     }
 
     /// Read **PROC0_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn proc0_count(&self) -> u32 {
@@ -392,8 +416,11 @@ impl Proc0Count {
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc1Ctrl {
@@ -412,14 +439,18 @@ impl Proc1Ctrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -428,6 +459,7 @@ impl Proc1Ctrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -435,6 +467,7 @@ impl Proc1Ctrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -484,6 +517,7 @@ impl Proc1CtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -491,6 +525,7 @@ impl Proc1CtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -498,6 +533,7 @@ impl Proc1CtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -547,6 +583,7 @@ impl Proc1Ctrl {
 /// ## Fields
 ///
 /// - **PROC1_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc1Cycles {
@@ -565,7 +602,9 @@ impl Proc1Cycles {
     // ======== Field Constants ========
 
     /// **PROC1_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC1_CYCLES_OFFSET: u32 = 0;
     pub const PROC1_CYCLES_MASK: u32 = 0x000001ff;
@@ -573,6 +612,7 @@ impl Proc1Cycles {
     // ======== Field Accessors ========
 
     /// **PROC1_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn proc1_cycles(&self) -> u32 {
@@ -580,6 +620,7 @@ impl Proc1Cycles {
     }
 
     /// Write **PROC1_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc1_cycles(&self, value: u32) {
@@ -617,6 +658,7 @@ impl Proc1CyclesVal {
     }
 
     /// Read **PROC1_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn proc1_cycles(&self) -> u32 {
@@ -624,6 +666,7 @@ impl Proc1CyclesVal {
     }
 
     /// Set **PROC1_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_proc1_cycles(self, value: u32) -> Self {
@@ -668,6 +711,7 @@ impl Proc1Cycles {
 /// ## Fields
 ///
 /// - **PROC1_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc1Count {
@@ -686,7 +730,9 @@ impl Proc1Count {
     // ======== Field Constants ========
 
     /// **PROC1_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC1_COUNT_OFFSET: u32 = 0;
     pub const PROC1_COUNT_MASK: u32 = 0x000001ff;
@@ -694,6 +740,7 @@ impl Proc1Count {
     // ======== Field Accessors ========
 
     /// **PROC1_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn proc1_count(&self) -> u32 {
@@ -725,6 +772,7 @@ impl Proc1CountVal {
     }
 
     /// Read **PROC1_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn proc1_count(&self) -> u32 {
@@ -770,8 +818,11 @@ impl Proc1Count {
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer0Ctrl {
@@ -790,14 +841,18 @@ impl Timer0Ctrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -806,6 +861,7 @@ impl Timer0Ctrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -813,6 +869,7 @@ impl Timer0Ctrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -862,6 +919,7 @@ impl Timer0CtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -869,6 +927,7 @@ impl Timer0CtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -876,6 +935,7 @@ impl Timer0CtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -925,6 +985,7 @@ impl Timer0Ctrl {
 /// ## Fields
 ///
 /// - **TIMER0_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer0Cycles {
@@ -943,7 +1004,9 @@ impl Timer0Cycles {
     // ======== Field Constants ========
 
     /// **TIMER0_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER0_CYCLES_OFFSET: u32 = 0;
     pub const TIMER0_CYCLES_MASK: u32 = 0x000001ff;
@@ -951,6 +1014,7 @@ impl Timer0Cycles {
     // ======== Field Accessors ========
 
     /// **TIMER0_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn timer0_cycles(&self) -> u32 {
@@ -958,6 +1022,7 @@ impl Timer0Cycles {
     }
 
     /// Write **TIMER0_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer0_cycles(&self, value: u32) {
@@ -995,6 +1060,7 @@ impl Timer0CyclesVal {
     }
 
     /// Read **TIMER0_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn timer0_cycles(&self) -> u32 {
@@ -1002,6 +1068,7 @@ impl Timer0CyclesVal {
     }
 
     /// Set **TIMER0_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_timer0_cycles(self, value: u32) -> Self {
@@ -1046,6 +1113,7 @@ impl Timer0Cycles {
 /// ## Fields
 ///
 /// - **TIMER0_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer0Count {
@@ -1064,7 +1132,9 @@ impl Timer0Count {
     // ======== Field Constants ========
 
     /// **TIMER0_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER0_COUNT_OFFSET: u32 = 0;
     pub const TIMER0_COUNT_MASK: u32 = 0x000001ff;
@@ -1072,6 +1142,7 @@ impl Timer0Count {
     // ======== Field Accessors ========
 
     /// **TIMER0_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn timer0_count(&self) -> u32 {
@@ -1103,6 +1174,7 @@ impl Timer0CountVal {
     }
 
     /// Read **TIMER0_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn timer0_count(&self) -> u32 {
@@ -1148,8 +1220,11 @@ impl Timer0Count {
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer1Ctrl {
@@ -1168,14 +1243,18 @@ impl Timer1Ctrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -1184,6 +1263,7 @@ impl Timer1Ctrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -1191,6 +1271,7 @@ impl Timer1Ctrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1240,6 +1321,7 @@ impl Timer1CtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -1247,6 +1329,7 @@ impl Timer1CtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1254,6 +1337,7 @@ impl Timer1CtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1303,6 +1387,7 @@ impl Timer1Ctrl {
 /// ## Fields
 ///
 /// - **TIMER1_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer1Cycles {
@@ -1321,7 +1406,9 @@ impl Timer1Cycles {
     // ======== Field Constants ========
 
     /// **TIMER1_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER1_CYCLES_OFFSET: u32 = 0;
     pub const TIMER1_CYCLES_MASK: u32 = 0x000001ff;
@@ -1329,6 +1416,7 @@ impl Timer1Cycles {
     // ======== Field Accessors ========
 
     /// **TIMER1_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn timer1_cycles(&self) -> u32 {
@@ -1336,6 +1424,7 @@ impl Timer1Cycles {
     }
 
     /// Write **TIMER1_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer1_cycles(&self, value: u32) {
@@ -1373,6 +1462,7 @@ impl Timer1CyclesVal {
     }
 
     /// Read **TIMER1_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn timer1_cycles(&self) -> u32 {
@@ -1380,6 +1470,7 @@ impl Timer1CyclesVal {
     }
 
     /// Set **TIMER1_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_timer1_cycles(self, value: u32) -> Self {
@@ -1424,6 +1515,7 @@ impl Timer1Cycles {
 /// ## Fields
 ///
 /// - **TIMER1_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer1Count {
@@ -1442,7 +1534,9 @@ impl Timer1Count {
     // ======== Field Constants ========
 
     /// **TIMER1_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER1_COUNT_OFFSET: u32 = 0;
     pub const TIMER1_COUNT_MASK: u32 = 0x000001ff;
@@ -1450,6 +1544,7 @@ impl Timer1Count {
     // ======== Field Accessors ========
 
     /// **TIMER1_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn timer1_count(&self) -> u32 {
@@ -1481,6 +1576,7 @@ impl Timer1CountVal {
     }
 
     /// Read **TIMER1_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn timer1_count(&self) -> u32 {
@@ -1526,8 +1622,11 @@ impl Timer1Count {
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct WatchdogCtrl {
@@ -1546,14 +1645,18 @@ impl WatchdogCtrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -1562,6 +1665,7 @@ impl WatchdogCtrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -1569,6 +1673,7 @@ impl WatchdogCtrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1618,6 +1723,7 @@ impl WatchdogCtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -1625,6 +1731,7 @@ impl WatchdogCtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1632,6 +1739,7 @@ impl WatchdogCtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1681,6 +1789,7 @@ impl WatchdogCtrl {
 /// ## Fields
 ///
 /// - **WATCHDOG_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct WatchdogCycles {
@@ -1699,7 +1808,9 @@ impl WatchdogCycles {
     // ======== Field Constants ========
 
     /// **WATCHDOG_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const WATCHDOG_CYCLES_OFFSET: u32 = 0;
     pub const WATCHDOG_CYCLES_MASK: u32 = 0x000001ff;
@@ -1707,6 +1818,7 @@ impl WatchdogCycles {
     // ======== Field Accessors ========
 
     /// **WATCHDOG_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn watchdog_cycles(&self) -> u32 {
@@ -1714,6 +1826,7 @@ impl WatchdogCycles {
     }
 
     /// Write **WATCHDOG_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_watchdog_cycles(&self, value: u32) {
@@ -1751,6 +1864,7 @@ impl WatchdogCyclesVal {
     }
 
     /// Read **WATCHDOG_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn watchdog_cycles(&self) -> u32 {
@@ -1758,6 +1872,7 @@ impl WatchdogCyclesVal {
     }
 
     /// Set **WATCHDOG_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_watchdog_cycles(self, value: u32) -> Self {
@@ -1802,6 +1917,7 @@ impl WatchdogCycles {
 /// ## Fields
 ///
 /// - **WATCHDOG_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct WatchdogCount {
@@ -1820,7 +1936,9 @@ impl WatchdogCount {
     // ======== Field Constants ========
 
     /// **WATCHDOG_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const WATCHDOG_COUNT_OFFSET: u32 = 0;
     pub const WATCHDOG_COUNT_MASK: u32 = 0x000001ff;
@@ -1828,6 +1946,7 @@ impl WatchdogCount {
     // ======== Field Accessors ========
 
     /// **WATCHDOG_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn watchdog_count(&self) -> u32 {
@@ -1859,6 +1978,7 @@ impl WatchdogCountVal {
     }
 
     /// Read **WATCHDOG_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn watchdog_count(&self) -> u32 {
@@ -1904,8 +2024,11 @@ impl WatchdogCount {
 /// ## Fields
 ///
 /// - **RUNNING** `[1]` (RO)
+///
 ///   Is the tick generator running?
+///
 /// - **ENABLE** `[0]` (RW)
+///
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct RiscvCtrl {
@@ -1924,14 +2047,18 @@ impl RiscvCtrl {
     // ======== Field Constants ========
 
     /// **RUNNING**
+    ///
     /// Is the tick generator running?
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
     /// **ENABLE**
+    ///
     /// start / stop tick generation
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
@@ -1940,6 +2067,7 @@ impl RiscvCtrl {
     // ======== Field Accessors ========
 
     /// **RUNNING** `[1]` (RO)
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -1947,6 +2075,7 @@ impl RiscvCtrl {
     }
 
     /// **ENABLE** `[0]` (RW)
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1996,6 +2125,7 @@ impl RiscvCtrlVal {
     }
 
     /// Read **RUNNING** `[1:1]`
+    ///
     /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -2003,6 +2133,7 @@ impl RiscvCtrlVal {
     }
 
     /// Read **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -2010,6 +2141,7 @@ impl RiscvCtrlVal {
     }
 
     /// Set **ENABLE** `[0:0]`
+    ///
     /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -2059,6 +2191,7 @@ impl RiscvCtrl {
 /// ## Fields
 ///
 /// - **RISCV_CYCLES** `[8:0]` (RW)
+///
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct RiscvCycles {
@@ -2077,7 +2210,9 @@ impl RiscvCycles {
     // ======== Field Constants ========
 
     /// **RISCV_CYCLES**
+    ///
     /// Total number of clk_tick cycles before the next tick.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const RISCV_CYCLES_OFFSET: u32 = 0;
     pub const RISCV_CYCLES_MASK: u32 = 0x000001ff;
@@ -2085,6 +2220,7 @@ impl RiscvCycles {
     // ======== Field Accessors ========
 
     /// **RISCV_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn riscv_cycles(&self) -> u32 {
@@ -2092,6 +2228,7 @@ impl RiscvCycles {
     }
 
     /// Write **RISCV_CYCLES** `[8:0]` (RW)
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_riscv_cycles(&self, value: u32) {
@@ -2129,6 +2266,7 @@ impl RiscvCyclesVal {
     }
 
     /// Read **RISCV_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn riscv_cycles(&self) -> u32 {
@@ -2136,6 +2274,7 @@ impl RiscvCyclesVal {
     }
 
     /// Set **RISCV_CYCLES** `[8:0]`
+    ///
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_riscv_cycles(self, value: u32) -> Self {
@@ -2180,6 +2319,7 @@ impl RiscvCycles {
 /// ## Fields
 ///
 /// - **RISCV_COUNT** `[8:0]` (RO)
+///
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct RiscvCount {
@@ -2198,7 +2338,9 @@ impl RiscvCount {
     // ======== Field Constants ========
 
     /// **RISCV_COUNT**
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const RISCV_COUNT_OFFSET: u32 = 0;
     pub const RISCV_COUNT_MASK: u32 = 0x000001ff;
@@ -2206,6 +2348,7 @@ impl RiscvCount {
     // ======== Field Accessors ========
 
     /// **RISCV_COUNT** `[8:0]` (RO)
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn riscv_count(&self) -> u32 {
@@ -2237,6 +2380,7 @@ impl RiscvCountVal {
     }
 
     /// Read **RISCV_COUNT** `[8:0]`
+    ///
     /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn riscv_count(&self) -> u32 {

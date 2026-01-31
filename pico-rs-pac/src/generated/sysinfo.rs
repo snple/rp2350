@@ -14,8 +14,11 @@ pub const BASE: u32 = 0x40000000;
 /// ## Fields
 ///
 /// - **REVISION** `[31:28]` (RO)
+///
 /// - **PART** `[27:12]` (RO)
+///
 /// - **MANUFACTURER** `[11:1]` (RO)
+///
 /// - **STOP_BIT** `[0]` (RO)
 #[repr(transparent)]
 pub struct ChipId {
@@ -276,9 +279,13 @@ impl PackageSel {
 /// ## Fields
 ///
 /// - **GATESIM** `[4]` (RO)
+///
 /// - **BATCHSIM** `[3]` (RO)
+///
 /// - **HDLSIM** `[2]` (RO)
+///
 /// - **ASIC** `[1]` (RO)
+///
 /// - **FPGA** `[0]` (RO)
 #[repr(transparent)]
 pub struct Platform {

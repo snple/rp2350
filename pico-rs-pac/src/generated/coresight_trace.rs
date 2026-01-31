@@ -15,8 +15,11 @@ pub const BASE: u32 = 0x50700000;
 /// ## Fields
 ///
 /// - **TRACE_CAPTURE_FIFO_OVERFLOW** `[1]` (RW)
+///
 ///   This status flag is set high when trace data has been dropped due to the FIFO being full at the point trace data was sampled. Write 1 to acknowledge and clear the bit.
+///
 /// - **TRACE_CAPTURE_FIFO_FLUSH** `[0]` (RW)
+///
 ///   Set to 1 to continuously hold the trace FIFO in a flushed state and prevent overflow.
 ///   Before clearing this flag, configure and start a DMA channel with the correct DREQ for the TRACE_CAPTURE_FIFO register.
 ///   Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
@@ -37,16 +40,20 @@ impl CtrlStatus {
     // ======== Field Constants ========
 
     /// **TRACE_CAPTURE_FIFO_OVERFLOW**
+    ///
     /// This status flag is set high when trace data has been dropped due to the FIFO being full at the point trace data was sampled. Write 1 to acknowledge and clear the bit.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const TRACE_CAPTURE_FIFO_OVERFLOW_OFFSET: u32 = 1;
     pub const TRACE_CAPTURE_FIFO_OVERFLOW_MASK: u32 = 0x00000002;
     pub const TRACE_CAPTURE_FIFO_OVERFLOW: u32 = 1 << 1;
 
     /// **TRACE_CAPTURE_FIFO_FLUSH**
+    ///
     /// Set to 1 to continuously hold the trace FIFO in a flushed state and prevent overflow.
     /// Before clearing this flag, configure and start a DMA channel with the correct DREQ for the TRACE_CAPTURE_FIFO register.
     /// Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const TRACE_CAPTURE_FIFO_FLUSH_OFFSET: u32 = 0;
     pub const TRACE_CAPTURE_FIFO_FLUSH_MASK: u32 = 0x00000001;
@@ -55,6 +62,7 @@ impl CtrlStatus {
     // ======== Field Accessors ========
 
     /// **TRACE_CAPTURE_FIFO_OVERFLOW** `[1]` (RW)
+    ///
     /// This status flag is set high when trace data has been dropped due to the FIFO being full at the point trace data was sampled. Write 1 to acknowledge and clear the bit.
     #[inline(always)]
     pub fn trace_capture_fifo_overflow(&self) -> bool {
@@ -74,6 +82,7 @@ impl CtrlStatus {
     }
 
     /// **TRACE_CAPTURE_FIFO_FLUSH** `[0]` (RW)
+    ///
     /// Set to 1 to continuously hold the trace FIFO in a flushed state and prevent overflow.
     /// Before clearing this flag, configure and start a DMA channel with the correct DREQ for the TRACE_CAPTURE_FIFO register.
     /// Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
@@ -125,6 +134,7 @@ impl CtrlStatusVal {
     }
 
     /// Read **TRACE_CAPTURE_FIFO_OVERFLOW** `[1:1]`
+    ///
     /// This status flag is set high when trace data has been dropped due to the FIFO being full at the point trace data was sampled. Write 1 to acknowledge and clear the bit.
     #[inline(always)]
     pub const fn trace_capture_fifo_overflow(&self) -> bool {
@@ -132,6 +142,7 @@ impl CtrlStatusVal {
     }
 
     /// Read **TRACE_CAPTURE_FIFO_FLUSH** `[0:0]`
+    ///
     /// Set to 1 to continuously hold the trace FIFO in a flushed state and prevent overflow.
     /// Before clearing this flag, configure and start a DMA channel with the correct DREQ for the TRACE_CAPTURE_FIFO register.
     /// Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
@@ -141,6 +152,7 @@ impl CtrlStatusVal {
     }
 
     /// Set **TRACE_CAPTURE_FIFO_OVERFLOW** `[1:1]`
+    ///
     /// This status flag is set high when trace data has been dropped due to the FIFO being full at the point trace data was sampled. Write 1 to acknowledge and clear the bit.
     #[inline(always)]
     pub const fn with_trace_capture_fifo_overflow(self, value: bool) -> Self {
@@ -154,6 +166,7 @@ impl CtrlStatusVal {
     }
 
     /// Set **TRACE_CAPTURE_FIFO_FLUSH** `[0:0]`
+    ///
     /// Set to 1 to continuously hold the trace FIFO in a flushed state and prevent overflow.
     /// Before clearing this flag, configure and start a DMA channel with the correct DREQ for the TRACE_CAPTURE_FIFO register.
     /// Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
@@ -207,6 +220,7 @@ impl CtrlStatus {
 /// ## Fields
 ///
 /// - **RDATA** `[31:0]` (RO)
+///
 ///   Read from an 8 x 32-bit FIFO containing trace data captured from the TPIU.
 ///   Hardware pushes to the FIFO on rising edges of clk_sys, when either of the following is true:
 ///   * TPIU TRACECTL output is low (normal trace data)
@@ -230,12 +244,14 @@ impl TraceCaptureFifo {
     // ======== Field Constants ========
 
     /// **RDATA**
+    ///
     /// Read from an 8 x 32-bit FIFO containing trace data captured from the TPIU.
     /// Hardware pushes to the FIFO on rising edges of clk_sys, when either of the following is true:
     /// * TPIU TRACECTL output is low (normal trace data)
     /// * TPIU TRACETCL output is high, and TPIU TRACEDATA0 and TRACEDATA1 are both low (trigger packet)
     /// These conditions are in accordance with Arm Coresight Architecture Spec v3.0 section D3.3.3: Decoding requirements for Trace Capture Devices
     /// The data captured into the FIFO is the full 32-bit TRACEDATA bus output by the TPIU. Note that the TPIU is a DDR output at half of clk_sys, therefore this interface can capture the full 32-bit TPIU DDR output bandwidth as it samples once per active edge of the TPIU output clock.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const RDATA_OFFSET: u32 = 0;
     pub const RDATA_MASK: u32 = 0xffffffff;
@@ -243,6 +259,7 @@ impl TraceCaptureFifo {
     // ======== Field Accessors ========
 
     /// **RDATA** `[31:0]` (RO)
+    ///
     /// Read from an 8 x 32-bit FIFO containing trace data captured from the TPIU.
     /// Hardware pushes to the FIFO on rising edges of clk_sys, when either of the following is true:
     /// * TPIU TRACECTL output is low (normal trace data)
@@ -285,6 +302,7 @@ impl TraceCaptureFifoVal {
     }
 
     /// Read **RDATA** `[31:0]`
+    ///
     /// Read from an 8 x 32-bit FIFO containing trace data captured from the TPIU.
     /// Hardware pushes to the FIFO on rising edges of clk_sys, when either of the following is true:
     /// * TPIU TRACECTL output is low (normal trace data)

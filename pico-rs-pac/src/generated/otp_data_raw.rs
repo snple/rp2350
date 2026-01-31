@@ -1670,8 +1670,11 @@ impl InfoCrc1 {
 /// ## Fields
 ///
 /// - **RISCV_DISABLE** `[1]` (RO)
+///
 ///   Permanently disable RISC-V processors (Hazard3)
+///
 /// - **ARM_DISABLE** `[0]` (RO)
+///
 ///   Permanently disable ARM processors (Cortex-M33)
 #[repr(transparent)]
 pub struct Crit0 {
@@ -1690,14 +1693,18 @@ impl Crit0 {
     // ======== Field Constants ========
 
     /// **RISCV_DISABLE**
+    ///
     /// Permanently disable RISC-V processors (Hazard3)
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RISCV_DISABLE_OFFSET: u32 = 1;
     pub const RISCV_DISABLE_MASK: u32 = 0x00000002;
     pub const RISCV_DISABLE: u32 = 1 << 1;
 
     /// **ARM_DISABLE**
+    ///
     /// Permanently disable ARM processors (Cortex-M33)
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const ARM_DISABLE_OFFSET: u32 = 0;
     pub const ARM_DISABLE_MASK: u32 = 0x00000001;
@@ -1706,6 +1713,7 @@ impl Crit0 {
     // ======== Field Accessors ========
 
     /// **RISCV_DISABLE** `[1]` (RO)
+    ///
     /// Permanently disable RISC-V processors (Hazard3)
     #[inline(always)]
     pub fn riscv_disable(&self) -> bool {
@@ -1713,6 +1721,7 @@ impl Crit0 {
     }
 
     /// **ARM_DISABLE** `[0]` (RO)
+    ///
     /// Permanently disable ARM processors (Cortex-M33)
     #[inline(always)]
     pub fn arm_disable(&self) -> bool {
@@ -1750,6 +1759,7 @@ impl Crit0Val {
     }
 
     /// Read **RISCV_DISABLE** `[1:1]`
+    ///
     /// Permanently disable RISC-V processors (Hazard3)
     #[inline(always)]
     pub const fn riscv_disable(&self) -> bool {
@@ -1757,6 +1767,7 @@ impl Crit0Val {
     }
 
     /// Read **ARM_DISABLE** `[0:0]`
+    ///
     /// Permanently disable ARM processors (Cortex-M33)
     #[inline(always)]
     pub const fn arm_disable(&self) -> bool {
@@ -2481,16 +2492,27 @@ impl Crit0R7 {
 /// ## Fields
 ///
 /// - **GLITCH_DETECTOR_SENS** `[6:5]` (RO)
+///
 ///   Increase the sensitivity of the glitch detectors from their default.
+///
 /// - **GLITCH_DETECTOR_ENABLE** `[4]` (RO)
+///
 ///   Arm the glitch detectors to reset the system if an abnormal clock/power event is observed.
+///
 /// - **BOOT_ARCH** `[3]` (RO)
+///
 ///   Set the default boot architecture, 0=ARM 1=RISC-V. Ignored if ARM_DISABLE, RISCV_DISABLE or SECURE_BOOT_ENABLE is set.
+///
 /// - **DEBUG_DISABLE** `[2]` (RO)
+///
 ///   Disable all debug access
+///
 /// - **SECURE_DEBUG_DISABLE** `[1]` (RO)
+///
 ///   Disable Secure debug access
+///
 /// - **SECURE_BOOT_ENABLE** `[0]` (RO)
+///
 ///   Enable boot signature enforcement, and permanently disable the RISC-V cores.
 #[repr(transparent)]
 pub struct Crit1 {
@@ -2509,41 +2531,53 @@ impl Crit1 {
     // ======== Field Constants ========
 
     /// **GLITCH_DETECTOR_SENS**
+    ///
     /// Increase the sensitivity of the glitch detectors from their default.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const GLITCH_DETECTOR_SENS_OFFSET: u32 = 5;
     pub const GLITCH_DETECTOR_SENS_MASK: u32 = 0x00000060;
 
     /// **GLITCH_DETECTOR_ENABLE**
+    ///
     /// Arm the glitch detectors to reset the system if an abnormal clock/power event is observed.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const GLITCH_DETECTOR_ENABLE_OFFSET: u32 = 4;
     pub const GLITCH_DETECTOR_ENABLE_MASK: u32 = 0x00000010;
     pub const GLITCH_DETECTOR_ENABLE: u32 = 1 << 4;
 
     /// **BOOT_ARCH**
+    ///
     /// Set the default boot architecture, 0=ARM 1=RISC-V. Ignored if ARM_DISABLE, RISCV_DISABLE or SECURE_BOOT_ENABLE is set.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const BOOT_ARCH_OFFSET: u32 = 3;
     pub const BOOT_ARCH_MASK: u32 = 0x00000008;
     pub const BOOT_ARCH: u32 = 1 << 3;
 
     /// **DEBUG_DISABLE**
+    ///
     /// Disable all debug access
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DEBUG_DISABLE_OFFSET: u32 = 2;
     pub const DEBUG_DISABLE_MASK: u32 = 0x00000004;
     pub const DEBUG_DISABLE: u32 = 1 << 2;
 
     /// **SECURE_DEBUG_DISABLE**
+    ///
     /// Disable Secure debug access
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SECURE_DEBUG_DISABLE_OFFSET: u32 = 1;
     pub const SECURE_DEBUG_DISABLE_MASK: u32 = 0x00000002;
     pub const SECURE_DEBUG_DISABLE: u32 = 1 << 1;
 
     /// **SECURE_BOOT_ENABLE**
+    ///
     /// Enable boot signature enforcement, and permanently disable the RISC-V cores.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SECURE_BOOT_ENABLE_OFFSET: u32 = 0;
     pub const SECURE_BOOT_ENABLE_MASK: u32 = 0x00000001;
@@ -2552,6 +2586,7 @@ impl Crit1 {
     // ======== Field Accessors ========
 
     /// **GLITCH_DETECTOR_SENS** `[6:5]` (RO)
+    ///
     /// Increase the sensitivity of the glitch detectors from their default.
     #[inline(always)]
     pub fn glitch_detector_sens(&self) -> u32 {
@@ -2559,6 +2594,7 @@ impl Crit1 {
     }
 
     /// **GLITCH_DETECTOR_ENABLE** `[4]` (RO)
+    ///
     /// Arm the glitch detectors to reset the system if an abnormal clock/power event is observed.
     #[inline(always)]
     pub fn glitch_detector_enable(&self) -> bool {
@@ -2566,6 +2602,7 @@ impl Crit1 {
     }
 
     /// **BOOT_ARCH** `[3]` (RO)
+    ///
     /// Set the default boot architecture, 0=ARM 1=RISC-V. Ignored if ARM_DISABLE, RISCV_DISABLE or SECURE_BOOT_ENABLE is set.
     #[inline(always)]
     pub fn boot_arch(&self) -> bool {
@@ -2573,6 +2610,7 @@ impl Crit1 {
     }
 
     /// **DEBUG_DISABLE** `[2]` (RO)
+    ///
     /// Disable all debug access
     #[inline(always)]
     pub fn debug_disable(&self) -> bool {
@@ -2580,6 +2618,7 @@ impl Crit1 {
     }
 
     /// **SECURE_DEBUG_DISABLE** `[1]` (RO)
+    ///
     /// Disable Secure debug access
     #[inline(always)]
     pub fn secure_debug_disable(&self) -> bool {
@@ -2587,6 +2626,7 @@ impl Crit1 {
     }
 
     /// **SECURE_BOOT_ENABLE** `[0]` (RO)
+    ///
     /// Enable boot signature enforcement, and permanently disable the RISC-V cores.
     #[inline(always)]
     pub fn secure_boot_enable(&self) -> bool {
@@ -2624,6 +2664,7 @@ impl Crit1Val {
     }
 
     /// Read **GLITCH_DETECTOR_SENS** `[6:5]`
+    ///
     /// Increase the sensitivity of the glitch detectors from their default.
     #[inline(always)]
     pub const fn glitch_detector_sens(&self) -> u32 {
@@ -2631,6 +2672,7 @@ impl Crit1Val {
     }
 
     /// Read **GLITCH_DETECTOR_ENABLE** `[4:4]`
+    ///
     /// Arm the glitch detectors to reset the system if an abnormal clock/power event is observed.
     #[inline(always)]
     pub const fn glitch_detector_enable(&self) -> bool {
@@ -2638,6 +2680,7 @@ impl Crit1Val {
     }
 
     /// Read **BOOT_ARCH** `[3:3]`
+    ///
     /// Set the default boot architecture, 0=ARM 1=RISC-V. Ignored if ARM_DISABLE, RISCV_DISABLE or SECURE_BOOT_ENABLE is set.
     #[inline(always)]
     pub const fn boot_arch(&self) -> bool {
@@ -2645,6 +2688,7 @@ impl Crit1Val {
     }
 
     /// Read **DEBUG_DISABLE** `[2:2]`
+    ///
     /// Disable all debug access
     #[inline(always)]
     pub const fn debug_disable(&self) -> bool {
@@ -2652,6 +2696,7 @@ impl Crit1Val {
     }
 
     /// Read **SECURE_DEBUG_DISABLE** `[1:1]`
+    ///
     /// Disable Secure debug access
     #[inline(always)]
     pub const fn secure_debug_disable(&self) -> bool {
@@ -2659,6 +2704,7 @@ impl Crit1Val {
     }
 
     /// Read **SECURE_BOOT_ENABLE** `[0:0]`
+    ///
     /// Enable boot signature enforcement, and permanently disable the RISC-V cores.
     #[inline(always)]
     pub const fn secure_boot_enable(&self) -> bool {
@@ -3383,47 +3429,82 @@ impl Crit1R7 {
 /// ## Fields
 ///
 /// - **DISABLE_SRAM_WINDOW_BOOT** `[21]` (RO)
+///
 /// - **DISABLE_XIP_ACCESS_ON_SRAM_ENTRY** `[20]` (RO)
+///
 ///   Disable all access to XIP after entering an SRAM binary.
 ///   Note that this will cause bootrom APIs that access XIP to fail, including APIs that interact with the partition table.
+///
 /// - **DISABLE_BOOTSEL_UART_BOOT** `[19]` (RO)
+///
 /// - **DISABLE_BOOTSEL_USB_PICOBOOT_IFC** `[18]` (RO)
+///
 /// - **DISABLE_BOOTSEL_USB_MSD_IFC** `[17]` (RO)
+///
 /// - **DISABLE_WATCHDOG_SCRATCH** `[16]` (RO)
+///
 /// - **DISABLE_POWER_SCRATCH** `[15]` (RO)
+///
 /// - **ENABLE_OTP_BOOT** `[14]` (RO)
+///
 ///   Enable OTP boot. A number of OTP rows specified by OTPBOOT_LEN will be loaded, starting from OTPBOOT_SRC, into the SRAM location specified by OTPBOOT_DST1 and OTPBOOT_DST0.
 ///   The loaded program image is stored with ECC, 16 bits per row, and must contain a valid IMAGE_DEF. Do not set this bit without first programming an image into OTP and configuring OTPBOOT_LEN, OTPBOOT_SRC, OTPBOOT_DST0 and OTPBOOT_DST1.
 ///   Note that OTPBOOT_LEN and OTPBOOT_SRC must be even numbers of OTP rows. Equivalently, the image must be a multiple of 32 bits in size, and must start at a 32-bit-aligned address in the ECC read data address window.
+///
 /// - **DISABLE_OTP_BOOT** `[13]` (RO)
+///
 ///   Takes precedence over ENABLE_OTP_BOOT.
+///
 /// - **DISABLE_FLASH_BOOT** `[12]` (RO)
+///
 /// - **ROLLBACK_REQUIRED** `[11]` (RO)
+///
 ///   Require binaries to have a rollback version. Set automatically the first time a binary with a rollback version is booted.
+///
 /// - **HASHED_PARTITION_TABLE** `[10]` (RO)
+///
 ///   Require a partition table to be hashed (if not signed)
+///
 /// - **SECURE_PARTITION_TABLE** `[9]` (RO)
+///
 ///   Require a partition table to be signed
+///
 /// - **DISABLE_AUTO_SWITCH_ARCH** `[8]` (RO)
+///
 ///   Disable auto-switch of CPU architecture on boot when the (only) binary to be booted is for the other Arm/RISC-V architecture and both architectures are enabled
+///
 /// - **SINGLE_FLASH_BINARY** `[7]` (RO)
+///
 ///   Restrict flash boot path to use of a single binary at the start of flash
+///
 /// - **OVERRIDE_FLASH_PARTITION_SLOT_SIZE** `[6]` (RO)
+///
 ///   Override the limit for default flash metadata scanning.
 ///   The value is specified in FLASH_PARTITION_SLOT_SIZE. Make sure FLASH_PARTITION_SLOT_SIZE is valid before setting this bit
+///
 /// - **FLASH_DEVINFO_ENABLE** `[5]` (RO)
+///
 ///   Mark FLASH_DEVINFO as containing valid, ECC'd data which describes external flash devices.
+///
 /// - **FAST_SIGCHECK_ROSC_DIV** `[4]` (RO)
+///
 ///   Enable quartering of ROSC divisor during signature check, to reduce secure boot time
+///
 /// - **FLASH_IO_VOLTAGE_1V8** `[3]` (RO)
+///
 ///   If 1, configure the QSPI pads for 1.8 V operation when accessing flash for the first time from the bootrom, using the VOLTAGE_SELECT register for the QSPI pads bank. This slightly improves the input timing of the pads at low voltages, but does not affect their output characteristics.
 ///   If 0, leave VOLTAGE_SELECT in its reset state (suitable for operation at and above 2.5 V)
+///
 /// - **ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG** `[2]` (RO)
+///
 ///   Enable loading of the non-default XOSC and PLL configuration before entering BOOTSEL mode.
 ///   Ensure that BOOTSEL_XOSC_CFG and BOOTSEL_PLL_CFG are correctly programmed before setting this bit.
 ///   If this bit is set, user software may use the contents of BOOTSEL_PLL_CFG to calculated the expected XOSC frequency based on the fixed USB boot frequency of 48 MHz.
+///
 /// - **ENABLE_BOOTSEL_LED** `[1]` (RO)
+///
 ///   Enable bootloader activity LED. If set, bootsel_led_cfg is assumed to be valid
+///
 /// - **DISABLE_BOOTSEL_EXEC2** `[0]` (RO)
 #[repr(transparent)]
 pub struct BootFlags0 {
@@ -3448,8 +3529,10 @@ impl BootFlags0 {
     pub const DISABLE_SRAM_WINDOW_BOOT: u32 = 1 << 21;
 
     /// **DISABLE_XIP_ACCESS_ON_SRAM_ENTRY**
+    ///
     /// Disable all access to XIP after entering an SRAM binary.
     /// Note that this will cause bootrom APIs that access XIP to fail, including APIs that interact with the partition table.
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const DISABLE_XIP_ACCESS_ON_SRAM_ENTRY_OFFSET: u32 = 20;
     pub const DISABLE_XIP_ACCESS_ON_SRAM_ENTRY_MASK: u32 = 0x00100000;
@@ -3486,16 +3569,20 @@ impl BootFlags0 {
     pub const DISABLE_POWER_SCRATCH: u32 = 1 << 15;
 
     /// **ENABLE_OTP_BOOT**
+    ///
     /// Enable OTP boot. A number of OTP rows specified by OTPBOOT_LEN will be loaded, starting from OTPBOOT_SRC, into the SRAM location specified by OTPBOOT_DST1 and OTPBOOT_DST0.
     /// The loaded program image is stored with ECC, 16 bits per row, and must contain a valid IMAGE_DEF. Do not set this bit without first programming an image into OTP and configuring OTPBOOT_LEN, OTPBOOT_SRC, OTPBOOT_DST0 and OTPBOOT_DST1.
     /// Note that OTPBOOT_LEN and OTPBOOT_SRC must be even numbers of OTP rows. Equivalently, the image must be a multiple of 32 bits in size, and must start at a 32-bit-aligned address in the ECC read data address window.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const ENABLE_OTP_BOOT_OFFSET: u32 = 14;
     pub const ENABLE_OTP_BOOT_MASK: u32 = 0x00004000;
     pub const ENABLE_OTP_BOOT: u32 = 1 << 14;
 
     /// **DISABLE_OTP_BOOT**
+    ///
     /// Takes precedence over ENABLE_OTP_BOOT.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const DISABLE_OTP_BOOT_OFFSET: u32 = 13;
     pub const DISABLE_OTP_BOOT_MASK: u32 = 0x00002000;
@@ -3508,81 +3595,103 @@ impl BootFlags0 {
     pub const DISABLE_FLASH_BOOT: u32 = 1 << 12;
 
     /// **ROLLBACK_REQUIRED**
+    ///
     /// Require binaries to have a rollback version. Set automatically the first time a binary with a rollback version is booted.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ROLLBACK_REQUIRED_OFFSET: u32 = 11;
     pub const ROLLBACK_REQUIRED_MASK: u32 = 0x00000800;
     pub const ROLLBACK_REQUIRED: u32 = 1 << 11;
 
     /// **HASHED_PARTITION_TABLE**
+    ///
     /// Require a partition table to be hashed (if not signed)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const HASHED_PARTITION_TABLE_OFFSET: u32 = 10;
     pub const HASHED_PARTITION_TABLE_MASK: u32 = 0x00000400;
     pub const HASHED_PARTITION_TABLE: u32 = 1 << 10;
 
     /// **SECURE_PARTITION_TABLE**
+    ///
     /// Require a partition table to be signed
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const SECURE_PARTITION_TABLE_OFFSET: u32 = 9;
     pub const SECURE_PARTITION_TABLE_MASK: u32 = 0x00000200;
     pub const SECURE_PARTITION_TABLE: u32 = 1 << 9;
 
     /// **DISABLE_AUTO_SWITCH_ARCH**
+    ///
     /// Disable auto-switch of CPU architecture on boot when the (only) binary to be booted is for the other Arm/RISC-V architecture and both architectures are enabled
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const DISABLE_AUTO_SWITCH_ARCH_OFFSET: u32 = 8;
     pub const DISABLE_AUTO_SWITCH_ARCH_MASK: u32 = 0x00000100;
     pub const DISABLE_AUTO_SWITCH_ARCH: u32 = 1 << 8;
 
     /// **SINGLE_FLASH_BINARY**
+    ///
     /// Restrict flash boot path to use of a single binary at the start of flash
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const SINGLE_FLASH_BINARY_OFFSET: u32 = 7;
     pub const SINGLE_FLASH_BINARY_MASK: u32 = 0x00000080;
     pub const SINGLE_FLASH_BINARY: u32 = 1 << 7;
 
     /// **OVERRIDE_FLASH_PARTITION_SLOT_SIZE**
+    ///
     /// Override the limit for default flash metadata scanning.
     /// The value is specified in FLASH_PARTITION_SLOT_SIZE. Make sure FLASH_PARTITION_SLOT_SIZE is valid before setting this bit
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const OVERRIDE_FLASH_PARTITION_SLOT_SIZE_OFFSET: u32 = 6;
     pub const OVERRIDE_FLASH_PARTITION_SLOT_SIZE_MASK: u32 = 0x00000040;
     pub const OVERRIDE_FLASH_PARTITION_SLOT_SIZE: u32 = 1 << 6;
 
     /// **FLASH_DEVINFO_ENABLE**
+    ///
     /// Mark FLASH_DEVINFO as containing valid, ECC'd data which describes external flash devices.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const FLASH_DEVINFO_ENABLE_OFFSET: u32 = 5;
     pub const FLASH_DEVINFO_ENABLE_MASK: u32 = 0x00000020;
     pub const FLASH_DEVINFO_ENABLE: u32 = 1 << 5;
 
     /// **FAST_SIGCHECK_ROSC_DIV**
+    ///
     /// Enable quartering of ROSC divisor during signature check, to reduce secure boot time
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const FAST_SIGCHECK_ROSC_DIV_OFFSET: u32 = 4;
     pub const FAST_SIGCHECK_ROSC_DIV_MASK: u32 = 0x00000010;
     pub const FAST_SIGCHECK_ROSC_DIV: u32 = 1 << 4;
 
     /// **FLASH_IO_VOLTAGE_1V8**
+    ///
     /// If 1, configure the QSPI pads for 1.8 V operation when accessing flash for the first time from the bootrom, using the VOLTAGE_SELECT register for the QSPI pads bank. This slightly improves the input timing of the pads at low voltages, but does not affect their output characteristics.
     /// If 0, leave VOLTAGE_SELECT in its reset state (suitable for operation at and above 2.5 V)
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const FLASH_IO_VOLTAGE_1V8_OFFSET: u32 = 3;
     pub const FLASH_IO_VOLTAGE_1V8_MASK: u32 = 0x00000008;
     pub const FLASH_IO_VOLTAGE_1V8: u32 = 1 << 3;
 
     /// **ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG**
+    ///
     /// Enable loading of the non-default XOSC and PLL configuration before entering BOOTSEL mode.
     /// Ensure that BOOTSEL_XOSC_CFG and BOOTSEL_PLL_CFG are correctly programmed before setting this bit.
     /// If this bit is set, user software may use the contents of BOOTSEL_PLL_CFG to calculated the expected XOSC frequency based on the fixed USB boot frequency of 48 MHz.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG_OFFSET: u32 = 2;
     pub const ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG_MASK: u32 = 0x00000004;
     pub const ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG: u32 = 1 << 2;
 
     /// **ENABLE_BOOTSEL_LED**
+    ///
     /// Enable bootloader activity LED. If set, bootsel_led_cfg is assumed to be valid
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const ENABLE_BOOTSEL_LED_OFFSET: u32 = 1;
     pub const ENABLE_BOOTSEL_LED_MASK: u32 = 0x00000002;
@@ -3603,6 +3712,7 @@ impl BootFlags0 {
     }
 
     /// **DISABLE_XIP_ACCESS_ON_SRAM_ENTRY** `[20]` (RO)
+    ///
     /// Disable all access to XIP after entering an SRAM binary.
     /// Note that this will cause bootrom APIs that access XIP to fail, including APIs that interact with the partition table.
     #[inline(always)]
@@ -3641,6 +3751,7 @@ impl BootFlags0 {
     }
 
     /// **ENABLE_OTP_BOOT** `[14]` (RO)
+    ///
     /// Enable OTP boot. A number of OTP rows specified by OTPBOOT_LEN will be loaded, starting from OTPBOOT_SRC, into the SRAM location specified by OTPBOOT_DST1 and OTPBOOT_DST0.
     /// The loaded program image is stored with ECC, 16 bits per row, and must contain a valid IMAGE_DEF. Do not set this bit without first programming an image into OTP and configuring OTPBOOT_LEN, OTPBOOT_SRC, OTPBOOT_DST0 and OTPBOOT_DST1.
     /// Note that OTPBOOT_LEN and OTPBOOT_SRC must be even numbers of OTP rows. Equivalently, the image must be a multiple of 32 bits in size, and must start at a 32-bit-aligned address in the ECC read data address window.
@@ -3650,6 +3761,7 @@ impl BootFlags0 {
     }
 
     /// **DISABLE_OTP_BOOT** `[13]` (RO)
+    ///
     /// Takes precedence over ENABLE_OTP_BOOT.
     #[inline(always)]
     pub fn disable_otp_boot(&self) -> bool {
@@ -3663,6 +3775,7 @@ impl BootFlags0 {
     }
 
     /// **ROLLBACK_REQUIRED** `[11]` (RO)
+    ///
     /// Require binaries to have a rollback version. Set automatically the first time a binary with a rollback version is booted.
     #[inline(always)]
     pub fn rollback_required(&self) -> bool {
@@ -3670,6 +3783,7 @@ impl BootFlags0 {
     }
 
     /// **HASHED_PARTITION_TABLE** `[10]` (RO)
+    ///
     /// Require a partition table to be hashed (if not signed)
     #[inline(always)]
     pub fn hashed_partition_table(&self) -> bool {
@@ -3677,6 +3791,7 @@ impl BootFlags0 {
     }
 
     /// **SECURE_PARTITION_TABLE** `[9]` (RO)
+    ///
     /// Require a partition table to be signed
     #[inline(always)]
     pub fn secure_partition_table(&self) -> bool {
@@ -3684,6 +3799,7 @@ impl BootFlags0 {
     }
 
     /// **DISABLE_AUTO_SWITCH_ARCH** `[8]` (RO)
+    ///
     /// Disable auto-switch of CPU architecture on boot when the (only) binary to be booted is for the other Arm/RISC-V architecture and both architectures are enabled
     #[inline(always)]
     pub fn disable_auto_switch_arch(&self) -> bool {
@@ -3691,6 +3807,7 @@ impl BootFlags0 {
     }
 
     /// **SINGLE_FLASH_BINARY** `[7]` (RO)
+    ///
     /// Restrict flash boot path to use of a single binary at the start of flash
     #[inline(always)]
     pub fn single_flash_binary(&self) -> bool {
@@ -3698,6 +3815,7 @@ impl BootFlags0 {
     }
 
     /// **OVERRIDE_FLASH_PARTITION_SLOT_SIZE** `[6]` (RO)
+    ///
     /// Override the limit for default flash metadata scanning.
     /// The value is specified in FLASH_PARTITION_SLOT_SIZE. Make sure FLASH_PARTITION_SLOT_SIZE is valid before setting this bit
     #[inline(always)]
@@ -3706,6 +3824,7 @@ impl BootFlags0 {
     }
 
     /// **FLASH_DEVINFO_ENABLE** `[5]` (RO)
+    ///
     /// Mark FLASH_DEVINFO as containing valid, ECC'd data which describes external flash devices.
     #[inline(always)]
     pub fn flash_devinfo_enable(&self) -> bool {
@@ -3713,6 +3832,7 @@ impl BootFlags0 {
     }
 
     /// **FAST_SIGCHECK_ROSC_DIV** `[4]` (RO)
+    ///
     /// Enable quartering of ROSC divisor during signature check, to reduce secure boot time
     #[inline(always)]
     pub fn fast_sigcheck_rosc_div(&self) -> bool {
@@ -3720,6 +3840,7 @@ impl BootFlags0 {
     }
 
     /// **FLASH_IO_VOLTAGE_1V8** `[3]` (RO)
+    ///
     /// If 1, configure the QSPI pads for 1.8 V operation when accessing flash for the first time from the bootrom, using the VOLTAGE_SELECT register for the QSPI pads bank. This slightly improves the input timing of the pads at low voltages, but does not affect their output characteristics.
     /// If 0, leave VOLTAGE_SELECT in its reset state (suitable for operation at and above 2.5 V)
     #[inline(always)]
@@ -3728,6 +3849,7 @@ impl BootFlags0 {
     }
 
     /// **ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG** `[2]` (RO)
+    ///
     /// Enable loading of the non-default XOSC and PLL configuration before entering BOOTSEL mode.
     /// Ensure that BOOTSEL_XOSC_CFG and BOOTSEL_PLL_CFG are correctly programmed before setting this bit.
     /// If this bit is set, user software may use the contents of BOOTSEL_PLL_CFG to calculated the expected XOSC frequency based on the fixed USB boot frequency of 48 MHz.
@@ -3737,6 +3859,7 @@ impl BootFlags0 {
     }
 
     /// **ENABLE_BOOTSEL_LED** `[1]` (RO)
+    ///
     /// Enable bootloader activity LED. If set, bootsel_led_cfg is assumed to be valid
     #[inline(always)]
     pub fn enable_bootsel_led(&self) -> bool {
@@ -3786,6 +3909,7 @@ impl BootFlags0Val {
     }
 
     /// Read **DISABLE_XIP_ACCESS_ON_SRAM_ENTRY** `[20:20]`
+    ///
     /// Disable all access to XIP after entering an SRAM binary.
     /// Note that this will cause bootrom APIs that access XIP to fail, including APIs that interact with the partition table.
     #[inline(always)]
@@ -3824,6 +3948,7 @@ impl BootFlags0Val {
     }
 
     /// Read **ENABLE_OTP_BOOT** `[14:14]`
+    ///
     /// Enable OTP boot. A number of OTP rows specified by OTPBOOT_LEN will be loaded, starting from OTPBOOT_SRC, into the SRAM location specified by OTPBOOT_DST1 and OTPBOOT_DST0.
     /// The loaded program image is stored with ECC, 16 bits per row, and must contain a valid IMAGE_DEF. Do not set this bit without first programming an image into OTP and configuring OTPBOOT_LEN, OTPBOOT_SRC, OTPBOOT_DST0 and OTPBOOT_DST1.
     /// Note that OTPBOOT_LEN and OTPBOOT_SRC must be even numbers of OTP rows. Equivalently, the image must be a multiple of 32 bits in size, and must start at a 32-bit-aligned address in the ECC read data address window.
@@ -3833,6 +3958,7 @@ impl BootFlags0Val {
     }
 
     /// Read **DISABLE_OTP_BOOT** `[13:13]`
+    ///
     /// Takes precedence over ENABLE_OTP_BOOT.
     #[inline(always)]
     pub const fn disable_otp_boot(&self) -> bool {
@@ -3846,6 +3972,7 @@ impl BootFlags0Val {
     }
 
     /// Read **ROLLBACK_REQUIRED** `[11:11]`
+    ///
     /// Require binaries to have a rollback version. Set automatically the first time a binary with a rollback version is booted.
     #[inline(always)]
     pub const fn rollback_required(&self) -> bool {
@@ -3853,6 +3980,7 @@ impl BootFlags0Val {
     }
 
     /// Read **HASHED_PARTITION_TABLE** `[10:10]`
+    ///
     /// Require a partition table to be hashed (if not signed)
     #[inline(always)]
     pub const fn hashed_partition_table(&self) -> bool {
@@ -3860,6 +3988,7 @@ impl BootFlags0Val {
     }
 
     /// Read **SECURE_PARTITION_TABLE** `[9:9]`
+    ///
     /// Require a partition table to be signed
     #[inline(always)]
     pub const fn secure_partition_table(&self) -> bool {
@@ -3867,6 +3996,7 @@ impl BootFlags0Val {
     }
 
     /// Read **DISABLE_AUTO_SWITCH_ARCH** `[8:8]`
+    ///
     /// Disable auto-switch of CPU architecture on boot when the (only) binary to be booted is for the other Arm/RISC-V architecture and both architectures are enabled
     #[inline(always)]
     pub const fn disable_auto_switch_arch(&self) -> bool {
@@ -3874,6 +4004,7 @@ impl BootFlags0Val {
     }
 
     /// Read **SINGLE_FLASH_BINARY** `[7:7]`
+    ///
     /// Restrict flash boot path to use of a single binary at the start of flash
     #[inline(always)]
     pub const fn single_flash_binary(&self) -> bool {
@@ -3881,6 +4012,7 @@ impl BootFlags0Val {
     }
 
     /// Read **OVERRIDE_FLASH_PARTITION_SLOT_SIZE** `[6:6]`
+    ///
     /// Override the limit for default flash metadata scanning.
     /// The value is specified in FLASH_PARTITION_SLOT_SIZE. Make sure FLASH_PARTITION_SLOT_SIZE is valid before setting this bit
     #[inline(always)]
@@ -3889,6 +4021,7 @@ impl BootFlags0Val {
     }
 
     /// Read **FLASH_DEVINFO_ENABLE** `[5:5]`
+    ///
     /// Mark FLASH_DEVINFO as containing valid, ECC'd data which describes external flash devices.
     #[inline(always)]
     pub const fn flash_devinfo_enable(&self) -> bool {
@@ -3896,6 +4029,7 @@ impl BootFlags0Val {
     }
 
     /// Read **FAST_SIGCHECK_ROSC_DIV** `[4:4]`
+    ///
     /// Enable quartering of ROSC divisor during signature check, to reduce secure boot time
     #[inline(always)]
     pub const fn fast_sigcheck_rosc_div(&self) -> bool {
@@ -3903,6 +4037,7 @@ impl BootFlags0Val {
     }
 
     /// Read **FLASH_IO_VOLTAGE_1V8** `[3:3]`
+    ///
     /// If 1, configure the QSPI pads for 1.8 V operation when accessing flash for the first time from the bootrom, using the VOLTAGE_SELECT register for the QSPI pads bank. This slightly improves the input timing of the pads at low voltages, but does not affect their output characteristics.
     /// If 0, leave VOLTAGE_SELECT in its reset state (suitable for operation at and above 2.5 V)
     #[inline(always)]
@@ -3911,6 +4046,7 @@ impl BootFlags0Val {
     }
 
     /// Read **ENABLE_BOOTSEL_NON_DEFAULT_PLL_XOSC_CFG** `[2:2]`
+    ///
     /// Enable loading of the non-default XOSC and PLL configuration before entering BOOTSEL mode.
     /// Ensure that BOOTSEL_XOSC_CFG and BOOTSEL_PLL_CFG are correctly programmed before setting this bit.
     /// If this bit is set, user software may use the contents of BOOTSEL_PLL_CFG to calculated the expected XOSC frequency based on the fixed USB boot frequency of 48 MHz.
@@ -3920,6 +4056,7 @@ impl BootFlags0Val {
     }
 
     /// Read **ENABLE_BOOTSEL_LED** `[1:1]`
+    ///
     /// Enable bootloader activity LED. If set, bootsel_led_cfg is assumed to be valid
     #[inline(always)]
     pub const fn enable_bootsel_led(&self) -> bool {
@@ -4165,17 +4302,24 @@ impl BootFlags0R2 {
 /// ## Fields
 ///
 /// - **DOUBLE_TAP** `[19]` (RO)
+///
 ///   Enable entering BOOTSEL mode via double-tap of the RUN/RSTn pin. Adds a significant delay to boot time, as configured by DOUBLE_TAP_DELAY.
 ///   This functions by waiting at startup (i.e. following a reset) to see if a second reset is applied soon afterward. The second reset is detected by the bootrom with help of the POWMAN_CHIP_RESET_DOUBLE_TAP flag, which is not reset by the external reset pin, and the bootrom enters BOOTSEL mode (NSBOOT) to await further instruction over USB or UART.
+///
 /// - **DOUBLE_TAP_DELAY** `[18:16]` (RO)
+///
 ///   Adjust how long to wait for a second reset when double tap BOOTSEL mode is enabled via DOUBLE_TAP. The minimum is 50 milliseconds, and each unit of this field adds an additional 50 milliseconds.
 ///   For example, settings this field to its maximum value of 7 will cause the chip to wait for 400 milliseconds at boot to check for a second reset which requests entry to BOOTSEL mode.
 ///   200 milliseconds (DOUBLE_TAP_DELAY=3) is a good intermediate value.
+///
 /// - **KEY_INVALID** `[11:8]` (RO)
+///
 ///   Mark a boot key as invalid, or prevent it from ever becoming valid. The bootrom will ignore any boot key marked as invalid during secure boot signature checks.
 ///   Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
 ///   When provisioning boot keys, it's recommended to mark any boot key slots you don't intend to use as KEY_INVALID, so that spurious keys can not be installed at a later time.
+///
 /// - **KEY_VALID** `[3:0]` (RO)
+///
 ///   Mark each of the possible boot keys as valid. The bootrom will check signatures against all valid boot keys, and ignore invalid boot keys.
 ///   Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
 ///   A KEY_VALID bit is ignored if the corresponding KEY_INVALID bit is set. Boot keys are considered valid only when KEY_VALID is set and KEY_INVALID is clear.
@@ -4198,35 +4342,43 @@ impl BootFlags1 {
     // ======== Field Constants ========
 
     /// **DOUBLE_TAP**
+    ///
     /// Enable entering BOOTSEL mode via double-tap of the RUN/RSTn pin. Adds a significant delay to boot time, as configured by DOUBLE_TAP_DELAY.
     /// This functions by waiting at startup (i.e. following a reset) to see if a second reset is applied soon afterward. The second reset is detected by the bootrom with help of the POWMAN_CHIP_RESET_DOUBLE_TAP flag, which is not reset by the external reset pin, and the bootrom enters BOOTSEL mode (NSBOOT) to await further instruction over USB or UART.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const DOUBLE_TAP_OFFSET: u32 = 19;
     pub const DOUBLE_TAP_MASK: u32 = 0x00080000;
     pub const DOUBLE_TAP: u32 = 1 << 19;
 
     /// **DOUBLE_TAP_DELAY**
+    ///
     /// Adjust how long to wait for a second reset when double tap BOOTSEL mode is enabled via DOUBLE_TAP. The minimum is 50 milliseconds, and each unit of this field adds an additional 50 milliseconds.
     /// For example, settings this field to its maximum value of 7 will cause the chip to wait for 400 milliseconds at boot to check for a second reset which requests entry to BOOTSEL mode.
     /// 200 milliseconds (DOUBLE_TAP_DELAY=3) is a good intermediate value.
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const DOUBLE_TAP_DELAY_OFFSET: u32 = 16;
     pub const DOUBLE_TAP_DELAY_MASK: u32 = 0x00070000;
 
     /// **KEY_INVALID**
+    ///
     /// Mark a boot key as invalid, or prevent it from ever becoming valid. The bootrom will ignore any boot key marked as invalid during secure boot signature checks.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// When provisioning boot keys, it's recommended to mark any boot key slots you don't intend to use as KEY_INVALID, so that spurious keys can not be installed at a later time.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const KEY_INVALID_OFFSET: u32 = 8;
     pub const KEY_INVALID_MASK: u32 = 0x00000f00;
 
     /// **KEY_VALID**
+    ///
     /// Mark each of the possible boot keys as valid. The bootrom will check signatures against all valid boot keys, and ignore invalid boot keys.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// A KEY_VALID bit is ignored if the corresponding KEY_INVALID bit is set. Boot keys are considered valid only when KEY_VALID is set and KEY_INVALID is clear.
     /// Do not mark a boot key as KEY_VALID if it does not contain a valid SHA-256 hash of your secp256k1 public key. Verify keys after programming, before setting the KEY_VALID bits -- a boot key with uncorrectable ECC faults will render your device unbootable if secure boot is enabled.
     /// Do not enable secure boot without first installing a valid key. This will render your device unbootable.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const KEY_VALID_OFFSET: u32 = 0;
     pub const KEY_VALID_MASK: u32 = 0x0000000f;
@@ -4234,6 +4386,7 @@ impl BootFlags1 {
     // ======== Field Accessors ========
 
     /// **DOUBLE_TAP** `[19]` (RO)
+    ///
     /// Enable entering BOOTSEL mode via double-tap of the RUN/RSTn pin. Adds a significant delay to boot time, as configured by DOUBLE_TAP_DELAY.
     /// This functions by waiting at startup (i.e. following a reset) to see if a second reset is applied soon afterward. The second reset is detected by the bootrom with help of the POWMAN_CHIP_RESET_DOUBLE_TAP flag, which is not reset by the external reset pin, and the bootrom enters BOOTSEL mode (NSBOOT) to await further instruction over USB or UART.
     #[inline(always)]
@@ -4242,6 +4395,7 @@ impl BootFlags1 {
     }
 
     /// **DOUBLE_TAP_DELAY** `[18:16]` (RO)
+    ///
     /// Adjust how long to wait for a second reset when double tap BOOTSEL mode is enabled via DOUBLE_TAP. The minimum is 50 milliseconds, and each unit of this field adds an additional 50 milliseconds.
     /// For example, settings this field to its maximum value of 7 will cause the chip to wait for 400 milliseconds at boot to check for a second reset which requests entry to BOOTSEL mode.
     /// 200 milliseconds (DOUBLE_TAP_DELAY=3) is a good intermediate value.
@@ -4251,6 +4405,7 @@ impl BootFlags1 {
     }
 
     /// **KEY_INVALID** `[11:8]` (RO)
+    ///
     /// Mark a boot key as invalid, or prevent it from ever becoming valid. The bootrom will ignore any boot key marked as invalid during secure boot signature checks.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// When provisioning boot keys, it's recommended to mark any boot key slots you don't intend to use as KEY_INVALID, so that spurious keys can not be installed at a later time.
@@ -4260,6 +4415,7 @@ impl BootFlags1 {
     }
 
     /// **KEY_VALID** `[3:0]` (RO)
+    ///
     /// Mark each of the possible boot keys as valid. The bootrom will check signatures against all valid boot keys, and ignore invalid boot keys.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// A KEY_VALID bit is ignored if the corresponding KEY_INVALID bit is set. Boot keys are considered valid only when KEY_VALID is set and KEY_INVALID is clear.
@@ -4301,6 +4457,7 @@ impl BootFlags1Val {
     }
 
     /// Read **DOUBLE_TAP** `[19:19]`
+    ///
     /// Enable entering BOOTSEL mode via double-tap of the RUN/RSTn pin. Adds a significant delay to boot time, as configured by DOUBLE_TAP_DELAY.
     /// This functions by waiting at startup (i.e. following a reset) to see if a second reset is applied soon afterward. The second reset is detected by the bootrom with help of the POWMAN_CHIP_RESET_DOUBLE_TAP flag, which is not reset by the external reset pin, and the bootrom enters BOOTSEL mode (NSBOOT) to await further instruction over USB or UART.
     #[inline(always)]
@@ -4309,6 +4466,7 @@ impl BootFlags1Val {
     }
 
     /// Read **DOUBLE_TAP_DELAY** `[18:16]`
+    ///
     /// Adjust how long to wait for a second reset when double tap BOOTSEL mode is enabled via DOUBLE_TAP. The minimum is 50 milliseconds, and each unit of this field adds an additional 50 milliseconds.
     /// For example, settings this field to its maximum value of 7 will cause the chip to wait for 400 milliseconds at boot to check for a second reset which requests entry to BOOTSEL mode.
     /// 200 milliseconds (DOUBLE_TAP_DELAY=3) is a good intermediate value.
@@ -4318,6 +4476,7 @@ impl BootFlags1Val {
     }
 
     /// Read **KEY_INVALID** `[11:8]`
+    ///
     /// Mark a boot key as invalid, or prevent it from ever becoming valid. The bootrom will ignore any boot key marked as invalid during secure boot signature checks.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// When provisioning boot keys, it's recommended to mark any boot key slots you don't intend to use as KEY_INVALID, so that spurious keys can not be installed at a later time.
@@ -4327,6 +4486,7 @@ impl BootFlags1Val {
     }
 
     /// Read **KEY_VALID** `[3:0]`
+    ///
     /// Mark each of the possible boot keys as valid. The bootrom will check signatures against all valid boot keys, and ignore invalid boot keys.
     /// Each bit in this field corresponds to one of the four 256-bit boot key hashes that may be stored in page 2 of the OTP.
     /// A KEY_VALID bit is ignored if the corresponding KEY_INVALID bit is set. Boot keys are considered valid only when KEY_VALID is set and KEY_INVALID is clear.
@@ -5153,18 +5313,25 @@ impl DefaultBootVersion1R2 {
 /// ## Fields
 ///
 /// - **CS1_SIZE** `[15:12]` (RO)
+///
 ///   The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
 ///   A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
+///
 /// - **CS0_SIZE** `[11:8]` (RO)
+///
 ///   The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
 ///   A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
+///
 /// - **D8H_ERASE_SUPPORTED** `[7]` (RO)
+///
 ///   If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
 ///   If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
+///
 /// - **CS1_GPIO** `[5:0]` (RO)
+///
 ///   Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
 ///   On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
 ///   Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -5185,9 +5352,11 @@ impl FlashDevinfo {
     // ======== Field Constants ========
 
     /// **CS1_SIZE**
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const CS1_SIZE_OFFSET: u32 = 12;
     pub const CS1_SIZE_MASK: u32 = 0x0000f000;
@@ -5219,9 +5388,11 @@ impl FlashDevinfo {
     pub const CS1_SIZE_16M_VAL: u32 = 12;
 
     /// **CS0_SIZE**
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const CS0_SIZE_OFFSET: u32 = 8;
     pub const CS0_SIZE_MASK: u32 = 0x00000f00;
@@ -5253,18 +5424,22 @@ impl FlashDevinfo {
     pub const CS0_SIZE_16M_VAL: u32 = 12;
 
     /// **D8H_ERASE_SUPPORTED**
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const D8H_ERASE_SUPPORTED_OFFSET: u32 = 7;
     pub const D8H_ERASE_SUPPORTED_MASK: u32 = 0x00000080;
     pub const D8H_ERASE_SUPPORTED: u32 = 1 << 7;
 
     /// **CS1_GPIO**
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const CS1_GPIO_OFFSET: u32 = 0;
     pub const CS1_GPIO_MASK: u32 = 0x0000003f;
@@ -5272,6 +5447,7 @@ impl FlashDevinfo {
     // ======== Field Accessors ========
 
     /// **CS1_SIZE** `[15:12]` (RO)
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
@@ -5281,6 +5457,7 @@ impl FlashDevinfo {
     }
 
     /// **CS0_SIZE** `[11:8]` (RO)
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
@@ -5290,6 +5467,7 @@ impl FlashDevinfo {
     }
 
     /// **D8H_ERASE_SUPPORTED** `[7]` (RO)
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
@@ -5299,6 +5477,7 @@ impl FlashDevinfo {
     }
 
     /// **CS1_GPIO** `[5:0]` (RO)
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -5338,6 +5517,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS1_SIZE** `[15:12]`
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
@@ -5347,6 +5527,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS0_SIZE** `[11:8]`
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
@@ -5356,6 +5537,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **D8H_ERASE_SUPPORTED** `[7:7]`
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
@@ -5365,6 +5547,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS1_GPIO** `[5:0]`
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -5510,8 +5693,11 @@ impl FlashPartitionSlotSize {
 /// ## Fields
 ///
 /// - **ACTIVELOW** `[8]` (RO)
+///
 ///   LED is active-low. (Default: active-high.)
+///
 /// - **PIN** `[5:0]` (RO)
+///
 ///   GPIO index to use for bootloader activity LED.
 #[repr(transparent)]
 pub struct BootselLedCfg {
@@ -5530,14 +5716,18 @@ impl BootselLedCfg {
     // ======== Field Constants ========
 
     /// **ACTIVELOW**
+    ///
     /// LED is active-low. (Default: active-high.)
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ACTIVELOW_OFFSET: u32 = 8;
     pub const ACTIVELOW_MASK: u32 = 0x00000100;
     pub const ACTIVELOW: u32 = 1 << 8;
 
     /// **PIN**
+    ///
     /// GPIO index to use for bootloader activity LED.
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const PIN_OFFSET: u32 = 0;
     pub const PIN_MASK: u32 = 0x0000003f;
@@ -5545,6 +5735,7 @@ impl BootselLedCfg {
     // ======== Field Accessors ========
 
     /// **ACTIVELOW** `[8]` (RO)
+    ///
     /// LED is active-low. (Default: active-high.)
     #[inline(always)]
     pub fn activelow(&self) -> bool {
@@ -5552,6 +5743,7 @@ impl BootselLedCfg {
     }
 
     /// **PIN** `[5:0]` (RO)
+    ///
     /// GPIO index to use for bootloader activity LED.
     #[inline(always)]
     pub fn pin(&self) -> u32 {
@@ -5589,6 +5781,7 @@ impl BootselLedCfgVal {
     }
 
     /// Read **ACTIVELOW** `[8:8]`
+    ///
     /// LED is active-low. (Default: active-high.)
     #[inline(always)]
     pub const fn activelow(&self) -> bool {
@@ -5596,6 +5789,7 @@ impl BootselLedCfgVal {
     }
 
     /// Read **PIN** `[5:0]`
+    ///
     /// GPIO index to use for bootloader activity LED.
     #[inline(always)]
     pub const fn pin(&self) -> u32 {
@@ -5649,13 +5843,20 @@ impl BootselLedCfg {
 /// ## Fields
 ///
 /// - **REFDIV** `[15]` (RO)
+///
 ///   PLL reference divisor, minus one.
 ///   Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
+///
 /// - **POSTDIV2** `[14:12]` (RO)
+///
 ///   PLL post-divide 2 divisor, in the range 1..7 inclusive.
+///
 /// - **POSTDIV1** `[11:9]` (RO)
+///
 ///   PLL post-divide 1 divisor, in the range 1..7 inclusive.
+///
 /// - **FBDIV** `[8:0]` (RO)
+///
 ///   PLL feedback divisor, in the range 16..320 inclusive.
 #[repr(transparent)]
 pub struct BootselPllCfg {
@@ -5674,27 +5875,35 @@ impl BootselPllCfg {
     // ======== Field Constants ========
 
     /// **REFDIV**
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const REFDIV_OFFSET: u32 = 15;
     pub const REFDIV_MASK: u32 = 0x00008000;
     pub const REFDIV: u32 = 1 << 15;
 
     /// **POSTDIV2**
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const POSTDIV2_OFFSET: u32 = 12;
     pub const POSTDIV2_MASK: u32 = 0x00007000;
 
     /// **POSTDIV1**
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
+    ///
     /// Bits `[11:9]`, mask `0x00000e00`
     pub const POSTDIV1_OFFSET: u32 = 9;
     pub const POSTDIV1_MASK: u32 = 0x00000e00;
 
     /// **FBDIV**
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const FBDIV_OFFSET: u32 = 0;
     pub const FBDIV_MASK: u32 = 0x000001ff;
@@ -5702,6 +5911,7 @@ impl BootselPllCfg {
     // ======== Field Accessors ========
 
     /// **REFDIV** `[15]` (RO)
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
     #[inline(always)]
@@ -5710,6 +5920,7 @@ impl BootselPllCfg {
     }
 
     /// **POSTDIV2** `[14:12]` (RO)
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub fn postdiv2(&self) -> u32 {
@@ -5717,6 +5928,7 @@ impl BootselPllCfg {
     }
 
     /// **POSTDIV1** `[11:9]` (RO)
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub fn postdiv1(&self) -> u32 {
@@ -5724,6 +5936,7 @@ impl BootselPllCfg {
     }
 
     /// **FBDIV** `[8:0]` (RO)
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
     #[inline(always)]
     pub fn fbdiv(&self) -> u32 {
@@ -5761,6 +5974,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **REFDIV** `[15:15]`
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
     #[inline(always)]
@@ -5769,6 +5983,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **POSTDIV2** `[14:12]`
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub const fn postdiv2(&self) -> u32 {
@@ -5776,6 +5991,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **POSTDIV1** `[11:9]`
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub const fn postdiv1(&self) -> u32 {
@@ -5783,6 +5999,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **FBDIV** `[8:0]`
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
     #[inline(always)]
     pub const fn fbdiv(&self) -> u32 {
@@ -5830,8 +6047,11 @@ impl BootselPllCfg {
 /// ## Fields
 ///
 /// - **RANGE** `[15:14]` (RO)
+///
 ///   Value of the XOSC_CTRL_FREQ_RANGE register.
+///
 /// - **STARTUP** `[13:0]` (RO)
+///
 ///   Value of the XOSC_STARTUP register
 #[repr(transparent)]
 pub struct BootselXoscCfg {
@@ -5850,7 +6070,9 @@ impl BootselXoscCfg {
     // ======== Field Constants ========
 
     /// **RANGE**
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const RANGE_OFFSET: u32 = 14;
     pub const RANGE_MASK: u32 = 0x0000c000;
@@ -5864,7 +6086,9 @@ impl BootselXoscCfg {
     pub const RANGE_40_100MHZ_VAL: u32 = 3;
 
     /// **STARTUP**
+    ///
     /// Value of the XOSC_STARTUP register
+    ///
     /// Bits `[13:0]`, mask `0x00003fff`
     pub const STARTUP_OFFSET: u32 = 0;
     pub const STARTUP_MASK: u32 = 0x00003fff;
@@ -5872,6 +6096,7 @@ impl BootselXoscCfg {
     // ======== Field Accessors ========
 
     /// **RANGE** `[15:14]` (RO)
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
     #[inline(always)]
     pub fn range(&self) -> u32 {
@@ -5879,6 +6104,7 @@ impl BootselXoscCfg {
     }
 
     /// **STARTUP** `[13:0]` (RO)
+    ///
     /// Value of the XOSC_STARTUP register
     #[inline(always)]
     pub fn startup(&self) -> u32 {
@@ -5916,6 +6142,7 @@ impl BootselXoscCfgVal {
     }
 
     /// Read **RANGE** `[15:14]`
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
     #[inline(always)]
     pub const fn range(&self) -> u32 {
@@ -5923,6 +6150,7 @@ impl BootselXoscCfgVal {
     }
 
     /// Read **STARTUP** `[13:0]`
+    ///
     /// Value of the XOSC_STARTUP register
     #[inline(always)]
     pub const fn startup(&self) -> u32 {
@@ -5968,40 +6196,75 @@ impl BootselXoscCfg {
 /// ## Fields
 ///
 /// - **DP_DM_SWAP** `[23]` (RO)
+///
 ///   Swap DM/DP during USB boot, to support board layouts with mirrored USB routing (deliberate or accidental).
+///
 /// - **WHITE_LABEL_ADDR_VALID** `[22]` (RO)
+///
 ///   valid flag for INFO_UF2_TXT_BOARD_ID_STRDEF entry of the USB_WHITE_LABEL struct (index 15)
+///
 /// - **WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID** `[15]` (RO)
+///
 ///   valid flag for the USB_WHITE_LABEL_ADDR field
+///
 /// - **WL_INFO_UF2_TXT_MODEL_STRDEF_VALID** `[14]` (RO)
+///
 ///   valid flag for INFO_UF2_TXT_MODEL_STRDEF entry of the USB_WHITE_LABEL struct (index 14)
+///
 /// - **WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID** `[13]` (RO)
+///
 ///   valid flag for INDEX_HTM_REDIRECT_NAME_STRDEF entry of the USB_WHITE_LABEL struct (index 13)
+///
 /// - **WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID** `[12]` (RO)
+///
 ///   valid flag for INDEX_HTM_REDIRECT_URL_STRDEF entry of the USB_WHITE_LABEL struct (index 12)
+///
 /// - **WL_SCSI_INQUIRY_VERSION_STRDEF_VALID** `[11]` (RO)
+///
 ///   valid flag for SCSI_INQUIRY_VERSION_STRDEF entry of the USB_WHITE_LABEL struct (index 11)
+///
 /// - **WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID** `[10]` (RO)
+///
 ///   valid flag for SCSI_INQUIRY_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 10)
+///
 /// - **WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID** `[9]` (RO)
+///
 ///   valid flag for SCSI_INQUIRY_VENDOR_STRDEF entry of the USB_WHITE_LABEL struct (index 9)
+///
 /// - **WL_VOLUME_LABEL_STRDEF_VALID** `[8]` (RO)
+///
 ///   valid flag for VOLUME_LABEL_STRDEF entry of the USB_WHITE_LABEL struct (index 8)
+///
 /// - **WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID** `[7]` (RO)
+///
 ///   valid flag for USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES entry of the USB_WHITE_LABEL struct (index 7)
+///
 /// - **WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID** `[6]` (RO)
+///
 ///   valid flag for USB_DEVICE_SERIAL_NUMBER_STRDEF entry of the USB_WHITE_LABEL struct (index 6)
+///
 /// - **WL_USB_DEVICE_PRODUCT_STRDEF_VALID** `[5]` (RO)
+///
 ///   valid flag for USB_DEVICE_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 5)
+///
 /// - **WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID** `[4]` (RO)
+///
 ///   valid flag for USB_DEVICE_MANUFACTURER_STRDEF entry of the USB_WHITE_LABEL struct (index 4)
+///
 /// - **WL_USB_DEVICE_LANG_ID_VALUE_VALID** `[3]` (RO)
+///
 ///   valid flag for USB_DEVICE_LANG_ID_VALUE entry of the USB_WHITE_LABEL struct (index 3)
+///
 /// - **WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID** `[2]` (RO)
+///
 ///   valid flag for USB_DEVICE_BCD_DEVICEVALUE entry of the USB_WHITE_LABEL struct (index 2)
+///
 /// - **WL_USB_DEVICE_PID_VALUE_VALID** `[1]` (RO)
+///
 ///   valid flag for USB_DEVICE_PID_VALUE entry of the USB_WHITE_LABEL struct (index 1)
+///
 /// - **WL_USB_DEVICE_VID_VALUE_VALID** `[0]` (RO)
+///
 ///   valid flag for USB_DEVICE_VID_VALUE entry of the USB_WHITE_LABEL struct (index 0)
 #[repr(transparent)]
 pub struct UsbBootFlags {
@@ -6020,126 +6283,162 @@ impl UsbBootFlags {
     // ======== Field Constants ========
 
     /// **DP_DM_SWAP**
+    ///
     /// Swap DM/DP during USB boot, to support board layouts with mirrored USB routing (deliberate or accidental).
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const DP_DM_SWAP_OFFSET: u32 = 23;
     pub const DP_DM_SWAP_MASK: u32 = 0x00800000;
     pub const DP_DM_SWAP: u32 = 1 << 23;
 
     /// **WHITE_LABEL_ADDR_VALID**
+    ///
     /// valid flag for INFO_UF2_TXT_BOARD_ID_STRDEF entry of the USB_WHITE_LABEL struct (index 15)
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const WHITE_LABEL_ADDR_VALID_OFFSET: u32 = 22;
     pub const WHITE_LABEL_ADDR_VALID_MASK: u32 = 0x00400000;
     pub const WHITE_LABEL_ADDR_VALID: u32 = 1 << 22;
 
     /// **WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID**
+    ///
     /// valid flag for the USB_WHITE_LABEL_ADDR field
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID_OFFSET: u32 = 15;
     pub const WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID_MASK: u32 = 0x00008000;
     pub const WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID: u32 = 1 << 15;
 
     /// **WL_INFO_UF2_TXT_MODEL_STRDEF_VALID**
+    ///
     /// valid flag for INFO_UF2_TXT_MODEL_STRDEF entry of the USB_WHITE_LABEL struct (index 14)
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const WL_INFO_UF2_TXT_MODEL_STRDEF_VALID_OFFSET: u32 = 14;
     pub const WL_INFO_UF2_TXT_MODEL_STRDEF_VALID_MASK: u32 = 0x00004000;
     pub const WL_INFO_UF2_TXT_MODEL_STRDEF_VALID: u32 = 1 << 14;
 
     /// **WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID**
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_NAME_STRDEF entry of the USB_WHITE_LABEL struct (index 13)
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID_OFFSET: u32 = 13;
     pub const WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID_MASK: u32 = 0x00002000;
     pub const WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID: u32 = 1 << 13;
 
     /// **WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID**
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_URL_STRDEF entry of the USB_WHITE_LABEL struct (index 12)
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID_OFFSET: u32 = 12;
     pub const WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID_MASK: u32 = 0x00001000;
     pub const WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID: u32 = 1 << 12;
 
     /// **WL_SCSI_INQUIRY_VERSION_STRDEF_VALID**
+    ///
     /// valid flag for SCSI_INQUIRY_VERSION_STRDEF entry of the USB_WHITE_LABEL struct (index 11)
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const WL_SCSI_INQUIRY_VERSION_STRDEF_VALID_OFFSET: u32 = 11;
     pub const WL_SCSI_INQUIRY_VERSION_STRDEF_VALID_MASK: u32 = 0x00000800;
     pub const WL_SCSI_INQUIRY_VERSION_STRDEF_VALID: u32 = 1 << 11;
 
     /// **WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID**
+    ///
     /// valid flag for SCSI_INQUIRY_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 10)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID_OFFSET: u32 = 10;
     pub const WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID_MASK: u32 = 0x00000400;
     pub const WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID: u32 = 1 << 10;
 
     /// **WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID**
+    ///
     /// valid flag for SCSI_INQUIRY_VENDOR_STRDEF entry of the USB_WHITE_LABEL struct (index 9)
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID_OFFSET: u32 = 9;
     pub const WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID_MASK: u32 = 0x00000200;
     pub const WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID: u32 = 1 << 9;
 
     /// **WL_VOLUME_LABEL_STRDEF_VALID**
+    ///
     /// valid flag for VOLUME_LABEL_STRDEF entry of the USB_WHITE_LABEL struct (index 8)
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const WL_VOLUME_LABEL_STRDEF_VALID_OFFSET: u32 = 8;
     pub const WL_VOLUME_LABEL_STRDEF_VALID_MASK: u32 = 0x00000100;
     pub const WL_VOLUME_LABEL_STRDEF_VALID: u32 = 1 << 8;
 
     /// **WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID**
+    ///
     /// valid flag for USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES entry of the USB_WHITE_LABEL struct (index 7)
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID_OFFSET: u32 = 7;
     pub const WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID_MASK: u32 = 0x00000080;
     pub const WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID: u32 = 1 << 7;
 
     /// **WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID**
+    ///
     /// valid flag for USB_DEVICE_SERIAL_NUMBER_STRDEF entry of the USB_WHITE_LABEL struct (index 6)
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID_OFFSET: u32 = 6;
     pub const WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID_MASK: u32 = 0x00000040;
     pub const WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID: u32 = 1 << 6;
 
     /// **WL_USB_DEVICE_PRODUCT_STRDEF_VALID**
+    ///
     /// valid flag for USB_DEVICE_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 5)
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const WL_USB_DEVICE_PRODUCT_STRDEF_VALID_OFFSET: u32 = 5;
     pub const WL_USB_DEVICE_PRODUCT_STRDEF_VALID_MASK: u32 = 0x00000020;
     pub const WL_USB_DEVICE_PRODUCT_STRDEF_VALID: u32 = 1 << 5;
 
     /// **WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID**
+    ///
     /// valid flag for USB_DEVICE_MANUFACTURER_STRDEF entry of the USB_WHITE_LABEL struct (index 4)
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID_OFFSET: u32 = 4;
     pub const WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID_MASK: u32 = 0x00000010;
     pub const WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID: u32 = 1 << 4;
 
     /// **WL_USB_DEVICE_LANG_ID_VALUE_VALID**
+    ///
     /// valid flag for USB_DEVICE_LANG_ID_VALUE entry of the USB_WHITE_LABEL struct (index 3)
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const WL_USB_DEVICE_LANG_ID_VALUE_VALID_OFFSET: u32 = 3;
     pub const WL_USB_DEVICE_LANG_ID_VALUE_VALID_MASK: u32 = 0x00000008;
     pub const WL_USB_DEVICE_LANG_ID_VALUE_VALID: u32 = 1 << 3;
 
     /// **WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID**
+    ///
     /// valid flag for USB_DEVICE_BCD_DEVICEVALUE entry of the USB_WHITE_LABEL struct (index 2)
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID_OFFSET: u32 = 2;
     pub const WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID_MASK: u32 = 0x00000004;
     pub const WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID: u32 = 1 << 2;
 
     /// **WL_USB_DEVICE_PID_VALUE_VALID**
+    ///
     /// valid flag for USB_DEVICE_PID_VALUE entry of the USB_WHITE_LABEL struct (index 1)
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const WL_USB_DEVICE_PID_VALUE_VALID_OFFSET: u32 = 1;
     pub const WL_USB_DEVICE_PID_VALUE_VALID_MASK: u32 = 0x00000002;
     pub const WL_USB_DEVICE_PID_VALUE_VALID: u32 = 1 << 1;
 
     /// **WL_USB_DEVICE_VID_VALUE_VALID**
+    ///
     /// valid flag for USB_DEVICE_VID_VALUE entry of the USB_WHITE_LABEL struct (index 0)
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const WL_USB_DEVICE_VID_VALUE_VALID_OFFSET: u32 = 0;
     pub const WL_USB_DEVICE_VID_VALUE_VALID_MASK: u32 = 0x00000001;
@@ -6148,6 +6447,7 @@ impl UsbBootFlags {
     // ======== Field Accessors ========
 
     /// **DP_DM_SWAP** `[23]` (RO)
+    ///
     /// Swap DM/DP during USB boot, to support board layouts with mirrored USB routing (deliberate or accidental).
     #[inline(always)]
     pub fn dp_dm_swap(&self) -> bool {
@@ -6155,6 +6455,7 @@ impl UsbBootFlags {
     }
 
     /// **WHITE_LABEL_ADDR_VALID** `[22]` (RO)
+    ///
     /// valid flag for INFO_UF2_TXT_BOARD_ID_STRDEF entry of the USB_WHITE_LABEL struct (index 15)
     #[inline(always)]
     pub fn white_label_addr_valid(&self) -> bool {
@@ -6162,6 +6463,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID** `[15]` (RO)
+    ///
     /// valid flag for the USB_WHITE_LABEL_ADDR field
     #[inline(always)]
     pub fn wl_info_uf2_txt_board_id_strdef_valid(&self) -> bool {
@@ -6169,6 +6471,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_INFO_UF2_TXT_MODEL_STRDEF_VALID** `[14]` (RO)
+    ///
     /// valid flag for INFO_UF2_TXT_MODEL_STRDEF entry of the USB_WHITE_LABEL struct (index 14)
     #[inline(always)]
     pub fn wl_info_uf2_txt_model_strdef_valid(&self) -> bool {
@@ -6176,6 +6479,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID** `[13]` (RO)
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_NAME_STRDEF entry of the USB_WHITE_LABEL struct (index 13)
     #[inline(always)]
     pub fn wl_index_htm_redirect_name_strdef_valid(&self) -> bool {
@@ -6183,6 +6487,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID** `[12]` (RO)
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_URL_STRDEF entry of the USB_WHITE_LABEL struct (index 12)
     #[inline(always)]
     pub fn wl_index_htm_redirect_url_strdef_valid(&self) -> bool {
@@ -6190,6 +6495,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_SCSI_INQUIRY_VERSION_STRDEF_VALID** `[11]` (RO)
+    ///
     /// valid flag for SCSI_INQUIRY_VERSION_STRDEF entry of the USB_WHITE_LABEL struct (index 11)
     #[inline(always)]
     pub fn wl_scsi_inquiry_version_strdef_valid(&self) -> bool {
@@ -6197,6 +6503,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID** `[10]` (RO)
+    ///
     /// valid flag for SCSI_INQUIRY_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 10)
     #[inline(always)]
     pub fn wl_scsi_inquiry_product_strdef_valid(&self) -> bool {
@@ -6204,6 +6511,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID** `[9]` (RO)
+    ///
     /// valid flag for SCSI_INQUIRY_VENDOR_STRDEF entry of the USB_WHITE_LABEL struct (index 9)
     #[inline(always)]
     pub fn wl_scsi_inquiry_vendor_strdef_valid(&self) -> bool {
@@ -6211,6 +6519,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_VOLUME_LABEL_STRDEF_VALID** `[8]` (RO)
+    ///
     /// valid flag for VOLUME_LABEL_STRDEF entry of the USB_WHITE_LABEL struct (index 8)
     #[inline(always)]
     pub fn wl_volume_label_strdef_valid(&self) -> bool {
@@ -6218,6 +6527,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID** `[7]` (RO)
+    ///
     /// valid flag for USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES entry of the USB_WHITE_LABEL struct (index 7)
     #[inline(always)]
     pub fn wl_usb_config_attributes_max_power_values_valid(&self) -> bool {
@@ -6225,6 +6535,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID** `[6]` (RO)
+    ///
     /// valid flag for USB_DEVICE_SERIAL_NUMBER_STRDEF entry of the USB_WHITE_LABEL struct (index 6)
     #[inline(always)]
     pub fn wl_usb_device_serial_number_strdef_valid(&self) -> bool {
@@ -6232,6 +6543,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_PRODUCT_STRDEF_VALID** `[5]` (RO)
+    ///
     /// valid flag for USB_DEVICE_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 5)
     #[inline(always)]
     pub fn wl_usb_device_product_strdef_valid(&self) -> bool {
@@ -6239,6 +6551,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID** `[4]` (RO)
+    ///
     /// valid flag for USB_DEVICE_MANUFACTURER_STRDEF entry of the USB_WHITE_LABEL struct (index 4)
     #[inline(always)]
     pub fn wl_usb_device_manufacturer_strdef_valid(&self) -> bool {
@@ -6246,6 +6559,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_LANG_ID_VALUE_VALID** `[3]` (RO)
+    ///
     /// valid flag for USB_DEVICE_LANG_ID_VALUE entry of the USB_WHITE_LABEL struct (index 3)
     #[inline(always)]
     pub fn wl_usb_device_lang_id_value_valid(&self) -> bool {
@@ -6253,6 +6567,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID** `[2]` (RO)
+    ///
     /// valid flag for USB_DEVICE_BCD_DEVICEVALUE entry of the USB_WHITE_LABEL struct (index 2)
     #[inline(always)]
     pub fn wl_usb_device_serial_number_value_valid(&self) -> bool {
@@ -6260,6 +6575,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_PID_VALUE_VALID** `[1]` (RO)
+    ///
     /// valid flag for USB_DEVICE_PID_VALUE entry of the USB_WHITE_LABEL struct (index 1)
     #[inline(always)]
     pub fn wl_usb_device_pid_value_valid(&self) -> bool {
@@ -6267,6 +6583,7 @@ impl UsbBootFlags {
     }
 
     /// **WL_USB_DEVICE_VID_VALUE_VALID** `[0]` (RO)
+    ///
     /// valid flag for USB_DEVICE_VID_VALUE entry of the USB_WHITE_LABEL struct (index 0)
     #[inline(always)]
     pub fn wl_usb_device_vid_value_valid(&self) -> bool {
@@ -6304,6 +6621,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **DP_DM_SWAP** `[23:23]`
+    ///
     /// Swap DM/DP during USB boot, to support board layouts with mirrored USB routing (deliberate or accidental).
     #[inline(always)]
     pub const fn dp_dm_swap(&self) -> bool {
@@ -6311,6 +6629,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WHITE_LABEL_ADDR_VALID** `[22:22]`
+    ///
     /// valid flag for INFO_UF2_TXT_BOARD_ID_STRDEF entry of the USB_WHITE_LABEL struct (index 15)
     #[inline(always)]
     pub const fn white_label_addr_valid(&self) -> bool {
@@ -6318,6 +6637,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_INFO_UF2_TXT_BOARD_ID_STRDEF_VALID** `[15:15]`
+    ///
     /// valid flag for the USB_WHITE_LABEL_ADDR field
     #[inline(always)]
     pub const fn wl_info_uf2_txt_board_id_strdef_valid(&self) -> bool {
@@ -6325,6 +6645,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_INFO_UF2_TXT_MODEL_STRDEF_VALID** `[14:14]`
+    ///
     /// valid flag for INFO_UF2_TXT_MODEL_STRDEF entry of the USB_WHITE_LABEL struct (index 14)
     #[inline(always)]
     pub const fn wl_info_uf2_txt_model_strdef_valid(&self) -> bool {
@@ -6332,6 +6653,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_INDEX_HTM_REDIRECT_NAME_STRDEF_VALID** `[13:13]`
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_NAME_STRDEF entry of the USB_WHITE_LABEL struct (index 13)
     #[inline(always)]
     pub const fn wl_index_htm_redirect_name_strdef_valid(&self) -> bool {
@@ -6339,6 +6661,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_INDEX_HTM_REDIRECT_URL_STRDEF_VALID** `[12:12]`
+    ///
     /// valid flag for INDEX_HTM_REDIRECT_URL_STRDEF entry of the USB_WHITE_LABEL struct (index 12)
     #[inline(always)]
     pub const fn wl_index_htm_redirect_url_strdef_valid(&self) -> bool {
@@ -6346,6 +6669,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_SCSI_INQUIRY_VERSION_STRDEF_VALID** `[11:11]`
+    ///
     /// valid flag for SCSI_INQUIRY_VERSION_STRDEF entry of the USB_WHITE_LABEL struct (index 11)
     #[inline(always)]
     pub const fn wl_scsi_inquiry_version_strdef_valid(&self) -> bool {
@@ -6353,6 +6677,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_SCSI_INQUIRY_PRODUCT_STRDEF_VALID** `[10:10]`
+    ///
     /// valid flag for SCSI_INQUIRY_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 10)
     #[inline(always)]
     pub const fn wl_scsi_inquiry_product_strdef_valid(&self) -> bool {
@@ -6360,6 +6685,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_SCSI_INQUIRY_VENDOR_STRDEF_VALID** `[9:9]`
+    ///
     /// valid flag for SCSI_INQUIRY_VENDOR_STRDEF entry of the USB_WHITE_LABEL struct (index 9)
     #[inline(always)]
     pub const fn wl_scsi_inquiry_vendor_strdef_valid(&self) -> bool {
@@ -6367,6 +6693,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_VOLUME_LABEL_STRDEF_VALID** `[8:8]`
+    ///
     /// valid flag for VOLUME_LABEL_STRDEF entry of the USB_WHITE_LABEL struct (index 8)
     #[inline(always)]
     pub const fn wl_volume_label_strdef_valid(&self) -> bool {
@@ -6374,6 +6701,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES_VALID** `[7:7]`
+    ///
     /// valid flag for USB_CONFIG_ATTRIBUTES_MAX_POWER_VALUES entry of the USB_WHITE_LABEL struct (index 7)
     #[inline(always)]
     pub const fn wl_usb_config_attributes_max_power_values_valid(&self) -> bool {
@@ -6381,6 +6709,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_SERIAL_NUMBER_STRDEF_VALID** `[6:6]`
+    ///
     /// valid flag for USB_DEVICE_SERIAL_NUMBER_STRDEF entry of the USB_WHITE_LABEL struct (index 6)
     #[inline(always)]
     pub const fn wl_usb_device_serial_number_strdef_valid(&self) -> bool {
@@ -6388,6 +6717,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_PRODUCT_STRDEF_VALID** `[5:5]`
+    ///
     /// valid flag for USB_DEVICE_PRODUCT_STRDEF entry of the USB_WHITE_LABEL struct (index 5)
     #[inline(always)]
     pub const fn wl_usb_device_product_strdef_valid(&self) -> bool {
@@ -6395,6 +6725,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_MANUFACTURER_STRDEF_VALID** `[4:4]`
+    ///
     /// valid flag for USB_DEVICE_MANUFACTURER_STRDEF entry of the USB_WHITE_LABEL struct (index 4)
     #[inline(always)]
     pub const fn wl_usb_device_manufacturer_strdef_valid(&self) -> bool {
@@ -6402,6 +6733,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_LANG_ID_VALUE_VALID** `[3:3]`
+    ///
     /// valid flag for USB_DEVICE_LANG_ID_VALUE entry of the USB_WHITE_LABEL struct (index 3)
     #[inline(always)]
     pub const fn wl_usb_device_lang_id_value_valid(&self) -> bool {
@@ -6409,6 +6741,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_SERIAL_NUMBER_VALUE_VALID** `[2:2]`
+    ///
     /// valid flag for USB_DEVICE_BCD_DEVICEVALUE entry of the USB_WHITE_LABEL struct (index 2)
     #[inline(always)]
     pub const fn wl_usb_device_serial_number_value_valid(&self) -> bool {
@@ -6416,6 +6749,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_PID_VALUE_VALID** `[1:1]`
+    ///
     /// valid flag for USB_DEVICE_PID_VALUE entry of the USB_WHITE_LABEL struct (index 1)
     #[inline(always)]
     pub const fn wl_usb_device_pid_value_valid(&self) -> bool {
@@ -6423,6 +6757,7 @@ impl UsbBootFlagsVal {
     }
 
     /// Read **WL_USB_DEVICE_VID_VALUE_VALID** `[0:0]`
+    ///
     /// valid flag for USB_DEVICE_VID_VALUE entry of the USB_WHITE_LABEL struct (index 0)
     #[inline(always)]
     pub const fn wl_usb_device_vid_value_valid(&self) -> bool {
@@ -18055,9 +18390,13 @@ impl Key67 {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key1Valid {
@@ -18076,14 +18415,18 @@ impl Key1Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18098,6 +18441,7 @@ impl Key1Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18105,6 +18449,7 @@ impl Key1Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18148,6 +18493,7 @@ impl Key1ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18155,6 +18501,7 @@ impl Key1ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18206,9 +18553,13 @@ impl Key1Valid {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key2Valid {
@@ -18227,14 +18578,18 @@ impl Key2Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18249,6 +18604,7 @@ impl Key2Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18256,6 +18612,7 @@ impl Key2Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18299,6 +18656,7 @@ impl Key2ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18306,6 +18664,7 @@ impl Key2ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18357,9 +18716,13 @@ impl Key2Valid {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key3Valid {
@@ -18378,14 +18741,18 @@ impl Key3Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18400,6 +18767,7 @@ impl Key3Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18407,6 +18775,7 @@ impl Key3Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18450,6 +18819,7 @@ impl Key3ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18457,6 +18827,7 @@ impl Key3ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18508,9 +18879,13 @@ impl Key3Valid {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key4Valid {
@@ -18529,14 +18904,18 @@ impl Key4Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18551,6 +18930,7 @@ impl Key4Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18558,6 +18938,7 @@ impl Key4Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18601,6 +18982,7 @@ impl Key4ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18608,6 +18990,7 @@ impl Key4ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18659,9 +19042,13 @@ impl Key4Valid {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key5Valid {
@@ -18680,14 +19067,18 @@ impl Key5Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18702,6 +19093,7 @@ impl Key5Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18709,6 +19101,7 @@ impl Key5Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18752,6 +19145,7 @@ impl Key5ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18759,6 +19153,7 @@ impl Key5ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18810,9 +19205,13 @@ impl Key5Valid {
 /// ## Fields
 ///
 /// - **VALID_R2** `[16]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID_R1** `[8]` (RO)
+///
 ///   Redundant copy of VALID, with 3-way majority vote
+///
 /// - **VALID** `[0]` (RO)
 #[repr(transparent)]
 pub struct Key6Valid {
@@ -18831,14 +19230,18 @@ impl Key6Valid {
     // ======== Field Constants ========
 
     /// **VALID_R2**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const VALID_R2_OFFSET: u32 = 16;
     pub const VALID_R2_MASK: u32 = 0x00010000;
     pub const VALID_R2: u32 = 1 << 16;
 
     /// **VALID_R1**
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const VALID_R1_OFFSET: u32 = 8;
     pub const VALID_R1_MASK: u32 = 0x00000100;
@@ -18853,6 +19256,7 @@ impl Key6Valid {
     // ======== Field Accessors ========
 
     /// **VALID_R2** `[16]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r2(&self) -> bool {
@@ -18860,6 +19264,7 @@ impl Key6Valid {
     }
 
     /// **VALID_R1** `[8]` (RO)
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub fn valid_r1(&self) -> bool {
@@ -18903,6 +19308,7 @@ impl Key6ValidVal {
     }
 
     /// Read **VALID_R2** `[16:16]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r2(&self) -> bool {
@@ -18910,6 +19316,7 @@ impl Key6ValidVal {
     }
 
     /// Read **VALID_R1** `[8:8]`
+    ///
     /// Redundant copy of VALID, with 3-way majority vote
     #[inline(always)]
     pub const fn valid_r1(&self) -> bool {
@@ -18962,14 +19369,23 @@ impl Key6Valid {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page0Lock0 {
@@ -18988,19 +19404,25 @@ impl Page0Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -19011,13 +19433,17 @@ impl Page0Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -19025,6 +19451,7 @@ impl Page0Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -19032,6 +19459,7 @@ impl Page0Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -19039,6 +19467,7 @@ impl Page0Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -19046,6 +19475,7 @@ impl Page0Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -19053,6 +19483,7 @@ impl Page0Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -19090,6 +19521,7 @@ impl Page0Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -19097,6 +19529,7 @@ impl Page0Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -19104,6 +19537,7 @@ impl Page0Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -19111,6 +19545,7 @@ impl Page0Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -19118,6 +19553,7 @@ impl Page0Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -19164,15 +19600,24 @@ impl Page0Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page0Lock1 {
@@ -19191,19 +19636,25 @@ impl Page0Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -19225,8 +19676,10 @@ impl Page0Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -19248,7 +19701,9 @@ impl Page0Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -19272,6 +19727,7 @@ impl Page0Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -19279,6 +19735,7 @@ impl Page0Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -19286,6 +19743,7 @@ impl Page0Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -19293,6 +19751,7 @@ impl Page0Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -19301,6 +19760,7 @@ impl Page0Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -19338,6 +19798,7 @@ impl Page0Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -19345,6 +19806,7 @@ impl Page0Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -19352,6 +19814,7 @@ impl Page0Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -19359,6 +19822,7 @@ impl Page0Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -19367,6 +19831,7 @@ impl Page0Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -19413,14 +19878,23 @@ impl Page0Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page1Lock0 {
@@ -19439,19 +19913,25 @@ impl Page1Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -19462,13 +19942,17 @@ impl Page1Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -19476,6 +19960,7 @@ impl Page1Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -19483,6 +19968,7 @@ impl Page1Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -19490,6 +19976,7 @@ impl Page1Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -19497,6 +19984,7 @@ impl Page1Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -19504,6 +19992,7 @@ impl Page1Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -19541,6 +20030,7 @@ impl Page1Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -19548,6 +20038,7 @@ impl Page1Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -19555,6 +20046,7 @@ impl Page1Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -19562,6 +20054,7 @@ impl Page1Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -19569,6 +20062,7 @@ impl Page1Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -19615,15 +20109,24 @@ impl Page1Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page1Lock1 {
@@ -19642,19 +20145,25 @@ impl Page1Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -19676,8 +20185,10 @@ impl Page1Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -19699,7 +20210,9 @@ impl Page1Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -19723,6 +20236,7 @@ impl Page1Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -19730,6 +20244,7 @@ impl Page1Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -19737,6 +20252,7 @@ impl Page1Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -19744,6 +20260,7 @@ impl Page1Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -19752,6 +20269,7 @@ impl Page1Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -19789,6 +20307,7 @@ impl Page1Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -19796,6 +20315,7 @@ impl Page1Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -19803,6 +20323,7 @@ impl Page1Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -19810,6 +20331,7 @@ impl Page1Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -19818,6 +20340,7 @@ impl Page1Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -19864,14 +20387,23 @@ impl Page1Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page2Lock0 {
@@ -19890,19 +20422,25 @@ impl Page2Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -19913,13 +20451,17 @@ impl Page2Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -19927,6 +20469,7 @@ impl Page2Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -19934,6 +20477,7 @@ impl Page2Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -19941,6 +20485,7 @@ impl Page2Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -19948,6 +20493,7 @@ impl Page2Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -19955,6 +20501,7 @@ impl Page2Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -19992,6 +20539,7 @@ impl Page2Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -19999,6 +20547,7 @@ impl Page2Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -20006,6 +20555,7 @@ impl Page2Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -20013,6 +20563,7 @@ impl Page2Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -20020,6 +20571,7 @@ impl Page2Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -20066,15 +20618,24 @@ impl Page2Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page2Lock1 {
@@ -20093,19 +20654,25 @@ impl Page2Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -20127,8 +20694,10 @@ impl Page2Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -20150,7 +20719,9 @@ impl Page2Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -20174,6 +20745,7 @@ impl Page2Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -20181,6 +20753,7 @@ impl Page2Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -20188,6 +20761,7 @@ impl Page2Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -20195,6 +20769,7 @@ impl Page2Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -20203,6 +20778,7 @@ impl Page2Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -20240,6 +20816,7 @@ impl Page2Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -20247,6 +20824,7 @@ impl Page2Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -20254,6 +20832,7 @@ impl Page2Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -20261,6 +20840,7 @@ impl Page2Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -20269,6 +20849,7 @@ impl Page2Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -20315,14 +20896,23 @@ impl Page2Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page3Lock0 {
@@ -20341,19 +20931,25 @@ impl Page3Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -20364,13 +20960,17 @@ impl Page3Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -20378,6 +20978,7 @@ impl Page3Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -20385,6 +20986,7 @@ impl Page3Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -20392,6 +20994,7 @@ impl Page3Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -20399,6 +21002,7 @@ impl Page3Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -20406,6 +21010,7 @@ impl Page3Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -20443,6 +21048,7 @@ impl Page3Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -20450,6 +21056,7 @@ impl Page3Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -20457,6 +21064,7 @@ impl Page3Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -20464,6 +21072,7 @@ impl Page3Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -20471,6 +21080,7 @@ impl Page3Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -20517,15 +21127,24 @@ impl Page3Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page3Lock1 {
@@ -20544,19 +21163,25 @@ impl Page3Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -20578,8 +21203,10 @@ impl Page3Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -20601,7 +21228,9 @@ impl Page3Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -20625,6 +21254,7 @@ impl Page3Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -20632,6 +21262,7 @@ impl Page3Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -20639,6 +21270,7 @@ impl Page3Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -20646,6 +21278,7 @@ impl Page3Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -20654,6 +21287,7 @@ impl Page3Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -20691,6 +21325,7 @@ impl Page3Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -20698,6 +21333,7 @@ impl Page3Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -20705,6 +21341,7 @@ impl Page3Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -20712,6 +21349,7 @@ impl Page3Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -20720,6 +21358,7 @@ impl Page3Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -20766,14 +21405,23 @@ impl Page3Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page4Lock0 {
@@ -20792,19 +21440,25 @@ impl Page4Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -20815,13 +21469,17 @@ impl Page4Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -20829,6 +21487,7 @@ impl Page4Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -20836,6 +21495,7 @@ impl Page4Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -20843,6 +21503,7 @@ impl Page4Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -20850,6 +21511,7 @@ impl Page4Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -20857,6 +21519,7 @@ impl Page4Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -20894,6 +21557,7 @@ impl Page4Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -20901,6 +21565,7 @@ impl Page4Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -20908,6 +21573,7 @@ impl Page4Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -20915,6 +21581,7 @@ impl Page4Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -20922,6 +21589,7 @@ impl Page4Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -20968,15 +21636,24 @@ impl Page4Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page4Lock1 {
@@ -20995,19 +21672,25 @@ impl Page4Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -21029,8 +21712,10 @@ impl Page4Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -21052,7 +21737,9 @@ impl Page4Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -21076,6 +21763,7 @@ impl Page4Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -21083,6 +21771,7 @@ impl Page4Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -21090,6 +21779,7 @@ impl Page4Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -21097,6 +21787,7 @@ impl Page4Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -21105,6 +21796,7 @@ impl Page4Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -21142,6 +21834,7 @@ impl Page4Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -21149,6 +21842,7 @@ impl Page4Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -21156,6 +21850,7 @@ impl Page4Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -21163,6 +21858,7 @@ impl Page4Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -21171,6 +21867,7 @@ impl Page4Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -21217,14 +21914,23 @@ impl Page4Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page5Lock0 {
@@ -21243,19 +21949,25 @@ impl Page5Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -21266,13 +21978,17 @@ impl Page5Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -21280,6 +21996,7 @@ impl Page5Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -21287,6 +22004,7 @@ impl Page5Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -21294,6 +22012,7 @@ impl Page5Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -21301,6 +22020,7 @@ impl Page5Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -21308,6 +22028,7 @@ impl Page5Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -21345,6 +22066,7 @@ impl Page5Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -21352,6 +22074,7 @@ impl Page5Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -21359,6 +22082,7 @@ impl Page5Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -21366,6 +22090,7 @@ impl Page5Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -21373,6 +22098,7 @@ impl Page5Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -21419,15 +22145,24 @@ impl Page5Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page5Lock1 {
@@ -21446,19 +22181,25 @@ impl Page5Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -21480,8 +22221,10 @@ impl Page5Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -21503,7 +22246,9 @@ impl Page5Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -21527,6 +22272,7 @@ impl Page5Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -21534,6 +22280,7 @@ impl Page5Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -21541,6 +22288,7 @@ impl Page5Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -21548,6 +22296,7 @@ impl Page5Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -21556,6 +22305,7 @@ impl Page5Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -21593,6 +22343,7 @@ impl Page5Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -21600,6 +22351,7 @@ impl Page5Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -21607,6 +22359,7 @@ impl Page5Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -21614,6 +22367,7 @@ impl Page5Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -21622,6 +22376,7 @@ impl Page5Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -21668,14 +22423,23 @@ impl Page5Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page6Lock0 {
@@ -21694,19 +22458,25 @@ impl Page6Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -21717,13 +22487,17 @@ impl Page6Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -21731,6 +22505,7 @@ impl Page6Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -21738,6 +22513,7 @@ impl Page6Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -21745,6 +22521,7 @@ impl Page6Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -21752,6 +22529,7 @@ impl Page6Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -21759,6 +22537,7 @@ impl Page6Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -21796,6 +22575,7 @@ impl Page6Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -21803,6 +22583,7 @@ impl Page6Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -21810,6 +22591,7 @@ impl Page6Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -21817,6 +22599,7 @@ impl Page6Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -21824,6 +22607,7 @@ impl Page6Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -21870,15 +22654,24 @@ impl Page6Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page6Lock1 {
@@ -21897,19 +22690,25 @@ impl Page6Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -21931,8 +22730,10 @@ impl Page6Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -21954,7 +22755,9 @@ impl Page6Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -21978,6 +22781,7 @@ impl Page6Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -21985,6 +22789,7 @@ impl Page6Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -21992,6 +22797,7 @@ impl Page6Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -21999,6 +22805,7 @@ impl Page6Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22007,6 +22814,7 @@ impl Page6Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -22044,6 +22852,7 @@ impl Page6Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -22051,6 +22860,7 @@ impl Page6Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -22058,6 +22868,7 @@ impl Page6Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -22065,6 +22876,7 @@ impl Page6Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22073,6 +22885,7 @@ impl Page6Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -22119,14 +22932,23 @@ impl Page6Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page7Lock0 {
@@ -22145,19 +22967,25 @@ impl Page7Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -22168,13 +22996,17 @@ impl Page7Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -22182,6 +23014,7 @@ impl Page7Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -22189,6 +23022,7 @@ impl Page7Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -22196,6 +23030,7 @@ impl Page7Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -22203,6 +23038,7 @@ impl Page7Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -22210,6 +23046,7 @@ impl Page7Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -22247,6 +23084,7 @@ impl Page7Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -22254,6 +23092,7 @@ impl Page7Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -22261,6 +23100,7 @@ impl Page7Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -22268,6 +23108,7 @@ impl Page7Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -22275,6 +23116,7 @@ impl Page7Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -22321,15 +23163,24 @@ impl Page7Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page7Lock1 {
@@ -22348,19 +23199,25 @@ impl Page7Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -22382,8 +23239,10 @@ impl Page7Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -22405,7 +23264,9 @@ impl Page7Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -22429,6 +23290,7 @@ impl Page7Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -22436,6 +23298,7 @@ impl Page7Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -22443,6 +23306,7 @@ impl Page7Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -22450,6 +23314,7 @@ impl Page7Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22458,6 +23323,7 @@ impl Page7Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -22495,6 +23361,7 @@ impl Page7Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -22502,6 +23369,7 @@ impl Page7Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -22509,6 +23377,7 @@ impl Page7Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -22516,6 +23385,7 @@ impl Page7Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22524,6 +23394,7 @@ impl Page7Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -22570,14 +23441,23 @@ impl Page7Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page8Lock0 {
@@ -22596,19 +23476,25 @@ impl Page8Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -22619,13 +23505,17 @@ impl Page8Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -22633,6 +23523,7 @@ impl Page8Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -22640,6 +23531,7 @@ impl Page8Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -22647,6 +23539,7 @@ impl Page8Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -22654,6 +23547,7 @@ impl Page8Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -22661,6 +23555,7 @@ impl Page8Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -22698,6 +23593,7 @@ impl Page8Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -22705,6 +23601,7 @@ impl Page8Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -22712,6 +23609,7 @@ impl Page8Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -22719,6 +23617,7 @@ impl Page8Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -22726,6 +23625,7 @@ impl Page8Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -22772,15 +23672,24 @@ impl Page8Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page8Lock1 {
@@ -22799,19 +23708,25 @@ impl Page8Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -22833,8 +23748,10 @@ impl Page8Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -22856,7 +23773,9 @@ impl Page8Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -22880,6 +23799,7 @@ impl Page8Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -22887,6 +23807,7 @@ impl Page8Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -22894,6 +23815,7 @@ impl Page8Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -22901,6 +23823,7 @@ impl Page8Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22909,6 +23832,7 @@ impl Page8Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -22946,6 +23870,7 @@ impl Page8Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -22953,6 +23878,7 @@ impl Page8Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -22960,6 +23886,7 @@ impl Page8Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -22967,6 +23894,7 @@ impl Page8Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -22975,6 +23903,7 @@ impl Page8Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -23021,14 +23950,23 @@ impl Page8Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page9Lock0 {
@@ -23047,19 +23985,25 @@ impl Page9Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -23070,13 +24014,17 @@ impl Page9Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -23084,6 +24032,7 @@ impl Page9Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -23091,6 +24040,7 @@ impl Page9Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -23098,6 +24048,7 @@ impl Page9Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -23105,6 +24056,7 @@ impl Page9Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -23112,6 +24064,7 @@ impl Page9Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -23149,6 +24102,7 @@ impl Page9Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -23156,6 +24110,7 @@ impl Page9Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -23163,6 +24118,7 @@ impl Page9Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -23170,6 +24126,7 @@ impl Page9Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -23177,6 +24134,7 @@ impl Page9Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -23223,15 +24181,24 @@ impl Page9Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page9Lock1 {
@@ -23250,19 +24217,25 @@ impl Page9Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -23284,8 +24257,10 @@ impl Page9Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -23307,7 +24282,9 @@ impl Page9Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -23331,6 +24308,7 @@ impl Page9Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -23338,6 +24316,7 @@ impl Page9Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -23345,6 +24324,7 @@ impl Page9Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -23352,6 +24332,7 @@ impl Page9Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -23360,6 +24341,7 @@ impl Page9Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -23397,6 +24379,7 @@ impl Page9Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -23404,6 +24387,7 @@ impl Page9Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -23411,6 +24395,7 @@ impl Page9Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -23418,6 +24403,7 @@ impl Page9Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -23426,6 +24412,7 @@ impl Page9Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -23472,14 +24459,23 @@ impl Page9Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page10Lock0 {
@@ -23498,19 +24494,25 @@ impl Page10Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -23521,13 +24523,17 @@ impl Page10Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -23535,6 +24541,7 @@ impl Page10Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -23542,6 +24549,7 @@ impl Page10Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -23549,6 +24557,7 @@ impl Page10Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -23556,6 +24565,7 @@ impl Page10Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -23563,6 +24573,7 @@ impl Page10Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -23600,6 +24611,7 @@ impl Page10Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -23607,6 +24619,7 @@ impl Page10Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -23614,6 +24627,7 @@ impl Page10Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -23621,6 +24635,7 @@ impl Page10Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -23628,6 +24643,7 @@ impl Page10Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -23674,15 +24690,24 @@ impl Page10Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page10Lock1 {
@@ -23701,19 +24726,25 @@ impl Page10Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -23735,8 +24766,10 @@ impl Page10Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -23758,7 +24791,9 @@ impl Page10Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -23782,6 +24817,7 @@ impl Page10Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -23789,6 +24825,7 @@ impl Page10Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -23796,6 +24833,7 @@ impl Page10Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -23803,6 +24841,7 @@ impl Page10Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -23811,6 +24850,7 @@ impl Page10Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -23848,6 +24888,7 @@ impl Page10Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -23855,6 +24896,7 @@ impl Page10Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -23862,6 +24904,7 @@ impl Page10Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -23869,6 +24912,7 @@ impl Page10Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -23877,6 +24921,7 @@ impl Page10Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -23923,14 +24968,23 @@ impl Page10Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page11Lock0 {
@@ -23949,19 +25003,25 @@ impl Page11Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -23972,13 +25032,17 @@ impl Page11Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -23986,6 +25050,7 @@ impl Page11Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -23993,6 +25058,7 @@ impl Page11Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -24000,6 +25066,7 @@ impl Page11Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -24007,6 +25074,7 @@ impl Page11Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -24014,6 +25082,7 @@ impl Page11Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -24051,6 +25120,7 @@ impl Page11Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -24058,6 +25128,7 @@ impl Page11Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -24065,6 +25136,7 @@ impl Page11Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -24072,6 +25144,7 @@ impl Page11Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -24079,6 +25152,7 @@ impl Page11Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -24125,15 +25199,24 @@ impl Page11Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page11Lock1 {
@@ -24152,19 +25235,25 @@ impl Page11Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -24186,8 +25275,10 @@ impl Page11Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -24209,7 +25300,9 @@ impl Page11Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -24233,6 +25326,7 @@ impl Page11Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -24240,6 +25334,7 @@ impl Page11Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -24247,6 +25342,7 @@ impl Page11Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -24254,6 +25350,7 @@ impl Page11Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -24262,6 +25359,7 @@ impl Page11Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -24299,6 +25397,7 @@ impl Page11Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -24306,6 +25405,7 @@ impl Page11Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -24313,6 +25413,7 @@ impl Page11Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -24320,6 +25421,7 @@ impl Page11Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -24328,6 +25430,7 @@ impl Page11Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -24374,14 +25477,23 @@ impl Page11Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page12Lock0 {
@@ -24400,19 +25512,25 @@ impl Page12Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -24423,13 +25541,17 @@ impl Page12Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -24437,6 +25559,7 @@ impl Page12Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -24444,6 +25567,7 @@ impl Page12Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -24451,6 +25575,7 @@ impl Page12Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -24458,6 +25583,7 @@ impl Page12Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -24465,6 +25591,7 @@ impl Page12Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -24502,6 +25629,7 @@ impl Page12Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -24509,6 +25637,7 @@ impl Page12Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -24516,6 +25645,7 @@ impl Page12Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -24523,6 +25653,7 @@ impl Page12Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -24530,6 +25661,7 @@ impl Page12Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -24576,15 +25708,24 @@ impl Page12Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page12Lock1 {
@@ -24603,19 +25744,25 @@ impl Page12Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -24637,8 +25784,10 @@ impl Page12Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -24660,7 +25809,9 @@ impl Page12Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -24684,6 +25835,7 @@ impl Page12Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -24691,6 +25843,7 @@ impl Page12Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -24698,6 +25851,7 @@ impl Page12Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -24705,6 +25859,7 @@ impl Page12Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -24713,6 +25868,7 @@ impl Page12Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -24750,6 +25906,7 @@ impl Page12Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -24757,6 +25914,7 @@ impl Page12Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -24764,6 +25922,7 @@ impl Page12Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -24771,6 +25930,7 @@ impl Page12Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -24779,6 +25939,7 @@ impl Page12Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -24825,14 +25986,23 @@ impl Page12Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page13Lock0 {
@@ -24851,19 +26021,25 @@ impl Page13Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -24874,13 +26050,17 @@ impl Page13Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -24888,6 +26068,7 @@ impl Page13Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -24895,6 +26076,7 @@ impl Page13Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -24902,6 +26084,7 @@ impl Page13Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -24909,6 +26092,7 @@ impl Page13Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -24916,6 +26100,7 @@ impl Page13Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -24953,6 +26138,7 @@ impl Page13Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -24960,6 +26146,7 @@ impl Page13Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -24967,6 +26154,7 @@ impl Page13Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -24974,6 +26162,7 @@ impl Page13Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -24981,6 +26170,7 @@ impl Page13Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -25027,15 +26217,24 @@ impl Page13Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page13Lock1 {
@@ -25054,19 +26253,25 @@ impl Page13Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -25088,8 +26293,10 @@ impl Page13Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -25111,7 +26318,9 @@ impl Page13Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -25135,6 +26344,7 @@ impl Page13Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -25142,6 +26352,7 @@ impl Page13Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -25149,6 +26360,7 @@ impl Page13Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -25156,6 +26368,7 @@ impl Page13Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -25164,6 +26377,7 @@ impl Page13Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -25201,6 +26415,7 @@ impl Page13Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -25208,6 +26423,7 @@ impl Page13Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -25215,6 +26431,7 @@ impl Page13Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -25222,6 +26439,7 @@ impl Page13Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -25230,6 +26448,7 @@ impl Page13Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -25276,14 +26495,23 @@ impl Page13Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page14Lock0 {
@@ -25302,19 +26530,25 @@ impl Page14Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -25325,13 +26559,17 @@ impl Page14Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -25339,6 +26577,7 @@ impl Page14Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -25346,6 +26585,7 @@ impl Page14Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -25353,6 +26593,7 @@ impl Page14Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -25360,6 +26601,7 @@ impl Page14Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -25367,6 +26609,7 @@ impl Page14Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -25404,6 +26647,7 @@ impl Page14Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -25411,6 +26655,7 @@ impl Page14Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -25418,6 +26663,7 @@ impl Page14Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -25425,6 +26671,7 @@ impl Page14Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -25432,6 +26679,7 @@ impl Page14Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -25478,15 +26726,24 @@ impl Page14Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page14Lock1 {
@@ -25505,19 +26762,25 @@ impl Page14Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -25539,8 +26802,10 @@ impl Page14Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -25562,7 +26827,9 @@ impl Page14Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -25586,6 +26853,7 @@ impl Page14Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -25593,6 +26861,7 @@ impl Page14Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -25600,6 +26869,7 @@ impl Page14Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -25607,6 +26877,7 @@ impl Page14Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -25615,6 +26886,7 @@ impl Page14Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -25652,6 +26924,7 @@ impl Page14Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -25659,6 +26932,7 @@ impl Page14Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -25666,6 +26940,7 @@ impl Page14Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -25673,6 +26948,7 @@ impl Page14Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -25681,6 +26957,7 @@ impl Page14Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -25727,14 +27004,23 @@ impl Page14Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page15Lock0 {
@@ -25753,19 +27039,25 @@ impl Page15Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -25776,13 +27068,17 @@ impl Page15Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -25790,6 +27086,7 @@ impl Page15Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -25797,6 +27094,7 @@ impl Page15Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -25804,6 +27102,7 @@ impl Page15Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -25811,6 +27110,7 @@ impl Page15Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -25818,6 +27118,7 @@ impl Page15Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -25855,6 +27156,7 @@ impl Page15Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -25862,6 +27164,7 @@ impl Page15Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -25869,6 +27172,7 @@ impl Page15Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -25876,6 +27180,7 @@ impl Page15Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -25883,6 +27188,7 @@ impl Page15Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -25929,15 +27235,24 @@ impl Page15Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page15Lock1 {
@@ -25956,19 +27271,25 @@ impl Page15Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -25990,8 +27311,10 @@ impl Page15Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -26013,7 +27336,9 @@ impl Page15Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -26037,6 +27362,7 @@ impl Page15Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -26044,6 +27370,7 @@ impl Page15Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -26051,6 +27378,7 @@ impl Page15Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -26058,6 +27386,7 @@ impl Page15Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -26066,6 +27395,7 @@ impl Page15Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -26103,6 +27433,7 @@ impl Page15Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -26110,6 +27441,7 @@ impl Page15Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -26117,6 +27449,7 @@ impl Page15Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -26124,6 +27457,7 @@ impl Page15Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -26132,6 +27466,7 @@ impl Page15Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -26178,14 +27513,23 @@ impl Page15Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page16Lock0 {
@@ -26204,19 +27548,25 @@ impl Page16Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -26227,13 +27577,17 @@ impl Page16Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -26241,6 +27595,7 @@ impl Page16Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -26248,6 +27603,7 @@ impl Page16Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -26255,6 +27611,7 @@ impl Page16Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -26262,6 +27619,7 @@ impl Page16Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -26269,6 +27627,7 @@ impl Page16Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -26306,6 +27665,7 @@ impl Page16Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -26313,6 +27673,7 @@ impl Page16Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -26320,6 +27681,7 @@ impl Page16Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -26327,6 +27689,7 @@ impl Page16Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -26334,6 +27697,7 @@ impl Page16Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -26380,15 +27744,24 @@ impl Page16Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page16Lock1 {
@@ -26407,19 +27780,25 @@ impl Page16Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -26441,8 +27820,10 @@ impl Page16Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -26464,7 +27845,9 @@ impl Page16Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -26488,6 +27871,7 @@ impl Page16Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -26495,6 +27879,7 @@ impl Page16Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -26502,6 +27887,7 @@ impl Page16Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -26509,6 +27895,7 @@ impl Page16Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -26517,6 +27904,7 @@ impl Page16Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -26554,6 +27942,7 @@ impl Page16Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -26561,6 +27950,7 @@ impl Page16Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -26568,6 +27958,7 @@ impl Page16Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -26575,6 +27966,7 @@ impl Page16Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -26583,6 +27975,7 @@ impl Page16Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -26629,14 +28022,23 @@ impl Page16Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page17Lock0 {
@@ -26655,19 +28057,25 @@ impl Page17Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -26678,13 +28086,17 @@ impl Page17Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -26692,6 +28104,7 @@ impl Page17Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -26699,6 +28112,7 @@ impl Page17Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -26706,6 +28120,7 @@ impl Page17Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -26713,6 +28128,7 @@ impl Page17Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -26720,6 +28136,7 @@ impl Page17Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -26757,6 +28174,7 @@ impl Page17Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -26764,6 +28182,7 @@ impl Page17Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -26771,6 +28190,7 @@ impl Page17Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -26778,6 +28198,7 @@ impl Page17Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -26785,6 +28206,7 @@ impl Page17Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -26831,15 +28253,24 @@ impl Page17Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page17Lock1 {
@@ -26858,19 +28289,25 @@ impl Page17Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -26892,8 +28329,10 @@ impl Page17Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -26915,7 +28354,9 @@ impl Page17Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -26939,6 +28380,7 @@ impl Page17Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -26946,6 +28388,7 @@ impl Page17Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -26953,6 +28396,7 @@ impl Page17Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -26960,6 +28404,7 @@ impl Page17Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -26968,6 +28413,7 @@ impl Page17Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -27005,6 +28451,7 @@ impl Page17Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -27012,6 +28459,7 @@ impl Page17Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -27019,6 +28467,7 @@ impl Page17Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -27026,6 +28475,7 @@ impl Page17Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -27034,6 +28484,7 @@ impl Page17Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -27080,14 +28531,23 @@ impl Page17Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page18Lock0 {
@@ -27106,19 +28566,25 @@ impl Page18Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -27129,13 +28595,17 @@ impl Page18Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -27143,6 +28613,7 @@ impl Page18Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -27150,6 +28621,7 @@ impl Page18Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -27157,6 +28629,7 @@ impl Page18Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -27164,6 +28637,7 @@ impl Page18Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -27171,6 +28645,7 @@ impl Page18Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -27208,6 +28683,7 @@ impl Page18Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -27215,6 +28691,7 @@ impl Page18Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -27222,6 +28699,7 @@ impl Page18Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -27229,6 +28707,7 @@ impl Page18Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -27236,6 +28715,7 @@ impl Page18Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -27282,15 +28762,24 @@ impl Page18Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page18Lock1 {
@@ -27309,19 +28798,25 @@ impl Page18Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -27343,8 +28838,10 @@ impl Page18Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -27366,7 +28863,9 @@ impl Page18Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -27390,6 +28889,7 @@ impl Page18Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -27397,6 +28897,7 @@ impl Page18Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -27404,6 +28905,7 @@ impl Page18Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -27411,6 +28913,7 @@ impl Page18Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -27419,6 +28922,7 @@ impl Page18Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -27456,6 +28960,7 @@ impl Page18Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -27463,6 +28968,7 @@ impl Page18Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -27470,6 +28976,7 @@ impl Page18Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -27477,6 +28984,7 @@ impl Page18Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -27485,6 +28993,7 @@ impl Page18Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -27531,14 +29040,23 @@ impl Page18Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page19Lock0 {
@@ -27557,19 +29075,25 @@ impl Page19Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -27580,13 +29104,17 @@ impl Page19Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -27594,6 +29122,7 @@ impl Page19Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -27601,6 +29130,7 @@ impl Page19Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -27608,6 +29138,7 @@ impl Page19Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -27615,6 +29146,7 @@ impl Page19Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -27622,6 +29154,7 @@ impl Page19Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -27659,6 +29192,7 @@ impl Page19Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -27666,6 +29200,7 @@ impl Page19Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -27673,6 +29208,7 @@ impl Page19Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -27680,6 +29216,7 @@ impl Page19Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -27687,6 +29224,7 @@ impl Page19Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -27733,15 +29271,24 @@ impl Page19Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page19Lock1 {
@@ -27760,19 +29307,25 @@ impl Page19Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -27794,8 +29347,10 @@ impl Page19Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -27817,7 +29372,9 @@ impl Page19Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -27841,6 +29398,7 @@ impl Page19Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -27848,6 +29406,7 @@ impl Page19Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -27855,6 +29414,7 @@ impl Page19Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -27862,6 +29422,7 @@ impl Page19Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -27870,6 +29431,7 @@ impl Page19Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -27907,6 +29469,7 @@ impl Page19Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -27914,6 +29477,7 @@ impl Page19Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -27921,6 +29485,7 @@ impl Page19Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -27928,6 +29493,7 @@ impl Page19Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -27936,6 +29502,7 @@ impl Page19Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -27982,14 +29549,23 @@ impl Page19Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page20Lock0 {
@@ -28008,19 +29584,25 @@ impl Page20Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -28031,13 +29613,17 @@ impl Page20Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -28045,6 +29631,7 @@ impl Page20Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -28052,6 +29639,7 @@ impl Page20Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -28059,6 +29647,7 @@ impl Page20Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -28066,6 +29655,7 @@ impl Page20Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -28073,6 +29663,7 @@ impl Page20Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -28110,6 +29701,7 @@ impl Page20Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -28117,6 +29709,7 @@ impl Page20Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -28124,6 +29717,7 @@ impl Page20Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -28131,6 +29725,7 @@ impl Page20Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -28138,6 +29733,7 @@ impl Page20Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -28184,15 +29780,24 @@ impl Page20Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page20Lock1 {
@@ -28211,19 +29816,25 @@ impl Page20Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -28245,8 +29856,10 @@ impl Page20Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -28268,7 +29881,9 @@ impl Page20Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -28292,6 +29907,7 @@ impl Page20Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -28299,6 +29915,7 @@ impl Page20Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -28306,6 +29923,7 @@ impl Page20Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -28313,6 +29931,7 @@ impl Page20Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -28321,6 +29940,7 @@ impl Page20Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -28358,6 +29978,7 @@ impl Page20Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -28365,6 +29986,7 @@ impl Page20Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -28372,6 +29994,7 @@ impl Page20Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -28379,6 +30002,7 @@ impl Page20Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -28387,6 +30011,7 @@ impl Page20Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -28433,14 +30058,23 @@ impl Page20Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page21Lock0 {
@@ -28459,19 +30093,25 @@ impl Page21Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -28482,13 +30122,17 @@ impl Page21Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -28496,6 +30140,7 @@ impl Page21Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -28503,6 +30148,7 @@ impl Page21Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -28510,6 +30156,7 @@ impl Page21Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -28517,6 +30164,7 @@ impl Page21Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -28524,6 +30172,7 @@ impl Page21Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -28561,6 +30210,7 @@ impl Page21Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -28568,6 +30218,7 @@ impl Page21Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -28575,6 +30226,7 @@ impl Page21Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -28582,6 +30234,7 @@ impl Page21Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -28589,6 +30242,7 @@ impl Page21Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -28635,15 +30289,24 @@ impl Page21Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page21Lock1 {
@@ -28662,19 +30325,25 @@ impl Page21Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -28696,8 +30365,10 @@ impl Page21Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -28719,7 +30390,9 @@ impl Page21Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -28743,6 +30416,7 @@ impl Page21Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -28750,6 +30424,7 @@ impl Page21Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -28757,6 +30432,7 @@ impl Page21Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -28764,6 +30440,7 @@ impl Page21Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -28772,6 +30449,7 @@ impl Page21Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -28809,6 +30487,7 @@ impl Page21Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -28816,6 +30495,7 @@ impl Page21Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -28823,6 +30503,7 @@ impl Page21Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -28830,6 +30511,7 @@ impl Page21Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -28838,6 +30520,7 @@ impl Page21Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -28884,14 +30567,23 @@ impl Page21Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page22Lock0 {
@@ -28910,19 +30602,25 @@ impl Page22Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -28933,13 +30631,17 @@ impl Page22Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -28947,6 +30649,7 @@ impl Page22Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -28954,6 +30657,7 @@ impl Page22Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -28961,6 +30665,7 @@ impl Page22Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -28968,6 +30673,7 @@ impl Page22Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -28975,6 +30681,7 @@ impl Page22Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -29012,6 +30719,7 @@ impl Page22Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -29019,6 +30727,7 @@ impl Page22Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -29026,6 +30735,7 @@ impl Page22Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -29033,6 +30743,7 @@ impl Page22Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -29040,6 +30751,7 @@ impl Page22Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -29086,15 +30798,24 @@ impl Page22Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page22Lock1 {
@@ -29113,19 +30834,25 @@ impl Page22Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -29147,8 +30874,10 @@ impl Page22Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -29170,7 +30899,9 @@ impl Page22Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -29194,6 +30925,7 @@ impl Page22Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -29201,6 +30933,7 @@ impl Page22Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -29208,6 +30941,7 @@ impl Page22Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -29215,6 +30949,7 @@ impl Page22Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -29223,6 +30958,7 @@ impl Page22Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -29260,6 +30996,7 @@ impl Page22Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -29267,6 +31004,7 @@ impl Page22Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -29274,6 +31012,7 @@ impl Page22Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -29281,6 +31020,7 @@ impl Page22Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -29289,6 +31029,7 @@ impl Page22Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -29335,14 +31076,23 @@ impl Page22Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page23Lock0 {
@@ -29361,19 +31111,25 @@ impl Page23Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -29384,13 +31140,17 @@ impl Page23Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -29398,6 +31158,7 @@ impl Page23Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -29405,6 +31166,7 @@ impl Page23Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -29412,6 +31174,7 @@ impl Page23Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -29419,6 +31182,7 @@ impl Page23Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -29426,6 +31190,7 @@ impl Page23Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -29463,6 +31228,7 @@ impl Page23Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -29470,6 +31236,7 @@ impl Page23Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -29477,6 +31244,7 @@ impl Page23Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -29484,6 +31252,7 @@ impl Page23Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -29491,6 +31260,7 @@ impl Page23Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -29537,15 +31307,24 @@ impl Page23Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page23Lock1 {
@@ -29564,19 +31343,25 @@ impl Page23Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -29598,8 +31383,10 @@ impl Page23Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -29621,7 +31408,9 @@ impl Page23Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -29645,6 +31434,7 @@ impl Page23Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -29652,6 +31442,7 @@ impl Page23Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -29659,6 +31450,7 @@ impl Page23Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -29666,6 +31458,7 @@ impl Page23Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -29674,6 +31467,7 @@ impl Page23Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -29711,6 +31505,7 @@ impl Page23Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -29718,6 +31513,7 @@ impl Page23Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -29725,6 +31521,7 @@ impl Page23Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -29732,6 +31529,7 @@ impl Page23Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -29740,6 +31538,7 @@ impl Page23Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -29786,14 +31585,23 @@ impl Page23Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page24Lock0 {
@@ -29812,19 +31620,25 @@ impl Page24Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -29835,13 +31649,17 @@ impl Page24Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -29849,6 +31667,7 @@ impl Page24Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -29856,6 +31675,7 @@ impl Page24Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -29863,6 +31683,7 @@ impl Page24Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -29870,6 +31691,7 @@ impl Page24Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -29877,6 +31699,7 @@ impl Page24Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -29914,6 +31737,7 @@ impl Page24Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -29921,6 +31745,7 @@ impl Page24Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -29928,6 +31753,7 @@ impl Page24Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -29935,6 +31761,7 @@ impl Page24Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -29942,6 +31769,7 @@ impl Page24Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -29988,15 +31816,24 @@ impl Page24Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page24Lock1 {
@@ -30015,19 +31852,25 @@ impl Page24Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -30049,8 +31892,10 @@ impl Page24Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -30072,7 +31917,9 @@ impl Page24Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -30096,6 +31943,7 @@ impl Page24Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -30103,6 +31951,7 @@ impl Page24Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -30110,6 +31959,7 @@ impl Page24Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -30117,6 +31967,7 @@ impl Page24Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -30125,6 +31976,7 @@ impl Page24Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -30162,6 +32014,7 @@ impl Page24Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -30169,6 +32022,7 @@ impl Page24Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -30176,6 +32030,7 @@ impl Page24Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -30183,6 +32038,7 @@ impl Page24Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -30191,6 +32047,7 @@ impl Page24Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -30237,14 +32094,23 @@ impl Page24Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page25Lock0 {
@@ -30263,19 +32129,25 @@ impl Page25Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -30286,13 +32158,17 @@ impl Page25Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -30300,6 +32176,7 @@ impl Page25Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -30307,6 +32184,7 @@ impl Page25Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -30314,6 +32192,7 @@ impl Page25Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -30321,6 +32200,7 @@ impl Page25Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -30328,6 +32208,7 @@ impl Page25Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -30365,6 +32246,7 @@ impl Page25Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -30372,6 +32254,7 @@ impl Page25Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -30379,6 +32262,7 @@ impl Page25Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -30386,6 +32270,7 @@ impl Page25Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -30393,6 +32278,7 @@ impl Page25Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -30439,15 +32325,24 @@ impl Page25Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page25Lock1 {
@@ -30466,19 +32361,25 @@ impl Page25Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -30500,8 +32401,10 @@ impl Page25Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -30523,7 +32426,9 @@ impl Page25Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -30547,6 +32452,7 @@ impl Page25Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -30554,6 +32460,7 @@ impl Page25Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -30561,6 +32468,7 @@ impl Page25Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -30568,6 +32476,7 @@ impl Page25Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -30576,6 +32485,7 @@ impl Page25Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -30613,6 +32523,7 @@ impl Page25Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -30620,6 +32531,7 @@ impl Page25Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -30627,6 +32539,7 @@ impl Page25Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -30634,6 +32547,7 @@ impl Page25Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -30642,6 +32556,7 @@ impl Page25Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -30688,14 +32603,23 @@ impl Page25Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page26Lock0 {
@@ -30714,19 +32638,25 @@ impl Page26Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -30737,13 +32667,17 @@ impl Page26Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -30751,6 +32685,7 @@ impl Page26Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -30758,6 +32693,7 @@ impl Page26Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -30765,6 +32701,7 @@ impl Page26Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -30772,6 +32709,7 @@ impl Page26Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -30779,6 +32717,7 @@ impl Page26Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -30816,6 +32755,7 @@ impl Page26Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -30823,6 +32763,7 @@ impl Page26Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -30830,6 +32771,7 @@ impl Page26Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -30837,6 +32779,7 @@ impl Page26Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -30844,6 +32787,7 @@ impl Page26Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -30890,15 +32834,24 @@ impl Page26Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page26Lock1 {
@@ -30917,19 +32870,25 @@ impl Page26Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -30951,8 +32910,10 @@ impl Page26Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -30974,7 +32935,9 @@ impl Page26Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -30998,6 +32961,7 @@ impl Page26Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -31005,6 +32969,7 @@ impl Page26Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -31012,6 +32977,7 @@ impl Page26Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -31019,6 +32985,7 @@ impl Page26Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31027,6 +32994,7 @@ impl Page26Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -31064,6 +33032,7 @@ impl Page26Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -31071,6 +33040,7 @@ impl Page26Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -31078,6 +33048,7 @@ impl Page26Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -31085,6 +33056,7 @@ impl Page26Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31093,6 +33065,7 @@ impl Page26Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -31139,14 +33112,23 @@ impl Page26Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page27Lock0 {
@@ -31165,19 +33147,25 @@ impl Page27Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -31188,13 +33176,17 @@ impl Page27Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -31202,6 +33194,7 @@ impl Page27Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -31209,6 +33202,7 @@ impl Page27Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -31216,6 +33210,7 @@ impl Page27Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -31223,6 +33218,7 @@ impl Page27Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -31230,6 +33226,7 @@ impl Page27Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -31267,6 +33264,7 @@ impl Page27Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -31274,6 +33272,7 @@ impl Page27Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -31281,6 +33280,7 @@ impl Page27Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -31288,6 +33288,7 @@ impl Page27Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -31295,6 +33296,7 @@ impl Page27Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -31341,15 +33343,24 @@ impl Page27Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page27Lock1 {
@@ -31368,19 +33379,25 @@ impl Page27Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -31402,8 +33419,10 @@ impl Page27Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -31425,7 +33444,9 @@ impl Page27Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -31449,6 +33470,7 @@ impl Page27Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -31456,6 +33478,7 @@ impl Page27Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -31463,6 +33486,7 @@ impl Page27Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -31470,6 +33494,7 @@ impl Page27Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31478,6 +33503,7 @@ impl Page27Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -31515,6 +33541,7 @@ impl Page27Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -31522,6 +33549,7 @@ impl Page27Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -31529,6 +33557,7 @@ impl Page27Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -31536,6 +33565,7 @@ impl Page27Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31544,6 +33574,7 @@ impl Page27Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -31590,14 +33621,23 @@ impl Page27Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page28Lock0 {
@@ -31616,19 +33656,25 @@ impl Page28Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -31639,13 +33685,17 @@ impl Page28Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -31653,6 +33703,7 @@ impl Page28Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -31660,6 +33711,7 @@ impl Page28Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -31667,6 +33719,7 @@ impl Page28Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -31674,6 +33727,7 @@ impl Page28Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -31681,6 +33735,7 @@ impl Page28Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -31718,6 +33773,7 @@ impl Page28Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -31725,6 +33781,7 @@ impl Page28Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -31732,6 +33789,7 @@ impl Page28Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -31739,6 +33797,7 @@ impl Page28Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -31746,6 +33805,7 @@ impl Page28Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -31792,15 +33852,24 @@ impl Page28Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page28Lock1 {
@@ -31819,19 +33888,25 @@ impl Page28Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -31853,8 +33928,10 @@ impl Page28Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -31876,7 +33953,9 @@ impl Page28Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -31900,6 +33979,7 @@ impl Page28Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -31907,6 +33987,7 @@ impl Page28Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -31914,6 +33995,7 @@ impl Page28Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -31921,6 +34003,7 @@ impl Page28Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31929,6 +34012,7 @@ impl Page28Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -31966,6 +34050,7 @@ impl Page28Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -31973,6 +34058,7 @@ impl Page28Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -31980,6 +34066,7 @@ impl Page28Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -31987,6 +34074,7 @@ impl Page28Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -31995,6 +34083,7 @@ impl Page28Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -32041,14 +34130,23 @@ impl Page28Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page29Lock0 {
@@ -32067,19 +34165,25 @@ impl Page29Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -32090,13 +34194,17 @@ impl Page29Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -32104,6 +34212,7 @@ impl Page29Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -32111,6 +34220,7 @@ impl Page29Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -32118,6 +34228,7 @@ impl Page29Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -32125,6 +34236,7 @@ impl Page29Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -32132,6 +34244,7 @@ impl Page29Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -32169,6 +34282,7 @@ impl Page29Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -32176,6 +34290,7 @@ impl Page29Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -32183,6 +34298,7 @@ impl Page29Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -32190,6 +34306,7 @@ impl Page29Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -32197,6 +34314,7 @@ impl Page29Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -32243,15 +34361,24 @@ impl Page29Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page29Lock1 {
@@ -32270,19 +34397,25 @@ impl Page29Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -32304,8 +34437,10 @@ impl Page29Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -32327,7 +34462,9 @@ impl Page29Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -32351,6 +34488,7 @@ impl Page29Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -32358,6 +34496,7 @@ impl Page29Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -32365,6 +34504,7 @@ impl Page29Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -32372,6 +34512,7 @@ impl Page29Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -32380,6 +34521,7 @@ impl Page29Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -32417,6 +34559,7 @@ impl Page29Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -32424,6 +34567,7 @@ impl Page29Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -32431,6 +34575,7 @@ impl Page29Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -32438,6 +34583,7 @@ impl Page29Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -32446,6 +34592,7 @@ impl Page29Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -32492,14 +34639,23 @@ impl Page29Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page30Lock0 {
@@ -32518,19 +34674,25 @@ impl Page30Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -32541,13 +34703,17 @@ impl Page30Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -32555,6 +34721,7 @@ impl Page30Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -32562,6 +34729,7 @@ impl Page30Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -32569,6 +34737,7 @@ impl Page30Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -32576,6 +34745,7 @@ impl Page30Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -32583,6 +34753,7 @@ impl Page30Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -32620,6 +34791,7 @@ impl Page30Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -32627,6 +34799,7 @@ impl Page30Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -32634,6 +34807,7 @@ impl Page30Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -32641,6 +34815,7 @@ impl Page30Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -32648,6 +34823,7 @@ impl Page30Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -32694,15 +34870,24 @@ impl Page30Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page30Lock1 {
@@ -32721,19 +34906,25 @@ impl Page30Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -32755,8 +34946,10 @@ impl Page30Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -32778,7 +34971,9 @@ impl Page30Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -32802,6 +34997,7 @@ impl Page30Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -32809,6 +35005,7 @@ impl Page30Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -32816,6 +35013,7 @@ impl Page30Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -32823,6 +35021,7 @@ impl Page30Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -32831,6 +35030,7 @@ impl Page30Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -32868,6 +35068,7 @@ impl Page30Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -32875,6 +35076,7 @@ impl Page30Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -32882,6 +35084,7 @@ impl Page30Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -32889,6 +35092,7 @@ impl Page30Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -32897,6 +35101,7 @@ impl Page30Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -32943,14 +35148,23 @@ impl Page30Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page31Lock0 {
@@ -32969,19 +35183,25 @@ impl Page31Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -32992,13 +35212,17 @@ impl Page31Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -33006,6 +35230,7 @@ impl Page31Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -33013,6 +35238,7 @@ impl Page31Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -33020,6 +35246,7 @@ impl Page31Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -33027,6 +35254,7 @@ impl Page31Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -33034,6 +35262,7 @@ impl Page31Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -33071,6 +35300,7 @@ impl Page31Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -33078,6 +35308,7 @@ impl Page31Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -33085,6 +35316,7 @@ impl Page31Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -33092,6 +35324,7 @@ impl Page31Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -33099,6 +35332,7 @@ impl Page31Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -33145,15 +35379,24 @@ impl Page31Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page31Lock1 {
@@ -33172,19 +35415,25 @@ impl Page31Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -33206,8 +35455,10 @@ impl Page31Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -33229,7 +35480,9 @@ impl Page31Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -33253,6 +35506,7 @@ impl Page31Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -33260,6 +35514,7 @@ impl Page31Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -33267,6 +35522,7 @@ impl Page31Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -33274,6 +35530,7 @@ impl Page31Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -33282,6 +35539,7 @@ impl Page31Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -33319,6 +35577,7 @@ impl Page31Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -33326,6 +35585,7 @@ impl Page31Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -33333,6 +35593,7 @@ impl Page31Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -33340,6 +35601,7 @@ impl Page31Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -33348,6 +35610,7 @@ impl Page31Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -33394,14 +35657,23 @@ impl Page31Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page32Lock0 {
@@ -33420,19 +35692,25 @@ impl Page32Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -33443,13 +35721,17 @@ impl Page32Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -33457,6 +35739,7 @@ impl Page32Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -33464,6 +35747,7 @@ impl Page32Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -33471,6 +35755,7 @@ impl Page32Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -33478,6 +35763,7 @@ impl Page32Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -33485,6 +35771,7 @@ impl Page32Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -33522,6 +35809,7 @@ impl Page32Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -33529,6 +35817,7 @@ impl Page32Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -33536,6 +35825,7 @@ impl Page32Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -33543,6 +35833,7 @@ impl Page32Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -33550,6 +35841,7 @@ impl Page32Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -33596,15 +35888,24 @@ impl Page32Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page32Lock1 {
@@ -33623,19 +35924,25 @@ impl Page32Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -33657,8 +35964,10 @@ impl Page32Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -33680,7 +35989,9 @@ impl Page32Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -33704,6 +36015,7 @@ impl Page32Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -33711,6 +36023,7 @@ impl Page32Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -33718,6 +36031,7 @@ impl Page32Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -33725,6 +36039,7 @@ impl Page32Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -33733,6 +36048,7 @@ impl Page32Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -33770,6 +36086,7 @@ impl Page32Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -33777,6 +36094,7 @@ impl Page32Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -33784,6 +36102,7 @@ impl Page32Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -33791,6 +36110,7 @@ impl Page32Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -33799,6 +36119,7 @@ impl Page32Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -33845,14 +36166,23 @@ impl Page32Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page33Lock0 {
@@ -33871,19 +36201,25 @@ impl Page33Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -33894,13 +36230,17 @@ impl Page33Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -33908,6 +36248,7 @@ impl Page33Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -33915,6 +36256,7 @@ impl Page33Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -33922,6 +36264,7 @@ impl Page33Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -33929,6 +36272,7 @@ impl Page33Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -33936,6 +36280,7 @@ impl Page33Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -33973,6 +36318,7 @@ impl Page33Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -33980,6 +36326,7 @@ impl Page33Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -33987,6 +36334,7 @@ impl Page33Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -33994,6 +36342,7 @@ impl Page33Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -34001,6 +36350,7 @@ impl Page33Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -34047,15 +36397,24 @@ impl Page33Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page33Lock1 {
@@ -34074,19 +36433,25 @@ impl Page33Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -34108,8 +36473,10 @@ impl Page33Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -34131,7 +36498,9 @@ impl Page33Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -34155,6 +36524,7 @@ impl Page33Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -34162,6 +36532,7 @@ impl Page33Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -34169,6 +36540,7 @@ impl Page33Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -34176,6 +36548,7 @@ impl Page33Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -34184,6 +36557,7 @@ impl Page33Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -34221,6 +36595,7 @@ impl Page33Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -34228,6 +36603,7 @@ impl Page33Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -34235,6 +36611,7 @@ impl Page33Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -34242,6 +36619,7 @@ impl Page33Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -34250,6 +36628,7 @@ impl Page33Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -34296,14 +36675,23 @@ impl Page33Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page34Lock0 {
@@ -34322,19 +36710,25 @@ impl Page34Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -34345,13 +36739,17 @@ impl Page34Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -34359,6 +36757,7 @@ impl Page34Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -34366,6 +36765,7 @@ impl Page34Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -34373,6 +36773,7 @@ impl Page34Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -34380,6 +36781,7 @@ impl Page34Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -34387,6 +36789,7 @@ impl Page34Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -34424,6 +36827,7 @@ impl Page34Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -34431,6 +36835,7 @@ impl Page34Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -34438,6 +36843,7 @@ impl Page34Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -34445,6 +36851,7 @@ impl Page34Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -34452,6 +36859,7 @@ impl Page34Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -34498,15 +36906,24 @@ impl Page34Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page34Lock1 {
@@ -34525,19 +36942,25 @@ impl Page34Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -34559,8 +36982,10 @@ impl Page34Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -34582,7 +37007,9 @@ impl Page34Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -34606,6 +37033,7 @@ impl Page34Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -34613,6 +37041,7 @@ impl Page34Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -34620,6 +37049,7 @@ impl Page34Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -34627,6 +37057,7 @@ impl Page34Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -34635,6 +37066,7 @@ impl Page34Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -34672,6 +37104,7 @@ impl Page34Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -34679,6 +37112,7 @@ impl Page34Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -34686,6 +37120,7 @@ impl Page34Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -34693,6 +37128,7 @@ impl Page34Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -34701,6 +37137,7 @@ impl Page34Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -34747,14 +37184,23 @@ impl Page34Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page35Lock0 {
@@ -34773,19 +37219,25 @@ impl Page35Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -34796,13 +37248,17 @@ impl Page35Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -34810,6 +37266,7 @@ impl Page35Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -34817,6 +37274,7 @@ impl Page35Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -34824,6 +37282,7 @@ impl Page35Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -34831,6 +37290,7 @@ impl Page35Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -34838,6 +37298,7 @@ impl Page35Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -34875,6 +37336,7 @@ impl Page35Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -34882,6 +37344,7 @@ impl Page35Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -34889,6 +37352,7 @@ impl Page35Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -34896,6 +37360,7 @@ impl Page35Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -34903,6 +37368,7 @@ impl Page35Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -34949,15 +37415,24 @@ impl Page35Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page35Lock1 {
@@ -34976,19 +37451,25 @@ impl Page35Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -35010,8 +37491,10 @@ impl Page35Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -35033,7 +37516,9 @@ impl Page35Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -35057,6 +37542,7 @@ impl Page35Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -35064,6 +37550,7 @@ impl Page35Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -35071,6 +37558,7 @@ impl Page35Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -35078,6 +37566,7 @@ impl Page35Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -35086,6 +37575,7 @@ impl Page35Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -35123,6 +37613,7 @@ impl Page35Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -35130,6 +37621,7 @@ impl Page35Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -35137,6 +37629,7 @@ impl Page35Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -35144,6 +37637,7 @@ impl Page35Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -35152,6 +37646,7 @@ impl Page35Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -35198,14 +37693,23 @@ impl Page35Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page36Lock0 {
@@ -35224,19 +37728,25 @@ impl Page36Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -35247,13 +37757,17 @@ impl Page36Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -35261,6 +37775,7 @@ impl Page36Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -35268,6 +37783,7 @@ impl Page36Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -35275,6 +37791,7 @@ impl Page36Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -35282,6 +37799,7 @@ impl Page36Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -35289,6 +37807,7 @@ impl Page36Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -35326,6 +37845,7 @@ impl Page36Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -35333,6 +37853,7 @@ impl Page36Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -35340,6 +37861,7 @@ impl Page36Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -35347,6 +37869,7 @@ impl Page36Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -35354,6 +37877,7 @@ impl Page36Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -35400,15 +37924,24 @@ impl Page36Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page36Lock1 {
@@ -35427,19 +37960,25 @@ impl Page36Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -35461,8 +38000,10 @@ impl Page36Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -35484,7 +38025,9 @@ impl Page36Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -35508,6 +38051,7 @@ impl Page36Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -35515,6 +38059,7 @@ impl Page36Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -35522,6 +38067,7 @@ impl Page36Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -35529,6 +38075,7 @@ impl Page36Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -35537,6 +38084,7 @@ impl Page36Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -35574,6 +38122,7 @@ impl Page36Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -35581,6 +38130,7 @@ impl Page36Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -35588,6 +38138,7 @@ impl Page36Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -35595,6 +38146,7 @@ impl Page36Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -35603,6 +38155,7 @@ impl Page36Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -35649,14 +38202,23 @@ impl Page36Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page37Lock0 {
@@ -35675,19 +38237,25 @@ impl Page37Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -35698,13 +38266,17 @@ impl Page37Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -35712,6 +38284,7 @@ impl Page37Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -35719,6 +38292,7 @@ impl Page37Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -35726,6 +38300,7 @@ impl Page37Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -35733,6 +38308,7 @@ impl Page37Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -35740,6 +38316,7 @@ impl Page37Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -35777,6 +38354,7 @@ impl Page37Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -35784,6 +38362,7 @@ impl Page37Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -35791,6 +38370,7 @@ impl Page37Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -35798,6 +38378,7 @@ impl Page37Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -35805,6 +38386,7 @@ impl Page37Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -35851,15 +38433,24 @@ impl Page37Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page37Lock1 {
@@ -35878,19 +38469,25 @@ impl Page37Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -35912,8 +38509,10 @@ impl Page37Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -35935,7 +38534,9 @@ impl Page37Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -35959,6 +38560,7 @@ impl Page37Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -35966,6 +38568,7 @@ impl Page37Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -35973,6 +38576,7 @@ impl Page37Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -35980,6 +38584,7 @@ impl Page37Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -35988,6 +38593,7 @@ impl Page37Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -36025,6 +38631,7 @@ impl Page37Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -36032,6 +38639,7 @@ impl Page37Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -36039,6 +38647,7 @@ impl Page37Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -36046,6 +38655,7 @@ impl Page37Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -36054,6 +38664,7 @@ impl Page37Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -36100,14 +38711,23 @@ impl Page37Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page38Lock0 {
@@ -36126,19 +38746,25 @@ impl Page38Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -36149,13 +38775,17 @@ impl Page38Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -36163,6 +38793,7 @@ impl Page38Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -36170,6 +38801,7 @@ impl Page38Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -36177,6 +38809,7 @@ impl Page38Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -36184,6 +38817,7 @@ impl Page38Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -36191,6 +38825,7 @@ impl Page38Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -36228,6 +38863,7 @@ impl Page38Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -36235,6 +38871,7 @@ impl Page38Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -36242,6 +38879,7 @@ impl Page38Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -36249,6 +38887,7 @@ impl Page38Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -36256,6 +38895,7 @@ impl Page38Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -36302,15 +38942,24 @@ impl Page38Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page38Lock1 {
@@ -36329,19 +38978,25 @@ impl Page38Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -36363,8 +39018,10 @@ impl Page38Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -36386,7 +39043,9 @@ impl Page38Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -36410,6 +39069,7 @@ impl Page38Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -36417,6 +39077,7 @@ impl Page38Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -36424,6 +39085,7 @@ impl Page38Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -36431,6 +39093,7 @@ impl Page38Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -36439,6 +39102,7 @@ impl Page38Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -36476,6 +39140,7 @@ impl Page38Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -36483,6 +39148,7 @@ impl Page38Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -36490,6 +39156,7 @@ impl Page38Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -36497,6 +39164,7 @@ impl Page38Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -36505,6 +39173,7 @@ impl Page38Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -36551,14 +39220,23 @@ impl Page38Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page39Lock0 {
@@ -36577,19 +39255,25 @@ impl Page39Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -36600,13 +39284,17 @@ impl Page39Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -36614,6 +39302,7 @@ impl Page39Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -36621,6 +39310,7 @@ impl Page39Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -36628,6 +39318,7 @@ impl Page39Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -36635,6 +39326,7 @@ impl Page39Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -36642,6 +39334,7 @@ impl Page39Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -36679,6 +39372,7 @@ impl Page39Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -36686,6 +39380,7 @@ impl Page39Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -36693,6 +39388,7 @@ impl Page39Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -36700,6 +39396,7 @@ impl Page39Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -36707,6 +39404,7 @@ impl Page39Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -36753,15 +39451,24 @@ impl Page39Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page39Lock1 {
@@ -36780,19 +39487,25 @@ impl Page39Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -36814,8 +39527,10 @@ impl Page39Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -36837,7 +39552,9 @@ impl Page39Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -36861,6 +39578,7 @@ impl Page39Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -36868,6 +39586,7 @@ impl Page39Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -36875,6 +39594,7 @@ impl Page39Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -36882,6 +39602,7 @@ impl Page39Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -36890,6 +39611,7 @@ impl Page39Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -36927,6 +39649,7 @@ impl Page39Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -36934,6 +39657,7 @@ impl Page39Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -36941,6 +39665,7 @@ impl Page39Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -36948,6 +39673,7 @@ impl Page39Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -36956,6 +39682,7 @@ impl Page39Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -37002,14 +39729,23 @@ impl Page39Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page40Lock0 {
@@ -37028,19 +39764,25 @@ impl Page40Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -37051,13 +39793,17 @@ impl Page40Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -37065,6 +39811,7 @@ impl Page40Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -37072,6 +39819,7 @@ impl Page40Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -37079,6 +39827,7 @@ impl Page40Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -37086,6 +39835,7 @@ impl Page40Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -37093,6 +39843,7 @@ impl Page40Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -37130,6 +39881,7 @@ impl Page40Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -37137,6 +39889,7 @@ impl Page40Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -37144,6 +39897,7 @@ impl Page40Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -37151,6 +39905,7 @@ impl Page40Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -37158,6 +39913,7 @@ impl Page40Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -37204,15 +39960,24 @@ impl Page40Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page40Lock1 {
@@ -37231,19 +39996,25 @@ impl Page40Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -37265,8 +40036,10 @@ impl Page40Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -37288,7 +40061,9 @@ impl Page40Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -37312,6 +40087,7 @@ impl Page40Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -37319,6 +40095,7 @@ impl Page40Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -37326,6 +40103,7 @@ impl Page40Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -37333,6 +40111,7 @@ impl Page40Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -37341,6 +40120,7 @@ impl Page40Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -37378,6 +40158,7 @@ impl Page40Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -37385,6 +40166,7 @@ impl Page40Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -37392,6 +40174,7 @@ impl Page40Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -37399,6 +40182,7 @@ impl Page40Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -37407,6 +40191,7 @@ impl Page40Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -37453,14 +40238,23 @@ impl Page40Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page41Lock0 {
@@ -37479,19 +40273,25 @@ impl Page41Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -37502,13 +40302,17 @@ impl Page41Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -37516,6 +40320,7 @@ impl Page41Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -37523,6 +40328,7 @@ impl Page41Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -37530,6 +40336,7 @@ impl Page41Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -37537,6 +40344,7 @@ impl Page41Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -37544,6 +40352,7 @@ impl Page41Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -37581,6 +40390,7 @@ impl Page41Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -37588,6 +40398,7 @@ impl Page41Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -37595,6 +40406,7 @@ impl Page41Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -37602,6 +40414,7 @@ impl Page41Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -37609,6 +40422,7 @@ impl Page41Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -37655,15 +40469,24 @@ impl Page41Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page41Lock1 {
@@ -37682,19 +40505,25 @@ impl Page41Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -37716,8 +40545,10 @@ impl Page41Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -37739,7 +40570,9 @@ impl Page41Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -37763,6 +40596,7 @@ impl Page41Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -37770,6 +40604,7 @@ impl Page41Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -37777,6 +40612,7 @@ impl Page41Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -37784,6 +40620,7 @@ impl Page41Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -37792,6 +40629,7 @@ impl Page41Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -37829,6 +40667,7 @@ impl Page41Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -37836,6 +40675,7 @@ impl Page41Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -37843,6 +40683,7 @@ impl Page41Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -37850,6 +40691,7 @@ impl Page41Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -37858,6 +40700,7 @@ impl Page41Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -37904,14 +40747,23 @@ impl Page41Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page42Lock0 {
@@ -37930,19 +40782,25 @@ impl Page42Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -37953,13 +40811,17 @@ impl Page42Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -37967,6 +40829,7 @@ impl Page42Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -37974,6 +40837,7 @@ impl Page42Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -37981,6 +40845,7 @@ impl Page42Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -37988,6 +40853,7 @@ impl Page42Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -37995,6 +40861,7 @@ impl Page42Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -38032,6 +40899,7 @@ impl Page42Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -38039,6 +40907,7 @@ impl Page42Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -38046,6 +40915,7 @@ impl Page42Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -38053,6 +40923,7 @@ impl Page42Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -38060,6 +40931,7 @@ impl Page42Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -38106,15 +40978,24 @@ impl Page42Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page42Lock1 {
@@ -38133,19 +41014,25 @@ impl Page42Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -38167,8 +41054,10 @@ impl Page42Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -38190,7 +41079,9 @@ impl Page42Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -38214,6 +41105,7 @@ impl Page42Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -38221,6 +41113,7 @@ impl Page42Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -38228,6 +41121,7 @@ impl Page42Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -38235,6 +41129,7 @@ impl Page42Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -38243,6 +41138,7 @@ impl Page42Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -38280,6 +41176,7 @@ impl Page42Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -38287,6 +41184,7 @@ impl Page42Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -38294,6 +41192,7 @@ impl Page42Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -38301,6 +41200,7 @@ impl Page42Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -38309,6 +41209,7 @@ impl Page42Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -38355,14 +41256,23 @@ impl Page42Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page43Lock0 {
@@ -38381,19 +41291,25 @@ impl Page43Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -38404,13 +41320,17 @@ impl Page43Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -38418,6 +41338,7 @@ impl Page43Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -38425,6 +41346,7 @@ impl Page43Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -38432,6 +41354,7 @@ impl Page43Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -38439,6 +41362,7 @@ impl Page43Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -38446,6 +41370,7 @@ impl Page43Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -38483,6 +41408,7 @@ impl Page43Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -38490,6 +41416,7 @@ impl Page43Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -38497,6 +41424,7 @@ impl Page43Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -38504,6 +41432,7 @@ impl Page43Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -38511,6 +41440,7 @@ impl Page43Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -38557,15 +41487,24 @@ impl Page43Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page43Lock1 {
@@ -38584,19 +41523,25 @@ impl Page43Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -38618,8 +41563,10 @@ impl Page43Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -38641,7 +41588,9 @@ impl Page43Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -38665,6 +41614,7 @@ impl Page43Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -38672,6 +41622,7 @@ impl Page43Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -38679,6 +41630,7 @@ impl Page43Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -38686,6 +41638,7 @@ impl Page43Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -38694,6 +41647,7 @@ impl Page43Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -38731,6 +41685,7 @@ impl Page43Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -38738,6 +41693,7 @@ impl Page43Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -38745,6 +41701,7 @@ impl Page43Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -38752,6 +41709,7 @@ impl Page43Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -38760,6 +41718,7 @@ impl Page43Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -38806,14 +41765,23 @@ impl Page43Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page44Lock0 {
@@ -38832,19 +41800,25 @@ impl Page44Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -38855,13 +41829,17 @@ impl Page44Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -38869,6 +41847,7 @@ impl Page44Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -38876,6 +41855,7 @@ impl Page44Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -38883,6 +41863,7 @@ impl Page44Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -38890,6 +41871,7 @@ impl Page44Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -38897,6 +41879,7 @@ impl Page44Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -38934,6 +41917,7 @@ impl Page44Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -38941,6 +41925,7 @@ impl Page44Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -38948,6 +41933,7 @@ impl Page44Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -38955,6 +41941,7 @@ impl Page44Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -38962,6 +41949,7 @@ impl Page44Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -39008,15 +41996,24 @@ impl Page44Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page44Lock1 {
@@ -39035,19 +42032,25 @@ impl Page44Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -39069,8 +42072,10 @@ impl Page44Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -39092,7 +42097,9 @@ impl Page44Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -39116,6 +42123,7 @@ impl Page44Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -39123,6 +42131,7 @@ impl Page44Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -39130,6 +42139,7 @@ impl Page44Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -39137,6 +42147,7 @@ impl Page44Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -39145,6 +42156,7 @@ impl Page44Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -39182,6 +42194,7 @@ impl Page44Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -39189,6 +42202,7 @@ impl Page44Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -39196,6 +42210,7 @@ impl Page44Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -39203,6 +42218,7 @@ impl Page44Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -39211,6 +42227,7 @@ impl Page44Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -39257,14 +42274,23 @@ impl Page44Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page45Lock0 {
@@ -39283,19 +42309,25 @@ impl Page45Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -39306,13 +42338,17 @@ impl Page45Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -39320,6 +42356,7 @@ impl Page45Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -39327,6 +42364,7 @@ impl Page45Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -39334,6 +42372,7 @@ impl Page45Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -39341,6 +42380,7 @@ impl Page45Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -39348,6 +42388,7 @@ impl Page45Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -39385,6 +42426,7 @@ impl Page45Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -39392,6 +42434,7 @@ impl Page45Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -39399,6 +42442,7 @@ impl Page45Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -39406,6 +42450,7 @@ impl Page45Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -39413,6 +42458,7 @@ impl Page45Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -39459,15 +42505,24 @@ impl Page45Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page45Lock1 {
@@ -39486,19 +42541,25 @@ impl Page45Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -39520,8 +42581,10 @@ impl Page45Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -39543,7 +42606,9 @@ impl Page45Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -39567,6 +42632,7 @@ impl Page45Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -39574,6 +42640,7 @@ impl Page45Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -39581,6 +42648,7 @@ impl Page45Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -39588,6 +42656,7 @@ impl Page45Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -39596,6 +42665,7 @@ impl Page45Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -39633,6 +42703,7 @@ impl Page45Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -39640,6 +42711,7 @@ impl Page45Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -39647,6 +42719,7 @@ impl Page45Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -39654,6 +42727,7 @@ impl Page45Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -39662,6 +42736,7 @@ impl Page45Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -39708,14 +42783,23 @@ impl Page45Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page46Lock0 {
@@ -39734,19 +42818,25 @@ impl Page46Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -39757,13 +42847,17 @@ impl Page46Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -39771,6 +42865,7 @@ impl Page46Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -39778,6 +42873,7 @@ impl Page46Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -39785,6 +42881,7 @@ impl Page46Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -39792,6 +42889,7 @@ impl Page46Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -39799,6 +42897,7 @@ impl Page46Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -39836,6 +42935,7 @@ impl Page46Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -39843,6 +42943,7 @@ impl Page46Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -39850,6 +42951,7 @@ impl Page46Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -39857,6 +42959,7 @@ impl Page46Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -39864,6 +42967,7 @@ impl Page46Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -39910,15 +43014,24 @@ impl Page46Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page46Lock1 {
@@ -39937,19 +43050,25 @@ impl Page46Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -39971,8 +43090,10 @@ impl Page46Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -39994,7 +43115,9 @@ impl Page46Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -40018,6 +43141,7 @@ impl Page46Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -40025,6 +43149,7 @@ impl Page46Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -40032,6 +43157,7 @@ impl Page46Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -40039,6 +43165,7 @@ impl Page46Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -40047,6 +43174,7 @@ impl Page46Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -40084,6 +43212,7 @@ impl Page46Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -40091,6 +43220,7 @@ impl Page46Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -40098,6 +43228,7 @@ impl Page46Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -40105,6 +43236,7 @@ impl Page46Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -40113,6 +43245,7 @@ impl Page46Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -40159,14 +43292,23 @@ impl Page46Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page47Lock0 {
@@ -40185,19 +43327,25 @@ impl Page47Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -40208,13 +43356,17 @@ impl Page47Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -40222,6 +43374,7 @@ impl Page47Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -40229,6 +43382,7 @@ impl Page47Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -40236,6 +43390,7 @@ impl Page47Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -40243,6 +43398,7 @@ impl Page47Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -40250,6 +43406,7 @@ impl Page47Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -40287,6 +43444,7 @@ impl Page47Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -40294,6 +43452,7 @@ impl Page47Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -40301,6 +43460,7 @@ impl Page47Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -40308,6 +43468,7 @@ impl Page47Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -40315,6 +43476,7 @@ impl Page47Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -40361,15 +43523,24 @@ impl Page47Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page47Lock1 {
@@ -40388,19 +43559,25 @@ impl Page47Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -40422,8 +43599,10 @@ impl Page47Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -40445,7 +43624,9 @@ impl Page47Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -40469,6 +43650,7 @@ impl Page47Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -40476,6 +43658,7 @@ impl Page47Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -40483,6 +43666,7 @@ impl Page47Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -40490,6 +43674,7 @@ impl Page47Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -40498,6 +43683,7 @@ impl Page47Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -40535,6 +43721,7 @@ impl Page47Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -40542,6 +43729,7 @@ impl Page47Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -40549,6 +43737,7 @@ impl Page47Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -40556,6 +43745,7 @@ impl Page47Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -40564,6 +43754,7 @@ impl Page47Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -40610,14 +43801,23 @@ impl Page47Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page48Lock0 {
@@ -40636,19 +43836,25 @@ impl Page48Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -40659,13 +43865,17 @@ impl Page48Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -40673,6 +43883,7 @@ impl Page48Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -40680,6 +43891,7 @@ impl Page48Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -40687,6 +43899,7 @@ impl Page48Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -40694,6 +43907,7 @@ impl Page48Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -40701,6 +43915,7 @@ impl Page48Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -40738,6 +43953,7 @@ impl Page48Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -40745,6 +43961,7 @@ impl Page48Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -40752,6 +43969,7 @@ impl Page48Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -40759,6 +43977,7 @@ impl Page48Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -40766,6 +43985,7 @@ impl Page48Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -40812,15 +44032,24 @@ impl Page48Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page48Lock1 {
@@ -40839,19 +44068,25 @@ impl Page48Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -40873,8 +44108,10 @@ impl Page48Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -40896,7 +44133,9 @@ impl Page48Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -40920,6 +44159,7 @@ impl Page48Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -40927,6 +44167,7 @@ impl Page48Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -40934,6 +44175,7 @@ impl Page48Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -40941,6 +44183,7 @@ impl Page48Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -40949,6 +44192,7 @@ impl Page48Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -40986,6 +44230,7 @@ impl Page48Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -40993,6 +44238,7 @@ impl Page48Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -41000,6 +44246,7 @@ impl Page48Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -41007,6 +44254,7 @@ impl Page48Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -41015,6 +44263,7 @@ impl Page48Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -41061,14 +44310,23 @@ impl Page48Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page49Lock0 {
@@ -41087,19 +44345,25 @@ impl Page49Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -41110,13 +44374,17 @@ impl Page49Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -41124,6 +44392,7 @@ impl Page49Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -41131,6 +44400,7 @@ impl Page49Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -41138,6 +44408,7 @@ impl Page49Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -41145,6 +44416,7 @@ impl Page49Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -41152,6 +44424,7 @@ impl Page49Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -41189,6 +44462,7 @@ impl Page49Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -41196,6 +44470,7 @@ impl Page49Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -41203,6 +44478,7 @@ impl Page49Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -41210,6 +44486,7 @@ impl Page49Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -41217,6 +44494,7 @@ impl Page49Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -41263,15 +44541,24 @@ impl Page49Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page49Lock1 {
@@ -41290,19 +44577,25 @@ impl Page49Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -41324,8 +44617,10 @@ impl Page49Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -41347,7 +44642,9 @@ impl Page49Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -41371,6 +44668,7 @@ impl Page49Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -41378,6 +44676,7 @@ impl Page49Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -41385,6 +44684,7 @@ impl Page49Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -41392,6 +44692,7 @@ impl Page49Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -41400,6 +44701,7 @@ impl Page49Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -41437,6 +44739,7 @@ impl Page49Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -41444,6 +44747,7 @@ impl Page49Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -41451,6 +44755,7 @@ impl Page49Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -41458,6 +44763,7 @@ impl Page49Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -41466,6 +44772,7 @@ impl Page49Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -41512,14 +44819,23 @@ impl Page49Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page50Lock0 {
@@ -41538,19 +44854,25 @@ impl Page50Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -41561,13 +44883,17 @@ impl Page50Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -41575,6 +44901,7 @@ impl Page50Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -41582,6 +44909,7 @@ impl Page50Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -41589,6 +44917,7 @@ impl Page50Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -41596,6 +44925,7 @@ impl Page50Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -41603,6 +44933,7 @@ impl Page50Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -41640,6 +44971,7 @@ impl Page50Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -41647,6 +44979,7 @@ impl Page50Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -41654,6 +44987,7 @@ impl Page50Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -41661,6 +44995,7 @@ impl Page50Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -41668,6 +45003,7 @@ impl Page50Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -41714,15 +45050,24 @@ impl Page50Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page50Lock1 {
@@ -41741,19 +45086,25 @@ impl Page50Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -41775,8 +45126,10 @@ impl Page50Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -41798,7 +45151,9 @@ impl Page50Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -41822,6 +45177,7 @@ impl Page50Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -41829,6 +45185,7 @@ impl Page50Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -41836,6 +45193,7 @@ impl Page50Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -41843,6 +45201,7 @@ impl Page50Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -41851,6 +45210,7 @@ impl Page50Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -41888,6 +45248,7 @@ impl Page50Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -41895,6 +45256,7 @@ impl Page50Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -41902,6 +45264,7 @@ impl Page50Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -41909,6 +45272,7 @@ impl Page50Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -41917,6 +45281,7 @@ impl Page50Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -41963,14 +45328,23 @@ impl Page50Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page51Lock0 {
@@ -41989,19 +45363,25 @@ impl Page51Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -42012,13 +45392,17 @@ impl Page51Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -42026,6 +45410,7 @@ impl Page51Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -42033,6 +45418,7 @@ impl Page51Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -42040,6 +45426,7 @@ impl Page51Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -42047,6 +45434,7 @@ impl Page51Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -42054,6 +45442,7 @@ impl Page51Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -42091,6 +45480,7 @@ impl Page51Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -42098,6 +45488,7 @@ impl Page51Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -42105,6 +45496,7 @@ impl Page51Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -42112,6 +45504,7 @@ impl Page51Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -42119,6 +45512,7 @@ impl Page51Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -42165,15 +45559,24 @@ impl Page51Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page51Lock1 {
@@ -42192,19 +45595,25 @@ impl Page51Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -42226,8 +45635,10 @@ impl Page51Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -42249,7 +45660,9 @@ impl Page51Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -42273,6 +45686,7 @@ impl Page51Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -42280,6 +45694,7 @@ impl Page51Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -42287,6 +45702,7 @@ impl Page51Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -42294,6 +45710,7 @@ impl Page51Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -42302,6 +45719,7 @@ impl Page51Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -42339,6 +45757,7 @@ impl Page51Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -42346,6 +45765,7 @@ impl Page51Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -42353,6 +45773,7 @@ impl Page51Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -42360,6 +45781,7 @@ impl Page51Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -42368,6 +45790,7 @@ impl Page51Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -42414,14 +45837,23 @@ impl Page51Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page52Lock0 {
@@ -42440,19 +45872,25 @@ impl Page52Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -42463,13 +45901,17 @@ impl Page52Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -42477,6 +45919,7 @@ impl Page52Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -42484,6 +45927,7 @@ impl Page52Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -42491,6 +45935,7 @@ impl Page52Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -42498,6 +45943,7 @@ impl Page52Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -42505,6 +45951,7 @@ impl Page52Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -42542,6 +45989,7 @@ impl Page52Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -42549,6 +45997,7 @@ impl Page52Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -42556,6 +46005,7 @@ impl Page52Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -42563,6 +46013,7 @@ impl Page52Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -42570,6 +46021,7 @@ impl Page52Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -42616,15 +46068,24 @@ impl Page52Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page52Lock1 {
@@ -42643,19 +46104,25 @@ impl Page52Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -42677,8 +46144,10 @@ impl Page52Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -42700,7 +46169,9 @@ impl Page52Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -42724,6 +46195,7 @@ impl Page52Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -42731,6 +46203,7 @@ impl Page52Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -42738,6 +46211,7 @@ impl Page52Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -42745,6 +46219,7 @@ impl Page52Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -42753,6 +46228,7 @@ impl Page52Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -42790,6 +46266,7 @@ impl Page52Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -42797,6 +46274,7 @@ impl Page52Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -42804,6 +46282,7 @@ impl Page52Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -42811,6 +46290,7 @@ impl Page52Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -42819,6 +46299,7 @@ impl Page52Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -42865,14 +46346,23 @@ impl Page52Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page53Lock0 {
@@ -42891,19 +46381,25 @@ impl Page53Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -42914,13 +46410,17 @@ impl Page53Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -42928,6 +46428,7 @@ impl Page53Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -42935,6 +46436,7 @@ impl Page53Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -42942,6 +46444,7 @@ impl Page53Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -42949,6 +46452,7 @@ impl Page53Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -42956,6 +46460,7 @@ impl Page53Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -42993,6 +46498,7 @@ impl Page53Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -43000,6 +46506,7 @@ impl Page53Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -43007,6 +46514,7 @@ impl Page53Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -43014,6 +46522,7 @@ impl Page53Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -43021,6 +46530,7 @@ impl Page53Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -43067,15 +46577,24 @@ impl Page53Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page53Lock1 {
@@ -43094,19 +46613,25 @@ impl Page53Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -43128,8 +46653,10 @@ impl Page53Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -43151,7 +46678,9 @@ impl Page53Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -43175,6 +46704,7 @@ impl Page53Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -43182,6 +46712,7 @@ impl Page53Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -43189,6 +46720,7 @@ impl Page53Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -43196,6 +46728,7 @@ impl Page53Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -43204,6 +46737,7 @@ impl Page53Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -43241,6 +46775,7 @@ impl Page53Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -43248,6 +46783,7 @@ impl Page53Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -43255,6 +46791,7 @@ impl Page53Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -43262,6 +46799,7 @@ impl Page53Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -43270,6 +46808,7 @@ impl Page53Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -43316,14 +46855,23 @@ impl Page53Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page54Lock0 {
@@ -43342,19 +46890,25 @@ impl Page54Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -43365,13 +46919,17 @@ impl Page54Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -43379,6 +46937,7 @@ impl Page54Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -43386,6 +46945,7 @@ impl Page54Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -43393,6 +46953,7 @@ impl Page54Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -43400,6 +46961,7 @@ impl Page54Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -43407,6 +46969,7 @@ impl Page54Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -43444,6 +47007,7 @@ impl Page54Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -43451,6 +47015,7 @@ impl Page54Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -43458,6 +47023,7 @@ impl Page54Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -43465,6 +47031,7 @@ impl Page54Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -43472,6 +47039,7 @@ impl Page54Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -43518,15 +47086,24 @@ impl Page54Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page54Lock1 {
@@ -43545,19 +47122,25 @@ impl Page54Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -43579,8 +47162,10 @@ impl Page54Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -43602,7 +47187,9 @@ impl Page54Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -43626,6 +47213,7 @@ impl Page54Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -43633,6 +47221,7 @@ impl Page54Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -43640,6 +47229,7 @@ impl Page54Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -43647,6 +47237,7 @@ impl Page54Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -43655,6 +47246,7 @@ impl Page54Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -43692,6 +47284,7 @@ impl Page54Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -43699,6 +47292,7 @@ impl Page54Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -43706,6 +47300,7 @@ impl Page54Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -43713,6 +47308,7 @@ impl Page54Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -43721,6 +47317,7 @@ impl Page54Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -43767,14 +47364,23 @@ impl Page54Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page55Lock0 {
@@ -43793,19 +47399,25 @@ impl Page55Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -43816,13 +47428,17 @@ impl Page55Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -43830,6 +47446,7 @@ impl Page55Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -43837,6 +47454,7 @@ impl Page55Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -43844,6 +47462,7 @@ impl Page55Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -43851,6 +47470,7 @@ impl Page55Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -43858,6 +47478,7 @@ impl Page55Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -43895,6 +47516,7 @@ impl Page55Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -43902,6 +47524,7 @@ impl Page55Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -43909,6 +47532,7 @@ impl Page55Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -43916,6 +47540,7 @@ impl Page55Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -43923,6 +47548,7 @@ impl Page55Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -43969,15 +47595,24 @@ impl Page55Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page55Lock1 {
@@ -43996,19 +47631,25 @@ impl Page55Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -44030,8 +47671,10 @@ impl Page55Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -44053,7 +47696,9 @@ impl Page55Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -44077,6 +47722,7 @@ impl Page55Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -44084,6 +47730,7 @@ impl Page55Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -44091,6 +47738,7 @@ impl Page55Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -44098,6 +47746,7 @@ impl Page55Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -44106,6 +47755,7 @@ impl Page55Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -44143,6 +47793,7 @@ impl Page55Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -44150,6 +47801,7 @@ impl Page55Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -44157,6 +47809,7 @@ impl Page55Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -44164,6 +47817,7 @@ impl Page55Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -44172,6 +47826,7 @@ impl Page55Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -44218,14 +47873,23 @@ impl Page55Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page56Lock0 {
@@ -44244,19 +47908,25 @@ impl Page56Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -44267,13 +47937,17 @@ impl Page56Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -44281,6 +47955,7 @@ impl Page56Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -44288,6 +47963,7 @@ impl Page56Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -44295,6 +47971,7 @@ impl Page56Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -44302,6 +47979,7 @@ impl Page56Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -44309,6 +47987,7 @@ impl Page56Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -44346,6 +48025,7 @@ impl Page56Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -44353,6 +48033,7 @@ impl Page56Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -44360,6 +48041,7 @@ impl Page56Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -44367,6 +48049,7 @@ impl Page56Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -44374,6 +48057,7 @@ impl Page56Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -44420,15 +48104,24 @@ impl Page56Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page56Lock1 {
@@ -44447,19 +48140,25 @@ impl Page56Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -44481,8 +48180,10 @@ impl Page56Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -44504,7 +48205,9 @@ impl Page56Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -44528,6 +48231,7 @@ impl Page56Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -44535,6 +48239,7 @@ impl Page56Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -44542,6 +48247,7 @@ impl Page56Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -44549,6 +48255,7 @@ impl Page56Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -44557,6 +48264,7 @@ impl Page56Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -44594,6 +48302,7 @@ impl Page56Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -44601,6 +48310,7 @@ impl Page56Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -44608,6 +48318,7 @@ impl Page56Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -44615,6 +48326,7 @@ impl Page56Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -44623,6 +48335,7 @@ impl Page56Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -44669,14 +48382,23 @@ impl Page56Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page57Lock0 {
@@ -44695,19 +48417,25 @@ impl Page57Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -44718,13 +48446,17 @@ impl Page57Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -44732,6 +48464,7 @@ impl Page57Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -44739,6 +48472,7 @@ impl Page57Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -44746,6 +48480,7 @@ impl Page57Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -44753,6 +48488,7 @@ impl Page57Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -44760,6 +48496,7 @@ impl Page57Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -44797,6 +48534,7 @@ impl Page57Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -44804,6 +48542,7 @@ impl Page57Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -44811,6 +48550,7 @@ impl Page57Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -44818,6 +48558,7 @@ impl Page57Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -44825,6 +48566,7 @@ impl Page57Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -44871,15 +48613,24 @@ impl Page57Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page57Lock1 {
@@ -44898,19 +48649,25 @@ impl Page57Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -44932,8 +48689,10 @@ impl Page57Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -44955,7 +48714,9 @@ impl Page57Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -44979,6 +48740,7 @@ impl Page57Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -44986,6 +48748,7 @@ impl Page57Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -44993,6 +48756,7 @@ impl Page57Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -45000,6 +48764,7 @@ impl Page57Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45008,6 +48773,7 @@ impl Page57Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -45045,6 +48811,7 @@ impl Page57Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -45052,6 +48819,7 @@ impl Page57Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -45059,6 +48827,7 @@ impl Page57Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -45066,6 +48835,7 @@ impl Page57Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45074,6 +48844,7 @@ impl Page57Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -45120,14 +48891,23 @@ impl Page57Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page58Lock0 {
@@ -45146,19 +48926,25 @@ impl Page58Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -45169,13 +48955,17 @@ impl Page58Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -45183,6 +48973,7 @@ impl Page58Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -45190,6 +48981,7 @@ impl Page58Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -45197,6 +48989,7 @@ impl Page58Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -45204,6 +48997,7 @@ impl Page58Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -45211,6 +49005,7 @@ impl Page58Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -45248,6 +49043,7 @@ impl Page58Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -45255,6 +49051,7 @@ impl Page58Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -45262,6 +49059,7 @@ impl Page58Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -45269,6 +49067,7 @@ impl Page58Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -45276,6 +49075,7 @@ impl Page58Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -45322,15 +49122,24 @@ impl Page58Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page58Lock1 {
@@ -45349,19 +49158,25 @@ impl Page58Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -45383,8 +49198,10 @@ impl Page58Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -45406,7 +49223,9 @@ impl Page58Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -45430,6 +49249,7 @@ impl Page58Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -45437,6 +49257,7 @@ impl Page58Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -45444,6 +49265,7 @@ impl Page58Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -45451,6 +49273,7 @@ impl Page58Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45459,6 +49282,7 @@ impl Page58Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -45496,6 +49320,7 @@ impl Page58Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -45503,6 +49328,7 @@ impl Page58Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -45510,6 +49336,7 @@ impl Page58Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -45517,6 +49344,7 @@ impl Page58Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45525,6 +49353,7 @@ impl Page58Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -45571,14 +49400,23 @@ impl Page58Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page59Lock0 {
@@ -45597,19 +49435,25 @@ impl Page59Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -45620,13 +49464,17 @@ impl Page59Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -45634,6 +49482,7 @@ impl Page59Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -45641,6 +49490,7 @@ impl Page59Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -45648,6 +49498,7 @@ impl Page59Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -45655,6 +49506,7 @@ impl Page59Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -45662,6 +49514,7 @@ impl Page59Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -45699,6 +49552,7 @@ impl Page59Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -45706,6 +49560,7 @@ impl Page59Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -45713,6 +49568,7 @@ impl Page59Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -45720,6 +49576,7 @@ impl Page59Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -45727,6 +49584,7 @@ impl Page59Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -45773,15 +49631,24 @@ impl Page59Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page59Lock1 {
@@ -45800,19 +49667,25 @@ impl Page59Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -45834,8 +49707,10 @@ impl Page59Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -45857,7 +49732,9 @@ impl Page59Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -45881,6 +49758,7 @@ impl Page59Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -45888,6 +49766,7 @@ impl Page59Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -45895,6 +49774,7 @@ impl Page59Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -45902,6 +49782,7 @@ impl Page59Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45910,6 +49791,7 @@ impl Page59Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -45947,6 +49829,7 @@ impl Page59Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -45954,6 +49837,7 @@ impl Page59Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -45961,6 +49845,7 @@ impl Page59Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -45968,6 +49853,7 @@ impl Page59Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -45976,6 +49862,7 @@ impl Page59Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -46022,14 +49909,23 @@ impl Page59Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page60Lock0 {
@@ -46048,19 +49944,25 @@ impl Page60Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -46071,13 +49973,17 @@ impl Page60Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -46085,6 +49991,7 @@ impl Page60Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -46092,6 +49999,7 @@ impl Page60Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -46099,6 +50007,7 @@ impl Page60Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -46106,6 +50015,7 @@ impl Page60Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -46113,6 +50023,7 @@ impl Page60Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -46150,6 +50061,7 @@ impl Page60Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -46157,6 +50069,7 @@ impl Page60Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -46164,6 +50077,7 @@ impl Page60Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -46171,6 +50085,7 @@ impl Page60Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -46178,6 +50093,7 @@ impl Page60Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -46224,15 +50140,24 @@ impl Page60Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page60Lock1 {
@@ -46251,19 +50176,25 @@ impl Page60Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -46285,8 +50216,10 @@ impl Page60Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -46308,7 +50241,9 @@ impl Page60Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -46332,6 +50267,7 @@ impl Page60Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -46339,6 +50275,7 @@ impl Page60Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -46346,6 +50283,7 @@ impl Page60Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -46353,6 +50291,7 @@ impl Page60Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -46361,6 +50300,7 @@ impl Page60Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -46398,6 +50338,7 @@ impl Page60Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -46405,6 +50346,7 @@ impl Page60Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -46412,6 +50354,7 @@ impl Page60Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -46419,6 +50362,7 @@ impl Page60Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -46427,6 +50371,7 @@ impl Page60Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -46473,14 +50418,23 @@ impl Page60Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page61Lock0 {
@@ -46499,19 +50453,25 @@ impl Page61Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -46522,13 +50482,17 @@ impl Page61Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -46536,6 +50500,7 @@ impl Page61Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -46543,6 +50508,7 @@ impl Page61Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -46550,6 +50516,7 @@ impl Page61Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -46557,6 +50524,7 @@ impl Page61Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -46564,6 +50532,7 @@ impl Page61Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -46601,6 +50570,7 @@ impl Page61Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -46608,6 +50578,7 @@ impl Page61Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -46615,6 +50586,7 @@ impl Page61Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -46622,6 +50594,7 @@ impl Page61Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -46629,6 +50602,7 @@ impl Page61Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -46675,15 +50649,24 @@ impl Page61Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page61Lock1 {
@@ -46702,19 +50685,25 @@ impl Page61Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -46736,8 +50725,10 @@ impl Page61Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -46759,7 +50750,9 @@ impl Page61Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -46783,6 +50776,7 @@ impl Page61Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -46790,6 +50784,7 @@ impl Page61Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -46797,6 +50792,7 @@ impl Page61Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -46804,6 +50800,7 @@ impl Page61Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -46812,6 +50809,7 @@ impl Page61Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -46849,6 +50847,7 @@ impl Page61Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -46856,6 +50855,7 @@ impl Page61Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -46863,6 +50863,7 @@ impl Page61Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -46870,6 +50871,7 @@ impl Page61Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -46878,6 +50880,7 @@ impl Page61Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -46924,14 +50927,23 @@ impl Page61Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page62Lock0 {
@@ -46950,19 +50962,25 @@ impl Page62Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -46973,13 +50991,17 @@ impl Page62Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -46987,6 +51009,7 @@ impl Page62Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -46994,6 +51017,7 @@ impl Page62Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -47001,6 +51025,7 @@ impl Page62Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -47008,6 +51033,7 @@ impl Page62Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -47015,6 +51041,7 @@ impl Page62Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -47052,6 +51079,7 @@ impl Page62Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -47059,6 +51087,7 @@ impl Page62Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -47066,6 +51095,7 @@ impl Page62Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -47073,6 +51103,7 @@ impl Page62Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -47080,6 +51111,7 @@ impl Page62Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -47126,15 +51158,24 @@ impl Page62Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page62Lock1 {
@@ -47153,19 +51194,25 @@ impl Page62Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -47187,8 +51234,10 @@ impl Page62Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -47210,7 +51259,9 @@ impl Page62Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -47234,6 +51285,7 @@ impl Page62Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -47241,6 +51293,7 @@ impl Page62Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -47248,6 +51301,7 @@ impl Page62Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -47255,6 +51309,7 @@ impl Page62Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -47263,6 +51318,7 @@ impl Page62Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -47300,6 +51356,7 @@ impl Page62Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -47307,6 +51364,7 @@ impl Page62Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -47314,6 +51372,7 @@ impl Page62Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -47321,6 +51380,7 @@ impl Page62Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -47329,6 +51389,7 @@ impl Page62Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {
@@ -47375,16 +51436,27 @@ impl Page62Lock1 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **RMA** `[7]` (RO)
+///
 ///   Decommission for RMA of a suspected faulty device. This re-enables the factory test JTAG interface, and makes pages 3 through 61 of the OTP permanently inaccessible.
+///
 /// - **NO_KEY_STATE** `[6]` (RO)
+///
 ///   State when at least one key is registered for this page and no matching key has been entered.
+///
 /// - **KEY_R** `[5:3]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+///
 /// - **KEY_W** `[2:0]` (RO)
+///
 ///   Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
 #[repr(transparent)]
 pub struct Page63Lock0 {
@@ -47403,26 +51475,34 @@ impl Page63Lock0 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **RMA**
+    ///
     /// Decommission for RMA of a suspected faulty device. This re-enables the factory test JTAG interface, and makes pages 3 through 61 of the OTP permanently inaccessible.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const RMA_OFFSET: u32 = 7;
     pub const RMA_MASK: u32 = 0x00000080;
     pub const RMA: u32 = 1 << 7;
 
     /// **NO_KEY_STATE**
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_KEY_STATE_OFFSET: u32 = 6;
     pub const NO_KEY_STATE_MASK: u32 = 0x00000040;
@@ -47433,13 +51513,17 @@ impl Page63Lock0 {
     pub const NO_KEY_STATE_INACCESSIBLE_VAL: u32 = 1;
 
     /// **KEY_R**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
+    ///
     /// Bits `[5:3]`, mask `0x00000038`
     pub const KEY_R_OFFSET: u32 = 3;
     pub const KEY_R_MASK: u32 = 0x00000038;
 
     /// **KEY_W**
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
+    ///
     /// Bits `[2:0]`, mask `0x00000007`
     pub const KEY_W_OFFSET: u32 = 0;
     pub const KEY_W_MASK: u32 = 0x00000007;
@@ -47447,6 +51531,7 @@ impl Page63Lock0 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -47454,6 +51539,7 @@ impl Page63Lock0 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -47461,6 +51547,7 @@ impl Page63Lock0 {
     }
 
     /// **RMA** `[7]` (RO)
+    ///
     /// Decommission for RMA of a suspected faulty device. This re-enables the factory test JTAG interface, and makes pages 3 through 61 of the OTP permanently inaccessible.
     #[inline(always)]
     pub fn rma(&self) -> bool {
@@ -47468,6 +51555,7 @@ impl Page63Lock0 {
     }
 
     /// **NO_KEY_STATE** `[6]` (RO)
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub fn no_key_state(&self) -> bool {
@@ -47475,6 +51563,7 @@ impl Page63Lock0 {
     }
 
     /// **KEY_R** `[5:3]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_r(&self) -> u32 {
@@ -47482,6 +51571,7 @@ impl Page63Lock0 {
     }
 
     /// **KEY_W** `[2:0]` (RO)
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub fn key_w(&self) -> u32 {
@@ -47519,6 +51609,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -47526,6 +51617,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -47533,6 +51625,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **RMA** `[7:7]`
+    ///
     /// Decommission for RMA of a suspected faulty device. This re-enables the factory test JTAG interface, and makes pages 3 through 61 of the OTP permanently inaccessible.
     #[inline(always)]
     pub const fn rma(&self) -> bool {
@@ -47540,6 +51633,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **NO_KEY_STATE** `[6:6]`
+    ///
     /// State when at least one key is registered for this page and no matching key has been entered.
     #[inline(always)]
     pub const fn no_key_state(&self) -> bool {
@@ -47547,6 +51641,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **KEY_R** `[5:3]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant read access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_r(&self) -> u32 {
@@ -47554,6 +51649,7 @@ impl Page63Lock0Val {
     }
 
     /// Read **KEY_W** `[2:0]`
+    ///
     /// Index 1-6 of a hardware key which must be entered to grant write access, or 0 if no such key is required.
     #[inline(always)]
     pub const fn key_w(&self) -> u32 {
@@ -47600,15 +51696,24 @@ impl Page63Lock0 {
 /// ## Fields
 ///
 /// - **R2** `[23:16]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **R1** `[15:8]` (RO)
+///
 ///   Redundant copy of bits 7:0
+///
 /// - **LOCK_BL** `[5:4]` (RO)
+///
 ///   Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+///
 /// - **LOCK_NS** `[3:2]` (RO)
+///
 ///   Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 ///   Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+///
 /// - **LOCK_S** `[1:0]` (RO)
+///
 ///   Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
 #[repr(transparent)]
 pub struct Page63Lock1 {
@@ -47627,19 +51732,25 @@ impl Page63Lock1 {
     // ======== Field Constants ========
 
     /// **R2**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const R2_OFFSET: u32 = 16;
     pub const R2_MASK: u32 = 0x00ff0000;
 
     /// **R1**
+    ///
     /// Redundant copy of bits 7:0
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const R1_OFFSET: u32 = 8;
     pub const R1_MASK: u32 = 0x0000ff00;
 
     /// **LOCK_BL**
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const LOCK_BL_OFFSET: u32 = 4;
     pub const LOCK_BL_MASK: u32 = 0x00000030;
@@ -47661,8 +51772,10 @@ impl Page63Lock1 {
     pub const LOCK_BL_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_NS**
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const LOCK_NS_OFFSET: u32 = 2;
     pub const LOCK_NS_MASK: u32 = 0x0000000c;
@@ -47684,7 +51797,9 @@ impl Page63Lock1 {
     pub const LOCK_NS_INACCESSIBLE_VAL: u32 = 3;
 
     /// **LOCK_S**
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const LOCK_S_OFFSET: u32 = 0;
     pub const LOCK_S_MASK: u32 = 0x00000003;
@@ -47708,6 +51823,7 @@ impl Page63Lock1 {
     // ======== Field Accessors ========
 
     /// **R2** `[23:16]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r2(&self) -> u32 {
@@ -47715,6 +51831,7 @@ impl Page63Lock1 {
     }
 
     /// **R1** `[15:8]` (RO)
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub fn r1(&self) -> u32 {
@@ -47722,6 +51839,7 @@ impl Page63Lock1 {
     }
 
     /// **LOCK_BL** `[5:4]` (RO)
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_bl(&self) -> u32 {
@@ -47729,6 +51847,7 @@ impl Page63Lock1 {
     }
 
     /// **LOCK_NS** `[3:2]` (RO)
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -47737,6 +51856,7 @@ impl Page63Lock1 {
     }
 
     /// **LOCK_S** `[1:0]` (RO)
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub fn lock_s(&self) -> u32 {
@@ -47774,6 +51894,7 @@ impl Page63Lock1Val {
     }
 
     /// Read **R2** `[23:16]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r2(&self) -> u32 {
@@ -47781,6 +51902,7 @@ impl Page63Lock1Val {
     }
 
     /// Read **R1** `[15:8]`
+    ///
     /// Redundant copy of bits 7:0
     #[inline(always)]
     pub const fn r1(&self) -> u32 {
@@ -47788,6 +51910,7 @@ impl Page63Lock1Val {
     }
 
     /// Read **LOCK_BL** `[5:4]`
+    ///
     /// Dummy lock bits reserved for bootloaders (including the RP2350 USB bootloader) to store their own OTP access permissions. No hardware effect, and no corresponding SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_bl(&self) -> u32 {
@@ -47795,6 +51918,7 @@ impl Page63Lock1Val {
     }
 
     /// Read **LOCK_NS** `[3:2]`
+    ///
     /// Lock state for Non-secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     /// Note that READ_WRITE and READ_ONLY are equivalent in hardware, as the SBPI programming interface is not accessible to Non-secure software. However, Secure software may check these bits to apply write permissions to a Non-secure OTP programming API.
     #[inline(always)]
@@ -47803,6 +51927,7 @@ impl Page63Lock1Val {
     }
 
     /// Read **LOCK_S** `[1:0]`
+    ///
     /// Lock state for Secure accesses to this page. Thermometer-coded, so lock state can be advanced permanently from any state to any less-permissive state by programming OTP. Software can also advance the lock state temporarily (until next OTP reset) using the SW_LOCKx registers.
     #[inline(always)]
     pub const fn lock_s(&self) -> u32 {

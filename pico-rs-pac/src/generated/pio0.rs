@@ -15,33 +15,48 @@ pub const BASE: u32 = 0x50200000;
 /// ## Fields
 ///
 /// - **NEXTPREV_CLKDIV_RESTART** `[26]` (WO)
+///
 ///   Write 1 to restart the clock dividers of state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
 ///   This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
+///
 /// - **NEXTPREV_SM_DISABLE** `[25]` (WO)
+///
 ///   Write 1 to disable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
 ///   This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
+///
 /// - **NEXTPREV_SM_ENABLE** `[24]` (WO)
+///
 ///   Write 1 to enable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
 ///   This is equivalent to setting the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
 ///   If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
+///
 /// - **NEXT_PIO_MASK** `[23:20]` (WO)
+///
 ///   A mask of state machines in the neighbouring higher-numbered PIO block in the system (or PIO block 0 if this is the highest-numbered PIO block) to which to apply the operations specified by NEXTPREV_CLKDIV_RESTART, NEXTPREV_SM_ENABLE, and NEXTPREV_SM_DISABLE in the same write.
 ///   This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
 ///   Note that in a system with two PIOs, NEXT_PIO_MASK and PREV_PIO_MASK actually indicate the same PIO block. In this case the effects are applied cumulatively (as though the masks were OR'd together).
 ///   Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
+///
 /// - **PREV_PIO_MASK** `[19:16]` (WO)
+///
 ///   A mask of state machines in the neighbouring lower-numbered PIO block in the system (or the highest-numbered PIO block if this is PIO block 0) to which to apply the operations specified by OP_CLKDIV_RESTART, OP_ENABLE, OP_DISABLE in the same write.
 ///   This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
 ///   Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
+///
 /// - **CLKDIV_RESTART** `[11:8]` (WO)
+///
 ///   Restart a state machine's clock divider from an initial phase of 0. Clock dividers are free-running, so once started, their output (including fractional jitter) is completely determined by the integer/fractional divisor configured in SMx_CLKDIV. This means that, if multiple clock dividers with the same divisor are restarted simultaneously, by writing multiple 1 bits to this field, the execution clocks of those state machines will run in precise lockstep.
 ///   Note that setting/clearing SM_ENABLE does not stop the clock divider from running, so once multiple state machines' clocks are synchronised, it is safe to disable/reenable a state machine, whilst keeping the clock dividers in sync.
 ///   Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
+///
 /// - **SM_RESTART** `[7:4]` (WO)
+///
 ///   Write 1 to instantly clear internal SM state which may be otherwise difficult to access and will affect future execution.
 ///   Specifically, the following are cleared: input and output shift counters; the contents of the input shift register; the delay counter; the waiting-on-IRQ state; any stalled instruction written to SMx_INSTR or run by OUT/MOV EXEC; any pin write left asserted due to OUT_STICKY.
 ///   The contents of the output shift register and the X/Y scratch registers are not affected.
+///
 /// - **SM_ENABLE** `[3:0]` (RW)
+///
 ///   Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
 #[repr(transparent)]
 pub struct Ctrl {
@@ -60,75 +75,89 @@ impl Ctrl {
     // ======== Field Constants ========
 
     /// **NEXTPREV_CLKDIV_RESTART**
+    ///
     /// Write 1 to restart the clock dividers of state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const NEXTPREV_CLKDIV_RESTART_OFFSET: u32 = 26;
     pub const NEXTPREV_CLKDIV_RESTART_MASK: u32 = 0x04000000;
     pub const NEXTPREV_CLKDIV_RESTART: u32 = 1 << 26;
 
     /// **NEXTPREV_SM_DISABLE**
+    ///
     /// Write 1 to disable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const NEXTPREV_SM_DISABLE_OFFSET: u32 = 25;
     pub const NEXTPREV_SM_DISABLE_MASK: u32 = 0x02000000;
     pub const NEXTPREV_SM_DISABLE: u32 = 1 << 25;
 
     /// **NEXTPREV_SM_ENABLE**
+    ///
     /// Write 1 to enable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to setting the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     /// If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const NEXTPREV_SM_ENABLE_OFFSET: u32 = 24;
     pub const NEXTPREV_SM_ENABLE_MASK: u32 = 0x01000000;
     pub const NEXTPREV_SM_ENABLE: u32 = 1 << 24;
 
     /// **NEXT_PIO_MASK**
+    ///
     /// A mask of state machines in the neighbouring higher-numbered PIO block in the system (or PIO block 0 if this is the highest-numbered PIO block) to which to apply the operations specified by NEXTPREV_CLKDIV_RESTART, NEXTPREV_SM_ENABLE, and NEXTPREV_SM_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Note that in a system with two PIOs, NEXT_PIO_MASK and PREV_PIO_MASK actually indicate the same PIO block. In this case the effects are applied cumulatively (as though the masks were OR'd together).
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
+    ///
     /// Bits `[23:20]`, mask `0x00f00000`
     pub const NEXT_PIO_MASK_OFFSET: u32 = 20;
     pub const NEXT_PIO_MASK_MASK: u32 = 0x00f00000;
 
     /// **PREV_PIO_MASK**
+    ///
     /// A mask of state machines in the neighbouring lower-numbered PIO block in the system (or the highest-numbered PIO block if this is PIO block 0) to which to apply the operations specified by OP_CLKDIV_RESTART, OP_ENABLE, OP_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const PREV_PIO_MASK_OFFSET: u32 = 16;
     pub const PREV_PIO_MASK_MASK: u32 = 0x000f0000;
 
     /// **CLKDIV_RESTART**
+    ///
     /// Restart a state machine's clock divider from an initial phase of 0. Clock dividers are free-running, so once started, their output (including fractional jitter) is completely determined by the integer/fractional divisor configured in SMx_CLKDIV. This means that, if multiple clock dividers with the same divisor are restarted simultaneously, by writing multiple 1 bits to this field, the execution clocks of those state machines will run in precise lockstep.
     /// Note that setting/clearing SM_ENABLE does not stop the clock divider from running, so once multiple state machines' clocks are synchronised, it is safe to disable/reenable a state machine, whilst keeping the clock dividers in sync.
     /// Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const CLKDIV_RESTART_OFFSET: u32 = 8;
     pub const CLKDIV_RESTART_MASK: u32 = 0x00000f00;
 
     /// **SM_RESTART**
+    ///
     /// Write 1 to instantly clear internal SM state which may be otherwise difficult to access and will affect future execution.
     /// Specifically, the following are cleared: input and output shift counters; the contents of the input shift register; the delay counter; the waiting-on-IRQ state; any stalled instruction written to SMx_INSTR or run by OUT/MOV EXEC; any pin write left asserted due to OUT_STICKY.
     /// The contents of the output shift register and the X/Y scratch registers are not affected.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const SM_RESTART_OFFSET: u32 = 4;
     pub const SM_RESTART_MASK: u32 = 0x000000f0;
 
     /// **SM_ENABLE**
+    ///
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const SM_ENABLE_OFFSET: u32 = 0;
     pub const SM_ENABLE_MASK: u32 = 0x0000000f;
 
     // ======== Field Accessors ========
 
-    /// **NEXTPREV_CLKDIV_RESTART** `[26]` (WO)
-    /// Write 1 to restart the clock dividers of state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
-    /// This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
     /// Trigger **NEXTPREV_CLKDIV_RESTART** (WO)
+    ///
     /// Write 1 to restart the clock dividers of state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
     #[inline(always)]
@@ -136,10 +165,8 @@ impl Ctrl {
         self.value.write_bits(Self::NEXTPREV_CLKDIV_RESTART_MASK);
     }
 
-    /// **NEXTPREV_SM_DISABLE** `[25]` (WO)
-    /// Write 1 to disable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
-    /// This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     /// Trigger **NEXTPREV_SM_DISABLE** (WO)
+    ///
     /// Write 1 to disable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     #[inline(always)]
@@ -147,11 +174,8 @@ impl Ctrl {
         self.value.write_bits(Self::NEXTPREV_SM_DISABLE_MASK);
     }
 
-    /// **NEXTPREV_SM_ENABLE** `[24]` (WO)
-    /// Write 1 to enable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
-    /// This is equivalent to setting the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
-    /// If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
     /// Trigger **NEXTPREV_SM_ENABLE** (WO)
+    ///
     /// Write 1 to enable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to setting the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     /// If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
@@ -160,12 +184,8 @@ impl Ctrl {
         self.value.write_bits(Self::NEXTPREV_SM_ENABLE_MASK);
     }
 
-    /// **NEXT_PIO_MASK** `[23:20]` (WO)
-    /// A mask of state machines in the neighbouring higher-numbered PIO block in the system (or PIO block 0 if this is the highest-numbered PIO block) to which to apply the operations specified by NEXTPREV_CLKDIV_RESTART, NEXTPREV_SM_ENABLE, and NEXTPREV_SM_DISABLE in the same write.
-    /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
-    /// Note that in a system with two PIOs, NEXT_PIO_MASK and PREV_PIO_MASK actually indicate the same PIO block. In this case the effects are applied cumulatively (as though the masks were OR'd together).
-    /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
     /// Write **NEXT_PIO_MASK** `[23:20]` (WO)
+    ///
     /// A mask of state machines in the neighbouring higher-numbered PIO block in the system (or PIO block 0 if this is the highest-numbered PIO block) to which to apply the operations specified by NEXTPREV_CLKDIV_RESTART, NEXTPREV_SM_ENABLE, and NEXTPREV_SM_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Note that in a system with two PIOs, NEXT_PIO_MASK and PREV_PIO_MASK actually indicate the same PIO block. In this case the effects are applied cumulatively (as though the masks were OR'd together).
@@ -175,11 +195,8 @@ impl Ctrl {
         self.value.write_bits((value << Self::NEXT_PIO_MASK_OFFSET) & Self::NEXT_PIO_MASK_MASK);
     }
 
-    /// **PREV_PIO_MASK** `[19:16]` (WO)
-    /// A mask of state machines in the neighbouring lower-numbered PIO block in the system (or the highest-numbered PIO block if this is PIO block 0) to which to apply the operations specified by OP_CLKDIV_RESTART, OP_ENABLE, OP_DISABLE in the same write.
-    /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
-    /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
     /// Write **PREV_PIO_MASK** `[19:16]` (WO)
+    ///
     /// A mask of state machines in the neighbouring lower-numbered PIO block in the system (or the highest-numbered PIO block if this is PIO block 0) to which to apply the operations specified by OP_CLKDIV_RESTART, OP_ENABLE, OP_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
@@ -188,11 +205,8 @@ impl Ctrl {
         self.value.write_bits((value << Self::PREV_PIO_MASK_OFFSET) & Self::PREV_PIO_MASK_MASK);
     }
 
-    /// **CLKDIV_RESTART** `[11:8]` (WO)
-    /// Restart a state machine's clock divider from an initial phase of 0. Clock dividers are free-running, so once started, their output (including fractional jitter) is completely determined by the integer/fractional divisor configured in SMx_CLKDIV. This means that, if multiple clock dividers with the same divisor are restarted simultaneously, by writing multiple 1 bits to this field, the execution clocks of those state machines will run in precise lockstep.
-    /// Note that setting/clearing SM_ENABLE does not stop the clock divider from running, so once multiple state machines' clocks are synchronised, it is safe to disable/reenable a state machine, whilst keeping the clock dividers in sync.
-    /// Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
     /// Write **CLKDIV_RESTART** `[11:8]` (WO)
+    ///
     /// Restart a state machine's clock divider from an initial phase of 0. Clock dividers are free-running, so once started, their output (including fractional jitter) is completely determined by the integer/fractional divisor configured in SMx_CLKDIV. This means that, if multiple clock dividers with the same divisor are restarted simultaneously, by writing multiple 1 bits to this field, the execution clocks of those state machines will run in precise lockstep.
     /// Note that setting/clearing SM_ENABLE does not stop the clock divider from running, so once multiple state machines' clocks are synchronised, it is safe to disable/reenable a state machine, whilst keeping the clock dividers in sync.
     /// Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
@@ -201,11 +215,8 @@ impl Ctrl {
         self.value.write_bits((value << Self::CLKDIV_RESTART_OFFSET) & Self::CLKDIV_RESTART_MASK);
     }
 
-    /// **SM_RESTART** `[7:4]` (WO)
-    /// Write 1 to instantly clear internal SM state which may be otherwise difficult to access and will affect future execution.
-    /// Specifically, the following are cleared: input and output shift counters; the contents of the input shift register; the delay counter; the waiting-on-IRQ state; any stalled instruction written to SMx_INSTR or run by OUT/MOV EXEC; any pin write left asserted due to OUT_STICKY.
-    /// The contents of the output shift register and the X/Y scratch registers are not affected.
     /// Write **SM_RESTART** `[7:4]` (WO)
+    ///
     /// Write 1 to instantly clear internal SM state which may be otherwise difficult to access and will affect future execution.
     /// Specifically, the following are cleared: input and output shift counters; the contents of the input shift register; the delay counter; the waiting-on-IRQ state; any stalled instruction written to SMx_INSTR or run by OUT/MOV EXEC; any pin write left asserted due to OUT_STICKY.
     /// The contents of the output shift register and the X/Y scratch registers are not affected.
@@ -215,6 +226,7 @@ impl Ctrl {
     }
 
     /// **SM_ENABLE** `[3:0]` (RW)
+    ///
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
     #[inline(always)]
     pub fn sm_enable(&self) -> u32 {
@@ -222,6 +234,7 @@ impl Ctrl {
     }
 
     /// Write **SM_ENABLE** `[3:0]` (RW)
+    ///
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
     #[inline(always)]
     pub fn write_sm_enable(&self, value: u32) {
@@ -259,6 +272,7 @@ impl CtrlVal {
     }
 
     /// Read **SM_ENABLE** `[3:0]`
+    ///
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
     #[inline(always)]
     pub const fn sm_enable(&self) -> u32 {
@@ -266,6 +280,7 @@ impl CtrlVal {
     }
 
     /// Set **NEXTPREV_CLKDIV_RESTART** `[26:26]`
+    ///
     /// Write 1 to restart the clock dividers of state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
     #[inline(always)]
@@ -280,6 +295,7 @@ impl CtrlVal {
     }
 
     /// Set **NEXTPREV_SM_DISABLE** `[25:25]`
+    ///
     /// Write 1 to disable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     #[inline(always)]
@@ -294,6 +310,7 @@ impl CtrlVal {
     }
 
     /// Set **NEXTPREV_SM_ENABLE** `[24:24]`
+    ///
     /// Write 1 to enable state machines in neighbouring PIO blocks, as specified by NEXT_PIO_MASK and PREV_PIO_MASK in the same write.
     /// This is equivalent to setting the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     /// If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
@@ -309,6 +326,7 @@ impl CtrlVal {
     }
 
     /// Set **NEXT_PIO_MASK** `[23:20]`
+    ///
     /// A mask of state machines in the neighbouring higher-numbered PIO block in the system (or PIO block 0 if this is the highest-numbered PIO block) to which to apply the operations specified by NEXTPREV_CLKDIV_RESTART, NEXTPREV_SM_ENABLE, and NEXTPREV_SM_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Note that in a system with two PIOs, NEXT_PIO_MASK and PREV_PIO_MASK actually indicate the same PIO block. In this case the effects are applied cumulatively (as though the masks were OR'd together).
@@ -321,6 +339,7 @@ impl CtrlVal {
     }
 
     /// Set **PREV_PIO_MASK** `[19:16]`
+    ///
     /// A mask of state machines in the neighbouring lower-numbered PIO block in the system (or the highest-numbered PIO block if this is PIO block 0) to which to apply the operations specified by OP_CLKDIV_RESTART, OP_ENABLE, OP_DISABLE in the same write.
     /// This allows state machines in a neighbouring PIO block to be started/stopped/clock-synced exactly simultaneously with a write to this PIO block's CTRL register.
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
@@ -332,6 +351,7 @@ impl CtrlVal {
     }
 
     /// Set **CLKDIV_RESTART** `[11:8]`
+    ///
     /// Restart a state machine's clock divider from an initial phase of 0. Clock dividers are free-running, so once started, their output (including fractional jitter) is completely determined by the integer/fractional divisor configured in SMx_CLKDIV. This means that, if multiple clock dividers with the same divisor are restarted simultaneously, by writing multiple 1 bits to this field, the execution clocks of those state machines will run in precise lockstep.
     /// Note that setting/clearing SM_ENABLE does not stop the clock divider from running, so once multiple state machines' clocks are synchronised, it is safe to disable/reenable a state machine, whilst keeping the clock dividers in sync.
     /// Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
@@ -343,6 +363,7 @@ impl CtrlVal {
     }
 
     /// Set **SM_RESTART** `[7:4]`
+    ///
     /// Write 1 to instantly clear internal SM state which may be otherwise difficult to access and will affect future execution.
     /// Specifically, the following are cleared: input and output shift counters; the contents of the input shift register; the delay counter; the waiting-on-IRQ state; any stalled instruction written to SMx_INSTR or run by OUT/MOV EXEC; any pin write left asserted due to OUT_STICKY.
     /// The contents of the output shift register and the X/Y scratch registers are not affected.
@@ -354,6 +375,7 @@ impl CtrlVal {
     }
 
     /// Set **SM_ENABLE** `[3:0]`
+    ///
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
     #[inline(always)]
     pub const fn with_sm_enable(self, value: u32) -> Self {
@@ -401,12 +423,19 @@ impl Ctrl {
 /// ## Fields
 ///
 /// - **TXEMPTY** `[27:24]` (RO)
+///
 ///   State machine TX FIFO is empty
+///
 /// - **TXFULL** `[19:16]` (RO)
+///
 ///   State machine TX FIFO is full
+///
 /// - **RXEMPTY** `[11:8]` (RO)
+///
 ///   State machine RX FIFO is empty
+///
 /// - **RXFULL** `[3:0]` (RO)
+///
 ///   State machine RX FIFO is full
 #[repr(transparent)]
 pub struct Fstat {
@@ -425,25 +454,33 @@ impl Fstat {
     // ======== Field Constants ========
 
     /// **TXEMPTY**
+    ///
     /// State machine TX FIFO is empty
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const TXEMPTY_OFFSET: u32 = 24;
     pub const TXEMPTY_MASK: u32 = 0x0f000000;
 
     /// **TXFULL**
+    ///
     /// State machine TX FIFO is full
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const TXFULL_OFFSET: u32 = 16;
     pub const TXFULL_MASK: u32 = 0x000f0000;
 
     /// **RXEMPTY**
+    ///
     /// State machine RX FIFO is empty
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const RXEMPTY_OFFSET: u32 = 8;
     pub const RXEMPTY_MASK: u32 = 0x00000f00;
 
     /// **RXFULL**
+    ///
     /// State machine RX FIFO is full
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const RXFULL_OFFSET: u32 = 0;
     pub const RXFULL_MASK: u32 = 0x0000000f;
@@ -451,6 +488,7 @@ impl Fstat {
     // ======== Field Accessors ========
 
     /// **TXEMPTY** `[27:24]` (RO)
+    ///
     /// State machine TX FIFO is empty
     #[inline(always)]
     pub fn txempty(&self) -> u32 {
@@ -458,6 +496,7 @@ impl Fstat {
     }
 
     /// **TXFULL** `[19:16]` (RO)
+    ///
     /// State machine TX FIFO is full
     #[inline(always)]
     pub fn txfull(&self) -> u32 {
@@ -465,6 +504,7 @@ impl Fstat {
     }
 
     /// **RXEMPTY** `[11:8]` (RO)
+    ///
     /// State machine RX FIFO is empty
     #[inline(always)]
     pub fn rxempty(&self) -> u32 {
@@ -472,6 +512,7 @@ impl Fstat {
     }
 
     /// **RXFULL** `[3:0]` (RO)
+    ///
     /// State machine RX FIFO is full
     #[inline(always)]
     pub fn rxfull(&self) -> u32 {
@@ -509,6 +550,7 @@ impl FstatVal {
     }
 
     /// Read **TXEMPTY** `[27:24]`
+    ///
     /// State machine TX FIFO is empty
     #[inline(always)]
     pub const fn txempty(&self) -> u32 {
@@ -516,6 +558,7 @@ impl FstatVal {
     }
 
     /// Read **TXFULL** `[19:16]`
+    ///
     /// State machine TX FIFO is full
     #[inline(always)]
     pub const fn txfull(&self) -> u32 {
@@ -523,6 +566,7 @@ impl FstatVal {
     }
 
     /// Read **RXEMPTY** `[11:8]`
+    ///
     /// State machine RX FIFO is empty
     #[inline(always)]
     pub const fn rxempty(&self) -> u32 {
@@ -530,6 +574,7 @@ impl FstatVal {
     }
 
     /// Read **RXFULL** `[3:0]`
+    ///
     /// State machine RX FIFO is full
     #[inline(always)]
     pub const fn rxfull(&self) -> u32 {
@@ -575,12 +620,19 @@ impl Fstat {
 /// ## Fields
 ///
 /// - **TXSTALL** `[27:24]` (RW)
+///
 ///   State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
+///
 /// - **TXOVER** `[19:16]` (RW)
+///
 ///   TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
+///
 /// - **RXUNDER** `[11:8]` (RW)
+///
 ///   RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
+///
 /// - **RXSTALL** `[3:0]` (RW)
+///
 ///   State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
 #[repr(transparent)]
 pub struct Fdebug {
@@ -599,25 +651,33 @@ impl Fdebug {
     // ======== Field Constants ========
 
     /// **TXSTALL**
+    ///
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
+    ///
     /// Bits `[27:24]`, mask `0x0f000000`
     pub const TXSTALL_OFFSET: u32 = 24;
     pub const TXSTALL_MASK: u32 = 0x0f000000;
 
     /// **TXOVER**
+    ///
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const TXOVER_OFFSET: u32 = 16;
     pub const TXOVER_MASK: u32 = 0x000f0000;
 
     /// **RXUNDER**
+    ///
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const RXUNDER_OFFSET: u32 = 8;
     pub const RXUNDER_MASK: u32 = 0x00000f00;
 
     /// **RXSTALL**
+    ///
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const RXSTALL_OFFSET: u32 = 0;
     pub const RXSTALL_MASK: u32 = 0x0000000f;
@@ -625,6 +685,7 @@ impl Fdebug {
     // ======== Field Accessors ========
 
     /// **TXSTALL** `[27:24]` (RW)
+    ///
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
     #[inline(always)]
     pub fn txstall(&self) -> u32 {
@@ -632,6 +693,7 @@ impl Fdebug {
     }
 
     /// Write **TXSTALL** `[27:24]` (RW)
+    ///
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
     #[inline(always)]
     pub fn write_txstall(&self, value: u32) {
@@ -639,6 +701,7 @@ impl Fdebug {
     }
 
     /// **TXOVER** `[19:16]` (RW)
+    ///
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
     #[inline(always)]
     pub fn txover(&self) -> u32 {
@@ -646,6 +709,7 @@ impl Fdebug {
     }
 
     /// Write **TXOVER** `[19:16]` (RW)
+    ///
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
     #[inline(always)]
     pub fn write_txover(&self, value: u32) {
@@ -653,6 +717,7 @@ impl Fdebug {
     }
 
     /// **RXUNDER** `[11:8]` (RW)
+    ///
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
     #[inline(always)]
     pub fn rxunder(&self) -> u32 {
@@ -660,6 +725,7 @@ impl Fdebug {
     }
 
     /// Write **RXUNDER** `[11:8]` (RW)
+    ///
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
     #[inline(always)]
     pub fn write_rxunder(&self, value: u32) {
@@ -667,6 +733,7 @@ impl Fdebug {
     }
 
     /// **RXSTALL** `[3:0]` (RW)
+    ///
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
     #[inline(always)]
     pub fn rxstall(&self) -> u32 {
@@ -674,6 +741,7 @@ impl Fdebug {
     }
 
     /// Write **RXSTALL** `[3:0]` (RW)
+    ///
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
     #[inline(always)]
     pub fn write_rxstall(&self, value: u32) {
@@ -711,6 +779,7 @@ impl FdebugVal {
     }
 
     /// Read **TXSTALL** `[27:24]`
+    ///
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
     #[inline(always)]
     pub const fn txstall(&self) -> u32 {
@@ -718,6 +787,7 @@ impl FdebugVal {
     }
 
     /// Read **TXOVER** `[19:16]`
+    ///
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
     #[inline(always)]
     pub const fn txover(&self) -> u32 {
@@ -725,6 +795,7 @@ impl FdebugVal {
     }
 
     /// Read **RXUNDER** `[11:8]`
+    ///
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
     #[inline(always)]
     pub const fn rxunder(&self) -> u32 {
@@ -732,6 +803,7 @@ impl FdebugVal {
     }
 
     /// Read **RXSTALL** `[3:0]`
+    ///
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
     #[inline(always)]
     pub const fn rxstall(&self) -> u32 {
@@ -739,6 +811,7 @@ impl FdebugVal {
     }
 
     /// Set **TXSTALL** `[27:24]`
+    ///
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
     #[inline(always)]
     pub const fn with_txstall(self, value: u32) -> Self {
@@ -748,6 +821,7 @@ impl FdebugVal {
     }
 
     /// Set **TXOVER** `[19:16]`
+    ///
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
     #[inline(always)]
     pub const fn with_txover(self, value: u32) -> Self {
@@ -757,6 +831,7 @@ impl FdebugVal {
     }
 
     /// Set **RXUNDER** `[11:8]`
+    ///
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
     #[inline(always)]
     pub const fn with_rxunder(self, value: u32) -> Self {
@@ -766,6 +841,7 @@ impl FdebugVal {
     }
 
     /// Set **RXSTALL** `[3:0]`
+    ///
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
     #[inline(always)]
     pub const fn with_rxstall(self, value: u32) -> Self {
@@ -813,12 +889,19 @@ impl Fdebug {
 /// ## Fields
 ///
 /// - **RX3** `[31:28]` (RO)
+///
 /// - **TX3** `[27:24]` (RO)
+///
 /// - **RX2** `[23:20]` (RO)
+///
 /// - **TX2** `[19:16]` (RO)
+///
 /// - **RX1** `[15:12]` (RO)
+///
 /// - **TX1** `[11:8]` (RO)
+///
 /// - **RX0** `[7:4]` (RO)
+///
 /// - **TX0** `[3:0]` (RO)
 #[repr(transparent)]
 pub struct Flevel {
@@ -1066,7 +1149,6 @@ impl Txf0 {
 
     // ======== Field Accessors ========
 
-    /// **TXF0** `[31:0]` (WO)
     /// Write **TXF0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf0(&self, value: u32) {
@@ -1173,7 +1255,6 @@ impl Txf1 {
 
     // ======== Field Accessors ========
 
-    /// **TXF1** `[31:0]` (WO)
     /// Write **TXF1** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf1(&self, value: u32) {
@@ -1280,7 +1361,6 @@ impl Txf2 {
 
     // ======== Field Accessors ========
 
-    /// **TXF2** `[31:0]` (WO)
     /// Write **TXF2** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf2(&self, value: u32) {
@@ -1387,7 +1467,6 @@ impl Txf3 {
 
     // ======== Field Accessors ========
 
-    /// **TXF3** `[31:0]` (WO)
     /// Write **TXF3** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf3(&self, value: u32) {
@@ -2001,7 +2080,6 @@ impl IrqForce {
 
     // ======== Field Accessors ========
 
-    /// **IRQ_FORCE** `[7:0]` (WO)
     /// Write **IRQ_FORCE** `[7:0]` (WO)
     #[inline(always)]
     pub fn write_irq_force(&self, value: u32) {
@@ -2415,12 +2493,19 @@ impl DbgPadoe {
 /// ## Fields
 ///
 /// - **VERSION** `[31:28]` (RO)
+///
 ///   Version of the core PIO hardware.
+///
 /// - **IMEM_SIZE** `[21:16]` (RO)
+///
 ///   The size of the instruction memory, measured in units of one instruction
+///
 /// - **SM_COUNT** `[11:8]` (RO)
+///
 ///   The number of state machines this PIO instance is equipped with.
+///
 /// - **FIFO_DEPTH** `[5:0]` (RO)
+///
 ///   The depth of the state machine TX/RX FIFOs, measured in words.
 ///   Joining fifos via SHIFTCTRL_FJOIN gives one FIFO with double
 ///   this depth.
@@ -2441,7 +2526,9 @@ impl DbgCfginfo {
     // ======== Field Constants ========
 
     /// **VERSION**
+    ///
     /// Version of the core PIO hardware.
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const VERSION_OFFSET: u32 = 28;
     pub const VERSION_MASK: u32 = 0xf0000000;
@@ -2455,21 +2542,27 @@ impl DbgCfginfo {
     pub const VERSION_V1_VAL: u32 = 1;
 
     /// **IMEM_SIZE**
+    ///
     /// The size of the instruction memory, measured in units of one instruction
+    ///
     /// Bits `[21:16]`, mask `0x003f0000`
     pub const IMEM_SIZE_OFFSET: u32 = 16;
     pub const IMEM_SIZE_MASK: u32 = 0x003f0000;
 
     /// **SM_COUNT**
+    ///
     /// The number of state machines this PIO instance is equipped with.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const SM_COUNT_OFFSET: u32 = 8;
     pub const SM_COUNT_MASK: u32 = 0x00000f00;
 
     /// **FIFO_DEPTH**
+    ///
     /// The depth of the state machine TX/RX FIFOs, measured in words.
     /// Joining fifos via SHIFTCTRL_FJOIN gives one FIFO with double
     /// this depth.
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const FIFO_DEPTH_OFFSET: u32 = 0;
     pub const FIFO_DEPTH_MASK: u32 = 0x0000003f;
@@ -2477,6 +2570,7 @@ impl DbgCfginfo {
     // ======== Field Accessors ========
 
     /// **VERSION** `[31:28]` (RO)
+    ///
     /// Version of the core PIO hardware.
     #[inline(always)]
     pub fn version(&self) -> u32 {
@@ -2484,6 +2578,7 @@ impl DbgCfginfo {
     }
 
     /// **IMEM_SIZE** `[21:16]` (RO)
+    ///
     /// The size of the instruction memory, measured in units of one instruction
     #[inline(always)]
     pub fn imem_size(&self) -> u32 {
@@ -2491,6 +2586,7 @@ impl DbgCfginfo {
     }
 
     /// **SM_COUNT** `[11:8]` (RO)
+    ///
     /// The number of state machines this PIO instance is equipped with.
     #[inline(always)]
     pub fn sm_count(&self) -> u32 {
@@ -2498,6 +2594,7 @@ impl DbgCfginfo {
     }
 
     /// **FIFO_DEPTH** `[5:0]` (RO)
+    ///
     /// The depth of the state machine TX/RX FIFOs, measured in words.
     /// Joining fifos via SHIFTCTRL_FJOIN gives one FIFO with double
     /// this depth.
@@ -2537,6 +2634,7 @@ impl DbgCfginfoVal {
     }
 
     /// Read **VERSION** `[31:28]`
+    ///
     /// Version of the core PIO hardware.
     #[inline(always)]
     pub const fn version(&self) -> u32 {
@@ -2544,6 +2642,7 @@ impl DbgCfginfoVal {
     }
 
     /// Read **IMEM_SIZE** `[21:16]`
+    ///
     /// The size of the instruction memory, measured in units of one instruction
     #[inline(always)]
     pub const fn imem_size(&self) -> u32 {
@@ -2551,6 +2650,7 @@ impl DbgCfginfoVal {
     }
 
     /// Read **SM_COUNT** `[11:8]`
+    ///
     /// The number of state machines this PIO instance is equipped with.
     #[inline(always)]
     pub const fn sm_count(&self) -> u32 {
@@ -2558,6 +2658,7 @@ impl DbgCfginfoVal {
     }
 
     /// Read **FIFO_DEPTH** `[5:0]`
+    ///
     /// The depth of the state machine TX/RX FIFOs, measured in words.
     /// Joining fifos via SHIFTCTRL_FJOIN gives one FIFO with double
     /// this depth.
@@ -2628,7 +2729,6 @@ impl InstrMem0 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM0** `[15:0]` (WO)
     /// Write **INSTR_MEM0** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem0(&self, value: u32) {
@@ -2735,7 +2835,6 @@ impl InstrMem1 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM1** `[15:0]` (WO)
     /// Write **INSTR_MEM1** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem1(&self, value: u32) {
@@ -2842,7 +2941,6 @@ impl InstrMem2 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM2** `[15:0]` (WO)
     /// Write **INSTR_MEM2** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem2(&self, value: u32) {
@@ -2949,7 +3047,6 @@ impl InstrMem3 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM3** `[15:0]` (WO)
     /// Write **INSTR_MEM3** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem3(&self, value: u32) {
@@ -3056,7 +3153,6 @@ impl InstrMem4 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM4** `[15:0]` (WO)
     /// Write **INSTR_MEM4** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem4(&self, value: u32) {
@@ -3163,7 +3259,6 @@ impl InstrMem5 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM5** `[15:0]` (WO)
     /// Write **INSTR_MEM5** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem5(&self, value: u32) {
@@ -3270,7 +3365,6 @@ impl InstrMem6 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM6** `[15:0]` (WO)
     /// Write **INSTR_MEM6** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem6(&self, value: u32) {
@@ -3377,7 +3471,6 @@ impl InstrMem7 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM7** `[15:0]` (WO)
     /// Write **INSTR_MEM7** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem7(&self, value: u32) {
@@ -3484,7 +3577,6 @@ impl InstrMem8 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM8** `[15:0]` (WO)
     /// Write **INSTR_MEM8** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem8(&self, value: u32) {
@@ -3591,7 +3683,6 @@ impl InstrMem9 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM9** `[15:0]` (WO)
     /// Write **INSTR_MEM9** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem9(&self, value: u32) {
@@ -3698,7 +3789,6 @@ impl InstrMem10 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM10** `[15:0]` (WO)
     /// Write **INSTR_MEM10** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem10(&self, value: u32) {
@@ -3805,7 +3895,6 @@ impl InstrMem11 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM11** `[15:0]` (WO)
     /// Write **INSTR_MEM11** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem11(&self, value: u32) {
@@ -3912,7 +4001,6 @@ impl InstrMem12 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM12** `[15:0]` (WO)
     /// Write **INSTR_MEM12** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem12(&self, value: u32) {
@@ -4019,7 +4107,6 @@ impl InstrMem13 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM13** `[15:0]` (WO)
     /// Write **INSTR_MEM13** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem13(&self, value: u32) {
@@ -4126,7 +4213,6 @@ impl InstrMem14 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM14** `[15:0]` (WO)
     /// Write **INSTR_MEM14** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem14(&self, value: u32) {
@@ -4233,7 +4319,6 @@ impl InstrMem15 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM15** `[15:0]` (WO)
     /// Write **INSTR_MEM15** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem15(&self, value: u32) {
@@ -4340,7 +4425,6 @@ impl InstrMem16 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM16** `[15:0]` (WO)
     /// Write **INSTR_MEM16** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem16(&self, value: u32) {
@@ -4447,7 +4531,6 @@ impl InstrMem17 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM17** `[15:0]` (WO)
     /// Write **INSTR_MEM17** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem17(&self, value: u32) {
@@ -4554,7 +4637,6 @@ impl InstrMem18 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM18** `[15:0]` (WO)
     /// Write **INSTR_MEM18** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem18(&self, value: u32) {
@@ -4661,7 +4743,6 @@ impl InstrMem19 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM19** `[15:0]` (WO)
     /// Write **INSTR_MEM19** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem19(&self, value: u32) {
@@ -4768,7 +4849,6 @@ impl InstrMem20 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM20** `[15:0]` (WO)
     /// Write **INSTR_MEM20** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem20(&self, value: u32) {
@@ -4875,7 +4955,6 @@ impl InstrMem21 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM21** `[15:0]` (WO)
     /// Write **INSTR_MEM21** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem21(&self, value: u32) {
@@ -4982,7 +5061,6 @@ impl InstrMem22 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM22** `[15:0]` (WO)
     /// Write **INSTR_MEM22** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem22(&self, value: u32) {
@@ -5089,7 +5167,6 @@ impl InstrMem23 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM23** `[15:0]` (WO)
     /// Write **INSTR_MEM23** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem23(&self, value: u32) {
@@ -5196,7 +5273,6 @@ impl InstrMem24 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM24** `[15:0]` (WO)
     /// Write **INSTR_MEM24** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem24(&self, value: u32) {
@@ -5303,7 +5379,6 @@ impl InstrMem25 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM25** `[15:0]` (WO)
     /// Write **INSTR_MEM25** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem25(&self, value: u32) {
@@ -5410,7 +5485,6 @@ impl InstrMem26 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM26** `[15:0]` (WO)
     /// Write **INSTR_MEM26** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem26(&self, value: u32) {
@@ -5517,7 +5591,6 @@ impl InstrMem27 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM27** `[15:0]` (WO)
     /// Write **INSTR_MEM27** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem27(&self, value: u32) {
@@ -5624,7 +5697,6 @@ impl InstrMem28 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM28** `[15:0]` (WO)
     /// Write **INSTR_MEM28** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem28(&self, value: u32) {
@@ -5731,7 +5803,6 @@ impl InstrMem29 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM29** `[15:0]` (WO)
     /// Write **INSTR_MEM29** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem29(&self, value: u32) {
@@ -5838,7 +5909,6 @@ impl InstrMem30 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM30** `[15:0]` (WO)
     /// Write **INSTR_MEM30** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem30(&self, value: u32) {
@@ -5945,7 +6015,6 @@ impl InstrMem31 {
 
     // ======== Field Accessors ========
 
-    /// **INSTR_MEM31** `[15:0]` (WO)
     /// Write **INSTR_MEM31** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem31(&self, value: u32) {
@@ -6030,9 +6099,12 @@ impl InstrMem31 {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Effective frequency is sysclk/(int + frac/256).
 ///   Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+///
 /// - **FRAC** `[15:8]` (RW)
+///
 ///   Fractional part of clock divisor
 #[repr(transparent)]
 pub struct Sm0Clkdiv {
@@ -6051,14 +6123,18 @@ impl Sm0Clkdiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional part of clock divisor
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const FRAC_OFFSET: u32 = 8;
     pub const FRAC_MASK: u32 = 0x0000ff00;
@@ -6066,6 +6142,7 @@ impl Sm0Clkdiv {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -6074,6 +6151,7 @@ impl Sm0Clkdiv {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -6082,6 +6160,7 @@ impl Sm0Clkdiv {
     }
 
     /// **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -6089,6 +6168,7 @@ impl Sm0Clkdiv {
     }
 
     /// Write **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -6126,6 +6206,7 @@ impl Sm0ClkdivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -6134,6 +6215,7 @@ impl Sm0ClkdivVal {
     }
 
     /// Read **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -6141,6 +6223,7 @@ impl Sm0ClkdivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -6151,6 +6234,7 @@ impl Sm0ClkdivVal {
     }
 
     /// Set **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -6198,30 +6282,51 @@ impl Sm0Clkdiv {
 /// ## Fields
 ///
 /// - **EXEC_STALLED** `[31]` (RO)
+///
 ///   If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+///
 /// - **SIDE_EN** `[30]` (RW)
+///
 ///   If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+///
 /// - **SIDE_PINDIR** `[29]` (RW)
+///
 ///   If 1, side-set data is asserted to pin directions, instead of pin values
+///
 /// - **JMP_PIN** `[28:24]` (RW)
+///
 ///   The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+///
 /// - **OUT_EN_SEL** `[23:19]` (RW)
+///
 ///   Which data bit to use for inline OUT enable
+///
 /// - **INLINE_OUT_EN** `[18]` (RW)
+///
 ///   If 1, use a bit of OUT data as an auxiliary write enable
 ///   When used in conjunction with OUT_STICKY, writes with an enable of 0 will
 ///   deassert the latest pin write. This can create useful masking/override behaviour
 ///   due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+///
 /// - **OUT_STICKY** `[17]` (RW)
+///
 ///   Continuously assert the most recent OUT/SET to the pins
+///
 /// - **WRAP_TOP** `[16:12]` (RW)
+///
 ///   After reaching this address, execution is wrapped to wrap_bottom.
 ///   If the instruction is a jump, and the jump condition is true, the jump takes priority.
+///
 /// - **WRAP_BOTTOM** `[11:7]` (RW)
+///
 ///   After reaching wrap_top, execution is wrapped to this address.
+///
 /// - **STATUS_SEL** `[6:5]` (RW)
+///
 ///   Comparison used for the MOV x, STATUS instruction.
+///
 /// - **STATUS_N** `[4:0]` (RW)
+///
 ///   Comparison level or IRQ index for the MOV x, STATUS instruction.
 ///   If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
 #[repr(transparent)]
@@ -6241,70 +6346,90 @@ impl Sm0Execctrl {
     // ======== Field Constants ========
 
     /// **EXEC_STALLED**
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const EXEC_STALLED_OFFSET: u32 = 31;
     pub const EXEC_STALLED_MASK: u32 = 0x80000000;
     pub const EXEC_STALLED: u32 = 1 << 31;
 
     /// **SIDE_EN**
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const SIDE_EN_OFFSET: u32 = 30;
     pub const SIDE_EN_MASK: u32 = 0x40000000;
     pub const SIDE_EN: u32 = 1 << 30;
 
     /// **SIDE_PINDIR**
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const SIDE_PINDIR_OFFSET: u32 = 29;
     pub const SIDE_PINDIR_MASK: u32 = 0x20000000;
     pub const SIDE_PINDIR: u32 = 1 << 29;
 
     /// **JMP_PIN**
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+    ///
     /// Bits `[28:24]`, mask `0x1f000000`
     pub const JMP_PIN_OFFSET: u32 = 24;
     pub const JMP_PIN_MASK: u32 = 0x1f000000;
 
     /// **OUT_EN_SEL**
+    ///
     /// Which data bit to use for inline OUT enable
+    ///
     /// Bits `[23:19]`, mask `0x00f80000`
     pub const OUT_EN_SEL_OFFSET: u32 = 19;
     pub const OUT_EN_SEL_MASK: u32 = 0x00f80000;
 
     /// **INLINE_OUT_EN**
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
     /// due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const INLINE_OUT_EN_OFFSET: u32 = 18;
     pub const INLINE_OUT_EN_MASK: u32 = 0x00040000;
     pub const INLINE_OUT_EN: u32 = 1 << 18;
 
     /// **OUT_STICKY**
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const OUT_STICKY_OFFSET: u32 = 17;
     pub const OUT_STICKY_MASK: u32 = 0x00020000;
     pub const OUT_STICKY: u32 = 1 << 17;
 
     /// **WRAP_TOP**
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const WRAP_TOP_OFFSET: u32 = 12;
     pub const WRAP_TOP_MASK: u32 = 0x0001f000;
 
     /// **WRAP_BOTTOM**
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
+    ///
     /// Bits `[11:7]`, mask `0x00000f80`
     pub const WRAP_BOTTOM_OFFSET: u32 = 7;
     pub const WRAP_BOTTOM_MASK: u32 = 0x00000f80;
 
     /// **STATUS_SEL**
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const STATUS_SEL_OFFSET: u32 = 5;
     pub const STATUS_SEL_MASK: u32 = 0x00000060;
@@ -6322,8 +6447,10 @@ impl Sm0Execctrl {
     pub const STATUS_SEL_IRQ_VAL: u32 = 2;
 
     /// **STATUS_N**
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const STATUS_N_OFFSET: u32 = 0;
     pub const STATUS_N_MASK: u32 = 0x0000001f;
@@ -6343,6 +6470,7 @@ impl Sm0Execctrl {
     // ======== Field Accessors ========
 
     /// **EXEC_STALLED** `[31]` (RO)
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub fn exec_stalled(&self) -> bool {
@@ -6350,6 +6478,7 @@ impl Sm0Execctrl {
     }
 
     /// **SIDE_EN** `[30]` (RW)
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub fn side_en(&self) -> bool {
@@ -6369,6 +6498,7 @@ impl Sm0Execctrl {
     }
 
     /// **SIDE_PINDIR** `[29]` (RW)
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub fn side_pindir(&self) -> bool {
@@ -6388,6 +6518,7 @@ impl Sm0Execctrl {
     }
 
     /// **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn jmp_pin(&self) -> u32 {
@@ -6395,6 +6526,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
@@ -6402,6 +6534,7 @@ impl Sm0Execctrl {
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn out_en_sel(&self) -> u32 {
@@ -6409,6 +6542,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
@@ -6416,6 +6550,7 @@ impl Sm0Execctrl {
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -6438,6 +6573,7 @@ impl Sm0Execctrl {
     }
 
     /// **OUT_STICKY** `[17]` (RW)
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub fn out_sticky(&self) -> bool {
@@ -6457,6 +6593,7 @@ impl Sm0Execctrl {
     }
 
     /// **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -6465,6 +6602,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -6473,6 +6611,7 @@ impl Sm0Execctrl {
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn wrap_bottom(&self) -> u32 {
@@ -6480,6 +6619,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
@@ -6487,6 +6627,7 @@ impl Sm0Execctrl {
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn status_sel(&self) -> u32 {
@@ -6494,6 +6635,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
@@ -6501,6 +6643,7 @@ impl Sm0Execctrl {
     }
 
     /// **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -6509,6 +6652,7 @@ impl Sm0Execctrl {
     }
 
     /// Write **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -6547,6 +6691,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **EXEC_STALLED** `[31:31]`
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub const fn exec_stalled(&self) -> bool {
@@ -6554,6 +6699,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn side_en(&self) -> bool {
@@ -6561,6 +6707,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn side_pindir(&self) -> bool {
@@ -6568,6 +6715,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn jmp_pin(&self) -> u32 {
@@ -6575,6 +6723,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn out_en_sel(&self) -> u32 {
@@ -6582,6 +6731,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -6592,6 +6742,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn out_sticky(&self) -> bool {
@@ -6599,6 +6750,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -6607,6 +6759,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn wrap_bottom(&self) -> u32 {
@@ -6614,6 +6767,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn status_sel(&self) -> u32 {
@@ -6621,6 +6775,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Read **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -6629,6 +6784,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn with_side_en(self, value: bool) -> Self {
@@ -6642,6 +6798,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn with_side_pindir(self, value: bool) -> Self {
@@ -6655,6 +6812,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
@@ -6664,6 +6822,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
@@ -6673,6 +6832,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -6689,6 +6849,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn with_out_sticky(self, value: bool) -> Self {
@@ -6702,6 +6863,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -6712,6 +6874,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
@@ -6721,6 +6884,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
@@ -6730,6 +6894,7 @@ impl Sm0ExecctrlVal {
     }
 
     /// Set **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -6778,36 +6943,57 @@ impl Sm0Execctrl {
 /// ## Fields
 ///
 /// - **FJOIN_RX** `[31]` (RW)
+///
 ///   When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
 ///   TX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **FJOIN_TX** `[30]` (RW)
+///
 ///   When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
 ///   RX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **PULL_THRESH** `[29:25]` (RW)
+///
 ///   Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **PUSH_THRESH** `[24:20]` (RW)
+///
 ///   Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **OUT_SHIFTDIR** `[19]` (RW)
+///
 ///   1 = shift out of output shift register to right. 0 = to left.
+///
 /// - **IN_SHIFTDIR** `[18]` (RW)
+///
 ///   1 = shift input shift register to right (data enters from left). 0 = to left.
+///
 /// - **AUTOPULL** `[17]` (RW)
+///
 ///   Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+///
 /// - **AUTOPUSH** `[16]` (RW)
+///
 ///   Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+///
 /// - **FJOIN_RX_PUT** `[15]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **FJOIN_RX_GET** `[14]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **IN_COUNT** `[4:0]` (RW)
+///
 ///   Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
 ///   For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
 ///   Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -6828,87 +7014,109 @@ impl Sm0Shiftctrl {
     // ======== Field Constants ========
 
     /// **FJOIN_RX**
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FJOIN_RX_OFFSET: u32 = 31;
     pub const FJOIN_RX_MASK: u32 = 0x80000000;
     pub const FJOIN_RX: u32 = 1 << 31;
 
     /// **FJOIN_TX**
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const FJOIN_TX_OFFSET: u32 = 30;
     pub const FJOIN_TX_MASK: u32 = 0x40000000;
     pub const FJOIN_TX: u32 = 1 << 30;
 
     /// **PULL_THRESH**
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[29:25]`, mask `0x3e000000`
     pub const PULL_THRESH_OFFSET: u32 = 25;
     pub const PULL_THRESH_MASK: u32 = 0x3e000000;
 
     /// **PUSH_THRESH**
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[24:20]`, mask `0x01f00000`
     pub const PUSH_THRESH_OFFSET: u32 = 20;
     pub const PUSH_THRESH_MASK: u32 = 0x01f00000;
 
     /// **OUT_SHIFTDIR**
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OUT_SHIFTDIR_OFFSET: u32 = 19;
     pub const OUT_SHIFTDIR_MASK: u32 = 0x00080000;
     pub const OUT_SHIFTDIR: u32 = 1 << 19;
 
     /// **IN_SHIFTDIR**
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const IN_SHIFTDIR_OFFSET: u32 = 18;
     pub const IN_SHIFTDIR_MASK: u32 = 0x00040000;
     pub const IN_SHIFTDIR: u32 = 1 << 18;
 
     /// **AUTOPULL**
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const AUTOPULL_OFFSET: u32 = 17;
     pub const AUTOPULL_MASK: u32 = 0x00020000;
     pub const AUTOPULL: u32 = 1 << 17;
 
     /// **AUTOPUSH**
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const AUTOPUSH_OFFSET: u32 = 16;
     pub const AUTOPUSH_MASK: u32 = 0x00010000;
     pub const AUTOPUSH: u32 = 1 << 16;
 
     /// **FJOIN_RX_PUT**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FJOIN_RX_PUT_OFFSET: u32 = 15;
     pub const FJOIN_RX_PUT_MASK: u32 = 0x00008000;
     pub const FJOIN_RX_PUT: u32 = 1 << 15;
 
     /// **FJOIN_RX_GET**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const FJOIN_RX_GET_OFFSET: u32 = 14;
     pub const FJOIN_RX_GET_MASK: u32 = 0x00004000;
     pub const FJOIN_RX_GET: u32 = 1 << 14;
 
     /// **IN_COUNT**
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const IN_COUNT_OFFSET: u32 = 0;
     pub const IN_COUNT_MASK: u32 = 0x0000001f;
@@ -6916,6 +7124,7 @@ impl Sm0Shiftctrl {
     // ======== Field Accessors ========
 
     /// **FJOIN_RX** `[31]` (RW)
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -6937,6 +7146,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **FJOIN_TX** `[30]` (RW)
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -6958,6 +7168,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -6966,6 +7177,7 @@ impl Sm0Shiftctrl {
     }
 
     /// Write **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -6974,6 +7186,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -6982,6 +7195,7 @@ impl Sm0Shiftctrl {
     }
 
     /// Write **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -6990,6 +7204,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub fn out_shiftdir(&self) -> bool {
@@ -7009,6 +7224,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **IN_SHIFTDIR** `[18]` (RW)
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub fn in_shiftdir(&self) -> bool {
@@ -7028,6 +7244,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **AUTOPULL** `[17]` (RW)
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub fn autopull(&self) -> bool {
@@ -7047,6 +7264,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **AUTOPUSH** `[16]` (RW)
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub fn autopush(&self) -> bool {
@@ -7066,6 +7284,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **FJOIN_RX_PUT** `[15]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7087,6 +7306,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **FJOIN_RX_GET** `[14]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7108,6 +7328,7 @@ impl Sm0Shiftctrl {
     }
 
     /// **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -7117,6 +7338,7 @@ impl Sm0Shiftctrl {
     }
 
     /// Write **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -7156,6 +7378,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -7165,6 +7388,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -7174,6 +7398,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -7182,6 +7407,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -7190,6 +7416,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn out_shiftdir(&self) -> bool {
@@ -7197,6 +7424,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn in_shiftdir(&self) -> bool {
@@ -7204,6 +7432,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn autopull(&self) -> bool {
@@ -7211,6 +7440,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn autopush(&self) -> bool {
@@ -7218,6 +7448,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7227,6 +7458,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7236,6 +7468,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Read **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -7245,6 +7478,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -7260,6 +7494,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -7275,6 +7510,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -7285,6 +7521,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -7295,6 +7532,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn with_out_shiftdir(self, value: bool) -> Self {
@@ -7308,6 +7546,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn with_in_shiftdir(self, value: bool) -> Self {
@@ -7321,6 +7560,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn with_autopull(self, value: bool) -> Self {
@@ -7334,6 +7574,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn with_autopush(self, value: bool) -> Self {
@@ -7347,6 +7588,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7362,6 +7604,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -7377,6 +7620,7 @@ impl Sm0ShiftctrlVal {
     }
 
     /// Set **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -7642,18 +7886,31 @@ impl Sm0Instr {
 /// ## Fields
 ///
 /// - **SIDESET_COUNT** `[31:29]` (RW)
+///
 ///   The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+///
 /// - **SET_COUNT** `[28:26]` (RW)
+///
 ///   The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+///
 /// - **OUT_COUNT** `[25:20]` (RW)
+///
 ///   The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+///
 /// - **IN_BASE** `[19:15]` (RW)
+///
 ///   The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+///
 /// - **SIDESET_BASE** `[14:10]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+///
 /// - **SET_BASE** `[9:5]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+///
 /// - **OUT_BASE** `[4:0]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
 #[repr(transparent)]
 pub struct Sm0Pinctrl {
@@ -7672,43 +7929,57 @@ impl Sm0Pinctrl {
     // ======== Field Constants ========
 
     /// **SIDESET_COUNT**
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const SIDESET_COUNT_OFFSET: u32 = 29;
     pub const SIDESET_COUNT_MASK: u32 = 0xe0000000;
 
     /// **SET_COUNT**
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+    ///
     /// Bits `[28:26]`, mask `0x1c000000`
     pub const SET_COUNT_OFFSET: u32 = 26;
     pub const SET_COUNT_MASK: u32 = 0x1c000000;
 
     /// **OUT_COUNT**
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+    ///
     /// Bits `[25:20]`, mask `0x03f00000`
     pub const OUT_COUNT_OFFSET: u32 = 20;
     pub const OUT_COUNT_MASK: u32 = 0x03f00000;
 
     /// **IN_BASE**
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+    ///
     /// Bits `[19:15]`, mask `0x000f8000`
     pub const IN_BASE_OFFSET: u32 = 15;
     pub const IN_BASE_MASK: u32 = 0x000f8000;
 
     /// **SIDESET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const SIDESET_BASE_OFFSET: u32 = 10;
     pub const SIDESET_BASE_MASK: u32 = 0x00007c00;
 
     /// **SET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const SET_BASE_OFFSET: u32 = 5;
     pub const SET_BASE_MASK: u32 = 0x000003e0;
 
     /// **OUT_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const OUT_BASE_OFFSET: u32 = 0;
     pub const OUT_BASE_MASK: u32 = 0x0000001f;
@@ -7716,6 +7987,7 @@ impl Sm0Pinctrl {
     // ======== Field Accessors ========
 
     /// **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn sideset_count(&self) -> u32 {
@@ -7723,6 +7995,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
@@ -7730,6 +8003,7 @@ impl Sm0Pinctrl {
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn set_count(&self) -> u32 {
@@ -7737,6 +8011,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
@@ -7744,6 +8019,7 @@ impl Sm0Pinctrl {
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn out_count(&self) -> u32 {
@@ -7751,6 +8027,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
@@ -7758,6 +8035,7 @@ impl Sm0Pinctrl {
     }
 
     /// **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn in_base(&self) -> u32 {
@@ -7765,6 +8043,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
@@ -7772,6 +8051,7 @@ impl Sm0Pinctrl {
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn sideset_base(&self) -> u32 {
@@ -7779,6 +8059,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
@@ -7786,6 +8067,7 @@ impl Sm0Pinctrl {
     }
 
     /// **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn set_base(&self) -> u32 {
@@ -7793,6 +8075,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
@@ -7800,6 +8083,7 @@ impl Sm0Pinctrl {
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn out_base(&self) -> u32 {
@@ -7807,6 +8091,7 @@ impl Sm0Pinctrl {
     }
 
     /// Write **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
@@ -7844,6 +8129,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn sideset_count(&self) -> u32 {
@@ -7851,6 +8137,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn set_count(&self) -> u32 {
@@ -7858,6 +8145,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn out_count(&self) -> u32 {
@@ -7865,6 +8153,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn in_base(&self) -> u32 {
@@ -7872,6 +8161,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn sideset_base(&self) -> u32 {
@@ -7879,6 +8169,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn set_base(&self) -> u32 {
@@ -7886,6 +8177,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Read **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn out_base(&self) -> u32 {
@@ -7893,6 +8185,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
@@ -7902,6 +8195,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
@@ -7911,6 +8205,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
@@ -7920,6 +8215,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
@@ -7929,6 +8225,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
@@ -7938,6 +8235,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
@@ -7947,6 +8245,7 @@ impl Sm0PinctrlVal {
     }
 
     /// Set **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
@@ -7995,9 +8294,12 @@ impl Sm0Pinctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Effective frequency is sysclk/(int + frac/256).
 ///   Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+///
 /// - **FRAC** `[15:8]` (RW)
+///
 ///   Fractional part of clock divisor
 #[repr(transparent)]
 pub struct Sm1Clkdiv {
@@ -8016,14 +8318,18 @@ impl Sm1Clkdiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional part of clock divisor
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const FRAC_OFFSET: u32 = 8;
     pub const FRAC_MASK: u32 = 0x0000ff00;
@@ -8031,6 +8337,7 @@ impl Sm1Clkdiv {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -8039,6 +8346,7 @@ impl Sm1Clkdiv {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -8047,6 +8355,7 @@ impl Sm1Clkdiv {
     }
 
     /// **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -8054,6 +8363,7 @@ impl Sm1Clkdiv {
     }
 
     /// Write **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -8091,6 +8401,7 @@ impl Sm1ClkdivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -8099,6 +8410,7 @@ impl Sm1ClkdivVal {
     }
 
     /// Read **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -8106,6 +8418,7 @@ impl Sm1ClkdivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -8116,6 +8429,7 @@ impl Sm1ClkdivVal {
     }
 
     /// Set **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -8163,30 +8477,51 @@ impl Sm1Clkdiv {
 /// ## Fields
 ///
 /// - **EXEC_STALLED** `[31]` (RO)
+///
 ///   If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+///
 /// - **SIDE_EN** `[30]` (RW)
+///
 ///   If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+///
 /// - **SIDE_PINDIR** `[29]` (RW)
+///
 ///   If 1, side-set data is asserted to pin directions, instead of pin values
+///
 /// - **JMP_PIN** `[28:24]` (RW)
+///
 ///   The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+///
 /// - **OUT_EN_SEL** `[23:19]` (RW)
+///
 ///   Which data bit to use for inline OUT enable
+///
 /// - **INLINE_OUT_EN** `[18]` (RW)
+///
 ///   If 1, use a bit of OUT data as an auxiliary write enable
 ///   When used in conjunction with OUT_STICKY, writes with an enable of 0 will
 ///   deassert the latest pin write. This can create useful masking/override behaviour
 ///   due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+///
 /// - **OUT_STICKY** `[17]` (RW)
+///
 ///   Continuously assert the most recent OUT/SET to the pins
+///
 /// - **WRAP_TOP** `[16:12]` (RW)
+///
 ///   After reaching this address, execution is wrapped to wrap_bottom.
 ///   If the instruction is a jump, and the jump condition is true, the jump takes priority.
+///
 /// - **WRAP_BOTTOM** `[11:7]` (RW)
+///
 ///   After reaching wrap_top, execution is wrapped to this address.
+///
 /// - **STATUS_SEL** `[6:5]` (RW)
+///
 ///   Comparison used for the MOV x, STATUS instruction.
+///
 /// - **STATUS_N** `[4:0]` (RW)
+///
 ///   Comparison level or IRQ index for the MOV x, STATUS instruction.
 ///   If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
 #[repr(transparent)]
@@ -8206,70 +8541,90 @@ impl Sm1Execctrl {
     // ======== Field Constants ========
 
     /// **EXEC_STALLED**
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const EXEC_STALLED_OFFSET: u32 = 31;
     pub const EXEC_STALLED_MASK: u32 = 0x80000000;
     pub const EXEC_STALLED: u32 = 1 << 31;
 
     /// **SIDE_EN**
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const SIDE_EN_OFFSET: u32 = 30;
     pub const SIDE_EN_MASK: u32 = 0x40000000;
     pub const SIDE_EN: u32 = 1 << 30;
 
     /// **SIDE_PINDIR**
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const SIDE_PINDIR_OFFSET: u32 = 29;
     pub const SIDE_PINDIR_MASK: u32 = 0x20000000;
     pub const SIDE_PINDIR: u32 = 1 << 29;
 
     /// **JMP_PIN**
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+    ///
     /// Bits `[28:24]`, mask `0x1f000000`
     pub const JMP_PIN_OFFSET: u32 = 24;
     pub const JMP_PIN_MASK: u32 = 0x1f000000;
 
     /// **OUT_EN_SEL**
+    ///
     /// Which data bit to use for inline OUT enable
+    ///
     /// Bits `[23:19]`, mask `0x00f80000`
     pub const OUT_EN_SEL_OFFSET: u32 = 19;
     pub const OUT_EN_SEL_MASK: u32 = 0x00f80000;
 
     /// **INLINE_OUT_EN**
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
     /// due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const INLINE_OUT_EN_OFFSET: u32 = 18;
     pub const INLINE_OUT_EN_MASK: u32 = 0x00040000;
     pub const INLINE_OUT_EN: u32 = 1 << 18;
 
     /// **OUT_STICKY**
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const OUT_STICKY_OFFSET: u32 = 17;
     pub const OUT_STICKY_MASK: u32 = 0x00020000;
     pub const OUT_STICKY: u32 = 1 << 17;
 
     /// **WRAP_TOP**
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const WRAP_TOP_OFFSET: u32 = 12;
     pub const WRAP_TOP_MASK: u32 = 0x0001f000;
 
     /// **WRAP_BOTTOM**
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
+    ///
     /// Bits `[11:7]`, mask `0x00000f80`
     pub const WRAP_BOTTOM_OFFSET: u32 = 7;
     pub const WRAP_BOTTOM_MASK: u32 = 0x00000f80;
 
     /// **STATUS_SEL**
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const STATUS_SEL_OFFSET: u32 = 5;
     pub const STATUS_SEL_MASK: u32 = 0x00000060;
@@ -8287,8 +8642,10 @@ impl Sm1Execctrl {
     pub const STATUS_SEL_IRQ_VAL: u32 = 2;
 
     /// **STATUS_N**
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const STATUS_N_OFFSET: u32 = 0;
     pub const STATUS_N_MASK: u32 = 0x0000001f;
@@ -8308,6 +8665,7 @@ impl Sm1Execctrl {
     // ======== Field Accessors ========
 
     /// **EXEC_STALLED** `[31]` (RO)
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub fn exec_stalled(&self) -> bool {
@@ -8315,6 +8673,7 @@ impl Sm1Execctrl {
     }
 
     /// **SIDE_EN** `[30]` (RW)
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub fn side_en(&self) -> bool {
@@ -8334,6 +8693,7 @@ impl Sm1Execctrl {
     }
 
     /// **SIDE_PINDIR** `[29]` (RW)
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub fn side_pindir(&self) -> bool {
@@ -8353,6 +8713,7 @@ impl Sm1Execctrl {
     }
 
     /// **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn jmp_pin(&self) -> u32 {
@@ -8360,6 +8721,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
@@ -8367,6 +8729,7 @@ impl Sm1Execctrl {
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn out_en_sel(&self) -> u32 {
@@ -8374,6 +8737,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
@@ -8381,6 +8745,7 @@ impl Sm1Execctrl {
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -8403,6 +8768,7 @@ impl Sm1Execctrl {
     }
 
     /// **OUT_STICKY** `[17]` (RW)
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub fn out_sticky(&self) -> bool {
@@ -8422,6 +8788,7 @@ impl Sm1Execctrl {
     }
 
     /// **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -8430,6 +8797,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -8438,6 +8806,7 @@ impl Sm1Execctrl {
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn wrap_bottom(&self) -> u32 {
@@ -8445,6 +8814,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
@@ -8452,6 +8822,7 @@ impl Sm1Execctrl {
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn status_sel(&self) -> u32 {
@@ -8459,6 +8830,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
@@ -8466,6 +8838,7 @@ impl Sm1Execctrl {
     }
 
     /// **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -8474,6 +8847,7 @@ impl Sm1Execctrl {
     }
 
     /// Write **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -8512,6 +8886,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **EXEC_STALLED** `[31:31]`
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub const fn exec_stalled(&self) -> bool {
@@ -8519,6 +8894,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn side_en(&self) -> bool {
@@ -8526,6 +8902,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn side_pindir(&self) -> bool {
@@ -8533,6 +8910,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn jmp_pin(&self) -> u32 {
@@ -8540,6 +8918,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn out_en_sel(&self) -> u32 {
@@ -8547,6 +8926,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -8557,6 +8937,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn out_sticky(&self) -> bool {
@@ -8564,6 +8945,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -8572,6 +8954,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn wrap_bottom(&self) -> u32 {
@@ -8579,6 +8962,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn status_sel(&self) -> u32 {
@@ -8586,6 +8970,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Read **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -8594,6 +8979,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn with_side_en(self, value: bool) -> Self {
@@ -8607,6 +8993,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn with_side_pindir(self, value: bool) -> Self {
@@ -8620,6 +9007,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
@@ -8629,6 +9017,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
@@ -8638,6 +9027,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -8654,6 +9044,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn with_out_sticky(self, value: bool) -> Self {
@@ -8667,6 +9058,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -8677,6 +9069,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
@@ -8686,6 +9079,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
@@ -8695,6 +9089,7 @@ impl Sm1ExecctrlVal {
     }
 
     /// Set **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -8743,36 +9138,57 @@ impl Sm1Execctrl {
 /// ## Fields
 ///
 /// - **FJOIN_RX** `[31]` (RW)
+///
 ///   When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
 ///   TX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **FJOIN_TX** `[30]` (RW)
+///
 ///   When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
 ///   RX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **PULL_THRESH** `[29:25]` (RW)
+///
 ///   Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **PUSH_THRESH** `[24:20]` (RW)
+///
 ///   Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **OUT_SHIFTDIR** `[19]` (RW)
+///
 ///   1 = shift out of output shift register to right. 0 = to left.
+///
 /// - **IN_SHIFTDIR** `[18]` (RW)
+///
 ///   1 = shift input shift register to right (data enters from left). 0 = to left.
+///
 /// - **AUTOPULL** `[17]` (RW)
+///
 ///   Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+///
 /// - **AUTOPUSH** `[16]` (RW)
+///
 ///   Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+///
 /// - **FJOIN_RX_PUT** `[15]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **FJOIN_RX_GET** `[14]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **IN_COUNT** `[4:0]` (RW)
+///
 ///   Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
 ///   For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
 ///   Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -8793,87 +9209,109 @@ impl Sm1Shiftctrl {
     // ======== Field Constants ========
 
     /// **FJOIN_RX**
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FJOIN_RX_OFFSET: u32 = 31;
     pub const FJOIN_RX_MASK: u32 = 0x80000000;
     pub const FJOIN_RX: u32 = 1 << 31;
 
     /// **FJOIN_TX**
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const FJOIN_TX_OFFSET: u32 = 30;
     pub const FJOIN_TX_MASK: u32 = 0x40000000;
     pub const FJOIN_TX: u32 = 1 << 30;
 
     /// **PULL_THRESH**
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[29:25]`, mask `0x3e000000`
     pub const PULL_THRESH_OFFSET: u32 = 25;
     pub const PULL_THRESH_MASK: u32 = 0x3e000000;
 
     /// **PUSH_THRESH**
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[24:20]`, mask `0x01f00000`
     pub const PUSH_THRESH_OFFSET: u32 = 20;
     pub const PUSH_THRESH_MASK: u32 = 0x01f00000;
 
     /// **OUT_SHIFTDIR**
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OUT_SHIFTDIR_OFFSET: u32 = 19;
     pub const OUT_SHIFTDIR_MASK: u32 = 0x00080000;
     pub const OUT_SHIFTDIR: u32 = 1 << 19;
 
     /// **IN_SHIFTDIR**
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const IN_SHIFTDIR_OFFSET: u32 = 18;
     pub const IN_SHIFTDIR_MASK: u32 = 0x00040000;
     pub const IN_SHIFTDIR: u32 = 1 << 18;
 
     /// **AUTOPULL**
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const AUTOPULL_OFFSET: u32 = 17;
     pub const AUTOPULL_MASK: u32 = 0x00020000;
     pub const AUTOPULL: u32 = 1 << 17;
 
     /// **AUTOPUSH**
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const AUTOPUSH_OFFSET: u32 = 16;
     pub const AUTOPUSH_MASK: u32 = 0x00010000;
     pub const AUTOPUSH: u32 = 1 << 16;
 
     /// **FJOIN_RX_PUT**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FJOIN_RX_PUT_OFFSET: u32 = 15;
     pub const FJOIN_RX_PUT_MASK: u32 = 0x00008000;
     pub const FJOIN_RX_PUT: u32 = 1 << 15;
 
     /// **FJOIN_RX_GET**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const FJOIN_RX_GET_OFFSET: u32 = 14;
     pub const FJOIN_RX_GET_MASK: u32 = 0x00004000;
     pub const FJOIN_RX_GET: u32 = 1 << 14;
 
     /// **IN_COUNT**
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const IN_COUNT_OFFSET: u32 = 0;
     pub const IN_COUNT_MASK: u32 = 0x0000001f;
@@ -8881,6 +9319,7 @@ impl Sm1Shiftctrl {
     // ======== Field Accessors ========
 
     /// **FJOIN_RX** `[31]` (RW)
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -8902,6 +9341,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **FJOIN_TX** `[30]` (RW)
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -8923,6 +9363,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -8931,6 +9372,7 @@ impl Sm1Shiftctrl {
     }
 
     /// Write **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -8939,6 +9381,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -8947,6 +9390,7 @@ impl Sm1Shiftctrl {
     }
 
     /// Write **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -8955,6 +9399,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub fn out_shiftdir(&self) -> bool {
@@ -8974,6 +9419,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **IN_SHIFTDIR** `[18]` (RW)
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub fn in_shiftdir(&self) -> bool {
@@ -8993,6 +9439,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **AUTOPULL** `[17]` (RW)
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub fn autopull(&self) -> bool {
@@ -9012,6 +9459,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **AUTOPUSH** `[16]` (RW)
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub fn autopush(&self) -> bool {
@@ -9031,6 +9479,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **FJOIN_RX_PUT** `[15]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9052,6 +9501,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **FJOIN_RX_GET** `[14]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9073,6 +9523,7 @@ impl Sm1Shiftctrl {
     }
 
     /// **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -9082,6 +9533,7 @@ impl Sm1Shiftctrl {
     }
 
     /// Write **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -9121,6 +9573,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -9130,6 +9583,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -9139,6 +9593,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -9147,6 +9602,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -9155,6 +9611,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn out_shiftdir(&self) -> bool {
@@ -9162,6 +9619,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn in_shiftdir(&self) -> bool {
@@ -9169,6 +9627,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn autopull(&self) -> bool {
@@ -9176,6 +9635,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn autopush(&self) -> bool {
@@ -9183,6 +9643,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9192,6 +9653,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9201,6 +9663,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Read **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -9210,6 +9673,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -9225,6 +9689,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -9240,6 +9705,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -9250,6 +9716,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -9260,6 +9727,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn with_out_shiftdir(self, value: bool) -> Self {
@@ -9273,6 +9741,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn with_in_shiftdir(self, value: bool) -> Self {
@@ -9286,6 +9755,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn with_autopull(self, value: bool) -> Self {
@@ -9299,6 +9769,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn with_autopush(self, value: bool) -> Self {
@@ -9312,6 +9783,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9327,6 +9799,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -9342,6 +9815,7 @@ impl Sm1ShiftctrlVal {
     }
 
     /// Set **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -9607,18 +10081,31 @@ impl Sm1Instr {
 /// ## Fields
 ///
 /// - **SIDESET_COUNT** `[31:29]` (RW)
+///
 ///   The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+///
 /// - **SET_COUNT** `[28:26]` (RW)
+///
 ///   The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+///
 /// - **OUT_COUNT** `[25:20]` (RW)
+///
 ///   The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+///
 /// - **IN_BASE** `[19:15]` (RW)
+///
 ///   The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+///
 /// - **SIDESET_BASE** `[14:10]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+///
 /// - **SET_BASE** `[9:5]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+///
 /// - **OUT_BASE** `[4:0]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
 #[repr(transparent)]
 pub struct Sm1Pinctrl {
@@ -9637,43 +10124,57 @@ impl Sm1Pinctrl {
     // ======== Field Constants ========
 
     /// **SIDESET_COUNT**
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const SIDESET_COUNT_OFFSET: u32 = 29;
     pub const SIDESET_COUNT_MASK: u32 = 0xe0000000;
 
     /// **SET_COUNT**
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+    ///
     /// Bits `[28:26]`, mask `0x1c000000`
     pub const SET_COUNT_OFFSET: u32 = 26;
     pub const SET_COUNT_MASK: u32 = 0x1c000000;
 
     /// **OUT_COUNT**
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+    ///
     /// Bits `[25:20]`, mask `0x03f00000`
     pub const OUT_COUNT_OFFSET: u32 = 20;
     pub const OUT_COUNT_MASK: u32 = 0x03f00000;
 
     /// **IN_BASE**
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+    ///
     /// Bits `[19:15]`, mask `0x000f8000`
     pub const IN_BASE_OFFSET: u32 = 15;
     pub const IN_BASE_MASK: u32 = 0x000f8000;
 
     /// **SIDESET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const SIDESET_BASE_OFFSET: u32 = 10;
     pub const SIDESET_BASE_MASK: u32 = 0x00007c00;
 
     /// **SET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const SET_BASE_OFFSET: u32 = 5;
     pub const SET_BASE_MASK: u32 = 0x000003e0;
 
     /// **OUT_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const OUT_BASE_OFFSET: u32 = 0;
     pub const OUT_BASE_MASK: u32 = 0x0000001f;
@@ -9681,6 +10182,7 @@ impl Sm1Pinctrl {
     // ======== Field Accessors ========
 
     /// **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn sideset_count(&self) -> u32 {
@@ -9688,6 +10190,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
@@ -9695,6 +10198,7 @@ impl Sm1Pinctrl {
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn set_count(&self) -> u32 {
@@ -9702,6 +10206,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
@@ -9709,6 +10214,7 @@ impl Sm1Pinctrl {
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn out_count(&self) -> u32 {
@@ -9716,6 +10222,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
@@ -9723,6 +10230,7 @@ impl Sm1Pinctrl {
     }
 
     /// **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn in_base(&self) -> u32 {
@@ -9730,6 +10238,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
@@ -9737,6 +10246,7 @@ impl Sm1Pinctrl {
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn sideset_base(&self) -> u32 {
@@ -9744,6 +10254,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
@@ -9751,6 +10262,7 @@ impl Sm1Pinctrl {
     }
 
     /// **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn set_base(&self) -> u32 {
@@ -9758,6 +10270,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
@@ -9765,6 +10278,7 @@ impl Sm1Pinctrl {
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn out_base(&self) -> u32 {
@@ -9772,6 +10286,7 @@ impl Sm1Pinctrl {
     }
 
     /// Write **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
@@ -9809,6 +10324,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn sideset_count(&self) -> u32 {
@@ -9816,6 +10332,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn set_count(&self) -> u32 {
@@ -9823,6 +10340,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn out_count(&self) -> u32 {
@@ -9830,6 +10348,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn in_base(&self) -> u32 {
@@ -9837,6 +10356,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn sideset_base(&self) -> u32 {
@@ -9844,6 +10364,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn set_base(&self) -> u32 {
@@ -9851,6 +10372,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Read **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn out_base(&self) -> u32 {
@@ -9858,6 +10380,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
@@ -9867,6 +10390,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
@@ -9876,6 +10400,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
@@ -9885,6 +10410,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
@@ -9894,6 +10420,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
@@ -9903,6 +10430,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
@@ -9912,6 +10440,7 @@ impl Sm1PinctrlVal {
     }
 
     /// Set **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
@@ -9960,9 +10489,12 @@ impl Sm1Pinctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Effective frequency is sysclk/(int + frac/256).
 ///   Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+///
 /// - **FRAC** `[15:8]` (RW)
+///
 ///   Fractional part of clock divisor
 #[repr(transparent)]
 pub struct Sm2Clkdiv {
@@ -9981,14 +10513,18 @@ impl Sm2Clkdiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional part of clock divisor
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const FRAC_OFFSET: u32 = 8;
     pub const FRAC_MASK: u32 = 0x0000ff00;
@@ -9996,6 +10532,7 @@ impl Sm2Clkdiv {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -10004,6 +10541,7 @@ impl Sm2Clkdiv {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -10012,6 +10550,7 @@ impl Sm2Clkdiv {
     }
 
     /// **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -10019,6 +10558,7 @@ impl Sm2Clkdiv {
     }
 
     /// Write **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -10056,6 +10596,7 @@ impl Sm2ClkdivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -10064,6 +10605,7 @@ impl Sm2ClkdivVal {
     }
 
     /// Read **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -10071,6 +10613,7 @@ impl Sm2ClkdivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -10081,6 +10624,7 @@ impl Sm2ClkdivVal {
     }
 
     /// Set **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -10128,30 +10672,51 @@ impl Sm2Clkdiv {
 /// ## Fields
 ///
 /// - **EXEC_STALLED** `[31]` (RO)
+///
 ///   If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+///
 /// - **SIDE_EN** `[30]` (RW)
+///
 ///   If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+///
 /// - **SIDE_PINDIR** `[29]` (RW)
+///
 ///   If 1, side-set data is asserted to pin directions, instead of pin values
+///
 /// - **JMP_PIN** `[28:24]` (RW)
+///
 ///   The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+///
 /// - **OUT_EN_SEL** `[23:19]` (RW)
+///
 ///   Which data bit to use for inline OUT enable
+///
 /// - **INLINE_OUT_EN** `[18]` (RW)
+///
 ///   If 1, use a bit of OUT data as an auxiliary write enable
 ///   When used in conjunction with OUT_STICKY, writes with an enable of 0 will
 ///   deassert the latest pin write. This can create useful masking/override behaviour
 ///   due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+///
 /// - **OUT_STICKY** `[17]` (RW)
+///
 ///   Continuously assert the most recent OUT/SET to the pins
+///
 /// - **WRAP_TOP** `[16:12]` (RW)
+///
 ///   After reaching this address, execution is wrapped to wrap_bottom.
 ///   If the instruction is a jump, and the jump condition is true, the jump takes priority.
+///
 /// - **WRAP_BOTTOM** `[11:7]` (RW)
+///
 ///   After reaching wrap_top, execution is wrapped to this address.
+///
 /// - **STATUS_SEL** `[6:5]` (RW)
+///
 ///   Comparison used for the MOV x, STATUS instruction.
+///
 /// - **STATUS_N** `[4:0]` (RW)
+///
 ///   Comparison level or IRQ index for the MOV x, STATUS instruction.
 ///   If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
 #[repr(transparent)]
@@ -10171,70 +10736,90 @@ impl Sm2Execctrl {
     // ======== Field Constants ========
 
     /// **EXEC_STALLED**
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const EXEC_STALLED_OFFSET: u32 = 31;
     pub const EXEC_STALLED_MASK: u32 = 0x80000000;
     pub const EXEC_STALLED: u32 = 1 << 31;
 
     /// **SIDE_EN**
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const SIDE_EN_OFFSET: u32 = 30;
     pub const SIDE_EN_MASK: u32 = 0x40000000;
     pub const SIDE_EN: u32 = 1 << 30;
 
     /// **SIDE_PINDIR**
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const SIDE_PINDIR_OFFSET: u32 = 29;
     pub const SIDE_PINDIR_MASK: u32 = 0x20000000;
     pub const SIDE_PINDIR: u32 = 1 << 29;
 
     /// **JMP_PIN**
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+    ///
     /// Bits `[28:24]`, mask `0x1f000000`
     pub const JMP_PIN_OFFSET: u32 = 24;
     pub const JMP_PIN_MASK: u32 = 0x1f000000;
 
     /// **OUT_EN_SEL**
+    ///
     /// Which data bit to use for inline OUT enable
+    ///
     /// Bits `[23:19]`, mask `0x00f80000`
     pub const OUT_EN_SEL_OFFSET: u32 = 19;
     pub const OUT_EN_SEL_MASK: u32 = 0x00f80000;
 
     /// **INLINE_OUT_EN**
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
     /// due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const INLINE_OUT_EN_OFFSET: u32 = 18;
     pub const INLINE_OUT_EN_MASK: u32 = 0x00040000;
     pub const INLINE_OUT_EN: u32 = 1 << 18;
 
     /// **OUT_STICKY**
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const OUT_STICKY_OFFSET: u32 = 17;
     pub const OUT_STICKY_MASK: u32 = 0x00020000;
     pub const OUT_STICKY: u32 = 1 << 17;
 
     /// **WRAP_TOP**
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const WRAP_TOP_OFFSET: u32 = 12;
     pub const WRAP_TOP_MASK: u32 = 0x0001f000;
 
     /// **WRAP_BOTTOM**
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
+    ///
     /// Bits `[11:7]`, mask `0x00000f80`
     pub const WRAP_BOTTOM_OFFSET: u32 = 7;
     pub const WRAP_BOTTOM_MASK: u32 = 0x00000f80;
 
     /// **STATUS_SEL**
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const STATUS_SEL_OFFSET: u32 = 5;
     pub const STATUS_SEL_MASK: u32 = 0x00000060;
@@ -10252,8 +10837,10 @@ impl Sm2Execctrl {
     pub const STATUS_SEL_IRQ_VAL: u32 = 2;
 
     /// **STATUS_N**
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const STATUS_N_OFFSET: u32 = 0;
     pub const STATUS_N_MASK: u32 = 0x0000001f;
@@ -10273,6 +10860,7 @@ impl Sm2Execctrl {
     // ======== Field Accessors ========
 
     /// **EXEC_STALLED** `[31]` (RO)
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub fn exec_stalled(&self) -> bool {
@@ -10280,6 +10868,7 @@ impl Sm2Execctrl {
     }
 
     /// **SIDE_EN** `[30]` (RW)
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub fn side_en(&self) -> bool {
@@ -10299,6 +10888,7 @@ impl Sm2Execctrl {
     }
 
     /// **SIDE_PINDIR** `[29]` (RW)
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub fn side_pindir(&self) -> bool {
@@ -10318,6 +10908,7 @@ impl Sm2Execctrl {
     }
 
     /// **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn jmp_pin(&self) -> u32 {
@@ -10325,6 +10916,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
@@ -10332,6 +10924,7 @@ impl Sm2Execctrl {
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn out_en_sel(&self) -> u32 {
@@ -10339,6 +10932,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
@@ -10346,6 +10940,7 @@ impl Sm2Execctrl {
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -10368,6 +10963,7 @@ impl Sm2Execctrl {
     }
 
     /// **OUT_STICKY** `[17]` (RW)
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub fn out_sticky(&self) -> bool {
@@ -10387,6 +10983,7 @@ impl Sm2Execctrl {
     }
 
     /// **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -10395,6 +10992,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -10403,6 +11001,7 @@ impl Sm2Execctrl {
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn wrap_bottom(&self) -> u32 {
@@ -10410,6 +11009,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
@@ -10417,6 +11017,7 @@ impl Sm2Execctrl {
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn status_sel(&self) -> u32 {
@@ -10424,6 +11025,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
@@ -10431,6 +11033,7 @@ impl Sm2Execctrl {
     }
 
     /// **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -10439,6 +11042,7 @@ impl Sm2Execctrl {
     }
 
     /// Write **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -10477,6 +11081,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **EXEC_STALLED** `[31:31]`
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub const fn exec_stalled(&self) -> bool {
@@ -10484,6 +11089,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn side_en(&self) -> bool {
@@ -10491,6 +11097,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn side_pindir(&self) -> bool {
@@ -10498,6 +11105,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn jmp_pin(&self) -> u32 {
@@ -10505,6 +11113,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn out_en_sel(&self) -> u32 {
@@ -10512,6 +11121,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -10522,6 +11132,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn out_sticky(&self) -> bool {
@@ -10529,6 +11140,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -10537,6 +11149,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn wrap_bottom(&self) -> u32 {
@@ -10544,6 +11157,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn status_sel(&self) -> u32 {
@@ -10551,6 +11165,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Read **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -10559,6 +11174,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn with_side_en(self, value: bool) -> Self {
@@ -10572,6 +11188,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn with_side_pindir(self, value: bool) -> Self {
@@ -10585,6 +11202,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
@@ -10594,6 +11212,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
@@ -10603,6 +11222,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -10619,6 +11239,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn with_out_sticky(self, value: bool) -> Self {
@@ -10632,6 +11253,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -10642,6 +11264,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
@@ -10651,6 +11274,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
@@ -10660,6 +11284,7 @@ impl Sm2ExecctrlVal {
     }
 
     /// Set **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -10708,36 +11333,57 @@ impl Sm2Execctrl {
 /// ## Fields
 ///
 /// - **FJOIN_RX** `[31]` (RW)
+///
 ///   When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
 ///   TX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **FJOIN_TX** `[30]` (RW)
+///
 ///   When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
 ///   RX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **PULL_THRESH** `[29:25]` (RW)
+///
 ///   Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **PUSH_THRESH** `[24:20]` (RW)
+///
 ///   Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **OUT_SHIFTDIR** `[19]` (RW)
+///
 ///   1 = shift out of output shift register to right. 0 = to left.
+///
 /// - **IN_SHIFTDIR** `[18]` (RW)
+///
 ///   1 = shift input shift register to right (data enters from left). 0 = to left.
+///
 /// - **AUTOPULL** `[17]` (RW)
+///
 ///   Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+///
 /// - **AUTOPUSH** `[16]` (RW)
+///
 ///   Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+///
 /// - **FJOIN_RX_PUT** `[15]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **FJOIN_RX_GET** `[14]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **IN_COUNT** `[4:0]` (RW)
+///
 ///   Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
 ///   For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
 ///   Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -10758,87 +11404,109 @@ impl Sm2Shiftctrl {
     // ======== Field Constants ========
 
     /// **FJOIN_RX**
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FJOIN_RX_OFFSET: u32 = 31;
     pub const FJOIN_RX_MASK: u32 = 0x80000000;
     pub const FJOIN_RX: u32 = 1 << 31;
 
     /// **FJOIN_TX**
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const FJOIN_TX_OFFSET: u32 = 30;
     pub const FJOIN_TX_MASK: u32 = 0x40000000;
     pub const FJOIN_TX: u32 = 1 << 30;
 
     /// **PULL_THRESH**
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[29:25]`, mask `0x3e000000`
     pub const PULL_THRESH_OFFSET: u32 = 25;
     pub const PULL_THRESH_MASK: u32 = 0x3e000000;
 
     /// **PUSH_THRESH**
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[24:20]`, mask `0x01f00000`
     pub const PUSH_THRESH_OFFSET: u32 = 20;
     pub const PUSH_THRESH_MASK: u32 = 0x01f00000;
 
     /// **OUT_SHIFTDIR**
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OUT_SHIFTDIR_OFFSET: u32 = 19;
     pub const OUT_SHIFTDIR_MASK: u32 = 0x00080000;
     pub const OUT_SHIFTDIR: u32 = 1 << 19;
 
     /// **IN_SHIFTDIR**
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const IN_SHIFTDIR_OFFSET: u32 = 18;
     pub const IN_SHIFTDIR_MASK: u32 = 0x00040000;
     pub const IN_SHIFTDIR: u32 = 1 << 18;
 
     /// **AUTOPULL**
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const AUTOPULL_OFFSET: u32 = 17;
     pub const AUTOPULL_MASK: u32 = 0x00020000;
     pub const AUTOPULL: u32 = 1 << 17;
 
     /// **AUTOPUSH**
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const AUTOPUSH_OFFSET: u32 = 16;
     pub const AUTOPUSH_MASK: u32 = 0x00010000;
     pub const AUTOPUSH: u32 = 1 << 16;
 
     /// **FJOIN_RX_PUT**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FJOIN_RX_PUT_OFFSET: u32 = 15;
     pub const FJOIN_RX_PUT_MASK: u32 = 0x00008000;
     pub const FJOIN_RX_PUT: u32 = 1 << 15;
 
     /// **FJOIN_RX_GET**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const FJOIN_RX_GET_OFFSET: u32 = 14;
     pub const FJOIN_RX_GET_MASK: u32 = 0x00004000;
     pub const FJOIN_RX_GET: u32 = 1 << 14;
 
     /// **IN_COUNT**
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const IN_COUNT_OFFSET: u32 = 0;
     pub const IN_COUNT_MASK: u32 = 0x0000001f;
@@ -10846,6 +11514,7 @@ impl Sm2Shiftctrl {
     // ======== Field Accessors ========
 
     /// **FJOIN_RX** `[31]` (RW)
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -10867,6 +11536,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **FJOIN_TX** `[30]` (RW)
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -10888,6 +11558,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -10896,6 +11567,7 @@ impl Sm2Shiftctrl {
     }
 
     /// Write **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -10904,6 +11576,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -10912,6 +11585,7 @@ impl Sm2Shiftctrl {
     }
 
     /// Write **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -10920,6 +11594,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub fn out_shiftdir(&self) -> bool {
@@ -10939,6 +11614,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **IN_SHIFTDIR** `[18]` (RW)
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub fn in_shiftdir(&self) -> bool {
@@ -10958,6 +11634,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **AUTOPULL** `[17]` (RW)
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub fn autopull(&self) -> bool {
@@ -10977,6 +11654,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **AUTOPUSH** `[16]` (RW)
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub fn autopush(&self) -> bool {
@@ -10996,6 +11674,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **FJOIN_RX_PUT** `[15]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11017,6 +11696,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **FJOIN_RX_GET** `[14]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11038,6 +11718,7 @@ impl Sm2Shiftctrl {
     }
 
     /// **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -11047,6 +11728,7 @@ impl Sm2Shiftctrl {
     }
 
     /// Write **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -11086,6 +11768,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -11095,6 +11778,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -11104,6 +11788,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -11112,6 +11797,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -11120,6 +11806,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn out_shiftdir(&self) -> bool {
@@ -11127,6 +11814,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn in_shiftdir(&self) -> bool {
@@ -11134,6 +11822,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn autopull(&self) -> bool {
@@ -11141,6 +11830,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn autopush(&self) -> bool {
@@ -11148,6 +11838,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11157,6 +11848,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11166,6 +11858,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Read **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -11175,6 +11868,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -11190,6 +11884,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -11205,6 +11900,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -11215,6 +11911,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -11225,6 +11922,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn with_out_shiftdir(self, value: bool) -> Self {
@@ -11238,6 +11936,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn with_in_shiftdir(self, value: bool) -> Self {
@@ -11251,6 +11950,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn with_autopull(self, value: bool) -> Self {
@@ -11264,6 +11964,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn with_autopush(self, value: bool) -> Self {
@@ -11277,6 +11978,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11292,6 +11994,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -11307,6 +12010,7 @@ impl Sm2ShiftctrlVal {
     }
 
     /// Set **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -11572,18 +12276,31 @@ impl Sm2Instr {
 /// ## Fields
 ///
 /// - **SIDESET_COUNT** `[31:29]` (RW)
+///
 ///   The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+///
 /// - **SET_COUNT** `[28:26]` (RW)
+///
 ///   The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+///
 /// - **OUT_COUNT** `[25:20]` (RW)
+///
 ///   The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+///
 /// - **IN_BASE** `[19:15]` (RW)
+///
 ///   The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+///
 /// - **SIDESET_BASE** `[14:10]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+///
 /// - **SET_BASE** `[9:5]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+///
 /// - **OUT_BASE** `[4:0]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
 #[repr(transparent)]
 pub struct Sm2Pinctrl {
@@ -11602,43 +12319,57 @@ impl Sm2Pinctrl {
     // ======== Field Constants ========
 
     /// **SIDESET_COUNT**
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const SIDESET_COUNT_OFFSET: u32 = 29;
     pub const SIDESET_COUNT_MASK: u32 = 0xe0000000;
 
     /// **SET_COUNT**
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+    ///
     /// Bits `[28:26]`, mask `0x1c000000`
     pub const SET_COUNT_OFFSET: u32 = 26;
     pub const SET_COUNT_MASK: u32 = 0x1c000000;
 
     /// **OUT_COUNT**
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+    ///
     /// Bits `[25:20]`, mask `0x03f00000`
     pub const OUT_COUNT_OFFSET: u32 = 20;
     pub const OUT_COUNT_MASK: u32 = 0x03f00000;
 
     /// **IN_BASE**
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+    ///
     /// Bits `[19:15]`, mask `0x000f8000`
     pub const IN_BASE_OFFSET: u32 = 15;
     pub const IN_BASE_MASK: u32 = 0x000f8000;
 
     /// **SIDESET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const SIDESET_BASE_OFFSET: u32 = 10;
     pub const SIDESET_BASE_MASK: u32 = 0x00007c00;
 
     /// **SET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const SET_BASE_OFFSET: u32 = 5;
     pub const SET_BASE_MASK: u32 = 0x000003e0;
 
     /// **OUT_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const OUT_BASE_OFFSET: u32 = 0;
     pub const OUT_BASE_MASK: u32 = 0x0000001f;
@@ -11646,6 +12377,7 @@ impl Sm2Pinctrl {
     // ======== Field Accessors ========
 
     /// **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn sideset_count(&self) -> u32 {
@@ -11653,6 +12385,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
@@ -11660,6 +12393,7 @@ impl Sm2Pinctrl {
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn set_count(&self) -> u32 {
@@ -11667,6 +12401,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
@@ -11674,6 +12409,7 @@ impl Sm2Pinctrl {
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn out_count(&self) -> u32 {
@@ -11681,6 +12417,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
@@ -11688,6 +12425,7 @@ impl Sm2Pinctrl {
     }
 
     /// **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn in_base(&self) -> u32 {
@@ -11695,6 +12433,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
@@ -11702,6 +12441,7 @@ impl Sm2Pinctrl {
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn sideset_base(&self) -> u32 {
@@ -11709,6 +12449,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
@@ -11716,6 +12457,7 @@ impl Sm2Pinctrl {
     }
 
     /// **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn set_base(&self) -> u32 {
@@ -11723,6 +12465,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
@@ -11730,6 +12473,7 @@ impl Sm2Pinctrl {
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn out_base(&self) -> u32 {
@@ -11737,6 +12481,7 @@ impl Sm2Pinctrl {
     }
 
     /// Write **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
@@ -11774,6 +12519,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn sideset_count(&self) -> u32 {
@@ -11781,6 +12527,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn set_count(&self) -> u32 {
@@ -11788,6 +12535,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn out_count(&self) -> u32 {
@@ -11795,6 +12543,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn in_base(&self) -> u32 {
@@ -11802,6 +12551,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn sideset_base(&self) -> u32 {
@@ -11809,6 +12559,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn set_base(&self) -> u32 {
@@ -11816,6 +12567,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Read **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn out_base(&self) -> u32 {
@@ -11823,6 +12575,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
@@ -11832,6 +12585,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
@@ -11841,6 +12595,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
@@ -11850,6 +12605,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
@@ -11859,6 +12615,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
@@ -11868,6 +12625,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
@@ -11877,6 +12635,7 @@ impl Sm2PinctrlVal {
     }
 
     /// Set **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
@@ -11925,9 +12684,12 @@ impl Sm2Pinctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Effective frequency is sysclk/(int + frac/256).
 ///   Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+///
 /// - **FRAC** `[15:8]` (RW)
+///
 ///   Fractional part of clock divisor
 #[repr(transparent)]
 pub struct Sm3Clkdiv {
@@ -11946,14 +12708,18 @@ impl Sm3Clkdiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional part of clock divisor
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const FRAC_OFFSET: u32 = 8;
     pub const FRAC_MASK: u32 = 0x0000ff00;
@@ -11961,6 +12727,7 @@ impl Sm3Clkdiv {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -11969,6 +12736,7 @@ impl Sm3Clkdiv {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -11977,6 +12745,7 @@ impl Sm3Clkdiv {
     }
 
     /// **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -11984,6 +12753,7 @@ impl Sm3Clkdiv {
     }
 
     /// Write **FRAC** `[15:8]` (RW)
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -12021,6 +12791,7 @@ impl Sm3ClkdivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -12029,6 +12800,7 @@ impl Sm3ClkdivVal {
     }
 
     /// Read **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -12036,6 +12808,7 @@ impl Sm3ClkdivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Effective frequency is sysclk/(int + frac/256).
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
@@ -12046,6 +12819,7 @@ impl Sm3ClkdivVal {
     }
 
     /// Set **FRAC** `[15:8]`
+    ///
     /// Fractional part of clock divisor
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -12093,30 +12867,51 @@ impl Sm3Clkdiv {
 /// ## Fields
 ///
 /// - **EXEC_STALLED** `[31]` (RO)
+///
 ///   If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+///
 /// - **SIDE_EN** `[30]` (RW)
+///
 ///   If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+///
 /// - **SIDE_PINDIR** `[29]` (RW)
+///
 ///   If 1, side-set data is asserted to pin directions, instead of pin values
+///
 /// - **JMP_PIN** `[28:24]` (RW)
+///
 ///   The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+///
 /// - **OUT_EN_SEL** `[23:19]` (RW)
+///
 ///   Which data bit to use for inline OUT enable
+///
 /// - **INLINE_OUT_EN** `[18]` (RW)
+///
 ///   If 1, use a bit of OUT data as an auxiliary write enable
 ///   When used in conjunction with OUT_STICKY, writes with an enable of 0 will
 ///   deassert the latest pin write. This can create useful masking/override behaviour
 ///   due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+///
 /// - **OUT_STICKY** `[17]` (RW)
+///
 ///   Continuously assert the most recent OUT/SET to the pins
+///
 /// - **WRAP_TOP** `[16:12]` (RW)
+///
 ///   After reaching this address, execution is wrapped to wrap_bottom.
 ///   If the instruction is a jump, and the jump condition is true, the jump takes priority.
+///
 /// - **WRAP_BOTTOM** `[11:7]` (RW)
+///
 ///   After reaching wrap_top, execution is wrapped to this address.
+///
 /// - **STATUS_SEL** `[6:5]` (RW)
+///
 ///   Comparison used for the MOV x, STATUS instruction.
+///
 /// - **STATUS_N** `[4:0]` (RW)
+///
 ///   Comparison level or IRQ index for the MOV x, STATUS instruction.
 ///   If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
 #[repr(transparent)]
@@ -12136,70 +12931,90 @@ impl Sm3Execctrl {
     // ======== Field Constants ========
 
     /// **EXEC_STALLED**
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const EXEC_STALLED_OFFSET: u32 = 31;
     pub const EXEC_STALLED_MASK: u32 = 0x80000000;
     pub const EXEC_STALLED: u32 = 1 << 31;
 
     /// **SIDE_EN**
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const SIDE_EN_OFFSET: u32 = 30;
     pub const SIDE_EN_MASK: u32 = 0x40000000;
     pub const SIDE_EN: u32 = 1 << 30;
 
     /// **SIDE_PINDIR**
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
+    ///
     /// Bits `[29:29]`, mask `0x20000000`
     pub const SIDE_PINDIR_OFFSET: u32 = 29;
     pub const SIDE_PINDIR_MASK: u32 = 0x20000000;
     pub const SIDE_PINDIR: u32 = 1 << 29;
 
     /// **JMP_PIN**
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
+    ///
     /// Bits `[28:24]`, mask `0x1f000000`
     pub const JMP_PIN_OFFSET: u32 = 24;
     pub const JMP_PIN_MASK: u32 = 0x1f000000;
 
     /// **OUT_EN_SEL**
+    ///
     /// Which data bit to use for inline OUT enable
+    ///
     /// Bits `[23:19]`, mask `0x00f80000`
     pub const OUT_EN_SEL_OFFSET: u32 = 19;
     pub const OUT_EN_SEL_MASK: u32 = 0x00f80000;
 
     /// **INLINE_OUT_EN**
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
     /// due to the priority ordering of state machine pin writes (SM0 < SM1 < ...)
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const INLINE_OUT_EN_OFFSET: u32 = 18;
     pub const INLINE_OUT_EN_MASK: u32 = 0x00040000;
     pub const INLINE_OUT_EN: u32 = 1 << 18;
 
     /// **OUT_STICKY**
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const OUT_STICKY_OFFSET: u32 = 17;
     pub const OUT_STICKY_MASK: u32 = 0x00020000;
     pub const OUT_STICKY: u32 = 1 << 17;
 
     /// **WRAP_TOP**
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const WRAP_TOP_OFFSET: u32 = 12;
     pub const WRAP_TOP_MASK: u32 = 0x0001f000;
 
     /// **WRAP_BOTTOM**
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
+    ///
     /// Bits `[11:7]`, mask `0x00000f80`
     pub const WRAP_BOTTOM_OFFSET: u32 = 7;
     pub const WRAP_BOTTOM_MASK: u32 = 0x00000f80;
 
     /// **STATUS_SEL**
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const STATUS_SEL_OFFSET: u32 = 5;
     pub const STATUS_SEL_MASK: u32 = 0x00000060;
@@ -12217,8 +13032,10 @@ impl Sm3Execctrl {
     pub const STATUS_SEL_IRQ_VAL: u32 = 2;
 
     /// **STATUS_N**
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const STATUS_N_OFFSET: u32 = 0;
     pub const STATUS_N_MASK: u32 = 0x0000001f;
@@ -12238,6 +13055,7 @@ impl Sm3Execctrl {
     // ======== Field Accessors ========
 
     /// **EXEC_STALLED** `[31]` (RO)
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub fn exec_stalled(&self) -> bool {
@@ -12245,6 +13063,7 @@ impl Sm3Execctrl {
     }
 
     /// **SIDE_EN** `[30]` (RW)
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub fn side_en(&self) -> bool {
@@ -12264,6 +13083,7 @@ impl Sm3Execctrl {
     }
 
     /// **SIDE_PINDIR** `[29]` (RW)
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub fn side_pindir(&self) -> bool {
@@ -12283,6 +13103,7 @@ impl Sm3Execctrl {
     }
 
     /// **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn jmp_pin(&self) -> u32 {
@@ -12290,6 +13111,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **JMP_PIN** `[28:24]` (RW)
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
@@ -12297,6 +13119,7 @@ impl Sm3Execctrl {
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn out_en_sel(&self) -> u32 {
@@ -12304,6 +13127,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **OUT_EN_SEL** `[23:19]` (RW)
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
@@ -12311,6 +13135,7 @@ impl Sm3Execctrl {
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -12333,6 +13158,7 @@ impl Sm3Execctrl {
     }
 
     /// **OUT_STICKY** `[17]` (RW)
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub fn out_sticky(&self) -> bool {
@@ -12352,6 +13178,7 @@ impl Sm3Execctrl {
     }
 
     /// **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -12360,6 +13187,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **WRAP_TOP** `[16:12]` (RW)
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -12368,6 +13196,7 @@ impl Sm3Execctrl {
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn wrap_bottom(&self) -> u32 {
@@ -12375,6 +13204,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **WRAP_BOTTOM** `[11:7]` (RW)
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
@@ -12382,6 +13212,7 @@ impl Sm3Execctrl {
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn status_sel(&self) -> u32 {
@@ -12389,6 +13220,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **STATUS_SEL** `[6:5]` (RW)
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
@@ -12396,6 +13228,7 @@ impl Sm3Execctrl {
     }
 
     /// **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -12404,6 +13237,7 @@ impl Sm3Execctrl {
     }
 
     /// Write **STATUS_N** `[4:0]` (RW)
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -12442,6 +13276,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **EXEC_STALLED** `[31:31]`
+    ///
     /// If 1, an instruction written to SMx_INSTR is stalled, and latched by the state machine. Will clear to 0 once this instruction completes.
     #[inline(always)]
     pub const fn exec_stalled(&self) -> bool {
@@ -12449,6 +13284,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn side_en(&self) -> bool {
@@ -12456,6 +13292,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn side_pindir(&self) -> bool {
@@ -12463,6 +13300,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn jmp_pin(&self) -> u32 {
@@ -12470,6 +13308,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn out_en_sel(&self) -> u32 {
@@ -12477,6 +13316,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -12487,6 +13327,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn out_sticky(&self) -> bool {
@@ -12494,6 +13335,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -12502,6 +13344,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn wrap_bottom(&self) -> u32 {
@@ -12509,6 +13352,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn status_sel(&self) -> u32 {
@@ -12516,6 +13360,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Read **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -12524,6 +13369,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **SIDE_EN** `[30:30]`
+    ///
     /// If 1, the MSB of the Delay/Side-set instruction field is used as side-set enable, rather than a side-set data bit. This allows instructions to perform side-set optionally, rather than on every instruction, but the maximum possible side-set width is reduced from 5 to 4. Note that the value of PINCTRL_SIDESET_COUNT is inclusive of this enable bit.
     #[inline(always)]
     pub const fn with_side_en(self, value: bool) -> Self {
@@ -12537,6 +13383,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **SIDE_PINDIR** `[29:29]`
+    ///
     /// If 1, side-set data is asserted to pin directions, instead of pin values
     #[inline(always)]
     pub const fn with_side_pindir(self, value: bool) -> Self {
@@ -12550,6 +13397,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **JMP_PIN** `[28:24]`
+    ///
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
@@ -12559,6 +13407,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **OUT_EN_SEL** `[23:19]`
+    ///
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
@@ -12568,6 +13417,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **INLINE_OUT_EN** `[18:18]`
+    ///
     /// If 1, use a bit of OUT data as an auxiliary write enable
     /// When used in conjunction with OUT_STICKY, writes with an enable of 0 will
     /// deassert the latest pin write. This can create useful masking/override behaviour
@@ -12584,6 +13434,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **OUT_STICKY** `[17:17]`
+    ///
     /// Continuously assert the most recent OUT/SET to the pins
     #[inline(always)]
     pub const fn with_out_sticky(self, value: bool) -> Self {
@@ -12597,6 +13448,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **WRAP_TOP** `[16:12]`
+    ///
     /// After reaching this address, execution is wrapped to wrap_bottom.
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
@@ -12607,6 +13459,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **WRAP_BOTTOM** `[11:7]`
+    ///
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
@@ -12616,6 +13469,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **STATUS_SEL** `[6:5]`
+    ///
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
@@ -12625,6 +13479,7 @@ impl Sm3ExecctrlVal {
     }
 
     /// Set **STATUS_N** `[4:0]`
+    ///
     /// Comparison level or IRQ index for the MOV x, STATUS instruction.
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
@@ -12673,36 +13528,57 @@ impl Sm3Execctrl {
 /// ## Fields
 ///
 /// - **FJOIN_RX** `[31]` (RW)
+///
 ///   When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
 ///   TX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **FJOIN_TX** `[30]` (RW)
+///
 ///   When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
 ///   RX FIFO is disabled as a result (always reads as both full and empty).
 ///   FIFOs are flushed when this bit is changed.
+///
 /// - **PULL_THRESH** `[29:25]` (RW)
+///
 ///   Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **PUSH_THRESH** `[24:20]` (RW)
+///
 ///   Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
 ///   Write 0 for value of 32.
+///
 /// - **OUT_SHIFTDIR** `[19]` (RW)
+///
 ///   1 = shift out of output shift register to right. 0 = to left.
+///
 /// - **IN_SHIFTDIR** `[18]` (RW)
+///
 ///   1 = shift input shift register to right (data enters from left). 0 = to left.
+///
 /// - **AUTOPULL** `[17]` (RW)
+///
 ///   Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+///
 /// - **AUTOPUSH** `[16]` (RW)
+///
 ///   Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+///
 /// - **FJOIN_RX_PUT** `[15]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **FJOIN_RX_GET** `[14]` (RW)
+///
 ///   If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
 ///   If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
 ///   Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+///
 /// - **IN_COUNT** `[4:0]` (RW)
+///
 ///   Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
 ///   For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
 ///   Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -12723,87 +13599,109 @@ impl Sm3Shiftctrl {
     // ======== Field Constants ========
 
     /// **FJOIN_RX**
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const FJOIN_RX_OFFSET: u32 = 31;
     pub const FJOIN_RX_MASK: u32 = 0x80000000;
     pub const FJOIN_RX: u32 = 1 << 31;
 
     /// **FJOIN_TX**
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const FJOIN_TX_OFFSET: u32 = 30;
     pub const FJOIN_TX_MASK: u32 = 0x40000000;
     pub const FJOIN_TX: u32 = 1 << 30;
 
     /// **PULL_THRESH**
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[29:25]`, mask `0x3e000000`
     pub const PULL_THRESH_OFFSET: u32 = 25;
     pub const PULL_THRESH_MASK: u32 = 0x3e000000;
 
     /// **PUSH_THRESH**
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
+    ///
     /// Bits `[24:20]`, mask `0x01f00000`
     pub const PUSH_THRESH_OFFSET: u32 = 20;
     pub const PUSH_THRESH_MASK: u32 = 0x01f00000;
 
     /// **OUT_SHIFTDIR**
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OUT_SHIFTDIR_OFFSET: u32 = 19;
     pub const OUT_SHIFTDIR_MASK: u32 = 0x00080000;
     pub const OUT_SHIFTDIR: u32 = 1 << 19;
 
     /// **IN_SHIFTDIR**
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const IN_SHIFTDIR_OFFSET: u32 = 18;
     pub const IN_SHIFTDIR_MASK: u32 = 0x00040000;
     pub const IN_SHIFTDIR: u32 = 1 << 18;
 
     /// **AUTOPULL**
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const AUTOPULL_OFFSET: u32 = 17;
     pub const AUTOPULL_MASK: u32 = 0x00020000;
     pub const AUTOPULL: u32 = 1 << 17;
 
     /// **AUTOPUSH**
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const AUTOPUSH_OFFSET: u32 = 16;
     pub const AUTOPUSH_MASK: u32 = 0x00010000;
     pub const AUTOPUSH: u32 = 1 << 16;
 
     /// **FJOIN_RX_PUT**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const FJOIN_RX_PUT_OFFSET: u32 = 15;
     pub const FJOIN_RX_PUT_MASK: u32 = 0x00008000;
     pub const FJOIN_RX_PUT: u32 = 1 << 15;
 
     /// **FJOIN_RX_GET**
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const FJOIN_RX_GET_OFFSET: u32 = 14;
     pub const FJOIN_RX_GET_MASK: u32 = 0x00004000;
     pub const FJOIN_RX_GET: u32 = 1 << 14;
 
     /// **IN_COUNT**
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const IN_COUNT_OFFSET: u32 = 0;
     pub const IN_COUNT_MASK: u32 = 0x0000001f;
@@ -12811,6 +13709,7 @@ impl Sm3Shiftctrl {
     // ======== Field Accessors ========
 
     /// **FJOIN_RX** `[31]` (RW)
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -12832,6 +13731,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **FJOIN_TX** `[30]` (RW)
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -12853,6 +13753,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -12861,6 +13762,7 @@ impl Sm3Shiftctrl {
     }
 
     /// Write **PULL_THRESH** `[29:25]` (RW)
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -12869,6 +13771,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -12877,6 +13780,7 @@ impl Sm3Shiftctrl {
     }
 
     /// Write **PUSH_THRESH** `[24:20]` (RW)
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -12885,6 +13789,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub fn out_shiftdir(&self) -> bool {
@@ -12904,6 +13809,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **IN_SHIFTDIR** `[18]` (RW)
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub fn in_shiftdir(&self) -> bool {
@@ -12923,6 +13829,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **AUTOPULL** `[17]` (RW)
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub fn autopull(&self) -> bool {
@@ -12942,6 +13849,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **AUTOPUSH** `[16]` (RW)
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub fn autopush(&self) -> bool {
@@ -12961,6 +13869,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **FJOIN_RX_PUT** `[15]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -12982,6 +13891,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **FJOIN_RX_GET** `[14]` (RW)
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -13003,6 +13913,7 @@ impl Sm3Shiftctrl {
     }
 
     /// **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -13012,6 +13923,7 @@ impl Sm3Shiftctrl {
     }
 
     /// Write **IN_COUNT** `[4:0]` (RW)
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -13051,6 +13963,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -13060,6 +13973,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -13069,6 +13983,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -13077,6 +13992,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -13085,6 +14001,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn out_shiftdir(&self) -> bool {
@@ -13092,6 +14009,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn in_shiftdir(&self) -> bool {
@@ -13099,6 +14017,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn autopull(&self) -> bool {
@@ -13106,6 +14025,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn autopush(&self) -> bool {
@@ -13113,6 +14033,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -13122,6 +14043,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -13131,6 +14053,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Read **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -13140,6 +14063,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX** `[31:31]`
+    ///
     /// When 1, RX FIFO steals the TX FIFO's storage, and becomes twice as deep.
     /// TX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -13155,6 +14079,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **FJOIN_TX** `[30:30]`
+    ///
     /// When 1, TX FIFO steals the RX FIFO's storage, and becomes twice as deep.
     /// RX FIFO is disabled as a result (always reads as both full and empty).
     /// FIFOs are flushed when this bit is changed.
@@ -13170,6 +14095,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **PULL_THRESH** `[29:25]`
+    ///
     /// Number of bits shifted out of OSR before autopull, or conditional pull (PULL IFEMPTY), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -13180,6 +14106,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **PUSH_THRESH** `[24:20]`
+    ///
     /// Number of bits shifted into ISR before autopush, or conditional push (PUSH IFFULL), will take place.
     /// Write 0 for value of 32.
     #[inline(always)]
@@ -13190,6 +14117,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **OUT_SHIFTDIR** `[19:19]`
+    ///
     /// 1 = shift out of output shift register to right. 0 = to left.
     #[inline(always)]
     pub const fn with_out_shiftdir(self, value: bool) -> Self {
@@ -13203,6 +14131,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **IN_SHIFTDIR** `[18:18]`
+    ///
     /// 1 = shift input shift register to right (data enters from left). 0 = to left.
     #[inline(always)]
     pub const fn with_in_shiftdir(self, value: bool) -> Self {
@@ -13216,6 +14145,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **AUTOPULL** `[17:17]`
+    ///
     /// Pull automatically when the output shift register is emptied, i.e. on or following an OUT instruction which causes the output shift counter to reach or exceed PULL_THRESH.
     #[inline(always)]
     pub const fn with_autopull(self, value: bool) -> Self {
@@ -13229,6 +14159,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **AUTOPUSH** `[16:16]`
+    ///
     /// Push automatically when the input shift register is filled, i.e. on an IN instruction which causes the input shift counter to reach or exceed PUSH_THRESH.
     #[inline(always)]
     pub const fn with_autopush(self, value: bool) -> Self {
@@ -13242,6 +14173,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_PUT** `[15:15]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random write access by the state machine (using the `put` instruction) and, unless FJOIN_RX_GET is also set, random read access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -13257,6 +14189,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **FJOIN_RX_GET** `[14:14]`
+    ///
     /// If 1, disable this state machine's RX FIFO, make its storage available for random read access by the state machine (using the `get` instruction) and, unless FJOIN_RX_PUT is also set, random write access by the processor (through the RXFx_PUTGETy registers).
     /// If FJOIN_RX_PUT and FJOIN_RX_GET are both set, then the RX FIFO's registers can be randomly read/written by the state machine, but are completely inaccessible to the processor.
     /// Setting this bit will clear the FJOIN_TX and FJOIN_RX bits.
@@ -13272,6 +14205,7 @@ impl Sm3ShiftctrlVal {
     }
 
     /// Set **IN_COUNT** `[4:0]`
+    ///
     /// Set the number of pins which are not masked to 0 when read by an IN PINS, WAIT PIN or MOV x, PINS instruction.
     /// For example, an IN_COUNT of 5 means that the 5 LSBs of the IN pin group are visible (bits 4:0), but the remaining 27 MSBs are masked to 0. A count of 32 is encoded with a field value of 0, so the default behaviour is to not perform any masking.
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
@@ -13537,18 +14471,31 @@ impl Sm3Instr {
 /// ## Fields
 ///
 /// - **SIDESET_COUNT** `[31:29]` (RW)
+///
 ///   The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+///
 /// - **SET_COUNT** `[28:26]` (RW)
+///
 ///   The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+///
 /// - **OUT_COUNT** `[25:20]` (RW)
+///
 ///   The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+///
 /// - **IN_BASE** `[19:15]` (RW)
+///
 ///   The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+///
 /// - **SIDESET_BASE** `[14:10]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+///
 /// - **SET_BASE** `[9:5]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+///
 /// - **OUT_BASE** `[4:0]` (RW)
+///
 ///   The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
 #[repr(transparent)]
 pub struct Sm3Pinctrl {
@@ -13567,43 +14514,57 @@ impl Sm3Pinctrl {
     // ======== Field Constants ========
 
     /// **SIDESET_COUNT**
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
+    ///
     /// Bits `[31:29]`, mask `0xe0000000`
     pub const SIDESET_COUNT_OFFSET: u32 = 29;
     pub const SIDESET_COUNT_MASK: u32 = 0xe0000000;
 
     /// **SET_COUNT**
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
+    ///
     /// Bits `[28:26]`, mask `0x1c000000`
     pub const SET_COUNT_OFFSET: u32 = 26;
     pub const SET_COUNT_MASK: u32 = 0x1c000000;
 
     /// **OUT_COUNT**
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
+    ///
     /// Bits `[25:20]`, mask `0x03f00000`
     pub const OUT_COUNT_OFFSET: u32 = 20;
     pub const OUT_COUNT_MASK: u32 = 0x03f00000;
 
     /// **IN_BASE**
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
+    ///
     /// Bits `[19:15]`, mask `0x000f8000`
     pub const IN_BASE_OFFSET: u32 = 15;
     pub const IN_BASE_MASK: u32 = 0x000f8000;
 
     /// **SIDESET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const SIDESET_BASE_OFFSET: u32 = 10;
     pub const SIDESET_BASE_MASK: u32 = 0x00007c00;
 
     /// **SET_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const SET_BASE_OFFSET: u32 = 5;
     pub const SET_BASE_MASK: u32 = 0x000003e0;
 
     /// **OUT_BASE**
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const OUT_BASE_OFFSET: u32 = 0;
     pub const OUT_BASE_MASK: u32 = 0x0000001f;
@@ -13611,6 +14572,7 @@ impl Sm3Pinctrl {
     // ======== Field Accessors ========
 
     /// **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn sideset_count(&self) -> u32 {
@@ -13618,6 +14580,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **SIDESET_COUNT** `[31:29]` (RW)
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
@@ -13625,6 +14588,7 @@ impl Sm3Pinctrl {
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn set_count(&self) -> u32 {
@@ -13632,6 +14596,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **SET_COUNT** `[28:26]` (RW)
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
@@ -13639,6 +14604,7 @@ impl Sm3Pinctrl {
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn out_count(&self) -> u32 {
@@ -13646,6 +14612,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **OUT_COUNT** `[25:20]` (RW)
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
@@ -13653,6 +14620,7 @@ impl Sm3Pinctrl {
     }
 
     /// **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn in_base(&self) -> u32 {
@@ -13660,6 +14628,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **IN_BASE** `[19:15]` (RW)
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
@@ -13667,6 +14636,7 @@ impl Sm3Pinctrl {
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn sideset_base(&self) -> u32 {
@@ -13674,6 +14644,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **SIDESET_BASE** `[14:10]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
@@ -13681,6 +14652,7 @@ impl Sm3Pinctrl {
     }
 
     /// **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn set_base(&self) -> u32 {
@@ -13688,6 +14660,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **SET_BASE** `[9:5]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
@@ -13695,6 +14668,7 @@ impl Sm3Pinctrl {
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn out_base(&self) -> u32 {
@@ -13702,6 +14676,7 @@ impl Sm3Pinctrl {
     }
 
     /// Write **OUT_BASE** `[4:0]` (RW)
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
@@ -13739,6 +14714,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn sideset_count(&self) -> u32 {
@@ -13746,6 +14722,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn set_count(&self) -> u32 {
@@ -13753,6 +14730,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn out_count(&self) -> u32 {
@@ -13760,6 +14738,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn in_base(&self) -> u32 {
@@ -13767,6 +14746,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn sideset_base(&self) -> u32 {
@@ -13774,6 +14754,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn set_base(&self) -> u32 {
@@ -13781,6 +14762,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Read **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn out_base(&self) -> u32 {
@@ -13788,6 +14770,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **SIDESET_COUNT** `[31:29]`
+    ///
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
@@ -13797,6 +14780,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **SET_COUNT** `[28:26]`
+    ///
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
@@ -13806,6 +14790,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **OUT_COUNT** `[25:20]`
+    ///
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
@@ -13815,6 +14800,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **IN_BASE** `[19:15]`
+    ///
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
@@ -13824,6 +14810,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **SIDESET_BASE** `[14:10]`
+    ///
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
@@ -13833,6 +14820,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **SET_BASE** `[9:5]`
+    ///
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
@@ -13842,6 +14830,7 @@ impl Sm3PinctrlVal {
     }
 
     /// Set **OUT_BASE** `[4:0]`
+    ///
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
@@ -15907,20 +16896,35 @@ impl Gpiobase {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RO)
+///
 /// - **SM6** `[14]` (RO)
+///
 /// - **SM5** `[13]` (RO)
+///
 /// - **SM4** `[12]` (RO)
+///
 /// - **SM3** `[11]` (RO)
+///
 /// - **SM2** `[10]` (RO)
+///
 /// - **SM1** `[9]` (RO)
+///
 /// - **SM0** `[8]` (RO)
+///
 /// - **SM3_TXNFULL** `[7]` (RO)
+///
 /// - **SM2_TXNFULL** `[6]` (RO)
+///
 /// - **SM1_TXNFULL** `[5]` (RO)
+///
 /// - **SM0_TXNFULL** `[4]` (RO)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RO)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RO)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RO)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
@@ -16297,20 +17301,35 @@ impl Intr {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RW)
+///
 /// - **SM6** `[14]` (RW)
+///
 /// - **SM5** `[13]` (RW)
+///
 /// - **SM4** `[12]` (RW)
+///
 /// - **SM3** `[11]` (RW)
+///
 /// - **SM2** `[10]` (RW)
+///
 /// - **SM1** `[9]` (RW)
+///
 /// - **SM0** `[8]` (RW)
+///
 /// - **SM3_TXNFULL** `[7]` (RW)
+///
 /// - **SM2_TXNFULL** `[6]` (RW)
+///
 /// - **SM1_TXNFULL** `[5]` (RW)
+///
 /// - **SM0_TXNFULL** `[4]` (RW)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RW)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RW)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RW)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Inte {
@@ -17071,20 +18090,35 @@ impl Irq0Inte {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RW)
+///
 /// - **SM6** `[14]` (RW)
+///
 /// - **SM5** `[13]` (RW)
+///
 /// - **SM4** `[12]` (RW)
+///
 /// - **SM3** `[11]` (RW)
+///
 /// - **SM2** `[10]` (RW)
+///
 /// - **SM1** `[9]` (RW)
+///
 /// - **SM0** `[8]` (RW)
+///
 /// - **SM3_TXNFULL** `[7]` (RW)
+///
 /// - **SM2_TXNFULL** `[6]` (RW)
+///
 /// - **SM1_TXNFULL** `[5]` (RW)
+///
 /// - **SM0_TXNFULL** `[4]` (RW)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RW)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RW)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RW)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Intf {
@@ -17845,20 +18879,35 @@ impl Irq0Intf {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RO)
+///
 /// - **SM6** `[14]` (RO)
+///
 /// - **SM5** `[13]` (RO)
+///
 /// - **SM4** `[12]` (RO)
+///
 /// - **SM3** `[11]` (RO)
+///
 /// - **SM2** `[10]` (RO)
+///
 /// - **SM1** `[9]` (RO)
+///
 /// - **SM0** `[8]` (RO)
+///
 /// - **SM3_TXNFULL** `[7]` (RO)
+///
 /// - **SM2_TXNFULL** `[6]` (RO)
+///
 /// - **SM1_TXNFULL** `[5]` (RO)
+///
 /// - **SM0_TXNFULL** `[4]` (RO)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RO)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RO)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RO)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq0Ints {
@@ -18235,20 +19284,35 @@ impl Irq0Ints {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RW)
+///
 /// - **SM6** `[14]` (RW)
+///
 /// - **SM5** `[13]` (RW)
+///
 /// - **SM4** `[12]` (RW)
+///
 /// - **SM3** `[11]` (RW)
+///
 /// - **SM2** `[10]` (RW)
+///
 /// - **SM1** `[9]` (RW)
+///
 /// - **SM0** `[8]` (RW)
+///
 /// - **SM3_TXNFULL** `[7]` (RW)
+///
 /// - **SM2_TXNFULL** `[6]` (RW)
+///
 /// - **SM1_TXNFULL** `[5]` (RW)
+///
 /// - **SM0_TXNFULL** `[4]` (RW)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RW)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RW)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RW)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Inte {
@@ -19009,20 +20073,35 @@ impl Irq1Inte {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RW)
+///
 /// - **SM6** `[14]` (RW)
+///
 /// - **SM5** `[13]` (RW)
+///
 /// - **SM4** `[12]` (RW)
+///
 /// - **SM3** `[11]` (RW)
+///
 /// - **SM2** `[10]` (RW)
+///
 /// - **SM1** `[9]` (RW)
+///
 /// - **SM0** `[8]` (RW)
+///
 /// - **SM3_TXNFULL** `[7]` (RW)
+///
 /// - **SM2_TXNFULL** `[6]` (RW)
+///
 /// - **SM1_TXNFULL** `[5]` (RW)
+///
 /// - **SM0_TXNFULL** `[4]` (RW)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RW)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RW)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RW)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Intf {
@@ -19783,20 +20862,35 @@ impl Irq1Intf {
 /// ## Fields
 ///
 /// - **SM7** `[15]` (RO)
+///
 /// - **SM6** `[14]` (RO)
+///
 /// - **SM5** `[13]` (RO)
+///
 /// - **SM4** `[12]` (RO)
+///
 /// - **SM3** `[11]` (RO)
+///
 /// - **SM2** `[10]` (RO)
+///
 /// - **SM1** `[9]` (RO)
+///
 /// - **SM0** `[8]` (RO)
+///
 /// - **SM3_TXNFULL** `[7]` (RO)
+///
 /// - **SM2_TXNFULL** `[6]` (RO)
+///
 /// - **SM1_TXNFULL** `[5]` (RO)
+///
 /// - **SM0_TXNFULL** `[4]` (RO)
+///
 /// - **SM3_RXNEMPTY** `[3]` (RO)
+///
 /// - **SM2_RXNEMPTY** `[2]` (RO)
+///
 /// - **SM1_RXNEMPTY** `[1]` (RO)
+///
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq1Ints {

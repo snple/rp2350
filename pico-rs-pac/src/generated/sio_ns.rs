@@ -13,6 +13,7 @@ pub const BASE: u32 = 0xd0020000;
 /// ## Fields
 ///
 /// - **CPUID** `[31:0]` (RO)
+///
 ///   Value is 0 when read from processor core 0, and 1 when read from processor core 1.
 #[repr(transparent)]
 pub struct Cpuid {
@@ -31,7 +32,9 @@ impl Cpuid {
     // ======== Field Constants ========
 
     /// **CPUID**
+    ///
     /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CPUID_OFFSET: u32 = 0;
     pub const CPUID_MASK: u32 = 0xffffffff;
@@ -39,6 +42,7 @@ impl Cpuid {
     // ======== Field Accessors ========
 
     /// **CPUID** `[31:0]` (RO)
+    ///
     /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
     #[inline(always)]
     pub fn cpuid(&self) -> u32 {
@@ -70,6 +74,7 @@ impl CpuidVal {
     }
 
     /// Read **CPUID** `[31:0]`
+    ///
     /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
     #[inline(always)]
     pub const fn cpuid(&self) -> u32 {
@@ -221,16 +226,27 @@ impl GpioIn {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (RO)
+///
 ///   Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+///
 /// - **QSPI_CSN** `[27]` (RO)
+///
 ///   Input value on QSPI CSn pin
+///
 /// - **QSPI_SCK** `[26]` (RO)
+///
 ///   Input value on QSPI SCK pin
+///
 /// - **USB_DM** `[25]` (RO)
+///
 ///   Input value on USB D- pin
+///
 /// - **USB_DP** `[24]` (RO)
+///
 ///   Input value on USB D+ pin
+///
 /// - **GPIO** `[15:0]` (RO)
+///
 ///   Input value on GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiIn {
@@ -249,41 +265,53 @@ impl GpioHiIn {
     // ======== Field Constants ========
 
     /// **QSPI_SD**
+    ///
     /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
     /// **QSPI_CSN**
+    ///
     /// Input value on QSPI CSn pin
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
     /// **QSPI_SCK**
+    ///
     /// Input value on QSPI SCK pin
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
     /// **USB_DM**
+    ///
     /// Input value on USB D- pin
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
     /// **USB_DP**
+    ///
     /// Input value on USB D+ pin
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
     /// **GPIO**
+    ///
     /// Input value on GPIO32...47
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
@@ -291,6 +319,7 @@ impl GpioHiIn {
     // ======== Field Accessors ========
 
     /// **QSPI_SD** `[31:28]` (RO)
+    ///
     /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
@@ -298,6 +327,7 @@ impl GpioHiIn {
     }
 
     /// **QSPI_CSN** `[27]` (RO)
+    ///
     /// Input value on QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
@@ -305,6 +335,7 @@ impl GpioHiIn {
     }
 
     /// **QSPI_SCK** `[26]` (RO)
+    ///
     /// Input value on QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
@@ -312,6 +343,7 @@ impl GpioHiIn {
     }
 
     /// **USB_DM** `[25]` (RO)
+    ///
     /// Input value on USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
@@ -319,6 +351,7 @@ impl GpioHiIn {
     }
 
     /// **USB_DP** `[24]` (RO)
+    ///
     /// Input value on USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
@@ -326,6 +359,7 @@ impl GpioHiIn {
     }
 
     /// **GPIO** `[15:0]` (RO)
+    ///
     /// Input value on GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
@@ -363,6 +397,7 @@ impl GpioHiInVal {
     }
 
     /// Read **QSPI_SD** `[31:28]`
+    ///
     /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
@@ -370,6 +405,7 @@ impl GpioHiInVal {
     }
 
     /// Read **QSPI_CSN** `[27:27]`
+    ///
     /// Input value on QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
@@ -377,6 +413,7 @@ impl GpioHiInVal {
     }
 
     /// Read **QSPI_SCK** `[26:26]`
+    ///
     /// Input value on QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
@@ -384,6 +421,7 @@ impl GpioHiInVal {
     }
 
     /// Read **USB_DM** `[25:25]`
+    ///
     /// Input value on USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
@@ -391,6 +429,7 @@ impl GpioHiInVal {
     }
 
     /// Read **USB_DP** `[24:24]`
+    ///
     /// Input value on USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
@@ -398,6 +437,7 @@ impl GpioHiInVal {
     }
 
     /// Read **GPIO** `[15:0]`
+    ///
     /// Input value on GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
@@ -443,6 +483,7 @@ impl GpioHiIn {
 /// ## Fields
 ///
 /// - **GPIO_OUT** `[31:0]` (RW)
+///
 ///   Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
 ///   If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
 ///   In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -463,9 +504,11 @@ impl GpioOut {
     // ======== Field Constants ========
 
     /// **GPIO_OUT**
+    ///
     /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
     /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_OFFSET: u32 = 0;
     pub const GPIO_OUT_MASK: u32 = 0xffffffff;
@@ -473,6 +516,7 @@ impl GpioOut {
     // ======== Field Accessors ========
 
     /// **GPIO_OUT** `[31:0]` (RW)
+    ///
     /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
     /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -482,6 +526,7 @@ impl GpioOut {
     }
 
     /// Write **GPIO_OUT** `[31:0]` (RW)
+    ///
     /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
     /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -521,6 +566,7 @@ impl GpioOutVal {
     }
 
     /// Read **GPIO_OUT** `[31:0]`
+    ///
     /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
     /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -530,6 +576,7 @@ impl GpioOutVal {
     }
 
     /// Set **GPIO_OUT** `[31:0]`
+    ///
     /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
     /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -581,16 +628,27 @@ impl GpioOut {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (RW)
+///
 ///   Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+///
 /// - **QSPI_CSN** `[27]` (RW)
+///
 ///   Output value for QSPI CSn pin
+///
 /// - **QSPI_SCK** `[26]` (RW)
+///
 ///   Output value for QSPI SCK pin
+///
 /// - **USB_DM** `[25]` (RW)
+///
 ///   Output value for USB D- pin
+///
 /// - **USB_DP** `[24]` (RW)
+///
 ///   Output value for USB D+ pin
+///
 /// - **GPIO** `[15:0]` (RW)
+///
 ///   Output value for GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiOut {
@@ -609,41 +667,53 @@ impl GpioHiOut {
     // ======== Field Constants ========
 
     /// **QSPI_SD**
+    ///
     /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
     /// **QSPI_CSN**
+    ///
     /// Output value for QSPI CSn pin
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
     /// **QSPI_SCK**
+    ///
     /// Output value for QSPI SCK pin
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
     /// **USB_DM**
+    ///
     /// Output value for USB D- pin
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
     /// **USB_DP**
+    ///
     /// Output value for USB D+ pin
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
     /// **GPIO**
+    ///
     /// Output value for GPIO32...47
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
@@ -651,6 +721,7 @@ impl GpioHiOut {
     // ======== Field Accessors ========
 
     /// **QSPI_SD** `[31:28]` (RW)
+    ///
     /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
@@ -658,6 +729,7 @@ impl GpioHiOut {
     }
 
     /// Write **QSPI_SD** `[31:28]` (RW)
+    ///
     /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
@@ -665,6 +737,7 @@ impl GpioHiOut {
     }
 
     /// **QSPI_CSN** `[27]` (RW)
+    ///
     /// Output value for QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
@@ -684,6 +757,7 @@ impl GpioHiOut {
     }
 
     /// **QSPI_SCK** `[26]` (RW)
+    ///
     /// Output value for QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
@@ -703,6 +777,7 @@ impl GpioHiOut {
     }
 
     /// **USB_DM** `[25]` (RW)
+    ///
     /// Output value for USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
@@ -722,6 +797,7 @@ impl GpioHiOut {
     }
 
     /// **USB_DP** `[24]` (RW)
+    ///
     /// Output value for USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
@@ -741,6 +817,7 @@ impl GpioHiOut {
     }
 
     /// **GPIO** `[15:0]` (RW)
+    ///
     /// Output value for GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
@@ -748,6 +825,7 @@ impl GpioHiOut {
     }
 
     /// Write **GPIO** `[15:0]` (RW)
+    ///
     /// Output value for GPIO32...47
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -785,6 +863,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **QSPI_SD** `[31:28]`
+    ///
     /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
@@ -792,6 +871,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **QSPI_CSN** `[27:27]`
+    ///
     /// Output value for QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
@@ -799,6 +879,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **QSPI_SCK** `[26:26]`
+    ///
     /// Output value for QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
@@ -806,6 +887,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **USB_DM** `[25:25]`
+    ///
     /// Output value for USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
@@ -813,6 +895,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **USB_DP** `[24:24]`
+    ///
     /// Output value for USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
@@ -820,6 +903,7 @@ impl GpioHiOutVal {
     }
 
     /// Read **GPIO** `[15:0]`
+    ///
     /// Output value for GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
@@ -827,6 +911,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **QSPI_SD** `[31:28]`
+    ///
     /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
@@ -836,6 +921,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **QSPI_CSN** `[27:27]`
+    ///
     /// Output value for QSPI CSn pin
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
@@ -849,6 +935,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **QSPI_SCK** `[26:26]`
+    ///
     /// Output value for QSPI SCK pin
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
@@ -862,6 +949,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **USB_DM** `[25:25]`
+    ///
     /// Output value for USB D- pin
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
@@ -875,6 +963,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **USB_DP** `[24:24]`
+    ///
     /// Output value for USB D+ pin
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
@@ -888,6 +977,7 @@ impl GpioHiOutVal {
     }
 
     /// Set **GPIO** `[15:0]`
+    ///
     /// Output value for GPIO32...47
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
@@ -935,6 +1025,7 @@ impl GpioHiOut {
 /// ## Fields
 ///
 /// - **GPIO_OUT_SET** `[31:0]` (WO)
+///
 ///   Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
 #[repr(transparent)]
 pub struct GpioOutSet {
@@ -953,16 +1044,17 @@ impl GpioOutSet {
     // ======== Field Constants ========
 
     /// **GPIO_OUT_SET**
+    ///
     /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_SET_OFFSET: u32 = 0;
     pub const GPIO_OUT_SET_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_SET** `[31:0]` (WO)
-    /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
     /// Write **GPIO_OUT_SET** `[31:0]` (WO)
+    ///
     /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
     #[inline(always)]
     pub fn write_gpio_out_set(&self, value: u32) {
@@ -1000,6 +1092,7 @@ impl GpioOutSetVal {
     }
 
     /// Set **GPIO_OUT_SET** `[31:0]`
+    ///
     /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
     #[inline(always)]
     pub const fn with_gpio_out_set(self, value: u32) -> Self {
@@ -1048,10 +1141,15 @@ impl GpioOutSet {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutSet {
@@ -1105,42 +1203,36 @@ impl GpioHiOutSet {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -1280,6 +1372,7 @@ impl GpioHiOutSet {
 /// ## Fields
 ///
 /// - **GPIO_OUT_CLR** `[31:0]` (WO)
+///
 ///   Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
 #[repr(transparent)]
 pub struct GpioOutClr {
@@ -1298,16 +1391,17 @@ impl GpioOutClr {
     // ======== Field Constants ========
 
     /// **GPIO_OUT_CLR**
+    ///
     /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_CLR_OFFSET: u32 = 0;
     pub const GPIO_OUT_CLR_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_CLR** `[31:0]` (WO)
-    /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
     /// Write **GPIO_OUT_CLR** `[31:0]` (WO)
+    ///
     /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
     #[inline(always)]
     pub fn write_gpio_out_clr(&self, value: u32) {
@@ -1345,6 +1439,7 @@ impl GpioOutClrVal {
     }
 
     /// Set **GPIO_OUT_CLR** `[31:0]`
+    ///
     /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
     #[inline(always)]
     pub const fn with_gpio_out_clr(self, value: u32) -> Self {
@@ -1393,10 +1488,15 @@ impl GpioOutClr {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutClr {
@@ -1450,42 +1550,36 @@ impl GpioHiOutClr {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -1625,6 +1719,7 @@ impl GpioHiOutClr {
 /// ## Fields
 ///
 /// - **GPIO_OUT_XOR** `[31:0]` (WO)
+///
 ///   Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
 #[repr(transparent)]
 pub struct GpioOutXor {
@@ -1643,16 +1738,17 @@ impl GpioOutXor {
     // ======== Field Constants ========
 
     /// **GPIO_OUT_XOR**
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_XOR_OFFSET: u32 = 0;
     pub const GPIO_OUT_XOR_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_XOR** `[31:0]` (WO)
-    /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
     /// Write **GPIO_OUT_XOR** `[31:0]` (WO)
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
     #[inline(always)]
     pub fn write_gpio_out_xor(&self, value: u32) {
@@ -1690,6 +1786,7 @@ impl GpioOutXorVal {
     }
 
     /// Set **GPIO_OUT_XOR** `[31:0]`
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
     #[inline(always)]
     pub const fn with_gpio_out_xor(self, value: u32) -> Self {
@@ -1738,10 +1835,15 @@ impl GpioOutXor {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutXor {
@@ -1795,42 +1897,36 @@ impl GpioHiOutXor {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -1970,6 +2066,7 @@ impl GpioHiOutXor {
 /// ## Fields
 ///
 /// - **GPIO_OE** `[31:0]` (RW)
+///
 ///   Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
 ///   If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
 ///   In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -1990,9 +2087,11 @@ impl GpioOe {
     // ======== Field Constants ========
 
     /// **GPIO_OE**
+    ///
     /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
     /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_OFFSET: u32 = 0;
     pub const GPIO_OE_MASK: u32 = 0xffffffff;
@@ -2000,6 +2099,7 @@ impl GpioOe {
     // ======== Field Accessors ========
 
     /// **GPIO_OE** `[31:0]` (RW)
+    ///
     /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
     /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -2009,6 +2109,7 @@ impl GpioOe {
     }
 
     /// Write **GPIO_OE** `[31:0]` (RW)
+    ///
     /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
     /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -2048,6 +2149,7 @@ impl GpioOeVal {
     }
 
     /// Read **GPIO_OE** `[31:0]`
+    ///
     /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
     /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -2057,6 +2159,7 @@ impl GpioOeVal {
     }
 
     /// Set **GPIO_OE** `[31:0]`
+    ///
     /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
     /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
     /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
@@ -2108,16 +2211,27 @@ impl GpioOe {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (RW)
+///
 ///   Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+///
 /// - **QSPI_CSN** `[27]` (RW)
+///
 ///   Output enable value for QSPI CSn pin
+///
 /// - **QSPI_SCK** `[26]` (RW)
+///
 ///   Output enable value for QSPI SCK pin
+///
 /// - **USB_DM** `[25]` (RW)
+///
 ///   Output enable value for USB D- pin
+///
 /// - **USB_DP** `[24]` (RW)
+///
 ///   Output enable value for USB D+ pin
+///
 /// - **GPIO** `[15:0]` (RW)
+///
 ///   Output enable value for GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiOe {
@@ -2136,41 +2250,53 @@ impl GpioHiOe {
     // ======== Field Constants ========
 
     /// **QSPI_SD**
+    ///
     /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    ///
     /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
     /// **QSPI_CSN**
+    ///
     /// Output enable value for QSPI CSn pin
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
     /// **QSPI_SCK**
+    ///
     /// Output enable value for QSPI SCK pin
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
     /// **USB_DM**
+    ///
     /// Output enable value for USB D- pin
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
     /// **USB_DP**
+    ///
     /// Output enable value for USB D+ pin
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
     /// **GPIO**
+    ///
     /// Output enable value for GPIO32...47
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
@@ -2178,6 +2304,7 @@ impl GpioHiOe {
     // ======== Field Accessors ========
 
     /// **QSPI_SD** `[31:28]` (RW)
+    ///
     /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
@@ -2185,6 +2312,7 @@ impl GpioHiOe {
     }
 
     /// Write **QSPI_SD** `[31:28]` (RW)
+    ///
     /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
@@ -2192,6 +2320,7 @@ impl GpioHiOe {
     }
 
     /// **QSPI_CSN** `[27]` (RW)
+    ///
     /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
@@ -2211,6 +2340,7 @@ impl GpioHiOe {
     }
 
     /// **QSPI_SCK** `[26]` (RW)
+    ///
     /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
@@ -2230,6 +2360,7 @@ impl GpioHiOe {
     }
 
     /// **USB_DM** `[25]` (RW)
+    ///
     /// Output enable value for USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
@@ -2249,6 +2380,7 @@ impl GpioHiOe {
     }
 
     /// **USB_DP** `[24]` (RW)
+    ///
     /// Output enable value for USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
@@ -2268,6 +2400,7 @@ impl GpioHiOe {
     }
 
     /// **GPIO** `[15:0]` (RW)
+    ///
     /// Output enable value for GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
@@ -2275,6 +2408,7 @@ impl GpioHiOe {
     }
 
     /// Write **GPIO** `[15:0]` (RW)
+    ///
     /// Output enable value for GPIO32...47
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -2312,6 +2446,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **QSPI_SD** `[31:28]`
+    ///
     /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
@@ -2319,6 +2454,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **QSPI_CSN** `[27:27]`
+    ///
     /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
@@ -2326,6 +2462,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **QSPI_SCK** `[26:26]`
+    ///
     /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
@@ -2333,6 +2470,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **USB_DM** `[25:25]`
+    ///
     /// Output enable value for USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
@@ -2340,6 +2478,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **USB_DP** `[24:24]`
+    ///
     /// Output enable value for USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
@@ -2347,6 +2486,7 @@ impl GpioHiOeVal {
     }
 
     /// Read **GPIO** `[15:0]`
+    ///
     /// Output enable value for GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
@@ -2354,6 +2494,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **QSPI_SD** `[31:28]`
+    ///
     /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
@@ -2363,6 +2504,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **QSPI_CSN** `[27:27]`
+    ///
     /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
@@ -2376,6 +2518,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **QSPI_SCK** `[26:26]`
+    ///
     /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
@@ -2389,6 +2532,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **USB_DM** `[25:25]`
+    ///
     /// Output enable value for USB D- pin
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
@@ -2402,6 +2546,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **USB_DP** `[24:24]`
+    ///
     /// Output enable value for USB D+ pin
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
@@ -2415,6 +2560,7 @@ impl GpioHiOeVal {
     }
 
     /// Set **GPIO** `[15:0]`
+    ///
     /// Output enable value for GPIO32...47
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
@@ -2462,6 +2608,7 @@ impl GpioHiOe {
 /// ## Fields
 ///
 /// - **GPIO_OE_SET** `[31:0]` (WO)
+///
 ///   Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
 #[repr(transparent)]
 pub struct GpioOeSet {
@@ -2480,16 +2627,17 @@ impl GpioOeSet {
     // ======== Field Constants ========
 
     /// **GPIO_OE_SET**
+    ///
     /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_SET_OFFSET: u32 = 0;
     pub const GPIO_OE_SET_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_SET** `[31:0]` (WO)
-    /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
     /// Write **GPIO_OE_SET** `[31:0]` (WO)
+    ///
     /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
     #[inline(always)]
     pub fn write_gpio_oe_set(&self, value: u32) {
@@ -2527,6 +2675,7 @@ impl GpioOeSetVal {
     }
 
     /// Set **GPIO_OE_SET** `[31:0]`
+    ///
     /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_set(self, value: u32) -> Self {
@@ -2575,10 +2724,15 @@ impl GpioOeSet {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeSet {
@@ -2632,42 +2786,36 @@ impl GpioHiOeSet {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -2807,6 +2955,7 @@ impl GpioHiOeSet {
 /// ## Fields
 ///
 /// - **GPIO_OE_CLR** `[31:0]` (WO)
+///
 ///   Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
 #[repr(transparent)]
 pub struct GpioOeClr {
@@ -2825,16 +2974,17 @@ impl GpioOeClr {
     // ======== Field Constants ========
 
     /// **GPIO_OE_CLR**
+    ///
     /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_CLR_OFFSET: u32 = 0;
     pub const GPIO_OE_CLR_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_CLR** `[31:0]` (WO)
-    /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
     /// Write **GPIO_OE_CLR** `[31:0]` (WO)
+    ///
     /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
     #[inline(always)]
     pub fn write_gpio_oe_clr(&self, value: u32) {
@@ -2872,6 +3022,7 @@ impl GpioOeClrVal {
     }
 
     /// Set **GPIO_OE_CLR** `[31:0]`
+    ///
     /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_clr(self, value: u32) -> Self {
@@ -2920,10 +3071,15 @@ impl GpioOeClr {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeClr {
@@ -2977,42 +3133,36 @@ impl GpioHiOeClr {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -3152,6 +3302,7 @@ impl GpioHiOeClr {
 /// ## Fields
 ///
 /// - **GPIO_OE_XOR** `[31:0]` (WO)
+///
 ///   Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
 #[repr(transparent)]
 pub struct GpioOeXor {
@@ -3170,16 +3321,17 @@ impl GpioOeXor {
     // ======== Field Constants ========
 
     /// **GPIO_OE_XOR**
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_XOR_OFFSET: u32 = 0;
     pub const GPIO_OE_XOR_MASK: u32 = 0xffffffff;
 
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_XOR** `[31:0]` (WO)
-    /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
     /// Write **GPIO_OE_XOR** `[31:0]` (WO)
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
     #[inline(always)]
     pub fn write_gpio_oe_xor(&self, value: u32) {
@@ -3217,6 +3369,7 @@ impl GpioOeXorVal {
     }
 
     /// Set **GPIO_OE_XOR** `[31:0]`
+    ///
     /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_xor(self, value: u32) -> Self {
@@ -3265,10 +3418,15 @@ impl GpioOeXor {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (WO)
+///
 /// - **QSPI_CSN** `[27]` (WO)
+///
 /// - **QSPI_SCK** `[26]` (WO)
+///
 /// - **USB_DM** `[25]` (WO)
+///
 /// - **USB_DP** `[24]` (WO)
+///
 /// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeXor {
@@ -3322,42 +3480,36 @@ impl GpioHiOeXor {
 
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** `[31:28]` (WO)
     /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
         self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** `[27]` (WO)
     /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
         self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** `[26]` (WO)
     /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
         self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** `[25]` (WO)
     /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
         self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** `[24]` (WO)
     /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
         self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** `[15:0]` (WO)
     /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
@@ -3501,12 +3653,19 @@ impl GpioHiOeXor {
 /// ## Fields
 ///
 /// - **ROE** `[3]` (RW)
+///
 ///   Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
+///
 /// - **WOF** `[2]` (RW)
+///
 ///   Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
+///
 /// - **RDY** `[1]` (RO)
+///
 ///   Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
+///
 /// - **VLD** `[0]` (RO)
+///
 ///   Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
 #[repr(transparent)]
 pub struct FifoSt {
@@ -3525,28 +3684,36 @@ impl FifoSt {
     // ======== Field Constants ========
 
     /// **ROE**
+    ///
     /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const ROE_OFFSET: u32 = 3;
     pub const ROE_MASK: u32 = 0x00000008;
     pub const ROE: u32 = 1 << 3;
 
     /// **WOF**
+    ///
     /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const WOF_OFFSET: u32 = 2;
     pub const WOF_MASK: u32 = 0x00000004;
     pub const WOF: u32 = 1 << 2;
 
     /// **RDY**
+    ///
     /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RDY_OFFSET: u32 = 1;
     pub const RDY_MASK: u32 = 0x00000002;
     pub const RDY: u32 = 1 << 1;
 
     /// **VLD**
+    ///
     /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const VLD_OFFSET: u32 = 0;
     pub const VLD_MASK: u32 = 0x00000001;
@@ -3555,6 +3722,7 @@ impl FifoSt {
     // ======== Field Accessors ========
 
     /// **ROE** `[3]` (RW)
+    ///
     /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub fn roe(&self) -> bool {
@@ -3574,6 +3742,7 @@ impl FifoSt {
     }
 
     /// **WOF** `[2]` (RW)
+    ///
     /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub fn wof(&self) -> bool {
@@ -3593,6 +3762,7 @@ impl FifoSt {
     }
 
     /// **RDY** `[1]` (RO)
+    ///
     /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
     #[inline(always)]
     pub fn rdy(&self) -> bool {
@@ -3600,6 +3770,7 @@ impl FifoSt {
     }
 
     /// **VLD** `[0]` (RO)
+    ///
     /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
     #[inline(always)]
     pub fn vld(&self) -> bool {
@@ -3637,6 +3808,7 @@ impl FifoStVal {
     }
 
     /// Read **ROE** `[3:3]`
+    ///
     /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub const fn roe(&self) -> bool {
@@ -3644,6 +3816,7 @@ impl FifoStVal {
     }
 
     /// Read **WOF** `[2:2]`
+    ///
     /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub const fn wof(&self) -> bool {
@@ -3651,6 +3824,7 @@ impl FifoStVal {
     }
 
     /// Read **RDY** `[1:1]`
+    ///
     /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
     #[inline(always)]
     pub const fn rdy(&self) -> bool {
@@ -3658,6 +3832,7 @@ impl FifoStVal {
     }
 
     /// Read **VLD** `[0:0]`
+    ///
     /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
     #[inline(always)]
     pub const fn vld(&self) -> bool {
@@ -3665,6 +3840,7 @@ impl FifoStVal {
     }
 
     /// Set **ROE** `[3:3]`
+    ///
     /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub const fn with_roe(self, value: bool) -> Self {
@@ -3678,6 +3854,7 @@ impl FifoStVal {
     }
 
     /// Set **WOF** `[2:2]`
+    ///
     /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub const fn with_wof(self, value: bool) -> Self {
@@ -3752,7 +3929,6 @@ impl FifoWr {
 
     // ======== Field Accessors ========
 
-    /// **FIFO_WR** `[31:0]` (WO)
     /// Write **FIFO_WR** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_fifo_wr(&self, value: u32) {
@@ -5253,12 +5429,19 @@ impl Interp0PeekFull {
 /// ## Fields
 ///
 /// - **OVERF** `[25]` (RO)
+///
 ///   Set if either OVERF0 or OVERF1 is set.
+///
 /// - **OVERF1** `[24]` (RO)
+///
 ///   Indicates if any masked-off MSBs in ACCUM1 are set.
+///
 /// - **OVERF0** `[23]` (RO)
+///
 ///   Indicates if any masked-off MSBs in ACCUM0 are set.
+///
 /// - **BLEND** `[21]` (RW)
+///
 ///   Only present on INTERP0 on each core. If BLEND mode is enabled:
 ///   - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
 ///   by the 8 LSBs of lane 1 shift and mask value (a fractional number between
@@ -5266,26 +5449,42 @@ impl Interp0PeekFull {
 ///   - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
 ///   - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
 ///   LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
+///
 /// - **FORCE_MSB** `[20:19]` (RW)
+///
 ///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
 ///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
 ///   of pointers into flash or SRAM.
+///
 /// - **ADD_RAW** `[18]` (RW)
+///
 ///   If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+///
 /// - **CROSS_RESULT** `[17]` (RW)
+///
 ///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+///
 /// - **CROSS_INPUT** `[16]` (RW)
+///
 ///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
 ///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+///
 /// - **SIGNED** `[15]` (RW)
+///
 ///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
 ///   before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+///
 /// - **MASK_MSB** `[14:10]` (RW)
+///
 ///   The most-significant bit allowed to pass by the mask (inclusive)
 ///   Setting MSB < LSB may cause chip to turn inside-out
+///
 /// - **MASK_LSB** `[9:5]` (RW)
+///
 ///   The least-significant bit allowed to pass by the mask (inclusive)
+///
 /// - **SHIFT** `[4:0]` (RW)
+///
 ///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp0CtrlLane0 {
@@ -5304,27 +5503,34 @@ impl Interp0CtrlLane0 {
     // ======== Field Constants ========
 
     /// **OVERF**
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const OVERF_OFFSET: u32 = 25;
     pub const OVERF_MASK: u32 = 0x02000000;
     pub const OVERF: u32 = 1 << 25;
 
     /// **OVERF1**
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const OVERF1_OFFSET: u32 = 24;
     pub const OVERF1_MASK: u32 = 0x01000000;
     pub const OVERF1: u32 = 1 << 24;
 
     /// **OVERF0**
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const OVERF0_OFFSET: u32 = 23;
     pub const OVERF0_MASK: u32 = 0x00800000;
     pub const OVERF0: u32 = 1 << 23;
 
     /// **BLEND**
+    ///
     /// Only present on INTERP0 on each core. If BLEND mode is enabled:
     /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
     /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
@@ -5332,64 +5538,81 @@ impl Interp0CtrlLane0 {
     /// - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
     /// - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
     /// LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const BLEND_OFFSET: u32 = 21;
     pub const BLEND_MASK: u32 = 0x00200000;
     pub const BLEND: u32 = 1 << 21;
 
     /// **FORCE_MSB**
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
+    ///
     /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
     /// **ADD_RAW**
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
     /// **CROSS_RESULT**
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
     /// **CROSS_INPUT**
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
     /// **SIGNED**
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
     /// **MASK_MSB**
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
     /// **MASK_LSB**
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
     /// **SHIFT**
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
@@ -5397,6 +5620,7 @@ impl Interp0CtrlLane0 {
     // ======== Field Accessors ========
 
     /// **OVERF** `[25]` (RO)
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub fn overf(&self) -> bool {
@@ -5404,6 +5628,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **OVERF1** `[24]` (RO)
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub fn overf1(&self) -> bool {
@@ -5411,6 +5636,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **OVERF0** `[23]` (RO)
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub fn overf0(&self) -> bool {
@@ -5418,6 +5644,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **BLEND** `[21]` (RW)
+    ///
     /// Only present on INTERP0 on each core. If BLEND mode is enabled:
     /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
     /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
@@ -5443,6 +5670,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5452,6 +5680,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// Write **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5461,6 +5690,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **ADD_RAW** `[18]` (RW)
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
@@ -5480,6 +5710,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **CROSS_RESULT** `[17]` (RW)
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
@@ -5499,6 +5730,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **CROSS_INPUT** `[16]` (RW)
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -5519,6 +5751,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **SIGNED** `[15]` (RW)
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -5539,6 +5772,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -5547,6 +5781,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// Write **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -5555,6 +5790,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
@@ -5562,6 +5798,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// Write **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
@@ -5569,6 +5806,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
@@ -5576,6 +5814,7 @@ impl Interp0CtrlLane0 {
     }
 
     /// Write **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
@@ -5613,6 +5852,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **OVERF** `[25:25]`
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub const fn overf(&self) -> bool {
@@ -5620,6 +5860,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **OVERF1** `[24:24]`
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub const fn overf1(&self) -> bool {
@@ -5627,6 +5868,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **OVERF0** `[23:23]`
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub const fn overf0(&self) -> bool {
@@ -5634,6 +5876,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **BLEND** `[21:21]`
+    ///
     /// Only present on INTERP0 on each core. If BLEND mode is enabled:
     /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
     /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
@@ -5647,6 +5890,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5656,6 +5900,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
@@ -5663,6 +5908,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
@@ -5670,6 +5916,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -5678,6 +5925,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -5686,6 +5934,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -5694,6 +5943,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
@@ -5701,6 +5951,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Read **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
@@ -5708,6 +5959,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **BLEND** `[21:21]`
+    ///
     /// Only present on INTERP0 on each core. If BLEND mode is enabled:
     /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
     /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
@@ -5727,6 +5979,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5738,6 +5991,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
@@ -5751,6 +6005,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
@@ -5764,6 +6019,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -5778,6 +6034,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -5792,6 +6049,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -5802,6 +6060,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
@@ -5811,6 +6070,7 @@ impl Interp0CtrlLane0Val {
     }
 
     /// Set **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
@@ -5858,25 +6118,40 @@ impl Interp0CtrlLane0 {
 /// ## Fields
 ///
 /// - **FORCE_MSB** `[20:19]` (RW)
+///
 ///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
 ///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
 ///   of pointers into flash or SRAM.
+///
 /// - **ADD_RAW** `[18]` (RW)
+///
 ///   If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+///
 /// - **CROSS_RESULT** `[17]` (RW)
+///
 ///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+///
 /// - **CROSS_INPUT** `[16]` (RW)
+///
 ///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
 ///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+///
 /// - **SIGNED** `[15]` (RW)
+///
 ///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
 ///   before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+///
 /// - **MASK_MSB** `[14:10]` (RW)
+///
 ///   The most-significant bit allowed to pass by the mask (inclusive)
 ///   Setting MSB < LSB may cause chip to turn inside-out
+///
 /// - **MASK_LSB** `[9:5]` (RW)
+///
 ///   The least-significant bit allowed to pass by the mask (inclusive)
+///
 /// - **SHIFT** `[4:0]` (RW)
+///
 ///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp0CtrlLane1 {
@@ -5895,58 +6170,74 @@ impl Interp0CtrlLane1 {
     // ======== Field Constants ========
 
     /// **FORCE_MSB**
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
+    ///
     /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
     /// **ADD_RAW**
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
     /// **CROSS_RESULT**
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
     /// **CROSS_INPUT**
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
     /// **SIGNED**
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
     /// **MASK_MSB**
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
     /// **MASK_LSB**
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
     /// **SHIFT**
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
@@ -5954,6 +6245,7 @@ impl Interp0CtrlLane1 {
     // ======== Field Accessors ========
 
     /// **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5963,6 +6255,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// Write **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -5972,6 +6265,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **ADD_RAW** `[18]` (RW)
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
@@ -5991,6 +6285,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **CROSS_RESULT** `[17]` (RW)
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
@@ -6010,6 +6305,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **CROSS_INPUT** `[16]` (RW)
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -6030,6 +6326,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **SIGNED** `[15]` (RW)
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -6050,6 +6347,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -6058,6 +6356,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// Write **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -6066,6 +6365,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
@@ -6073,6 +6373,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// Write **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
@@ -6080,6 +6381,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
@@ -6087,6 +6389,7 @@ impl Interp0CtrlLane1 {
     }
 
     /// Write **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
@@ -6124,6 +6427,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -6133,6 +6437,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
@@ -6140,6 +6445,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
@@ -6147,6 +6453,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -6155,6 +6462,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -6163,6 +6471,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -6171,6 +6480,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
@@ -6178,6 +6488,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Read **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
@@ -6185,6 +6496,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -6196,6 +6508,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
@@ -6209,6 +6522,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
@@ -6222,6 +6536,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -6236,6 +6551,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -6250,6 +6566,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -6260,6 +6577,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
@@ -6269,6 +6587,7 @@ impl Interp0CtrlLane1Val {
     }
 
     /// Set **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
@@ -6578,7 +6897,6 @@ impl Interp0Base1and0 {
 
     // ======== Field Accessors ========
 
-    /// **INTERP0_BASE_1AND0** `[31:0]` (WO)
     /// Write **INTERP0_BASE_1AND0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_interp0_base_1and0(&self, value: u32) {
@@ -7876,36 +8194,59 @@ impl Interp1PeekFull {
 /// ## Fields
 ///
 /// - **OVERF** `[25]` (RO)
+///
 ///   Set if either OVERF0 or OVERF1 is set.
+///
 /// - **OVERF1** `[24]` (RO)
+///
 ///   Indicates if any masked-off MSBs in ACCUM1 are set.
+///
 /// - **OVERF0** `[23]` (RO)
+///
 ///   Indicates if any masked-off MSBs in ACCUM0 are set.
+///
 /// - **CLAMP** `[22]` (RW)
+///
 ///   Only present on INTERP1 on each core. If CLAMP mode is enabled:
 ///   - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
 ///   BASE0 and an upper bound of BASE1.
 ///   - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
+///
 /// - **FORCE_MSB** `[20:19]` (RW)
+///
 ///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
 ///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
 ///   of pointers into flash or SRAM.
+///
 /// - **ADD_RAW** `[18]` (RW)
+///
 ///   If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+///
 /// - **CROSS_RESULT** `[17]` (RW)
+///
 ///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+///
 /// - **CROSS_INPUT** `[16]` (RW)
+///
 ///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
 ///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+///
 /// - **SIGNED** `[15]` (RW)
+///
 ///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
 ///   before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+///
 /// - **MASK_MSB** `[14:10]` (RW)
+///
 ///   The most-significant bit allowed to pass by the mask (inclusive)
 ///   Setting MSB < LSB may cause chip to turn inside-out
+///
 /// - **MASK_LSB** `[9:5]` (RW)
+///
 ///   The least-significant bit allowed to pass by the mask (inclusive)
+///
 /// - **SHIFT** `[4:0]` (RW)
+///
 ///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp1CtrlLane0 {
@@ -7924,89 +8265,113 @@ impl Interp1CtrlLane0 {
     // ======== Field Constants ========
 
     /// **OVERF**
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const OVERF_OFFSET: u32 = 25;
     pub const OVERF_MASK: u32 = 0x02000000;
     pub const OVERF: u32 = 1 << 25;
 
     /// **OVERF1**
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const OVERF1_OFFSET: u32 = 24;
     pub const OVERF1_MASK: u32 = 0x01000000;
     pub const OVERF1: u32 = 1 << 24;
 
     /// **OVERF0**
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const OVERF0_OFFSET: u32 = 23;
     pub const OVERF0_MASK: u32 = 0x00800000;
     pub const OVERF0: u32 = 1 << 23;
 
     /// **CLAMP**
+    ///
     /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
     /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
     /// BASE0 and an upper bound of BASE1.
     /// - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const CLAMP_OFFSET: u32 = 22;
     pub const CLAMP_MASK: u32 = 0x00400000;
     pub const CLAMP: u32 = 1 << 22;
 
     /// **FORCE_MSB**
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
+    ///
     /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
     /// **ADD_RAW**
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
     /// **CROSS_RESULT**
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
     /// **CROSS_INPUT**
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
     /// **SIGNED**
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
     /// **MASK_MSB**
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
     /// **MASK_LSB**
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
     /// **SHIFT**
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
@@ -8014,6 +8379,7 @@ impl Interp1CtrlLane0 {
     // ======== Field Accessors ========
 
     /// **OVERF** `[25]` (RO)
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub fn overf(&self) -> bool {
@@ -8021,6 +8387,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **OVERF1** `[24]` (RO)
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub fn overf1(&self) -> bool {
@@ -8028,6 +8395,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **OVERF0** `[23]` (RO)
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub fn overf0(&self) -> bool {
@@ -8035,6 +8403,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **CLAMP** `[22]` (RW)
+    ///
     /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
     /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
     /// BASE0 and an upper bound of BASE1.
@@ -8057,6 +8426,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8066,6 +8436,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// Write **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8075,6 +8446,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **ADD_RAW** `[18]` (RW)
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
@@ -8094,6 +8466,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **CROSS_RESULT** `[17]` (RW)
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
@@ -8113,6 +8486,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **CROSS_INPUT** `[16]` (RW)
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8133,6 +8507,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **SIGNED** `[15]` (RW)
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8153,6 +8528,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8161,6 +8537,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// Write **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8169,6 +8546,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
@@ -8176,6 +8554,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// Write **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
@@ -8183,6 +8562,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
@@ -8190,6 +8570,7 @@ impl Interp1CtrlLane0 {
     }
 
     /// Write **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
@@ -8227,6 +8608,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **OVERF** `[25:25]`
+    ///
     /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub const fn overf(&self) -> bool {
@@ -8234,6 +8616,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **OVERF1** `[24:24]`
+    ///
     /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub const fn overf1(&self) -> bool {
@@ -8241,6 +8624,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **OVERF0** `[23:23]`
+    ///
     /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub const fn overf0(&self) -> bool {
@@ -8248,6 +8632,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **CLAMP** `[22:22]`
+    ///
     /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
     /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
     /// BASE0 and an upper bound of BASE1.
@@ -8258,6 +8643,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8267,6 +8653,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
@@ -8274,6 +8661,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
@@ -8281,6 +8669,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8289,6 +8678,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8297,6 +8687,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8305,6 +8696,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
@@ -8312,6 +8704,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Read **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
@@ -8319,6 +8712,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **CLAMP** `[22:22]`
+    ///
     /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
     /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
     /// BASE0 and an upper bound of BASE1.
@@ -8335,6 +8729,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8346,6 +8741,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
@@ -8359,6 +8755,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
@@ -8372,6 +8769,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8386,6 +8784,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8400,6 +8799,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8410,6 +8810,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
@@ -8419,6 +8820,7 @@ impl Interp1CtrlLane0Val {
     }
 
     /// Set **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
@@ -8466,25 +8868,40 @@ impl Interp1CtrlLane0 {
 /// ## Fields
 ///
 /// - **FORCE_MSB** `[20:19]` (RW)
+///
 ///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
 ///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
 ///   of pointers into flash or SRAM.
+///
 /// - **ADD_RAW** `[18]` (RW)
+///
 ///   If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+///
 /// - **CROSS_RESULT** `[17]` (RW)
+///
 ///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+///
 /// - **CROSS_INPUT** `[16]` (RW)
+///
 ///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
 ///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+///
 /// - **SIGNED** `[15]` (RW)
+///
 ///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
 ///   before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+///
 /// - **MASK_MSB** `[14:10]` (RW)
+///
 ///   The most-significant bit allowed to pass by the mask (inclusive)
 ///   Setting MSB < LSB may cause chip to turn inside-out
+///
 /// - **MASK_LSB** `[9:5]` (RW)
+///
 ///   The least-significant bit allowed to pass by the mask (inclusive)
+///
 /// - **SHIFT** `[4:0]` (RW)
+///
 ///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp1CtrlLane1 {
@@ -8503,58 +8920,74 @@ impl Interp1CtrlLane1 {
     // ======== Field Constants ========
 
     /// **FORCE_MSB**
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
+    ///
     /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
     /// **ADD_RAW**
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
     /// **CROSS_RESULT**
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
     /// **CROSS_INPUT**
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
     /// **SIGNED**
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
     /// **MASK_MSB**
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
+    ///
     /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
     /// **MASK_LSB**
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
+    ///
     /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
     /// **SHIFT**
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
@@ -8562,6 +8995,7 @@ impl Interp1CtrlLane1 {
     // ======== Field Accessors ========
 
     /// **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8571,6 +9005,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// Write **FORCE_MSB** `[20:19]` (RW)
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8580,6 +9015,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **ADD_RAW** `[18]` (RW)
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
@@ -8599,6 +9035,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **CROSS_RESULT** `[17]` (RW)
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
@@ -8618,6 +9055,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **CROSS_INPUT** `[16]` (RW)
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8638,6 +9076,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **SIGNED** `[15]` (RW)
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8658,6 +9097,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8666,6 +9106,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// Write **MASK_MSB** `[14:10]` (RW)
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8674,6 +9115,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
@@ -8681,6 +9123,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// Write **MASK_LSB** `[9:5]` (RW)
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
@@ -8688,6 +9131,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
@@ -8695,6 +9139,7 @@ impl Interp1CtrlLane1 {
     }
 
     /// Write **SHIFT** `[4:0]` (RW)
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
@@ -8732,6 +9177,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8741,6 +9187,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
@@ -8748,6 +9195,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
@@ -8755,6 +9203,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8763,6 +9212,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8771,6 +9221,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8779,6 +9230,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
@@ -8786,6 +9238,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Read **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
@@ -8793,6 +9246,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **FORCE_MSB** `[20:19]`
+    ///
     /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
     /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
     /// of pointers into flash or SRAM.
@@ -8804,6 +9258,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **ADD_RAW** `[18:18]`
+    ///
     /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
@@ -8817,6 +9272,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **CROSS_RESULT** `[17:17]`
+    ///
     /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
@@ -8830,6 +9286,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **CROSS_INPUT** `[16:16]`
+    ///
     /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
     /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
@@ -8844,6 +9301,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **SIGNED** `[15:15]`
+    ///
     /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
     /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
@@ -8858,6 +9316,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **MASK_MSB** `[14:10]`
+    ///
     /// The most-significant bit allowed to pass by the mask (inclusive)
     /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
@@ -8868,6 +9327,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **MASK_LSB** `[9:5]`
+    ///
     /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
@@ -8877,6 +9337,7 @@ impl Interp1CtrlLane1Val {
     }
 
     /// Set **SHIFT** `[4:0]`
+    ///
     /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
@@ -9186,7 +9647,6 @@ impl Interp1Base1and0 {
 
     // ======== Field Accessors ========
 
-    /// **INTERP1_BASE_1AND0** `[31:0]` (WO)
     /// Write **INTERP1_BASE_1AND0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_interp1_base_1and0(&self, value: u32) {
@@ -13685,10 +14145,15 @@ impl DoorbellInClr {
 /// ## Fields
 ///
 /// - **TMDS** `[5]` (RW)
+///
 ///   IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+///
 /// - **INTERP1** `[1]` (RW)
+///
 ///   If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+///
 /// - **INTERP0** `[0]` (RW)
+///
 ///   If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
 #[repr(transparent)]
 pub struct PeriNonsec {
@@ -13707,21 +14172,27 @@ impl PeriNonsec {
     // ======== Field Constants ========
 
     /// **TMDS**
+    ///
     /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const TMDS_OFFSET: u32 = 5;
     pub const TMDS_MASK: u32 = 0x00000020;
     pub const TMDS: u32 = 1 << 5;
 
     /// **INTERP1**
+    ///
     /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const INTERP1_OFFSET: u32 = 1;
     pub const INTERP1_MASK: u32 = 0x00000002;
     pub const INTERP1: u32 = 1 << 1;
 
     /// **INTERP0**
+    ///
     /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const INTERP0_OFFSET: u32 = 0;
     pub const INTERP0_MASK: u32 = 0x00000001;
@@ -13730,6 +14201,7 @@ impl PeriNonsec {
     // ======== Field Accessors ========
 
     /// **TMDS** `[5]` (RW)
+    ///
     /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn tmds(&self) -> bool {
@@ -13749,6 +14221,7 @@ impl PeriNonsec {
     }
 
     /// **INTERP1** `[1]` (RW)
+    ///
     /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn interp1(&self) -> bool {
@@ -13768,6 +14241,7 @@ impl PeriNonsec {
     }
 
     /// **INTERP0** `[0]` (RW)
+    ///
     /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn interp0(&self) -> bool {
@@ -13817,6 +14291,7 @@ impl PeriNonsecVal {
     }
 
     /// Read **TMDS** `[5:5]`
+    ///
     /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn tmds(&self) -> bool {
@@ -13824,6 +14299,7 @@ impl PeriNonsecVal {
     }
 
     /// Read **INTERP1** `[1:1]`
+    ///
     /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn interp1(&self) -> bool {
@@ -13831,6 +14307,7 @@ impl PeriNonsecVal {
     }
 
     /// Read **INTERP0** `[0:0]`
+    ///
     /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn interp0(&self) -> bool {
@@ -13838,6 +14315,7 @@ impl PeriNonsecVal {
     }
 
     /// Set **TMDS** `[5:5]`
+    ///
     /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_tmds(self, value: bool) -> Self {
@@ -13851,6 +14329,7 @@ impl PeriNonsecVal {
     }
 
     /// Set **INTERP1** `[1:1]`
+    ///
     /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_interp1(self, value: bool) -> Self {
@@ -13864,6 +14343,7 @@ impl PeriNonsecVal {
     }
 
     /// Set **INTERP0** `[0:0]`
+    ///
     /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_interp0(self, value: bool) -> Self {
@@ -13917,12 +14397,19 @@ impl PeriNonsec {
 /// ## Fields
 ///
 /// - **CORE1_CLR** `[9]` (RW)
+///
 ///   Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
+///
 /// - **CORE0_CLR** `[8]` (RW)
+///
 ///   Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
+///
 /// - **CORE1_SET** `[1]` (RW)
+///
 ///   Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
+///
 /// - **CORE0_SET** `[0]` (RW)
+///
 ///   Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
 #[repr(transparent)]
 pub struct RiscvSoftirq {
@@ -13941,28 +14428,36 @@ impl RiscvSoftirq {
     // ======== Field Constants ========
 
     /// **CORE1_CLR**
+    ///
     /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const CORE1_CLR_OFFSET: u32 = 9;
     pub const CORE1_CLR_MASK: u32 = 0x00000200;
     pub const CORE1_CLR: u32 = 1 << 9;
 
     /// **CORE0_CLR**
+    ///
     /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const CORE0_CLR_OFFSET: u32 = 8;
     pub const CORE0_CLR_MASK: u32 = 0x00000100;
     pub const CORE0_CLR: u32 = 1 << 8;
 
     /// **CORE1_SET**
+    ///
     /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const CORE1_SET_OFFSET: u32 = 1;
     pub const CORE1_SET_MASK: u32 = 0x00000002;
     pub const CORE1_SET: u32 = 1 << 1;
 
     /// **CORE0_SET**
+    ///
     /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CORE0_SET_OFFSET: u32 = 0;
     pub const CORE0_SET_MASK: u32 = 0x00000001;
@@ -13971,6 +14466,7 @@ impl RiscvSoftirq {
     // ======== Field Accessors ========
 
     /// **CORE1_CLR** `[9]` (RW)
+    ///
     /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core1_clr(&self) -> bool {
@@ -13990,6 +14486,7 @@ impl RiscvSoftirq {
     }
 
     /// **CORE0_CLR** `[8]` (RW)
+    ///
     /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core0_clr(&self) -> bool {
@@ -14009,6 +14506,7 @@ impl RiscvSoftirq {
     }
 
     /// **CORE1_SET** `[1]` (RW)
+    ///
     /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core1_set(&self) -> bool {
@@ -14028,6 +14526,7 @@ impl RiscvSoftirq {
     }
 
     /// **CORE0_SET** `[0]` (RW)
+    ///
     /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core0_set(&self) -> bool {
@@ -14077,6 +14576,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Read **CORE1_CLR** `[9:9]`
+    ///
     /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core1_clr(&self) -> bool {
@@ -14084,6 +14584,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Read **CORE0_CLR** `[8:8]`
+    ///
     /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core0_clr(&self) -> bool {
@@ -14091,6 +14592,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Read **CORE1_SET** `[1:1]`
+    ///
     /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core1_set(&self) -> bool {
@@ -14098,6 +14600,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Read **CORE0_SET** `[0:0]`
+    ///
     /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core0_set(&self) -> bool {
@@ -14105,6 +14608,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Set **CORE1_CLR** `[9:9]`
+    ///
     /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core1_clr(self, value: bool) -> Self {
@@ -14118,6 +14622,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Set **CORE0_CLR** `[8:8]`
+    ///
     /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core0_clr(self, value: bool) -> Self {
@@ -14131,6 +14636,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Set **CORE1_SET** `[1:1]`
+    ///
     /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core1_set(self, value: bool) -> Self {
@@ -14144,6 +14650,7 @@ impl RiscvSoftirqVal {
     }
 
     /// Set **CORE0_SET** `[0:0]`
+    ///
     /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core0_set(self, value: bool) -> Self {
@@ -14196,12 +14703,19 @@ impl RiscvSoftirq {
 /// ## Fields
 ///
 /// - **DBGPAUSE_CORE1** `[3]` (RW)
+///
 ///   If 1, the timer pauses when core 1 is in the debug halt state.
+///
 /// - **DBGPAUSE_CORE0** `[2]` (RW)
+///
 ///   If 1, the timer pauses when core 0 is in the debug halt state.
+///
 /// - **FULLSPEED** `[1]` (RW)
+///
 ///   If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Timer enable bit. When 0, the timer will not increment automatically.
 #[repr(transparent)]
 pub struct MtimeCtrl {
@@ -14220,28 +14734,36 @@ impl MtimeCtrl {
     // ======== Field Constants ========
 
     /// **DBGPAUSE_CORE1**
+    ///
     /// If 1, the timer pauses when core 1 is in the debug halt state.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const DBGPAUSE_CORE1_OFFSET: u32 = 3;
     pub const DBGPAUSE_CORE1_MASK: u32 = 0x00000008;
     pub const DBGPAUSE_CORE1: u32 = 1 << 3;
 
     /// **DBGPAUSE_CORE0**
+    ///
     /// If 1, the timer pauses when core 0 is in the debug halt state.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DBGPAUSE_CORE0_OFFSET: u32 = 2;
     pub const DBGPAUSE_CORE0_MASK: u32 = 0x00000004;
     pub const DBGPAUSE_CORE0: u32 = 1 << 2;
 
     /// **FULLSPEED**
+    ///
     /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const FULLSPEED_OFFSET: u32 = 1;
     pub const FULLSPEED_MASK: u32 = 0x00000002;
     pub const FULLSPEED: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Timer enable bit. When 0, the timer will not increment automatically.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -14250,6 +14772,7 @@ impl MtimeCtrl {
     // ======== Field Accessors ========
 
     /// **DBGPAUSE_CORE1** `[3]` (RW)
+    ///
     /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub fn dbgpause_core1(&self) -> bool {
@@ -14269,6 +14792,7 @@ impl MtimeCtrl {
     }
 
     /// **DBGPAUSE_CORE0** `[2]` (RW)
+    ///
     /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub fn dbgpause_core0(&self) -> bool {
@@ -14288,6 +14812,7 @@ impl MtimeCtrl {
     }
 
     /// **FULLSPEED** `[1]` (RW)
+    ///
     /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub fn fullspeed(&self) -> bool {
@@ -14307,6 +14832,7 @@ impl MtimeCtrl {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub fn en(&self) -> bool {
@@ -14356,6 +14882,7 @@ impl MtimeCtrlVal {
     }
 
     /// Read **DBGPAUSE_CORE1** `[3:3]`
+    ///
     /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub const fn dbgpause_core1(&self) -> bool {
@@ -14363,6 +14890,7 @@ impl MtimeCtrlVal {
     }
 
     /// Read **DBGPAUSE_CORE0** `[2:2]`
+    ///
     /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub const fn dbgpause_core0(&self) -> bool {
@@ -14370,6 +14898,7 @@ impl MtimeCtrlVal {
     }
 
     /// Read **FULLSPEED** `[1:1]`
+    ///
     /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub const fn fullspeed(&self) -> bool {
@@ -14377,6 +14906,7 @@ impl MtimeCtrlVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub const fn en(&self) -> bool {
@@ -14384,6 +14914,7 @@ impl MtimeCtrlVal {
     }
 
     /// Set **DBGPAUSE_CORE1** `[3:3]`
+    ///
     /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub const fn with_dbgpause_core1(self, value: bool) -> Self {
@@ -14397,6 +14928,7 @@ impl MtimeCtrlVal {
     }
 
     /// Set **DBGPAUSE_CORE0** `[2:2]`
+    ///
     /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub const fn with_dbgpause_core0(self, value: bool) -> Self {
@@ -14410,6 +14942,7 @@ impl MtimeCtrlVal {
     }
 
     /// Set **FULLSPEED** `[1:1]`
+    ///
     /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub const fn with_fullspeed(self, value: bool) -> Self {
@@ -14423,6 +14956,7 @@ impl MtimeCtrlVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
@@ -14948,31 +15482,50 @@ impl Mtimecmph {
 /// ## Fields
 ///
 /// - **CLEAR_BALANCE** `[28]` (WO)
+///
 ///   Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
+///
 /// - **PIX2_NOSHIFT** `[27]` (RW)
+///
 ///   When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
 ///   This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
+///
 /// - **PIX_SHIFT** `[26:24]` (RW)
+///
 ///   Shift applied to the colour data register with each read of a POP alias register.
 ///   Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
 ///   Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
+///
 /// - **INTERLEAVE** `[23]` (RW)
+///
 ///   Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
 ///   When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
 ///   When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
+///
 /// - **L2_NBITS** `[20:18]` (RW)
+///
 ///   Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+///
 /// - **L1_NBITS** `[17:15]` (RW)
+///
 ///   Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+///
 /// - **L0_NBITS** `[14:12]` (RW)
+///
 ///   Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+///
 /// - **L2_ROT** `[11:8]` (RW)
+///
 ///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
 ///   For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
+///
 /// - **L1_ROT** `[7:4]` (RW)
+///
 ///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
 ///   For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
+///
 /// - **L0_ROT** `[3:0]` (RW)
+///
 ///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
 ///   For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
 #[repr(transparent)]
@@ -14992,24 +15545,30 @@ impl TmdsCtrl {
     // ======== Field Constants ========
 
     /// **CLEAR_BALANCE**
+    ///
     /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const CLEAR_BALANCE_OFFSET: u32 = 28;
     pub const CLEAR_BALANCE_MASK: u32 = 0x10000000;
     pub const CLEAR_BALANCE: u32 = 1 << 28;
 
     /// **PIX2_NOSHIFT**
+    ///
     /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
     /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const PIX2_NOSHIFT_OFFSET: u32 = 27;
     pub const PIX2_NOSHIFT_MASK: u32 = 0x08000000;
     pub const PIX2_NOSHIFT: u32 = 1 << 27;
 
     /// **PIX_SHIFT**
+    ///
     /// Shift applied to the colour data register with each read of a POP alias register.
     /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
     /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
+    ///
     /// Bits `[26:24]`, mask `0x07000000`
     pub const PIX_SHIFT_OFFSET: u32 = 24;
     pub const PIX_SHIFT_MASK: u32 = 0x07000000;
@@ -15039,58 +15598,71 @@ impl TmdsCtrl {
     pub const PIX_SHIFT_16_VAL: u32 = 5;
 
     /// **INTERLEAVE**
+    ///
     /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
     /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
     /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const INTERLEAVE_OFFSET: u32 = 23;
     pub const INTERLEAVE_MASK: u32 = 0x00800000;
     pub const INTERLEAVE: u32 = 1 << 23;
 
     /// **L2_NBITS**
+    ///
     /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    ///
     /// Bits `[20:18]`, mask `0x001c0000`
     pub const L2_NBITS_OFFSET: u32 = 18;
     pub const L2_NBITS_MASK: u32 = 0x001c0000;
 
     /// **L1_NBITS**
+    ///
     /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    ///
     /// Bits `[17:15]`, mask `0x00038000`
     pub const L1_NBITS_OFFSET: u32 = 15;
     pub const L1_NBITS_MASK: u32 = 0x00038000;
 
     /// **L0_NBITS**
+    ///
     /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const L0_NBITS_OFFSET: u32 = 12;
     pub const L0_NBITS_MASK: u32 = 0x00007000;
 
     /// **L2_ROT**
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const L2_ROT_OFFSET: u32 = 8;
     pub const L2_ROT_MASK: u32 = 0x00000f00;
 
     /// **L1_ROT**
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const L1_ROT_OFFSET: u32 = 4;
     pub const L1_ROT_MASK: u32 = 0x000000f0;
 
     /// **L0_ROT**
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const L0_ROT_OFFSET: u32 = 0;
     pub const L0_ROT_MASK: u32 = 0x0000000f;
 
     // ======== Field Accessors ========
 
-    /// **CLEAR_BALANCE** `[28]` (WO)
-    /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
     /// Trigger **CLEAR_BALANCE** (WO)
+    ///
     /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
     #[inline(always)]
     pub fn trigger_clear_balance(&self) {
@@ -15098,6 +15670,7 @@ impl TmdsCtrl {
     }
 
     /// **PIX2_NOSHIFT** `[27]` (RW)
+    ///
     /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
     /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
@@ -15118,6 +15691,7 @@ impl TmdsCtrl {
     }
 
     /// **PIX_SHIFT** `[26:24]` (RW)
+    ///
     /// Shift applied to the colour data register with each read of a POP alias register.
     /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
     /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
@@ -15127,6 +15701,7 @@ impl TmdsCtrl {
     }
 
     /// Write **PIX_SHIFT** `[26:24]` (RW)
+    ///
     /// Shift applied to the colour data register with each read of a POP alias register.
     /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
     /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
@@ -15136,6 +15711,7 @@ impl TmdsCtrl {
     }
 
     /// **INTERLEAVE** `[23]` (RW)
+    ///
     /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
     /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
     /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
@@ -15157,6 +15733,7 @@ impl TmdsCtrl {
     }
 
     /// **L2_NBITS** `[20:18]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l2_nbits(&self) -> u32 {
@@ -15164,6 +15741,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L2_NBITS** `[20:18]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l2_nbits(&self, value: u32) {
@@ -15171,6 +15749,7 @@ impl TmdsCtrl {
     }
 
     /// **L1_NBITS** `[17:15]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l1_nbits(&self) -> u32 {
@@ -15178,6 +15757,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L1_NBITS** `[17:15]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l1_nbits(&self, value: u32) {
@@ -15185,6 +15765,7 @@ impl TmdsCtrl {
     }
 
     /// **L0_NBITS** `[14:12]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l0_nbits(&self) -> u32 {
@@ -15192,6 +15773,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L0_NBITS** `[14:12]` (RW)
+    ///
     /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l0_nbits(&self, value: u32) {
@@ -15199,6 +15781,7 @@ impl TmdsCtrl {
     }
 
     /// **L2_ROT** `[11:8]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15207,6 +15790,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L2_ROT** `[11:8]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15215,6 +15799,7 @@ impl TmdsCtrl {
     }
 
     /// **L1_ROT** `[7:4]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
@@ -15223,6 +15808,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L1_ROT** `[7:4]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
@@ -15231,6 +15817,7 @@ impl TmdsCtrl {
     }
 
     /// **L0_ROT** `[3:0]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15239,6 +15826,7 @@ impl TmdsCtrl {
     }
 
     /// Write **L0_ROT** `[3:0]` (RW)
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15277,6 +15865,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **PIX2_NOSHIFT** `[27:27]`
+    ///
     /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
     /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
@@ -15285,6 +15874,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **PIX_SHIFT** `[26:24]`
+    ///
     /// Shift applied to the colour data register with each read of a POP alias register.
     /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
     /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
@@ -15294,6 +15884,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **INTERLEAVE** `[23:23]`
+    ///
     /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
     /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
     /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
@@ -15303,6 +15894,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L2_NBITS** `[20:18]`
+    ///
     /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l2_nbits(&self) -> u32 {
@@ -15310,6 +15902,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L1_NBITS** `[17:15]`
+    ///
     /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l1_nbits(&self) -> u32 {
@@ -15317,6 +15910,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L0_NBITS** `[14:12]`
+    ///
     /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l0_nbits(&self) -> u32 {
@@ -15324,6 +15918,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L2_ROT** `[11:8]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15332,6 +15927,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L1_ROT** `[7:4]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
@@ -15340,6 +15936,7 @@ impl TmdsCtrlVal {
     }
 
     /// Read **L0_ROT** `[3:0]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15348,6 +15945,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **CLEAR_BALANCE** `[28:28]`
+    ///
     /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
     #[inline(always)]
     pub const fn with_clear_balance(self, value: bool) -> Self {
@@ -15361,6 +15959,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **PIX2_NOSHIFT** `[27:27]`
+    ///
     /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
     /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
@@ -15375,6 +15974,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **PIX_SHIFT** `[26:24]`
+    ///
     /// Shift applied to the colour data register with each read of a POP alias register.
     /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
     /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
@@ -15386,6 +15986,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **INTERLEAVE** `[23:23]`
+    ///
     /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
     /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
     /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
@@ -15401,6 +16002,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L2_NBITS** `[20:18]`
+    ///
     /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l2_nbits(self, value: u32) -> Self {
@@ -15410,6 +16012,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L1_NBITS** `[17:15]`
+    ///
     /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l1_nbits(self, value: u32) -> Self {
@@ -15419,6 +16022,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L0_NBITS** `[14:12]`
+    ///
     /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l0_nbits(self, value: u32) -> Self {
@@ -15428,6 +16032,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L2_ROT** `[11:8]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15438,6 +16043,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L1_ROT** `[7:4]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
@@ -15448,6 +16054,7 @@ impl TmdsCtrlVal {
     }
 
     /// Set **L0_ROT** `[3:0]`
+    ///
     /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
     /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
@@ -15519,7 +16126,6 @@ impl TmdsWdata {
 
     // ======== Field Accessors ========
 
-    /// **TMDS_WDATA** `[31:0]` (WO)
     /// Write **TMDS_WDATA** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_tmds_wdata(&self, value: u32) {

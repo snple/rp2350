@@ -12,6 +12,11 @@
 #![allow(clippy::zero_ptr)]
 #![allow(clippy::self_named_constructors)]
 #![allow(clippy::derivable_impls)]
+#![allow(clippy::doc_lazy_continuation)]
+#![allow(rustdoc::bare_urls)]
+#![allow(rustdoc::broken_intra_doc_links)]
+#![allow(rustdoc::private_intra_doc_links)]
+#![allow(rustdoc::list_item_indent)]
 
 // Re-export everything from the generated module
 mod generated;

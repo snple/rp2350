@@ -560,7 +560,10 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
         writeln!(out, "///")?;
         writeln!(out, "/// ## Fields")?;
         writeln!(out, "///")?;
-        for field in &reg.fields {
+        for (i, field) in reg.fields.iter().enumerate() {
+            if i > 0 {
+                writeln!(out, "///")?;
+            }
             let access_str = match field.access {
                 Access::ReadOnly => "RO",
                 Access::WriteOnly => "WO",
@@ -579,6 +582,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             )?;
             // Description lines (preserve original line breaks)
             if !field.description.is_empty() {
+                writeln!(out, "///")?;
                 for line in clean_desc(&field.description).lines() {
                     writeln!(out, "///   {}", line)?;
                 }
@@ -611,13 +615,13 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             let field_shouty = field.name.to_shouty_snake_case();
 
             // Field description (preserve original line breaks)
+            writeln!(out, "    /// **{}**", field.name)?;
             if !field.description.is_empty() {
-                writeln!(out, "    /// **{}**", field.name)?;
+                writeln!(out, "    ///")?;
                 for line in clean_desc(&field.description).lines() {
                     writeln!(out, "    /// {}", line)?;
                 }
-            } else {
-                writeln!(out, "    /// **{}**", field.name)?;
+                writeln!(out, "    ///")?;
             }
             writeln!(
                 out,
@@ -724,14 +728,18 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             };
 
             // Document the field (only once, before the first method)
-            writeln!(
-                out,
-                "    /// **{}** {} ({})",
-                field.name, bit_range, access_str
-            )?;
-            if !field.description.is_empty() {
-                for line in clean_desc(&field.description).lines() {
-                    writeln!(out, "    /// {}", line)?;
+            // Skip for WriteOnly fields as they'll be documented with their trigger/write methods
+            if !matches!(field.access, Access::WriteOnly) {
+                writeln!(
+                    out,
+                    "    /// **{}** {} ({})",
+                    field.name, bit_range, access_str
+                )?;
+                if !field.description.is_empty() {
+                    writeln!(out, "    ///")?;
+                    for line in clean_desc(&field.description).lines() {
+                        writeln!(out, "    /// {}", line)?;
+                    }
                 }
             }
 
@@ -804,6 +812,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             {
                 writeln!(out, "    /// Write **{}** {} (RW)", field.name, bit_range)?;
                 if !field.description.is_empty() {
+                    writeln!(out, "    ///")?;
                     for line in clean_desc(&field.description).lines() {
                         writeln!(out, "    /// {}", line)?;
                     }
@@ -827,6 +836,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             if matches!(field.access, Access::WriteOnly) && width == 1 {
                 writeln!(out, "    /// Trigger **{}** (WO)", field.name)?;
                 if !field.description.is_empty() {
+                    writeln!(out, "    ///")?;
                     for line in clean_desc(&field.description).lines() {
                         writeln!(out, "    /// {}", line)?;
                     }
@@ -850,6 +860,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             if matches!(field.access, Access::WriteOnly) && width > 1 {
                 writeln!(out, "    /// Write **{}** {} (WO)", field.name, bit_range)?;
                 if !field.description.is_empty() {
+                    writeln!(out, "    ///")?;
                     for line in clean_desc(&field.description).lines() {
                         writeln!(out, "    /// {}", line)?;
                     }
@@ -957,6 +968,7 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
                 field.name, field.msb, field.lsb
             )?;
             if !field.description.is_empty() {
+                writeln!(out, "    ///")?;
                 for line in clean_desc(&field.description).lines() {
                     writeln!(out, "    /// {}", line)?;
                 }
@@ -997,6 +1009,7 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
                 field.name, field.msb, field.lsb
             )?;
             if !field.description.is_empty() {
+                writeln!(out, "    ///")?;
                 for line in clean_desc(&field.description).lines() {
                     writeln!(out, "    /// {}", line)?;
                 }

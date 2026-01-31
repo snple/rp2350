@@ -15,9 +15,13 @@ pub const BASE: u32 = 0x50600000;
 /// ## Fields
 ///
 /// - **WOF** `[10]` (RW)
+///
 ///   FIFO was written when full. Write 1 to clear.
+///
 /// - **EMPTY** `[9]` (RO)
+///
 /// - **FULL** `[8]` (RO)
+///
 /// - **LEVEL** `[7:0]` (RO)
 #[repr(transparent)]
 pub struct Stat {
@@ -36,7 +40,9 @@ impl Stat {
     // ======== Field Constants ========
 
     /// **WOF**
+    ///
     /// FIFO was written when full. Write 1 to clear.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const WOF_OFFSET: u32 = 10;
     pub const WOF_MASK: u32 = 0x00000400;
@@ -62,6 +68,7 @@ impl Stat {
     // ======== Field Accessors ========
 
     /// **WOF** `[10]` (RW)
+    ///
     /// FIFO was written when full. Write 1 to clear.
     #[inline(always)]
     pub fn wof(&self) -> bool {
@@ -129,6 +136,7 @@ impl StatVal {
     }
 
     /// Read **WOF** `[10:10]`
+    ///
     /// FIFO was written when full. Write 1 to clear.
     #[inline(always)]
     pub const fn wof(&self) -> bool {
@@ -154,6 +162,7 @@ impl StatVal {
     }
 
     /// Set **WOF** `[10:10]`
+    ///
     /// FIFO was written when full. Write 1 to clear.
     #[inline(always)]
     pub const fn with_wof(self, value: bool) -> Self {
@@ -228,7 +237,6 @@ impl Fifo {
 
     // ======== Field Accessors ========
 
-    /// **FIFO** `[31:0]` (WO)
     /// Write **FIFO** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_fifo(&self, value: u32) {

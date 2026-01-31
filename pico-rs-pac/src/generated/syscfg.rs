@@ -15,8 +15,11 @@ pub const BASE: u32 = 0x40008000;
 /// ## Fields
 ///
 /// - **PROC1_HALTED** `[1]` (RO)
+///
 ///   Indication that proc1 has halted
+///
 /// - **PROC0_HALTED** `[0]` (RO)
+///
 ///   Indication that proc0 has halted
 #[repr(transparent)]
 pub struct ProcConfig {
@@ -35,14 +38,18 @@ impl ProcConfig {
     // ======== Field Constants ========
 
     /// **PROC1_HALTED**
+    ///
     /// Indication that proc1 has halted
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const PROC1_HALTED_OFFSET: u32 = 1;
     pub const PROC1_HALTED_MASK: u32 = 0x00000002;
     pub const PROC1_HALTED: u32 = 1 << 1;
 
     /// **PROC0_HALTED**
+    ///
     /// Indication that proc0 has halted
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PROC0_HALTED_OFFSET: u32 = 0;
     pub const PROC0_HALTED_MASK: u32 = 0x00000001;
@@ -51,6 +58,7 @@ impl ProcConfig {
     // ======== Field Accessors ========
 
     /// **PROC1_HALTED** `[1]` (RO)
+    ///
     /// Indication that proc1 has halted
     #[inline(always)]
     pub fn proc1_halted(&self) -> bool {
@@ -58,6 +66,7 @@ impl ProcConfig {
     }
 
     /// **PROC0_HALTED** `[0]` (RO)
+    ///
     /// Indication that proc0 has halted
     #[inline(always)]
     pub fn proc0_halted(&self) -> bool {
@@ -95,6 +104,7 @@ impl ProcConfigVal {
     }
 
     /// Read **PROC1_HALTED** `[1:1]`
+    ///
     /// Indication that proc1 has halted
     #[inline(always)]
     pub const fn proc1_halted(&self) -> bool {
@@ -102,6 +112,7 @@ impl ProcConfigVal {
     }
 
     /// Read **PROC0_HALTED** `[0:0]`
+    ///
     /// Indication that proc0 has halted
     #[inline(always)]
     pub const fn proc0_halted(&self) -> bool {
@@ -273,10 +284,15 @@ impl ProcInSyncBypass {
 /// ## Fields
 ///
 /// - **QSPI_SD** `[31:28]` (RW)
+///
 /// - **QSPI_CSN** `[27]` (RW)
+///
 /// - **QSPI_SCK** `[26]` (RW)
+///
 /// - **USB_DM** `[25]` (RW)
+///
 /// - **USB_DP** `[24]` (RW)
+///
 /// - **GPIO** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct ProcInSyncBypassHi {
@@ -595,12 +611,19 @@ impl ProcInSyncBypassHi {
 /// ## Fields
 ///
 /// - **ATTACH** `[3]` (RW)
+///
 ///   Attach chip debug port to syscfg controls, and disconnect it from external SWD pads.
+///
 /// - **SWCLK** `[2]` (RW)
+///
 ///   Directly drive SWCLK, if ATTACH is set
+///
 /// - **SWDI** `[1]` (RW)
+///
 ///   Directly drive SWDIO input, if ATTACH is set
+///
 /// - **SWDO** `[0]` (RO)
+///
 ///   Observe the value of SWDIO output.
 #[repr(transparent)]
 pub struct Dbgforce {
@@ -619,28 +642,36 @@ impl Dbgforce {
     // ======== Field Constants ========
 
     /// **ATTACH**
+    ///
     /// Attach chip debug port to syscfg controls, and disconnect it from external SWD pads.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const ATTACH_OFFSET: u32 = 3;
     pub const ATTACH_MASK: u32 = 0x00000008;
     pub const ATTACH: u32 = 1 << 3;
 
     /// **SWCLK**
+    ///
     /// Directly drive SWCLK, if ATTACH is set
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const SWCLK_OFFSET: u32 = 2;
     pub const SWCLK_MASK: u32 = 0x00000004;
     pub const SWCLK: u32 = 1 << 2;
 
     /// **SWDI**
+    ///
     /// Directly drive SWDIO input, if ATTACH is set
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const SWDI_OFFSET: u32 = 1;
     pub const SWDI_MASK: u32 = 0x00000002;
     pub const SWDI: u32 = 1 << 1;
 
     /// **SWDO**
+    ///
     /// Observe the value of SWDIO output.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SWDO_OFFSET: u32 = 0;
     pub const SWDO_MASK: u32 = 0x00000001;
@@ -649,6 +680,7 @@ impl Dbgforce {
     // ======== Field Accessors ========
 
     /// **ATTACH** `[3]` (RW)
+    ///
     /// Attach chip debug port to syscfg controls, and disconnect it from external SWD pads.
     #[inline(always)]
     pub fn attach(&self) -> bool {
@@ -668,6 +700,7 @@ impl Dbgforce {
     }
 
     /// **SWCLK** `[2]` (RW)
+    ///
     /// Directly drive SWCLK, if ATTACH is set
     #[inline(always)]
     pub fn swclk(&self) -> bool {
@@ -687,6 +720,7 @@ impl Dbgforce {
     }
 
     /// **SWDI** `[1]` (RW)
+    ///
     /// Directly drive SWDIO input, if ATTACH is set
     #[inline(always)]
     pub fn swdi(&self) -> bool {
@@ -706,6 +740,7 @@ impl Dbgforce {
     }
 
     /// **SWDO** `[0]` (RO)
+    ///
     /// Observe the value of SWDIO output.
     #[inline(always)]
     pub fn swdo(&self) -> bool {
@@ -743,6 +778,7 @@ impl DbgforceVal {
     }
 
     /// Read **ATTACH** `[3:3]`
+    ///
     /// Attach chip debug port to syscfg controls, and disconnect it from external SWD pads.
     #[inline(always)]
     pub const fn attach(&self) -> bool {
@@ -750,6 +786,7 @@ impl DbgforceVal {
     }
 
     /// Read **SWCLK** `[2:2]`
+    ///
     /// Directly drive SWCLK, if ATTACH is set
     #[inline(always)]
     pub const fn swclk(&self) -> bool {
@@ -757,6 +794,7 @@ impl DbgforceVal {
     }
 
     /// Read **SWDI** `[1:1]`
+    ///
     /// Directly drive SWDIO input, if ATTACH is set
     #[inline(always)]
     pub const fn swdi(&self) -> bool {
@@ -764,6 +802,7 @@ impl DbgforceVal {
     }
 
     /// Read **SWDO** `[0:0]`
+    ///
     /// Observe the value of SWDIO output.
     #[inline(always)]
     pub const fn swdo(&self) -> bool {
@@ -771,6 +810,7 @@ impl DbgforceVal {
     }
 
     /// Set **ATTACH** `[3:3]`
+    ///
     /// Attach chip debug port to syscfg controls, and disconnect it from external SWD pads.
     #[inline(always)]
     pub const fn with_attach(self, value: bool) -> Self {
@@ -784,6 +824,7 @@ impl DbgforceVal {
     }
 
     /// Set **SWCLK** `[2:2]`
+    ///
     /// Directly drive SWCLK, if ATTACH is set
     #[inline(always)]
     pub const fn with_swclk(self, value: bool) -> Self {
@@ -797,6 +838,7 @@ impl DbgforceVal {
     }
 
     /// Set **SWDI** `[1:1]`
+    ///
     /// Directly drive SWDIO input, if ATTACH is set
     #[inline(always)]
     pub const fn with_swdi(self, value: bool) -> Self {
@@ -850,17 +892,29 @@ impl Dbgforce {
 /// ## Fields
 ///
 /// - **BOOTRAM** `[12]` (RW)
+///
 /// - **ROM** `[11]` (RW)
+///
 /// - **USB** `[10]` (RW)
+///
 /// - **SRAM9** `[9]` (RW)
+///
 /// - **SRAM8** `[8]` (RW)
+///
 /// - **SRAM7** `[7]` (RW)
+///
 /// - **SRAM6** `[6]` (RW)
+///
 /// - **SRAM5** `[5]` (RW)
+///
 /// - **SRAM4** `[4]` (RW)
+///
 /// - **SRAM3** `[3]` (RW)
+///
 /// - **SRAM2** `[2]` (RW)
+///
 /// - **SRAM1** `[1]` (RW)
+///
 /// - **SRAM0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Mempowerdown {
@@ -1495,6 +1549,7 @@ impl Mempowerdown {
 /// ## Fields
 ///
 /// - **AUXCTRL** `[7:0]` (RW)
+///
 ///   * Bits 7:3: Reserved
 ///   * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
 ///   * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.
@@ -1516,10 +1571,12 @@ impl Auxctrl {
     // ======== Field Constants ========
 
     /// **AUXCTRL**
+    ///
     /// * Bits 7:3: Reserved
     /// * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
     /// * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.
     /// * Bit 0: Force POWMAN clock to switch to LPOSC, by asserting its WDRESET input. This must be set before initiating a watchdog reset of the RSM from a stage that includes CLOCKS, if POWMAN is running from clk_ref at the point that the watchdog reset takes place. Otherwise, the short pulse generated on clk_ref by the reset of the CLOCKS block may affect POWMAN register state.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const AUXCTRL_OFFSET: u32 = 0;
     pub const AUXCTRL_MASK: u32 = 0x000000ff;
@@ -1527,6 +1584,7 @@ impl Auxctrl {
     // ======== Field Accessors ========
 
     /// **AUXCTRL** `[7:0]` (RW)
+    ///
     /// * Bits 7:3: Reserved
     /// * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
     /// * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.
@@ -1537,6 +1595,7 @@ impl Auxctrl {
     }
 
     /// Write **AUXCTRL** `[7:0]` (RW)
+    ///
     /// * Bits 7:3: Reserved
     /// * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
     /// * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.
@@ -1577,6 +1636,7 @@ impl AuxctrlVal {
     }
 
     /// Read **AUXCTRL** `[7:0]`
+    ///
     /// * Bits 7:3: Reserved
     /// * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
     /// * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.
@@ -1587,6 +1647,7 @@ impl AuxctrlVal {
     }
 
     /// Set **AUXCTRL** `[7:0]`
+    ///
     /// * Bits 7:3: Reserved
     /// * Bit 2: Set to mask OTP power analogue power supply detection from resetting OTP controller and PSM
     /// * Bit 1: When clear, the LPOSC output is XORed into the TRNG ROSC output as an additional, uncorrelated entropy source. When set, this behaviour is disabled.

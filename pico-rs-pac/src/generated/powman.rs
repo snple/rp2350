@@ -144,21 +144,30 @@ impl Badpasswd {
 /// ## Fields
 ///
 /// - **RST_N** `[15]` (RW)
+///
 ///   returns the regulator to its startup settings
 ///   0 - reset
 ///   1 - not reset (default)
+///
 /// - **UNLOCK** `[13]` (RW)
+///
 ///   unlocks the VREG control interface after power up
 ///   0 - Locked (default)
 ///   1 - Unlocked
 ///   It cannot be relocked when it is unlocked.
+///
 /// - **ISOLATE** `[12]` (RW)
+///
 ///   isolates the VREG control interface
 ///   0 - not isolated (default)
 ///   1 - isolated
+///
 /// - **DISABLE_VOLTAGE_LIMIT** `[8]` (RW)
+///
 ///   0=not disabled, 1=enabled
+///
 /// - **HT_TH** `[6:4]` (RW)
+///
 ///   high temperature protection threshold
 ///   regulator power transistors are disabled when junction temperature exceeds threshold
 ///   000 - 100C
@@ -186,41 +195,50 @@ impl VregCtrl {
     // ======== Field Constants ========
 
     /// **RST_N**
+    ///
     /// returns the regulator to its startup settings
     /// 0 - reset
     /// 1 - not reset (default)
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const RST_N_OFFSET: u32 = 15;
     pub const RST_N_MASK: u32 = 0x00008000;
     pub const RST_N: u32 = 1 << 15;
 
     /// **UNLOCK**
+    ///
     /// unlocks the VREG control interface after power up
     /// 0 - Locked (default)
     /// 1 - Unlocked
     /// It cannot be relocked when it is unlocked.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const UNLOCK_OFFSET: u32 = 13;
     pub const UNLOCK_MASK: u32 = 0x00002000;
     pub const UNLOCK: u32 = 1 << 13;
 
     /// **ISOLATE**
+    ///
     /// isolates the VREG control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const ISOLATE_OFFSET: u32 = 12;
     pub const ISOLATE_MASK: u32 = 0x00001000;
     pub const ISOLATE: u32 = 1 << 12;
 
     /// **DISABLE_VOLTAGE_LIMIT**
+    ///
     /// 0=not disabled, 1=enabled
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const DISABLE_VOLTAGE_LIMIT_OFFSET: u32 = 8;
     pub const DISABLE_VOLTAGE_LIMIT_MASK: u32 = 0x00000100;
     pub const DISABLE_VOLTAGE_LIMIT: u32 = 1 << 8;
 
     /// **HT_TH**
+    ///
     /// high temperature protection threshold
     /// regulator power transistors are disabled when junction temperature exceeds threshold
     /// 000 - 100C
@@ -231,6 +249,7 @@ impl VregCtrl {
     /// 101 - 125C
     /// 110 - 135C
     /// 111 - 150C
+    ///
     /// Bits `[6:4]`, mask `0x00000070`
     pub const HT_TH_OFFSET: u32 = 4;
     pub const HT_TH_MASK: u32 = 0x00000070;
@@ -238,6 +257,7 @@ impl VregCtrl {
     // ======== Field Accessors ========
 
     /// **RST_N** `[15]` (RW)
+    ///
     /// returns the regulator to its startup settings
     /// 0 - reset
     /// 1 - not reset (default)
@@ -259,6 +279,7 @@ impl VregCtrl {
     }
 
     /// **UNLOCK** `[13]` (RW)
+    ///
     /// unlocks the VREG control interface after power up
     /// 0 - Locked (default)
     /// 1 - Unlocked
@@ -281,6 +302,7 @@ impl VregCtrl {
     }
 
     /// **ISOLATE** `[12]` (RW)
+    ///
     /// isolates the VREG control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -302,6 +324,7 @@ impl VregCtrl {
     }
 
     /// **DISABLE_VOLTAGE_LIMIT** `[8]` (RW)
+    ///
     /// 0=not disabled, 1=enabled
     #[inline(always)]
     pub fn disable_voltage_limit(&self) -> bool {
@@ -321,6 +344,7 @@ impl VregCtrl {
     }
 
     /// **HT_TH** `[6:4]` (RW)
+    ///
     /// high temperature protection threshold
     /// regulator power transistors are disabled when junction temperature exceeds threshold
     /// 000 - 100C
@@ -337,6 +361,7 @@ impl VregCtrl {
     }
 
     /// Write **HT_TH** `[6:4]` (RW)
+    ///
     /// high temperature protection threshold
     /// regulator power transistors are disabled when junction temperature exceeds threshold
     /// 000 - 100C
@@ -383,6 +408,7 @@ impl VregCtrlVal {
     }
 
     /// Read **RST_N** `[15:15]`
+    ///
     /// returns the regulator to its startup settings
     /// 0 - reset
     /// 1 - not reset (default)
@@ -392,6 +418,7 @@ impl VregCtrlVal {
     }
 
     /// Read **UNLOCK** `[13:13]`
+    ///
     /// unlocks the VREG control interface after power up
     /// 0 - Locked (default)
     /// 1 - Unlocked
@@ -402,6 +429,7 @@ impl VregCtrlVal {
     }
 
     /// Read **ISOLATE** `[12:12]`
+    ///
     /// isolates the VREG control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -411,6 +439,7 @@ impl VregCtrlVal {
     }
 
     /// Read **DISABLE_VOLTAGE_LIMIT** `[8:8]`
+    ///
     /// 0=not disabled, 1=enabled
     #[inline(always)]
     pub const fn disable_voltage_limit(&self) -> bool {
@@ -418,6 +447,7 @@ impl VregCtrlVal {
     }
 
     /// Read **HT_TH** `[6:4]`
+    ///
     /// high temperature protection threshold
     /// regulator power transistors are disabled when junction temperature exceeds threshold
     /// 000 - 100C
@@ -434,6 +464,7 @@ impl VregCtrlVal {
     }
 
     /// Set **RST_N** `[15:15]`
+    ///
     /// returns the regulator to its startup settings
     /// 0 - reset
     /// 1 - not reset (default)
@@ -449,6 +480,7 @@ impl VregCtrlVal {
     }
 
     /// Set **UNLOCK** `[13:13]`
+    ///
     /// unlocks the VREG control interface after power up
     /// 0 - Locked (default)
     /// 1 - Unlocked
@@ -465,6 +497,7 @@ impl VregCtrlVal {
     }
 
     /// Set **ISOLATE** `[12:12]`
+    ///
     /// isolates the VREG control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -480,6 +513,7 @@ impl VregCtrlVal {
     }
 
     /// Set **DISABLE_VOLTAGE_LIMIT** `[8:8]`
+    ///
     /// 0=not disabled, 1=enabled
     #[inline(always)]
     pub const fn with_disable_voltage_limit(self, value: bool) -> Self {
@@ -493,6 +527,7 @@ impl VregCtrlVal {
     }
 
     /// Set **HT_TH** `[6:4]`
+    ///
     /// high temperature protection threshold
     /// regulator power transistors are disabled when junction temperature exceeds threshold
     /// 000 - 100C
@@ -549,9 +584,12 @@ impl VregCtrl {
 /// ## Fields
 ///
 /// - **VOUT_OK** `[4]` (RO)
+///
 ///   output regulation status
 ///   0=not in regulation, 1=in regulation
+///
 /// - **STARTUP** `[0]` (RO)
+///
 ///   startup status
 ///   0=startup complete, 1=starting up
 #[repr(transparent)]
@@ -571,16 +609,20 @@ impl VregSts {
     // ======== Field Constants ========
 
     /// **VOUT_OK**
+    ///
     /// output regulation status
     /// 0=not in regulation, 1=in regulation
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const VOUT_OK_OFFSET: u32 = 4;
     pub const VOUT_OK_MASK: u32 = 0x00000010;
     pub const VOUT_OK: u32 = 1 << 4;
 
     /// **STARTUP**
+    ///
     /// startup status
     /// 0=startup complete, 1=starting up
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const STARTUP_OFFSET: u32 = 0;
     pub const STARTUP_MASK: u32 = 0x00000001;
@@ -589,6 +631,7 @@ impl VregSts {
     // ======== Field Accessors ========
 
     /// **VOUT_OK** `[4]` (RO)
+    ///
     /// output regulation status
     /// 0=not in regulation, 1=in regulation
     #[inline(always)]
@@ -597,6 +640,7 @@ impl VregSts {
     }
 
     /// **STARTUP** `[0]` (RO)
+    ///
     /// startup status
     /// 0=startup complete, 1=starting up
     #[inline(always)]
@@ -635,6 +679,7 @@ impl VregStsVal {
     }
 
     /// Read **VOUT_OK** `[4:4]`
+    ///
     /// output regulation status
     /// 0=not in regulation, 1=in regulation
     #[inline(always)]
@@ -643,6 +688,7 @@ impl VregStsVal {
     }
 
     /// Read **STARTUP** `[0:0]`
+    ///
     /// startup status
     /// 0=startup complete, 1=starting up
     #[inline(always)]
@@ -689,9 +735,12 @@ impl VregSts {
 /// ## Fields
 ///
 /// - **UPDATE_IN_PROGRESS** `[15]` (RO)
+///
 ///   regulator state is being updated
 ///   writes to the vreg register will be ignored when this field is set
+///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   output voltage select
 ///   the regulator output voltage is limited to 1.3V unless the voltage limit
 ///   is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -727,7 +776,9 @@ impl VregSts {
 ///   11101 - 3.00V
 ///   11110 - 3.15V
 ///   11111 - 3.30V
+///
 /// - **HIZ** `[1]` (RW)
+///
 ///   high impedance mode select
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
@@ -747,14 +798,17 @@ impl Vreg {
     // ======== Field Constants ========
 
     /// **UPDATE_IN_PROGRESS**
+    ///
     /// regulator state is being updated
     /// writes to the vreg register will be ignored when this field is set
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const UPDATE_IN_PROGRESS_OFFSET: u32 = 15;
     pub const UPDATE_IN_PROGRESS_MASK: u32 = 0x00008000;
     pub const UPDATE_IN_PROGRESS: u32 = 1 << 15;
 
     /// **VSEL**
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -790,13 +844,16 @@ impl Vreg {
     /// 11101 - 3.00V
     /// 11110 - 3.15V
     /// 11111 - 3.30V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **HIZ**
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HIZ_OFFSET: u32 = 1;
     pub const HIZ_MASK: u32 = 0x00000002;
@@ -805,6 +862,7 @@ impl Vreg {
     // ======== Field Accessors ========
 
     /// **UPDATE_IN_PROGRESS** `[15]` (RO)
+    ///
     /// regulator state is being updated
     /// writes to the vreg register will be ignored when this field is set
     #[inline(always)]
@@ -813,6 +871,7 @@ impl Vreg {
     }
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -854,6 +913,7 @@ impl Vreg {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -895,6 +955,7 @@ impl Vreg {
     }
 
     /// **HIZ** `[1]` (RW)
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -945,6 +1006,7 @@ impl VregVal {
     }
 
     /// Read **UPDATE_IN_PROGRESS** `[15:15]`
+    ///
     /// regulator state is being updated
     /// writes to the vreg register will be ignored when this field is set
     #[inline(always)]
@@ -953,6 +1015,7 @@ impl VregVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -994,6 +1057,7 @@ impl VregVal {
     }
 
     /// Read **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1002,6 +1066,7 @@ impl VregVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1045,6 +1110,7 @@ impl VregVal {
     }
 
     /// Set **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1097,6 +1163,7 @@ impl Vreg {
 /// ## Fields
 ///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   output voltage select
 ///   the regulator output voltage is limited to 1.3V unless the voltage limit
 ///   is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1132,12 +1199,16 @@ impl Vreg {
 ///   11101 - 3.00V
 ///   11110 - 3.15V
 ///   11111 - 3.30V
+///
 /// - **MODE** `[2]` (RW)
+///
 ///   selects either normal (switching) mode or low power (linear) mode
 ///   low power mode can only be selected for output voltages up to 1.3V
 ///   0 = normal mode (switching)
 ///   1 = low power mode (linear)
+///
 /// - **HIZ** `[1]` (RW)
+///
 ///   high impedance mode select
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
@@ -1157,6 +1228,7 @@ impl VregLpEntry {
     // ======== Field Constants ========
 
     /// **VSEL**
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1192,23 +1264,28 @@ impl VregLpEntry {
     /// 11101 - 3.00V
     /// 11110 - 3.15V
     /// 11111 - 3.30V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **MODE**
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
     /// 1 = low power mode (linear)
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const MODE_OFFSET: u32 = 2;
     pub const MODE_MASK: u32 = 0x00000004;
     pub const MODE: u32 = 1 << 2;
 
     /// **HIZ**
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HIZ_OFFSET: u32 = 1;
     pub const HIZ_MASK: u32 = 0x00000002;
@@ -1217,6 +1294,7 @@ impl VregLpEntry {
     // ======== Field Accessors ========
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1258,6 +1336,7 @@ impl VregLpEntry {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1299,6 +1378,7 @@ impl VregLpEntry {
     }
 
     /// **MODE** `[2]` (RW)
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1321,6 +1401,7 @@ impl VregLpEntry {
     }
 
     /// **HIZ** `[1]` (RW)
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1371,6 +1452,7 @@ impl VregLpEntryVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1412,6 +1494,7 @@ impl VregLpEntryVal {
     }
 
     /// Read **MODE** `[2:2]`
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1422,6 +1505,7 @@ impl VregLpEntryVal {
     }
 
     /// Read **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1430,6 +1514,7 @@ impl VregLpEntryVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1473,6 +1558,7 @@ impl VregLpEntryVal {
     }
 
     /// Set **MODE** `[2:2]`
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1489,6 +1575,7 @@ impl VregLpEntryVal {
     }
 
     /// Set **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1541,6 +1628,7 @@ impl VregLpEntry {
 /// ## Fields
 ///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   output voltage select
 ///   the regulator output voltage is limited to 1.3V unless the voltage limit
 ///   is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1576,12 +1664,16 @@ impl VregLpEntry {
 ///   11101 - 3.00V
 ///   11110 - 3.15V
 ///   11111 - 3.30V
+///
 /// - **MODE** `[2]` (RW)
+///
 ///   selects either normal (switching) mode or low power (linear) mode
 ///   low power mode can only be selected for output voltages up to 1.3V
 ///   0 = normal mode (switching)
 ///   1 = low power mode (linear)
+///
 /// - **HIZ** `[1]` (RW)
+///
 ///   high impedance mode select
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
@@ -1601,6 +1693,7 @@ impl VregLpExit {
     // ======== Field Constants ========
 
     /// **VSEL**
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1636,23 +1729,28 @@ impl VregLpExit {
     /// 11101 - 3.00V
     /// 11110 - 3.15V
     /// 11111 - 3.30V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **MODE**
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
     /// 1 = low power mode (linear)
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const MODE_OFFSET: u32 = 2;
     pub const MODE_MASK: u32 = 0x00000004;
     pub const MODE: u32 = 1 << 2;
 
     /// **HIZ**
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HIZ_OFFSET: u32 = 1;
     pub const HIZ_MASK: u32 = 0x00000002;
@@ -1661,6 +1759,7 @@ impl VregLpExit {
     // ======== Field Accessors ========
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1702,6 +1801,7 @@ impl VregLpExit {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1743,6 +1843,7 @@ impl VregLpExit {
     }
 
     /// **MODE** `[2]` (RW)
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1765,6 +1866,7 @@ impl VregLpExit {
     }
 
     /// **HIZ** `[1]` (RW)
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1815,6 +1917,7 @@ impl VregLpExitVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1856,6 +1959,7 @@ impl VregLpExitVal {
     }
 
     /// Read **MODE** `[2:2]`
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1866,6 +1970,7 @@ impl VregLpExitVal {
     }
 
     /// Read **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1874,6 +1979,7 @@ impl VregLpExitVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// output voltage select
     /// the regulator output voltage is limited to 1.3V unless the voltage limit
     /// is disabled using the disable_voltage_limit field in the vreg_ctrl register
@@ -1917,6 +2023,7 @@ impl VregLpExitVal {
     }
 
     /// Set **MODE** `[2:2]`
+    ///
     /// selects either normal (switching) mode or low power (linear) mode
     /// low power mode can only be selected for output voltages up to 1.3V
     /// 0 = normal mode (switching)
@@ -1933,6 +2040,7 @@ impl VregLpExitVal {
     }
 
     /// Set **HIZ** `[1:1]`
+    ///
     /// high impedance mode select
     /// 0=not in high impedance mode, 1=in high impedance mode
     #[inline(always)]
@@ -1985,6 +2093,7 @@ impl VregLpExit {
 /// ## Fields
 ///
 /// - **ISOLATE** `[12]` (RW)
+///
 ///   isolates the brown-out detection control interface
 ///   0 - not isolated (default)
 ///   1 - isolated
@@ -2005,9 +2114,11 @@ impl BodCtrl {
     // ======== Field Constants ========
 
     /// **ISOLATE**
+    ///
     /// isolates the brown-out detection control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const ISOLATE_OFFSET: u32 = 12;
     pub const ISOLATE_MASK: u32 = 0x00001000;
@@ -2016,6 +2127,7 @@ impl BodCtrl {
     // ======== Field Accessors ========
 
     /// **ISOLATE** `[12]` (RW)
+    ///
     /// isolates the brown-out detection control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -2067,6 +2179,7 @@ impl BodCtrlVal {
     }
 
     /// Read **ISOLATE** `[12:12]`
+    ///
     /// isolates the brown-out detection control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -2076,6 +2189,7 @@ impl BodCtrlVal {
     }
 
     /// Set **ISOLATE** `[12:12]`
+    ///
     /// isolates the brown-out detection control interface
     /// 0 - not isolated (default)
     /// 1 - isolated
@@ -2129,6 +2243,7 @@ impl BodCtrl {
 /// ## Fields
 ///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   threshold select
 ///   00000 - 0.473V
 ///   00001 - 0.516V
@@ -2148,7 +2263,9 @@ impl BodCtrl {
 ///   01111 - 1.118V
 ///   10000 - 1.161
 ///   10001 - 1.204V
+///
 /// - **EN** `[0]` (RW)
+///
 ///   enable brown-out detection
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
@@ -2168,6 +2285,7 @@ impl Bod {
     // ======== Field Constants ========
 
     /// **VSEL**
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2187,13 +2305,16 @@ impl Bod {
     /// 01111 - 1.118V
     /// 10000 - 1.161
     /// 10001 - 1.204V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **EN**
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -2202,6 +2323,7 @@ impl Bod {
     // ======== Field Accessors ========
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2227,6 +2349,7 @@ impl Bod {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2252,6 +2375,7 @@ impl Bod {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2302,6 +2426,7 @@ impl BodVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2327,6 +2452,7 @@ impl BodVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2335,6 +2461,7 @@ impl BodVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2362,6 +2489,7 @@ impl BodVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2414,6 +2542,7 @@ impl Bod {
 /// ## Fields
 ///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   threshold select
 ///   00000 - 0.473V
 ///   00001 - 0.516V
@@ -2433,7 +2562,9 @@ impl Bod {
 ///   01111 - 1.118V
 ///   10000 - 1.161
 ///   10001 - 1.204V
+///
 /// - **EN** `[0]` (RW)
+///
 ///   enable brown-out detection
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
@@ -2453,6 +2584,7 @@ impl BodLpEntry {
     // ======== Field Constants ========
 
     /// **VSEL**
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2472,13 +2604,16 @@ impl BodLpEntry {
     /// 01111 - 1.118V
     /// 10000 - 1.161
     /// 10001 - 1.204V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **EN**
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -2487,6 +2622,7 @@ impl BodLpEntry {
     // ======== Field Accessors ========
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2512,6 +2648,7 @@ impl BodLpEntry {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2537,6 +2674,7 @@ impl BodLpEntry {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2587,6 +2725,7 @@ impl BodLpEntryVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2612,6 +2751,7 @@ impl BodLpEntryVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2620,6 +2760,7 @@ impl BodLpEntryVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2647,6 +2788,7 @@ impl BodLpEntryVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2699,6 +2841,7 @@ impl BodLpEntry {
 /// ## Fields
 ///
 /// - **VSEL** `[8:4]` (RW)
+///
 ///   threshold select
 ///   00000 - 0.473V
 ///   00001 - 0.516V
@@ -2718,7 +2861,9 @@ impl BodLpEntry {
 ///   01111 - 1.118V
 ///   10000 - 1.161
 ///   10001 - 1.204V
+///
 /// - **EN** `[0]` (RW)
+///
 ///   enable brown-out detection
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
@@ -2738,6 +2883,7 @@ impl BodLpExit {
     // ======== Field Constants ========
 
     /// **VSEL**
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2757,13 +2903,16 @@ impl BodLpExit {
     /// 01111 - 1.118V
     /// 10000 - 1.161
     /// 10001 - 1.204V
+    ///
     /// Bits `[8:4]`, mask `0x000001f0`
     pub const VSEL_OFFSET: u32 = 4;
     pub const VSEL_MASK: u32 = 0x000001f0;
 
     /// **EN**
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -2772,6 +2921,7 @@ impl BodLpExit {
     // ======== Field Accessors ========
 
     /// **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2797,6 +2947,7 @@ impl BodLpExit {
     }
 
     /// Write **VSEL** `[8:4]` (RW)
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2822,6 +2973,7 @@ impl BodLpExit {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2872,6 +3024,7 @@ impl BodLpExitVal {
     }
 
     /// Read **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2897,6 +3050,7 @@ impl BodLpExitVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2905,6 +3059,7 @@ impl BodLpExitVal {
     }
 
     /// Set **VSEL** `[8:4]`
+    ///
     /// threshold select
     /// 00000 - 0.473V
     /// 00001 - 0.516V
@@ -2932,6 +3087,7 @@ impl BodLpExitVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// enable brown-out detection
     /// 0=not enabled, 1=enabled
     #[inline(always)]
@@ -2984,8 +3140,11 @@ impl BodLpExit {
 /// ## Fields
 ///
 /// - **TRIM** `[9:4]` (RW)
+///
 ///   Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
+///
 /// - **MODE** `[1:0]` (RW)
+///
 ///   This feature has been removed
 #[repr(transparent)]
 pub struct Lposc {
@@ -3004,13 +3163,17 @@ impl Lposc {
     // ======== Field Constants ========
 
     /// **TRIM**
+    ///
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
+    ///
     /// Bits `[9:4]`, mask `0x000003f0`
     pub const TRIM_OFFSET: u32 = 4;
     pub const TRIM_MASK: u32 = 0x000003f0;
 
     /// **MODE**
+    ///
     /// This feature has been removed
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const MODE_OFFSET: u32 = 0;
     pub const MODE_MASK: u32 = 0x00000003;
@@ -3018,6 +3181,7 @@ impl Lposc {
     // ======== Field Accessors ========
 
     /// **TRIM** `[9:4]` (RW)
+    ///
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
     #[inline(always)]
     pub fn trim(&self) -> u32 {
@@ -3025,6 +3189,7 @@ impl Lposc {
     }
 
     /// Write **TRIM** `[9:4]` (RW)
+    ///
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
     #[inline(always)]
     pub fn write_trim(&self, value: u32) {
@@ -3032,6 +3197,7 @@ impl Lposc {
     }
 
     /// **MODE** `[1:0]` (RW)
+    ///
     /// This feature has been removed
     #[inline(always)]
     pub fn mode(&self) -> u32 {
@@ -3039,6 +3205,7 @@ impl Lposc {
     }
 
     /// Write **MODE** `[1:0]` (RW)
+    ///
     /// This feature has been removed
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
@@ -3076,6 +3243,7 @@ impl LposcVal {
     }
 
     /// Read **TRIM** `[9:4]`
+    ///
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
     #[inline(always)]
     pub const fn trim(&self) -> u32 {
@@ -3083,6 +3251,7 @@ impl LposcVal {
     }
 
     /// Read **MODE** `[1:0]`
+    ///
     /// This feature has been removed
     #[inline(always)]
     pub const fn mode(&self) -> u32 {
@@ -3090,6 +3259,7 @@ impl LposcVal {
     }
 
     /// Set **TRIM** `[9:4]`
+    ///
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
     #[inline(always)]
     pub const fn with_trim(self, value: u32) -> Self {
@@ -3099,6 +3269,7 @@ impl LposcVal {
     }
 
     /// Set **MODE** `[1:0]`
+    ///
     /// This feature has been removed
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
@@ -3146,6 +3317,7 @@ impl Lposc {
 /// ## Fields
 ///
 /// - **HAD_WATCHDOG_RESET_RSM** `[28]` (RO)
+///
 ///   Last reset was a watchdog timeout which was configured to reset the power-on state machine
 ///   This resets:
 ///   double_tap flag no
@@ -3157,7 +3329,9 @@ impl Lposc {
 ///   swcore no
 ///   psm yes
 ///   and does not change the power state
+///
 /// - **HAD_HZD_SYS_RESET_REQ** `[27]` (RO)
+///
 ///   Last reset was a system reset from the hazard debugger
 ///   This resets:
 ///   double_tap flag no
@@ -3169,7 +3343,9 @@ impl Lposc {
 ///   swcore no
 ///   psm yes
 ///   and does not change the power state
+///
 /// - **HAD_GLITCH_DETECT** `[26]` (RO)
+///
 ///   Last reset was due to a power supply glitch
 ///   This resets:
 ///   double_tap flag no
@@ -3181,7 +3357,9 @@ impl Lposc {
 ///   swcore no
 ///   psm yes
 ///   and does not change the power state
+///
 /// - **HAD_SWCORE_PD** `[25]` (RO)
+///
 ///   Last reset was a switched core powerdown
 ///   This resets:
 ///   double_tap flag no
@@ -3193,7 +3371,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_WATCHDOG_RESET_SWCORE** `[24]` (RO)
+///
 ///   Last reset was a watchdog timeout which was configured to reset the switched-core
 ///   This resets:
 ///   double_tap flag no
@@ -3205,7 +3385,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_WATCHDOG_RESET_POWMAN** `[23]` (RO)
+///
 ///   Last reset was a watchdog timeout which was configured to reset the power manager
 ///   This resets:
 ///   double_tap flag no
@@ -3217,7 +3399,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_WATCHDOG_RESET_POWMAN_ASYNC** `[22]` (RO)
+///
 ///   Last reset was a watchdog timeout which was configured to reset the power manager asynchronously
 ///   This resets:
 ///   double_tap flag no
@@ -3229,7 +3413,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_RESCUE** `[21]` (RO)
+///
 ///   Last reset was a rescue reset from the debugger
 ///   This resets:
 ///   double_tap flag no
@@ -3241,7 +3427,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_DP_RESET_REQ** `[19]` (RO)
+///
 ///   Last reset was an reset request from the arm debugger
 ///   This resets:
 ///   double_tap flag no
@@ -3253,7 +3441,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_RUN_LOW** `[18]` (RO)
+///
 ///   Last reset was from the RUN pin
 ///   This resets:
 ///   double_tap flag no
@@ -3265,7 +3455,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_BOR** `[17]` (RO)
+///
 ///   Last reset was from the brown-out detection block
 ///   This resets:
 ///   double_tap flag yes
@@ -3277,7 +3469,9 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **HAD_POR** `[16]` (RO)
+///
 ///   Last reset was from the power-on reset
 ///   This resets:
 ///   double_tap flag yes
@@ -3289,11 +3483,15 @@ impl Lposc {
 ///   swcore yes
 ///   psm yes
 ///   then starts the power sequencer
+///
 /// - **RESCUE_FLAG** `[4]` (RW)
+///
 ///   This is set by a rescue reset from the RP-AP.
 ///   Its purpose is to halt before the bootrom before booting from flash in order to recover from a boot lock-up.
 ///   The debugger can then attach once the bootrom has been halted and flash some working code that does not lock up.
+///
 /// - **DOUBLE_TAP** `[0]` (RW)
+///
 ///   This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
 #[repr(transparent)]
 pub struct ChipReset {
@@ -3312,6 +3510,7 @@ impl ChipReset {
     // ======== Field Constants ========
 
     /// **HAD_WATCHDOG_RESET_RSM**
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power-on state machine
     /// This resets:
     /// double_tap flag no
@@ -3323,12 +3522,14 @@ impl ChipReset {
     /// swcore no
     /// psm yes
     /// and does not change the power state
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const HAD_WATCHDOG_RESET_RSM_OFFSET: u32 = 28;
     pub const HAD_WATCHDOG_RESET_RSM_MASK: u32 = 0x10000000;
     pub const HAD_WATCHDOG_RESET_RSM: u32 = 1 << 28;
 
     /// **HAD_HZD_SYS_RESET_REQ**
+    ///
     /// Last reset was a system reset from the hazard debugger
     /// This resets:
     /// double_tap flag no
@@ -3340,12 +3541,14 @@ impl ChipReset {
     /// swcore no
     /// psm yes
     /// and does not change the power state
+    ///
     /// Bits `[27:27]`, mask `0x08000000`
     pub const HAD_HZD_SYS_RESET_REQ_OFFSET: u32 = 27;
     pub const HAD_HZD_SYS_RESET_REQ_MASK: u32 = 0x08000000;
     pub const HAD_HZD_SYS_RESET_REQ: u32 = 1 << 27;
 
     /// **HAD_GLITCH_DETECT**
+    ///
     /// Last reset was due to a power supply glitch
     /// This resets:
     /// double_tap flag no
@@ -3357,12 +3560,14 @@ impl ChipReset {
     /// swcore no
     /// psm yes
     /// and does not change the power state
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const HAD_GLITCH_DETECT_OFFSET: u32 = 26;
     pub const HAD_GLITCH_DETECT_MASK: u32 = 0x04000000;
     pub const HAD_GLITCH_DETECT: u32 = 1 << 26;
 
     /// **HAD_SWCORE_PD**
+    ///
     /// Last reset was a switched core powerdown
     /// This resets:
     /// double_tap flag no
@@ -3374,12 +3579,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const HAD_SWCORE_PD_OFFSET: u32 = 25;
     pub const HAD_SWCORE_PD_MASK: u32 = 0x02000000;
     pub const HAD_SWCORE_PD: u32 = 1 << 25;
 
     /// **HAD_WATCHDOG_RESET_SWCORE**
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the switched-core
     /// This resets:
     /// double_tap flag no
@@ -3391,12 +3598,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const HAD_WATCHDOG_RESET_SWCORE_OFFSET: u32 = 24;
     pub const HAD_WATCHDOG_RESET_SWCORE_MASK: u32 = 0x01000000;
     pub const HAD_WATCHDOG_RESET_SWCORE: u32 = 1 << 24;
 
     /// **HAD_WATCHDOG_RESET_POWMAN**
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager
     /// This resets:
     /// double_tap flag no
@@ -3408,12 +3617,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[23:23]`, mask `0x00800000`
     pub const HAD_WATCHDOG_RESET_POWMAN_OFFSET: u32 = 23;
     pub const HAD_WATCHDOG_RESET_POWMAN_MASK: u32 = 0x00800000;
     pub const HAD_WATCHDOG_RESET_POWMAN: u32 = 1 << 23;
 
     /// **HAD_WATCHDOG_RESET_POWMAN_ASYNC**
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager asynchronously
     /// This resets:
     /// double_tap flag no
@@ -3425,12 +3636,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[22:22]`, mask `0x00400000`
     pub const HAD_WATCHDOG_RESET_POWMAN_ASYNC_OFFSET: u32 = 22;
     pub const HAD_WATCHDOG_RESET_POWMAN_ASYNC_MASK: u32 = 0x00400000;
     pub const HAD_WATCHDOG_RESET_POWMAN_ASYNC: u32 = 1 << 22;
 
     /// **HAD_RESCUE**
+    ///
     /// Last reset was a rescue reset from the debugger
     /// This resets:
     /// double_tap flag no
@@ -3442,12 +3655,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[21:21]`, mask `0x00200000`
     pub const HAD_RESCUE_OFFSET: u32 = 21;
     pub const HAD_RESCUE_MASK: u32 = 0x00200000;
     pub const HAD_RESCUE: u32 = 1 << 21;
 
     /// **HAD_DP_RESET_REQ**
+    ///
     /// Last reset was an reset request from the arm debugger
     /// This resets:
     /// double_tap flag no
@@ -3459,12 +3674,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const HAD_DP_RESET_REQ_OFFSET: u32 = 19;
     pub const HAD_DP_RESET_REQ_MASK: u32 = 0x00080000;
     pub const HAD_DP_RESET_REQ: u32 = 1 << 19;
 
     /// **HAD_RUN_LOW**
+    ///
     /// Last reset was from the RUN pin
     /// This resets:
     /// double_tap flag no
@@ -3476,12 +3693,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const HAD_RUN_LOW_OFFSET: u32 = 18;
     pub const HAD_RUN_LOW_MASK: u32 = 0x00040000;
     pub const HAD_RUN_LOW: u32 = 1 << 18;
 
     /// **HAD_BOR**
+    ///
     /// Last reset was from the brown-out detection block
     /// This resets:
     /// double_tap flag yes
@@ -3493,12 +3712,14 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const HAD_BOR_OFFSET: u32 = 17;
     pub const HAD_BOR_MASK: u32 = 0x00020000;
     pub const HAD_BOR: u32 = 1 << 17;
 
     /// **HAD_POR**
+    ///
     /// Last reset was from the power-on reset
     /// This resets:
     /// double_tap flag yes
@@ -3510,22 +3731,27 @@ impl ChipReset {
     /// swcore yes
     /// psm yes
     /// then starts the power sequencer
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const HAD_POR_OFFSET: u32 = 16;
     pub const HAD_POR_MASK: u32 = 0x00010000;
     pub const HAD_POR: u32 = 1 << 16;
 
     /// **RESCUE_FLAG**
+    ///
     /// This is set by a rescue reset from the RP-AP.
     /// Its purpose is to halt before the bootrom before booting from flash in order to recover from a boot lock-up.
     /// The debugger can then attach once the bootrom has been halted and flash some working code that does not lock up.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RESCUE_FLAG_OFFSET: u32 = 4;
     pub const RESCUE_FLAG_MASK: u32 = 0x00000010;
     pub const RESCUE_FLAG: u32 = 1 << 4;
 
     /// **DOUBLE_TAP**
+    ///
     /// This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const DOUBLE_TAP_OFFSET: u32 = 0;
     pub const DOUBLE_TAP_MASK: u32 = 0x00000001;
@@ -3534,6 +3760,7 @@ impl ChipReset {
     // ======== Field Accessors ========
 
     /// **HAD_WATCHDOG_RESET_RSM** `[28]` (RO)
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power-on state machine
     /// This resets:
     /// double_tap flag no
@@ -3551,6 +3778,7 @@ impl ChipReset {
     }
 
     /// **HAD_HZD_SYS_RESET_REQ** `[27]` (RO)
+    ///
     /// Last reset was a system reset from the hazard debugger
     /// This resets:
     /// double_tap flag no
@@ -3568,6 +3796,7 @@ impl ChipReset {
     }
 
     /// **HAD_GLITCH_DETECT** `[26]` (RO)
+    ///
     /// Last reset was due to a power supply glitch
     /// This resets:
     /// double_tap flag no
@@ -3585,6 +3814,7 @@ impl ChipReset {
     }
 
     /// **HAD_SWCORE_PD** `[25]` (RO)
+    ///
     /// Last reset was a switched core powerdown
     /// This resets:
     /// double_tap flag no
@@ -3602,6 +3832,7 @@ impl ChipReset {
     }
 
     /// **HAD_WATCHDOG_RESET_SWCORE** `[24]` (RO)
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the switched-core
     /// This resets:
     /// double_tap flag no
@@ -3619,6 +3850,7 @@ impl ChipReset {
     }
 
     /// **HAD_WATCHDOG_RESET_POWMAN** `[23]` (RO)
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager
     /// This resets:
     /// double_tap flag no
@@ -3636,6 +3868,7 @@ impl ChipReset {
     }
 
     /// **HAD_WATCHDOG_RESET_POWMAN_ASYNC** `[22]` (RO)
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager asynchronously
     /// This resets:
     /// double_tap flag no
@@ -3653,6 +3886,7 @@ impl ChipReset {
     }
 
     /// **HAD_RESCUE** `[21]` (RO)
+    ///
     /// Last reset was a rescue reset from the debugger
     /// This resets:
     /// double_tap flag no
@@ -3670,6 +3904,7 @@ impl ChipReset {
     }
 
     /// **HAD_DP_RESET_REQ** `[19]` (RO)
+    ///
     /// Last reset was an reset request from the arm debugger
     /// This resets:
     /// double_tap flag no
@@ -3687,6 +3922,7 @@ impl ChipReset {
     }
 
     /// **HAD_RUN_LOW** `[18]` (RO)
+    ///
     /// Last reset was from the RUN pin
     /// This resets:
     /// double_tap flag no
@@ -3704,6 +3940,7 @@ impl ChipReset {
     }
 
     /// **HAD_BOR** `[17]` (RO)
+    ///
     /// Last reset was from the brown-out detection block
     /// This resets:
     /// double_tap flag yes
@@ -3721,6 +3958,7 @@ impl ChipReset {
     }
 
     /// **HAD_POR** `[16]` (RO)
+    ///
     /// Last reset was from the power-on reset
     /// This resets:
     /// double_tap flag yes
@@ -3738,6 +3976,7 @@ impl ChipReset {
     }
 
     /// **RESCUE_FLAG** `[4]` (RW)
+    ///
     /// This is set by a rescue reset from the RP-AP.
     /// Its purpose is to halt before the bootrom before booting from flash in order to recover from a boot lock-up.
     /// The debugger can then attach once the bootrom has been halted and flash some working code that does not lock up.
@@ -3759,6 +3998,7 @@ impl ChipReset {
     }
 
     /// **DOUBLE_TAP** `[0]` (RW)
+    ///
     /// This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
     #[inline(always)]
     pub fn double_tap(&self) -> bool {
@@ -3808,6 +4048,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_WATCHDOG_RESET_RSM** `[28:28]`
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power-on state machine
     /// This resets:
     /// double_tap flag no
@@ -3825,6 +4066,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_HZD_SYS_RESET_REQ** `[27:27]`
+    ///
     /// Last reset was a system reset from the hazard debugger
     /// This resets:
     /// double_tap flag no
@@ -3842,6 +4084,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_GLITCH_DETECT** `[26:26]`
+    ///
     /// Last reset was due to a power supply glitch
     /// This resets:
     /// double_tap flag no
@@ -3859,6 +4102,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_SWCORE_PD** `[25:25]`
+    ///
     /// Last reset was a switched core powerdown
     /// This resets:
     /// double_tap flag no
@@ -3876,6 +4120,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_WATCHDOG_RESET_SWCORE** `[24:24]`
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the switched-core
     /// This resets:
     /// double_tap flag no
@@ -3893,6 +4138,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_WATCHDOG_RESET_POWMAN** `[23:23]`
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager
     /// This resets:
     /// double_tap flag no
@@ -3910,6 +4156,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_WATCHDOG_RESET_POWMAN_ASYNC** `[22:22]`
+    ///
     /// Last reset was a watchdog timeout which was configured to reset the power manager asynchronously
     /// This resets:
     /// double_tap flag no
@@ -3927,6 +4174,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_RESCUE** `[21:21]`
+    ///
     /// Last reset was a rescue reset from the debugger
     /// This resets:
     /// double_tap flag no
@@ -3944,6 +4192,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_DP_RESET_REQ** `[19:19]`
+    ///
     /// Last reset was an reset request from the arm debugger
     /// This resets:
     /// double_tap flag no
@@ -3961,6 +4210,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_RUN_LOW** `[18:18]`
+    ///
     /// Last reset was from the RUN pin
     /// This resets:
     /// double_tap flag no
@@ -3978,6 +4228,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_BOR** `[17:17]`
+    ///
     /// Last reset was from the brown-out detection block
     /// This resets:
     /// double_tap flag yes
@@ -3995,6 +4246,7 @@ impl ChipResetVal {
     }
 
     /// Read **HAD_POR** `[16:16]`
+    ///
     /// Last reset was from the power-on reset
     /// This resets:
     /// double_tap flag yes
@@ -4012,6 +4264,7 @@ impl ChipResetVal {
     }
 
     /// Read **RESCUE_FLAG** `[4:4]`
+    ///
     /// This is set by a rescue reset from the RP-AP.
     /// Its purpose is to halt before the bootrom before booting from flash in order to recover from a boot lock-up.
     /// The debugger can then attach once the bootrom has been halted and flash some working code that does not lock up.
@@ -4021,6 +4274,7 @@ impl ChipResetVal {
     }
 
     /// Read **DOUBLE_TAP** `[0:0]`
+    ///
     /// This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
     #[inline(always)]
     pub const fn double_tap(&self) -> bool {
@@ -4028,6 +4282,7 @@ impl ChipResetVal {
     }
 
     /// Set **RESCUE_FLAG** `[4:4]`
+    ///
     /// This is set by a rescue reset from the RP-AP.
     /// Its purpose is to halt before the bootrom before booting from flash in order to recover from a boot lock-up.
     /// The debugger can then attach once the bootrom has been halted and flash some working code that does not lock up.
@@ -4043,6 +4298,7 @@ impl ChipResetVal {
     }
 
     /// Set **DOUBLE_TAP** `[0:0]`
+    ///
     /// This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
     #[inline(always)]
     pub const fn with_double_tap(self, value: bool) -> Self {
@@ -4095,18 +4351,25 @@ impl ChipReset {
 /// ## Fields
 ///
 /// - **RESET_RSM** `[12]` (RW)
+///
 ///   If set to 1, a watchdog reset will run the full power-on state machine (PSM) sequence
 ///   From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
 ///   From a hardware debug perspective it has the same effect as a reset from a glitch detector
+///
 /// - **RESET_SWCORE** `[8]` (RW)
+///
 ///   If set to 1, a watchdog reset will reset the switched core power domain and run the full power-on state machine (PSM) sequence
 ///   From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
 ///   From a hardware debug perspective it has the same effect as a power-on reset for the switched core power domain
+///
 /// - **RESET_POWMAN** `[4]` (RW)
+///
 ///   If set to 1, a watchdog reset will restore powman defaults, reset the timer, reset the switched core power domain
 ///   and run the full power-on state machine (PSM) sequence
 ///   This relies on clk_ref running. Use reset_powman_async if that may not be true
+///
 /// - **RESET_POWMAN_ASYNC** `[0]` (RW)
+///
 ///   If set to 1, a watchdog reset will restore powman defaults, reset the timer,
 ///   reset the switched core domain and run the full power-on state machine (PSM) sequence
 ///   This does not rely on clk_ref running
@@ -4127,36 +4390,44 @@ impl Wdsel {
     // ======== Field Constants ========
 
     /// **RESET_RSM**
+    ///
     /// If set to 1, a watchdog reset will run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a reset from a glitch detector
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const RESET_RSM_OFFSET: u32 = 12;
     pub const RESET_RSM_MASK: u32 = 0x00001000;
     pub const RESET_RSM: u32 = 1 << 12;
 
     /// **RESET_SWCORE**
+    ///
     /// If set to 1, a watchdog reset will reset the switched core power domain and run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a power-on reset for the switched core power domain
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const RESET_SWCORE_OFFSET: u32 = 8;
     pub const RESET_SWCORE_MASK: u32 = 0x00000100;
     pub const RESET_SWCORE: u32 = 1 << 8;
 
     /// **RESET_POWMAN**
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer, reset the switched core power domain
     /// and run the full power-on state machine (PSM) sequence
     /// This relies on clk_ref running. Use reset_powman_async if that may not be true
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const RESET_POWMAN_OFFSET: u32 = 4;
     pub const RESET_POWMAN_MASK: u32 = 0x00000010;
     pub const RESET_POWMAN: u32 = 1 << 4;
 
     /// **RESET_POWMAN_ASYNC**
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer,
     /// reset the switched core domain and run the full power-on state machine (PSM) sequence
     /// This does not rely on clk_ref running
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RESET_POWMAN_ASYNC_OFFSET: u32 = 0;
     pub const RESET_POWMAN_ASYNC_MASK: u32 = 0x00000001;
@@ -4165,6 +4436,7 @@ impl Wdsel {
     // ======== Field Accessors ========
 
     /// **RESET_RSM** `[12]` (RW)
+    ///
     /// If set to 1, a watchdog reset will run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a reset from a glitch detector
@@ -4186,6 +4458,7 @@ impl Wdsel {
     }
 
     /// **RESET_SWCORE** `[8]` (RW)
+    ///
     /// If set to 1, a watchdog reset will reset the switched core power domain and run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a power-on reset for the switched core power domain
@@ -4207,6 +4480,7 @@ impl Wdsel {
     }
 
     /// **RESET_POWMAN** `[4]` (RW)
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer, reset the switched core power domain
     /// and run the full power-on state machine (PSM) sequence
     /// This relies on clk_ref running. Use reset_powman_async if that may not be true
@@ -4228,6 +4502,7 @@ impl Wdsel {
     }
 
     /// **RESET_POWMAN_ASYNC** `[0]` (RW)
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer,
     /// reset the switched core domain and run the full power-on state machine (PSM) sequence
     /// This does not rely on clk_ref running
@@ -4279,6 +4554,7 @@ impl WdselVal {
     }
 
     /// Read **RESET_RSM** `[12:12]`
+    ///
     /// If set to 1, a watchdog reset will run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a reset from a glitch detector
@@ -4288,6 +4564,7 @@ impl WdselVal {
     }
 
     /// Read **RESET_SWCORE** `[8:8]`
+    ///
     /// If set to 1, a watchdog reset will reset the switched core power domain and run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a power-on reset for the switched core power domain
@@ -4297,6 +4574,7 @@ impl WdselVal {
     }
 
     /// Read **RESET_POWMAN** `[4:4]`
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer, reset the switched core power domain
     /// and run the full power-on state machine (PSM) sequence
     /// This relies on clk_ref running. Use reset_powman_async if that may not be true
@@ -4306,6 +4584,7 @@ impl WdselVal {
     }
 
     /// Read **RESET_POWMAN_ASYNC** `[0:0]`
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer,
     /// reset the switched core domain and run the full power-on state machine (PSM) sequence
     /// This does not rely on clk_ref running
@@ -4315,6 +4594,7 @@ impl WdselVal {
     }
 
     /// Set **RESET_RSM** `[12:12]`
+    ///
     /// If set to 1, a watchdog reset will run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a reset from a glitch detector
@@ -4330,6 +4610,7 @@ impl WdselVal {
     }
 
     /// Set **RESET_SWCORE** `[8:8]`
+    ///
     /// If set to 1, a watchdog reset will reset the switched core power domain and run the full power-on state machine (PSM) sequence
     /// From a user perspective it is the same as setting RSM_WDSEL_PROC_COLD
     /// From a hardware debug perspective it has the same effect as a power-on reset for the switched core power domain
@@ -4345,6 +4626,7 @@ impl WdselVal {
     }
 
     /// Set **RESET_POWMAN** `[4:4]`
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer, reset the switched core power domain
     /// and run the full power-on state machine (PSM) sequence
     /// This relies on clk_ref running. Use reset_powman_async if that may not be true
@@ -4360,6 +4642,7 @@ impl WdselVal {
     }
 
     /// Set **RESET_POWMAN_ASYNC** `[0:0]`
+    ///
     /// If set to 1, a watchdog reset will restore powman defaults, reset the timer,
     /// reset the switched core domain and run the full power-on state machine (PSM) sequence
     /// This does not rely on clk_ref running
@@ -4414,41 +4697,62 @@ impl Wdsel {
 /// ## Fields
 ///
 /// - **USING_FAST_POWCK** `[20]` (RO)
+///
 ///   0 indicates the POWMAN clock is running from the low power oscillator (32kHz)
 ///   1 indicates the POWMAN clock is running from the reference clock (2-50MHz)
+///
 /// - **USING_BOD_LP** `[17]` (RO)
+///
 ///   Indicates the brown-out detector (BOD) mode
 ///   0 = BOD high power mode which is the default
 ///   1 = BOD low power mode
+///
 /// - **USING_VREG_LP** `[16]` (RO)
+///
 ///   Indicates the voltage regulator (VREG) mode
 ///   0 = VREG high power mode which is the default
 ///   1 = VREG low power mode
+///
 /// - **USE_FAST_POWCK** `[12]` (RW)
+///
 ///   selects the reference clock (clk_ref) as the source of the POWMAN clock when switched-core is powered. The POWMAN clock always switches to the slow clock (lposc) when switched-core is powered down because the fast clock stops running.
 ///   0 always run the POWMAN clock from the slow clock (lposc)
 ///   1 run the POWMAN clock from the fast clock when available
 ///   This setting takes effect when a power up sequence is next run
+///
 /// - **RUN_LPOSC_IN_LP** `[8]` (RW)
+///
 ///   Set to 0 to stop the low power osc when the switched-core is powered down, which is unwise if using it to clock the timer
 ///   This setting takes effect when the swcore is next powered down
+///
 /// - **USE_BOD_HP** `[7]` (RW)
+///
 ///   Set to 0 to prevent automatic switching to bod high power mode when switched-core is powered up
 ///   This setting takes effect when the swcore is next powered up
+///
 /// - **USE_BOD_LP** `[6]` (RW)
+///
 ///   Set to 0 to prevent automatic switching to bod low power mode when switched-core is powered down
 ///   This setting takes effect when the swcore is next powered down
+///
 /// - **USE_VREG_HP** `[5]` (RW)
+///
 ///   Set to 0 to prevent automatic switching to vreg high power mode when switched-core is powered up
 ///   This setting takes effect when the swcore is next powered up
+///
 /// - **USE_VREG_LP** `[4]` (RW)
+///
 ///   Set to 0 to prevent automatic switching to vreg low power mode when switched-core is powered down
 ///   This setting takes effect when the swcore is next powered down
+///
 /// - **HW_PWRUP_SRAM0** `[1]` (RW)
+///
 ///   Specifies the power state of SRAM0 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
 ///   0=power-up
 ///   1=no change
+///
 /// - **HW_PWRUP_SRAM1** `[0]` (RW)
+///
 ///   Specifies the power state of SRAM1 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
 ///   0=power-up
 ///   1=no change
@@ -4469,94 +4773,116 @@ impl SeqCfg {
     // ======== Field Constants ========
 
     /// **USING_FAST_POWCK**
+    ///
     /// 0 indicates the POWMAN clock is running from the low power oscillator (32kHz)
     /// 1 indicates the POWMAN clock is running from the reference clock (2-50MHz)
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const USING_FAST_POWCK_OFFSET: u32 = 20;
     pub const USING_FAST_POWCK_MASK: u32 = 0x00100000;
     pub const USING_FAST_POWCK: u32 = 1 << 20;
 
     /// **USING_BOD_LP**
+    ///
     /// Indicates the brown-out detector (BOD) mode
     /// 0 = BOD high power mode which is the default
     /// 1 = BOD low power mode
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const USING_BOD_LP_OFFSET: u32 = 17;
     pub const USING_BOD_LP_MASK: u32 = 0x00020000;
     pub const USING_BOD_LP: u32 = 1 << 17;
 
     /// **USING_VREG_LP**
+    ///
     /// Indicates the voltage regulator (VREG) mode
     /// 0 = VREG high power mode which is the default
     /// 1 = VREG low power mode
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const USING_VREG_LP_OFFSET: u32 = 16;
     pub const USING_VREG_LP_MASK: u32 = 0x00010000;
     pub const USING_VREG_LP: u32 = 1 << 16;
 
     /// **USE_FAST_POWCK**
+    ///
     /// selects the reference clock (clk_ref) as the source of the POWMAN clock when switched-core is powered. The POWMAN clock always switches to the slow clock (lposc) when switched-core is powered down because the fast clock stops running.
     /// 0 always run the POWMAN clock from the slow clock (lposc)
     /// 1 run the POWMAN clock from the fast clock when available
     /// This setting takes effect when a power up sequence is next run
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const USE_FAST_POWCK_OFFSET: u32 = 12;
     pub const USE_FAST_POWCK_MASK: u32 = 0x00001000;
     pub const USE_FAST_POWCK: u32 = 1 << 12;
 
     /// **RUN_LPOSC_IN_LP**
+    ///
     /// Set to 0 to stop the low power osc when the switched-core is powered down, which is unwise if using it to clock the timer
     /// This setting takes effect when the swcore is next powered down
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const RUN_LPOSC_IN_LP_OFFSET: u32 = 8;
     pub const RUN_LPOSC_IN_LP_MASK: u32 = 0x00000100;
     pub const RUN_LPOSC_IN_LP: u32 = 1 << 8;
 
     /// **USE_BOD_HP**
+    ///
     /// Set to 0 to prevent automatic switching to bod high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const USE_BOD_HP_OFFSET: u32 = 7;
     pub const USE_BOD_HP_MASK: u32 = 0x00000080;
     pub const USE_BOD_HP: u32 = 1 << 7;
 
     /// **USE_BOD_LP**
+    ///
     /// Set to 0 to prevent automatic switching to bod low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const USE_BOD_LP_OFFSET: u32 = 6;
     pub const USE_BOD_LP_MASK: u32 = 0x00000040;
     pub const USE_BOD_LP: u32 = 1 << 6;
 
     /// **USE_VREG_HP**
+    ///
     /// Set to 0 to prevent automatic switching to vreg high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const USE_VREG_HP_OFFSET: u32 = 5;
     pub const USE_VREG_HP_MASK: u32 = 0x00000020;
     pub const USE_VREG_HP: u32 = 1 << 5;
 
     /// **USE_VREG_LP**
+    ///
     /// Set to 0 to prevent automatic switching to vreg low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const USE_VREG_LP_OFFSET: u32 = 4;
     pub const USE_VREG_LP_MASK: u32 = 0x00000010;
     pub const USE_VREG_LP: u32 = 1 << 4;
 
     /// **HW_PWRUP_SRAM0**
+    ///
     /// Specifies the power state of SRAM0 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const HW_PWRUP_SRAM0_OFFSET: u32 = 1;
     pub const HW_PWRUP_SRAM0_MASK: u32 = 0x00000002;
     pub const HW_PWRUP_SRAM0: u32 = 1 << 1;
 
     /// **HW_PWRUP_SRAM1**
+    ///
     /// Specifies the power state of SRAM1 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const HW_PWRUP_SRAM1_OFFSET: u32 = 0;
     pub const HW_PWRUP_SRAM1_MASK: u32 = 0x00000001;
@@ -4565,6 +4891,7 @@ impl SeqCfg {
     // ======== Field Accessors ========
 
     /// **USING_FAST_POWCK** `[20]` (RO)
+    ///
     /// 0 indicates the POWMAN clock is running from the low power oscillator (32kHz)
     /// 1 indicates the POWMAN clock is running from the reference clock (2-50MHz)
     #[inline(always)]
@@ -4573,6 +4900,7 @@ impl SeqCfg {
     }
 
     /// **USING_BOD_LP** `[17]` (RO)
+    ///
     /// Indicates the brown-out detector (BOD) mode
     /// 0 = BOD high power mode which is the default
     /// 1 = BOD low power mode
@@ -4582,6 +4910,7 @@ impl SeqCfg {
     }
 
     /// **USING_VREG_LP** `[16]` (RO)
+    ///
     /// Indicates the voltage regulator (VREG) mode
     /// 0 = VREG high power mode which is the default
     /// 1 = VREG low power mode
@@ -4591,6 +4920,7 @@ impl SeqCfg {
     }
 
     /// **USE_FAST_POWCK** `[12]` (RW)
+    ///
     /// selects the reference clock (clk_ref) as the source of the POWMAN clock when switched-core is powered. The POWMAN clock always switches to the slow clock (lposc) when switched-core is powered down because the fast clock stops running.
     /// 0 always run the POWMAN clock from the slow clock (lposc)
     /// 1 run the POWMAN clock from the fast clock when available
@@ -4613,6 +4943,7 @@ impl SeqCfg {
     }
 
     /// **RUN_LPOSC_IN_LP** `[8]` (RW)
+    ///
     /// Set to 0 to stop the low power osc when the switched-core is powered down, which is unwise if using it to clock the timer
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4633,6 +4964,7 @@ impl SeqCfg {
     }
 
     /// **USE_BOD_HP** `[7]` (RW)
+    ///
     /// Set to 0 to prevent automatic switching to bod high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4653,6 +4985,7 @@ impl SeqCfg {
     }
 
     /// **USE_BOD_LP** `[6]` (RW)
+    ///
     /// Set to 0 to prevent automatic switching to bod low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4673,6 +5006,7 @@ impl SeqCfg {
     }
 
     /// **USE_VREG_HP** `[5]` (RW)
+    ///
     /// Set to 0 to prevent automatic switching to vreg high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4693,6 +5027,7 @@ impl SeqCfg {
     }
 
     /// **USE_VREG_LP** `[4]` (RW)
+    ///
     /// Set to 0 to prevent automatic switching to vreg low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4713,6 +5048,7 @@ impl SeqCfg {
     }
 
     /// **HW_PWRUP_SRAM0** `[1]` (RW)
+    ///
     /// Specifies the power state of SRAM0 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -4734,6 +5070,7 @@ impl SeqCfg {
     }
 
     /// **HW_PWRUP_SRAM1** `[0]` (RW)
+    ///
     /// Specifies the power state of SRAM1 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -4785,6 +5122,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USING_FAST_POWCK** `[20:20]`
+    ///
     /// 0 indicates the POWMAN clock is running from the low power oscillator (32kHz)
     /// 1 indicates the POWMAN clock is running from the reference clock (2-50MHz)
     #[inline(always)]
@@ -4793,6 +5131,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USING_BOD_LP** `[17:17]`
+    ///
     /// Indicates the brown-out detector (BOD) mode
     /// 0 = BOD high power mode which is the default
     /// 1 = BOD low power mode
@@ -4802,6 +5141,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USING_VREG_LP** `[16:16]`
+    ///
     /// Indicates the voltage regulator (VREG) mode
     /// 0 = VREG high power mode which is the default
     /// 1 = VREG low power mode
@@ -4811,6 +5151,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USE_FAST_POWCK** `[12:12]`
+    ///
     /// selects the reference clock (clk_ref) as the source of the POWMAN clock when switched-core is powered. The POWMAN clock always switches to the slow clock (lposc) when switched-core is powered down because the fast clock stops running.
     /// 0 always run the POWMAN clock from the slow clock (lposc)
     /// 1 run the POWMAN clock from the fast clock when available
@@ -4821,6 +5162,7 @@ impl SeqCfgVal {
     }
 
     /// Read **RUN_LPOSC_IN_LP** `[8:8]`
+    ///
     /// Set to 0 to stop the low power osc when the switched-core is powered down, which is unwise if using it to clock the timer
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4829,6 +5171,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USE_BOD_HP** `[7:7]`
+    ///
     /// Set to 0 to prevent automatic switching to bod high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4837,6 +5180,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USE_BOD_LP** `[6:6]`
+    ///
     /// Set to 0 to prevent automatic switching to bod low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4845,6 +5189,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USE_VREG_HP** `[5:5]`
+    ///
     /// Set to 0 to prevent automatic switching to vreg high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4853,6 +5198,7 @@ impl SeqCfgVal {
     }
 
     /// Read **USE_VREG_LP** `[4:4]`
+    ///
     /// Set to 0 to prevent automatic switching to vreg low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4861,6 +5207,7 @@ impl SeqCfgVal {
     }
 
     /// Read **HW_PWRUP_SRAM0** `[1:1]`
+    ///
     /// Specifies the power state of SRAM0 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -4870,6 +5217,7 @@ impl SeqCfgVal {
     }
 
     /// Read **HW_PWRUP_SRAM1** `[0:0]`
+    ///
     /// Specifies the power state of SRAM1 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -4879,6 +5227,7 @@ impl SeqCfgVal {
     }
 
     /// Set **USE_FAST_POWCK** `[12:12]`
+    ///
     /// selects the reference clock (clk_ref) as the source of the POWMAN clock when switched-core is powered. The POWMAN clock always switches to the slow clock (lposc) when switched-core is powered down because the fast clock stops running.
     /// 0 always run the POWMAN clock from the slow clock (lposc)
     /// 1 run the POWMAN clock from the fast clock when available
@@ -4895,6 +5244,7 @@ impl SeqCfgVal {
     }
 
     /// Set **RUN_LPOSC_IN_LP** `[8:8]`
+    ///
     /// Set to 0 to stop the low power osc when the switched-core is powered down, which is unwise if using it to clock the timer
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4909,6 +5259,7 @@ impl SeqCfgVal {
     }
 
     /// Set **USE_BOD_HP** `[7:7]`
+    ///
     /// Set to 0 to prevent automatic switching to bod high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4923,6 +5274,7 @@ impl SeqCfgVal {
     }
 
     /// Set **USE_BOD_LP** `[6:6]`
+    ///
     /// Set to 0 to prevent automatic switching to bod low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4937,6 +5289,7 @@ impl SeqCfgVal {
     }
 
     /// Set **USE_VREG_HP** `[5:5]`
+    ///
     /// Set to 0 to prevent automatic switching to vreg high power mode when switched-core is powered up
     /// This setting takes effect when the swcore is next powered up
     #[inline(always)]
@@ -4951,6 +5304,7 @@ impl SeqCfgVal {
     }
 
     /// Set **USE_VREG_LP** `[4:4]`
+    ///
     /// Set to 0 to prevent automatic switching to vreg low power mode when switched-core is powered down
     /// This setting takes effect when the swcore is next powered down
     #[inline(always)]
@@ -4965,6 +5319,7 @@ impl SeqCfgVal {
     }
 
     /// Set **HW_PWRUP_SRAM0** `[1:1]`
+    ///
     /// Specifies the power state of SRAM0 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -4980,6 +5335,7 @@ impl SeqCfgVal {
     }
 
     /// Set **HW_PWRUP_SRAM1** `[0:0]`
+    ///
     /// Specifies the power state of SRAM1 when powering up swcore from a low power state (P1.xxx) to a high power state (P0.0xx).
     /// 0=power-up
     /// 1=no change
@@ -5044,20 +5400,35 @@ impl SeqCfg {
 /// ## Fields
 ///
 /// - **CHANGING** `[13]` (RO)
+///
 ///   Indicates a power state change is in progress
+///
 /// - **WAITING** `[12]` (RO)
+///
 ///   Indicates the power manager has received a state change request and is waiting for other actions to complete before executing it
+///
 /// - **BAD_HW_REQ** `[11]` (RO)
+///
 ///   Invalid hardware initiated state request, power up requests actioned, power down requests ignored
+///
 /// - **BAD_SW_REQ** `[10]` (RO)
+///
 ///   Invalid software initiated state request ignored
+///
 /// - **PWRUP_WHILE_WAITING** `[9]` (RW)
+///
 ///   Indicates that a power state change request was ignored because of a pending power state change request
+///
 /// - **REQ_IGNORED** `[8]` (RW)
+///
 ///   Indicates that a software state change request was ignored because it clashed with an ongoing hardware or debugger request
+///
 /// - **REQ** `[7:4]` (RW)
+///
 ///   This is written by software or hardware to request a new power state
+///
 /// - **CURRENT** `[3:0]` (RO)
+///
 ///   Indicates the current power state
 #[repr(transparent)]
 pub struct State {
@@ -5076,55 +5447,71 @@ impl State {
     // ======== Field Constants ========
 
     /// **CHANGING**
+    ///
     /// Indicates a power state change is in progress
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const CHANGING_OFFSET: u32 = 13;
     pub const CHANGING_MASK: u32 = 0x00002000;
     pub const CHANGING: u32 = 1 << 13;
 
     /// **WAITING**
+    ///
     /// Indicates the power manager has received a state change request and is waiting for other actions to complete before executing it
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const WAITING_OFFSET: u32 = 12;
     pub const WAITING_MASK: u32 = 0x00001000;
     pub const WAITING: u32 = 1 << 12;
 
     /// **BAD_HW_REQ**
+    ///
     /// Invalid hardware initiated state request, power up requests actioned, power down requests ignored
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const BAD_HW_REQ_OFFSET: u32 = 11;
     pub const BAD_HW_REQ_MASK: u32 = 0x00000800;
     pub const BAD_HW_REQ: u32 = 1 << 11;
 
     /// **BAD_SW_REQ**
+    ///
     /// Invalid software initiated state request ignored
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const BAD_SW_REQ_OFFSET: u32 = 10;
     pub const BAD_SW_REQ_MASK: u32 = 0x00000400;
     pub const BAD_SW_REQ: u32 = 1 << 10;
 
     /// **PWRUP_WHILE_WAITING**
+    ///
     /// Indicates that a power state change request was ignored because of a pending power state change request
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const PWRUP_WHILE_WAITING_OFFSET: u32 = 9;
     pub const PWRUP_WHILE_WAITING_MASK: u32 = 0x00000200;
     pub const PWRUP_WHILE_WAITING: u32 = 1 << 9;
 
     /// **REQ_IGNORED**
+    ///
     /// Indicates that a software state change request was ignored because it clashed with an ongoing hardware or debugger request
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const REQ_IGNORED_OFFSET: u32 = 8;
     pub const REQ_IGNORED_MASK: u32 = 0x00000100;
     pub const REQ_IGNORED: u32 = 1 << 8;
 
     /// **REQ**
+    ///
     /// This is written by software or hardware to request a new power state
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const REQ_OFFSET: u32 = 4;
     pub const REQ_MASK: u32 = 0x000000f0;
 
     /// **CURRENT**
+    ///
     /// Indicates the current power state
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CURRENT_OFFSET: u32 = 0;
     pub const CURRENT_MASK: u32 = 0x0000000f;
@@ -5132,6 +5519,7 @@ impl State {
     // ======== Field Accessors ========
 
     /// **CHANGING** `[13]` (RO)
+    ///
     /// Indicates a power state change is in progress
     #[inline(always)]
     pub fn changing(&self) -> bool {
@@ -5139,6 +5527,7 @@ impl State {
     }
 
     /// **WAITING** `[12]` (RO)
+    ///
     /// Indicates the power manager has received a state change request and is waiting for other actions to complete before executing it
     #[inline(always)]
     pub fn waiting(&self) -> bool {
@@ -5146,6 +5535,7 @@ impl State {
     }
 
     /// **BAD_HW_REQ** `[11]` (RO)
+    ///
     /// Invalid hardware initiated state request, power up requests actioned, power down requests ignored
     #[inline(always)]
     pub fn bad_hw_req(&self) -> bool {
@@ -5153,6 +5543,7 @@ impl State {
     }
 
     /// **BAD_SW_REQ** `[10]` (RO)
+    ///
     /// Invalid software initiated state request ignored
     #[inline(always)]
     pub fn bad_sw_req(&self) -> bool {
@@ -5160,6 +5551,7 @@ impl State {
     }
 
     /// **PWRUP_WHILE_WAITING** `[9]` (RW)
+    ///
     /// Indicates that a power state change request was ignored because of a pending power state change request
     #[inline(always)]
     pub fn pwrup_while_waiting(&self) -> bool {
@@ -5179,6 +5571,7 @@ impl State {
     }
 
     /// **REQ_IGNORED** `[8]` (RW)
+    ///
     /// Indicates that a software state change request was ignored because it clashed with an ongoing hardware or debugger request
     #[inline(always)]
     pub fn req_ignored(&self) -> bool {
@@ -5198,6 +5591,7 @@ impl State {
     }
 
     /// **REQ** `[7:4]` (RW)
+    ///
     /// This is written by software or hardware to request a new power state
     #[inline(always)]
     pub fn req(&self) -> u32 {
@@ -5205,6 +5599,7 @@ impl State {
     }
 
     /// Write **REQ** `[7:4]` (RW)
+    ///
     /// This is written by software or hardware to request a new power state
     #[inline(always)]
     pub fn write_req(&self, value: u32) {
@@ -5212,6 +5607,7 @@ impl State {
     }
 
     /// **CURRENT** `[3:0]` (RO)
+    ///
     /// Indicates the current power state
     #[inline(always)]
     pub fn current(&self) -> u32 {
@@ -5249,6 +5645,7 @@ impl StateVal {
     }
 
     /// Read **CHANGING** `[13:13]`
+    ///
     /// Indicates a power state change is in progress
     #[inline(always)]
     pub const fn changing(&self) -> bool {
@@ -5256,6 +5653,7 @@ impl StateVal {
     }
 
     /// Read **WAITING** `[12:12]`
+    ///
     /// Indicates the power manager has received a state change request and is waiting for other actions to complete before executing it
     #[inline(always)]
     pub const fn waiting(&self) -> bool {
@@ -5263,6 +5661,7 @@ impl StateVal {
     }
 
     /// Read **BAD_HW_REQ** `[11:11]`
+    ///
     /// Invalid hardware initiated state request, power up requests actioned, power down requests ignored
     #[inline(always)]
     pub const fn bad_hw_req(&self) -> bool {
@@ -5270,6 +5669,7 @@ impl StateVal {
     }
 
     /// Read **BAD_SW_REQ** `[10:10]`
+    ///
     /// Invalid software initiated state request ignored
     #[inline(always)]
     pub const fn bad_sw_req(&self) -> bool {
@@ -5277,6 +5677,7 @@ impl StateVal {
     }
 
     /// Read **PWRUP_WHILE_WAITING** `[9:9]`
+    ///
     /// Indicates that a power state change request was ignored because of a pending power state change request
     #[inline(always)]
     pub const fn pwrup_while_waiting(&self) -> bool {
@@ -5284,6 +5685,7 @@ impl StateVal {
     }
 
     /// Read **REQ_IGNORED** `[8:8]`
+    ///
     /// Indicates that a software state change request was ignored because it clashed with an ongoing hardware or debugger request
     #[inline(always)]
     pub const fn req_ignored(&self) -> bool {
@@ -5291,6 +5693,7 @@ impl StateVal {
     }
 
     /// Read **REQ** `[7:4]`
+    ///
     /// This is written by software or hardware to request a new power state
     #[inline(always)]
     pub const fn req(&self) -> u32 {
@@ -5298,6 +5701,7 @@ impl StateVal {
     }
 
     /// Read **CURRENT** `[3:0]`
+    ///
     /// Indicates the current power state
     #[inline(always)]
     pub const fn current(&self) -> u32 {
@@ -5305,6 +5709,7 @@ impl StateVal {
     }
 
     /// Set **PWRUP_WHILE_WAITING** `[9:9]`
+    ///
     /// Indicates that a power state change request was ignored because of a pending power state change request
     #[inline(always)]
     pub const fn with_pwrup_while_waiting(self, value: bool) -> Self {
@@ -5318,6 +5723,7 @@ impl StateVal {
     }
 
     /// Set **REQ_IGNORED** `[8:8]`
+    ///
     /// Indicates that a software state change request was ignored because it clashed with an ongoing hardware or debugger request
     #[inline(always)]
     pub const fn with_req_ignored(self, value: bool) -> Self {
@@ -5331,6 +5737,7 @@ impl StateVal {
     }
 
     /// Set **REQ** `[7:4]`
+    ///
     /// This is written by software or hardware to request a new power state
     #[inline(always)]
     pub const fn with_req(self, value: u32) -> Self {
@@ -5376,6 +5783,7 @@ impl State {
 /// ## Fields
 ///
 /// - **POW_FASTDIV** `[10:0]` (RW)
+///
 ///   divides the POWMAN clock to provide a tick for the delay module and state machines
 ///   when clk_pow is running from the slow clock it is not divided
 ///   when clk_pow is running from the fast clock it is divided by tick_div
@@ -5396,9 +5804,11 @@ impl PowFastdiv {
     // ======== Field Constants ========
 
     /// **POW_FASTDIV**
+    ///
     /// divides the POWMAN clock to provide a tick for the delay module and state machines
     /// when clk_pow is running from the slow clock it is not divided
     /// when clk_pow is running from the fast clock it is divided by tick_div
+    ///
     /// Bits `[10:0]`, mask `0x000007ff`
     pub const POW_FASTDIV_OFFSET: u32 = 0;
     pub const POW_FASTDIV_MASK: u32 = 0x000007ff;
@@ -5406,6 +5816,7 @@ impl PowFastdiv {
     // ======== Field Accessors ========
 
     /// **POW_FASTDIV** `[10:0]` (RW)
+    ///
     /// divides the POWMAN clock to provide a tick for the delay module and state machines
     /// when clk_pow is running from the slow clock it is not divided
     /// when clk_pow is running from the fast clock it is divided by tick_div
@@ -5415,6 +5826,7 @@ impl PowFastdiv {
     }
 
     /// Write **POW_FASTDIV** `[10:0]` (RW)
+    ///
     /// divides the POWMAN clock to provide a tick for the delay module and state machines
     /// when clk_pow is running from the slow clock it is not divided
     /// when clk_pow is running from the fast clock it is divided by tick_div
@@ -5454,6 +5866,7 @@ impl PowFastdivVal {
     }
 
     /// Read **POW_FASTDIV** `[10:0]`
+    ///
     /// divides the POWMAN clock to provide a tick for the delay module and state machines
     /// when clk_pow is running from the slow clock it is not divided
     /// when clk_pow is running from the fast clock it is divided by tick_div
@@ -5463,6 +5876,7 @@ impl PowFastdivVal {
     }
 
     /// Set **POW_FASTDIV** `[10:0]`
+    ///
     /// divides the POWMAN clock to provide a tick for the delay module and state machines
     /// when clk_pow is running from the slow clock it is not divided
     /// when clk_pow is running from the fast clock it is divided by tick_div
@@ -5512,12 +5926,17 @@ impl PowFastdiv {
 /// ## Fields
 ///
 /// - **SRAM_STEP** `[15:8]` (RW)
+///
 ///   timing between the sram0 and sram1 power state machine steps
 ///   measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
+///
 /// - **XIP_STEP** `[7:4]` (RW)
+///
 ///   timing between the xip power state machine steps
 ///   measured in units of the lposc period, 0 gives a delay of 1 unit
+///
 /// - **SWCORE_STEP** `[3:0]` (RW)
+///
 ///   timing between the swcore power state machine steps
 ///   measured in units of the lposc period, 0 gives a delay of 1 unit
 #[repr(transparent)]
@@ -5537,22 +5956,28 @@ impl PowDelay {
     // ======== Field Constants ========
 
     /// **SRAM_STEP**
+    ///
     /// timing between the sram0 and sram1 power state machine steps
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SRAM_STEP_OFFSET: u32 = 8;
     pub const SRAM_STEP_MASK: u32 = 0x0000ff00;
 
     /// **XIP_STEP**
+    ///
     /// timing between the xip power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
+    ///
     /// Bits `[7:4]`, mask `0x000000f0`
     pub const XIP_STEP_OFFSET: u32 = 4;
     pub const XIP_STEP_MASK: u32 = 0x000000f0;
 
     /// **SWCORE_STEP**
+    ///
     /// timing between the swcore power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const SWCORE_STEP_OFFSET: u32 = 0;
     pub const SWCORE_STEP_MASK: u32 = 0x0000000f;
@@ -5560,6 +5985,7 @@ impl PowDelay {
     // ======== Field Accessors ========
 
     /// **SRAM_STEP** `[15:8]` (RW)
+    ///
     /// timing between the sram0 and sram1 power state machine steps
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5568,6 +5994,7 @@ impl PowDelay {
     }
 
     /// Write **SRAM_STEP** `[15:8]` (RW)
+    ///
     /// timing between the sram0 and sram1 power state machine steps
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5576,6 +6003,7 @@ impl PowDelay {
     }
 
     /// **XIP_STEP** `[7:4]` (RW)
+    ///
     /// timing between the xip power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5584,6 +6012,7 @@ impl PowDelay {
     }
 
     /// Write **XIP_STEP** `[7:4]` (RW)
+    ///
     /// timing between the xip power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5592,6 +6021,7 @@ impl PowDelay {
     }
 
     /// **SWCORE_STEP** `[3:0]` (RW)
+    ///
     /// timing between the swcore power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5600,6 +6030,7 @@ impl PowDelay {
     }
 
     /// Write **SWCORE_STEP** `[3:0]` (RW)
+    ///
     /// timing between the swcore power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5638,6 +6069,7 @@ impl PowDelayVal {
     }
 
     /// Read **SRAM_STEP** `[15:8]`
+    ///
     /// timing between the sram0 and sram1 power state machine steps
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5646,6 +6078,7 @@ impl PowDelayVal {
     }
 
     /// Read **XIP_STEP** `[7:4]`
+    ///
     /// timing between the xip power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5654,6 +6087,7 @@ impl PowDelayVal {
     }
 
     /// Read **SWCORE_STEP** `[3:0]`
+    ///
     /// timing between the swcore power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5662,6 +6096,7 @@ impl PowDelayVal {
     }
 
     /// Set **SRAM_STEP** `[15:8]`
+    ///
     /// timing between the sram0 and sram1 power state machine steps
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5672,6 +6107,7 @@ impl PowDelayVal {
     }
 
     /// Set **XIP_STEP** `[7:4]`
+    ///
     /// timing between the xip power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5682,6 +6118,7 @@ impl PowDelayVal {
     }
 
     /// Set **SWCORE_STEP** `[3:0]`
+    ///
     /// timing between the swcore power state machine steps
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
@@ -5730,12 +6167,19 @@ impl PowDelay {
 /// ## Fields
 ///
 /// - **LP_EXIT_STATE** `[14]` (RW)
+///
 ///   output level when exiting the low power state
+///
 /// - **LP_ENTRY_STATE** `[13]` (RW)
+///
 ///   output level when entering the low power state
+///
 /// - **INIT_STATE** `[12]` (RW)
+///
 /// - **INIT** `[8]` (RW)
+///
 /// - **GPIO_SELECT** `[5:0]` (RW)
+///
 ///   selects from gpio 0->30
 ///   set to 31 to disable this feature
 #[repr(transparent)]
@@ -5755,14 +6199,18 @@ impl ExtCtrl0 {
     // ======== Field Constants ========
 
     /// **LP_EXIT_STATE**
+    ///
     /// output level when exiting the low power state
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LP_EXIT_STATE_OFFSET: u32 = 14;
     pub const LP_EXIT_STATE_MASK: u32 = 0x00004000;
     pub const LP_EXIT_STATE: u32 = 1 << 14;
 
     /// **LP_ENTRY_STATE**
+    ///
     /// output level when entering the low power state
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const LP_ENTRY_STATE_OFFSET: u32 = 13;
     pub const LP_ENTRY_STATE_MASK: u32 = 0x00002000;
@@ -5781,8 +6229,10 @@ impl ExtCtrl0 {
     pub const INIT: u32 = 1 << 8;
 
     /// **GPIO_SELECT**
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const GPIO_SELECT_OFFSET: u32 = 0;
     pub const GPIO_SELECT_MASK: u32 = 0x0000003f;
@@ -5790,6 +6240,7 @@ impl ExtCtrl0 {
     // ======== Field Accessors ========
 
     /// **LP_EXIT_STATE** `[14]` (RW)
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub fn lp_exit_state(&self) -> bool {
@@ -5809,6 +6260,7 @@ impl ExtCtrl0 {
     }
 
     /// **LP_ENTRY_STATE** `[13]` (RW)
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub fn lp_entry_state(&self) -> bool {
@@ -5864,6 +6316,7 @@ impl ExtCtrl0 {
     }
 
     /// **GPIO_SELECT** `[5:0]` (RW)
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -5872,6 +6325,7 @@ impl ExtCtrl0 {
     }
 
     /// Write **GPIO_SELECT** `[5:0]` (RW)
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -5910,6 +6364,7 @@ impl ExtCtrl0Val {
     }
 
     /// Read **LP_EXIT_STATE** `[14:14]`
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub const fn lp_exit_state(&self) -> bool {
@@ -5917,6 +6372,7 @@ impl ExtCtrl0Val {
     }
 
     /// Read **LP_ENTRY_STATE** `[13:13]`
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub const fn lp_entry_state(&self) -> bool {
@@ -5936,6 +6392,7 @@ impl ExtCtrl0Val {
     }
 
     /// Read **GPIO_SELECT** `[5:0]`
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -5944,6 +6401,7 @@ impl ExtCtrl0Val {
     }
 
     /// Set **LP_EXIT_STATE** `[14:14]`
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub const fn with_lp_exit_state(self, value: bool) -> Self {
@@ -5957,6 +6415,7 @@ impl ExtCtrl0Val {
     }
 
     /// Set **LP_ENTRY_STATE** `[13:13]`
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub const fn with_lp_entry_state(self, value: bool) -> Self {
@@ -5994,6 +6453,7 @@ impl ExtCtrl0Val {
     }
 
     /// Set **GPIO_SELECT** `[5:0]`
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -6042,12 +6502,19 @@ impl ExtCtrl0 {
 /// ## Fields
 ///
 /// - **LP_EXIT_STATE** `[14]` (RW)
+///
 ///   output level when exiting the low power state
+///
 /// - **LP_ENTRY_STATE** `[13]` (RW)
+///
 ///   output level when entering the low power state
+///
 /// - **INIT_STATE** `[12]` (RW)
+///
 /// - **INIT** `[8]` (RW)
+///
 /// - **GPIO_SELECT** `[5:0]` (RW)
+///
 ///   selects from gpio 0->30
 ///   set to 31 to disable this feature
 #[repr(transparent)]
@@ -6067,14 +6534,18 @@ impl ExtCtrl1 {
     // ======== Field Constants ========
 
     /// **LP_EXIT_STATE**
+    ///
     /// output level when exiting the low power state
+    ///
     /// Bits `[14:14]`, mask `0x00004000`
     pub const LP_EXIT_STATE_OFFSET: u32 = 14;
     pub const LP_EXIT_STATE_MASK: u32 = 0x00004000;
     pub const LP_EXIT_STATE: u32 = 1 << 14;
 
     /// **LP_ENTRY_STATE**
+    ///
     /// output level when entering the low power state
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const LP_ENTRY_STATE_OFFSET: u32 = 13;
     pub const LP_ENTRY_STATE_MASK: u32 = 0x00002000;
@@ -6093,8 +6564,10 @@ impl ExtCtrl1 {
     pub const INIT: u32 = 1 << 8;
 
     /// **GPIO_SELECT**
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const GPIO_SELECT_OFFSET: u32 = 0;
     pub const GPIO_SELECT_MASK: u32 = 0x0000003f;
@@ -6102,6 +6575,7 @@ impl ExtCtrl1 {
     // ======== Field Accessors ========
 
     /// **LP_EXIT_STATE** `[14]` (RW)
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub fn lp_exit_state(&self) -> bool {
@@ -6121,6 +6595,7 @@ impl ExtCtrl1 {
     }
 
     /// **LP_ENTRY_STATE** `[13]` (RW)
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub fn lp_entry_state(&self) -> bool {
@@ -6176,6 +6651,7 @@ impl ExtCtrl1 {
     }
 
     /// **GPIO_SELECT** `[5:0]` (RW)
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -6184,6 +6660,7 @@ impl ExtCtrl1 {
     }
 
     /// Write **GPIO_SELECT** `[5:0]` (RW)
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -6222,6 +6699,7 @@ impl ExtCtrl1Val {
     }
 
     /// Read **LP_EXIT_STATE** `[14:14]`
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub const fn lp_exit_state(&self) -> bool {
@@ -6229,6 +6707,7 @@ impl ExtCtrl1Val {
     }
 
     /// Read **LP_ENTRY_STATE** `[13:13]`
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub const fn lp_entry_state(&self) -> bool {
@@ -6248,6 +6727,7 @@ impl ExtCtrl1Val {
     }
 
     /// Read **GPIO_SELECT** `[5:0]`
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -6256,6 +6736,7 @@ impl ExtCtrl1Val {
     }
 
     /// Set **LP_EXIT_STATE** `[14:14]`
+    ///
     /// output level when exiting the low power state
     #[inline(always)]
     pub const fn with_lp_exit_state(self, value: bool) -> Self {
@@ -6269,6 +6750,7 @@ impl ExtCtrl1Val {
     }
 
     /// Set **LP_ENTRY_STATE** `[13:13]`
+    ///
     /// output level when entering the low power state
     #[inline(always)]
     pub const fn with_lp_entry_state(self, value: bool) -> Self {
@@ -6306,6 +6788,7 @@ impl ExtCtrl1Val {
     }
 
     /// Set **GPIO_SELECT** `[5:0]`
+    ///
     /// selects from gpio 0->30
     /// set to 31 to disable this feature
     #[inline(always)]
@@ -6354,8 +6837,11 @@ impl ExtCtrl1 {
 /// ## Fields
 ///
 /// - **DRIVE_LPCK** `[4]` (RW)
+///
 ///   Use the selected GPIO to drive the 32kHz low power clock, in place of LPOSC. This field must only be written when POWMAN_TIMER_RUN=0
+///
 /// - **SOURCE_SEL** `[1:0]` (RW)
+///
 ///   0 -> gpio12
 ///   1 -> gpio20
 ///   2 -> gpio14
@@ -6377,17 +6863,21 @@ impl ExtTimeRef {
     // ======== Field Constants ========
 
     /// **DRIVE_LPCK**
+    ///
     /// Use the selected GPIO to drive the 32kHz low power clock, in place of LPOSC. This field must only be written when POWMAN_TIMER_RUN=0
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const DRIVE_LPCK_OFFSET: u32 = 4;
     pub const DRIVE_LPCK_MASK: u32 = 0x00000010;
     pub const DRIVE_LPCK: u32 = 1 << 4;
 
     /// **SOURCE_SEL**
+    ///
     /// 0 -> gpio12
     /// 1 -> gpio20
     /// 2 -> gpio14
     /// 3 -> gpio22
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SOURCE_SEL_OFFSET: u32 = 0;
     pub const SOURCE_SEL_MASK: u32 = 0x00000003;
@@ -6395,6 +6885,7 @@ impl ExtTimeRef {
     // ======== Field Accessors ========
 
     /// **DRIVE_LPCK** `[4]` (RW)
+    ///
     /// Use the selected GPIO to drive the 32kHz low power clock, in place of LPOSC. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn drive_lpck(&self) -> bool {
@@ -6414,6 +6905,7 @@ impl ExtTimeRef {
     }
 
     /// **SOURCE_SEL** `[1:0]` (RW)
+    ///
     /// 0 -> gpio12
     /// 1 -> gpio20
     /// 2 -> gpio14
@@ -6424,6 +6916,7 @@ impl ExtTimeRef {
     }
 
     /// Write **SOURCE_SEL** `[1:0]` (RW)
+    ///
     /// 0 -> gpio12
     /// 1 -> gpio20
     /// 2 -> gpio14
@@ -6464,6 +6957,7 @@ impl ExtTimeRefVal {
     }
 
     /// Read **DRIVE_LPCK** `[4:4]`
+    ///
     /// Use the selected GPIO to drive the 32kHz low power clock, in place of LPOSC. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn drive_lpck(&self) -> bool {
@@ -6471,6 +6965,7 @@ impl ExtTimeRefVal {
     }
 
     /// Read **SOURCE_SEL** `[1:0]`
+    ///
     /// 0 -> gpio12
     /// 1 -> gpio20
     /// 2 -> gpio14
@@ -6481,6 +6976,7 @@ impl ExtTimeRefVal {
     }
 
     /// Set **DRIVE_LPCK** `[4:4]`
+    ///
     /// Use the selected GPIO to drive the 32kHz low power clock, in place of LPOSC. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn with_drive_lpck(self, value: bool) -> Self {
@@ -6494,6 +6990,7 @@ impl ExtTimeRefVal {
     }
 
     /// Set **SOURCE_SEL** `[1:0]`
+    ///
     /// 0 -> gpio12
     /// 1 -> gpio20
     /// 2 -> gpio14
@@ -6544,6 +7041,7 @@ impl ExtTimeRef {
 /// ## Fields
 ///
 /// - **LPOSC_FREQ_KHZ_INT** `[5:0]` (RW)
+///
 ///   Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
 #[repr(transparent)]
 pub struct LposcFreqKhzInt {
@@ -6562,7 +7060,9 @@ impl LposcFreqKhzInt {
     // ======== Field Constants ========
 
     /// **LPOSC_FREQ_KHZ_INT**
+    ///
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const LPOSC_FREQ_KHZ_INT_OFFSET: u32 = 0;
     pub const LPOSC_FREQ_KHZ_INT_MASK: u32 = 0x0000003f;
@@ -6570,6 +7070,7 @@ impl LposcFreqKhzInt {
     // ======== Field Accessors ========
 
     /// **LPOSC_FREQ_KHZ_INT** `[5:0]` (RW)
+    ///
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn lposc_freq_khz_int(&self) -> u32 {
@@ -6577,6 +7078,7 @@ impl LposcFreqKhzInt {
     }
 
     /// Write **LPOSC_FREQ_KHZ_INT** `[5:0]` (RW)
+    ///
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn write_lposc_freq_khz_int(&self, value: u32) {
@@ -6614,6 +7116,7 @@ impl LposcFreqKhzIntVal {
     }
 
     /// Read **LPOSC_FREQ_KHZ_INT** `[5:0]`
+    ///
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn lposc_freq_khz_int(&self) -> u32 {
@@ -6621,6 +7124,7 @@ impl LposcFreqKhzIntVal {
     }
 
     /// Set **LPOSC_FREQ_KHZ_INT** `[5:0]`
+    ///
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn with_lposc_freq_khz_int(self, value: u32) -> Self {
@@ -6668,6 +7172,7 @@ impl LposcFreqKhzInt {
 /// ## Fields
 ///
 /// - **LPOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
 #[repr(transparent)]
 pub struct LposcFreqKhzFrac {
@@ -6686,7 +7191,9 @@ impl LposcFreqKhzFrac {
     // ======== Field Constants ========
 
     /// **LPOSC_FREQ_KHZ_FRAC**
+    ///
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const LPOSC_FREQ_KHZ_FRAC_OFFSET: u32 = 0;
     pub const LPOSC_FREQ_KHZ_FRAC_MASK: u32 = 0x0000ffff;
@@ -6694,6 +7201,7 @@ impl LposcFreqKhzFrac {
     // ======== Field Accessors ========
 
     /// **LPOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn lposc_freq_khz_frac(&self) -> u32 {
@@ -6701,6 +7209,7 @@ impl LposcFreqKhzFrac {
     }
 
     /// Write **LPOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn write_lposc_freq_khz_frac(&self, value: u32) {
@@ -6738,6 +7247,7 @@ impl LposcFreqKhzFracVal {
     }
 
     /// Read **LPOSC_FREQ_KHZ_FRAC** `[15:0]`
+    ///
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn lposc_freq_khz_frac(&self) -> u32 {
@@ -6745,6 +7255,7 @@ impl LposcFreqKhzFracVal {
     }
 
     /// Set **LPOSC_FREQ_KHZ_FRAC** `[15:0]`
+    ///
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn with_lposc_freq_khz_frac(self, value: u32) -> Self {
@@ -6792,6 +7303,7 @@ impl LposcFreqKhzFrac {
 /// ## Fields
 ///
 /// - **XOSC_FREQ_KHZ_INT** `[15:0]` (RW)
+///
 ///   Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
 #[repr(transparent)]
 pub struct XoscFreqKhzInt {
@@ -6810,7 +7322,9 @@ impl XoscFreqKhzInt {
     // ======== Field Constants ========
 
     /// **XOSC_FREQ_KHZ_INT**
+    ///
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const XOSC_FREQ_KHZ_INT_OFFSET: u32 = 0;
     pub const XOSC_FREQ_KHZ_INT_MASK: u32 = 0x0000ffff;
@@ -6818,6 +7332,7 @@ impl XoscFreqKhzInt {
     // ======== Field Accessors ========
 
     /// **XOSC_FREQ_KHZ_INT** `[15:0]` (RW)
+    ///
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn xosc_freq_khz_int(&self) -> u32 {
@@ -6825,6 +7340,7 @@ impl XoscFreqKhzInt {
     }
 
     /// Write **XOSC_FREQ_KHZ_INT** `[15:0]` (RW)
+    ///
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn write_xosc_freq_khz_int(&self, value: u32) {
@@ -6862,6 +7378,7 @@ impl XoscFreqKhzIntVal {
     }
 
     /// Read **XOSC_FREQ_KHZ_INT** `[15:0]`
+    ///
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn xosc_freq_khz_int(&self) -> u32 {
@@ -6869,6 +7386,7 @@ impl XoscFreqKhzIntVal {
     }
 
     /// Set **XOSC_FREQ_KHZ_INT** `[15:0]`
+    ///
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn with_xosc_freq_khz_int(self, value: u32) -> Self {
@@ -6916,6 +7434,7 @@ impl XoscFreqKhzInt {
 /// ## Fields
 ///
 /// - **XOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
 #[repr(transparent)]
 pub struct XoscFreqKhzFrac {
@@ -6934,7 +7453,9 @@ impl XoscFreqKhzFrac {
     // ======== Field Constants ========
 
     /// **XOSC_FREQ_KHZ_FRAC**
+    ///
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const XOSC_FREQ_KHZ_FRAC_OFFSET: u32 = 0;
     pub const XOSC_FREQ_KHZ_FRAC_MASK: u32 = 0x0000ffff;
@@ -6942,6 +7463,7 @@ impl XoscFreqKhzFrac {
     // ======== Field Accessors ========
 
     /// **XOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn xosc_freq_khz_frac(&self) -> u32 {
@@ -6949,6 +7471,7 @@ impl XoscFreqKhzFrac {
     }
 
     /// Write **XOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn write_xosc_freq_khz_frac(&self, value: u32) {
@@ -6986,6 +7509,7 @@ impl XoscFreqKhzFracVal {
     }
 
     /// Read **XOSC_FREQ_KHZ_FRAC** `[15:0]`
+    ///
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn xosc_freq_khz_frac(&self) -> u32 {
@@ -6993,6 +7517,7 @@ impl XoscFreqKhzFracVal {
     }
 
     /// Set **XOSC_FREQ_KHZ_FRAC** `[15:0]`
+    ///
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn with_xosc_freq_khz_frac(self, value: u32) -> Self {
@@ -7038,6 +7563,7 @@ impl XoscFreqKhzFrac {
 /// ## Fields
 ///
 /// - **SET_TIME_63TO48** `[15:0]` (RW)
+///
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime63to48 {
@@ -7056,7 +7582,9 @@ impl SetTime63to48 {
     // ======== Field Constants ========
 
     /// **SET_TIME_63TO48**
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const SET_TIME_63TO48_OFFSET: u32 = 0;
     pub const SET_TIME_63TO48_MASK: u32 = 0x0000ffff;
@@ -7064,6 +7592,7 @@ impl SetTime63to48 {
     // ======== Field Accessors ========
 
     /// **SET_TIME_63TO48** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn set_time_63to48(&self) -> u32 {
@@ -7071,6 +7600,7 @@ impl SetTime63to48 {
     }
 
     /// Write **SET_TIME_63TO48** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_63to48(&self, value: u32) {
@@ -7108,6 +7638,7 @@ impl SetTime63to48Val {
     }
 
     /// Read **SET_TIME_63TO48** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn set_time_63to48(&self) -> u32 {
@@ -7115,6 +7646,7 @@ impl SetTime63to48Val {
     }
 
     /// Set **SET_TIME_63TO48** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn with_set_time_63to48(self, value: u32) -> Self {
@@ -7160,6 +7692,7 @@ impl SetTime63to48 {
 /// ## Fields
 ///
 /// - **SET_TIME_47TO32** `[15:0]` (RW)
+///
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime47to32 {
@@ -7178,7 +7711,9 @@ impl SetTime47to32 {
     // ======== Field Constants ========
 
     /// **SET_TIME_47TO32**
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const SET_TIME_47TO32_OFFSET: u32 = 0;
     pub const SET_TIME_47TO32_MASK: u32 = 0x0000ffff;
@@ -7186,6 +7721,7 @@ impl SetTime47to32 {
     // ======== Field Accessors ========
 
     /// **SET_TIME_47TO32** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn set_time_47to32(&self) -> u32 {
@@ -7193,6 +7729,7 @@ impl SetTime47to32 {
     }
 
     /// Write **SET_TIME_47TO32** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_47to32(&self, value: u32) {
@@ -7230,6 +7767,7 @@ impl SetTime47to32Val {
     }
 
     /// Read **SET_TIME_47TO32** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn set_time_47to32(&self) -> u32 {
@@ -7237,6 +7775,7 @@ impl SetTime47to32Val {
     }
 
     /// Set **SET_TIME_47TO32** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn with_set_time_47to32(self, value: u32) -> Self {
@@ -7282,6 +7821,7 @@ impl SetTime47to32 {
 /// ## Fields
 ///
 /// - **SET_TIME_31TO16** `[15:0]` (RW)
+///
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime31to16 {
@@ -7300,7 +7840,9 @@ impl SetTime31to16 {
     // ======== Field Constants ========
 
     /// **SET_TIME_31TO16**
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const SET_TIME_31TO16_OFFSET: u32 = 0;
     pub const SET_TIME_31TO16_MASK: u32 = 0x0000ffff;
@@ -7308,6 +7850,7 @@ impl SetTime31to16 {
     // ======== Field Accessors ========
 
     /// **SET_TIME_31TO16** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn set_time_31to16(&self) -> u32 {
@@ -7315,6 +7858,7 @@ impl SetTime31to16 {
     }
 
     /// Write **SET_TIME_31TO16** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_31to16(&self, value: u32) {
@@ -7352,6 +7896,7 @@ impl SetTime31to16Val {
     }
 
     /// Read **SET_TIME_31TO16** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn set_time_31to16(&self) -> u32 {
@@ -7359,6 +7904,7 @@ impl SetTime31to16Val {
     }
 
     /// Set **SET_TIME_31TO16** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn with_set_time_31to16(self, value: u32) -> Self {
@@ -7404,6 +7950,7 @@ impl SetTime31to16 {
 /// ## Fields
 ///
 /// - **SET_TIME_15TO0** `[15:0]` (RW)
+///
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime15to0 {
@@ -7422,7 +7969,9 @@ impl SetTime15to0 {
     // ======== Field Constants ========
 
     /// **SET_TIME_15TO0**
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const SET_TIME_15TO0_OFFSET: u32 = 0;
     pub const SET_TIME_15TO0_MASK: u32 = 0x0000ffff;
@@ -7430,6 +7979,7 @@ impl SetTime15to0 {
     // ======== Field Accessors ========
 
     /// **SET_TIME_15TO0** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn set_time_15to0(&self) -> u32 {
@@ -7437,6 +7987,7 @@ impl SetTime15to0 {
     }
 
     /// Write **SET_TIME_15TO0** `[15:0]` (RW)
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_15to0(&self, value: u32) {
@@ -7474,6 +8025,7 @@ impl SetTime15to0Val {
     }
 
     /// Read **SET_TIME_15TO0** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn set_time_15to0(&self) -> u32 {
@@ -7481,6 +8033,7 @@ impl SetTime15to0Val {
     }
 
     /// Set **SET_TIME_15TO0** `[15:0]`
+    ///
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub const fn with_set_time_15to0(self, value: u32) -> Self {
@@ -7526,6 +8079,7 @@ impl SetTime15to0 {
 /// ## Fields
 ///
 /// - **READ_TIME_UPPER** `[31:0]` (RO)
+///
 ///   For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
 #[repr(transparent)]
 pub struct ReadTimeUpper {
@@ -7544,7 +8098,9 @@ impl ReadTimeUpper {
     // ======== Field Constants ========
 
     /// **READ_TIME_UPPER**
+    ///
     /// For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const READ_TIME_UPPER_OFFSET: u32 = 0;
     pub const READ_TIME_UPPER_MASK: u32 = 0xffffffff;
@@ -7552,6 +8108,7 @@ impl ReadTimeUpper {
     // ======== Field Accessors ========
 
     /// **READ_TIME_UPPER** `[31:0]` (RO)
+    ///
     /// For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
     #[inline(always)]
     pub fn read_time_upper(&self) -> u32 {
@@ -7589,6 +8146,7 @@ impl ReadTimeUpperVal {
     }
 
     /// Read **READ_TIME_UPPER** `[31:0]`
+    ///
     /// For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
     #[inline(always)]
     pub const fn read_time_upper(&self) -> u32 {
@@ -7632,6 +8190,7 @@ impl ReadTimeUpper {
 /// ## Fields
 ///
 /// - **READ_TIME_LOWER** `[31:0]` (RO)
+///
 ///   For reading bits 31:0 of the timer.
 #[repr(transparent)]
 pub struct ReadTimeLower {
@@ -7650,7 +8209,9 @@ impl ReadTimeLower {
     // ======== Field Constants ========
 
     /// **READ_TIME_LOWER**
+    ///
     /// For reading bits 31:0 of the timer.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const READ_TIME_LOWER_OFFSET: u32 = 0;
     pub const READ_TIME_LOWER_MASK: u32 = 0xffffffff;
@@ -7658,6 +8219,7 @@ impl ReadTimeLower {
     // ======== Field Accessors ========
 
     /// **READ_TIME_LOWER** `[31:0]` (RO)
+    ///
     /// For reading bits 31:0 of the timer.
     #[inline(always)]
     pub fn read_time_lower(&self) -> u32 {
@@ -7695,6 +8257,7 @@ impl ReadTimeLowerVal {
     }
 
     /// Read **READ_TIME_LOWER** `[31:0]`
+    ///
     /// For reading bits 31:0 of the timer.
     #[inline(always)]
     pub const fn read_time_lower(&self) -> u32 {
@@ -7738,6 +8301,7 @@ impl ReadTimeLower {
 /// ## Fields
 ///
 /// - **ALARM_TIME_63TO48** `[15:0]` (RW)
+///
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime63to48 {
@@ -7756,7 +8320,9 @@ impl AlarmTime63to48 {
     // ======== Field Constants ========
 
     /// **ALARM_TIME_63TO48**
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ALARM_TIME_63TO48_OFFSET: u32 = 0;
     pub const ALARM_TIME_63TO48_MASK: u32 = 0x0000ffff;
@@ -7764,6 +8330,7 @@ impl AlarmTime63to48 {
     // ======== Field Accessors ========
 
     /// **ALARM_TIME_63TO48** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn alarm_time_63to48(&self) -> u32 {
@@ -7771,6 +8338,7 @@ impl AlarmTime63to48 {
     }
 
     /// Write **ALARM_TIME_63TO48** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_63to48(&self, value: u32) {
@@ -7808,6 +8376,7 @@ impl AlarmTime63to48Val {
     }
 
     /// Read **ALARM_TIME_63TO48** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_63to48(&self) -> u32 {
@@ -7815,6 +8384,7 @@ impl AlarmTime63to48Val {
     }
 
     /// Set **ALARM_TIME_63TO48** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn with_alarm_time_63to48(self, value: u32) -> Self {
@@ -7860,6 +8430,7 @@ impl AlarmTime63to48 {
 /// ## Fields
 ///
 /// - **ALARM_TIME_47TO32** `[15:0]` (RW)
+///
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime47to32 {
@@ -7878,7 +8449,9 @@ impl AlarmTime47to32 {
     // ======== Field Constants ========
 
     /// **ALARM_TIME_47TO32**
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ALARM_TIME_47TO32_OFFSET: u32 = 0;
     pub const ALARM_TIME_47TO32_MASK: u32 = 0x0000ffff;
@@ -7886,6 +8459,7 @@ impl AlarmTime47to32 {
     // ======== Field Accessors ========
 
     /// **ALARM_TIME_47TO32** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn alarm_time_47to32(&self) -> u32 {
@@ -7893,6 +8467,7 @@ impl AlarmTime47to32 {
     }
 
     /// Write **ALARM_TIME_47TO32** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_47to32(&self, value: u32) {
@@ -7930,6 +8505,7 @@ impl AlarmTime47to32Val {
     }
 
     /// Read **ALARM_TIME_47TO32** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_47to32(&self) -> u32 {
@@ -7937,6 +8513,7 @@ impl AlarmTime47to32Val {
     }
 
     /// Set **ALARM_TIME_47TO32** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn with_alarm_time_47to32(self, value: u32) -> Self {
@@ -7982,6 +8559,7 @@ impl AlarmTime47to32 {
 /// ## Fields
 ///
 /// - **ALARM_TIME_31TO16** `[15:0]` (RW)
+///
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime31to16 {
@@ -8000,7 +8578,9 @@ impl AlarmTime31to16 {
     // ======== Field Constants ========
 
     /// **ALARM_TIME_31TO16**
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ALARM_TIME_31TO16_OFFSET: u32 = 0;
     pub const ALARM_TIME_31TO16_MASK: u32 = 0x0000ffff;
@@ -8008,6 +8588,7 @@ impl AlarmTime31to16 {
     // ======== Field Accessors ========
 
     /// **ALARM_TIME_31TO16** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn alarm_time_31to16(&self) -> u32 {
@@ -8015,6 +8596,7 @@ impl AlarmTime31to16 {
     }
 
     /// Write **ALARM_TIME_31TO16** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_31to16(&self, value: u32) {
@@ -8052,6 +8634,7 @@ impl AlarmTime31to16Val {
     }
 
     /// Read **ALARM_TIME_31TO16** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_31to16(&self) -> u32 {
@@ -8059,6 +8642,7 @@ impl AlarmTime31to16Val {
     }
 
     /// Set **ALARM_TIME_31TO16** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn with_alarm_time_31to16(self, value: u32) -> Self {
@@ -8104,6 +8688,7 @@ impl AlarmTime31to16 {
 /// ## Fields
 ///
 /// - **ALARM_TIME_15TO0** `[15:0]` (RW)
+///
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime15to0 {
@@ -8122,7 +8707,9 @@ impl AlarmTime15to0 {
     // ======== Field Constants ========
 
     /// **ALARM_TIME_15TO0**
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const ALARM_TIME_15TO0_OFFSET: u32 = 0;
     pub const ALARM_TIME_15TO0_MASK: u32 = 0x0000ffff;
@@ -8130,6 +8717,7 @@ impl AlarmTime15to0 {
     // ======== Field Accessors ========
 
     /// **ALARM_TIME_15TO0** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn alarm_time_15to0(&self) -> u32 {
@@ -8137,6 +8725,7 @@ impl AlarmTime15to0 {
     }
 
     /// Write **ALARM_TIME_15TO0** `[15:0]` (RW)
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_15to0(&self, value: u32) {
@@ -8174,6 +8763,7 @@ impl AlarmTime15to0Val {
     }
 
     /// Read **ALARM_TIME_15TO0** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_15to0(&self) -> u32 {
@@ -8181,6 +8771,7 @@ impl AlarmTime15to0Val {
     }
 
     /// Set **ALARM_TIME_15TO0** `[15:0]`
+    ///
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn with_alarm_time_15to0(self, value: u32) -> Self {
@@ -8226,34 +8817,61 @@ impl AlarmTime15to0 {
 /// ## Fields
 ///
 /// - **USING_GPIO_1HZ** `[19]` (RO)
+///
 ///   Timer is synchronised to a 1hz gpio source
+///
 /// - **USING_GPIO_1KHZ** `[18]` (RO)
+///
 ///   Timer is running from a 1khz gpio source
+///
 /// - **USING_LPOSC** `[17]` (RO)
+///
 ///   Timer is running from lposc
+///
 /// - **USING_XOSC** `[16]` (RO)
+///
 ///   Timer is running from xosc
+///
 /// - **USE_GPIO_1HZ** `[13]` (RW)
+///
 ///   Selects the gpio source as the reference for the sec counter. The msec counter will continue to use the lposc or xosc reference.
+///
 /// - **USE_GPIO_1KHZ** `[10]` (WO)
+///
 ///   switch to gpio as the source of the 1kHz timer tick
+///
 /// - **USE_XOSC** `[9]` (WO)
+///
 ///   switch to xosc as the source of the 1kHz timer tick
+///
 /// - **USE_LPOSC** `[8]` (WO)
+///
 ///   Switch to lposc as the source of the 1kHz timer tick
+///
 /// - **ALARM** `[6]` (RW)
+///
 ///   Alarm has fired. Write to 1 to clear the alarm.
+///
 /// - **PWRUP_ON_ALARM** `[5]` (RW)
+///
 ///   Alarm wakes the chip from low power mode
+///
 /// - **ALARM_ENAB** `[4]` (RW)
+///
 ///   Enables the alarm. The alarm must be disabled while writing the alarm time.
+///
 /// - **CLEAR** `[2]` (WO)
+///
 ///   Clears the timer, does not disable the timer and does not affect the alarm. This control can be written at any time.
+///
 /// - **RUN** `[1]` (RW)
+///
 ///   Timer enable. Setting this bit causes the timer to begin counting up from its current value. Clearing this bit stops the timer from counting.
 ///   Before enabling the timer, set the POWMAN_LPOSC_FREQ* and POWMAN_XOSC_FREQ* registers to configure the count rate, and initialise the current time by writing to SET_TIME_63TO48 through SET_TIME_15TO0. You must not write to the SET_TIME_x registers when the timer is running.
 ///   Once configured, start the timer by setting POWMAN_TIMER_RUN=1. This will start the timer running from the LPOSC. When the XOSC is available switch the reference clock to XOSC then select it as the timer clock by setting POWMAN_TIMER_USE_XOSC=1
+///
 /// - **NONSEC_WRITE** `[0]` (RW)
+///
 ///   Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
 #[repr(transparent)]
 pub struct Timer {
@@ -8272,100 +8890,128 @@ impl Timer {
     // ======== Field Constants ========
 
     /// **USING_GPIO_1HZ**
+    ///
     /// Timer is synchronised to a 1hz gpio source
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const USING_GPIO_1HZ_OFFSET: u32 = 19;
     pub const USING_GPIO_1HZ_MASK: u32 = 0x00080000;
     pub const USING_GPIO_1HZ: u32 = 1 << 19;
 
     /// **USING_GPIO_1KHZ**
+    ///
     /// Timer is running from a 1khz gpio source
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const USING_GPIO_1KHZ_OFFSET: u32 = 18;
     pub const USING_GPIO_1KHZ_MASK: u32 = 0x00040000;
     pub const USING_GPIO_1KHZ: u32 = 1 << 18;
 
     /// **USING_LPOSC**
+    ///
     /// Timer is running from lposc
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const USING_LPOSC_OFFSET: u32 = 17;
     pub const USING_LPOSC_MASK: u32 = 0x00020000;
     pub const USING_LPOSC: u32 = 1 << 17;
 
     /// **USING_XOSC**
+    ///
     /// Timer is running from xosc
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const USING_XOSC_OFFSET: u32 = 16;
     pub const USING_XOSC_MASK: u32 = 0x00010000;
     pub const USING_XOSC: u32 = 1 << 16;
 
     /// **USE_GPIO_1HZ**
+    ///
     /// Selects the gpio source as the reference for the sec counter. The msec counter will continue to use the lposc or xosc reference.
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const USE_GPIO_1HZ_OFFSET: u32 = 13;
     pub const USE_GPIO_1HZ_MASK: u32 = 0x00002000;
     pub const USE_GPIO_1HZ: u32 = 1 << 13;
 
     /// **USE_GPIO_1KHZ**
+    ///
     /// switch to gpio as the source of the 1kHz timer tick
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const USE_GPIO_1KHZ_OFFSET: u32 = 10;
     pub const USE_GPIO_1KHZ_MASK: u32 = 0x00000400;
     pub const USE_GPIO_1KHZ: u32 = 1 << 10;
 
     /// **USE_XOSC**
+    ///
     /// switch to xosc as the source of the 1kHz timer tick
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const USE_XOSC_OFFSET: u32 = 9;
     pub const USE_XOSC_MASK: u32 = 0x00000200;
     pub const USE_XOSC: u32 = 1 << 9;
 
     /// **USE_LPOSC**
+    ///
     /// Switch to lposc as the source of the 1kHz timer tick
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const USE_LPOSC_OFFSET: u32 = 8;
     pub const USE_LPOSC_MASK: u32 = 0x00000100;
     pub const USE_LPOSC: u32 = 1 << 8;
 
     /// **ALARM**
+    ///
     /// Alarm has fired. Write to 1 to clear the alarm.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ALARM_OFFSET: u32 = 6;
     pub const ALARM_MASK: u32 = 0x00000040;
     pub const ALARM: u32 = 1 << 6;
 
     /// **PWRUP_ON_ALARM**
+    ///
     /// Alarm wakes the chip from low power mode
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const PWRUP_ON_ALARM_OFFSET: u32 = 5;
     pub const PWRUP_ON_ALARM_MASK: u32 = 0x00000020;
     pub const PWRUP_ON_ALARM: u32 = 1 << 5;
 
     /// **ALARM_ENAB**
+    ///
     /// Enables the alarm. The alarm must be disabled while writing the alarm time.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const ALARM_ENAB_OFFSET: u32 = 4;
     pub const ALARM_ENAB_MASK: u32 = 0x00000010;
     pub const ALARM_ENAB: u32 = 1 << 4;
 
     /// **CLEAR**
+    ///
     /// Clears the timer, does not disable the timer and does not affect the alarm. This control can be written at any time.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const CLEAR_OFFSET: u32 = 2;
     pub const CLEAR_MASK: u32 = 0x00000004;
     pub const CLEAR: u32 = 1 << 2;
 
     /// **RUN**
+    ///
     /// Timer enable. Setting this bit causes the timer to begin counting up from its current value. Clearing this bit stops the timer from counting.
     /// Before enabling the timer, set the POWMAN_LPOSC_FREQ* and POWMAN_XOSC_FREQ* registers to configure the count rate, and initialise the current time by writing to SET_TIME_63TO48 through SET_TIME_15TO0. You must not write to the SET_TIME_x registers when the timer is running.
     /// Once configured, start the timer by setting POWMAN_TIMER_RUN=1. This will start the timer running from the LPOSC. When the XOSC is available switch the reference clock to XOSC then select it as the timer clock by setting POWMAN_TIMER_USE_XOSC=1
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const RUN_OFFSET: u32 = 1;
     pub const RUN_MASK: u32 = 0x00000002;
     pub const RUN: u32 = 1 << 1;
 
     /// **NONSEC_WRITE**
+    ///
     /// Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NONSEC_WRITE_OFFSET: u32 = 0;
     pub const NONSEC_WRITE_MASK: u32 = 0x00000001;
@@ -8374,6 +9020,7 @@ impl Timer {
     // ======== Field Accessors ========
 
     /// **USING_GPIO_1HZ** `[19]` (RO)
+    ///
     /// Timer is synchronised to a 1hz gpio source
     #[inline(always)]
     pub fn using_gpio_1hz(&self) -> bool {
@@ -8381,6 +9028,7 @@ impl Timer {
     }
 
     /// **USING_GPIO_1KHZ** `[18]` (RO)
+    ///
     /// Timer is running from a 1khz gpio source
     #[inline(always)]
     pub fn using_gpio_1khz(&self) -> bool {
@@ -8388,6 +9036,7 @@ impl Timer {
     }
 
     /// **USING_LPOSC** `[17]` (RO)
+    ///
     /// Timer is running from lposc
     #[inline(always)]
     pub fn using_lposc(&self) -> bool {
@@ -8395,6 +9044,7 @@ impl Timer {
     }
 
     /// **USING_XOSC** `[16]` (RO)
+    ///
     /// Timer is running from xosc
     #[inline(always)]
     pub fn using_xosc(&self) -> bool {
@@ -8402,6 +9052,7 @@ impl Timer {
     }
 
     /// **USE_GPIO_1HZ** `[13]` (RW)
+    ///
     /// Selects the gpio source as the reference for the sec counter. The msec counter will continue to use the lposc or xosc reference.
     #[inline(always)]
     pub fn use_gpio_1hz(&self) -> bool {
@@ -8420,27 +9071,24 @@ impl Timer {
         self.value.clr_bits(Self::USE_GPIO_1HZ_MASK);
     }
 
-    /// **USE_GPIO_1KHZ** `[10]` (WO)
-    /// switch to gpio as the source of the 1kHz timer tick
     /// Trigger **USE_GPIO_1KHZ** (WO)
+    ///
     /// switch to gpio as the source of the 1kHz timer tick
     #[inline(always)]
     pub fn trigger_use_gpio_1khz(&self) {
         self.value.write_bits(Self::USE_GPIO_1KHZ_MASK);
     }
 
-    /// **USE_XOSC** `[9]` (WO)
-    /// switch to xosc as the source of the 1kHz timer tick
     /// Trigger **USE_XOSC** (WO)
+    ///
     /// switch to xosc as the source of the 1kHz timer tick
     #[inline(always)]
     pub fn trigger_use_xosc(&self) {
         self.value.write_bits(Self::USE_XOSC_MASK);
     }
 
-    /// **USE_LPOSC** `[8]` (WO)
-    /// Switch to lposc as the source of the 1kHz timer tick
     /// Trigger **USE_LPOSC** (WO)
+    ///
     /// Switch to lposc as the source of the 1kHz timer tick
     #[inline(always)]
     pub fn trigger_use_lposc(&self) {
@@ -8448,6 +9096,7 @@ impl Timer {
     }
 
     /// **ALARM** `[6]` (RW)
+    ///
     /// Alarm has fired. Write to 1 to clear the alarm.
     #[inline(always)]
     pub fn alarm(&self) -> bool {
@@ -8467,6 +9116,7 @@ impl Timer {
     }
 
     /// **PWRUP_ON_ALARM** `[5]` (RW)
+    ///
     /// Alarm wakes the chip from low power mode
     #[inline(always)]
     pub fn pwrup_on_alarm(&self) -> bool {
@@ -8486,6 +9136,7 @@ impl Timer {
     }
 
     /// **ALARM_ENAB** `[4]` (RW)
+    ///
     /// Enables the alarm. The alarm must be disabled while writing the alarm time.
     #[inline(always)]
     pub fn alarm_enab(&self) -> bool {
@@ -8504,9 +9155,8 @@ impl Timer {
         self.value.clr_bits(Self::ALARM_ENAB_MASK);
     }
 
-    /// **CLEAR** `[2]` (WO)
-    /// Clears the timer, does not disable the timer and does not affect the alarm. This control can be written at any time.
     /// Trigger **CLEAR** (WO)
+    ///
     /// Clears the timer, does not disable the timer and does not affect the alarm. This control can be written at any time.
     #[inline(always)]
     pub fn trigger_clear(&self) {
@@ -8514,6 +9164,7 @@ impl Timer {
     }
 
     /// **RUN** `[1]` (RW)
+    ///
     /// Timer enable. Setting this bit causes the timer to begin counting up from its current value. Clearing this bit stops the timer from counting.
     /// Before enabling the timer, set the POWMAN_LPOSC_FREQ* and POWMAN_XOSC_FREQ* registers to configure the count rate, and initialise the current time by writing to SET_TIME_63TO48 through SET_TIME_15TO0. You must not write to the SET_TIME_x registers when the timer is running.
     /// Once configured, start the timer by setting POWMAN_TIMER_RUN=1. This will start the timer running from the LPOSC. When the XOSC is available switch the reference clock to XOSC then select it as the timer clock by setting POWMAN_TIMER_USE_XOSC=1
@@ -8535,6 +9186,7 @@ impl Timer {
     }
 
     /// **NONSEC_WRITE** `[0]` (RW)
+    ///
     /// Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
     #[inline(always)]
     pub fn nonsec_write(&self) -> bool {
@@ -8584,6 +9236,7 @@ impl TimerVal {
     }
 
     /// Read **USING_GPIO_1HZ** `[19:19]`
+    ///
     /// Timer is synchronised to a 1hz gpio source
     #[inline(always)]
     pub const fn using_gpio_1hz(&self) -> bool {
@@ -8591,6 +9244,7 @@ impl TimerVal {
     }
 
     /// Read **USING_GPIO_1KHZ** `[18:18]`
+    ///
     /// Timer is running from a 1khz gpio source
     #[inline(always)]
     pub const fn using_gpio_1khz(&self) -> bool {
@@ -8598,6 +9252,7 @@ impl TimerVal {
     }
 
     /// Read **USING_LPOSC** `[17:17]`
+    ///
     /// Timer is running from lposc
     #[inline(always)]
     pub const fn using_lposc(&self) -> bool {
@@ -8605,6 +9260,7 @@ impl TimerVal {
     }
 
     /// Read **USING_XOSC** `[16:16]`
+    ///
     /// Timer is running from xosc
     #[inline(always)]
     pub const fn using_xosc(&self) -> bool {
@@ -8612,6 +9268,7 @@ impl TimerVal {
     }
 
     /// Read **USE_GPIO_1HZ** `[13:13]`
+    ///
     /// Selects the gpio source as the reference for the sec counter. The msec counter will continue to use the lposc or xosc reference.
     #[inline(always)]
     pub const fn use_gpio_1hz(&self) -> bool {
@@ -8619,6 +9276,7 @@ impl TimerVal {
     }
 
     /// Read **ALARM** `[6:6]`
+    ///
     /// Alarm has fired. Write to 1 to clear the alarm.
     #[inline(always)]
     pub const fn alarm(&self) -> bool {
@@ -8626,6 +9284,7 @@ impl TimerVal {
     }
 
     /// Read **PWRUP_ON_ALARM** `[5:5]`
+    ///
     /// Alarm wakes the chip from low power mode
     #[inline(always)]
     pub const fn pwrup_on_alarm(&self) -> bool {
@@ -8633,6 +9292,7 @@ impl TimerVal {
     }
 
     /// Read **ALARM_ENAB** `[4:4]`
+    ///
     /// Enables the alarm. The alarm must be disabled while writing the alarm time.
     #[inline(always)]
     pub const fn alarm_enab(&self) -> bool {
@@ -8640,6 +9300,7 @@ impl TimerVal {
     }
 
     /// Read **RUN** `[1:1]`
+    ///
     /// Timer enable. Setting this bit causes the timer to begin counting up from its current value. Clearing this bit stops the timer from counting.
     /// Before enabling the timer, set the POWMAN_LPOSC_FREQ* and POWMAN_XOSC_FREQ* registers to configure the count rate, and initialise the current time by writing to SET_TIME_63TO48 through SET_TIME_15TO0. You must not write to the SET_TIME_x registers when the timer is running.
     /// Once configured, start the timer by setting POWMAN_TIMER_RUN=1. This will start the timer running from the LPOSC. When the XOSC is available switch the reference clock to XOSC then select it as the timer clock by setting POWMAN_TIMER_USE_XOSC=1
@@ -8649,6 +9310,7 @@ impl TimerVal {
     }
 
     /// Read **NONSEC_WRITE** `[0:0]`
+    ///
     /// Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
     #[inline(always)]
     pub const fn nonsec_write(&self) -> bool {
@@ -8656,6 +9318,7 @@ impl TimerVal {
     }
 
     /// Set **USE_GPIO_1HZ** `[13:13]`
+    ///
     /// Selects the gpio source as the reference for the sec counter. The msec counter will continue to use the lposc or xosc reference.
     #[inline(always)]
     pub const fn with_use_gpio_1hz(self, value: bool) -> Self {
@@ -8669,6 +9332,7 @@ impl TimerVal {
     }
 
     /// Set **USE_GPIO_1KHZ** `[10:10]`
+    ///
     /// switch to gpio as the source of the 1kHz timer tick
     #[inline(always)]
     pub const fn with_use_gpio_1khz(self, value: bool) -> Self {
@@ -8682,6 +9346,7 @@ impl TimerVal {
     }
 
     /// Set **USE_XOSC** `[9:9]`
+    ///
     /// switch to xosc as the source of the 1kHz timer tick
     #[inline(always)]
     pub const fn with_use_xosc(self, value: bool) -> Self {
@@ -8695,6 +9360,7 @@ impl TimerVal {
     }
 
     /// Set **USE_LPOSC** `[8:8]`
+    ///
     /// Switch to lposc as the source of the 1kHz timer tick
     #[inline(always)]
     pub const fn with_use_lposc(self, value: bool) -> Self {
@@ -8708,6 +9374,7 @@ impl TimerVal {
     }
 
     /// Set **ALARM** `[6:6]`
+    ///
     /// Alarm has fired. Write to 1 to clear the alarm.
     #[inline(always)]
     pub const fn with_alarm(self, value: bool) -> Self {
@@ -8721,6 +9388,7 @@ impl TimerVal {
     }
 
     /// Set **PWRUP_ON_ALARM** `[5:5]`
+    ///
     /// Alarm wakes the chip from low power mode
     #[inline(always)]
     pub const fn with_pwrup_on_alarm(self, value: bool) -> Self {
@@ -8734,6 +9402,7 @@ impl TimerVal {
     }
 
     /// Set **ALARM_ENAB** `[4:4]`
+    ///
     /// Enables the alarm. The alarm must be disabled while writing the alarm time.
     #[inline(always)]
     pub const fn with_alarm_enab(self, value: bool) -> Self {
@@ -8747,6 +9416,7 @@ impl TimerVal {
     }
 
     /// Set **CLEAR** `[2:2]`
+    ///
     /// Clears the timer, does not disable the timer and does not affect the alarm. This control can be written at any time.
     #[inline(always)]
     pub const fn with_clear(self, value: bool) -> Self {
@@ -8760,6 +9430,7 @@ impl TimerVal {
     }
 
     /// Set **RUN** `[1:1]`
+    ///
     /// Timer enable. Setting this bit causes the timer to begin counting up from its current value. Clearing this bit stops the timer from counting.
     /// Before enabling the timer, set the POWMAN_LPOSC_FREQ* and POWMAN_XOSC_FREQ* registers to configure the count rate, and initialise the current time by writing to SET_TIME_63TO48 through SET_TIME_15TO0. You must not write to the SET_TIME_x registers when the timer is running.
     /// Once configured, start the timer by setting POWMAN_TIMER_RUN=1. This will start the timer running from the LPOSC. When the XOSC is available switch the reference clock to XOSC then select it as the timer clock by setting POWMAN_TIMER_USE_XOSC=1
@@ -8775,6 +9446,7 @@ impl TimerVal {
     }
 
     /// Set **NONSEC_WRITE** `[0:0]`
+    ///
     /// Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
     #[inline(always)]
     pub const fn with_nonsec_write(self, value: bool) -> Self {
@@ -8840,15 +9512,24 @@ impl Timer {
 /// ## Fields
 ///
 /// - **RAW_STATUS** `[10]` (RO)
+///
 ///   Value of selected gpio pin (only if enable == 1)
+///
 /// - **STATUS** `[9]` (RW)
+///
 ///   Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+///
 /// - **MODE** `[8]` (RW)
+///
 ///   Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+///
 /// - **DIRECTION** `[7]` (RW)
+///
 /// - **ENABLE** `[6]` (RW)
+///
 ///   Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
 ///   If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+///
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup0 {
@@ -8867,21 +9548,27 @@ impl Pwrup0 {
     // ======== Field Constants ========
 
     /// **RAW_STATUS**
+    ///
     /// Value of selected gpio pin (only if enable == 1)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const RAW_STATUS_OFFSET: u32 = 10;
     pub const RAW_STATUS_MASK: u32 = 0x00000400;
     pub const RAW_STATUS: u32 = 1 << 10;
 
     /// **STATUS**
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const STATUS_OFFSET: u32 = 9;
     pub const STATUS_MASK: u32 = 0x00000200;
     pub const STATUS: u32 = 1 << 9;
 
     /// **MODE**
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MODE_OFFSET: u32 = 8;
     pub const MODE_MASK: u32 = 0x00000100;
@@ -8902,8 +9589,10 @@ impl Pwrup0 {
     pub const DIRECTION_HIGH_RISING_VAL: u32 = 1;
 
     /// **ENABLE**
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ENABLE_OFFSET: u32 = 6;
     pub const ENABLE_MASK: u32 = 0x00000040;
@@ -8917,6 +9606,7 @@ impl Pwrup0 {
     // ======== Field Accessors ========
 
     /// **RAW_STATUS** `[10]` (RO)
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub fn raw_status(&self) -> bool {
@@ -8924,6 +9614,7 @@ impl Pwrup0 {
     }
 
     /// **STATUS** `[9]` (RW)
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub fn status(&self) -> bool {
@@ -8943,6 +9634,7 @@ impl Pwrup0 {
     }
 
     /// **MODE** `[8]` (RW)
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub fn mode(&self) -> bool {
@@ -8980,6 +9672,7 @@ impl Pwrup0 {
     }
 
     /// **ENABLE** `[6]` (RW)
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9042,6 +9735,7 @@ impl Pwrup0Val {
     }
 
     /// Read **RAW_STATUS** `[10:10]`
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub const fn raw_status(&self) -> bool {
@@ -9049,6 +9743,7 @@ impl Pwrup0Val {
     }
 
     /// Read **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn status(&self) -> bool {
@@ -9056,6 +9751,7 @@ impl Pwrup0Val {
     }
 
     /// Read **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn mode(&self) -> bool {
@@ -9069,6 +9765,7 @@ impl Pwrup0Val {
     }
 
     /// Read **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9083,6 +9780,7 @@ impl Pwrup0Val {
     }
 
     /// Set **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn with_status(self, value: bool) -> Self {
@@ -9096,6 +9794,7 @@ impl Pwrup0Val {
     }
 
     /// Set **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn with_mode(self, value: bool) -> Self {
@@ -9121,6 +9820,7 @@ impl Pwrup0Val {
     }
 
     /// Set **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9195,15 +9895,24 @@ impl Pwrup0 {
 /// ## Fields
 ///
 /// - **RAW_STATUS** `[10]` (RO)
+///
 ///   Value of selected gpio pin (only if enable == 1)
+///
 /// - **STATUS** `[9]` (RW)
+///
 ///   Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+///
 /// - **MODE** `[8]` (RW)
+///
 ///   Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+///
 /// - **DIRECTION** `[7]` (RW)
+///
 /// - **ENABLE** `[6]` (RW)
+///
 ///   Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
 ///   If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+///
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup1 {
@@ -9222,21 +9931,27 @@ impl Pwrup1 {
     // ======== Field Constants ========
 
     /// **RAW_STATUS**
+    ///
     /// Value of selected gpio pin (only if enable == 1)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const RAW_STATUS_OFFSET: u32 = 10;
     pub const RAW_STATUS_MASK: u32 = 0x00000400;
     pub const RAW_STATUS: u32 = 1 << 10;
 
     /// **STATUS**
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const STATUS_OFFSET: u32 = 9;
     pub const STATUS_MASK: u32 = 0x00000200;
     pub const STATUS: u32 = 1 << 9;
 
     /// **MODE**
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MODE_OFFSET: u32 = 8;
     pub const MODE_MASK: u32 = 0x00000100;
@@ -9257,8 +9972,10 @@ impl Pwrup1 {
     pub const DIRECTION_HIGH_RISING_VAL: u32 = 1;
 
     /// **ENABLE**
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ENABLE_OFFSET: u32 = 6;
     pub const ENABLE_MASK: u32 = 0x00000040;
@@ -9272,6 +9989,7 @@ impl Pwrup1 {
     // ======== Field Accessors ========
 
     /// **RAW_STATUS** `[10]` (RO)
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub fn raw_status(&self) -> bool {
@@ -9279,6 +9997,7 @@ impl Pwrup1 {
     }
 
     /// **STATUS** `[9]` (RW)
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub fn status(&self) -> bool {
@@ -9298,6 +10017,7 @@ impl Pwrup1 {
     }
 
     /// **MODE** `[8]` (RW)
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub fn mode(&self) -> bool {
@@ -9335,6 +10055,7 @@ impl Pwrup1 {
     }
 
     /// **ENABLE** `[6]` (RW)
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9397,6 +10118,7 @@ impl Pwrup1Val {
     }
 
     /// Read **RAW_STATUS** `[10:10]`
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub const fn raw_status(&self) -> bool {
@@ -9404,6 +10126,7 @@ impl Pwrup1Val {
     }
 
     /// Read **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn status(&self) -> bool {
@@ -9411,6 +10134,7 @@ impl Pwrup1Val {
     }
 
     /// Read **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn mode(&self) -> bool {
@@ -9424,6 +10148,7 @@ impl Pwrup1Val {
     }
 
     /// Read **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9438,6 +10163,7 @@ impl Pwrup1Val {
     }
 
     /// Set **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn with_status(self, value: bool) -> Self {
@@ -9451,6 +10177,7 @@ impl Pwrup1Val {
     }
 
     /// Set **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn with_mode(self, value: bool) -> Self {
@@ -9476,6 +10203,7 @@ impl Pwrup1Val {
     }
 
     /// Set **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9550,15 +10278,24 @@ impl Pwrup1 {
 /// ## Fields
 ///
 /// - **RAW_STATUS** `[10]` (RO)
+///
 ///   Value of selected gpio pin (only if enable == 1)
+///
 /// - **STATUS** `[9]` (RW)
+///
 ///   Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+///
 /// - **MODE** `[8]` (RW)
+///
 ///   Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+///
 /// - **DIRECTION** `[7]` (RW)
+///
 /// - **ENABLE** `[6]` (RW)
+///
 ///   Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
 ///   If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+///
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup2 {
@@ -9577,21 +10314,27 @@ impl Pwrup2 {
     // ======== Field Constants ========
 
     /// **RAW_STATUS**
+    ///
     /// Value of selected gpio pin (only if enable == 1)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const RAW_STATUS_OFFSET: u32 = 10;
     pub const RAW_STATUS_MASK: u32 = 0x00000400;
     pub const RAW_STATUS: u32 = 1 << 10;
 
     /// **STATUS**
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const STATUS_OFFSET: u32 = 9;
     pub const STATUS_MASK: u32 = 0x00000200;
     pub const STATUS: u32 = 1 << 9;
 
     /// **MODE**
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MODE_OFFSET: u32 = 8;
     pub const MODE_MASK: u32 = 0x00000100;
@@ -9612,8 +10355,10 @@ impl Pwrup2 {
     pub const DIRECTION_HIGH_RISING_VAL: u32 = 1;
 
     /// **ENABLE**
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ENABLE_OFFSET: u32 = 6;
     pub const ENABLE_MASK: u32 = 0x00000040;
@@ -9627,6 +10372,7 @@ impl Pwrup2 {
     // ======== Field Accessors ========
 
     /// **RAW_STATUS** `[10]` (RO)
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub fn raw_status(&self) -> bool {
@@ -9634,6 +10380,7 @@ impl Pwrup2 {
     }
 
     /// **STATUS** `[9]` (RW)
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub fn status(&self) -> bool {
@@ -9653,6 +10400,7 @@ impl Pwrup2 {
     }
 
     /// **MODE** `[8]` (RW)
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub fn mode(&self) -> bool {
@@ -9690,6 +10438,7 @@ impl Pwrup2 {
     }
 
     /// **ENABLE** `[6]` (RW)
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9752,6 +10501,7 @@ impl Pwrup2Val {
     }
 
     /// Read **RAW_STATUS** `[10:10]`
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub const fn raw_status(&self) -> bool {
@@ -9759,6 +10509,7 @@ impl Pwrup2Val {
     }
 
     /// Read **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn status(&self) -> bool {
@@ -9766,6 +10517,7 @@ impl Pwrup2Val {
     }
 
     /// Read **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn mode(&self) -> bool {
@@ -9779,6 +10531,7 @@ impl Pwrup2Val {
     }
 
     /// Read **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9793,6 +10546,7 @@ impl Pwrup2Val {
     }
 
     /// Set **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn with_status(self, value: bool) -> Self {
@@ -9806,6 +10560,7 @@ impl Pwrup2Val {
     }
 
     /// Set **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn with_mode(self, value: bool) -> Self {
@@ -9831,6 +10586,7 @@ impl Pwrup2Val {
     }
 
     /// Set **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -9905,15 +10661,24 @@ impl Pwrup2 {
 /// ## Fields
 ///
 /// - **RAW_STATUS** `[10]` (RO)
+///
 ///   Value of selected gpio pin (only if enable == 1)
+///
 /// - **STATUS** `[9]` (RW)
+///
 ///   Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+///
 /// - **MODE** `[8]` (RW)
+///
 ///   Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+///
 /// - **DIRECTION** `[7]` (RW)
+///
 /// - **ENABLE** `[6]` (RW)
+///
 ///   Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
 ///   If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+///
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup3 {
@@ -9932,21 +10697,27 @@ impl Pwrup3 {
     // ======== Field Constants ========
 
     /// **RAW_STATUS**
+    ///
     /// Value of selected gpio pin (only if enable == 1)
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const RAW_STATUS_OFFSET: u32 = 10;
     pub const RAW_STATUS_MASK: u32 = 0x00000400;
     pub const RAW_STATUS: u32 = 1 << 10;
 
     /// **STATUS**
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const STATUS_OFFSET: u32 = 9;
     pub const STATUS_MASK: u32 = 0x00000200;
     pub const STATUS: u32 = 1 << 9;
 
     /// **MODE**
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MODE_OFFSET: u32 = 8;
     pub const MODE_MASK: u32 = 0x00000100;
@@ -9967,8 +10738,10 @@ impl Pwrup3 {
     pub const DIRECTION_HIGH_RISING_VAL: u32 = 1;
 
     /// **ENABLE**
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const ENABLE_OFFSET: u32 = 6;
     pub const ENABLE_MASK: u32 = 0x00000040;
@@ -9982,6 +10755,7 @@ impl Pwrup3 {
     // ======== Field Accessors ========
 
     /// **RAW_STATUS** `[10]` (RO)
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub fn raw_status(&self) -> bool {
@@ -9989,6 +10763,7 @@ impl Pwrup3 {
     }
 
     /// **STATUS** `[9]` (RW)
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub fn status(&self) -> bool {
@@ -10008,6 +10783,7 @@ impl Pwrup3 {
     }
 
     /// **MODE** `[8]` (RW)
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub fn mode(&self) -> bool {
@@ -10045,6 +10821,7 @@ impl Pwrup3 {
     }
 
     /// **ENABLE** `[6]` (RW)
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -10107,6 +10884,7 @@ impl Pwrup3Val {
     }
 
     /// Read **RAW_STATUS** `[10:10]`
+    ///
     /// Value of selected gpio pin (only if enable == 1)
     #[inline(always)]
     pub const fn raw_status(&self) -> bool {
@@ -10114,6 +10892,7 @@ impl Pwrup3Val {
     }
 
     /// Read **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn status(&self) -> bool {
@@ -10121,6 +10900,7 @@ impl Pwrup3Val {
     }
 
     /// Read **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn mode(&self) -> bool {
@@ -10134,6 +10914,7 @@ impl Pwrup3Val {
     }
 
     /// Read **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -10148,6 +10929,7 @@ impl Pwrup3Val {
     }
 
     /// Set **STATUS** `[9:9]`
+    ///
     /// Status of gpio wakeup. Write to 1 to clear a latched edge detect.
     #[inline(always)]
     pub const fn with_status(self, value: bool) -> Self {
@@ -10161,6 +10943,7 @@ impl Pwrup3Val {
     }
 
     /// Set **MODE** `[8:8]`
+    ///
     /// Edge or level detect. Edge will detect a 0 to 1 transition (or 1 to 0 transition). Level will detect a 1 or 0. Both types of event get latched into the current_pwrup_req register.
     #[inline(always)]
     pub const fn with_mode(self, value: bool) -> Self {
@@ -10186,6 +10969,7 @@ impl Pwrup3Val {
     }
 
     /// Set **ENABLE** `[6:6]`
+    ///
     /// Set to 1 to enable the wakeup source. Set to 0 to disable the wakeup source and clear a pending wakeup event.
     /// If using edge detect a latched edge needs to be cleared by writing 1 to the status register also.
     #[inline(always)]
@@ -10467,6 +11251,7 @@ impl LastSwcorePwrup {
 /// ## Fields
 ///
 /// - **IGNORE** `[0]` (RW)
+///
 ///   Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
 #[repr(transparent)]
 pub struct DbgPwrcfg {
@@ -10485,7 +11270,9 @@ impl DbgPwrcfg {
     // ======== Field Constants ========
 
     /// **IGNORE**
+    ///
     /// Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const IGNORE_OFFSET: u32 = 0;
     pub const IGNORE_MASK: u32 = 0x00000001;
@@ -10494,6 +11281,7 @@ impl DbgPwrcfg {
     // ======== Field Accessors ========
 
     /// **IGNORE** `[0]` (RW)
+    ///
     /// Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
     #[inline(always)]
     pub fn ignore(&self) -> bool {
@@ -10543,6 +11331,7 @@ impl DbgPwrcfgVal {
     }
 
     /// Read **IGNORE** `[0:0]`
+    ///
     /// Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
     #[inline(always)]
     pub const fn ignore(&self) -> bool {
@@ -10550,6 +11339,7 @@ impl DbgPwrcfgVal {
     }
 
     /// Set **IGNORE** `[0:0]`
+    ///
     /// Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
     #[inline(always)]
     pub const fn with_ignore(self, value: bool) -> Self {
@@ -10604,10 +11394,13 @@ impl DbgPwrcfg {
 /// ## Fields
 ///
 /// - **NEXT** `[1]` (RW)
+///
 ///   This flag always ORs writes into its current contents. It can be set but not cleared by software.
 ///   The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the BOOT0..3 registers will be ignored following the next reset of the RSM by powman.
 ///   This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it by power cycling.
+///
 /// - **NOW** `[0]` (RW)
+///
 ///   When powman resets the RSM, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
 ///   The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
 #[repr(transparent)]
@@ -10627,17 +11420,21 @@ impl Bootdis {
     // ======== Field Constants ========
 
     /// **NEXT**
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the BOOT0..3 registers will be ignored following the next reset of the RSM by powman.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it by power cycling.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const NEXT_OFFSET: u32 = 1;
     pub const NEXT_MASK: u32 = 0x00000002;
     pub const NEXT: u32 = 1 << 1;
 
     /// **NOW**
+    ///
     /// When powman resets the RSM, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const NOW_OFFSET: u32 = 0;
     pub const NOW_MASK: u32 = 0x00000001;
@@ -10646,6 +11443,7 @@ impl Bootdis {
     // ======== Field Accessors ========
 
     /// **NEXT** `[1]` (RW)
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the BOOT0..3 registers will be ignored following the next reset of the RSM by powman.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it by power cycling.
@@ -10667,6 +11465,7 @@ impl Bootdis {
     }
 
     /// **NOW** `[0]` (RW)
+    ///
     /// When powman resets the RSM, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -10717,6 +11516,7 @@ impl BootdisVal {
     }
 
     /// Read **NEXT** `[1:1]`
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the BOOT0..3 registers will be ignored following the next reset of the RSM by powman.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it by power cycling.
@@ -10726,6 +11526,7 @@ impl BootdisVal {
     }
 
     /// Read **NOW** `[0:0]`
+    ///
     /// When powman resets the RSM, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -10734,6 +11535,7 @@ impl BootdisVal {
     }
 
     /// Set **NEXT** `[1:1]`
+    ///
     /// This flag always ORs writes into its current contents. It can be set but not cleared by software.
     /// The BOOTDIS_NEXT bit is OR'd into the BOOTDIS_NOW bit when the core is powered down. Simultaneously, the BOOTDIS_NEXT bit is cleared. Setting this bit means that the BOOT0..3 registers will be ignored following the next reset of the RSM by powman.
     /// This flag should be set by an early boot stage that has soft-locked OTP pages, to prevent later stages from unlocking it by power cycling.
@@ -10749,6 +11551,7 @@ impl BootdisVal {
     }
 
     /// Set **NOW** `[0:0]`
+    ///
     /// When powman resets the RSM, the current value of BOOTDIS_NEXT is OR'd into BOOTDIS_NOW, and BOOTDIS_NEXT is cleared.
     /// The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
     #[inline(always)]
@@ -10799,6 +11602,7 @@ impl Bootdis {
 /// ## Fields
 ///
 /// - **DP_INSTID** `[3:0]` (RW)
+///
 ///   Configure DP instance ID for SWD multidrop selection.
 ///   Recommend that this is NOT changed until you require debug access in multi-chip environment
 #[repr(transparent)]
@@ -10818,8 +11622,10 @@ impl Dbgconfig {
     // ======== Field Constants ========
 
     /// **DP_INSTID**
+    ///
     /// Configure DP instance ID for SWD multidrop selection.
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const DP_INSTID_OFFSET: u32 = 0;
     pub const DP_INSTID_MASK: u32 = 0x0000000f;
@@ -10827,6 +11633,7 @@ impl Dbgconfig {
     // ======== Field Accessors ========
 
     /// **DP_INSTID** `[3:0]` (RW)
+    ///
     /// Configure DP instance ID for SWD multidrop selection.
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
     #[inline(always)]
@@ -10835,6 +11642,7 @@ impl Dbgconfig {
     }
 
     /// Write **DP_INSTID** `[3:0]` (RW)
+    ///
     /// Configure DP instance ID for SWD multidrop selection.
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
     #[inline(always)]
@@ -10873,6 +11681,7 @@ impl DbgconfigVal {
     }
 
     /// Read **DP_INSTID** `[3:0]`
+    ///
     /// Configure DP instance ID for SWD multidrop selection.
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
     #[inline(always)]
@@ -10881,6 +11690,7 @@ impl DbgconfigVal {
     }
 
     /// Set **DP_INSTID** `[3:0]`
+    ///
     /// Configure DP instance ID for SWD multidrop selection.
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
     #[inline(always)]
@@ -12345,10 +13155,15 @@ impl Boot3 {
 /// ## Fields
 ///
 /// - **PWRUP_WHILE_WAITING** `[3]` (RO)
+///
 ///   Source is state.pwrup_while_waiting
+///
 /// - **STATE_REQ_IGNORED** `[2]` (RO)
+///
 ///   Source is state.req_ignored
+///
 /// - **TIMER** `[1]` (RO)
+///
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
@@ -12367,14 +13182,18 @@ impl Intr {
     // ======== Field Constants ========
 
     /// **PWRUP_WHILE_WAITING**
+    ///
     /// Source is state.pwrup_while_waiting
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PWRUP_WHILE_WAITING_OFFSET: u32 = 3;
     pub const PWRUP_WHILE_WAITING_MASK: u32 = 0x00000008;
     pub const PWRUP_WHILE_WAITING: u32 = 1 << 3;
 
     /// **STATE_REQ_IGNORED**
+    ///
     /// Source is state.req_ignored
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const STATE_REQ_IGNORED_OFFSET: u32 = 2;
     pub const STATE_REQ_IGNORED_MASK: u32 = 0x00000004;
@@ -12395,6 +13214,7 @@ impl Intr {
     // ======== Field Accessors ========
 
     /// **PWRUP_WHILE_WAITING** `[3]` (RO)
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub fn pwrup_while_waiting(&self) -> bool {
@@ -12402,6 +13222,7 @@ impl Intr {
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RO)
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub fn state_req_ignored(&self) -> bool {
@@ -12463,6 +13284,7 @@ impl IntrVal {
     }
 
     /// Read **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn pwrup_while_waiting(&self) -> bool {
@@ -12470,6 +13292,7 @@ impl IntrVal {
     }
 
     /// Read **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn state_req_ignored(&self) -> bool {
@@ -12539,10 +13362,15 @@ impl Intr {
 /// ## Fields
 ///
 /// - **PWRUP_WHILE_WAITING** `[3]` (RW)
+///
 ///   Source is state.pwrup_while_waiting
+///
 /// - **STATE_REQ_IGNORED** `[2]` (RW)
+///
 ///   Source is state.req_ignored
+///
 /// - **TIMER** `[1]` (RW)
+///
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
@@ -12561,14 +13389,18 @@ impl Inte {
     // ======== Field Constants ========
 
     /// **PWRUP_WHILE_WAITING**
+    ///
     /// Source is state.pwrup_while_waiting
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PWRUP_WHILE_WAITING_OFFSET: u32 = 3;
     pub const PWRUP_WHILE_WAITING_MASK: u32 = 0x00000008;
     pub const PWRUP_WHILE_WAITING: u32 = 1 << 3;
 
     /// **STATE_REQ_IGNORED**
+    ///
     /// Source is state.req_ignored
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const STATE_REQ_IGNORED_OFFSET: u32 = 2;
     pub const STATE_REQ_IGNORED_MASK: u32 = 0x00000004;
@@ -12589,6 +13421,7 @@ impl Inte {
     // ======== Field Accessors ========
 
     /// **PWRUP_WHILE_WAITING** `[3]` (RW)
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub fn pwrup_while_waiting(&self) -> bool {
@@ -12608,6 +13441,7 @@ impl Inte {
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RW)
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub fn state_req_ignored(&self) -> bool {
@@ -12693,6 +13527,7 @@ impl InteVal {
     }
 
     /// Read **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn pwrup_while_waiting(&self) -> bool {
@@ -12700,6 +13535,7 @@ impl InteVal {
     }
 
     /// Read **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn state_req_ignored(&self) -> bool {
@@ -12719,6 +13555,7 @@ impl InteVal {
     }
 
     /// Set **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn with_pwrup_while_waiting(self, value: bool) -> Self {
@@ -12732,6 +13569,7 @@ impl InteVal {
     }
 
     /// Set **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn with_state_req_ignored(self, value: bool) -> Self {
@@ -12807,10 +13645,15 @@ impl Inte {
 /// ## Fields
 ///
 /// - **PWRUP_WHILE_WAITING** `[3]` (RW)
+///
 ///   Source is state.pwrup_while_waiting
+///
 /// - **STATE_REQ_IGNORED** `[2]` (RW)
+///
 ///   Source is state.req_ignored
+///
 /// - **TIMER** `[1]` (RW)
+///
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
@@ -12829,14 +13672,18 @@ impl Intf {
     // ======== Field Constants ========
 
     /// **PWRUP_WHILE_WAITING**
+    ///
     /// Source is state.pwrup_while_waiting
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PWRUP_WHILE_WAITING_OFFSET: u32 = 3;
     pub const PWRUP_WHILE_WAITING_MASK: u32 = 0x00000008;
     pub const PWRUP_WHILE_WAITING: u32 = 1 << 3;
 
     /// **STATE_REQ_IGNORED**
+    ///
     /// Source is state.req_ignored
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const STATE_REQ_IGNORED_OFFSET: u32 = 2;
     pub const STATE_REQ_IGNORED_MASK: u32 = 0x00000004;
@@ -12857,6 +13704,7 @@ impl Intf {
     // ======== Field Accessors ========
 
     /// **PWRUP_WHILE_WAITING** `[3]` (RW)
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub fn pwrup_while_waiting(&self) -> bool {
@@ -12876,6 +13724,7 @@ impl Intf {
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RW)
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub fn state_req_ignored(&self) -> bool {
@@ -12961,6 +13810,7 @@ impl IntfVal {
     }
 
     /// Read **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn pwrup_while_waiting(&self) -> bool {
@@ -12968,6 +13818,7 @@ impl IntfVal {
     }
 
     /// Read **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn state_req_ignored(&self) -> bool {
@@ -12987,6 +13838,7 @@ impl IntfVal {
     }
 
     /// Set **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn with_pwrup_while_waiting(self, value: bool) -> Self {
@@ -13000,6 +13852,7 @@ impl IntfVal {
     }
 
     /// Set **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn with_state_req_ignored(self, value: bool) -> Self {
@@ -13075,10 +13928,15 @@ impl Intf {
 /// ## Fields
 ///
 /// - **PWRUP_WHILE_WAITING** `[3]` (RO)
+///
 ///   Source is state.pwrup_while_waiting
+///
 /// - **STATE_REQ_IGNORED** `[2]` (RO)
+///
 ///   Source is state.req_ignored
+///
 /// - **TIMER** `[1]` (RO)
+///
 /// - **VREG_OUTPUT_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
@@ -13097,14 +13955,18 @@ impl Ints {
     // ======== Field Constants ========
 
     /// **PWRUP_WHILE_WAITING**
+    ///
     /// Source is state.pwrup_while_waiting
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const PWRUP_WHILE_WAITING_OFFSET: u32 = 3;
     pub const PWRUP_WHILE_WAITING_MASK: u32 = 0x00000008;
     pub const PWRUP_WHILE_WAITING: u32 = 1 << 3;
 
     /// **STATE_REQ_IGNORED**
+    ///
     /// Source is state.req_ignored
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const STATE_REQ_IGNORED_OFFSET: u32 = 2;
     pub const STATE_REQ_IGNORED_MASK: u32 = 0x00000004;
@@ -13125,6 +13987,7 @@ impl Ints {
     // ======== Field Accessors ========
 
     /// **PWRUP_WHILE_WAITING** `[3]` (RO)
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub fn pwrup_while_waiting(&self) -> bool {
@@ -13132,6 +13995,7 @@ impl Ints {
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RO)
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub fn state_req_ignored(&self) -> bool {
@@ -13181,6 +14045,7 @@ impl IntsVal {
     }
 
     /// Read **PWRUP_WHILE_WAITING** `[3:3]`
+    ///
     /// Source is state.pwrup_while_waiting
     #[inline(always)]
     pub const fn pwrup_while_waiting(&self) -> bool {
@@ -13188,6 +14053,7 @@ impl IntsVal {
     }
 
     /// Read **STATE_REQ_IGNORED** `[2:2]`
+    ///
     /// Source is state.req_ignored
     #[inline(always)]
     pub const fn state_req_ignored(&self) -> bool {

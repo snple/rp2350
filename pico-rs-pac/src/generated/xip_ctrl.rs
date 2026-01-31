@@ -15,41 +15,62 @@ pub const BASE: u32 = 0x400c8000;
 /// ## Fields
 ///
 /// - **WRITABLE_M1** `[11]` (RW)
+///
 ///   If 1, enable writes to XIP memory window 1 (addresses 0x11000000 through 0x11ffffff, and their uncached mirrors). If 0, this region is read-only.
 ///   XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 1.
 ///   The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
 ///   Second, when a written line is evicted, it will cause a write command to be issued to the flash, which can break the flash out of its continuous read mode. After this point, flash reads will return garbage. This is a security concern, as it allows Non-secure software to break Secure flash reads if it has permission to write to any flash address.
 ///   Note the read-only behaviour is implemented by downgrading writes to reads, so writes will still cause allocation of an address, but have no other effect.
+///
 /// - **WRITABLE_M0** `[10]` (RW)
+///
 ///   If 1, enable writes to XIP memory window 0 (addresses 0x10000000 through 0x10ffffff, and their uncached mirrors). If 0, this region is read-only.
 ///   XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 0.
 ///   The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
 ///   Second, when a written line is evicted, it will cause a write command to be issued to the flash, which can break the flash out of its continuous read mode. After this point, flash reads will return garbage. This is a security concern, as it allows Non-secure software to break Secure flash reads if it has permission to write to any flash address.
 ///   Note the read-only behaviour is implemented by downgrading writes to reads, so writes will still cause allocation of an address, but have no other effect.
+///
 /// - **SPLIT_WAYS** `[9]` (RW)
+///
 ///   When 1, route all cached+Secure accesses to way 0 of the cache, and route all cached+Non-secure accesses to way 1 of the cache.
 ///   This partitions the cache into two half-sized direct-mapped regions, such that Non-secure code can not observe cache line state changes caused by Secure execution.
 ///   A full cache flush is required when changing the value of SPLIT_WAYS. The flush should be performed whilst SPLIT_WAYS is 0, so that both cache ways are accessible for invalidation.
+///
 /// - **MAINT_NONSEC** `[8]` (RW)
+///
 ///   When 0, Non-secure accesses to the cache maintenance address window (addr[27] == 1, addr[26] == 0) will generate a bus error. When 1, Non-secure accesses can perform cache maintenance operations by writing to the cache maintenance address window.
 ///   Cache maintenance operations may be used to corrupt Secure data by invalidating cache lines inappropriately, or map Secure content into a Non-secure region by pinning cache lines. Therefore this bit should generally be set to 0, unless Secure code is not using the cache.
 ///   Care should also be taken to clear the cache data memory and tag memory before granting maintenance operations to Non-secure code.
+///
 /// - **NO_UNTRANSLATED_NONSEC** `[7]` (RW)
+///
 ///   When 1, Non-secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
+///
 /// - **NO_UNTRANSLATED_SEC** `[6]` (RW)
+///
 ///   When 1, Secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
+///
 /// - **NO_UNCACHED_NONSEC** `[5]` (RW)
+///
 ///   When 1, Non-secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
 ///   Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
+///
 /// - **NO_UNCACHED_SEC** `[4]` (RW)
+///
 ///   When 1, Secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
 ///   Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
+///
 /// - **POWER_DOWN** `[3]` (RW)
+///
 ///   When 1, the cache memories are powered down. They retain state, but can not be accessed. This reduces static power dissipation. Writing 1 to this bit forces CTRL_EN_SECURE and CTRL_EN_NONSECURE to 0, i.e. the cache cannot be enabled when powered down.
+///
 /// - **EN_NONSECURE** `[1]` (RW)
+///
 ///   When 1, enable the cache for Non-secure accesses. When enabled, Non-secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
 ///   Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
+///
 /// - **EN_SECURE** `[0]` (RW)
+///
 ///   When 1, enable the cache for Secure accesses. When enabled, Secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
 ///   Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
 ///   There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
@@ -70,94 +91,116 @@ impl Ctrl {
     // ======== Field Constants ========
 
     /// **WRITABLE_M1**
+    ///
     /// If 1, enable writes to XIP memory window 1 (addresses 0x11000000 through 0x11ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 1.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
     /// Second, when a written line is evicted, it will cause a write command to be issued to the flash, which can break the flash out of its continuous read mode. After this point, flash reads will return garbage. This is a security concern, as it allows Non-secure software to break Secure flash reads if it has permission to write to any flash address.
     /// Note the read-only behaviour is implemented by downgrading writes to reads, so writes will still cause allocation of an address, but have no other effect.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const WRITABLE_M1_OFFSET: u32 = 11;
     pub const WRITABLE_M1_MASK: u32 = 0x00000800;
     pub const WRITABLE_M1: u32 = 1 << 11;
 
     /// **WRITABLE_M0**
+    ///
     /// If 1, enable writes to XIP memory window 0 (addresses 0x10000000 through 0x10ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 0.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
     /// Second, when a written line is evicted, it will cause a write command to be issued to the flash, which can break the flash out of its continuous read mode. After this point, flash reads will return garbage. This is a security concern, as it allows Non-secure software to break Secure flash reads if it has permission to write to any flash address.
     /// Note the read-only behaviour is implemented by downgrading writes to reads, so writes will still cause allocation of an address, but have no other effect.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const WRITABLE_M0_OFFSET: u32 = 10;
     pub const WRITABLE_M0_MASK: u32 = 0x00000400;
     pub const WRITABLE_M0: u32 = 1 << 10;
 
     /// **SPLIT_WAYS**
+    ///
     /// When 1, route all cached+Secure accesses to way 0 of the cache, and route all cached+Non-secure accesses to way 1 of the cache.
     /// This partitions the cache into two half-sized direct-mapped regions, such that Non-secure code can not observe cache line state changes caused by Secure execution.
     /// A full cache flush is required when changing the value of SPLIT_WAYS. The flush should be performed whilst SPLIT_WAYS is 0, so that both cache ways are accessible for invalidation.
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const SPLIT_WAYS_OFFSET: u32 = 9;
     pub const SPLIT_WAYS_MASK: u32 = 0x00000200;
     pub const SPLIT_WAYS: u32 = 1 << 9;
 
     /// **MAINT_NONSEC**
+    ///
     /// When 0, Non-secure accesses to the cache maintenance address window (addr[27] == 1, addr[26] == 0) will generate a bus error. When 1, Non-secure accesses can perform cache maintenance operations by writing to the cache maintenance address window.
     /// Cache maintenance operations may be used to corrupt Secure data by invalidating cache lines inappropriately, or map Secure content into a Non-secure region by pinning cache lines. Therefore this bit should generally be set to 0, unless Secure code is not using the cache.
     /// Care should also be taken to clear the cache data memory and tag memory before granting maintenance operations to Non-secure code.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const MAINT_NONSEC_OFFSET: u32 = 8;
     pub const MAINT_NONSEC_MASK: u32 = 0x00000100;
     pub const MAINT_NONSEC: u32 = 1 << 8;
 
     /// **NO_UNTRANSLATED_NONSEC**
+    ///
     /// When 1, Non-secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const NO_UNTRANSLATED_NONSEC_OFFSET: u32 = 7;
     pub const NO_UNTRANSLATED_NONSEC_MASK: u32 = 0x00000080;
     pub const NO_UNTRANSLATED_NONSEC: u32 = 1 << 7;
 
     /// **NO_UNTRANSLATED_SEC**
+    ///
     /// When 1, Secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const NO_UNTRANSLATED_SEC_OFFSET: u32 = 6;
     pub const NO_UNTRANSLATED_SEC_MASK: u32 = 0x00000040;
     pub const NO_UNTRANSLATED_SEC: u32 = 1 << 6;
 
     /// **NO_UNCACHED_NONSEC**
+    ///
     /// When 1, Non-secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const NO_UNCACHED_NONSEC_OFFSET: u32 = 5;
     pub const NO_UNCACHED_NONSEC_MASK: u32 = 0x00000020;
     pub const NO_UNCACHED_NONSEC: u32 = 1 << 5;
 
     /// **NO_UNCACHED_SEC**
+    ///
     /// When 1, Secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const NO_UNCACHED_SEC_OFFSET: u32 = 4;
     pub const NO_UNCACHED_SEC_MASK: u32 = 0x00000010;
     pub const NO_UNCACHED_SEC: u32 = 1 << 4;
 
     /// **POWER_DOWN**
+    ///
     /// When 1, the cache memories are powered down. They retain state, but can not be accessed. This reduces static power dissipation. Writing 1 to this bit forces CTRL_EN_SECURE and CTRL_EN_NONSECURE to 0, i.e. the cache cannot be enabled when powered down.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const POWER_DOWN_OFFSET: u32 = 3;
     pub const POWER_DOWN_MASK: u32 = 0x00000008;
     pub const POWER_DOWN: u32 = 1 << 3;
 
     /// **EN_NONSECURE**
+    ///
     /// When 1, enable the cache for Non-secure accesses. When enabled, Non-secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const EN_NONSECURE_OFFSET: u32 = 1;
     pub const EN_NONSECURE_MASK: u32 = 0x00000002;
     pub const EN_NONSECURE: u32 = 1 << 1;
 
     /// **EN_SECURE**
+    ///
     /// When 1, enable the cache for Secure accesses. When enabled, Secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     /// There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_SECURE_OFFSET: u32 = 0;
     pub const EN_SECURE_MASK: u32 = 0x00000001;
@@ -166,6 +209,7 @@ impl Ctrl {
     // ======== Field Accessors ========
 
     /// **WRITABLE_M1** `[11]` (RW)
+    ///
     /// If 1, enable writes to XIP memory window 1 (addresses 0x11000000 through 0x11ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 1.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -189,6 +233,7 @@ impl Ctrl {
     }
 
     /// **WRITABLE_M0** `[10]` (RW)
+    ///
     /// If 1, enable writes to XIP memory window 0 (addresses 0x10000000 through 0x10ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 0.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -212,6 +257,7 @@ impl Ctrl {
     }
 
     /// **SPLIT_WAYS** `[9]` (RW)
+    ///
     /// When 1, route all cached+Secure accesses to way 0 of the cache, and route all cached+Non-secure accesses to way 1 of the cache.
     /// This partitions the cache into two half-sized direct-mapped regions, such that Non-secure code can not observe cache line state changes caused by Secure execution.
     /// A full cache flush is required when changing the value of SPLIT_WAYS. The flush should be performed whilst SPLIT_WAYS is 0, so that both cache ways are accessible for invalidation.
@@ -233,6 +279,7 @@ impl Ctrl {
     }
 
     /// **MAINT_NONSEC** `[8]` (RW)
+    ///
     /// When 0, Non-secure accesses to the cache maintenance address window (addr[27] == 1, addr[26] == 0) will generate a bus error. When 1, Non-secure accesses can perform cache maintenance operations by writing to the cache maintenance address window.
     /// Cache maintenance operations may be used to corrupt Secure data by invalidating cache lines inappropriately, or map Secure content into a Non-secure region by pinning cache lines. Therefore this bit should generally be set to 0, unless Secure code is not using the cache.
     /// Care should also be taken to clear the cache data memory and tag memory before granting maintenance operations to Non-secure code.
@@ -254,6 +301,7 @@ impl Ctrl {
     }
 
     /// **NO_UNTRANSLATED_NONSEC** `[7]` (RW)
+    ///
     /// When 1, Non-secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub fn no_untranslated_nonsec(&self) -> bool {
@@ -273,6 +321,7 @@ impl Ctrl {
     }
 
     /// **NO_UNTRANSLATED_SEC** `[6]` (RW)
+    ///
     /// When 1, Secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub fn no_untranslated_sec(&self) -> bool {
@@ -292,6 +341,7 @@ impl Ctrl {
     }
 
     /// **NO_UNCACHED_NONSEC** `[5]` (RW)
+    ///
     /// When 1, Non-secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -312,6 +362,7 @@ impl Ctrl {
     }
 
     /// **NO_UNCACHED_SEC** `[4]` (RW)
+    ///
     /// When 1, Secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -332,6 +383,7 @@ impl Ctrl {
     }
 
     /// **POWER_DOWN** `[3]` (RW)
+    ///
     /// When 1, the cache memories are powered down. They retain state, but can not be accessed. This reduces static power dissipation. Writing 1 to this bit forces CTRL_EN_SECURE and CTRL_EN_NONSECURE to 0, i.e. the cache cannot be enabled when powered down.
     #[inline(always)]
     pub fn power_down(&self) -> bool {
@@ -351,6 +403,7 @@ impl Ctrl {
     }
 
     /// **EN_NONSECURE** `[1]` (RW)
+    ///
     /// When 1, enable the cache for Non-secure accesses. When enabled, Non-secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     #[inline(always)]
@@ -371,6 +424,7 @@ impl Ctrl {
     }
 
     /// **EN_SECURE** `[0]` (RW)
+    ///
     /// When 1, enable the cache for Secure accesses. When enabled, Secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     /// There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
@@ -422,6 +476,7 @@ impl CtrlVal {
     }
 
     /// Read **WRITABLE_M1** `[11:11]`
+    ///
     /// If 1, enable writes to XIP memory window 1 (addresses 0x11000000 through 0x11ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 1.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -433,6 +488,7 @@ impl CtrlVal {
     }
 
     /// Read **WRITABLE_M0** `[10:10]`
+    ///
     /// If 1, enable writes to XIP memory window 0 (addresses 0x10000000 through 0x10ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 0.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -444,6 +500,7 @@ impl CtrlVal {
     }
 
     /// Read **SPLIT_WAYS** `[9:9]`
+    ///
     /// When 1, route all cached+Secure accesses to way 0 of the cache, and route all cached+Non-secure accesses to way 1 of the cache.
     /// This partitions the cache into two half-sized direct-mapped regions, such that Non-secure code can not observe cache line state changes caused by Secure execution.
     /// A full cache flush is required when changing the value of SPLIT_WAYS. The flush should be performed whilst SPLIT_WAYS is 0, so that both cache ways are accessible for invalidation.
@@ -453,6 +510,7 @@ impl CtrlVal {
     }
 
     /// Read **MAINT_NONSEC** `[8:8]`
+    ///
     /// When 0, Non-secure accesses to the cache maintenance address window (addr[27] == 1, addr[26] == 0) will generate a bus error. When 1, Non-secure accesses can perform cache maintenance operations by writing to the cache maintenance address window.
     /// Cache maintenance operations may be used to corrupt Secure data by invalidating cache lines inappropriately, or map Secure content into a Non-secure region by pinning cache lines. Therefore this bit should generally be set to 0, unless Secure code is not using the cache.
     /// Care should also be taken to clear the cache data memory and tag memory before granting maintenance operations to Non-secure code.
@@ -462,6 +520,7 @@ impl CtrlVal {
     }
 
     /// Read **NO_UNTRANSLATED_NONSEC** `[7:7]`
+    ///
     /// When 1, Non-secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub const fn no_untranslated_nonsec(&self) -> bool {
@@ -469,6 +528,7 @@ impl CtrlVal {
     }
 
     /// Read **NO_UNTRANSLATED_SEC** `[6:6]`
+    ///
     /// When 1, Secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub const fn no_untranslated_sec(&self) -> bool {
@@ -476,6 +536,7 @@ impl CtrlVal {
     }
 
     /// Read **NO_UNCACHED_NONSEC** `[5:5]`
+    ///
     /// When 1, Non-secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -484,6 +545,7 @@ impl CtrlVal {
     }
 
     /// Read **NO_UNCACHED_SEC** `[4:4]`
+    ///
     /// When 1, Secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -492,6 +554,7 @@ impl CtrlVal {
     }
 
     /// Read **POWER_DOWN** `[3:3]`
+    ///
     /// When 1, the cache memories are powered down. They retain state, but can not be accessed. This reduces static power dissipation. Writing 1 to this bit forces CTRL_EN_SECURE and CTRL_EN_NONSECURE to 0, i.e. the cache cannot be enabled when powered down.
     #[inline(always)]
     pub const fn power_down(&self) -> bool {
@@ -499,6 +562,7 @@ impl CtrlVal {
     }
 
     /// Read **EN_NONSECURE** `[1:1]`
+    ///
     /// When 1, enable the cache for Non-secure accesses. When enabled, Non-secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     #[inline(always)]
@@ -507,6 +571,7 @@ impl CtrlVal {
     }
 
     /// Read **EN_SECURE** `[0:0]`
+    ///
     /// When 1, enable the cache for Secure accesses. When enabled, Secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     /// There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
@@ -516,6 +581,7 @@ impl CtrlVal {
     }
 
     /// Set **WRITABLE_M1** `[11:11]`
+    ///
     /// If 1, enable writes to XIP memory window 1 (addresses 0x11000000 through 0x11ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 1.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -533,6 +599,7 @@ impl CtrlVal {
     }
 
     /// Set **WRITABLE_M0** `[10:10]`
+    ///
     /// If 1, enable writes to XIP memory window 0 (addresses 0x10000000 through 0x10ffffff, and their uncached mirrors). If 0, this region is read-only.
     /// XIP memory is *read-only by default*. This bit must be set to enable writes if a RAM device is attached on QSPI chip select 0.
     /// The default read-only behaviour avoids two issues with writing to a read-only QSPI device (e.g. flash). First, a write will initially appear to succeed due to caching, but the data will eventually be lost when the written line is evicted, causing unpredictable behaviour.
@@ -550,6 +617,7 @@ impl CtrlVal {
     }
 
     /// Set **SPLIT_WAYS** `[9:9]`
+    ///
     /// When 1, route all cached+Secure accesses to way 0 of the cache, and route all cached+Non-secure accesses to way 1 of the cache.
     /// This partitions the cache into two half-sized direct-mapped regions, such that Non-secure code can not observe cache line state changes caused by Secure execution.
     /// A full cache flush is required when changing the value of SPLIT_WAYS. The flush should be performed whilst SPLIT_WAYS is 0, so that both cache ways are accessible for invalidation.
@@ -565,6 +633,7 @@ impl CtrlVal {
     }
 
     /// Set **MAINT_NONSEC** `[8:8]`
+    ///
     /// When 0, Non-secure accesses to the cache maintenance address window (addr[27] == 1, addr[26] == 0) will generate a bus error. When 1, Non-secure accesses can perform cache maintenance operations by writing to the cache maintenance address window.
     /// Cache maintenance operations may be used to corrupt Secure data by invalidating cache lines inappropriately, or map Secure content into a Non-secure region by pinning cache lines. Therefore this bit should generally be set to 0, unless Secure code is not using the cache.
     /// Care should also be taken to clear the cache data memory and tag memory before granting maintenance operations to Non-secure code.
@@ -580,6 +649,7 @@ impl CtrlVal {
     }
 
     /// Set **NO_UNTRANSLATED_NONSEC** `[7:7]`
+    ///
     /// When 1, Non-secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub const fn with_no_untranslated_nonsec(self, value: bool) -> Self {
@@ -593,6 +663,7 @@ impl CtrlVal {
     }
 
     /// Set **NO_UNTRANSLATED_SEC** `[6:6]`
+    ///
     /// When 1, Secure accesses to the uncached, untranslated window (addr[27:26] == 3) will generate a bus error.
     #[inline(always)]
     pub const fn with_no_untranslated_sec(self, value: bool) -> Self {
@@ -606,6 +677,7 @@ impl CtrlVal {
     }
 
     /// Set **NO_UNCACHED_NONSEC** `[5:5]`
+    ///
     /// When 1, Non-secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -620,6 +692,7 @@ impl CtrlVal {
     }
 
     /// Set **NO_UNCACHED_SEC** `[4:4]`
+    ///
     /// When 1, Secure accesses to the uncached window (addr[27:26] == 1) will generate a bus error. This may reduce the number of SAU/MPU/PMP regions required to protect flash contents.
     /// Note this does not disable access to the uncached, untranslated window -- see NO_UNTRANSLATED_SEC.
     #[inline(always)]
@@ -634,6 +707,7 @@ impl CtrlVal {
     }
 
     /// Set **POWER_DOWN** `[3:3]`
+    ///
     /// When 1, the cache memories are powered down. They retain state, but can not be accessed. This reduces static power dissipation. Writing 1 to this bit forces CTRL_EN_SECURE and CTRL_EN_NONSECURE to 0, i.e. the cache cannot be enabled when powered down.
     #[inline(always)]
     pub const fn with_power_down(self, value: bool) -> Self {
@@ -647,6 +721,7 @@ impl CtrlVal {
     }
 
     /// Set **EN_NONSECURE** `[1:1]`
+    ///
     /// When 1, enable the cache for Non-secure accesses. When enabled, Non-secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     #[inline(always)]
@@ -661,6 +736,7 @@ impl CtrlVal {
     }
 
     /// Set **EN_SECURE** `[0:0]`
+    ///
     /// When 1, enable the cache for Secure accesses. When enabled, Secure XIP accesses to the cached (addr[26] == 0) window will query the cache, and QSPI accesses are performed only if the requested data is not present. When disabled, Secure access ignore the cache contents, and always access the QSPI interface.
     /// Accesses to the uncached (addr[26] == 1) window will never query the cache, irrespective of this bit.
     /// There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
@@ -712,10 +788,13 @@ impl Ctrl {
 /// ## Fields
 ///
 /// - **FIFO_FULL** `[2]` (RO)
+///
 ///   When 1, indicates the XIP streaming FIFO is completely full.
 ///   The streaming FIFO is 2 entries deep, so the full and empty
 ///   flag allow its level to be ascertained.
+///
 /// - **FIFO_EMPTY** `[1]` (RO)
+///
 ///   When 1, indicates the XIP streaming FIFO is completely empty.
 #[repr(transparent)]
 pub struct Stat {
@@ -734,16 +813,20 @@ impl Stat {
     // ======== Field Constants ========
 
     /// **FIFO_FULL**
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely full.
     /// The streaming FIFO is 2 entries deep, so the full and empty
     /// flag allow its level to be ascertained.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const FIFO_FULL_OFFSET: u32 = 2;
     pub const FIFO_FULL_MASK: u32 = 0x00000004;
     pub const FIFO_FULL: u32 = 1 << 2;
 
     /// **FIFO_EMPTY**
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely empty.
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const FIFO_EMPTY_OFFSET: u32 = 1;
     pub const FIFO_EMPTY_MASK: u32 = 0x00000002;
@@ -752,6 +835,7 @@ impl Stat {
     // ======== Field Accessors ========
 
     /// **FIFO_FULL** `[2]` (RO)
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely full.
     /// The streaming FIFO is 2 entries deep, so the full and empty
     /// flag allow its level to be ascertained.
@@ -761,6 +845,7 @@ impl Stat {
     }
 
     /// **FIFO_EMPTY** `[1]` (RO)
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely empty.
     #[inline(always)]
     pub fn fifo_empty(&self) -> bool {
@@ -798,6 +883,7 @@ impl StatVal {
     }
 
     /// Read **FIFO_FULL** `[2:2]`
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely full.
     /// The streaming FIFO is 2 entries deep, so the full and empty
     /// flag allow its level to be ascertained.
@@ -807,6 +893,7 @@ impl StatVal {
     }
 
     /// Read **FIFO_EMPTY** `[1:1]`
+    ///
     /// When 1, indicates the XIP streaming FIFO is completely empty.
     #[inline(always)]
     pub const fn fifo_empty(&self) -> bool {
@@ -852,6 +939,7 @@ impl Stat {
 /// ## Fields
 ///
 /// - **CTR_HIT** `[31:0]` (RW)
+///
 ///   A 32 bit saturating counter that increments upon each cache hit,
 ///   i.e. when an XIP access is serviced directly from cached data.
 ///   Write any value to clear.
@@ -872,9 +960,11 @@ impl CtrHit {
     // ======== Field Constants ========
 
     /// **CTR_HIT**
+    ///
     /// A 32 bit saturating counter that increments upon each cache hit,
     /// i.e. when an XIP access is serviced directly from cached data.
     /// Write any value to clear.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CTR_HIT_OFFSET: u32 = 0;
     pub const CTR_HIT_MASK: u32 = 0xffffffff;
@@ -882,6 +972,7 @@ impl CtrHit {
     // ======== Field Accessors ========
 
     /// **CTR_HIT** `[31:0]` (RW)
+    ///
     /// A 32 bit saturating counter that increments upon each cache hit,
     /// i.e. when an XIP access is serviced directly from cached data.
     /// Write any value to clear.
@@ -891,6 +982,7 @@ impl CtrHit {
     }
 
     /// Write **CTR_HIT** `[31:0]` (RW)
+    ///
     /// A 32 bit saturating counter that increments upon each cache hit,
     /// i.e. when an XIP access is serviced directly from cached data.
     /// Write any value to clear.
@@ -930,6 +1022,7 @@ impl CtrHitVal {
     }
 
     /// Read **CTR_HIT** `[31:0]`
+    ///
     /// A 32 bit saturating counter that increments upon each cache hit,
     /// i.e. when an XIP access is serviced directly from cached data.
     /// Write any value to clear.
@@ -939,6 +1032,7 @@ impl CtrHitVal {
     }
 
     /// Set **CTR_HIT** `[31:0]`
+    ///
     /// A 32 bit saturating counter that increments upon each cache hit,
     /// i.e. when an XIP access is serviced directly from cached data.
     /// Write any value to clear.
@@ -988,6 +1082,7 @@ impl CtrHit {
 /// ## Fields
 ///
 /// - **CTR_ACC** `[31:0]` (RW)
+///
 ///   A 32 bit saturating counter that increments upon each XIP access,
 ///   whether the cache is hit or not. This includes noncacheable accesses.
 ///   Write any value to clear.
@@ -1008,9 +1103,11 @@ impl CtrAcc {
     // ======== Field Constants ========
 
     /// **CTR_ACC**
+    ///
     /// A 32 bit saturating counter that increments upon each XIP access,
     /// whether the cache is hit or not. This includes noncacheable accesses.
     /// Write any value to clear.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const CTR_ACC_OFFSET: u32 = 0;
     pub const CTR_ACC_MASK: u32 = 0xffffffff;
@@ -1018,6 +1115,7 @@ impl CtrAcc {
     // ======== Field Accessors ========
 
     /// **CTR_ACC** `[31:0]` (RW)
+    ///
     /// A 32 bit saturating counter that increments upon each XIP access,
     /// whether the cache is hit or not. This includes noncacheable accesses.
     /// Write any value to clear.
@@ -1027,6 +1125,7 @@ impl CtrAcc {
     }
 
     /// Write **CTR_ACC** `[31:0]` (RW)
+    ///
     /// A 32 bit saturating counter that increments upon each XIP access,
     /// whether the cache is hit or not. This includes noncacheable accesses.
     /// Write any value to clear.
@@ -1066,6 +1165,7 @@ impl CtrAccVal {
     }
 
     /// Read **CTR_ACC** `[31:0]`
+    ///
     /// A 32 bit saturating counter that increments upon each XIP access,
     /// whether the cache is hit or not. This includes noncacheable accesses.
     /// Write any value to clear.
@@ -1075,6 +1175,7 @@ impl CtrAccVal {
     }
 
     /// Set **CTR_ACC** `[31:0]`
+    ///
     /// A 32 bit saturating counter that increments upon each XIP access,
     /// whether the cache is hit or not. This includes noncacheable accesses.
     /// Write any value to clear.
@@ -1124,6 +1225,7 @@ impl CtrAcc {
 /// ## Fields
 ///
 /// - **STREAM_ADDR** `[31:2]` (RW)
+///
 ///   The address of the next word to be streamed from flash to the streaming FIFO.
 ///   Increments automatically after each flash access.
 ///   Write the initial access address here before starting a streaming read.
@@ -1144,9 +1246,11 @@ impl StreamAddr {
     // ======== Field Constants ========
 
     /// **STREAM_ADDR**
+    ///
     /// The address of the next word to be streamed from flash to the streaming FIFO.
     /// Increments automatically after each flash access.
     /// Write the initial access address here before starting a streaming read.
+    ///
     /// Bits `[31:2]`, mask `0xfffffffc`
     pub const STREAM_ADDR_OFFSET: u32 = 2;
     pub const STREAM_ADDR_MASK: u32 = 0xfffffffc;
@@ -1154,6 +1258,7 @@ impl StreamAddr {
     // ======== Field Accessors ========
 
     /// **STREAM_ADDR** `[31:2]` (RW)
+    ///
     /// The address of the next word to be streamed from flash to the streaming FIFO.
     /// Increments automatically after each flash access.
     /// Write the initial access address here before starting a streaming read.
@@ -1163,6 +1268,7 @@ impl StreamAddr {
     }
 
     /// Write **STREAM_ADDR** `[31:2]` (RW)
+    ///
     /// The address of the next word to be streamed from flash to the streaming FIFO.
     /// Increments automatically after each flash access.
     /// Write the initial access address here before starting a streaming read.
@@ -1202,6 +1308,7 @@ impl StreamAddrVal {
     }
 
     /// Read **STREAM_ADDR** `[31:2]`
+    ///
     /// The address of the next word to be streamed from flash to the streaming FIFO.
     /// Increments automatically after each flash access.
     /// Write the initial access address here before starting a streaming read.
@@ -1211,6 +1318,7 @@ impl StreamAddrVal {
     }
 
     /// Set **STREAM_ADDR** `[31:2]`
+    ///
     /// The address of the next word to be streamed from flash to the streaming FIFO.
     /// Increments automatically after each flash access.
     /// Write the initial access address here before starting a streaming read.
@@ -1260,6 +1368,7 @@ impl StreamAddr {
 /// ## Fields
 ///
 /// - **STREAM_CTR** `[21:0]` (RW)
+///
 ///   Write a nonzero value to start a streaming read. This will then
 ///   progress in the background, using flash idle cycles to transfer
 ///   a linear data block from flash to the streaming FIFO.
@@ -1285,6 +1394,7 @@ impl StreamCtr {
     // ======== Field Constants ========
 
     /// **STREAM_CTR**
+    ///
     /// Write a nonzero value to start a streaming read. This will then
     /// progress in the background, using flash idle cycles to transfer
     /// a linear data block from flash to the streaming FIFO.
@@ -1293,6 +1403,7 @@ impl StreamCtr {
     /// Write 0 to halt an in-progress stream, and discard any in-flight
     /// read, so that a new stream can immediately be started (after
     /// draining the FIFO and reinitialising STREAM_ADDR)
+    ///
     /// Bits `[21:0]`, mask `0x003fffff`
     pub const STREAM_CTR_OFFSET: u32 = 0;
     pub const STREAM_CTR_MASK: u32 = 0x003fffff;
@@ -1300,6 +1411,7 @@ impl StreamCtr {
     // ======== Field Accessors ========
 
     /// **STREAM_CTR** `[21:0]` (RW)
+    ///
     /// Write a nonzero value to start a streaming read. This will then
     /// progress in the background, using flash idle cycles to transfer
     /// a linear data block from flash to the streaming FIFO.
@@ -1314,6 +1426,7 @@ impl StreamCtr {
     }
 
     /// Write **STREAM_CTR** `[21:0]` (RW)
+    ///
     /// Write a nonzero value to start a streaming read. This will then
     /// progress in the background, using flash idle cycles to transfer
     /// a linear data block from flash to the streaming FIFO.
@@ -1358,6 +1471,7 @@ impl StreamCtrVal {
     }
 
     /// Read **STREAM_CTR** `[21:0]`
+    ///
     /// Write a nonzero value to start a streaming read. This will then
     /// progress in the background, using flash idle cycles to transfer
     /// a linear data block from flash to the streaming FIFO.
@@ -1372,6 +1486,7 @@ impl StreamCtrVal {
     }
 
     /// Set **STREAM_CTR** `[21:0]`
+    ///
     /// Write a nonzero value to start a streaming read. This will then
     /// progress in the background, using flash idle cycles to transfer
     /// a linear data block from flash to the streaming FIFO.
@@ -1426,6 +1541,7 @@ impl StreamCtr {
 /// ## Fields
 ///
 /// - **STREAM_FIFO** `[31:0]` (RO)
+///
 ///   Streamed data is buffered here, for retrieval by the system DMA.
 ///   This FIFO can also be accessed via the XIP_AUX slave, to avoid exposing
 ///   the DMA to bus stalls caused by other XIP traffic.
@@ -1446,9 +1562,11 @@ impl StreamFifo {
     // ======== Field Constants ========
 
     /// **STREAM_FIFO**
+    ///
     /// Streamed data is buffered here, for retrieval by the system DMA.
     /// This FIFO can also be accessed via the XIP_AUX slave, to avoid exposing
     /// the DMA to bus stalls caused by other XIP traffic.
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const STREAM_FIFO_OFFSET: u32 = 0;
     pub const STREAM_FIFO_MASK: u32 = 0xffffffff;
@@ -1456,6 +1574,7 @@ impl StreamFifo {
     // ======== Field Accessors ========
 
     /// **STREAM_FIFO** `[31:0]` (RO)
+    ///
     /// Streamed data is buffered here, for retrieval by the system DMA.
     /// This FIFO can also be accessed via the XIP_AUX slave, to avoid exposing
     /// the DMA to bus stalls caused by other XIP traffic.
@@ -1495,6 +1614,7 @@ impl StreamFifoVal {
     }
 
     /// Read **STREAM_FIFO** `[31:0]`
+    ///
     /// Streamed data is buffered here, for retrieval by the system DMA.
     /// This FIFO can also be accessed via the XIP_AUX slave, to avoid exposing
     /// the DMA to bus stalls caused by other XIP traffic.

@@ -14,20 +14,33 @@ pub const BASE: u32 = 0x40010000;
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **DC50** `[12]` (RW)
+///
 ///   Enables duty cycle correction for odd divisors, can be changed on-the-fly
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[8:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout0Ctrl {
@@ -46,50 +59,64 @@ impl ClkGpout0Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **DC50**
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DC50_OFFSET: u32 = 12;
     pub const DC50_MASK: u32 = 0x00001000;
     pub const DC50: u32 = 1 << 12;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[8:5]`, mask `0x000001e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000001e0;
@@ -127,6 +154,7 @@ impl ClkGpout0Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -134,6 +162,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -154,6 +183,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -162,6 +192,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -170,6 +201,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **DC50** `[12]` (RW)
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub fn dc50(&self) -> bool {
@@ -189,6 +221,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -208,6 +241,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -227,6 +261,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -234,6 +269,7 @@ impl ClkGpout0Ctrl {
     }
 
     /// Write **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -271,6 +307,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -278,6 +315,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -286,6 +324,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -294,6 +333,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn dc50(&self) -> bool {
@@ -301,6 +341,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -308,6 +349,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -315,6 +357,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Read **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -322,6 +365,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -336,6 +380,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -346,6 +391,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_dc50(self, value: bool) -> Self {
@@ -359,6 +405,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -372,6 +419,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -385,6 +433,7 @@ impl ClkGpout0CtrlVal {
     }
 
     /// Set **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -430,8 +479,11 @@ impl ClkGpout0Ctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+///
 /// - **FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout0Div {
@@ -450,13 +502,17 @@ impl ClkGpout0Div {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x0000ffff;
@@ -464,6 +520,7 @@ impl ClkGpout0Div {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -471,6 +528,7 @@ impl ClkGpout0Div {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -478,6 +536,7 @@ impl ClkGpout0Div {
     }
 
     /// **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -485,6 +544,7 @@ impl ClkGpout0Div {
     }
 
     /// Write **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -522,6 +582,7 @@ impl ClkGpout0DivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -529,6 +590,7 @@ impl ClkGpout0DivVal {
     }
 
     /// Read **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -536,6 +598,7 @@ impl ClkGpout0DivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -545,6 +608,7 @@ impl ClkGpout0DivVal {
     }
 
     /// Set **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -592,6 +656,7 @@ impl ClkGpout0Div {
 /// ## Fields
 ///
 /// - **CLK_GPOUT0_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout0Selected {
@@ -610,7 +675,9 @@ impl ClkGpout0Selected {
     // ======== Field Constants ========
 
     /// **CLK_GPOUT0_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_GPOUT0_SELECTED_OFFSET: u32 = 0;
     pub const CLK_GPOUT0_SELECTED_MASK: u32 = 0x00000001;
@@ -619,6 +686,7 @@ impl ClkGpout0Selected {
     // ======== Field Accessors ========
 
     /// **CLK_GPOUT0_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_gpout0_selected(&self) -> bool {
@@ -656,6 +724,7 @@ impl ClkGpout0SelectedVal {
     }
 
     /// Read **CLK_GPOUT0_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_gpout0_selected(&self) -> bool {
@@ -701,20 +770,33 @@ impl ClkGpout0Selected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **DC50** `[12]` (RW)
+///
 ///   Enables duty cycle correction for odd divisors, can be changed on-the-fly
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[8:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout1Ctrl {
@@ -733,50 +815,64 @@ impl ClkGpout1Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **DC50**
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DC50_OFFSET: u32 = 12;
     pub const DC50_MASK: u32 = 0x00001000;
     pub const DC50: u32 = 1 << 12;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[8:5]`, mask `0x000001e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000001e0;
@@ -814,6 +910,7 @@ impl ClkGpout1Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -821,6 +918,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -841,6 +939,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -849,6 +948,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -857,6 +957,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **DC50** `[12]` (RW)
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub fn dc50(&self) -> bool {
@@ -876,6 +977,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -895,6 +997,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -914,6 +1017,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -921,6 +1025,7 @@ impl ClkGpout1Ctrl {
     }
 
     /// Write **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -958,6 +1063,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -965,6 +1071,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -973,6 +1080,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -981,6 +1089,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn dc50(&self) -> bool {
@@ -988,6 +1097,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -995,6 +1105,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -1002,6 +1113,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Read **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -1009,6 +1121,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -1023,6 +1136,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -1033,6 +1147,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_dc50(self, value: bool) -> Self {
@@ -1046,6 +1161,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1059,6 +1175,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -1072,6 +1189,7 @@ impl ClkGpout1CtrlVal {
     }
 
     /// Set **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -1117,8 +1235,11 @@ impl ClkGpout1Ctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+///
 /// - **FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout1Div {
@@ -1137,13 +1258,17 @@ impl ClkGpout1Div {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x0000ffff;
@@ -1151,6 +1276,7 @@ impl ClkGpout1Div {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -1158,6 +1284,7 @@ impl ClkGpout1Div {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -1165,6 +1292,7 @@ impl ClkGpout1Div {
     }
 
     /// **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -1172,6 +1300,7 @@ impl ClkGpout1Div {
     }
 
     /// Write **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -1209,6 +1338,7 @@ impl ClkGpout1DivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -1216,6 +1346,7 @@ impl ClkGpout1DivVal {
     }
 
     /// Read **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -1223,6 +1354,7 @@ impl ClkGpout1DivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -1232,6 +1364,7 @@ impl ClkGpout1DivVal {
     }
 
     /// Set **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -1279,6 +1412,7 @@ impl ClkGpout1Div {
 /// ## Fields
 ///
 /// - **CLK_GPOUT1_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout1Selected {
@@ -1297,7 +1431,9 @@ impl ClkGpout1Selected {
     // ======== Field Constants ========
 
     /// **CLK_GPOUT1_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_GPOUT1_SELECTED_OFFSET: u32 = 0;
     pub const CLK_GPOUT1_SELECTED_MASK: u32 = 0x00000001;
@@ -1306,6 +1442,7 @@ impl ClkGpout1Selected {
     // ======== Field Accessors ========
 
     /// **CLK_GPOUT1_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_gpout1_selected(&self) -> bool {
@@ -1343,6 +1480,7 @@ impl ClkGpout1SelectedVal {
     }
 
     /// Read **CLK_GPOUT1_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_gpout1_selected(&self) -> bool {
@@ -1388,20 +1526,33 @@ impl ClkGpout1Selected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **DC50** `[12]` (RW)
+///
 ///   Enables duty cycle correction for odd divisors, can be changed on-the-fly
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[8:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout2Ctrl {
@@ -1420,50 +1571,64 @@ impl ClkGpout2Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **DC50**
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DC50_OFFSET: u32 = 12;
     pub const DC50_MASK: u32 = 0x00001000;
     pub const DC50: u32 = 1 << 12;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[8:5]`, mask `0x000001e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000001e0;
@@ -1501,6 +1666,7 @@ impl ClkGpout2Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -1508,6 +1674,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -1528,6 +1695,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -1536,6 +1704,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -1544,6 +1713,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **DC50** `[12]` (RW)
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub fn dc50(&self) -> bool {
@@ -1563,6 +1733,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -1582,6 +1753,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -1601,6 +1773,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -1608,6 +1781,7 @@ impl ClkGpout2Ctrl {
     }
 
     /// Write **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -1645,6 +1819,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -1652,6 +1827,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -1660,6 +1836,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -1668,6 +1845,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn dc50(&self) -> bool {
@@ -1675,6 +1853,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -1682,6 +1861,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -1689,6 +1869,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Read **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -1696,6 +1877,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -1710,6 +1892,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -1720,6 +1903,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_dc50(self, value: bool) -> Self {
@@ -1733,6 +1917,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -1746,6 +1931,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -1759,6 +1945,7 @@ impl ClkGpout2CtrlVal {
     }
 
     /// Set **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -1804,8 +1991,11 @@ impl ClkGpout2Ctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+///
 /// - **FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout2Div {
@@ -1824,13 +2014,17 @@ impl ClkGpout2Div {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x0000ffff;
@@ -1838,6 +2032,7 @@ impl ClkGpout2Div {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -1845,6 +2040,7 @@ impl ClkGpout2Div {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -1852,6 +2048,7 @@ impl ClkGpout2Div {
     }
 
     /// **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -1859,6 +2056,7 @@ impl ClkGpout2Div {
     }
 
     /// Write **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -1896,6 +2094,7 @@ impl ClkGpout2DivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -1903,6 +2102,7 @@ impl ClkGpout2DivVal {
     }
 
     /// Read **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -1910,6 +2110,7 @@ impl ClkGpout2DivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -1919,6 +2120,7 @@ impl ClkGpout2DivVal {
     }
 
     /// Set **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -1966,6 +2168,7 @@ impl ClkGpout2Div {
 /// ## Fields
 ///
 /// - **CLK_GPOUT2_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout2Selected {
@@ -1984,7 +2187,9 @@ impl ClkGpout2Selected {
     // ======== Field Constants ========
 
     /// **CLK_GPOUT2_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_GPOUT2_SELECTED_OFFSET: u32 = 0;
     pub const CLK_GPOUT2_SELECTED_MASK: u32 = 0x00000001;
@@ -1993,6 +2198,7 @@ impl ClkGpout2Selected {
     // ======== Field Accessors ========
 
     /// **CLK_GPOUT2_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_gpout2_selected(&self) -> bool {
@@ -2030,6 +2236,7 @@ impl ClkGpout2SelectedVal {
     }
 
     /// Read **CLK_GPOUT2_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_gpout2_selected(&self) -> bool {
@@ -2075,20 +2282,33 @@ impl ClkGpout2Selected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **DC50** `[12]` (RW)
+///
 ///   Enables duty cycle correction for odd divisors, can be changed on-the-fly
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[8:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout3Ctrl {
@@ -2107,50 +2327,64 @@ impl ClkGpout3Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **DC50**
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const DC50_OFFSET: u32 = 12;
     pub const DC50_MASK: u32 = 0x00001000;
     pub const DC50: u32 = 1 << 12;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[8:5]`, mask `0x000001e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000001e0;
@@ -2188,6 +2422,7 @@ impl ClkGpout3Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -2195,6 +2430,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -2215,6 +2451,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -2223,6 +2460,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -2231,6 +2469,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **DC50** `[12]` (RW)
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub fn dc50(&self) -> bool {
@@ -2250,6 +2489,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -2269,6 +2509,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -2288,6 +2529,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -2295,6 +2537,7 @@ impl ClkGpout3Ctrl {
     }
 
     /// Write **AUXSRC** `[8:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -2332,6 +2575,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -2339,6 +2583,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -2347,6 +2592,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -2355,6 +2601,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn dc50(&self) -> bool {
@@ -2362,6 +2609,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -2369,6 +2617,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -2376,6 +2625,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Read **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -2383,6 +2633,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -2397,6 +2648,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -2407,6 +2659,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **DC50** `[12:12]`
+    ///
     /// Enables duty cycle correction for odd divisors, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_dc50(self, value: bool) -> Self {
@@ -2420,6 +2673,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -2433,6 +2687,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -2446,6 +2701,7 @@ impl ClkGpout3CtrlVal {
     }
 
     /// Set **AUXSRC** `[8:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -2491,8 +2747,11 @@ impl ClkGpout3Ctrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+///
 /// - **FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout3Div {
@@ -2511,13 +2770,17 @@ impl ClkGpout3Div {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x0000ffff;
@@ -2525,6 +2788,7 @@ impl ClkGpout3Div {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -2532,6 +2796,7 @@ impl ClkGpout3Div {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -2539,6 +2804,7 @@ impl ClkGpout3Div {
     }
 
     /// **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -2546,6 +2812,7 @@ impl ClkGpout3Div {
     }
 
     /// Write **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -2583,6 +2850,7 @@ impl ClkGpout3DivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -2590,6 +2858,7 @@ impl ClkGpout3DivVal {
     }
 
     /// Read **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -2597,6 +2866,7 @@ impl ClkGpout3DivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -2606,6 +2876,7 @@ impl ClkGpout3DivVal {
     }
 
     /// Set **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -2653,6 +2924,7 @@ impl ClkGpout3Div {
 /// ## Fields
 ///
 /// - **CLK_GPOUT3_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout3Selected {
@@ -2671,7 +2943,9 @@ impl ClkGpout3Selected {
     // ======== Field Constants ========
 
     /// **CLK_GPOUT3_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_GPOUT3_SELECTED_OFFSET: u32 = 0;
     pub const CLK_GPOUT3_SELECTED_MASK: u32 = 0x00000001;
@@ -2680,6 +2954,7 @@ impl ClkGpout3Selected {
     // ======== Field Accessors ========
 
     /// **CLK_GPOUT3_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_gpout3_selected(&self) -> bool {
@@ -2717,6 +2992,7 @@ impl ClkGpout3SelectedVal {
     }
 
     /// Read **CLK_GPOUT3_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_gpout3_selected(&self) -> bool {
@@ -2762,8 +3038,11 @@ impl ClkGpout3Selected {
 /// ## Fields
 ///
 /// - **AUXSRC** `[6:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
+///
 /// - **SRC** `[1:0]` (RW)
+///
 ///   Selects the clock source glitchlessly, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkRefCtrl {
@@ -2782,7 +3061,9 @@ impl ClkRefCtrl {
     // ======== Field Constants ========
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[6:5]`, mask `0x00000060`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x00000060;
@@ -2796,7 +3077,9 @@ impl ClkRefCtrl {
     pub const AUXSRC_CLKSRC_PLL_USB_PRIMARY_REF_OPCG_VAL: u32 = 3;
 
     /// **SRC**
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const SRC_OFFSET: u32 = 0;
     pub const SRC_MASK: u32 = 0x00000003;
@@ -2812,6 +3095,7 @@ impl ClkRefCtrl {
     // ======== Field Accessors ========
 
     /// **AUXSRC** `[6:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -2819,6 +3103,7 @@ impl ClkRefCtrl {
     }
 
     /// Write **AUXSRC** `[6:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -2826,6 +3111,7 @@ impl ClkRefCtrl {
     }
 
     /// **SRC** `[1:0]` (RW)
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub fn src(&self) -> u32 {
@@ -2833,6 +3119,7 @@ impl ClkRefCtrl {
     }
 
     /// Write **SRC** `[1:0]` (RW)
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub fn write_src(&self, value: u32) {
@@ -2870,6 +3157,7 @@ impl ClkRefCtrlVal {
     }
 
     /// Read **AUXSRC** `[6:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -2877,6 +3165,7 @@ impl ClkRefCtrlVal {
     }
 
     /// Read **SRC** `[1:0]`
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub const fn src(&self) -> u32 {
@@ -2884,6 +3173,7 @@ impl ClkRefCtrlVal {
     }
 
     /// Set **AUXSRC** `[6:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -2893,6 +3183,7 @@ impl ClkRefCtrlVal {
     }
 
     /// Set **SRC** `[1:0]`
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_src(self, value: u32) -> Self {
@@ -2938,6 +3229,7 @@ impl ClkRefCtrl {
 /// ## Fields
 ///
 /// - **INT** `[23:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkRefDiv {
@@ -2956,7 +3248,9 @@ impl ClkRefDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[23:16]`, mask `0x00ff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0x00ff0000;
@@ -2964,6 +3258,7 @@ impl ClkRefDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[23:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -2971,6 +3266,7 @@ impl ClkRefDiv {
     }
 
     /// Write **INT** `[23:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -3008,6 +3304,7 @@ impl ClkRefDivVal {
     }
 
     /// Read **INT** `[23:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -3015,6 +3312,7 @@ impl ClkRefDivVal {
     }
 
     /// Set **INT** `[23:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -3062,6 +3360,7 @@ impl ClkRefDiv {
 /// ## Fields
 ///
 /// - **CLK_REF_SELECTED** `[3:0]` (RO)
+///
 ///   The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
 #[repr(transparent)]
 pub struct ClkRefSelected {
@@ -3080,7 +3379,9 @@ impl ClkRefSelected {
     // ======== Field Constants ========
 
     /// **CLK_REF_SELECTED**
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
+    ///
     /// Bits `[3:0]`, mask `0x0000000f`
     pub const CLK_REF_SELECTED_OFFSET: u32 = 0;
     pub const CLK_REF_SELECTED_MASK: u32 = 0x0000000f;
@@ -3088,6 +3389,7 @@ impl ClkRefSelected {
     // ======== Field Accessors ========
 
     /// **CLK_REF_SELECTED** `[3:0]` (RO)
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub fn clk_ref_selected(&self) -> u32 {
@@ -3125,6 +3427,7 @@ impl ClkRefSelectedVal {
     }
 
     /// Read **CLK_REF_SELECTED** `[3:0]`
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub const fn clk_ref_selected(&self) -> u32 {
@@ -3170,8 +3473,11 @@ impl ClkRefSelected {
 /// ## Fields
 ///
 /// - **AUXSRC** `[7:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
+///
 /// - **SRC** `[0]` (RW)
+///
 ///   Selects the clock source glitchlessly, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkSysCtrl {
@@ -3190,7 +3496,9 @@ impl ClkSysCtrl {
     // ======== Field Constants ========
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000000e0;
@@ -3208,7 +3516,9 @@ impl ClkSysCtrl {
     pub const AUXSRC_CLKSRC_GPIN1_VAL: u32 = 5;
 
     /// **SRC**
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const SRC_OFFSET: u32 = 0;
     pub const SRC_MASK: u32 = 0x00000001;
@@ -3221,6 +3531,7 @@ impl ClkSysCtrl {
     // ======== Field Accessors ========
 
     /// **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -3228,6 +3539,7 @@ impl ClkSysCtrl {
     }
 
     /// Write **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -3235,6 +3547,7 @@ impl ClkSysCtrl {
     }
 
     /// **SRC** `[0]` (RW)
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub fn src(&self) -> bool {
@@ -3284,6 +3597,7 @@ impl ClkSysCtrlVal {
     }
 
     /// Read **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -3291,6 +3605,7 @@ impl ClkSysCtrlVal {
     }
 
     /// Read **SRC** `[0:0]`
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub const fn src(&self) -> bool {
@@ -3298,6 +3613,7 @@ impl ClkSysCtrlVal {
     }
 
     /// Set **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -3307,6 +3623,7 @@ impl ClkSysCtrlVal {
     }
 
     /// Set **SRC** `[0:0]`
+    ///
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_src(self, value: bool) -> Self {
@@ -3356,8 +3673,11 @@ impl ClkSysCtrl {
 /// ## Fields
 ///
 /// - **INT** `[31:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+///
 /// - **FRAC** `[15:0]` (RW)
+///
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkSysDiv {
@@ -3376,13 +3696,17 @@ impl ClkSysDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[31:16]`, mask `0xffff0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0xffff0000;
 
     /// **FRAC**
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const FRAC_OFFSET: u32 = 0;
     pub const FRAC_MASK: u32 = 0x0000ffff;
@@ -3390,6 +3714,7 @@ impl ClkSysDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -3397,6 +3722,7 @@ impl ClkSysDiv {
     }
 
     /// Write **INT** `[31:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -3404,6 +3730,7 @@ impl ClkSysDiv {
     }
 
     /// **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn frac(&self) -> u32 {
@@ -3411,6 +3738,7 @@ impl ClkSysDiv {
     }
 
     /// Write **FRAC** `[15:0]` (RW)
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
@@ -3448,6 +3776,7 @@ impl ClkSysDivVal {
     }
 
     /// Read **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -3455,6 +3784,7 @@ impl ClkSysDivVal {
     }
 
     /// Read **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn frac(&self) -> u32 {
@@ -3462,6 +3792,7 @@ impl ClkSysDivVal {
     }
 
     /// Set **INT** `[31:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -3471,6 +3802,7 @@ impl ClkSysDivVal {
     }
 
     /// Set **FRAC** `[15:0]`
+    ///
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
@@ -3518,6 +3850,7 @@ impl ClkSysDiv {
 /// ## Fields
 ///
 /// - **CLK_SYS_SELECTED** `[1:0]` (RO)
+///
 ///   The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
 #[repr(transparent)]
 pub struct ClkSysSelected {
@@ -3536,7 +3869,9 @@ impl ClkSysSelected {
     // ======== Field Constants ========
 
     /// **CLK_SYS_SELECTED**
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const CLK_SYS_SELECTED_OFFSET: u32 = 0;
     pub const CLK_SYS_SELECTED_MASK: u32 = 0x00000003;
@@ -3544,6 +3879,7 @@ impl ClkSysSelected {
     // ======== Field Accessors ========
 
     /// **CLK_SYS_SELECTED** `[1:0]` (RO)
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub fn clk_sys_selected(&self) -> u32 {
@@ -3581,6 +3917,7 @@ impl ClkSysSelectedVal {
     }
 
     /// Read **CLK_SYS_SELECTED** `[1:0]`
+    ///
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub const fn clk_sys_selected(&self) -> u32 {
@@ -3626,12 +3963,19 @@ impl ClkSysSelected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[7:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkPeriCtrl {
@@ -3650,28 +3994,36 @@ impl ClkPeriCtrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000000e0;
@@ -3693,6 +4045,7 @@ impl ClkPeriCtrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -3700,6 +4053,7 @@ impl ClkPeriCtrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -3719,6 +4073,7 @@ impl ClkPeriCtrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -3738,6 +4093,7 @@ impl ClkPeriCtrl {
     }
 
     /// **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -3745,6 +4101,7 @@ impl ClkPeriCtrl {
     }
 
     /// Write **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -3782,6 +4139,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -3789,6 +4147,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -3796,6 +4155,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -3803,6 +4163,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Read **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -3810,6 +4171,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -3823,6 +4185,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -3836,6 +4199,7 @@ impl ClkPeriCtrlVal {
     }
 
     /// Set **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -3881,6 +4245,7 @@ impl ClkPeriCtrl {
 /// ## Fields
 ///
 /// - **INT** `[17:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkPeriDiv {
@@ -3899,7 +4264,9 @@ impl ClkPeriDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0x00030000;
@@ -3907,6 +4274,7 @@ impl ClkPeriDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[17:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -3914,6 +4282,7 @@ impl ClkPeriDiv {
     }
 
     /// Write **INT** `[17:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -3951,6 +4320,7 @@ impl ClkPeriDivVal {
     }
 
     /// Read **INT** `[17:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -3958,6 +4328,7 @@ impl ClkPeriDivVal {
     }
 
     /// Set **INT** `[17:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -4005,6 +4376,7 @@ impl ClkPeriDiv {
 /// ## Fields
 ///
 /// - **CLK_PERI_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkPeriSelected {
@@ -4023,7 +4395,9 @@ impl ClkPeriSelected {
     // ======== Field Constants ========
 
     /// **CLK_PERI_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_PERI_SELECTED_OFFSET: u32 = 0;
     pub const CLK_PERI_SELECTED_MASK: u32 = 0x00000001;
@@ -4032,6 +4406,7 @@ impl ClkPeriSelected {
     // ======== Field Accessors ========
 
     /// **CLK_PERI_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_peri_selected(&self) -> bool {
@@ -4069,6 +4444,7 @@ impl ClkPeriSelectedVal {
     }
 
     /// Read **CLK_PERI_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_peri_selected(&self) -> bool {
@@ -4114,18 +4490,29 @@ impl ClkPeriSelected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[7:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkHstxCtrl {
@@ -4144,43 +4531,55 @@ impl ClkHstxCtrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000000e0;
@@ -4198,6 +4597,7 @@ impl ClkHstxCtrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -4205,6 +4605,7 @@ impl ClkHstxCtrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4225,6 +4626,7 @@ impl ClkHstxCtrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4233,6 +4635,7 @@ impl ClkHstxCtrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4241,6 +4644,7 @@ impl ClkHstxCtrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -4260,6 +4664,7 @@ impl ClkHstxCtrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -4279,6 +4684,7 @@ impl ClkHstxCtrl {
     }
 
     /// **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -4286,6 +4692,7 @@ impl ClkHstxCtrl {
     }
 
     /// Write **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -4323,6 +4730,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -4330,6 +4738,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4338,6 +4747,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4346,6 +4756,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -4353,6 +4764,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -4360,6 +4772,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Read **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -4367,6 +4780,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4381,6 +4795,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4391,6 +4806,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -4404,6 +4820,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -4417,6 +4834,7 @@ impl ClkHstxCtrlVal {
     }
 
     /// Set **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -4462,6 +4880,7 @@ impl ClkHstxCtrl {
 /// ## Fields
 ///
 /// - **INT** `[17:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkHstxDiv {
@@ -4480,7 +4899,9 @@ impl ClkHstxDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0x00030000;
@@ -4488,6 +4909,7 @@ impl ClkHstxDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[17:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -4495,6 +4917,7 @@ impl ClkHstxDiv {
     }
 
     /// Write **INT** `[17:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -4532,6 +4955,7 @@ impl ClkHstxDivVal {
     }
 
     /// Read **INT** `[17:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -4539,6 +4963,7 @@ impl ClkHstxDivVal {
     }
 
     /// Set **INT** `[17:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -4586,6 +5011,7 @@ impl ClkHstxDiv {
 /// ## Fields
 ///
 /// - **CLK_HSTX_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkHstxSelected {
@@ -4604,7 +5030,9 @@ impl ClkHstxSelected {
     // ======== Field Constants ========
 
     /// **CLK_HSTX_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_HSTX_SELECTED_OFFSET: u32 = 0;
     pub const CLK_HSTX_SELECTED_MASK: u32 = 0x00000001;
@@ -4613,6 +5041,7 @@ impl ClkHstxSelected {
     // ======== Field Accessors ========
 
     /// **CLK_HSTX_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_hstx_selected(&self) -> bool {
@@ -4650,6 +5079,7 @@ impl ClkHstxSelectedVal {
     }
 
     /// Read **CLK_HSTX_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_hstx_selected(&self) -> bool {
@@ -4695,18 +5125,29 @@ impl ClkHstxSelected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[7:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkUsbCtrl {
@@ -4725,43 +5166,55 @@ impl ClkUsbCtrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000000e0;
@@ -4781,6 +5234,7 @@ impl ClkUsbCtrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -4788,6 +5242,7 @@ impl ClkUsbCtrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4808,6 +5263,7 @@ impl ClkUsbCtrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4816,6 +5272,7 @@ impl ClkUsbCtrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4824,6 +5281,7 @@ impl ClkUsbCtrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -4843,6 +5301,7 @@ impl ClkUsbCtrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -4862,6 +5321,7 @@ impl ClkUsbCtrl {
     }
 
     /// **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -4869,6 +5329,7 @@ impl ClkUsbCtrl {
     }
 
     /// Write **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -4906,6 +5367,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -4913,6 +5375,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4921,6 +5384,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4929,6 +5393,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -4936,6 +5401,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -4943,6 +5409,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Read **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -4950,6 +5417,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -4964,6 +5432,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -4974,6 +5443,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -4987,6 +5457,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -5000,6 +5471,7 @@ impl ClkUsbCtrlVal {
     }
 
     /// Set **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -5045,6 +5517,7 @@ impl ClkUsbCtrl {
 /// ## Fields
 ///
 /// - **INT** `[19:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkUsbDiv {
@@ -5063,7 +5536,9 @@ impl ClkUsbDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0x000f0000;
@@ -5071,6 +5546,7 @@ impl ClkUsbDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[19:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -5078,6 +5554,7 @@ impl ClkUsbDiv {
     }
 
     /// Write **INT** `[19:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -5115,6 +5592,7 @@ impl ClkUsbDivVal {
     }
 
     /// Read **INT** `[19:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -5122,6 +5600,7 @@ impl ClkUsbDivVal {
     }
 
     /// Set **INT** `[19:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -5169,6 +5648,7 @@ impl ClkUsbDiv {
 /// ## Fields
 ///
 /// - **CLK_USB_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkUsbSelected {
@@ -5187,7 +5667,9 @@ impl ClkUsbSelected {
     // ======== Field Constants ========
 
     /// **CLK_USB_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_USB_SELECTED_OFFSET: u32 = 0;
     pub const CLK_USB_SELECTED_MASK: u32 = 0x00000001;
@@ -5196,6 +5678,7 @@ impl ClkUsbSelected {
     // ======== Field Accessors ========
 
     /// **CLK_USB_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_usb_selected(&self) -> bool {
@@ -5233,6 +5716,7 @@ impl ClkUsbSelectedVal {
     }
 
     /// Read **CLK_USB_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_usb_selected(&self) -> bool {
@@ -5278,18 +5762,29 @@ impl ClkUsbSelected {
 /// ## Fields
 ///
 /// - **ENABLED** `[28]` (RO)
+///
 ///   clock generator is enabled
+///
 /// - **NUDGE** `[20]` (RW)
+///
 ///   An edge on this signal shifts the phase of the output by 1 cycle of the input clock
 ///   This can be done at any time
+///
 /// - **PHASE** `[17:16]` (RW)
+///
 ///   This delays the enable signal by up to 3 cycles of the input clock
 ///   This must be set before the clock is enabled to have any effect
+///
 /// - **ENABLE** `[11]` (RW)
+///
 ///   Starts and stops the clock generator cleanly
+///
 /// - **KILL** `[10]` (RW)
+///
 ///   Asynchronously kills the clock generator, enable must be set low before deasserting kill
+///
 /// - **AUXSRC** `[7:5]` (RW)
+///
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkAdcCtrl {
@@ -5308,43 +5803,55 @@ impl ClkAdcCtrl {
     // ======== Field Constants ========
 
     /// **ENABLED**
+    ///
     /// clock generator is enabled
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const ENABLED_OFFSET: u32 = 28;
     pub const ENABLED_MASK: u32 = 0x10000000;
     pub const ENABLED: u32 = 1 << 28;
 
     /// **NUDGE**
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NUDGE_OFFSET: u32 = 20;
     pub const NUDGE_MASK: u32 = 0x00100000;
     pub const NUDGE: u32 = 1 << 20;
 
     /// **PHASE**
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const PHASE_OFFSET: u32 = 16;
     pub const PHASE_MASK: u32 = 0x00030000;
 
     /// **ENABLE**
+    ///
     /// Starts and stops the clock generator cleanly
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const ENABLE_OFFSET: u32 = 11;
     pub const ENABLE_MASK: u32 = 0x00000800;
     pub const ENABLE: u32 = 1 << 11;
 
     /// **KILL**
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const KILL_OFFSET: u32 = 10;
     pub const KILL_MASK: u32 = 0x00000400;
     pub const KILL: u32 = 1 << 10;
 
     /// **AUXSRC**
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
+    ///
     /// Bits `[7:5]`, mask `0x000000e0`
     pub const AUXSRC_OFFSET: u32 = 5;
     pub const AUXSRC_MASK: u32 = 0x000000e0;
@@ -5364,6 +5871,7 @@ impl ClkAdcCtrl {
     // ======== Field Accessors ========
 
     /// **ENABLED** `[28]` (RO)
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -5371,6 +5879,7 @@ impl ClkAdcCtrl {
     }
 
     /// **NUDGE** `[20]` (RW)
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -5391,6 +5900,7 @@ impl ClkAdcCtrl {
     }
 
     /// **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -5399,6 +5909,7 @@ impl ClkAdcCtrl {
     }
 
     /// Write **PHASE** `[17:16]` (RW)
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -5407,6 +5918,7 @@ impl ClkAdcCtrl {
     }
 
     /// **ENABLE** `[11]` (RW)
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -5426,6 +5938,7 @@ impl ClkAdcCtrl {
     }
 
     /// **KILL** `[10]` (RW)
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub fn kill(&self) -> bool {
@@ -5445,6 +5958,7 @@ impl ClkAdcCtrl {
     }
 
     /// **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn auxsrc(&self) -> u32 {
@@ -5452,6 +5966,7 @@ impl ClkAdcCtrl {
     }
 
     /// Write **AUXSRC** `[7:5]` (RW)
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
@@ -5489,6 +6004,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **ENABLED** `[28:28]`
+    ///
     /// clock generator is enabled
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -5496,6 +6012,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -5504,6 +6021,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -5512,6 +6030,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -5519,6 +6038,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn kill(&self) -> bool {
@@ -5526,6 +6046,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Read **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn auxsrc(&self) -> u32 {
@@ -5533,6 +6054,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Set **NUDGE** `[20:20]`
+    ///
     /// An edge on this signal shifts the phase of the output by 1 cycle of the input clock
     /// This can be done at any time
     #[inline(always)]
@@ -5547,6 +6069,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Set **PHASE** `[17:16]`
+    ///
     /// This delays the enable signal by up to 3 cycles of the input clock
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
@@ -5557,6 +6080,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Set **ENABLE** `[11:11]`
+    ///
     /// Starts and stops the clock generator cleanly
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -5570,6 +6094,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Set **KILL** `[10:10]`
+    ///
     /// Asynchronously kills the clock generator, enable must be set low before deasserting kill
     #[inline(always)]
     pub const fn with_kill(self, value: bool) -> Self {
@@ -5583,6 +6108,7 @@ impl ClkAdcCtrlVal {
     }
 
     /// Set **AUXSRC** `[7:5]`
+    ///
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
@@ -5628,6 +6154,7 @@ impl ClkAdcCtrl {
 /// ## Fields
 ///
 /// - **INT** `[19:16]` (RW)
+///
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkAdcDiv {
@@ -5646,7 +6173,9 @@ impl ClkAdcDiv {
     // ======== Field Constants ========
 
     /// **INT**
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
+    ///
     /// Bits `[19:16]`, mask `0x000f0000`
     pub const INT_OFFSET: u32 = 16;
     pub const INT_MASK: u32 = 0x000f0000;
@@ -5654,6 +6183,7 @@ impl ClkAdcDiv {
     // ======== Field Accessors ========
 
     /// **INT** `[19:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn int(&self) -> u32 {
@@ -5661,6 +6191,7 @@ impl ClkAdcDiv {
     }
 
     /// Write **INT** `[19:16]` (RW)
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
@@ -5698,6 +6229,7 @@ impl ClkAdcDivVal {
     }
 
     /// Read **INT** `[19:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn int(&self) -> u32 {
@@ -5705,6 +6237,7 @@ impl ClkAdcDivVal {
     }
 
     /// Set **INT** `[19:16]`
+    ///
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
@@ -5752,6 +6285,7 @@ impl ClkAdcDiv {
 /// ## Fields
 ///
 /// - **CLK_ADC_SELECTED** `[0]` (RO)
+///
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkAdcSelected {
@@ -5770,7 +6304,9 @@ impl ClkAdcSelected {
     // ======== Field Constants ========
 
     /// **CLK_ADC_SELECTED**
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const CLK_ADC_SELECTED_OFFSET: u32 = 0;
     pub const CLK_ADC_SELECTED_MASK: u32 = 0x00000001;
@@ -5779,6 +6315,7 @@ impl ClkAdcSelected {
     // ======== Field Accessors ========
 
     /// **CLK_ADC_SELECTED** `[0]` (RO)
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub fn clk_adc_selected(&self) -> bool {
@@ -5816,6 +6353,7 @@ impl ClkAdcSelectedVal {
     }
 
     /// Read **CLK_ADC_SELECTED** `[0:0]`
+    ///
     /// This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
     #[inline(always)]
     pub const fn clk_adc_selected(&self) -> bool {
@@ -6225,12 +6763,19 @@ impl DftclkLposcCtrl {
 /// ## Fields
 ///
 /// - **CLEAR** `[16]` (RW)
+///
 ///   For clearing the resus after the fault that triggered it has been corrected
+///
 /// - **FRCE** `[12]` (RW)
+///
 ///   Force a resus, for test purposes only
+///
 /// - **ENABLE** `[8]` (RW)
+///
 ///   Enable resus
+///
 /// - **TIMEOUT** `[7:0]` (RW)
+///
 ///   This is expressed as a number of clk_ref cycles
 ///   and must be >= 2x clk_ref_freq/min_clk_tst_freq
 #[repr(transparent)]
@@ -6250,29 +6795,37 @@ impl ClkSysResusCtrl {
     // ======== Field Constants ========
 
     /// **CLEAR**
+    ///
     /// For clearing the resus after the fault that triggered it has been corrected
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const CLEAR_OFFSET: u32 = 16;
     pub const CLEAR_MASK: u32 = 0x00010000;
     pub const CLEAR: u32 = 1 << 16;
 
     /// **FRCE**
+    ///
     /// Force a resus, for test purposes only
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const FRCE_OFFSET: u32 = 12;
     pub const FRCE_MASK: u32 = 0x00001000;
     pub const FRCE: u32 = 1 << 12;
 
     /// **ENABLE**
+    ///
     /// Enable resus
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ENABLE_OFFSET: u32 = 8;
     pub const ENABLE_MASK: u32 = 0x00000100;
     pub const ENABLE: u32 = 1 << 8;
 
     /// **TIMEOUT**
+    ///
     /// This is expressed as a number of clk_ref cycles
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const TIMEOUT_OFFSET: u32 = 0;
     pub const TIMEOUT_MASK: u32 = 0x000000ff;
@@ -6280,6 +6833,7 @@ impl ClkSysResusCtrl {
     // ======== Field Accessors ========
 
     /// **CLEAR** `[16]` (RW)
+    ///
     /// For clearing the resus after the fault that triggered it has been corrected
     #[inline(always)]
     pub fn clear(&self) -> bool {
@@ -6299,6 +6853,7 @@ impl ClkSysResusCtrl {
     }
 
     /// **FRCE** `[12]` (RW)
+    ///
     /// Force a resus, for test purposes only
     #[inline(always)]
     pub fn frce(&self) -> bool {
@@ -6318,6 +6873,7 @@ impl ClkSysResusCtrl {
     }
 
     /// **ENABLE** `[8]` (RW)
+    ///
     /// Enable resus
     #[inline(always)]
     pub fn enable(&self) -> bool {
@@ -6337,6 +6893,7 @@ impl ClkSysResusCtrl {
     }
 
     /// **TIMEOUT** `[7:0]` (RW)
+    ///
     /// This is expressed as a number of clk_ref cycles
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
     #[inline(always)]
@@ -6345,6 +6902,7 @@ impl ClkSysResusCtrl {
     }
 
     /// Write **TIMEOUT** `[7:0]` (RW)
+    ///
     /// This is expressed as a number of clk_ref cycles
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
     #[inline(always)]
@@ -6383,6 +6941,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Read **CLEAR** `[16:16]`
+    ///
     /// For clearing the resus after the fault that triggered it has been corrected
     #[inline(always)]
     pub const fn clear(&self) -> bool {
@@ -6390,6 +6949,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Read **FRCE** `[12:12]`
+    ///
     /// Force a resus, for test purposes only
     #[inline(always)]
     pub const fn frce(&self) -> bool {
@@ -6397,6 +6957,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Read **ENABLE** `[8:8]`
+    ///
     /// Enable resus
     #[inline(always)]
     pub const fn enable(&self) -> bool {
@@ -6404,6 +6965,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Read **TIMEOUT** `[7:0]`
+    ///
     /// This is expressed as a number of clk_ref cycles
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
     #[inline(always)]
@@ -6412,6 +6974,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Set **CLEAR** `[16:16]`
+    ///
     /// For clearing the resus after the fault that triggered it has been corrected
     #[inline(always)]
     pub const fn with_clear(self, value: bool) -> Self {
@@ -6425,6 +6988,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Set **FRCE** `[12:12]`
+    ///
     /// Force a resus, for test purposes only
     #[inline(always)]
     pub const fn with_frce(self, value: bool) -> Self {
@@ -6438,6 +7002,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Set **ENABLE** `[8:8]`
+    ///
     /// Enable resus
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
@@ -6451,6 +7016,7 @@ impl ClkSysResusCtrlVal {
     }
 
     /// Set **TIMEOUT** `[7:0]`
+    ///
     /// This is expressed as a number of clk_ref cycles
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
     #[inline(always)]
@@ -6497,6 +7063,7 @@ impl ClkSysResusCtrl {
 /// ## Fields
 ///
 /// - **RESUSSED** `[0]` (RO)
+///
 ///   Clock has been resuscitated, correct the error then send ctrl_clear=1
 #[repr(transparent)]
 pub struct ClkSysResusStatus {
@@ -6515,7 +7082,9 @@ impl ClkSysResusStatus {
     // ======== Field Constants ========
 
     /// **RESUSSED**
+    ///
     /// Clock has been resuscitated, correct the error then send ctrl_clear=1
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const RESUSSED_OFFSET: u32 = 0;
     pub const RESUSSED_MASK: u32 = 0x00000001;
@@ -6524,6 +7093,7 @@ impl ClkSysResusStatus {
     // ======== Field Accessors ========
 
     /// **RESUSSED** `[0]` (RO)
+    ///
     /// Clock has been resuscitated, correct the error then send ctrl_clear=1
     #[inline(always)]
     pub fn resussed(&self) -> bool {
@@ -6561,6 +7131,7 @@ impl ClkSysResusStatusVal {
     }
 
     /// Read **RESUSSED** `[0:0]`
+    ///
     /// Clock has been resuscitated, correct the error then send ctrl_clear=1
     #[inline(always)]
     pub const fn resussed(&self) -> bool {
@@ -7351,20 +7922,35 @@ impl Fc0Src {
 /// ## Fields
 ///
 /// - **DIED** `[28]` (RO)
+///
 ///   Test clock stopped during test
+///
 /// - **FAST** `[24]` (RO)
+///
 ///   Test clock faster than expected, only valid when status_done=1
+///
 /// - **SLOW** `[20]` (RO)
+///
 ///   Test clock slower than expected, only valid when status_done=1
+///
 /// - **FAIL** `[16]` (RO)
+///
 ///   Test failed
+///
 /// - **WAITING** `[12]` (RO)
+///
 ///   Waiting for test clock to start
+///
 /// - **RUNNING** `[8]` (RO)
+///
 ///   Test running
+///
 /// - **DONE** `[4]` (RO)
+///
 ///   Test complete
+///
 /// - **PASS** `[0]` (RO)
+///
 ///   Test passed
 #[repr(transparent)]
 pub struct Fc0Status {
@@ -7383,56 +7969,72 @@ impl Fc0Status {
     // ======== Field Constants ========
 
     /// **DIED**
+    ///
     /// Test clock stopped during test
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const DIED_OFFSET: u32 = 28;
     pub const DIED_MASK: u32 = 0x10000000;
     pub const DIED: u32 = 1 << 28;
 
     /// **FAST**
+    ///
     /// Test clock faster than expected, only valid when status_done=1
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const FAST_OFFSET: u32 = 24;
     pub const FAST_MASK: u32 = 0x01000000;
     pub const FAST: u32 = 1 << 24;
 
     /// **SLOW**
+    ///
     /// Test clock slower than expected, only valid when status_done=1
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const SLOW_OFFSET: u32 = 20;
     pub const SLOW_MASK: u32 = 0x00100000;
     pub const SLOW: u32 = 1 << 20;
 
     /// **FAIL**
+    ///
     /// Test failed
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const FAIL_OFFSET: u32 = 16;
     pub const FAIL_MASK: u32 = 0x00010000;
     pub const FAIL: u32 = 1 << 16;
 
     /// **WAITING**
+    ///
     /// Waiting for test clock to start
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const WAITING_OFFSET: u32 = 12;
     pub const WAITING_MASK: u32 = 0x00001000;
     pub const WAITING: u32 = 1 << 12;
 
     /// **RUNNING**
+    ///
     /// Test running
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const RUNNING_OFFSET: u32 = 8;
     pub const RUNNING_MASK: u32 = 0x00000100;
     pub const RUNNING: u32 = 1 << 8;
 
     /// **DONE**
+    ///
     /// Test complete
+    ///
     /// Bits `[4:4]`, mask `0x00000010`
     pub const DONE_OFFSET: u32 = 4;
     pub const DONE_MASK: u32 = 0x00000010;
     pub const DONE: u32 = 1 << 4;
 
     /// **PASS**
+    ///
     /// Test passed
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PASS_OFFSET: u32 = 0;
     pub const PASS_MASK: u32 = 0x00000001;
@@ -7441,6 +8043,7 @@ impl Fc0Status {
     // ======== Field Accessors ========
 
     /// **DIED** `[28]` (RO)
+    ///
     /// Test clock stopped during test
     #[inline(always)]
     pub fn died(&self) -> bool {
@@ -7448,6 +8051,7 @@ impl Fc0Status {
     }
 
     /// **FAST** `[24]` (RO)
+    ///
     /// Test clock faster than expected, only valid when status_done=1
     #[inline(always)]
     pub fn fast(&self) -> bool {
@@ -7455,6 +8059,7 @@ impl Fc0Status {
     }
 
     /// **SLOW** `[20]` (RO)
+    ///
     /// Test clock slower than expected, only valid when status_done=1
     #[inline(always)]
     pub fn slow(&self) -> bool {
@@ -7462,6 +8067,7 @@ impl Fc0Status {
     }
 
     /// **FAIL** `[16]` (RO)
+    ///
     /// Test failed
     #[inline(always)]
     pub fn fail(&self) -> bool {
@@ -7469,6 +8075,7 @@ impl Fc0Status {
     }
 
     /// **WAITING** `[12]` (RO)
+    ///
     /// Waiting for test clock to start
     #[inline(always)]
     pub fn waiting(&self) -> bool {
@@ -7476,6 +8083,7 @@ impl Fc0Status {
     }
 
     /// **RUNNING** `[8]` (RO)
+    ///
     /// Test running
     #[inline(always)]
     pub fn running(&self) -> bool {
@@ -7483,6 +8091,7 @@ impl Fc0Status {
     }
 
     /// **DONE** `[4]` (RO)
+    ///
     /// Test complete
     #[inline(always)]
     pub fn done(&self) -> bool {
@@ -7490,6 +8099,7 @@ impl Fc0Status {
     }
 
     /// **PASS** `[0]` (RO)
+    ///
     /// Test passed
     #[inline(always)]
     pub fn pass(&self) -> bool {
@@ -7527,6 +8137,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **DIED** `[28:28]`
+    ///
     /// Test clock stopped during test
     #[inline(always)]
     pub const fn died(&self) -> bool {
@@ -7534,6 +8145,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **FAST** `[24:24]`
+    ///
     /// Test clock faster than expected, only valid when status_done=1
     #[inline(always)]
     pub const fn fast(&self) -> bool {
@@ -7541,6 +8153,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **SLOW** `[20:20]`
+    ///
     /// Test clock slower than expected, only valid when status_done=1
     #[inline(always)]
     pub const fn slow(&self) -> bool {
@@ -7548,6 +8161,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **FAIL** `[16:16]`
+    ///
     /// Test failed
     #[inline(always)]
     pub const fn fail(&self) -> bool {
@@ -7555,6 +8169,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **WAITING** `[12:12]`
+    ///
     /// Waiting for test clock to start
     #[inline(always)]
     pub const fn waiting(&self) -> bool {
@@ -7562,6 +8177,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **RUNNING** `[8:8]`
+    ///
     /// Test running
     #[inline(always)]
     pub const fn running(&self) -> bool {
@@ -7569,6 +8185,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **DONE** `[4:4]`
+    ///
     /// Test complete
     #[inline(always)]
     pub const fn done(&self) -> bool {
@@ -7576,6 +8193,7 @@ impl Fc0StatusVal {
     }
 
     /// Read **PASS** `[0:0]`
+    ///
     /// Test passed
     #[inline(always)]
     pub const fn pass(&self) -> bool {
@@ -7621,6 +8239,7 @@ impl Fc0Status {
 /// ## Fields
 ///
 /// - **KHZ** `[29:5]` (RO)
+///
 /// - **FRAC** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Fc0Result {
@@ -7743,36 +8362,67 @@ impl Fc0Result {
 /// ## Fields
 ///
 /// - **CLK_SYS_SIO** `[31]` (RW)
+///
 /// - **CLK_SYS_SHA256** `[30]` (RW)
+///
 /// - **CLK_SYS_PSM** `[29]` (RW)
+///
 /// - **CLK_SYS_ROSC** `[28]` (RW)
+///
 /// - **CLK_SYS_ROM** `[27]` (RW)
+///
 /// - **CLK_SYS_RESETS** `[26]` (RW)
+///
 /// - **CLK_SYS_PWM** `[25]` (RW)
+///
 /// - **CLK_SYS_POWMAN** `[24]` (RW)
+///
 /// - **CLK_REF_POWMAN** `[23]` (RW)
+///
 /// - **CLK_SYS_PLL_USB** `[22]` (RW)
+///
 /// - **CLK_SYS_PLL_SYS** `[21]` (RW)
+///
 /// - **CLK_SYS_PIO2** `[20]` (RW)
+///
 /// - **CLK_SYS_PIO1** `[19]` (RW)
+///
 /// - **CLK_SYS_PIO0** `[18]` (RW)
+///
 /// - **CLK_SYS_PADS** `[17]` (RW)
+///
 /// - **CLK_SYS_OTP** `[16]` (RW)
+///
 /// - **CLK_REF_OTP** `[15]` (RW)
+///
 /// - **CLK_SYS_JTAG** `[14]` (RW)
+///
 /// - **CLK_SYS_IO** `[13]` (RW)
+///
 /// - **CLK_SYS_I2C1** `[12]` (RW)
+///
 /// - **CLK_SYS_I2C0** `[11]` (RW)
+///
 /// - **CLK_SYS_HSTX** `[10]` (RW)
+///
 /// - **CLK_HSTX** `[9]` (RW)
+///
 /// - **CLK_SYS_GLITCH_DETECTOR** `[8]` (RW)
+///
 /// - **CLK_SYS_DMA** `[7]` (RW)
+///
 /// - **CLK_SYS_BUSFABRIC** `[6]` (RW)
+///
 /// - **CLK_SYS_BUSCTRL** `[5]` (RW)
+///
 /// - **CLK_SYS_BOOTRAM** `[4]` (RW)
+///
 /// - **CLK_SYS_ADC** `[3]` (RW)
+///
 /// - **CLK_ADC** `[2]` (RW)
+///
 /// - **CLK_SYS_ACCESSCTRL** `[1]` (RW)
+///
 /// - **CLK_SYS_CLOCKS** `[0]` (RW)
 #[repr(transparent)]
 pub struct WakeEn0 {
@@ -9205,35 +9855,65 @@ impl WakeEn0 {
 /// ## Fields
 ///
 /// - **CLK_SYS_XOSC** `[30]` (RW)
+///
 /// - **CLK_SYS_XIP** `[29]` (RW)
+///
 /// - **CLK_SYS_WATCHDOG** `[28]` (RW)
+///
 /// - **CLK_USB** `[27]` (RW)
+///
 /// - **CLK_SYS_USBCTRL** `[26]` (RW)
+///
 /// - **CLK_SYS_UART1** `[25]` (RW)
+///
 /// - **CLK_PERI_UART1** `[24]` (RW)
+///
 /// - **CLK_SYS_UART0** `[23]` (RW)
+///
 /// - **CLK_PERI_UART0** `[22]` (RW)
+///
 /// - **CLK_SYS_TRNG** `[21]` (RW)
+///
 /// - **CLK_SYS_TIMER1** `[20]` (RW)
+///
 /// - **CLK_SYS_TIMER0** `[19]` (RW)
+///
 /// - **CLK_SYS_TICKS** `[18]` (RW)
+///
 /// - **CLK_REF_TICKS** `[17]` (RW)
+///
 /// - **CLK_SYS_TBMAN** `[16]` (RW)
+///
 /// - **CLK_SYS_SYSINFO** `[15]` (RW)
+///
 /// - **CLK_SYS_SYSCFG** `[14]` (RW)
+///
 /// - **CLK_SYS_SRAM9** `[13]` (RW)
+///
 /// - **CLK_SYS_SRAM8** `[12]` (RW)
+///
 /// - **CLK_SYS_SRAM7** `[11]` (RW)
+///
 /// - **CLK_SYS_SRAM6** `[10]` (RW)
+///
 /// - **CLK_SYS_SRAM5** `[9]` (RW)
+///
 /// - **CLK_SYS_SRAM4** `[8]` (RW)
+///
 /// - **CLK_SYS_SRAM3** `[7]` (RW)
+///
 /// - **CLK_SYS_SRAM2** `[6]` (RW)
+///
 /// - **CLK_SYS_SRAM1** `[5]` (RW)
+///
 /// - **CLK_SYS_SRAM0** `[4]` (RW)
+///
 /// - **CLK_SYS_SPI1** `[3]` (RW)
+///
 /// - **CLK_PERI_SPI1** `[2]` (RW)
+///
 /// - **CLK_SYS_SPI0** `[1]` (RW)
+///
 /// - **CLK_PERI_SPI0** `[0]` (RW)
 #[repr(transparent)]
 pub struct WakeEn1 {
@@ -10624,36 +11304,67 @@ impl WakeEn1 {
 /// ## Fields
 ///
 /// - **CLK_SYS_SIO** `[31]` (RW)
+///
 /// - **CLK_SYS_SHA256** `[30]` (RW)
+///
 /// - **CLK_SYS_PSM** `[29]` (RW)
+///
 /// - **CLK_SYS_ROSC** `[28]` (RW)
+///
 /// - **CLK_SYS_ROM** `[27]` (RW)
+///
 /// - **CLK_SYS_RESETS** `[26]` (RW)
+///
 /// - **CLK_SYS_PWM** `[25]` (RW)
+///
 /// - **CLK_SYS_POWMAN** `[24]` (RW)
+///
 /// - **CLK_REF_POWMAN** `[23]` (RW)
+///
 /// - **CLK_SYS_PLL_USB** `[22]` (RW)
+///
 /// - **CLK_SYS_PLL_SYS** `[21]` (RW)
+///
 /// - **CLK_SYS_PIO2** `[20]` (RW)
+///
 /// - **CLK_SYS_PIO1** `[19]` (RW)
+///
 /// - **CLK_SYS_PIO0** `[18]` (RW)
+///
 /// - **CLK_SYS_PADS** `[17]` (RW)
+///
 /// - **CLK_SYS_OTP** `[16]` (RW)
+///
 /// - **CLK_REF_OTP** `[15]` (RW)
+///
 /// - **CLK_SYS_JTAG** `[14]` (RW)
+///
 /// - **CLK_SYS_IO** `[13]` (RW)
+///
 /// - **CLK_SYS_I2C1** `[12]` (RW)
+///
 /// - **CLK_SYS_I2C0** `[11]` (RW)
+///
 /// - **CLK_SYS_HSTX** `[10]` (RW)
+///
 /// - **CLK_HSTX** `[9]` (RW)
+///
 /// - **CLK_SYS_GLITCH_DETECTOR** `[8]` (RW)
+///
 /// - **CLK_SYS_DMA** `[7]` (RW)
+///
 /// - **CLK_SYS_BUSFABRIC** `[6]` (RW)
+///
 /// - **CLK_SYS_BUSCTRL** `[5]` (RW)
+///
 /// - **CLK_SYS_BOOTRAM** `[4]` (RW)
+///
 /// - **CLK_SYS_ADC** `[3]` (RW)
+///
 /// - **CLK_ADC** `[2]` (RW)
+///
 /// - **CLK_SYS_ACCESSCTRL** `[1]` (RW)
+///
 /// - **CLK_SYS_CLOCKS** `[0]` (RW)
 #[repr(transparent)]
 pub struct SleepEn0 {
@@ -12086,35 +12797,65 @@ impl SleepEn0 {
 /// ## Fields
 ///
 /// - **CLK_SYS_XOSC** `[30]` (RW)
+///
 /// - **CLK_SYS_XIP** `[29]` (RW)
+///
 /// - **CLK_SYS_WATCHDOG** `[28]` (RW)
+///
 /// - **CLK_USB** `[27]` (RW)
+///
 /// - **CLK_SYS_USBCTRL** `[26]` (RW)
+///
 /// - **CLK_SYS_UART1** `[25]` (RW)
+///
 /// - **CLK_PERI_UART1** `[24]` (RW)
+///
 /// - **CLK_SYS_UART0** `[23]` (RW)
+///
 /// - **CLK_PERI_UART0** `[22]` (RW)
+///
 /// - **CLK_SYS_TRNG** `[21]` (RW)
+///
 /// - **CLK_SYS_TIMER1** `[20]` (RW)
+///
 /// - **CLK_SYS_TIMER0** `[19]` (RW)
+///
 /// - **CLK_SYS_TICKS** `[18]` (RW)
+///
 /// - **CLK_REF_TICKS** `[17]` (RW)
+///
 /// - **CLK_SYS_TBMAN** `[16]` (RW)
+///
 /// - **CLK_SYS_SYSINFO** `[15]` (RW)
+///
 /// - **CLK_SYS_SYSCFG** `[14]` (RW)
+///
 /// - **CLK_SYS_SRAM9** `[13]` (RW)
+///
 /// - **CLK_SYS_SRAM8** `[12]` (RW)
+///
 /// - **CLK_SYS_SRAM7** `[11]` (RW)
+///
 /// - **CLK_SYS_SRAM6** `[10]` (RW)
+///
 /// - **CLK_SYS_SRAM5** `[9]` (RW)
+///
 /// - **CLK_SYS_SRAM4** `[8]` (RW)
+///
 /// - **CLK_SYS_SRAM3** `[7]` (RW)
+///
 /// - **CLK_SYS_SRAM2** `[6]` (RW)
+///
 /// - **CLK_SYS_SRAM1** `[5]` (RW)
+///
 /// - **CLK_SYS_SRAM0** `[4]` (RW)
+///
 /// - **CLK_SYS_SPI1** `[3]` (RW)
+///
 /// - **CLK_PERI_SPI1** `[2]` (RW)
+///
 /// - **CLK_SYS_SPI0** `[1]` (RW)
+///
 /// - **CLK_PERI_SPI0** `[0]` (RW)
 #[repr(transparent)]
 pub struct SleepEn1 {
@@ -13505,36 +14246,67 @@ impl SleepEn1 {
 /// ## Fields
 ///
 /// - **CLK_SYS_SIO** `[31]` (RO)
+///
 /// - **CLK_SYS_SHA256** `[30]` (RO)
+///
 /// - **CLK_SYS_PSM** `[29]` (RO)
+///
 /// - **CLK_SYS_ROSC** `[28]` (RO)
+///
 /// - **CLK_SYS_ROM** `[27]` (RO)
+///
 /// - **CLK_SYS_RESETS** `[26]` (RO)
+///
 /// - **CLK_SYS_PWM** `[25]` (RO)
+///
 /// - **CLK_SYS_POWMAN** `[24]` (RO)
+///
 /// - **CLK_REF_POWMAN** `[23]` (RO)
+///
 /// - **CLK_SYS_PLL_USB** `[22]` (RO)
+///
 /// - **CLK_SYS_PLL_SYS** `[21]` (RO)
+///
 /// - **CLK_SYS_PIO2** `[20]` (RO)
+///
 /// - **CLK_SYS_PIO1** `[19]` (RO)
+///
 /// - **CLK_SYS_PIO0** `[18]` (RO)
+///
 /// - **CLK_SYS_PADS** `[17]` (RO)
+///
 /// - **CLK_SYS_OTP** `[16]` (RO)
+///
 /// - **CLK_REF_OTP** `[15]` (RO)
+///
 /// - **CLK_SYS_JTAG** `[14]` (RO)
+///
 /// - **CLK_SYS_IO** `[13]` (RO)
+///
 /// - **CLK_SYS_I2C1** `[12]` (RO)
+///
 /// - **CLK_SYS_I2C0** `[11]` (RO)
+///
 /// - **CLK_SYS_HSTX** `[10]` (RO)
+///
 /// - **CLK_HSTX** `[9]` (RO)
+///
 /// - **CLK_SYS_GLITCH_DETECTOR** `[8]` (RO)
+///
 /// - **CLK_SYS_DMA** `[7]` (RO)
+///
 /// - **CLK_SYS_BUSFABRIC** `[6]` (RO)
+///
 /// - **CLK_SYS_BUSCTRL** `[5]` (RO)
+///
 /// - **CLK_SYS_BOOTRAM** `[4]` (RO)
+///
 /// - **CLK_SYS_ADC** `[3]` (RO)
+///
 /// - **CLK_ADC** `[2]` (RO)
+///
 /// - **CLK_SYS_ACCESSCTRL** `[1]` (RO)
+///
 /// - **CLK_SYS_CLOCKS** `[0]` (RO)
 #[repr(transparent)]
 pub struct Enabled0 {
@@ -14199,35 +14971,65 @@ impl Enabled0 {
 /// ## Fields
 ///
 /// - **CLK_SYS_XOSC** `[30]` (RO)
+///
 /// - **CLK_SYS_XIP** `[29]` (RO)
+///
 /// - **CLK_SYS_WATCHDOG** `[28]` (RO)
+///
 /// - **CLK_USB** `[27]` (RO)
+///
 /// - **CLK_SYS_USBCTRL** `[26]` (RO)
+///
 /// - **CLK_SYS_UART1** `[25]` (RO)
+///
 /// - **CLK_PERI_UART1** `[24]` (RO)
+///
 /// - **CLK_SYS_UART0** `[23]` (RO)
+///
 /// - **CLK_PERI_UART0** `[22]` (RO)
+///
 /// - **CLK_SYS_TRNG** `[21]` (RO)
+///
 /// - **CLK_SYS_TIMER1** `[20]` (RO)
+///
 /// - **CLK_SYS_TIMER0** `[19]` (RO)
+///
 /// - **CLK_SYS_TICKS** `[18]` (RO)
+///
 /// - **CLK_REF_TICKS** `[17]` (RO)
+///
 /// - **CLK_SYS_TBMAN** `[16]` (RO)
+///
 /// - **CLK_SYS_SYSINFO** `[15]` (RO)
+///
 /// - **CLK_SYS_SYSCFG** `[14]` (RO)
+///
 /// - **CLK_SYS_SRAM9** `[13]` (RO)
+///
 /// - **CLK_SYS_SRAM8** `[12]` (RO)
+///
 /// - **CLK_SYS_SRAM7** `[11]` (RO)
+///
 /// - **CLK_SYS_SRAM6** `[10]` (RO)
+///
 /// - **CLK_SYS_SRAM5** `[9]` (RO)
+///
 /// - **CLK_SYS_SRAM4** `[8]` (RO)
+///
 /// - **CLK_SYS_SRAM3** `[7]` (RO)
+///
 /// - **CLK_SYS_SRAM2** `[6]` (RO)
+///
 /// - **CLK_SYS_SRAM1** `[5]` (RO)
+///
 /// - **CLK_SYS_SRAM0** `[4]` (RO)
+///
 /// - **CLK_SYS_SPI1** `[3]` (RO)
+///
 /// - **CLK_PERI_SPI1** `[2]` (RO)
+///
 /// - **CLK_SYS_SPI0** `[1]` (RO)
+///
 /// - **CLK_PERI_SPI0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Enabled1 {

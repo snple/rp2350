@@ -1671,18 +1671,25 @@ impl InfoCrc1 {
 /// ## Fields
 ///
 /// - **CS1_SIZE** `[15:12]` (RO)
+///
 ///   The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
 ///   A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
+///
 /// - **CS0_SIZE** `[11:8]` (RO)
+///
 ///   The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
 ///   A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
+///
 /// - **D8H_ERASE_SUPPORTED** `[7]` (RO)
+///
 ///   If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
 ///   If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
 ///   When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
+///
 /// - **CS1_GPIO** `[5:0]` (RO)
+///
 ///   Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
 ///   On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
 ///   Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -1703,9 +1710,11 @@ impl FlashDevinfo {
     // ======== Field Constants ========
 
     /// **CS1_SIZE**
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
+    ///
     /// Bits `[15:12]`, mask `0x0000f000`
     pub const CS1_SIZE_OFFSET: u32 = 12;
     pub const CS1_SIZE_MASK: u32 = 0x0000f000;
@@ -1737,9 +1746,11 @@ impl FlashDevinfo {
     pub const CS1_SIZE_16M_VAL: u32 = 12;
 
     /// **CS0_SIZE**
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
+    ///
     /// Bits `[11:8]`, mask `0x00000f00`
     pub const CS0_SIZE_OFFSET: u32 = 8;
     pub const CS0_SIZE_MASK: u32 = 0x00000f00;
@@ -1771,18 +1782,22 @@ impl FlashDevinfo {
     pub const CS0_SIZE_16M_VAL: u32 = 12;
 
     /// **D8H_ERASE_SUPPORTED**
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const D8H_ERASE_SUPPORTED_OFFSET: u32 = 7;
     pub const D8H_ERASE_SUPPORTED_MASK: u32 = 0x00000080;
     pub const D8H_ERASE_SUPPORTED: u32 = 1 << 7;
 
     /// **CS1_GPIO**
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const CS1_GPIO_OFFSET: u32 = 0;
     pub const CS1_GPIO_MASK: u32 = 0x0000003f;
@@ -1790,6 +1805,7 @@ impl FlashDevinfo {
     // ======== Field Accessors ========
 
     /// **CS1_SIZE** `[15:12]` (RO)
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
@@ -1799,6 +1815,7 @@ impl FlashDevinfo {
     }
 
     /// **CS0_SIZE** `[11:8]` (RO)
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
@@ -1808,6 +1825,7 @@ impl FlashDevinfo {
     }
 
     /// **D8H_ERASE_SUPPORTED** `[7]` (RO)
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
@@ -1817,6 +1835,7 @@ impl FlashDevinfo {
     }
 
     /// **CS1_GPIO** `[5:0]` (RO)
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -1856,6 +1875,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS1_SIZE** `[15:12]`
+    ///
     /// The size of the flash/PSRAM device on chip select 1 (addressable at 0x11000000 through 0x11ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS1_SIZE. For example, four megabytes is encoded with a CS1_SIZE value of 10, and 16 megabytes is encoded with a CS1_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of zero is used.
@@ -1865,6 +1885,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS0_SIZE** `[11:8]`
+    ///
     /// The size of the flash/PSRAM device on chip select 0 (addressable at 0x10000000 through 0x10ffffff).
     /// A value of zero is decoded as a size of zero (no device). Nonzero values are decoded as 4kiB << CS0_SIZE. For example, four megabytes is encoded with a CS0_SIZE value of 10, and 16 megabytes is encoded with a CS0_SIZE value of 12.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, a default of 12 (16 MiB) is used.
@@ -1874,6 +1895,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **D8H_ERASE_SUPPORTED** `[7:7]`
+    ///
     /// If true, all attached devices are assumed to support (or ignore, in the case of PSRAM) a block erase command with a command prefix of D8h, an erase size of 64 kiB, and a 24-bit address. Almost all 25-series flash devices support this command.
     /// If set, the bootrom will use the D8h erase command where it is able, to accelerate bulk erase operations. This makes flash programming faster.
     /// When BOOT_FLAGS0_FLASH_DEVINFO_ENABLE is not set, this field defaults to false.
@@ -1883,6 +1905,7 @@ impl FlashDevinfoVal {
     }
 
     /// Read **CS1_GPIO** `[5:0]`
+    ///
     /// Indicate a GPIO number to be used for the secondary flash chip select (CS1), which selects the external QSPI device mapped at system addresses 0x11000000 through 0x11ffffff. There is no such configuration for CS0, as the primary chip select has a dedicated pin.
     /// On RP2350 the permissible GPIO numbers are 0, 8, 19 and 47.
     /// Ignored if CS1_size is zero. If CS1_SIZE is nonzero, the bootrom will automatically configure this GPIO as a second chip select upon entering the flash boot path, or entering any other path that may use the QSPI flash interface, such as BOOTSEL mode (nsboot).
@@ -2028,8 +2051,11 @@ impl FlashPartitionSlotSize {
 /// ## Fields
 ///
 /// - **ACTIVELOW** `[8]` (RO)
+///
 ///   LED is active-low. (Default: active-high.)
+///
 /// - **PIN** `[5:0]` (RO)
+///
 ///   GPIO index to use for bootloader activity LED.
 #[repr(transparent)]
 pub struct BootselLedCfg {
@@ -2048,14 +2074,18 @@ impl BootselLedCfg {
     // ======== Field Constants ========
 
     /// **ACTIVELOW**
+    ///
     /// LED is active-low. (Default: active-high.)
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const ACTIVELOW_OFFSET: u32 = 8;
     pub const ACTIVELOW_MASK: u32 = 0x00000100;
     pub const ACTIVELOW: u32 = 1 << 8;
 
     /// **PIN**
+    ///
     /// GPIO index to use for bootloader activity LED.
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const PIN_OFFSET: u32 = 0;
     pub const PIN_MASK: u32 = 0x0000003f;
@@ -2063,6 +2093,7 @@ impl BootselLedCfg {
     // ======== Field Accessors ========
 
     /// **ACTIVELOW** `[8]` (RO)
+    ///
     /// LED is active-low. (Default: active-high.)
     #[inline(always)]
     pub fn activelow(&self) -> bool {
@@ -2070,6 +2101,7 @@ impl BootselLedCfg {
     }
 
     /// **PIN** `[5:0]` (RO)
+    ///
     /// GPIO index to use for bootloader activity LED.
     #[inline(always)]
     pub fn pin(&self) -> u32 {
@@ -2107,6 +2139,7 @@ impl BootselLedCfgVal {
     }
 
     /// Read **ACTIVELOW** `[8:8]`
+    ///
     /// LED is active-low. (Default: active-high.)
     #[inline(always)]
     pub const fn activelow(&self) -> bool {
@@ -2114,6 +2147,7 @@ impl BootselLedCfgVal {
     }
 
     /// Read **PIN** `[5:0]`
+    ///
     /// GPIO index to use for bootloader activity LED.
     #[inline(always)]
     pub const fn pin(&self) -> u32 {
@@ -2167,13 +2201,20 @@ impl BootselLedCfg {
 /// ## Fields
 ///
 /// - **REFDIV** `[15]` (RO)
+///
 ///   PLL reference divisor, minus one.
 ///   Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
+///
 /// - **POSTDIV2** `[14:12]` (RO)
+///
 ///   PLL post-divide 2 divisor, in the range 1..7 inclusive.
+///
 /// - **POSTDIV1** `[11:9]` (RO)
+///
 ///   PLL post-divide 1 divisor, in the range 1..7 inclusive.
+///
 /// - **FBDIV** `[8:0]` (RO)
+///
 ///   PLL feedback divisor, in the range 16..320 inclusive.
 #[repr(transparent)]
 pub struct BootselPllCfg {
@@ -2192,27 +2233,35 @@ impl BootselPllCfg {
     // ======== Field Constants ========
 
     /// **REFDIV**
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
+    ///
     /// Bits `[15:15]`, mask `0x00008000`
     pub const REFDIV_OFFSET: u32 = 15;
     pub const REFDIV_MASK: u32 = 0x00008000;
     pub const REFDIV: u32 = 1 << 15;
 
     /// **POSTDIV2**
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const POSTDIV2_OFFSET: u32 = 12;
     pub const POSTDIV2_MASK: u32 = 0x00007000;
 
     /// **POSTDIV1**
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
+    ///
     /// Bits `[11:9]`, mask `0x00000e00`
     pub const POSTDIV1_OFFSET: u32 = 9;
     pub const POSTDIV1_MASK: u32 = 0x00000e00;
 
     /// **FBDIV**
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
+    ///
     /// Bits `[8:0]`, mask `0x000001ff`
     pub const FBDIV_OFFSET: u32 = 0;
     pub const FBDIV_MASK: u32 = 0x000001ff;
@@ -2220,6 +2269,7 @@ impl BootselPllCfg {
     // ======== Field Accessors ========
 
     /// **REFDIV** `[15]` (RO)
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
     #[inline(always)]
@@ -2228,6 +2278,7 @@ impl BootselPllCfg {
     }
 
     /// **POSTDIV2** `[14:12]` (RO)
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub fn postdiv2(&self) -> u32 {
@@ -2235,6 +2286,7 @@ impl BootselPllCfg {
     }
 
     /// **POSTDIV1** `[11:9]` (RO)
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub fn postdiv1(&self) -> u32 {
@@ -2242,6 +2294,7 @@ impl BootselPllCfg {
     }
 
     /// **FBDIV** `[8:0]` (RO)
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
     #[inline(always)]
     pub fn fbdiv(&self) -> u32 {
@@ -2279,6 +2332,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **REFDIV** `[15:15]`
+    ///
     /// PLL reference divisor, minus one.
     /// Programming a value of 0 means a reference divisor of 1. Programming a value of 1 means a reference divisor of 2 (for exceptionally fast XIN inputs)
     #[inline(always)]
@@ -2287,6 +2341,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **POSTDIV2** `[14:12]`
+    ///
     /// PLL post-divide 2 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub const fn postdiv2(&self) -> u32 {
@@ -2294,6 +2349,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **POSTDIV1** `[11:9]`
+    ///
     /// PLL post-divide 1 divisor, in the range 1..7 inclusive.
     #[inline(always)]
     pub const fn postdiv1(&self) -> u32 {
@@ -2301,6 +2357,7 @@ impl BootselPllCfgVal {
     }
 
     /// Read **FBDIV** `[8:0]`
+    ///
     /// PLL feedback divisor, in the range 16..320 inclusive.
     #[inline(always)]
     pub const fn fbdiv(&self) -> u32 {
@@ -2348,8 +2405,11 @@ impl BootselPllCfg {
 /// ## Fields
 ///
 /// - **RANGE** `[15:14]` (RO)
+///
 ///   Value of the XOSC_CTRL_FREQ_RANGE register.
+///
 /// - **STARTUP** `[13:0]` (RO)
+///
 ///   Value of the XOSC_STARTUP register
 #[repr(transparent)]
 pub struct BootselXoscCfg {
@@ -2368,7 +2428,9 @@ impl BootselXoscCfg {
     // ======== Field Constants ========
 
     /// **RANGE**
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const RANGE_OFFSET: u32 = 14;
     pub const RANGE_MASK: u32 = 0x0000c000;
@@ -2382,7 +2444,9 @@ impl BootselXoscCfg {
     pub const RANGE_40_100MHZ_VAL: u32 = 3;
 
     /// **STARTUP**
+    ///
     /// Value of the XOSC_STARTUP register
+    ///
     /// Bits `[13:0]`, mask `0x00003fff`
     pub const STARTUP_OFFSET: u32 = 0;
     pub const STARTUP_MASK: u32 = 0x00003fff;
@@ -2390,6 +2454,7 @@ impl BootselXoscCfg {
     // ======== Field Accessors ========
 
     /// **RANGE** `[15:14]` (RO)
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
     #[inline(always)]
     pub fn range(&self) -> u32 {
@@ -2397,6 +2462,7 @@ impl BootselXoscCfg {
     }
 
     /// **STARTUP** `[13:0]` (RO)
+    ///
     /// Value of the XOSC_STARTUP register
     #[inline(always)]
     pub fn startup(&self) -> u32 {
@@ -2434,6 +2500,7 @@ impl BootselXoscCfgVal {
     }
 
     /// Read **RANGE** `[15:14]`
+    ///
     /// Value of the XOSC_CTRL_FREQ_RANGE register.
     #[inline(always)]
     pub const fn range(&self) -> u32 {
@@ -2441,6 +2508,7 @@ impl BootselXoscCfgVal {
     }
 
     /// Read **STARTUP** `[13:0]`
+    ///
     /// Value of the XOSC_STARTUP register
     #[inline(always)]
     pub const fn startup(&self) -> u32 {

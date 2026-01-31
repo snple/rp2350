@@ -18,13 +18,20 @@ pub const BASE: u32 = 0x40050000;
 /// ## Fields
 ///
 /// - **LOCK** `[31]` (RO)
+///
 ///   PLL is locked
+///
 /// - **LOCK_N** `[30]` (RW)
+///
 ///   PLL is not locked
 ///   Ideally this is cleared when PLL lock is seen and this should never normally be set
+///
 /// - **BYPASS** `[8]` (RW)
+///
 ///   Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
+///
 /// - **REFDIV** `[5:0]` (RW)
+///
 ///   Divides the PLL input reference clock.
 ///   Behaviour is undefined for div=0.
 ///   PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
@@ -45,31 +52,39 @@ impl Cs {
     // ======== Field Constants ========
 
     /// **LOCK**
+    ///
     /// PLL is locked
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const LOCK_OFFSET: u32 = 31;
     pub const LOCK_MASK: u32 = 0x80000000;
     pub const LOCK: u32 = 1 << 31;
 
     /// **LOCK_N**
+    ///
     /// PLL is not locked
     /// Ideally this is cleared when PLL lock is seen and this should never normally be set
+    ///
     /// Bits `[30:30]`, mask `0x40000000`
     pub const LOCK_N_OFFSET: u32 = 30;
     pub const LOCK_N_MASK: u32 = 0x40000000;
     pub const LOCK_N: u32 = 1 << 30;
 
     /// **BYPASS**
+    ///
     /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
+    ///
     /// Bits `[8:8]`, mask `0x00000100`
     pub const BYPASS_OFFSET: u32 = 8;
     pub const BYPASS_MASK: u32 = 0x00000100;
     pub const BYPASS: u32 = 1 << 8;
 
     /// **REFDIV**
+    ///
     /// Divides the PLL input reference clock.
     /// Behaviour is undefined for div=0.
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
+    ///
     /// Bits `[5:0]`, mask `0x0000003f`
     pub const REFDIV_OFFSET: u32 = 0;
     pub const REFDIV_MASK: u32 = 0x0000003f;
@@ -77,6 +92,7 @@ impl Cs {
     // ======== Field Accessors ========
 
     /// **LOCK** `[31]` (RO)
+    ///
     /// PLL is locked
     #[inline(always)]
     pub fn lock(&self) -> bool {
@@ -84,6 +100,7 @@ impl Cs {
     }
 
     /// **LOCK_N** `[30]` (RW)
+    ///
     /// PLL is not locked
     /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
@@ -104,6 +121,7 @@ impl Cs {
     }
 
     /// **BYPASS** `[8]` (RW)
+    ///
     /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub fn bypass(&self) -> bool {
@@ -123,6 +141,7 @@ impl Cs {
     }
 
     /// **REFDIV** `[5:0]` (RW)
+    ///
     /// Divides the PLL input reference clock.
     /// Behaviour is undefined for div=0.
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
@@ -132,6 +151,7 @@ impl Cs {
     }
 
     /// Write **REFDIV** `[5:0]` (RW)
+    ///
     /// Divides the PLL input reference clock.
     /// Behaviour is undefined for div=0.
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
@@ -171,6 +191,7 @@ impl CsVal {
     }
 
     /// Read **LOCK** `[31:31]`
+    ///
     /// PLL is locked
     #[inline(always)]
     pub const fn lock(&self) -> bool {
@@ -178,6 +199,7 @@ impl CsVal {
     }
 
     /// Read **LOCK_N** `[30:30]`
+    ///
     /// PLL is not locked
     /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
@@ -186,6 +208,7 @@ impl CsVal {
     }
 
     /// Read **BYPASS** `[8:8]`
+    ///
     /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub const fn bypass(&self) -> bool {
@@ -193,6 +216,7 @@ impl CsVal {
     }
 
     /// Read **REFDIV** `[5:0]`
+    ///
     /// Divides the PLL input reference clock.
     /// Behaviour is undefined for div=0.
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
@@ -202,6 +226,7 @@ impl CsVal {
     }
 
     /// Set **LOCK_N** `[30:30]`
+    ///
     /// PLL is not locked
     /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
@@ -216,6 +241,7 @@ impl CsVal {
     }
 
     /// Set **BYPASS** `[8:8]`
+    ///
     /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub const fn with_bypass(self, value: bool) -> Self {
@@ -229,6 +255,7 @@ impl CsVal {
     }
 
     /// Set **REFDIV** `[5:0]`
+    ///
     /// Divides the PLL input reference clock.
     /// Behaviour is undefined for div=0.
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
@@ -278,15 +305,22 @@ impl Cs {
 /// ## Fields
 ///
 /// - **VCOPD** `[5]` (RW)
+///
 ///   PLL VCO powerdown
 ///   To save power set high when PLL output not required or bypass=1.
+///
 /// - **POSTDIVPD** `[3]` (RW)
+///
 ///   PLL post divider powerdown
 ///   To save power set high when PLL output not required or bypass=1.
+///
 /// - **DSMPD** `[2]` (RW)
+///
 ///   PLL DSM powerdown
 ///   Nothing is achieved by setting this low.
+///
 /// - **PD** `[0]` (RW)
+///
 ///   PLL powerdown
 ///   To save power set high when PLL output not required.
 #[repr(transparent)]
@@ -306,32 +340,40 @@ impl Pwr {
     // ======== Field Constants ========
 
     /// **VCOPD**
+    ///
     /// PLL VCO powerdown
     /// To save power set high when PLL output not required or bypass=1.
+    ///
     /// Bits `[5:5]`, mask `0x00000020`
     pub const VCOPD_OFFSET: u32 = 5;
     pub const VCOPD_MASK: u32 = 0x00000020;
     pub const VCOPD: u32 = 1 << 5;
 
     /// **POSTDIVPD**
+    ///
     /// PLL post divider powerdown
     /// To save power set high when PLL output not required or bypass=1.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const POSTDIVPD_OFFSET: u32 = 3;
     pub const POSTDIVPD_MASK: u32 = 0x00000008;
     pub const POSTDIVPD: u32 = 1 << 3;
 
     /// **DSMPD**
+    ///
     /// PLL DSM powerdown
     /// Nothing is achieved by setting this low.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const DSMPD_OFFSET: u32 = 2;
     pub const DSMPD_MASK: u32 = 0x00000004;
     pub const DSMPD: u32 = 1 << 2;
 
     /// **PD**
+    ///
     /// PLL powerdown
     /// To save power set high when PLL output not required.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const PD_OFFSET: u32 = 0;
     pub const PD_MASK: u32 = 0x00000001;
@@ -340,6 +382,7 @@ impl Pwr {
     // ======== Field Accessors ========
 
     /// **VCOPD** `[5]` (RW)
+    ///
     /// PLL VCO powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -360,6 +403,7 @@ impl Pwr {
     }
 
     /// **POSTDIVPD** `[3]` (RW)
+    ///
     /// PLL post divider powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -380,6 +424,7 @@ impl Pwr {
     }
 
     /// **DSMPD** `[2]` (RW)
+    ///
     /// PLL DSM powerdown
     /// Nothing is achieved by setting this low.
     #[inline(always)]
@@ -400,6 +445,7 @@ impl Pwr {
     }
 
     /// **PD** `[0]` (RW)
+    ///
     /// PLL powerdown
     /// To save power set high when PLL output not required.
     #[inline(always)]
@@ -450,6 +496,7 @@ impl PwrVal {
     }
 
     /// Read **VCOPD** `[5:5]`
+    ///
     /// PLL VCO powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -458,6 +505,7 @@ impl PwrVal {
     }
 
     /// Read **POSTDIVPD** `[3:3]`
+    ///
     /// PLL post divider powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -466,6 +514,7 @@ impl PwrVal {
     }
 
     /// Read **DSMPD** `[2:2]`
+    ///
     /// PLL DSM powerdown
     /// Nothing is achieved by setting this low.
     #[inline(always)]
@@ -474,6 +523,7 @@ impl PwrVal {
     }
 
     /// Read **PD** `[0:0]`
+    ///
     /// PLL powerdown
     /// To save power set high when PLL output not required.
     #[inline(always)]
@@ -482,6 +532,7 @@ impl PwrVal {
     }
 
     /// Set **VCOPD** `[5:5]`
+    ///
     /// PLL VCO powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -496,6 +547,7 @@ impl PwrVal {
     }
 
     /// Set **POSTDIVPD** `[3:3]`
+    ///
     /// PLL post divider powerdown
     /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
@@ -510,6 +562,7 @@ impl PwrVal {
     }
 
     /// Set **DSMPD** `[2:2]`
+    ///
     /// PLL DSM powerdown
     /// Nothing is achieved by setting this low.
     #[inline(always)]
@@ -524,6 +577,7 @@ impl PwrVal {
     }
 
     /// Set **PD** `[0:0]`
+    ///
     /// PLL powerdown
     /// To save power set high when PLL output not required.
     #[inline(always)]
@@ -577,6 +631,7 @@ impl Pwr {
 /// ## Fields
 ///
 /// - **FBDIV_INT** `[11:0]` (RW)
+///
 ///   see ctrl reg description for constraints
 #[repr(transparent)]
 pub struct FbdivInt {
@@ -595,7 +650,9 @@ impl FbdivInt {
     // ======== Field Constants ========
 
     /// **FBDIV_INT**
+    ///
     /// see ctrl reg description for constraints
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const FBDIV_INT_OFFSET: u32 = 0;
     pub const FBDIV_INT_MASK: u32 = 0x00000fff;
@@ -603,6 +660,7 @@ impl FbdivInt {
     // ======== Field Accessors ========
 
     /// **FBDIV_INT** `[11:0]` (RW)
+    ///
     /// see ctrl reg description for constraints
     #[inline(always)]
     pub fn fbdiv_int(&self) -> u32 {
@@ -610,6 +668,7 @@ impl FbdivInt {
     }
 
     /// Write **FBDIV_INT** `[11:0]` (RW)
+    ///
     /// see ctrl reg description for constraints
     #[inline(always)]
     pub fn write_fbdiv_int(&self, value: u32) {
@@ -647,6 +706,7 @@ impl FbdivIntVal {
     }
 
     /// Read **FBDIV_INT** `[11:0]`
+    ///
     /// see ctrl reg description for constraints
     #[inline(always)]
     pub const fn fbdiv_int(&self) -> u32 {
@@ -654,6 +714,7 @@ impl FbdivIntVal {
     }
 
     /// Set **FBDIV_INT** `[11:0]`
+    ///
     /// see ctrl reg description for constraints
     #[inline(always)]
     pub const fn with_fbdiv_int(self, value: u32) -> Self {
@@ -703,8 +764,11 @@ impl FbdivInt {
 /// ## Fields
 ///
 /// - **POSTDIV1** `[18:16]` (RW)
+///
 ///   divide by 1-7
+///
 /// - **POSTDIV2** `[14:12]` (RW)
+///
 ///   divide by 1-7
 #[repr(transparent)]
 pub struct Prim {
@@ -723,13 +787,17 @@ impl Prim {
     // ======== Field Constants ========
 
     /// **POSTDIV1**
+    ///
     /// divide by 1-7
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const POSTDIV1_OFFSET: u32 = 16;
     pub const POSTDIV1_MASK: u32 = 0x00070000;
 
     /// **POSTDIV2**
+    ///
     /// divide by 1-7
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const POSTDIV2_OFFSET: u32 = 12;
     pub const POSTDIV2_MASK: u32 = 0x00007000;
@@ -737,6 +805,7 @@ impl Prim {
     // ======== Field Accessors ========
 
     /// **POSTDIV1** `[18:16]` (RW)
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub fn postdiv1(&self) -> u32 {
@@ -744,6 +813,7 @@ impl Prim {
     }
 
     /// Write **POSTDIV1** `[18:16]` (RW)
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv1(&self, value: u32) {
@@ -751,6 +821,7 @@ impl Prim {
     }
 
     /// **POSTDIV2** `[14:12]` (RW)
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub fn postdiv2(&self) -> u32 {
@@ -758,6 +829,7 @@ impl Prim {
     }
 
     /// Write **POSTDIV2** `[14:12]` (RW)
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv2(&self, value: u32) {
@@ -795,6 +867,7 @@ impl PrimVal {
     }
 
     /// Read **POSTDIV1** `[18:16]`
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub const fn postdiv1(&self) -> u32 {
@@ -802,6 +875,7 @@ impl PrimVal {
     }
 
     /// Read **POSTDIV2** `[14:12]`
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub const fn postdiv2(&self) -> u32 {
@@ -809,6 +883,7 @@ impl PrimVal {
     }
 
     /// Set **POSTDIV1** `[18:16]`
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub const fn with_postdiv1(self, value: u32) -> Self {
@@ -818,6 +893,7 @@ impl PrimVal {
     }
 
     /// Set **POSTDIV2** `[14:12]`
+    ///
     /// divide by 1-7
     #[inline(always)]
     pub const fn with_postdiv2(self, value: u32) -> Self {

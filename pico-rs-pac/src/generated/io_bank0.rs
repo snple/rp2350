@@ -12,12 +12,19 @@ pub const BASE: u32 = 0x40028000;
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio0Status {
@@ -36,28 +43,36 @@ impl Gpio0Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -66,6 +81,7 @@ impl Gpio0Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -73,6 +89,7 @@ impl Gpio0Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -80,6 +97,7 @@ impl Gpio0Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -87,6 +105,7 @@ impl Gpio0Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -124,6 +143,7 @@ impl Gpio0StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -131,6 +151,7 @@ impl Gpio0StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -138,6 +159,7 @@ impl Gpio0StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -145,6 +167,7 @@ impl Gpio0StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -188,10 +211,15 @@ impl Gpio0Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -295,8 +323,10 @@ impl Gpio0Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -376,6 +406,7 @@ impl Gpio0Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -384,6 +415,7 @@ impl Gpio0Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -446,6 +478,7 @@ impl Gpio0CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -486,6 +519,7 @@ impl Gpio0CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -532,12 +566,19 @@ impl Gpio0Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio1Status {
@@ -556,28 +597,36 @@ impl Gpio1Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -586,6 +635,7 @@ impl Gpio1Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -593,6 +643,7 @@ impl Gpio1Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -600,6 +651,7 @@ impl Gpio1Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -607,6 +659,7 @@ impl Gpio1Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -644,6 +697,7 @@ impl Gpio1StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -651,6 +705,7 @@ impl Gpio1StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -658,6 +713,7 @@ impl Gpio1StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -665,6 +721,7 @@ impl Gpio1StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -708,10 +765,15 @@ impl Gpio1Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -815,8 +877,10 @@ impl Gpio1Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -896,6 +960,7 @@ impl Gpio1Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -904,6 +969,7 @@ impl Gpio1Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -966,6 +1032,7 @@ impl Gpio1CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1006,6 +1073,7 @@ impl Gpio1CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1052,12 +1120,19 @@ impl Gpio1Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio2Status {
@@ -1076,28 +1151,36 @@ impl Gpio2Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -1106,6 +1189,7 @@ impl Gpio2Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -1113,6 +1197,7 @@ impl Gpio2Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -1120,6 +1205,7 @@ impl Gpio2Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -1127,6 +1213,7 @@ impl Gpio2Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -1164,6 +1251,7 @@ impl Gpio2StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -1171,6 +1259,7 @@ impl Gpio2StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -1178,6 +1267,7 @@ impl Gpio2StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -1185,6 +1275,7 @@ impl Gpio2StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -1228,10 +1319,15 @@ impl Gpio2Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -1335,8 +1431,10 @@ impl Gpio2Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -1418,6 +1516,7 @@ impl Gpio2Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1426,6 +1525,7 @@ impl Gpio2Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1488,6 +1588,7 @@ impl Gpio2CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1528,6 +1629,7 @@ impl Gpio2CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1574,12 +1676,19 @@ impl Gpio2Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio3Status {
@@ -1598,28 +1707,36 @@ impl Gpio3Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -1628,6 +1745,7 @@ impl Gpio3Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -1635,6 +1753,7 @@ impl Gpio3Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -1642,6 +1761,7 @@ impl Gpio3Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -1649,6 +1769,7 @@ impl Gpio3Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -1686,6 +1807,7 @@ impl Gpio3StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -1693,6 +1815,7 @@ impl Gpio3StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -1700,6 +1823,7 @@ impl Gpio3StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -1707,6 +1831,7 @@ impl Gpio3StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -1750,10 +1875,15 @@ impl Gpio3Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -1857,8 +1987,10 @@ impl Gpio3Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -1940,6 +2072,7 @@ impl Gpio3Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -1948,6 +2081,7 @@ impl Gpio3Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2010,6 +2144,7 @@ impl Gpio3CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2050,6 +2185,7 @@ impl Gpio3CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2096,12 +2232,19 @@ impl Gpio3Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio4Status {
@@ -2120,28 +2263,36 @@ impl Gpio4Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -2150,6 +2301,7 @@ impl Gpio4Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -2157,6 +2309,7 @@ impl Gpio4Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -2164,6 +2317,7 @@ impl Gpio4Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -2171,6 +2325,7 @@ impl Gpio4Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -2208,6 +2363,7 @@ impl Gpio4StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -2215,6 +2371,7 @@ impl Gpio4StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -2222,6 +2379,7 @@ impl Gpio4StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -2229,6 +2387,7 @@ impl Gpio4StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -2272,10 +2431,15 @@ impl Gpio4Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -2379,8 +2543,10 @@ impl Gpio4Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -2458,6 +2624,7 @@ impl Gpio4Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2466,6 +2633,7 @@ impl Gpio4Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2528,6 +2696,7 @@ impl Gpio4CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2568,6 +2737,7 @@ impl Gpio4CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2614,12 +2784,19 @@ impl Gpio4Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio5Status {
@@ -2638,28 +2815,36 @@ impl Gpio5Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -2668,6 +2853,7 @@ impl Gpio5Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -2675,6 +2861,7 @@ impl Gpio5Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -2682,6 +2869,7 @@ impl Gpio5Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -2689,6 +2877,7 @@ impl Gpio5Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -2726,6 +2915,7 @@ impl Gpio5StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -2733,6 +2923,7 @@ impl Gpio5StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -2740,6 +2931,7 @@ impl Gpio5StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -2747,6 +2939,7 @@ impl Gpio5StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -2790,10 +2983,15 @@ impl Gpio5Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -2897,8 +3095,10 @@ impl Gpio5Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -2976,6 +3176,7 @@ impl Gpio5Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -2984,6 +3185,7 @@ impl Gpio5Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3046,6 +3248,7 @@ impl Gpio5CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3086,6 +3289,7 @@ impl Gpio5CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3132,12 +3336,19 @@ impl Gpio5Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio6Status {
@@ -3156,28 +3367,36 @@ impl Gpio6Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -3186,6 +3405,7 @@ impl Gpio6Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -3193,6 +3413,7 @@ impl Gpio6Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -3200,6 +3421,7 @@ impl Gpio6Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -3207,6 +3429,7 @@ impl Gpio6Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -3244,6 +3467,7 @@ impl Gpio6StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -3251,6 +3475,7 @@ impl Gpio6StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -3258,6 +3483,7 @@ impl Gpio6StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -3265,6 +3491,7 @@ impl Gpio6StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -3308,10 +3535,15 @@ impl Gpio6Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -3415,8 +3647,10 @@ impl Gpio6Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -3494,6 +3728,7 @@ impl Gpio6Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3502,6 +3737,7 @@ impl Gpio6Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3564,6 +3800,7 @@ impl Gpio6CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3604,6 +3841,7 @@ impl Gpio6CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -3650,12 +3888,19 @@ impl Gpio6Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio7Status {
@@ -3674,28 +3919,36 @@ impl Gpio7Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -3704,6 +3957,7 @@ impl Gpio7Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -3711,6 +3965,7 @@ impl Gpio7Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -3718,6 +3973,7 @@ impl Gpio7Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -3725,6 +3981,7 @@ impl Gpio7Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -3762,6 +4019,7 @@ impl Gpio7StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -3769,6 +4027,7 @@ impl Gpio7StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -3776,6 +4035,7 @@ impl Gpio7StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -3783,6 +4043,7 @@ impl Gpio7StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -3826,10 +4087,15 @@ impl Gpio7Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -3933,8 +4199,10 @@ impl Gpio7Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -4012,6 +4280,7 @@ impl Gpio7Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4020,6 +4289,7 @@ impl Gpio7Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4082,6 +4352,7 @@ impl Gpio7CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4122,6 +4393,7 @@ impl Gpio7CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4168,12 +4440,19 @@ impl Gpio7Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio8Status {
@@ -4192,28 +4471,36 @@ impl Gpio8Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -4222,6 +4509,7 @@ impl Gpio8Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -4229,6 +4517,7 @@ impl Gpio8Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -4236,6 +4525,7 @@ impl Gpio8Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -4243,6 +4533,7 @@ impl Gpio8Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -4280,6 +4571,7 @@ impl Gpio8StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -4287,6 +4579,7 @@ impl Gpio8StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -4294,6 +4587,7 @@ impl Gpio8StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -4301,6 +4595,7 @@ impl Gpio8StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -4344,10 +4639,15 @@ impl Gpio8Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -4451,8 +4751,10 @@ impl Gpio8Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -4530,6 +4832,7 @@ impl Gpio8Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4538,6 +4841,7 @@ impl Gpio8Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4600,6 +4904,7 @@ impl Gpio8CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4640,6 +4945,7 @@ impl Gpio8CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -4686,12 +4992,19 @@ impl Gpio8Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio9Status {
@@ -4710,28 +5023,36 @@ impl Gpio9Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -4740,6 +5061,7 @@ impl Gpio9Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -4747,6 +5069,7 @@ impl Gpio9Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -4754,6 +5077,7 @@ impl Gpio9Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -4761,6 +5085,7 @@ impl Gpio9Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -4798,6 +5123,7 @@ impl Gpio9StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -4805,6 +5131,7 @@ impl Gpio9StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -4812,6 +5139,7 @@ impl Gpio9StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -4819,6 +5147,7 @@ impl Gpio9StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -4862,10 +5191,15 @@ impl Gpio9Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -4969,8 +5303,10 @@ impl Gpio9Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -5046,6 +5382,7 @@ impl Gpio9Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5054,6 +5391,7 @@ impl Gpio9Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5116,6 +5454,7 @@ impl Gpio9CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5156,6 +5495,7 @@ impl Gpio9CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5202,12 +5542,19 @@ impl Gpio9Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio10Status {
@@ -5226,28 +5573,36 @@ impl Gpio10Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -5256,6 +5611,7 @@ impl Gpio10Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -5263,6 +5619,7 @@ impl Gpio10Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -5270,6 +5627,7 @@ impl Gpio10Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -5277,6 +5635,7 @@ impl Gpio10Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -5314,6 +5673,7 @@ impl Gpio10StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -5321,6 +5681,7 @@ impl Gpio10StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -5328,6 +5689,7 @@ impl Gpio10StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -5335,6 +5697,7 @@ impl Gpio10StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -5378,10 +5741,15 @@ impl Gpio10Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -5485,8 +5853,10 @@ impl Gpio10Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -5564,6 +5934,7 @@ impl Gpio10Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5572,6 +5943,7 @@ impl Gpio10Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5634,6 +6006,7 @@ impl Gpio10CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5674,6 +6047,7 @@ impl Gpio10CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -5720,12 +6094,19 @@ impl Gpio10Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio11Status {
@@ -5744,28 +6125,36 @@ impl Gpio11Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -5774,6 +6163,7 @@ impl Gpio11Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -5781,6 +6171,7 @@ impl Gpio11Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -5788,6 +6179,7 @@ impl Gpio11Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -5795,6 +6187,7 @@ impl Gpio11Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -5832,6 +6225,7 @@ impl Gpio11StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -5839,6 +6233,7 @@ impl Gpio11StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -5846,6 +6241,7 @@ impl Gpio11StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -5853,6 +6249,7 @@ impl Gpio11StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -5896,10 +6293,15 @@ impl Gpio11Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -6003,8 +6405,10 @@ impl Gpio11Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -6082,6 +6486,7 @@ impl Gpio11Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6090,6 +6495,7 @@ impl Gpio11Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6152,6 +6558,7 @@ impl Gpio11CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6192,6 +6599,7 @@ impl Gpio11CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6238,12 +6646,19 @@ impl Gpio11Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio12Status {
@@ -6262,28 +6677,36 @@ impl Gpio12Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -6292,6 +6715,7 @@ impl Gpio12Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -6299,6 +6723,7 @@ impl Gpio12Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -6306,6 +6731,7 @@ impl Gpio12Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -6313,6 +6739,7 @@ impl Gpio12Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -6350,6 +6777,7 @@ impl Gpio12StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -6357,6 +6785,7 @@ impl Gpio12StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -6364,6 +6793,7 @@ impl Gpio12StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -6371,6 +6801,7 @@ impl Gpio12StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -6414,10 +6845,15 @@ impl Gpio12Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -6521,8 +6957,10 @@ impl Gpio12Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -6602,6 +7040,7 @@ impl Gpio12Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6610,6 +7049,7 @@ impl Gpio12Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6672,6 +7112,7 @@ impl Gpio12CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6712,6 +7153,7 @@ impl Gpio12CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -6758,12 +7200,19 @@ impl Gpio12Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio13Status {
@@ -6782,28 +7231,36 @@ impl Gpio13Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -6812,6 +7269,7 @@ impl Gpio13Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -6819,6 +7277,7 @@ impl Gpio13Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -6826,6 +7285,7 @@ impl Gpio13Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -6833,6 +7293,7 @@ impl Gpio13Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -6870,6 +7331,7 @@ impl Gpio13StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -6877,6 +7339,7 @@ impl Gpio13StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -6884,6 +7347,7 @@ impl Gpio13StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -6891,6 +7355,7 @@ impl Gpio13StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -6934,10 +7399,15 @@ impl Gpio13Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -7041,8 +7511,10 @@ impl Gpio13Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -7122,6 +7594,7 @@ impl Gpio13Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7130,6 +7603,7 @@ impl Gpio13Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7192,6 +7666,7 @@ impl Gpio13CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7232,6 +7707,7 @@ impl Gpio13CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7278,12 +7754,19 @@ impl Gpio13Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio14Status {
@@ -7302,28 +7785,36 @@ impl Gpio14Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -7332,6 +7823,7 @@ impl Gpio14Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -7339,6 +7831,7 @@ impl Gpio14Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -7346,6 +7839,7 @@ impl Gpio14Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -7353,6 +7847,7 @@ impl Gpio14Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -7390,6 +7885,7 @@ impl Gpio14StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -7397,6 +7893,7 @@ impl Gpio14StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -7404,6 +7901,7 @@ impl Gpio14StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -7411,6 +7909,7 @@ impl Gpio14StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -7454,10 +7953,15 @@ impl Gpio14Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -7561,8 +8065,10 @@ impl Gpio14Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -7644,6 +8150,7 @@ impl Gpio14Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7652,6 +8159,7 @@ impl Gpio14Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7714,6 +8222,7 @@ impl Gpio14CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7754,6 +8263,7 @@ impl Gpio14CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -7800,12 +8310,19 @@ impl Gpio14Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio15Status {
@@ -7824,28 +8341,36 @@ impl Gpio15Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -7854,6 +8379,7 @@ impl Gpio15Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -7861,6 +8387,7 @@ impl Gpio15Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -7868,6 +8395,7 @@ impl Gpio15Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -7875,6 +8403,7 @@ impl Gpio15Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -7912,6 +8441,7 @@ impl Gpio15StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -7919,6 +8449,7 @@ impl Gpio15StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -7926,6 +8457,7 @@ impl Gpio15StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -7933,6 +8465,7 @@ impl Gpio15StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -7976,10 +8509,15 @@ impl Gpio15Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -8083,8 +8621,10 @@ impl Gpio15Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -8166,6 +8706,7 @@ impl Gpio15Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8174,6 +8715,7 @@ impl Gpio15Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8236,6 +8778,7 @@ impl Gpio15CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8276,6 +8819,7 @@ impl Gpio15CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8322,12 +8866,19 @@ impl Gpio15Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio16Status {
@@ -8346,28 +8897,36 @@ impl Gpio16Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -8376,6 +8935,7 @@ impl Gpio16Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -8383,6 +8943,7 @@ impl Gpio16Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -8390,6 +8951,7 @@ impl Gpio16Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -8397,6 +8959,7 @@ impl Gpio16Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -8434,6 +8997,7 @@ impl Gpio16StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -8441,6 +9005,7 @@ impl Gpio16StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -8448,6 +9013,7 @@ impl Gpio16StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -8455,6 +9021,7 @@ impl Gpio16StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -8498,10 +9065,15 @@ impl Gpio16Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -8605,8 +9177,10 @@ impl Gpio16Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -8684,6 +9258,7 @@ impl Gpio16Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8692,6 +9267,7 @@ impl Gpio16Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8754,6 +9330,7 @@ impl Gpio16CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8794,6 +9371,7 @@ impl Gpio16CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -8840,12 +9418,19 @@ impl Gpio16Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio17Status {
@@ -8864,28 +9449,36 @@ impl Gpio17Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -8894,6 +9487,7 @@ impl Gpio17Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -8901,6 +9495,7 @@ impl Gpio17Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -8908,6 +9503,7 @@ impl Gpio17Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -8915,6 +9511,7 @@ impl Gpio17Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -8952,6 +9549,7 @@ impl Gpio17StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -8959,6 +9557,7 @@ impl Gpio17StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -8966,6 +9565,7 @@ impl Gpio17StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -8973,6 +9573,7 @@ impl Gpio17StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -9016,10 +9617,15 @@ impl Gpio17Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -9123,8 +9729,10 @@ impl Gpio17Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -9202,6 +9810,7 @@ impl Gpio17Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9210,6 +9819,7 @@ impl Gpio17Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9272,6 +9882,7 @@ impl Gpio17CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9312,6 +9923,7 @@ impl Gpio17CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9358,12 +9970,19 @@ impl Gpio17Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio18Status {
@@ -9382,28 +10001,36 @@ impl Gpio18Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -9412,6 +10039,7 @@ impl Gpio18Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -9419,6 +10047,7 @@ impl Gpio18Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -9426,6 +10055,7 @@ impl Gpio18Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -9433,6 +10063,7 @@ impl Gpio18Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -9470,6 +10101,7 @@ impl Gpio18StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -9477,6 +10109,7 @@ impl Gpio18StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -9484,6 +10117,7 @@ impl Gpio18StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -9491,6 +10125,7 @@ impl Gpio18StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -9534,10 +10169,15 @@ impl Gpio18Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -9641,8 +10281,10 @@ impl Gpio18Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -9722,6 +10364,7 @@ impl Gpio18Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9730,6 +10373,7 @@ impl Gpio18Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9792,6 +10436,7 @@ impl Gpio18CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9832,6 +10477,7 @@ impl Gpio18CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -9878,12 +10524,19 @@ impl Gpio18Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio19Status {
@@ -9902,28 +10555,36 @@ impl Gpio19Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -9932,6 +10593,7 @@ impl Gpio19Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -9939,6 +10601,7 @@ impl Gpio19Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -9946,6 +10609,7 @@ impl Gpio19Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -9953,6 +10617,7 @@ impl Gpio19Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -9990,6 +10655,7 @@ impl Gpio19StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -9997,6 +10663,7 @@ impl Gpio19StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -10004,6 +10671,7 @@ impl Gpio19StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -10011,6 +10679,7 @@ impl Gpio19StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -10054,10 +10723,15 @@ impl Gpio19Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -10161,8 +10835,10 @@ impl Gpio19Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -10244,6 +10920,7 @@ impl Gpio19Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10252,6 +10929,7 @@ impl Gpio19Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10314,6 +10992,7 @@ impl Gpio19CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10354,6 +11033,7 @@ impl Gpio19CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10400,12 +11080,19 @@ impl Gpio19Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio20Status {
@@ -10424,28 +11111,36 @@ impl Gpio20Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -10454,6 +11149,7 @@ impl Gpio20Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -10461,6 +11157,7 @@ impl Gpio20Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -10468,6 +11165,7 @@ impl Gpio20Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -10475,6 +11173,7 @@ impl Gpio20Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -10512,6 +11211,7 @@ impl Gpio20StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -10519,6 +11219,7 @@ impl Gpio20StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -10526,6 +11227,7 @@ impl Gpio20StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -10533,6 +11235,7 @@ impl Gpio20StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -10576,10 +11279,15 @@ impl Gpio20Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -10683,8 +11391,10 @@ impl Gpio20Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -10762,6 +11472,7 @@ impl Gpio20Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10770,6 +11481,7 @@ impl Gpio20Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10832,6 +11544,7 @@ impl Gpio20CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10872,6 +11585,7 @@ impl Gpio20CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -10918,12 +11632,19 @@ impl Gpio20Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio21Status {
@@ -10942,28 +11663,36 @@ impl Gpio21Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -10972,6 +11701,7 @@ impl Gpio21Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -10979,6 +11709,7 @@ impl Gpio21Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -10986,6 +11717,7 @@ impl Gpio21Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -10993,6 +11725,7 @@ impl Gpio21Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -11030,6 +11763,7 @@ impl Gpio21StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -11037,6 +11771,7 @@ impl Gpio21StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -11044,6 +11779,7 @@ impl Gpio21StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -11051,6 +11787,7 @@ impl Gpio21StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -11094,10 +11831,15 @@ impl Gpio21Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -11201,8 +11943,10 @@ impl Gpio21Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -11280,6 +12024,7 @@ impl Gpio21Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11288,6 +12033,7 @@ impl Gpio21Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11350,6 +12096,7 @@ impl Gpio21CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11390,6 +12137,7 @@ impl Gpio21CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11436,12 +12184,19 @@ impl Gpio21Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio22Status {
@@ -11460,28 +12215,36 @@ impl Gpio22Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -11490,6 +12253,7 @@ impl Gpio22Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -11497,6 +12261,7 @@ impl Gpio22Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -11504,6 +12269,7 @@ impl Gpio22Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -11511,6 +12277,7 @@ impl Gpio22Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -11548,6 +12315,7 @@ impl Gpio22StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -11555,6 +12323,7 @@ impl Gpio22StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -11562,6 +12331,7 @@ impl Gpio22StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -11569,6 +12339,7 @@ impl Gpio22StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -11612,10 +12383,15 @@ impl Gpio22Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -11719,8 +12495,10 @@ impl Gpio22Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -11800,6 +12578,7 @@ impl Gpio22Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11808,6 +12587,7 @@ impl Gpio22Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11870,6 +12650,7 @@ impl Gpio22CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11910,6 +12691,7 @@ impl Gpio22CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -11956,12 +12738,19 @@ impl Gpio22Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio23Status {
@@ -11980,28 +12769,36 @@ impl Gpio23Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -12010,6 +12807,7 @@ impl Gpio23Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -12017,6 +12815,7 @@ impl Gpio23Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -12024,6 +12823,7 @@ impl Gpio23Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -12031,6 +12831,7 @@ impl Gpio23Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -12068,6 +12869,7 @@ impl Gpio23StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -12075,6 +12877,7 @@ impl Gpio23StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -12082,6 +12885,7 @@ impl Gpio23StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -12089,6 +12893,7 @@ impl Gpio23StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -12132,10 +12937,15 @@ impl Gpio23Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -12239,8 +13049,10 @@ impl Gpio23Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -12320,6 +13132,7 @@ impl Gpio23Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12328,6 +13141,7 @@ impl Gpio23Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12390,6 +13204,7 @@ impl Gpio23CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12430,6 +13245,7 @@ impl Gpio23CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12476,12 +13292,19 @@ impl Gpio23Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio24Status {
@@ -12500,28 +13323,36 @@ impl Gpio24Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -12530,6 +13361,7 @@ impl Gpio24Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -12537,6 +13369,7 @@ impl Gpio24Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -12544,6 +13377,7 @@ impl Gpio24Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -12551,6 +13385,7 @@ impl Gpio24Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -12588,6 +13423,7 @@ impl Gpio24StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -12595,6 +13431,7 @@ impl Gpio24StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -12602,6 +13439,7 @@ impl Gpio24StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -12609,6 +13447,7 @@ impl Gpio24StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -12652,10 +13491,15 @@ impl Gpio24Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -12759,8 +13603,10 @@ impl Gpio24Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -12838,6 +13684,7 @@ impl Gpio24Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12846,6 +13693,7 @@ impl Gpio24Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12908,6 +13756,7 @@ impl Gpio24CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12948,6 +13797,7 @@ impl Gpio24CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -12994,12 +13844,19 @@ impl Gpio24Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio25Status {
@@ -13018,28 +13875,36 @@ impl Gpio25Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -13048,6 +13913,7 @@ impl Gpio25Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -13055,6 +13921,7 @@ impl Gpio25Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -13062,6 +13929,7 @@ impl Gpio25Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -13069,6 +13937,7 @@ impl Gpio25Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -13106,6 +13975,7 @@ impl Gpio25StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -13113,6 +13983,7 @@ impl Gpio25StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -13120,6 +13991,7 @@ impl Gpio25StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -13127,6 +13999,7 @@ impl Gpio25StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -13170,10 +14043,15 @@ impl Gpio25Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -13277,8 +14155,10 @@ impl Gpio25Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -13356,6 +14236,7 @@ impl Gpio25Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13364,6 +14245,7 @@ impl Gpio25Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13426,6 +14308,7 @@ impl Gpio25CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13466,6 +14349,7 @@ impl Gpio25CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13512,12 +14396,19 @@ impl Gpio25Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio26Status {
@@ -13536,28 +14427,36 @@ impl Gpio26Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -13566,6 +14465,7 @@ impl Gpio26Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -13573,6 +14473,7 @@ impl Gpio26Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -13580,6 +14481,7 @@ impl Gpio26Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -13587,6 +14489,7 @@ impl Gpio26Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -13624,6 +14527,7 @@ impl Gpio26StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -13631,6 +14535,7 @@ impl Gpio26StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -13638,6 +14543,7 @@ impl Gpio26StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -13645,6 +14551,7 @@ impl Gpio26StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -13688,10 +14595,15 @@ impl Gpio26Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -13795,8 +14707,10 @@ impl Gpio26Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -13874,6 +14788,7 @@ impl Gpio26Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13882,6 +14797,7 @@ impl Gpio26Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13944,6 +14860,7 @@ impl Gpio26CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -13984,6 +14901,7 @@ impl Gpio26CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14030,12 +14948,19 @@ impl Gpio26Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio27Status {
@@ -14054,28 +14979,36 @@ impl Gpio27Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -14084,6 +15017,7 @@ impl Gpio27Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -14091,6 +15025,7 @@ impl Gpio27Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -14098,6 +15033,7 @@ impl Gpio27Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -14105,6 +15041,7 @@ impl Gpio27Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -14142,6 +15079,7 @@ impl Gpio27StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -14149,6 +15087,7 @@ impl Gpio27StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -14156,6 +15095,7 @@ impl Gpio27StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -14163,6 +15103,7 @@ impl Gpio27StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -14206,10 +15147,15 @@ impl Gpio27Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -14313,8 +15259,10 @@ impl Gpio27Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -14392,6 +15340,7 @@ impl Gpio27Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14400,6 +15349,7 @@ impl Gpio27Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14462,6 +15412,7 @@ impl Gpio27CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14502,6 +15453,7 @@ impl Gpio27CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14548,12 +15500,19 @@ impl Gpio27Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio28Status {
@@ -14572,28 +15531,36 @@ impl Gpio28Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -14602,6 +15569,7 @@ impl Gpio28Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -14609,6 +15577,7 @@ impl Gpio28Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -14616,6 +15585,7 @@ impl Gpio28Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -14623,6 +15593,7 @@ impl Gpio28Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -14660,6 +15631,7 @@ impl Gpio28StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -14667,6 +15639,7 @@ impl Gpio28StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -14674,6 +15647,7 @@ impl Gpio28StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -14681,6 +15655,7 @@ impl Gpio28StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -14724,10 +15699,15 @@ impl Gpio28Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -14831,8 +15811,10 @@ impl Gpio28Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -14908,6 +15890,7 @@ impl Gpio28Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14916,6 +15899,7 @@ impl Gpio28Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -14978,6 +15962,7 @@ impl Gpio28CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15018,6 +16003,7 @@ impl Gpio28CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15064,12 +16050,19 @@ impl Gpio28Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio29Status {
@@ -15088,28 +16081,36 @@ impl Gpio29Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -15118,6 +16119,7 @@ impl Gpio29Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -15125,6 +16127,7 @@ impl Gpio29Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -15132,6 +16135,7 @@ impl Gpio29Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -15139,6 +16143,7 @@ impl Gpio29Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -15176,6 +16181,7 @@ impl Gpio29StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -15183,6 +16189,7 @@ impl Gpio29StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -15190,6 +16197,7 @@ impl Gpio29StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -15197,6 +16205,7 @@ impl Gpio29StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -15240,10 +16249,15 @@ impl Gpio29Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -15347,8 +16361,10 @@ impl Gpio29Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -15424,6 +16440,7 @@ impl Gpio29Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15432,6 +16449,7 @@ impl Gpio29Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15494,6 +16512,7 @@ impl Gpio29CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15534,6 +16553,7 @@ impl Gpio29CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15580,12 +16600,19 @@ impl Gpio29Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio30Status {
@@ -15604,28 +16631,36 @@ impl Gpio30Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -15634,6 +16669,7 @@ impl Gpio30Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -15641,6 +16677,7 @@ impl Gpio30Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -15648,6 +16685,7 @@ impl Gpio30Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -15655,6 +16693,7 @@ impl Gpio30Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -15692,6 +16731,7 @@ impl Gpio30StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -15699,6 +16739,7 @@ impl Gpio30StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -15706,6 +16747,7 @@ impl Gpio30StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -15713,6 +16755,7 @@ impl Gpio30StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -15756,10 +16799,15 @@ impl Gpio30Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -15863,8 +16911,10 @@ impl Gpio30Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -15942,6 +16992,7 @@ impl Gpio30Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -15950,6 +17001,7 @@ impl Gpio30Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16012,6 +17064,7 @@ impl Gpio30CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16052,6 +17105,7 @@ impl Gpio30CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16098,12 +17152,19 @@ impl Gpio30Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio31Status {
@@ -16122,28 +17183,36 @@ impl Gpio31Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -16152,6 +17221,7 @@ impl Gpio31Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -16159,6 +17229,7 @@ impl Gpio31Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -16166,6 +17237,7 @@ impl Gpio31Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -16173,6 +17245,7 @@ impl Gpio31Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -16210,6 +17283,7 @@ impl Gpio31StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -16217,6 +17291,7 @@ impl Gpio31StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -16224,6 +17299,7 @@ impl Gpio31StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -16231,6 +17307,7 @@ impl Gpio31StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -16274,10 +17351,15 @@ impl Gpio31Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -16381,8 +17463,10 @@ impl Gpio31Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -16460,6 +17544,7 @@ impl Gpio31Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16468,6 +17553,7 @@ impl Gpio31Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16530,6 +17616,7 @@ impl Gpio31CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16570,6 +17657,7 @@ impl Gpio31CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16616,12 +17704,19 @@ impl Gpio31Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio32Status {
@@ -16640,28 +17735,36 @@ impl Gpio32Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -16670,6 +17773,7 @@ impl Gpio32Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -16677,6 +17781,7 @@ impl Gpio32Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -16684,6 +17789,7 @@ impl Gpio32Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -16691,6 +17797,7 @@ impl Gpio32Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -16728,6 +17835,7 @@ impl Gpio32StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -16735,6 +17843,7 @@ impl Gpio32StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -16742,6 +17851,7 @@ impl Gpio32StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -16749,6 +17859,7 @@ impl Gpio32StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -16792,10 +17903,15 @@ impl Gpio32Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -16899,8 +18015,10 @@ impl Gpio32Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -16976,6 +18094,7 @@ impl Gpio32Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -16984,6 +18103,7 @@ impl Gpio32Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17046,6 +18166,7 @@ impl Gpio32CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17086,6 +18207,7 @@ impl Gpio32CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17132,12 +18254,19 @@ impl Gpio32Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio33Status {
@@ -17156,28 +18285,36 @@ impl Gpio33Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -17186,6 +18323,7 @@ impl Gpio33Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -17193,6 +18331,7 @@ impl Gpio33Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -17200,6 +18339,7 @@ impl Gpio33Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -17207,6 +18347,7 @@ impl Gpio33Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -17244,6 +18385,7 @@ impl Gpio33StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -17251,6 +18393,7 @@ impl Gpio33StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -17258,6 +18401,7 @@ impl Gpio33StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -17265,6 +18409,7 @@ impl Gpio33StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -17308,10 +18453,15 @@ impl Gpio33Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -17415,8 +18565,10 @@ impl Gpio33Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -17492,6 +18644,7 @@ impl Gpio33Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17500,6 +18653,7 @@ impl Gpio33Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17562,6 +18716,7 @@ impl Gpio33CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17602,6 +18757,7 @@ impl Gpio33CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -17648,12 +18804,19 @@ impl Gpio33Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio34Status {
@@ -17672,28 +18835,36 @@ impl Gpio34Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -17702,6 +18873,7 @@ impl Gpio34Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -17709,6 +18881,7 @@ impl Gpio34Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -17716,6 +18889,7 @@ impl Gpio34Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -17723,6 +18897,7 @@ impl Gpio34Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -17760,6 +18935,7 @@ impl Gpio34StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -17767,6 +18943,7 @@ impl Gpio34StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -17774,6 +18951,7 @@ impl Gpio34StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -17781,6 +18959,7 @@ impl Gpio34StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -17824,10 +19003,15 @@ impl Gpio34Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -17931,8 +19115,10 @@ impl Gpio34Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -18010,6 +19196,7 @@ impl Gpio34Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18018,6 +19205,7 @@ impl Gpio34Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18080,6 +19268,7 @@ impl Gpio34CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18120,6 +19309,7 @@ impl Gpio34CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18166,12 +19356,19 @@ impl Gpio34Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio35Status {
@@ -18190,28 +19387,36 @@ impl Gpio35Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -18220,6 +19425,7 @@ impl Gpio35Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -18227,6 +19433,7 @@ impl Gpio35Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -18234,6 +19441,7 @@ impl Gpio35Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -18241,6 +19449,7 @@ impl Gpio35Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -18278,6 +19487,7 @@ impl Gpio35StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -18285,6 +19495,7 @@ impl Gpio35StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -18292,6 +19503,7 @@ impl Gpio35StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -18299,6 +19511,7 @@ impl Gpio35StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -18342,10 +19555,15 @@ impl Gpio35Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -18449,8 +19667,10 @@ impl Gpio35Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -18528,6 +19748,7 @@ impl Gpio35Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18536,6 +19757,7 @@ impl Gpio35Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18598,6 +19820,7 @@ impl Gpio35CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18638,6 +19861,7 @@ impl Gpio35CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -18684,12 +19908,19 @@ impl Gpio35Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio36Status {
@@ -18708,28 +19939,36 @@ impl Gpio36Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -18738,6 +19977,7 @@ impl Gpio36Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -18745,6 +19985,7 @@ impl Gpio36Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -18752,6 +19993,7 @@ impl Gpio36Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -18759,6 +20001,7 @@ impl Gpio36Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -18796,6 +20039,7 @@ impl Gpio36StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -18803,6 +20047,7 @@ impl Gpio36StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -18810,6 +20055,7 @@ impl Gpio36StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -18817,6 +20063,7 @@ impl Gpio36StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -18860,10 +20107,15 @@ impl Gpio36Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -18967,8 +20219,10 @@ impl Gpio36Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -19044,6 +20298,7 @@ impl Gpio36Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19052,6 +20307,7 @@ impl Gpio36Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19114,6 +20370,7 @@ impl Gpio36CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19154,6 +20411,7 @@ impl Gpio36CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19200,12 +20458,19 @@ impl Gpio36Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio37Status {
@@ -19224,28 +20489,36 @@ impl Gpio37Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -19254,6 +20527,7 @@ impl Gpio37Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -19261,6 +20535,7 @@ impl Gpio37Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -19268,6 +20543,7 @@ impl Gpio37Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -19275,6 +20551,7 @@ impl Gpio37Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -19312,6 +20589,7 @@ impl Gpio37StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -19319,6 +20597,7 @@ impl Gpio37StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -19326,6 +20605,7 @@ impl Gpio37StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -19333,6 +20613,7 @@ impl Gpio37StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -19376,10 +20657,15 @@ impl Gpio37Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -19483,8 +20769,10 @@ impl Gpio37Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -19560,6 +20848,7 @@ impl Gpio37Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19568,6 +20857,7 @@ impl Gpio37Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19630,6 +20920,7 @@ impl Gpio37CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19670,6 +20961,7 @@ impl Gpio37CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -19716,12 +21008,19 @@ impl Gpio37Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio38Status {
@@ -19740,28 +21039,36 @@ impl Gpio38Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -19770,6 +21077,7 @@ impl Gpio38Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -19777,6 +21085,7 @@ impl Gpio38Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -19784,6 +21093,7 @@ impl Gpio38Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -19791,6 +21101,7 @@ impl Gpio38Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -19828,6 +21139,7 @@ impl Gpio38StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -19835,6 +21147,7 @@ impl Gpio38StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -19842,6 +21155,7 @@ impl Gpio38StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -19849,6 +21163,7 @@ impl Gpio38StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -19892,10 +21207,15 @@ impl Gpio38Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -19999,8 +21319,10 @@ impl Gpio38Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -20078,6 +21400,7 @@ impl Gpio38Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20086,6 +21409,7 @@ impl Gpio38Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20148,6 +21472,7 @@ impl Gpio38CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20188,6 +21513,7 @@ impl Gpio38CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20234,12 +21560,19 @@ impl Gpio38Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio39Status {
@@ -20258,28 +21591,36 @@ impl Gpio39Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -20288,6 +21629,7 @@ impl Gpio39Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -20295,6 +21637,7 @@ impl Gpio39Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -20302,6 +21645,7 @@ impl Gpio39Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -20309,6 +21653,7 @@ impl Gpio39Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -20346,6 +21691,7 @@ impl Gpio39StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -20353,6 +21699,7 @@ impl Gpio39StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -20360,6 +21707,7 @@ impl Gpio39StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -20367,6 +21715,7 @@ impl Gpio39StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -20410,10 +21759,15 @@ impl Gpio39Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -20517,8 +21871,10 @@ impl Gpio39Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -20596,6 +21952,7 @@ impl Gpio39Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20604,6 +21961,7 @@ impl Gpio39Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20666,6 +22024,7 @@ impl Gpio39CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20706,6 +22065,7 @@ impl Gpio39CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -20752,12 +22112,19 @@ impl Gpio39Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio40Status {
@@ -20776,28 +22143,36 @@ impl Gpio40Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -20806,6 +22181,7 @@ impl Gpio40Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -20813,6 +22189,7 @@ impl Gpio40Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -20820,6 +22197,7 @@ impl Gpio40Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -20827,6 +22205,7 @@ impl Gpio40Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -20864,6 +22243,7 @@ impl Gpio40StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -20871,6 +22251,7 @@ impl Gpio40StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -20878,6 +22259,7 @@ impl Gpio40StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -20885,6 +22267,7 @@ impl Gpio40StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -20928,10 +22311,15 @@ impl Gpio40Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -21035,8 +22423,10 @@ impl Gpio40Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -21112,6 +22502,7 @@ impl Gpio40Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21120,6 +22511,7 @@ impl Gpio40Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21182,6 +22574,7 @@ impl Gpio40CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21222,6 +22615,7 @@ impl Gpio40CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21268,12 +22662,19 @@ impl Gpio40Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio41Status {
@@ -21292,28 +22693,36 @@ impl Gpio41Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -21322,6 +22731,7 @@ impl Gpio41Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -21329,6 +22739,7 @@ impl Gpio41Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -21336,6 +22747,7 @@ impl Gpio41Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -21343,6 +22755,7 @@ impl Gpio41Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -21380,6 +22793,7 @@ impl Gpio41StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -21387,6 +22801,7 @@ impl Gpio41StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -21394,6 +22809,7 @@ impl Gpio41StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -21401,6 +22817,7 @@ impl Gpio41StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -21444,10 +22861,15 @@ impl Gpio41Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -21551,8 +22973,10 @@ impl Gpio41Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -21628,6 +23052,7 @@ impl Gpio41Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21636,6 +23061,7 @@ impl Gpio41Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21698,6 +23124,7 @@ impl Gpio41CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21738,6 +23165,7 @@ impl Gpio41CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -21784,12 +23212,19 @@ impl Gpio41Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio42Status {
@@ -21808,28 +23243,36 @@ impl Gpio42Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -21838,6 +23281,7 @@ impl Gpio42Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -21845,6 +23289,7 @@ impl Gpio42Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -21852,6 +23297,7 @@ impl Gpio42Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -21859,6 +23305,7 @@ impl Gpio42Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -21896,6 +23343,7 @@ impl Gpio42StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -21903,6 +23351,7 @@ impl Gpio42StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -21910,6 +23359,7 @@ impl Gpio42StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -21917,6 +23367,7 @@ impl Gpio42StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -21960,10 +23411,15 @@ impl Gpio42Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -22067,8 +23523,10 @@ impl Gpio42Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -22146,6 +23604,7 @@ impl Gpio42Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22154,6 +23613,7 @@ impl Gpio42Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22216,6 +23676,7 @@ impl Gpio42CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22256,6 +23717,7 @@ impl Gpio42CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22302,12 +23764,19 @@ impl Gpio42Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio43Status {
@@ -22326,28 +23795,36 @@ impl Gpio43Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -22356,6 +23833,7 @@ impl Gpio43Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -22363,6 +23841,7 @@ impl Gpio43Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -22370,6 +23849,7 @@ impl Gpio43Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -22377,6 +23857,7 @@ impl Gpio43Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -22414,6 +23895,7 @@ impl Gpio43StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -22421,6 +23903,7 @@ impl Gpio43StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -22428,6 +23911,7 @@ impl Gpio43StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -22435,6 +23919,7 @@ impl Gpio43StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -22478,10 +23963,15 @@ impl Gpio43Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -22585,8 +24075,10 @@ impl Gpio43Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -22664,6 +24156,7 @@ impl Gpio43Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22672,6 +24165,7 @@ impl Gpio43Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22734,6 +24228,7 @@ impl Gpio43CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22774,6 +24269,7 @@ impl Gpio43CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -22820,12 +24316,19 @@ impl Gpio43Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio44Status {
@@ -22844,28 +24347,36 @@ impl Gpio44Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -22874,6 +24385,7 @@ impl Gpio44Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -22881,6 +24393,7 @@ impl Gpio44Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -22888,6 +24401,7 @@ impl Gpio44Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -22895,6 +24409,7 @@ impl Gpio44Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -22932,6 +24447,7 @@ impl Gpio44StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -22939,6 +24455,7 @@ impl Gpio44StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -22946,6 +24463,7 @@ impl Gpio44StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -22953,6 +24471,7 @@ impl Gpio44StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -22996,10 +24515,15 @@ impl Gpio44Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -23103,8 +24627,10 @@ impl Gpio44Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -23180,6 +24706,7 @@ impl Gpio44Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23188,6 +24715,7 @@ impl Gpio44Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23250,6 +24778,7 @@ impl Gpio44CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23290,6 +24819,7 @@ impl Gpio44CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23336,12 +24866,19 @@ impl Gpio44Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio45Status {
@@ -23360,28 +24897,36 @@ impl Gpio45Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -23390,6 +24935,7 @@ impl Gpio45Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -23397,6 +24943,7 @@ impl Gpio45Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -23404,6 +24951,7 @@ impl Gpio45Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -23411,6 +24959,7 @@ impl Gpio45Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -23448,6 +24997,7 @@ impl Gpio45StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -23455,6 +25005,7 @@ impl Gpio45StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -23462,6 +25013,7 @@ impl Gpio45StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -23469,6 +25021,7 @@ impl Gpio45StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -23512,10 +25065,15 @@ impl Gpio45Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -23619,8 +25177,10 @@ impl Gpio45Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -23696,6 +25256,7 @@ impl Gpio45Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23704,6 +25265,7 @@ impl Gpio45Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23766,6 +25328,7 @@ impl Gpio45CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23806,6 +25369,7 @@ impl Gpio45CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -23852,12 +25416,19 @@ impl Gpio45Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio46Status {
@@ -23876,28 +25447,36 @@ impl Gpio46Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -23906,6 +25485,7 @@ impl Gpio46Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -23913,6 +25493,7 @@ impl Gpio46Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -23920,6 +25501,7 @@ impl Gpio46Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -23927,6 +25509,7 @@ impl Gpio46Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -23964,6 +25547,7 @@ impl Gpio46StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -23971,6 +25555,7 @@ impl Gpio46StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -23978,6 +25563,7 @@ impl Gpio46StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -23985,6 +25571,7 @@ impl Gpio46StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -24028,10 +25615,15 @@ impl Gpio46Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -24135,8 +25727,10 @@ impl Gpio46Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -24214,6 +25808,7 @@ impl Gpio46Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24222,6 +25817,7 @@ impl Gpio46Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24284,6 +25880,7 @@ impl Gpio46CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24324,6 +25921,7 @@ impl Gpio46CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24370,12 +25968,19 @@ impl Gpio46Ctrl {
 /// ## Fields
 ///
 /// - **IRQTOPROC** `[26]` (RO)
+///
 ///   interrupt to processors, after override is applied
+///
 /// - **INFROMPAD** `[17]` (RO)
+///
 ///   input signal from pad, before filtering and override are applied
+///
 /// - **OETOPAD** `[13]` (RO)
+///
 ///   output enable to pad after register override is applied
+///
 /// - **OUTTOPAD** `[9]` (RO)
+///
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio47Status {
@@ -24394,28 +25999,36 @@ impl Gpio47Status {
     // ======== Field Constants ========
 
     /// **IRQTOPROC**
+    ///
     /// interrupt to processors, after override is applied
+    ///
     /// Bits `[26:26]`, mask `0x04000000`
     pub const IRQTOPROC_OFFSET: u32 = 26;
     pub const IRQTOPROC_MASK: u32 = 0x04000000;
     pub const IRQTOPROC: u32 = 1 << 26;
 
     /// **INFROMPAD**
+    ///
     /// input signal from pad, before filtering and override are applied
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const INFROMPAD_OFFSET: u32 = 17;
     pub const INFROMPAD_MASK: u32 = 0x00020000;
     pub const INFROMPAD: u32 = 1 << 17;
 
     /// **OETOPAD**
+    ///
     /// output enable to pad after register override is applied
+    ///
     /// Bits `[13:13]`, mask `0x00002000`
     pub const OETOPAD_OFFSET: u32 = 13;
     pub const OETOPAD_MASK: u32 = 0x00002000;
     pub const OETOPAD: u32 = 1 << 13;
 
     /// **OUTTOPAD**
+    ///
     /// output signal to pad after register override is applied
+    ///
     /// Bits `[9:9]`, mask `0x00000200`
     pub const OUTTOPAD_OFFSET: u32 = 9;
     pub const OUTTOPAD_MASK: u32 = 0x00000200;
@@ -24424,6 +26037,7 @@ impl Gpio47Status {
     // ======== Field Accessors ========
 
     /// **IRQTOPROC** `[26]` (RO)
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub fn irqtoproc(&self) -> bool {
@@ -24431,6 +26045,7 @@ impl Gpio47Status {
     }
 
     /// **INFROMPAD** `[17]` (RO)
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub fn infrompad(&self) -> bool {
@@ -24438,6 +26053,7 @@ impl Gpio47Status {
     }
 
     /// **OETOPAD** `[13]` (RO)
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub fn oetopad(&self) -> bool {
@@ -24445,6 +26061,7 @@ impl Gpio47Status {
     }
 
     /// **OUTTOPAD** `[9]` (RO)
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub fn outtopad(&self) -> bool {
@@ -24482,6 +26099,7 @@ impl Gpio47StatusVal {
     }
 
     /// Read **IRQTOPROC** `[26:26]`
+    ///
     /// interrupt to processors, after override is applied
     #[inline(always)]
     pub const fn irqtoproc(&self) -> bool {
@@ -24489,6 +26107,7 @@ impl Gpio47StatusVal {
     }
 
     /// Read **INFROMPAD** `[17:17]`
+    ///
     /// input signal from pad, before filtering and override are applied
     #[inline(always)]
     pub const fn infrompad(&self) -> bool {
@@ -24496,6 +26115,7 @@ impl Gpio47StatusVal {
     }
 
     /// Read **OETOPAD** `[13:13]`
+    ///
     /// output enable to pad after register override is applied
     #[inline(always)]
     pub const fn oetopad(&self) -> bool {
@@ -24503,6 +26123,7 @@ impl Gpio47StatusVal {
     }
 
     /// Read **OUTTOPAD** `[9:9]`
+    ///
     /// output signal to pad after register override is applied
     #[inline(always)]
     pub const fn outtopad(&self) -> bool {
@@ -24546,10 +26167,15 @@ impl Gpio47Status {
 /// ## Fields
 ///
 /// - **IRQOVER** `[29:28]` (RW)
+///
 /// - **INOVER** `[17:16]` (RW)
+///
 /// - **OEOVER** `[15:14]` (RW)
+///
 /// - **OUTOVER** `[13:12]` (RW)
+///
 /// - **FUNCSEL** `[4:0]` (RW)
+///
 ///   0-31 -> selects pin function according to the gpio table
 ///   31 == NULL
 #[repr(transparent)]
@@ -24653,8 +26279,10 @@ impl Gpio47Ctrl {
     pub const OUTOVER_HIGH_VAL: u32 = 3;
 
     /// **FUNCSEL**
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
+    ///
     /// Bits `[4:0]`, mask `0x0000001f`
     pub const FUNCSEL_OFFSET: u32 = 0;
     pub const FUNCSEL_MASK: u32 = 0x0000001f;
@@ -24734,6 +26362,7 @@ impl Gpio47Ctrl {
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24742,6 +26371,7 @@ impl Gpio47Ctrl {
     }
 
     /// Write **FUNCSEL** `[4:0]` (RW)
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24804,6 +26434,7 @@ impl Gpio47CtrlVal {
     }
 
     /// Read **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24844,6 +26475,7 @@ impl Gpio47CtrlVal {
     }
 
     /// Set **FUNCSEL** `[4:0]`
+    ///
     /// 0-31 -> selects pin function according to the gpio table
     /// 31 == NULL
     #[inline(always)]
@@ -24890,36 +26522,67 @@ impl Gpio47Ctrl {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure0 {
@@ -25582,20 +27245,35 @@ impl IrqsummaryProc0Secure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure1 {
@@ -25970,36 +27648,67 @@ impl IrqsummaryProc0Secure1 {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure0 {
@@ -26662,20 +28371,35 @@ impl IrqsummaryProc0Nonsecure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure1 {
@@ -27050,36 +28774,67 @@ impl IrqsummaryProc0Nonsecure1 {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure0 {
@@ -27742,20 +29497,35 @@ impl IrqsummaryProc1Secure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure1 {
@@ -28130,36 +29900,67 @@ impl IrqsummaryProc1Secure1 {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure0 {
@@ -28822,20 +30623,35 @@ impl IrqsummaryProc1Nonsecure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure1 {
@@ -29210,36 +31026,67 @@ impl IrqsummaryProc1Nonsecure1 {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure0 {
@@ -29902,20 +31749,35 @@ impl IrqsummaryDormantWakeSecure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure1 {
@@ -30290,36 +32152,67 @@ impl IrqsummaryDormantWakeSecure1 {
 /// ## Fields
 ///
 /// - **GPIO31** `[31]` (RO)
+///
 /// - **GPIO30** `[30]` (RO)
+///
 /// - **GPIO29** `[29]` (RO)
+///
 /// - **GPIO28** `[28]` (RO)
+///
 /// - **GPIO27** `[27]` (RO)
+///
 /// - **GPIO26** `[26]` (RO)
+///
 /// - **GPIO25** `[25]` (RO)
+///
 /// - **GPIO24** `[24]` (RO)
+///
 /// - **GPIO23** `[23]` (RO)
+///
 /// - **GPIO22** `[22]` (RO)
+///
 /// - **GPIO21** `[21]` (RO)
+///
 /// - **GPIO20** `[20]` (RO)
+///
 /// - **GPIO19** `[19]` (RO)
+///
 /// - **GPIO18** `[18]` (RO)
+///
 /// - **GPIO17** `[17]` (RO)
+///
 /// - **GPIO16** `[16]` (RO)
+///
 /// - **GPIO15** `[15]` (RO)
+///
 /// - **GPIO14** `[14]` (RO)
+///
 /// - **GPIO13** `[13]` (RO)
+///
 /// - **GPIO12** `[12]` (RO)
+///
 /// - **GPIO11** `[11]` (RO)
+///
 /// - **GPIO10** `[10]` (RO)
+///
 /// - **GPIO9** `[9]` (RO)
+///
 /// - **GPIO8** `[8]` (RO)
+///
 /// - **GPIO7** `[7]` (RO)
+///
 /// - **GPIO6** `[6]` (RO)
+///
 /// - **GPIO5** `[5]` (RO)
+///
 /// - **GPIO4** `[4]` (RO)
+///
 /// - **GPIO3** `[3]` (RO)
+///
 /// - **GPIO2** `[2]` (RO)
+///
 /// - **GPIO1** `[1]` (RO)
+///
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure0 {
@@ -30982,20 +32875,35 @@ impl IrqsummaryDormantWakeNonsecure0 {
 /// ## Fields
 ///
 /// - **GPIO47** `[15]` (RO)
+///
 /// - **GPIO46** `[14]` (RO)
+///
 /// - **GPIO45** `[13]` (RO)
+///
 /// - **GPIO44** `[12]` (RO)
+///
 /// - **GPIO43** `[11]` (RO)
+///
 /// - **GPIO42** `[10]` (RO)
+///
 /// - **GPIO41** `[9]` (RO)
+///
 /// - **GPIO40** `[8]` (RO)
+///
 /// - **GPIO39** `[7]` (RO)
+///
 /// - **GPIO38** `[6]` (RO)
+///
 /// - **GPIO37** `[5]` (RO)
+///
 /// - **GPIO36** `[4]` (RO)
+///
 /// - **GPIO35** `[3]` (RO)
+///
 /// - **GPIO34** `[2]` (RO)
+///
 /// - **GPIO33** `[1]` (RO)
+///
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure1 {
@@ -31372,36 +33280,67 @@ impl IrqsummaryDormantWakeNonsecure1 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr0 {
@@ -32450,36 +34389,67 @@ impl Intr0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr1 {
@@ -33528,36 +35498,67 @@ impl Intr1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr2 {
@@ -34606,36 +36607,67 @@ impl Intr2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr3 {
@@ -35684,36 +37716,67 @@ impl Intr3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr4 {
@@ -36762,36 +38825,67 @@ impl Intr4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr5 {
@@ -37840,36 +39934,67 @@ impl Intr5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte0 {
@@ -39302,36 +41427,67 @@ impl Proc0Inte0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte1 {
@@ -40764,36 +42920,67 @@ impl Proc0Inte1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte2 {
@@ -42226,36 +44413,67 @@ impl Proc0Inte2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte3 {
@@ -43688,36 +45906,67 @@ impl Proc0Inte3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte4 {
@@ -45150,36 +47399,67 @@ impl Proc0Inte4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte5 {
@@ -46612,36 +48892,67 @@ impl Proc0Inte5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf0 {
@@ -48074,36 +50385,67 @@ impl Proc0Intf0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf1 {
@@ -49536,36 +51878,67 @@ impl Proc0Intf1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf2 {
@@ -50998,36 +53371,67 @@ impl Proc0Intf2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf3 {
@@ -52460,36 +54864,67 @@ impl Proc0Intf3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf4 {
@@ -53922,36 +56357,67 @@ impl Proc0Intf4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf5 {
@@ -55384,36 +57850,67 @@ impl Proc0Intf5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints0 {
@@ -56078,36 +58575,67 @@ impl Proc0Ints0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints1 {
@@ -56772,36 +59300,67 @@ impl Proc0Ints1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints2 {
@@ -57466,36 +60025,67 @@ impl Proc0Ints2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints3 {
@@ -58160,36 +60750,67 @@ impl Proc0Ints3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints4 {
@@ -58854,36 +61475,67 @@ impl Proc0Ints4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints5 {
@@ -59548,36 +62200,67 @@ impl Proc0Ints5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte0 {
@@ -61010,36 +63693,67 @@ impl Proc1Inte0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte1 {
@@ -62472,36 +65186,67 @@ impl Proc1Inte1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte2 {
@@ -63934,36 +66679,67 @@ impl Proc1Inte2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte3 {
@@ -65396,36 +68172,67 @@ impl Proc1Inte3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte4 {
@@ -66858,36 +69665,67 @@ impl Proc1Inte4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte5 {
@@ -68320,36 +71158,67 @@ impl Proc1Inte5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf0 {
@@ -69782,36 +72651,67 @@ impl Proc1Intf0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf1 {
@@ -71244,36 +74144,67 @@ impl Proc1Intf1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf2 {
@@ -72706,36 +75637,67 @@ impl Proc1Intf2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf3 {
@@ -74168,36 +77130,67 @@ impl Proc1Intf3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf4 {
@@ -75630,36 +78623,67 @@ impl Proc1Intf4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf5 {
@@ -77092,36 +80116,67 @@ impl Proc1Intf5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints0 {
@@ -77786,36 +80841,67 @@ impl Proc1Ints0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints1 {
@@ -78480,36 +81566,67 @@ impl Proc1Ints1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints2 {
@@ -79174,36 +82291,67 @@ impl Proc1Ints2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints3 {
@@ -79868,36 +83016,67 @@ impl Proc1Ints3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints4 {
@@ -80562,36 +83741,67 @@ impl Proc1Ints4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints5 {
@@ -81256,36 +84466,67 @@ impl Proc1Ints5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte0 {
@@ -82718,36 +85959,67 @@ impl DormantWakeInte0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte1 {
@@ -84180,36 +87452,67 @@ impl DormantWakeInte1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte2 {
@@ -85642,36 +88945,67 @@ impl DormantWakeInte2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte3 {
@@ -87104,36 +90438,67 @@ impl DormantWakeInte3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte4 {
@@ -88566,36 +91931,67 @@ impl DormantWakeInte4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte5 {
@@ -90028,36 +93424,67 @@ impl DormantWakeInte5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf0 {
@@ -91490,36 +94917,67 @@ impl DormantWakeIntf0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf1 {
@@ -92952,36 +96410,67 @@ impl DormantWakeIntf1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf2 {
@@ -94414,36 +97903,67 @@ impl DormantWakeIntf2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf3 {
@@ -95876,36 +99396,67 @@ impl DormantWakeIntf3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf4 {
@@ -97338,36 +100889,67 @@ impl DormantWakeIntf4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RW)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RW)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RW)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RW)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RW)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RW)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RW)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RW)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RW)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RW)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RW)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RW)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RW)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RW)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RW)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RW)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RW)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RW)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RW)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RW)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RW)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RW)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RW)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RW)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RW)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RW)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RW)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RW)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RW)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RW)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RW)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf5 {
@@ -98800,36 +102382,67 @@ impl DormantWakeIntf5 {
 /// ## Fields
 ///
 /// - **GPIO7_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO7_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO7_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO7_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO6_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO6_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO6_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO6_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO5_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO5_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO5_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO5_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO4_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO4_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO4_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO4_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO3_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO3_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO3_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO3_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO2_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO2_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO2_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO2_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO1_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO1_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO1_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO1_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO0_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO0_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO0_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts0 {
@@ -99494,36 +103107,67 @@ impl DormantWakeInts0 {
 /// ## Fields
 ///
 /// - **GPIO15_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO15_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO15_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO15_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO14_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO14_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO14_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO14_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO13_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO13_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO13_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO13_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO12_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO12_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO12_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO12_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO11_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO11_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO11_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO11_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO10_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO10_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO10_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO10_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO9_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO9_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO9_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO9_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO8_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO8_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO8_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts1 {
@@ -100188,36 +103832,67 @@ impl DormantWakeInts1 {
 /// ## Fields
 ///
 /// - **GPIO23_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO23_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO23_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO23_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO22_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO22_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO22_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO22_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO21_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO21_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO21_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO21_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO20_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO20_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO20_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO20_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO19_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO19_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO19_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO19_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO18_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO18_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO18_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO18_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO17_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO17_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO17_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO17_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO16_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO16_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO16_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts2 {
@@ -100882,36 +104557,67 @@ impl DormantWakeInts2 {
 /// ## Fields
 ///
 /// - **GPIO31_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO31_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO31_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO31_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO30_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO30_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO30_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO30_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO29_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO29_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO29_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO29_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO28_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO28_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO28_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO28_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO27_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO27_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO27_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO27_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO26_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO26_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO26_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO26_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO25_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO25_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO25_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO25_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO24_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO24_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO24_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts3 {
@@ -101576,36 +105282,67 @@ impl DormantWakeInts3 {
 /// ## Fields
 ///
 /// - **GPIO39_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO39_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO39_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO39_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO38_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO38_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO38_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO38_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO37_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO37_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO37_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO37_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO36_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO36_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO36_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO36_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO35_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO35_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO35_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO35_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO34_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO34_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO34_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO34_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO33_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO33_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO33_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO33_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO32_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO32_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO32_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts4 {
@@ -102270,36 +106007,67 @@ impl DormantWakeInts4 {
 /// ## Fields
 ///
 /// - **GPIO47_EDGE_HIGH** `[31]` (RO)
+///
 /// - **GPIO47_EDGE_LOW** `[30]` (RO)
+///
 /// - **GPIO47_LEVEL_HIGH** `[29]` (RO)
+///
 /// - **GPIO47_LEVEL_LOW** `[28]` (RO)
+///
 /// - **GPIO46_EDGE_HIGH** `[27]` (RO)
+///
 /// - **GPIO46_EDGE_LOW** `[26]` (RO)
+///
 /// - **GPIO46_LEVEL_HIGH** `[25]` (RO)
+///
 /// - **GPIO46_LEVEL_LOW** `[24]` (RO)
+///
 /// - **GPIO45_EDGE_HIGH** `[23]` (RO)
+///
 /// - **GPIO45_EDGE_LOW** `[22]` (RO)
+///
 /// - **GPIO45_LEVEL_HIGH** `[21]` (RO)
+///
 /// - **GPIO45_LEVEL_LOW** `[20]` (RO)
+///
 /// - **GPIO44_EDGE_HIGH** `[19]` (RO)
+///
 /// - **GPIO44_EDGE_LOW** `[18]` (RO)
+///
 /// - **GPIO44_LEVEL_HIGH** `[17]` (RO)
+///
 /// - **GPIO44_LEVEL_LOW** `[16]` (RO)
+///
 /// - **GPIO43_EDGE_HIGH** `[15]` (RO)
+///
 /// - **GPIO43_EDGE_LOW** `[14]` (RO)
+///
 /// - **GPIO43_LEVEL_HIGH** `[13]` (RO)
+///
 /// - **GPIO43_LEVEL_LOW** `[12]` (RO)
+///
 /// - **GPIO42_EDGE_HIGH** `[11]` (RO)
+///
 /// - **GPIO42_EDGE_LOW** `[10]` (RO)
+///
 /// - **GPIO42_LEVEL_HIGH** `[9]` (RO)
+///
 /// - **GPIO42_LEVEL_LOW** `[8]` (RO)
+///
 /// - **GPIO41_EDGE_HIGH** `[7]` (RO)
+///
 /// - **GPIO41_EDGE_LOW** `[6]` (RO)
+///
 /// - **GPIO41_LEVEL_HIGH** `[5]` (RO)
+///
 /// - **GPIO41_LEVEL_LOW** `[4]` (RO)
+///
 /// - **GPIO40_EDGE_HIGH** `[3]` (RO)
+///
 /// - **GPIO40_EDGE_LOW** `[2]` (RO)
+///
 /// - **GPIO40_LEVEL_HIGH** `[1]` (RO)
+///
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts5 {

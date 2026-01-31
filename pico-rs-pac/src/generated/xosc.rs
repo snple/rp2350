@@ -15,10 +15,13 @@ pub const BASE: u32 = 0x40048000;
 /// ## Fields
 ///
 /// - **ENABLE** `[23:12]` (RW)
+///
 ///   On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
 ///   If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
 ///   The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
+///
 /// - **FREQ_RANGE** `[11:0]` (RW)
+///
 ///   The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
 #[repr(transparent)]
 pub struct Ctrl {
@@ -37,9 +40,11 @@ impl Ctrl {
     // ======== Field Constants ========
 
     /// **ENABLE**
+    ///
     /// On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
     /// If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
+    ///
     /// Bits `[23:12]`, mask `0x00fff000`
     pub const ENABLE_OFFSET: u32 = 12;
     pub const ENABLE_MASK: u32 = 0x00fff000;
@@ -49,7 +54,9 @@ impl Ctrl {
     pub const ENABLE_ENABLE_VAL: u32 = 4011;
 
     /// **FREQ_RANGE**
+    ///
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const FREQ_RANGE_OFFSET: u32 = 0;
     pub const FREQ_RANGE_MASK: u32 = 0x00000fff;
@@ -65,6 +72,7 @@ impl Ctrl {
     // ======== Field Accessors ========
 
     /// **ENABLE** `[23:12]` (RW)
+    ///
     /// On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
     /// If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
@@ -74,6 +82,7 @@ impl Ctrl {
     }
 
     /// Write **ENABLE** `[23:12]` (RW)
+    ///
     /// On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
     /// If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
@@ -83,6 +92,7 @@ impl Ctrl {
     }
 
     /// **FREQ_RANGE** `[11:0]` (RW)
+    ///
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
     #[inline(always)]
     pub fn freq_range(&self) -> u32 {
@@ -90,6 +100,7 @@ impl Ctrl {
     }
 
     /// Write **FREQ_RANGE** `[11:0]` (RW)
+    ///
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
     #[inline(always)]
     pub fn write_freq_range(&self, value: u32) {
@@ -127,6 +138,7 @@ impl CtrlVal {
     }
 
     /// Read **ENABLE** `[23:12]`
+    ///
     /// On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
     /// If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
@@ -136,6 +148,7 @@ impl CtrlVal {
     }
 
     /// Read **FREQ_RANGE** `[11:0]`
+    ///
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
     #[inline(always)]
     pub const fn freq_range(&self) -> u32 {
@@ -143,6 +156,7 @@ impl CtrlVal {
     }
 
     /// Set **ENABLE** `[23:12]`
+    ///
     /// On power-up this field is initialised to DISABLE and the chip runs from the ROSC.
     /// If the chip has subsequently been programmed to run from the XOSC then setting this field to DISABLE may lock-up the chip. If this is a concern then run the clk_ref from the ROSC and enable the clk_sys RESUS feature.
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
@@ -154,6 +168,7 @@ impl CtrlVal {
     }
 
     /// Set **FREQ_RANGE** `[11:0]`
+    ///
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
     #[inline(always)]
     pub const fn with_freq_range(self, value: u32) -> Self {
@@ -201,12 +216,19 @@ impl Ctrl {
 /// ## Fields
 ///
 /// - **STABLE** `[31]` (RO)
+///
 ///   Oscillator is running and stable
+///
 /// - **BADWRITE** `[24]` (RW)
+///
 ///   An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or DORMANT
+///
 /// - **ENABLED** `[12]` (RO)
+///
 ///   Oscillator is enabled but not necessarily running and stable, resets to 0
+///
 /// - **FREQ_RANGE** `[1:0]` (RO)
+///
 ///   The current frequency range setting
 #[repr(transparent)]
 pub struct Status {
@@ -225,28 +247,36 @@ impl Status {
     // ======== Field Constants ========
 
     /// **STABLE**
+    ///
     /// Oscillator is running and stable
+    ///
     /// Bits `[31:31]`, mask `0x80000000`
     pub const STABLE_OFFSET: u32 = 31;
     pub const STABLE_MASK: u32 = 0x80000000;
     pub const STABLE: u32 = 1 << 31;
 
     /// **BADWRITE**
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or DORMANT
+    ///
     /// Bits `[24:24]`, mask `0x01000000`
     pub const BADWRITE_OFFSET: u32 = 24;
     pub const BADWRITE_MASK: u32 = 0x01000000;
     pub const BADWRITE: u32 = 1 << 24;
 
     /// **ENABLED**
+    ///
     /// Oscillator is enabled but not necessarily running and stable, resets to 0
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const ENABLED_OFFSET: u32 = 12;
     pub const ENABLED_MASK: u32 = 0x00001000;
     pub const ENABLED: u32 = 1 << 12;
 
     /// **FREQ_RANGE**
+    ///
     /// The current frequency range setting
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const FREQ_RANGE_OFFSET: u32 = 0;
     pub const FREQ_RANGE_MASK: u32 = 0x00000003;
@@ -262,6 +292,7 @@ impl Status {
     // ======== Field Accessors ========
 
     /// **STABLE** `[31]` (RO)
+    ///
     /// Oscillator is running and stable
     #[inline(always)]
     pub fn stable(&self) -> bool {
@@ -269,6 +300,7 @@ impl Status {
     }
 
     /// **BADWRITE** `[24]` (RW)
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or DORMANT
     #[inline(always)]
     pub fn badwrite(&self) -> bool {
@@ -288,6 +320,7 @@ impl Status {
     }
 
     /// **ENABLED** `[12]` (RO)
+    ///
     /// Oscillator is enabled but not necessarily running and stable, resets to 0
     #[inline(always)]
     pub fn enabled(&self) -> bool {
@@ -295,6 +328,7 @@ impl Status {
     }
 
     /// **FREQ_RANGE** `[1:0]` (RO)
+    ///
     /// The current frequency range setting
     #[inline(always)]
     pub fn freq_range(&self) -> u32 {
@@ -332,6 +366,7 @@ impl StatusVal {
     }
 
     /// Read **STABLE** `[31:31]`
+    ///
     /// Oscillator is running and stable
     #[inline(always)]
     pub const fn stable(&self) -> bool {
@@ -339,6 +374,7 @@ impl StatusVal {
     }
 
     /// Read **BADWRITE** `[24:24]`
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or DORMANT
     #[inline(always)]
     pub const fn badwrite(&self) -> bool {
@@ -346,6 +382,7 @@ impl StatusVal {
     }
 
     /// Read **ENABLED** `[12:12]`
+    ///
     /// Oscillator is enabled but not necessarily running and stable, resets to 0
     #[inline(always)]
     pub const fn enabled(&self) -> bool {
@@ -353,6 +390,7 @@ impl StatusVal {
     }
 
     /// Read **FREQ_RANGE** `[1:0]`
+    ///
     /// The current frequency range setting
     #[inline(always)]
     pub const fn freq_range(&self) -> u32 {
@@ -360,6 +398,7 @@ impl StatusVal {
     }
 
     /// Set **BADWRITE** `[24:24]`
+    ///
     /// An invalid value has been written to CTRL_ENABLE or CTRL_FREQ_RANGE or DORMANT
     #[inline(always)]
     pub const fn with_badwrite(self, value: bool) -> Self {
@@ -410,6 +449,7 @@ impl Status {
 /// ## Fields
 ///
 /// - **DORMANT** `[31:0]` (RW)
+///
 ///   This is used to save power by pausing the XOSC
 ///   On power-up this field is initialised to WAKE
 ///   An invalid write will also select WAKE
@@ -432,11 +472,13 @@ impl Dormant {
     // ======== Field Constants ========
 
     /// **DORMANT**
+    ///
     /// This is used to save power by pausing the XOSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
     /// Warning: stop the PLLs before selecting dormant mode
     /// Warning: setup the irq before selecting dormant mode
+    ///
     /// Bits `[31:0]`, mask `0xffffffff`
     pub const DORMANT_OFFSET: u32 = 0;
     pub const DORMANT_MASK: u32 = 0xffffffff;
@@ -448,6 +490,7 @@ impl Dormant {
     // ======== Field Accessors ========
 
     /// **DORMANT** `[31:0]` (RW)
+    ///
     /// This is used to save power by pausing the XOSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -459,6 +502,7 @@ impl Dormant {
     }
 
     /// Write **DORMANT** `[31:0]` (RW)
+    ///
     /// This is used to save power by pausing the XOSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -494,6 +538,7 @@ impl DormantVal {
     }
 
     /// Read **DORMANT** `[31:0]`
+    ///
     /// This is used to save power by pausing the XOSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -505,6 +550,7 @@ impl DormantVal {
     }
 
     /// Set **DORMANT** `[31:0]`
+    ///
     /// This is used to save power by pausing the XOSC
     /// On power-up this field is initialised to WAKE
     /// An invalid write will also select WAKE
@@ -556,8 +602,11 @@ impl Dormant {
 /// ## Fields
 ///
 /// - **X4** `[20]` (RW)
+///
 ///   Multiplies the startup_delay by 4, just in case. The reset value is controlled by a mask-programmable tiecell and is provided in case we are booting from XOSC and the default startup delay is insufficient. The reset value is 0x0.
+///
 /// - **DELAY** `[13:0]` (RW)
+///
 ///   in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
 #[repr(transparent)]
 pub struct Startup {
@@ -576,14 +625,18 @@ impl Startup {
     // ======== Field Constants ========
 
     /// **X4**
+    ///
     /// Multiplies the startup_delay by 4, just in case. The reset value is controlled by a mask-programmable tiecell and is provided in case we are booting from XOSC and the default startup delay is insufficient. The reset value is 0x0.
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const X4_OFFSET: u32 = 20;
     pub const X4_MASK: u32 = 0x00100000;
     pub const X4: u32 = 1 << 20;
 
     /// **DELAY**
+    ///
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
+    ///
     /// Bits `[13:0]`, mask `0x00003fff`
     pub const DELAY_OFFSET: u32 = 0;
     pub const DELAY_MASK: u32 = 0x00003fff;
@@ -591,6 +644,7 @@ impl Startup {
     // ======== Field Accessors ========
 
     /// **X4** `[20]` (RW)
+    ///
     /// Multiplies the startup_delay by 4, just in case. The reset value is controlled by a mask-programmable tiecell and is provided in case we are booting from XOSC and the default startup delay is insufficient. The reset value is 0x0.
     #[inline(always)]
     pub fn x4(&self) -> bool {
@@ -610,6 +664,7 @@ impl Startup {
     }
 
     /// **DELAY** `[13:0]` (RW)
+    ///
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
     #[inline(always)]
     pub fn delay(&self) -> u32 {
@@ -617,6 +672,7 @@ impl Startup {
     }
 
     /// Write **DELAY** `[13:0]` (RW)
+    ///
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
     #[inline(always)]
     pub fn write_delay(&self, value: u32) {
@@ -654,6 +710,7 @@ impl StartupVal {
     }
 
     /// Read **X4** `[20:20]`
+    ///
     /// Multiplies the startup_delay by 4, just in case. The reset value is controlled by a mask-programmable tiecell and is provided in case we are booting from XOSC and the default startup delay is insufficient. The reset value is 0x0.
     #[inline(always)]
     pub const fn x4(&self) -> bool {
@@ -661,6 +718,7 @@ impl StartupVal {
     }
 
     /// Read **DELAY** `[13:0]`
+    ///
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
     #[inline(always)]
     pub const fn delay(&self) -> u32 {
@@ -668,6 +726,7 @@ impl StartupVal {
     }
 
     /// Set **X4** `[20:20]`
+    ///
     /// Multiplies the startup_delay by 4, just in case. The reset value is controlled by a mask-programmable tiecell and is provided in case we are booting from XOSC and the default startup delay is insufficient. The reset value is 0x0.
     #[inline(always)]
     pub const fn with_x4(self, value: bool) -> Self {
@@ -681,6 +740,7 @@ impl StartupVal {
     }
 
     /// Set **DELAY** `[13:0]`
+    ///
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
     #[inline(always)]
     pub const fn with_delay(self, value: u32) -> Self {

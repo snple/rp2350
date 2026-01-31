@@ -17,37 +17,64 @@ pub const BASE: u32 = 0x400d0000;
 /// ## Fields
 ///
 /// - **RXDELAY** `[31:30]` (RW)
+///
 ///   Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
+///
 /// - **CLKDIV** `[29:22]` (RW)
+///
 ///   Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
 ///   The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
+///
 /// - **RXLEVEL** `[20:18]` (RO)
+///
 ///   Current level of DIRECT_RX FIFO
+///
 /// - **RXFULL** `[17]` (RO)
+///
 ///   When 1, the DIRECT_RX FIFO is currently full. The serial interface will be stalled until data is popped; the interface will not begin a new serial frame when the DIRECT_TX FIFO is empty or the DIRECT_RX FIFO is full.
+///
 /// - **RXEMPTY** `[16]` (RO)
+///
 ///   When 1, the DIRECT_RX FIFO is currently empty. If the processor attempts to read more data, the FIFO state is not affected, but the value returned to the processor is undefined.
+///
 /// - **TXLEVEL** `[14:12]` (RO)
+///
 ///   Current level of DIRECT_TX FIFO
+///
 /// - **TXEMPTY** `[11]` (RO)
+///
 ///   When 1, the DIRECT_TX FIFO is currently empty. Unless the processor pushes more data, transmission will stop and BUSY will go low once the current 8-bit serial frame completes.
+///
 /// - **TXFULL** `[10]` (RO)
+///
 ///   When 1, the DIRECT_TX FIFO is currently full. If the processor tries to write more data, that data will be ignored.
+///
 /// - **AUTO_CS1N** `[7]` (RW)
+///
 ///   When 1, automatically assert the CS1n chip select line whenever the BUSY flag is set.
+///
 /// - **AUTO_CS0N** `[6]` (RW)
+///
 ///   When 1, automatically assert the CS0n chip select line whenever the BUSY flag is set.
+///
 /// - **ASSERT_CS1N** `[3]` (RW)
+///
 ///   When 1, assert (i.e. drive low) the CS1n chip select line.
 ///   Note that this applies even when DIRECT_CSR_EN is 0.
+///
 /// - **ASSERT_CS0N** `[2]` (RW)
+///
 ///   When 1, assert (i.e. drive low) the CS0n chip select line.
 ///   Note that this applies even when DIRECT_CSR_EN is 0.
+///
 /// - **BUSY** `[1]` (RO)
+///
 ///   Direct mode busy flag. If 1, data is currently being shifted in/out (or would be if the interface were not stalled on the RX FIFO), and the chip select must not yet be deasserted.
 ///   The busy flag will also be set to 1 if a memory-mapped transfer is still in progress when direct mode is enabled. Direct mode blocks new memory-mapped transfers, but can't halt a transfer that is already in progress. If there is a chance that memory-mapped transfers may be in progress, the busy flag should be polled for 0 before asserting the chip select.
 ///   (In practice you will usually discover this timing condition through other means, because any subsequent memory-mapped transfers when direct mode is enabled will return bus errors, which are difficult to ignore.)
+///
 /// - **EN** `[0]` (RW)
+///
 ///   Enable direct mode.
 ///   In direct mode, software controls the chip select lines, and can perform direct SPI transfers by pushing data to the DIRECT_TX FIFO, and popping the same amount of data from the DIRECT_RX FIFO.
 ///   Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
@@ -68,101 +95,129 @@ impl DirectCsr {
     // ======== Field Constants ========
 
     /// **RXDELAY**
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
+    ///
     /// Bits `[31:30]`, mask `0xc0000000`
     pub const RXDELAY_OFFSET: u32 = 30;
     pub const RXDELAY_MASK: u32 = 0xc0000000;
 
     /// **CLKDIV**
+    ///
     /// Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
+    ///
     /// Bits `[29:22]`, mask `0x3fc00000`
     pub const CLKDIV_OFFSET: u32 = 22;
     pub const CLKDIV_MASK: u32 = 0x3fc00000;
 
     /// **RXLEVEL**
+    ///
     /// Current level of DIRECT_RX FIFO
+    ///
     /// Bits `[20:18]`, mask `0x001c0000`
     pub const RXLEVEL_OFFSET: u32 = 18;
     pub const RXLEVEL_MASK: u32 = 0x001c0000;
 
     /// **RXFULL**
+    ///
     /// When 1, the DIRECT_RX FIFO is currently full. The serial interface will be stalled until data is popped; the interface will not begin a new serial frame when the DIRECT_TX FIFO is empty or the DIRECT_RX FIFO is full.
+    ///
     /// Bits `[17:17]`, mask `0x00020000`
     pub const RXFULL_OFFSET: u32 = 17;
     pub const RXFULL_MASK: u32 = 0x00020000;
     pub const RXFULL: u32 = 1 << 17;
 
     /// **RXEMPTY**
+    ///
     /// When 1, the DIRECT_RX FIFO is currently empty. If the processor attempts to read more data, the FIFO state is not affected, but the value returned to the processor is undefined.
+    ///
     /// Bits `[16:16]`, mask `0x00010000`
     pub const RXEMPTY_OFFSET: u32 = 16;
     pub const RXEMPTY_MASK: u32 = 0x00010000;
     pub const RXEMPTY: u32 = 1 << 16;
 
     /// **TXLEVEL**
+    ///
     /// Current level of DIRECT_TX FIFO
+    ///
     /// Bits `[14:12]`, mask `0x00007000`
     pub const TXLEVEL_OFFSET: u32 = 12;
     pub const TXLEVEL_MASK: u32 = 0x00007000;
 
     /// **TXEMPTY**
+    ///
     /// When 1, the DIRECT_TX FIFO is currently empty. Unless the processor pushes more data, transmission will stop and BUSY will go low once the current 8-bit serial frame completes.
+    ///
     /// Bits `[11:11]`, mask `0x00000800`
     pub const TXEMPTY_OFFSET: u32 = 11;
     pub const TXEMPTY_MASK: u32 = 0x00000800;
     pub const TXEMPTY: u32 = 1 << 11;
 
     /// **TXFULL**
+    ///
     /// When 1, the DIRECT_TX FIFO is currently full. If the processor tries to write more data, that data will be ignored.
+    ///
     /// Bits `[10:10]`, mask `0x00000400`
     pub const TXFULL_OFFSET: u32 = 10;
     pub const TXFULL_MASK: u32 = 0x00000400;
     pub const TXFULL: u32 = 1 << 10;
 
     /// **AUTO_CS1N**
+    ///
     /// When 1, automatically assert the CS1n chip select line whenever the BUSY flag is set.
+    ///
     /// Bits `[7:7]`, mask `0x00000080`
     pub const AUTO_CS1N_OFFSET: u32 = 7;
     pub const AUTO_CS1N_MASK: u32 = 0x00000080;
     pub const AUTO_CS1N: u32 = 1 << 7;
 
     /// **AUTO_CS0N**
+    ///
     /// When 1, automatically assert the CS0n chip select line whenever the BUSY flag is set.
+    ///
     /// Bits `[6:6]`, mask `0x00000040`
     pub const AUTO_CS0N_OFFSET: u32 = 6;
     pub const AUTO_CS0N_MASK: u32 = 0x00000040;
     pub const AUTO_CS0N: u32 = 1 << 6;
 
     /// **ASSERT_CS1N**
+    ///
     /// When 1, assert (i.e. drive low) the CS1n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
+    ///
     /// Bits `[3:3]`, mask `0x00000008`
     pub const ASSERT_CS1N_OFFSET: u32 = 3;
     pub const ASSERT_CS1N_MASK: u32 = 0x00000008;
     pub const ASSERT_CS1N: u32 = 1 << 3;
 
     /// **ASSERT_CS0N**
+    ///
     /// When 1, assert (i.e. drive low) the CS0n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
+    ///
     /// Bits `[2:2]`, mask `0x00000004`
     pub const ASSERT_CS0N_OFFSET: u32 = 2;
     pub const ASSERT_CS0N_MASK: u32 = 0x00000004;
     pub const ASSERT_CS0N: u32 = 1 << 2;
 
     /// **BUSY**
+    ///
     /// Direct mode busy flag. If 1, data is currently being shifted in/out (or would be if the interface were not stalled on the RX FIFO), and the chip select must not yet be deasserted.
     /// The busy flag will also be set to 1 if a memory-mapped transfer is still in progress when direct mode is enabled. Direct mode blocks new memory-mapped transfers, but can't halt a transfer that is already in progress. If there is a chance that memory-mapped transfers may be in progress, the busy flag should be polled for 0 before asserting the chip select.
     /// (In practice you will usually discover this timing condition through other means, because any subsequent memory-mapped transfers when direct mode is enabled will return bus errors, which are difficult to ignore.)
+    ///
     /// Bits `[1:1]`, mask `0x00000002`
     pub const BUSY_OFFSET: u32 = 1;
     pub const BUSY_MASK: u32 = 0x00000002;
     pub const BUSY: u32 = 1 << 1;
 
     /// **EN**
+    ///
     /// Enable direct mode.
     /// In direct mode, software controls the chip select lines, and can perform direct SPI transfers by pushing data to the DIRECT_TX FIFO, and popping the same amount of data from the DIRECT_RX FIFO.
     /// Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
+    ///
     /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
@@ -171,6 +226,7 @@ impl DirectCsr {
     // ======== Field Accessors ========
 
     /// **RXDELAY** `[31:30]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
     #[inline(always)]
     pub fn rxdelay(&self) -> u32 {
@@ -178,6 +234,7 @@ impl DirectCsr {
     }
 
     /// Write **RXDELAY** `[31:30]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
     #[inline(always)]
     pub fn write_rxdelay(&self, value: u32) {
@@ -185,6 +242,7 @@ impl DirectCsr {
     }
 
     /// **CLKDIV** `[29:22]` (RW)
+    ///
     /// Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
     #[inline(always)]
@@ -193,6 +251,7 @@ impl DirectCsr {
     }
 
     /// Write **CLKDIV** `[29:22]` (RW)
+    ///
     /// Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
     #[inline(always)]
@@ -201,6 +260,7 @@ impl DirectCsr {
     }
 
     /// **RXLEVEL** `[20:18]` (RO)
+    ///
     /// Current level of DIRECT_RX FIFO
     #[inline(always)]
     pub fn rxlevel(&self) -> u32 {
@@ -208,6 +268,7 @@ impl DirectCsr {
     }
 
     /// **RXFULL** `[17]` (RO)
+    ///
     /// When 1, the DIRECT_RX FIFO is currently full. The serial interface will be stalled until data is popped; the interface will not begin a new serial frame when the DIRECT_TX FIFO is empty or the DIRECT_RX FIFO is full.
     #[inline(always)]
     pub fn rxfull(&self) -> bool {
@@ -215,6 +276,7 @@ impl DirectCsr {
     }
 
     /// **RXEMPTY** `[16]` (RO)
+    ///
     /// When 1, the DIRECT_RX FIFO is currently empty. If the processor attempts to read more data, the FIFO state is not affected, but the value returned to the processor is undefined.
     #[inline(always)]
     pub fn rxempty(&self) -> bool {
@@ -222,6 +284,7 @@ impl DirectCsr {
     }
 
     /// **TXLEVEL** `[14:12]` (RO)
+    ///
     /// Current level of DIRECT_TX FIFO
     #[inline(always)]
     pub fn txlevel(&self) -> u32 {
@@ -229,6 +292,7 @@ impl DirectCsr {
     }
 
     /// **TXEMPTY** `[11]` (RO)
+    ///
     /// When 1, the DIRECT_TX FIFO is currently empty. Unless the processor pushes more data, transmission will stop and BUSY will go low once the current 8-bit serial frame completes.
     #[inline(always)]
     pub fn txempty(&self) -> bool {
@@ -236,6 +300,7 @@ impl DirectCsr {
     }
 
     /// **TXFULL** `[10]` (RO)
+    ///
     /// When 1, the DIRECT_TX FIFO is currently full. If the processor tries to write more data, that data will be ignored.
     #[inline(always)]
     pub fn txfull(&self) -> bool {
@@ -243,6 +308,7 @@ impl DirectCsr {
     }
 
     /// **AUTO_CS1N** `[7]` (RW)
+    ///
     /// When 1, automatically assert the CS1n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub fn auto_cs1n(&self) -> bool {
@@ -262,6 +328,7 @@ impl DirectCsr {
     }
 
     /// **AUTO_CS0N** `[6]` (RW)
+    ///
     /// When 1, automatically assert the CS0n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub fn auto_cs0n(&self) -> bool {
@@ -281,6 +348,7 @@ impl DirectCsr {
     }
 
     /// **ASSERT_CS1N** `[3]` (RW)
+    ///
     /// When 1, assert (i.e. drive low) the CS1n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -301,6 +369,7 @@ impl DirectCsr {
     }
 
     /// **ASSERT_CS0N** `[2]` (RW)
+    ///
     /// When 1, assert (i.e. drive low) the CS0n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -321,6 +390,7 @@ impl DirectCsr {
     }
 
     /// **BUSY** `[1]` (RO)
+    ///
     /// Direct mode busy flag. If 1, data is currently being shifted in/out (or would be if the interface were not stalled on the RX FIFO), and the chip select must not yet be deasserted.
     /// The busy flag will also be set to 1 if a memory-mapped transfer is still in progress when direct mode is enabled. Direct mode blocks new memory-mapped transfers, but can't halt a transfer that is already in progress. If there is a chance that memory-mapped transfers may be in progress, the busy flag should be polled for 0 before asserting the chip select.
     /// (In practice you will usually discover this timing condition through other means, because any subsequent memory-mapped transfers when direct mode is enabled will return bus errors, which are difficult to ignore.)
@@ -330,6 +400,7 @@ impl DirectCsr {
     }
 
     /// **EN** `[0]` (RW)
+    ///
     /// Enable direct mode.
     /// In direct mode, software controls the chip select lines, and can perform direct SPI transfers by pushing data to the DIRECT_TX FIFO, and popping the same amount of data from the DIRECT_RX FIFO.
     /// Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
@@ -381,6 +452,7 @@ impl DirectCsrVal {
     }
 
     /// Read **RXDELAY** `[31:30]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
     #[inline(always)]
     pub const fn rxdelay(&self) -> u32 {
@@ -388,6 +460,7 @@ impl DirectCsrVal {
     }
 
     /// Read **CLKDIV** `[29:22]`
+    ///
     /// Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
     #[inline(always)]
@@ -396,6 +469,7 @@ impl DirectCsrVal {
     }
 
     /// Read **RXLEVEL** `[20:18]`
+    ///
     /// Current level of DIRECT_RX FIFO
     #[inline(always)]
     pub const fn rxlevel(&self) -> u32 {
@@ -403,6 +477,7 @@ impl DirectCsrVal {
     }
 
     /// Read **RXFULL** `[17:17]`
+    ///
     /// When 1, the DIRECT_RX FIFO is currently full. The serial interface will be stalled until data is popped; the interface will not begin a new serial frame when the DIRECT_TX FIFO is empty or the DIRECT_RX FIFO is full.
     #[inline(always)]
     pub const fn rxfull(&self) -> bool {
@@ -410,6 +485,7 @@ impl DirectCsrVal {
     }
 
     /// Read **RXEMPTY** `[16:16]`
+    ///
     /// When 1, the DIRECT_RX FIFO is currently empty. If the processor attempts to read more data, the FIFO state is not affected, but the value returned to the processor is undefined.
     #[inline(always)]
     pub const fn rxempty(&self) -> bool {
@@ -417,6 +493,7 @@ impl DirectCsrVal {
     }
 
     /// Read **TXLEVEL** `[14:12]`
+    ///
     /// Current level of DIRECT_TX FIFO
     #[inline(always)]
     pub const fn txlevel(&self) -> u32 {
@@ -424,6 +501,7 @@ impl DirectCsrVal {
     }
 
     /// Read **TXEMPTY** `[11:11]`
+    ///
     /// When 1, the DIRECT_TX FIFO is currently empty. Unless the processor pushes more data, transmission will stop and BUSY will go low once the current 8-bit serial frame completes.
     #[inline(always)]
     pub const fn txempty(&self) -> bool {
@@ -431,6 +509,7 @@ impl DirectCsrVal {
     }
 
     /// Read **TXFULL** `[10:10]`
+    ///
     /// When 1, the DIRECT_TX FIFO is currently full. If the processor tries to write more data, that data will be ignored.
     #[inline(always)]
     pub const fn txfull(&self) -> bool {
@@ -438,6 +517,7 @@ impl DirectCsrVal {
     }
 
     /// Read **AUTO_CS1N** `[7:7]`
+    ///
     /// When 1, automatically assert the CS1n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub const fn auto_cs1n(&self) -> bool {
@@ -445,6 +525,7 @@ impl DirectCsrVal {
     }
 
     /// Read **AUTO_CS0N** `[6:6]`
+    ///
     /// When 1, automatically assert the CS0n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub const fn auto_cs0n(&self) -> bool {
@@ -452,6 +533,7 @@ impl DirectCsrVal {
     }
 
     /// Read **ASSERT_CS1N** `[3:3]`
+    ///
     /// When 1, assert (i.e. drive low) the CS1n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -460,6 +542,7 @@ impl DirectCsrVal {
     }
 
     /// Read **ASSERT_CS0N** `[2:2]`
+    ///
     /// When 1, assert (i.e. drive low) the CS0n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -468,6 +551,7 @@ impl DirectCsrVal {
     }
 
     /// Read **BUSY** `[1:1]`
+    ///
     /// Direct mode busy flag. If 1, data is currently being shifted in/out (or would be if the interface were not stalled on the RX FIFO), and the chip select must not yet be deasserted.
     /// The busy flag will also be set to 1 if a memory-mapped transfer is still in progress when direct mode is enabled. Direct mode blocks new memory-mapped transfers, but can't halt a transfer that is already in progress. If there is a chance that memory-mapped transfers may be in progress, the busy flag should be polled for 0 before asserting the chip select.
     /// (In practice you will usually discover this timing condition through other means, because any subsequent memory-mapped transfers when direct mode is enabled will return bus errors, which are difficult to ignore.)
@@ -477,6 +561,7 @@ impl DirectCsrVal {
     }
 
     /// Read **EN** `[0:0]`
+    ///
     /// Enable direct mode.
     /// In direct mode, software controls the chip select lines, and can perform direct SPI transfers by pushing data to the DIRECT_TX FIFO, and popping the same amount of data from the DIRECT_RX FIFO.
     /// Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
@@ -486,6 +571,7 @@ impl DirectCsrVal {
     }
 
     /// Set **RXDELAY** `[31:30]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
     #[inline(always)]
     pub const fn with_rxdelay(self, value: u32) -> Self {
@@ -495,6 +581,7 @@ impl DirectCsrVal {
     }
 
     /// Set **CLKDIV** `[29:22]`
+    ///
     /// Clock divisor for direct serial mode. Divisors of 1..255 are encoded directly, and the maximum divisor of 256 is encoded by a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
     #[inline(always)]
@@ -505,6 +592,7 @@ impl DirectCsrVal {
     }
 
     /// Set **AUTO_CS1N** `[7:7]`
+    ///
     /// When 1, automatically assert the CS1n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub const fn with_auto_cs1n(self, value: bool) -> Self {
@@ -518,6 +606,7 @@ impl DirectCsrVal {
     }
 
     /// Set **AUTO_CS0N** `[6:6]`
+    ///
     /// When 1, automatically assert the CS0n chip select line whenever the BUSY flag is set.
     #[inline(always)]
     pub const fn with_auto_cs0n(self, value: bool) -> Self {
@@ -531,6 +620,7 @@ impl DirectCsrVal {
     }
 
     /// Set **ASSERT_CS1N** `[3:3]`
+    ///
     /// When 1, assert (i.e. drive low) the CS1n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -545,6 +635,7 @@ impl DirectCsrVal {
     }
 
     /// Set **ASSERT_CS0N** `[2:2]`
+    ///
     /// When 1, assert (i.e. drive low) the CS0n chip select line.
     /// Note that this applies even when DIRECT_CSR_EN is 0.
     #[inline(always)]
@@ -559,6 +650,7 @@ impl DirectCsrVal {
     }
 
     /// Set **EN** `[0:0]`
+    ///
     /// Enable direct mode.
     /// In direct mode, software controls the chip select lines, and can perform direct SPI transfers by pushing data to the DIRECT_TX FIFO, and popping the same amount of data from the DIRECT_RX FIFO.
     /// Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
@@ -612,16 +704,25 @@ impl DirectCsr {
 /// ## Fields
 ///
 /// - **NOPUSH** `[20]` (WO)
+///
 ///   Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
 ///   Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
+///
 /// - **OE** `[19]` (WO)
+///
 ///   Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
 ///   For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
+///
 /// - **DWIDTH** `[18]` (WO)
+///
 ///   Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
+///
 /// - **IWIDTH** `[17:16]` (WO)
+///
 ///   Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
+///
 /// - **DATA** `[15:0]` (WO)
+///
 ///   Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
 ///   For 16-bit data, the least-significant byte is transmitted first.
 #[repr(transparent)]
@@ -641,30 +742,38 @@ impl DirectTx {
     // ======== Field Constants ========
 
     /// **NOPUSH**
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
+    ///
     /// Bits `[20:20]`, mask `0x00100000`
     pub const NOPUSH_OFFSET: u32 = 20;
     pub const NOPUSH_MASK: u32 = 0x00100000;
     pub const NOPUSH: u32 = 1 << 20;
 
     /// **OE**
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
+    ///
     /// Bits `[19:19]`, mask `0x00080000`
     pub const OE_OFFSET: u32 = 19;
     pub const OE_MASK: u32 = 0x00080000;
     pub const OE: u32 = 1 << 19;
 
     /// **DWIDTH**
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
+    ///
     /// Bits `[18:18]`, mask `0x00040000`
     pub const DWIDTH_OFFSET: u32 = 18;
     pub const DWIDTH_MASK: u32 = 0x00040000;
     pub const DWIDTH: u32 = 1 << 18;
 
     /// **IWIDTH**
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
+    ///
     /// Bits `[17:16]`, mask `0x00030000`
     pub const IWIDTH_OFFSET: u32 = 16;
     pub const IWIDTH_MASK: u32 = 0x00030000;
@@ -682,18 +791,18 @@ impl DirectTx {
     pub const IWIDTH_Q_VAL: u32 = 2;
 
     /// **DATA**
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DATA_OFFSET: u32 = 0;
     pub const DATA_MASK: u32 = 0x0000ffff;
 
     // ======== Field Accessors ========
 
-    /// **NOPUSH** `[20]` (WO)
-    /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
-    /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     /// Trigger **NOPUSH** (WO)
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
@@ -701,10 +810,8 @@ impl DirectTx {
         self.value.write_bits(Self::NOPUSH_MASK);
     }
 
-    /// **OE** `[19]` (WO)
-    /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
-    /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     /// Trigger **OE** (WO)
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
@@ -712,28 +819,24 @@ impl DirectTx {
         self.value.write_bits(Self::OE_MASK);
     }
 
-    /// **DWIDTH** `[18]` (WO)
-    /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     /// Trigger **DWIDTH** (WO)
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub fn trigger_dwidth(&self) {
         self.value.write_bits(Self::DWIDTH_MASK);
     }
 
-    /// **IWIDTH** `[17:16]` (WO)
-    /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     /// Write **IWIDTH** `[17:16]` (WO)
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub fn write_iwidth(&self, value: u32) {
         self.value.write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
     }
 
-    /// **DATA** `[15:0]` (WO)
-    /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
-    /// For 16-bit data, the least-significant byte is transmitted first.
     /// Write **DATA** `[15:0]` (WO)
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
@@ -772,6 +875,7 @@ impl DirectTxVal {
     }
 
     /// Set **NOPUSH** `[20:20]`
+    ///
     /// Inhibit the RX FIFO push that would correspond to this TX FIFO entry.
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
@@ -786,6 +890,7 @@ impl DirectTxVal {
     }
 
     /// Set **OE** `[19:19]`
+    ///
     /// Output enable (active-high). For single width (SPI), this field is ignored, and SD0 is always set to output, with SD1 always set to input.
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
@@ -800,6 +905,7 @@ impl DirectTxVal {
     }
 
     /// Set **DWIDTH** `[18:18]`
+    ///
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub const fn with_dwidth(self, value: bool) -> Self {
@@ -813,6 +919,7 @@ impl DirectTxVal {
     }
 
     /// Set **IWIDTH** `[17:16]`
+    ///
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub const fn with_iwidth(self, value: u32) -> Self {
@@ -822,6 +929,7 @@ impl DirectTxVal {
     }
 
     /// Set **DATA** `[15:0]`
+    ///
     /// Data pushed here will be clocked out falling edges of SCK (or before the very first rising edge of SCK, if this is the first pulse). For each byte clocked out, the interface will simultaneously sample one byte, on rising edges of SCK, and push this to the DIRECT_RX FIFO.
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
@@ -870,6 +978,7 @@ impl DirectTx {
 /// ## Fields
 ///
 /// - **DIRECT_RX** `[15:0]` (RO)
+///
 ///   With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
 ///   When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
 #[repr(transparent)]
@@ -889,8 +998,10 @@ impl DirectRx {
     // ======== Field Constants ========
 
     /// **DIRECT_RX**
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
+    ///
     /// Bits `[15:0]`, mask `0x0000ffff`
     pub const DIRECT_RX_OFFSET: u32 = 0;
     pub const DIRECT_RX_MASK: u32 = 0x0000ffff;
@@ -898,6 +1009,7 @@ impl DirectRx {
     // ======== Field Accessors ========
 
     /// **DIRECT_RX** `[15:0]` (RO)
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
     #[inline(always)]
@@ -936,6 +1048,7 @@ impl DirectRxVal {
     }
 
     /// Read **DIRECT_RX** `[15:0]`
+    ///
     /// With each byte clocked out on the serial interface, one byte will simultaneously be clocked in, and will appear in this FIFO. The serial interface will stall when this FIFO is full, to avoid dropping data.
     /// When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
     #[inline(always)]
@@ -982,33 +1095,48 @@ impl DirectRx {
 /// ## Fields
 ///
 /// - **COOLDOWN** `[31:30]` (RW)
+///
 ///   Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
 ///   If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
 ///   Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
 ///   If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
+///
 /// - **PAGEBREAK** `[29:28]` (RW)
+///
 ///   When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
 ///   Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
 ///   This field has no effect when COOLDOWN is disabled.
+///
 /// - **SELECT_SETUP** `[25]` (RW)
+///
 ///   Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
 ///   The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
+///
 /// - **SELECT_HOLD** `[24:23]` (RW)
+///
 ///   Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
 ///   The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
 ///   Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
 ///   Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
+///
 /// - **MAX_SELECT** `[22:17]` (RW)
+///
 ///   Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
 ///   This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
 ///   If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
+///
 /// - **MIN_DESELECT** `[16:12]` (RW)
+///
 ///   After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
 ///   Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
+///
 /// - **RXDELAY** `[10:8]` (RW)
+///
 ///   Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
 ///   At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
+///
 /// - **CLKDIV** `[7:0]` (RW)
+///
 ///   Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
 ///   The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
 ///   If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -1029,18 +1157,22 @@ impl M0Timing {
     // ======== Field Constants ========
 
     /// **COOLDOWN**
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
     /// If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
+    ///
     /// Bits `[31:30]`, mask `0xc0000000`
     pub const COOLDOWN_OFFSET: u32 = 30;
     pub const COOLDOWN_MASK: u32 = 0xc0000000;
 
     /// **PAGEBREAK**
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
+    ///
     /// Bits `[29:28]`, mask `0x30000000`
     pub const PAGEBREAK_OFFSET: u32 = 28;
     pub const PAGEBREAK_MASK: u32 = 0x30000000;
@@ -1062,48 +1194,60 @@ impl M0Timing {
     pub const PAGEBREAK_4096_VAL: u32 = 3;
 
     /// **SELECT_SETUP**
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const SELECT_SETUP_OFFSET: u32 = 25;
     pub const SELECT_SETUP_MASK: u32 = 0x02000000;
     pub const SELECT_SETUP: u32 = 1 << 25;
 
     /// **SELECT_HOLD**
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
     /// Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
+    ///
     /// Bits `[24:23]`, mask `0x01800000`
     pub const SELECT_HOLD_OFFSET: u32 = 23;
     pub const SELECT_HOLD_MASK: u32 = 0x01800000;
 
     /// **MAX_SELECT**
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
+    ///
     /// Bits `[22:17]`, mask `0x007e0000`
     pub const MAX_SELECT_OFFSET: u32 = 17;
     pub const MAX_SELECT_MASK: u32 = 0x007e0000;
 
     /// **MIN_DESELECT**
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const MIN_DESELECT_OFFSET: u32 = 12;
     pub const MIN_DESELECT_MASK: u32 = 0x0001f000;
 
     /// **RXDELAY**
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const RXDELAY_OFFSET: u32 = 8;
     pub const RXDELAY_MASK: u32 = 0x00000700;
 
     /// **CLKDIV**
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CLKDIV_OFFSET: u32 = 0;
     pub const CLKDIV_MASK: u32 = 0x000000ff;
@@ -1111,6 +1255,7 @@ impl M0Timing {
     // ======== Field Accessors ========
 
     /// **COOLDOWN** `[31:30]` (RW)
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -1121,6 +1266,7 @@ impl M0Timing {
     }
 
     /// Write **COOLDOWN** `[31:30]` (RW)
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -1131,6 +1277,7 @@ impl M0Timing {
     }
 
     /// **PAGEBREAK** `[29:28]` (RW)
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -1140,6 +1287,7 @@ impl M0Timing {
     }
 
     /// Write **PAGEBREAK** `[29:28]` (RW)
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -1149,6 +1297,7 @@ impl M0Timing {
     }
 
     /// **SELECT_SETUP** `[25]` (RW)
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -1169,6 +1318,7 @@ impl M0Timing {
     }
 
     /// **SELECT_HOLD** `[24:23]` (RW)
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -1179,6 +1329,7 @@ impl M0Timing {
     }
 
     /// Write **SELECT_HOLD** `[24:23]` (RW)
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -1189,6 +1340,7 @@ impl M0Timing {
     }
 
     /// **MAX_SELECT** `[22:17]` (RW)
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -1198,6 +1350,7 @@ impl M0Timing {
     }
 
     /// Write **MAX_SELECT** `[22:17]` (RW)
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -1207,6 +1360,7 @@ impl M0Timing {
     }
 
     /// **MIN_DESELECT** `[16:12]` (RW)
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -1215,6 +1369,7 @@ impl M0Timing {
     }
 
     /// Write **MIN_DESELECT** `[16:12]` (RW)
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -1223,6 +1378,7 @@ impl M0Timing {
     }
 
     /// **RXDELAY** `[10:8]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -1231,6 +1387,7 @@ impl M0Timing {
     }
 
     /// Write **RXDELAY** `[10:8]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -1239,6 +1396,7 @@ impl M0Timing {
     }
 
     /// **CLKDIV** `[7:0]` (RW)
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -1248,6 +1406,7 @@ impl M0Timing {
     }
 
     /// Write **CLKDIV** `[7:0]` (RW)
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -1287,6 +1446,7 @@ impl M0TimingVal {
     }
 
     /// Read **COOLDOWN** `[31:30]`
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -1297,6 +1457,7 @@ impl M0TimingVal {
     }
 
     /// Read **PAGEBREAK** `[29:28]`
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -1306,6 +1467,7 @@ impl M0TimingVal {
     }
 
     /// Read **SELECT_SETUP** `[25:25]`
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -1314,6 +1476,7 @@ impl M0TimingVal {
     }
 
     /// Read **SELECT_HOLD** `[24:23]`
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -1324,6 +1487,7 @@ impl M0TimingVal {
     }
 
     /// Read **MAX_SELECT** `[22:17]`
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -1333,6 +1497,7 @@ impl M0TimingVal {
     }
 
     /// Read **MIN_DESELECT** `[16:12]`
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -1341,6 +1506,7 @@ impl M0TimingVal {
     }
 
     /// Read **RXDELAY** `[10:8]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -1349,6 +1515,7 @@ impl M0TimingVal {
     }
 
     /// Read **CLKDIV** `[7:0]`
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -1358,6 +1525,7 @@ impl M0TimingVal {
     }
 
     /// Set **COOLDOWN** `[31:30]`
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -1370,6 +1538,7 @@ impl M0TimingVal {
     }
 
     /// Set **PAGEBREAK** `[29:28]`
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -1381,6 +1550,7 @@ impl M0TimingVal {
     }
 
     /// Set **SELECT_SETUP** `[25:25]`
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -1395,6 +1565,7 @@ impl M0TimingVal {
     }
 
     /// Set **SELECT_HOLD** `[24:23]`
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -1407,6 +1578,7 @@ impl M0TimingVal {
     }
 
     /// Set **MAX_SELECT** `[22:17]`
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -1418,6 +1590,7 @@ impl M0TimingVal {
     }
 
     /// Set **MIN_DESELECT** `[16:12]`
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -1428,6 +1601,7 @@ impl M0TimingVal {
     }
 
     /// Set **RXDELAY** `[10:8]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -1438,6 +1612,7 @@ impl M0TimingVal {
     }
 
     /// Set **CLKDIV** `[7:0]`
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -1489,26 +1664,43 @@ impl M0Timing {
 /// ## Fields
 ///
 /// - **DTR** `[28]` (RW)
+///
 ///   Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
 ///   DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
 ///   If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+///
 /// - **DUMMY_LEN** `[18:16]` (RW)
+///
 ///   Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+///
 /// - **SUFFIX_LEN** `[15:14]` (RW)
+///
 ///   Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
 ///   Only values of 0 and 8 bits are supported.
+///
 /// - **PREFIX_LEN** `[12]` (RW)
+///
 ///   Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+///
 /// - **DATA_WIDTH** `[9:8]` (RW)
+///
 ///   The width used for the data transfer
+///
 /// - **DUMMY_WIDTH** `[7:6]` (RW)
+///
 ///   The width used for the dummy phase, if any.
 ///   If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+///
 /// - **SUFFIX_WIDTH** `[5:4]` (RW)
+///
 ///   The width used for the post-address command suffix, if any
+///
 /// - **ADDR_WIDTH** `[3:2]` (RW)
+///
 ///   The transfer width used for the address. The address phase always transfers 24 bits in total.
+///
 /// - **PREFIX_WIDTH** `[1:0]` (RW)
+///
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M0Rfmt {
@@ -1527,16 +1719,20 @@ impl M0Rfmt {
     // ======== Field Constants ========
 
     /// **DTR**
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const DTR_OFFSET: u32 = 28;
     pub const DTR_MASK: u32 = 0x10000000;
     pub const DTR: u32 = 1 << 28;
 
     /// **DUMMY_LEN**
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const DUMMY_LEN_OFFSET: u32 = 16;
     pub const DUMMY_LEN_MASK: u32 = 0x00070000;
@@ -1574,8 +1770,10 @@ impl M0Rfmt {
     pub const DUMMY_LEN_28_VAL: u32 = 7;
 
     /// **SUFFIX_LEN**
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const SUFFIX_LEN_OFFSET: u32 = 14;
     pub const SUFFIX_LEN_MASK: u32 = 0x0000c000;
@@ -1589,7 +1787,9 @@ impl M0Rfmt {
     pub const SUFFIX_LEN_8_VAL: u32 = 2;
 
     /// **PREFIX_LEN**
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const PREFIX_LEN_OFFSET: u32 = 12;
     pub const PREFIX_LEN_MASK: u32 = 0x00001000;
@@ -1604,7 +1804,9 @@ impl M0Rfmt {
     pub const PREFIX_LEN_8_VAL: u32 = 1;
 
     /// **DATA_WIDTH**
+    ///
     /// The width used for the data transfer
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DATA_WIDTH_OFFSET: u32 = 8;
     pub const DATA_WIDTH_MASK: u32 = 0x00000300;
@@ -1622,8 +1824,10 @@ impl M0Rfmt {
     pub const DATA_WIDTH_Q_VAL: u32 = 2;
 
     /// **DUMMY_WIDTH**
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const DUMMY_WIDTH_OFFSET: u32 = 6;
     pub const DUMMY_WIDTH_MASK: u32 = 0x000000c0;
@@ -1641,7 +1845,9 @@ impl M0Rfmt {
     pub const DUMMY_WIDTH_Q_VAL: u32 = 2;
 
     /// **SUFFIX_WIDTH**
+    ///
     /// The width used for the post-address command suffix, if any
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const SUFFIX_WIDTH_OFFSET: u32 = 4;
     pub const SUFFIX_WIDTH_MASK: u32 = 0x00000030;
@@ -1659,7 +1865,9 @@ impl M0Rfmt {
     pub const SUFFIX_WIDTH_Q_VAL: u32 = 2;
 
     /// **ADDR_WIDTH**
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const ADDR_WIDTH_OFFSET: u32 = 2;
     pub const ADDR_WIDTH_MASK: u32 = 0x0000000c;
@@ -1677,7 +1885,9 @@ impl M0Rfmt {
     pub const ADDR_WIDTH_Q_VAL: u32 = 2;
 
     /// **PREFIX_WIDTH**
+    ///
     /// The transfer width used for the command prefix, if any
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const PREFIX_WIDTH_OFFSET: u32 = 0;
     pub const PREFIX_WIDTH_MASK: u32 = 0x00000003;
@@ -1697,6 +1907,7 @@ impl M0Rfmt {
     // ======== Field Accessors ========
 
     /// **DTR** `[28]` (RW)
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -1718,6 +1929,7 @@ impl M0Rfmt {
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn dummy_len(&self) -> u32 {
@@ -1725,6 +1937,7 @@ impl M0Rfmt {
     }
 
     /// Write **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
@@ -1732,6 +1945,7 @@ impl M0Rfmt {
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -1740,6 +1954,7 @@ impl M0Rfmt {
     }
 
     /// Write **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -1748,6 +1963,7 @@ impl M0Rfmt {
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub fn prefix_len(&self) -> bool {
@@ -1767,6 +1983,7 @@ impl M0Rfmt {
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn data_width(&self) -> u32 {
@@ -1774,6 +1991,7 @@ impl M0Rfmt {
     }
 
     /// Write **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
@@ -1781,6 +1999,7 @@ impl M0Rfmt {
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -1789,6 +2008,7 @@ impl M0Rfmt {
     }
 
     /// Write **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -1797,6 +2017,7 @@ impl M0Rfmt {
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn suffix_width(&self) -> u32 {
@@ -1804,6 +2025,7 @@ impl M0Rfmt {
     }
 
     /// Write **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
@@ -1811,6 +2033,7 @@ impl M0Rfmt {
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn addr_width(&self) -> u32 {
@@ -1818,6 +2041,7 @@ impl M0Rfmt {
     }
 
     /// Write **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
@@ -1825,6 +2049,7 @@ impl M0Rfmt {
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn prefix_width(&self) -> u32 {
@@ -1832,6 +2057,7 @@ impl M0Rfmt {
     }
 
     /// Write **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
@@ -1869,6 +2095,7 @@ impl M0RfmtVal {
     }
 
     /// Read **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -1878,6 +2105,7 @@ impl M0RfmtVal {
     }
 
     /// Read **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn dummy_len(&self) -> u32 {
@@ -1885,6 +2113,7 @@ impl M0RfmtVal {
     }
 
     /// Read **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -1893,6 +2122,7 @@ impl M0RfmtVal {
     }
 
     /// Read **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn prefix_len(&self) -> bool {
@@ -1900,6 +2130,7 @@ impl M0RfmtVal {
     }
 
     /// Read **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn data_width(&self) -> u32 {
@@ -1907,6 +2138,7 @@ impl M0RfmtVal {
     }
 
     /// Read **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -1915,6 +2147,7 @@ impl M0RfmtVal {
     }
 
     /// Read **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn suffix_width(&self) -> u32 {
@@ -1922,6 +2155,7 @@ impl M0RfmtVal {
     }
 
     /// Read **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn addr_width(&self) -> u32 {
@@ -1929,6 +2163,7 @@ impl M0RfmtVal {
     }
 
     /// Read **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn prefix_width(&self) -> u32 {
@@ -1936,6 +2171,7 @@ impl M0RfmtVal {
     }
 
     /// Set **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -1951,6 +2187,7 @@ impl M0RfmtVal {
     }
 
     /// Set **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
@@ -1960,6 +2197,7 @@ impl M0RfmtVal {
     }
 
     /// Set **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -1970,6 +2208,7 @@ impl M0RfmtVal {
     }
 
     /// Set **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn with_prefix_len(self, value: bool) -> Self {
@@ -1983,6 +2222,7 @@ impl M0RfmtVal {
     }
 
     /// Set **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
@@ -1992,6 +2232,7 @@ impl M0RfmtVal {
     }
 
     /// Set **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -2002,6 +2243,7 @@ impl M0RfmtVal {
     }
 
     /// Set **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
@@ -2011,6 +2253,7 @@ impl M0RfmtVal {
     }
 
     /// Set **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
@@ -2020,6 +2263,7 @@ impl M0RfmtVal {
     }
 
     /// Set **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
@@ -2068,8 +2312,11 @@ impl M0Rfmt {
 /// ## Fields
 ///
 /// - **SUFFIX** `[15:8]` (RW)
+///
 ///   The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
+///
 /// - **PREFIX** `[7:0]` (RW)
+///
 ///   The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M0Rcmd {
@@ -2088,13 +2335,17 @@ impl M0Rcmd {
     // ======== Field Constants ========
 
     /// **SUFFIX**
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SUFFIX_OFFSET: u32 = 8;
     pub const SUFFIX_MASK: u32 = 0x0000ff00;
 
     /// **PREFIX**
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PREFIX_OFFSET: u32 = 0;
     pub const PREFIX_MASK: u32 = 0x000000ff;
@@ -2102,6 +2353,7 @@ impl M0Rcmd {
     // ======== Field Accessors ========
 
     /// **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn suffix(&self) -> u32 {
@@ -2109,6 +2361,7 @@ impl M0Rcmd {
     }
 
     /// Write **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
@@ -2116,6 +2369,7 @@ impl M0Rcmd {
     }
 
     /// **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn prefix(&self) -> u32 {
@@ -2123,6 +2377,7 @@ impl M0Rcmd {
     }
 
     /// Write **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
@@ -2160,6 +2415,7 @@ impl M0RcmdVal {
     }
 
     /// Read **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn suffix(&self) -> u32 {
@@ -2167,6 +2423,7 @@ impl M0RcmdVal {
     }
 
     /// Read **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn prefix(&self) -> u32 {
@@ -2174,6 +2431,7 @@ impl M0RcmdVal {
     }
 
     /// Set **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
@@ -2183,6 +2441,7 @@ impl M0RcmdVal {
     }
 
     /// Set **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
@@ -2232,26 +2491,43 @@ impl M0Rcmd {
 /// ## Fields
 ///
 /// - **DTR** `[28]` (RW)
+///
 ///   Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
 ///   DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
 ///   If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+///
 /// - **DUMMY_LEN** `[18:16]` (RW)
+///
 ///   Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+///
 /// - **SUFFIX_LEN** `[15:14]` (RW)
+///
 ///   Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
 ///   Only values of 0 and 8 bits are supported.
+///
 /// - **PREFIX_LEN** `[12]` (RW)
+///
 ///   Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+///
 /// - **DATA_WIDTH** `[9:8]` (RW)
+///
 ///   The width used for the data transfer
+///
 /// - **DUMMY_WIDTH** `[7:6]` (RW)
+///
 ///   The width used for the dummy phase, if any.
 ///   If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+///
 /// - **SUFFIX_WIDTH** `[5:4]` (RW)
+///
 ///   The width used for the post-address command suffix, if any
+///
 /// - **ADDR_WIDTH** `[3:2]` (RW)
+///
 ///   The transfer width used for the address. The address phase always transfers 24 bits in total.
+///
 /// - **PREFIX_WIDTH** `[1:0]` (RW)
+///
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M0Wfmt {
@@ -2270,16 +2546,20 @@ impl M0Wfmt {
     // ======== Field Constants ========
 
     /// **DTR**
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const DTR_OFFSET: u32 = 28;
     pub const DTR_MASK: u32 = 0x10000000;
     pub const DTR: u32 = 1 << 28;
 
     /// **DUMMY_LEN**
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const DUMMY_LEN_OFFSET: u32 = 16;
     pub const DUMMY_LEN_MASK: u32 = 0x00070000;
@@ -2317,8 +2597,10 @@ impl M0Wfmt {
     pub const DUMMY_LEN_28_VAL: u32 = 7;
 
     /// **SUFFIX_LEN**
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const SUFFIX_LEN_OFFSET: u32 = 14;
     pub const SUFFIX_LEN_MASK: u32 = 0x0000c000;
@@ -2332,7 +2614,9 @@ impl M0Wfmt {
     pub const SUFFIX_LEN_8_VAL: u32 = 2;
 
     /// **PREFIX_LEN**
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const PREFIX_LEN_OFFSET: u32 = 12;
     pub const PREFIX_LEN_MASK: u32 = 0x00001000;
@@ -2347,7 +2631,9 @@ impl M0Wfmt {
     pub const PREFIX_LEN_8_VAL: u32 = 1;
 
     /// **DATA_WIDTH**
+    ///
     /// The width used for the data transfer
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DATA_WIDTH_OFFSET: u32 = 8;
     pub const DATA_WIDTH_MASK: u32 = 0x00000300;
@@ -2365,8 +2651,10 @@ impl M0Wfmt {
     pub const DATA_WIDTH_Q_VAL: u32 = 2;
 
     /// **DUMMY_WIDTH**
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const DUMMY_WIDTH_OFFSET: u32 = 6;
     pub const DUMMY_WIDTH_MASK: u32 = 0x000000c0;
@@ -2384,7 +2672,9 @@ impl M0Wfmt {
     pub const DUMMY_WIDTH_Q_VAL: u32 = 2;
 
     /// **SUFFIX_WIDTH**
+    ///
     /// The width used for the post-address command suffix, if any
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const SUFFIX_WIDTH_OFFSET: u32 = 4;
     pub const SUFFIX_WIDTH_MASK: u32 = 0x00000030;
@@ -2402,7 +2692,9 @@ impl M0Wfmt {
     pub const SUFFIX_WIDTH_Q_VAL: u32 = 2;
 
     /// **ADDR_WIDTH**
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const ADDR_WIDTH_OFFSET: u32 = 2;
     pub const ADDR_WIDTH_MASK: u32 = 0x0000000c;
@@ -2420,7 +2712,9 @@ impl M0Wfmt {
     pub const ADDR_WIDTH_Q_VAL: u32 = 2;
 
     /// **PREFIX_WIDTH**
+    ///
     /// The transfer width used for the command prefix, if any
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const PREFIX_WIDTH_OFFSET: u32 = 0;
     pub const PREFIX_WIDTH_MASK: u32 = 0x00000003;
@@ -2440,6 +2734,7 @@ impl M0Wfmt {
     // ======== Field Accessors ========
 
     /// **DTR** `[28]` (RW)
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -2461,6 +2756,7 @@ impl M0Wfmt {
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn dummy_len(&self) -> u32 {
@@ -2468,6 +2764,7 @@ impl M0Wfmt {
     }
 
     /// Write **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
@@ -2475,6 +2772,7 @@ impl M0Wfmt {
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -2483,6 +2781,7 @@ impl M0Wfmt {
     }
 
     /// Write **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -2491,6 +2790,7 @@ impl M0Wfmt {
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub fn prefix_len(&self) -> bool {
@@ -2510,6 +2810,7 @@ impl M0Wfmt {
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn data_width(&self) -> u32 {
@@ -2517,6 +2818,7 @@ impl M0Wfmt {
     }
 
     /// Write **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
@@ -2524,6 +2826,7 @@ impl M0Wfmt {
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -2532,6 +2835,7 @@ impl M0Wfmt {
     }
 
     /// Write **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -2540,6 +2844,7 @@ impl M0Wfmt {
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn suffix_width(&self) -> u32 {
@@ -2547,6 +2852,7 @@ impl M0Wfmt {
     }
 
     /// Write **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
@@ -2554,6 +2860,7 @@ impl M0Wfmt {
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn addr_width(&self) -> u32 {
@@ -2561,6 +2868,7 @@ impl M0Wfmt {
     }
 
     /// Write **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
@@ -2568,6 +2876,7 @@ impl M0Wfmt {
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn prefix_width(&self) -> u32 {
@@ -2575,6 +2884,7 @@ impl M0Wfmt {
     }
 
     /// Write **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
@@ -2612,6 +2922,7 @@ impl M0WfmtVal {
     }
 
     /// Read **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -2621,6 +2932,7 @@ impl M0WfmtVal {
     }
 
     /// Read **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn dummy_len(&self) -> u32 {
@@ -2628,6 +2940,7 @@ impl M0WfmtVal {
     }
 
     /// Read **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -2636,6 +2949,7 @@ impl M0WfmtVal {
     }
 
     /// Read **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn prefix_len(&self) -> bool {
@@ -2643,6 +2957,7 @@ impl M0WfmtVal {
     }
 
     /// Read **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn data_width(&self) -> u32 {
@@ -2650,6 +2965,7 @@ impl M0WfmtVal {
     }
 
     /// Read **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -2658,6 +2974,7 @@ impl M0WfmtVal {
     }
 
     /// Read **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn suffix_width(&self) -> u32 {
@@ -2665,6 +2982,7 @@ impl M0WfmtVal {
     }
 
     /// Read **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn addr_width(&self) -> u32 {
@@ -2672,6 +2990,7 @@ impl M0WfmtVal {
     }
 
     /// Read **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn prefix_width(&self) -> u32 {
@@ -2679,6 +2998,7 @@ impl M0WfmtVal {
     }
 
     /// Set **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -2694,6 +3014,7 @@ impl M0WfmtVal {
     }
 
     /// Set **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
@@ -2703,6 +3024,7 @@ impl M0WfmtVal {
     }
 
     /// Set **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -2713,6 +3035,7 @@ impl M0WfmtVal {
     }
 
     /// Set **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn with_prefix_len(self, value: bool) -> Self {
@@ -2726,6 +3049,7 @@ impl M0WfmtVal {
     }
 
     /// Set **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
@@ -2735,6 +3059,7 @@ impl M0WfmtVal {
     }
 
     /// Set **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -2745,6 +3070,7 @@ impl M0WfmtVal {
     }
 
     /// Set **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
@@ -2754,6 +3080,7 @@ impl M0WfmtVal {
     }
 
     /// Set **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
@@ -2763,6 +3090,7 @@ impl M0WfmtVal {
     }
 
     /// Set **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
@@ -2811,8 +3139,11 @@ impl M0Wfmt {
 /// ## Fields
 ///
 /// - **SUFFIX** `[15:8]` (RW)
+///
 ///   The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
+///
 /// - **PREFIX** `[7:0]` (RW)
+///
 ///   The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M0Wcmd {
@@ -2831,13 +3162,17 @@ impl M0Wcmd {
     // ======== Field Constants ========
 
     /// **SUFFIX**
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SUFFIX_OFFSET: u32 = 8;
     pub const SUFFIX_MASK: u32 = 0x0000ff00;
 
     /// **PREFIX**
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PREFIX_OFFSET: u32 = 0;
     pub const PREFIX_MASK: u32 = 0x000000ff;
@@ -2845,6 +3180,7 @@ impl M0Wcmd {
     // ======== Field Accessors ========
 
     /// **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn suffix(&self) -> u32 {
@@ -2852,6 +3188,7 @@ impl M0Wcmd {
     }
 
     /// Write **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
@@ -2859,6 +3196,7 @@ impl M0Wcmd {
     }
 
     /// **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn prefix(&self) -> u32 {
@@ -2866,6 +3204,7 @@ impl M0Wcmd {
     }
 
     /// Write **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
@@ -2903,6 +3242,7 @@ impl M0WcmdVal {
     }
 
     /// Read **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn suffix(&self) -> u32 {
@@ -2910,6 +3250,7 @@ impl M0WcmdVal {
     }
 
     /// Read **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn prefix(&self) -> u32 {
@@ -2917,6 +3258,7 @@ impl M0WcmdVal {
     }
 
     /// Set **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
@@ -2926,6 +3268,7 @@ impl M0WcmdVal {
     }
 
     /// Set **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
@@ -2973,33 +3316,48 @@ impl M0Wcmd {
 /// ## Fields
 ///
 /// - **COOLDOWN** `[31:30]` (RW)
+///
 ///   Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
 ///   If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
 ///   Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
 ///   If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
+///
 /// - **PAGEBREAK** `[29:28]` (RW)
+///
 ///   When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
 ///   Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
 ///   This field has no effect when COOLDOWN is disabled.
+///
 /// - **SELECT_SETUP** `[25]` (RW)
+///
 ///   Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
 ///   The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
+///
 /// - **SELECT_HOLD** `[24:23]` (RW)
+///
 ///   Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
 ///   The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
 ///   Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
 ///   Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
+///
 /// - **MAX_SELECT** `[22:17]` (RW)
+///
 ///   Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
 ///   This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
 ///   If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
+///
 /// - **MIN_DESELECT** `[16:12]` (RW)
+///
 ///   After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
 ///   Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
+///
 /// - **RXDELAY** `[10:8]` (RW)
+///
 ///   Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
 ///   At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
+///
 /// - **CLKDIV** `[7:0]` (RW)
+///
 ///   Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
 ///   The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
 ///   If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -3020,18 +3378,22 @@ impl M1Timing {
     // ======== Field Constants ========
 
     /// **COOLDOWN**
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
     /// If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
+    ///
     /// Bits `[31:30]`, mask `0xc0000000`
     pub const COOLDOWN_OFFSET: u32 = 30;
     pub const COOLDOWN_MASK: u32 = 0xc0000000;
 
     /// **PAGEBREAK**
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
+    ///
     /// Bits `[29:28]`, mask `0x30000000`
     pub const PAGEBREAK_OFFSET: u32 = 28;
     pub const PAGEBREAK_MASK: u32 = 0x30000000;
@@ -3053,48 +3415,60 @@ impl M1Timing {
     pub const PAGEBREAK_4096_VAL: u32 = 3;
 
     /// **SELECT_SETUP**
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
+    ///
     /// Bits `[25:25]`, mask `0x02000000`
     pub const SELECT_SETUP_OFFSET: u32 = 25;
     pub const SELECT_SETUP_MASK: u32 = 0x02000000;
     pub const SELECT_SETUP: u32 = 1 << 25;
 
     /// **SELECT_HOLD**
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
     /// Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
+    ///
     /// Bits `[24:23]`, mask `0x01800000`
     pub const SELECT_HOLD_OFFSET: u32 = 23;
     pub const SELECT_HOLD_MASK: u32 = 0x01800000;
 
     /// **MAX_SELECT**
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
+    ///
     /// Bits `[22:17]`, mask `0x007e0000`
     pub const MAX_SELECT_OFFSET: u32 = 17;
     pub const MAX_SELECT_MASK: u32 = 0x007e0000;
 
     /// **MIN_DESELECT**
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
+    ///
     /// Bits `[16:12]`, mask `0x0001f000`
     pub const MIN_DESELECT_OFFSET: u32 = 12;
     pub const MIN_DESELECT_MASK: u32 = 0x0001f000;
 
     /// **RXDELAY**
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
+    ///
     /// Bits `[10:8]`, mask `0x00000700`
     pub const RXDELAY_OFFSET: u32 = 8;
     pub const RXDELAY_MASK: u32 = 0x00000700;
 
     /// **CLKDIV**
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const CLKDIV_OFFSET: u32 = 0;
     pub const CLKDIV_MASK: u32 = 0x000000ff;
@@ -3102,6 +3476,7 @@ impl M1Timing {
     // ======== Field Accessors ========
 
     /// **COOLDOWN** `[31:30]` (RW)
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -3112,6 +3487,7 @@ impl M1Timing {
     }
 
     /// Write **COOLDOWN** `[31:30]` (RW)
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -3122,6 +3498,7 @@ impl M1Timing {
     }
 
     /// **PAGEBREAK** `[29:28]` (RW)
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -3131,6 +3508,7 @@ impl M1Timing {
     }
 
     /// Write **PAGEBREAK** `[29:28]` (RW)
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -3140,6 +3518,7 @@ impl M1Timing {
     }
 
     /// **SELECT_SETUP** `[25]` (RW)
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -3160,6 +3539,7 @@ impl M1Timing {
     }
 
     /// **SELECT_HOLD** `[24:23]` (RW)
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -3170,6 +3550,7 @@ impl M1Timing {
     }
 
     /// Write **SELECT_HOLD** `[24:23]` (RW)
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -3180,6 +3561,7 @@ impl M1Timing {
     }
 
     /// **MAX_SELECT** `[22:17]` (RW)
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -3189,6 +3571,7 @@ impl M1Timing {
     }
 
     /// Write **MAX_SELECT** `[22:17]` (RW)
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -3198,6 +3581,7 @@ impl M1Timing {
     }
 
     /// **MIN_DESELECT** `[16:12]` (RW)
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -3206,6 +3590,7 @@ impl M1Timing {
     }
 
     /// Write **MIN_DESELECT** `[16:12]` (RW)
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -3214,6 +3599,7 @@ impl M1Timing {
     }
 
     /// **RXDELAY** `[10:8]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -3222,6 +3608,7 @@ impl M1Timing {
     }
 
     /// Write **RXDELAY** `[10:8]` (RW)
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -3230,6 +3617,7 @@ impl M1Timing {
     }
 
     /// **CLKDIV** `[7:0]` (RW)
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -3239,6 +3627,7 @@ impl M1Timing {
     }
 
     /// Write **CLKDIV** `[7:0]` (RW)
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -3278,6 +3667,7 @@ impl M1TimingVal {
     }
 
     /// Read **COOLDOWN** `[31:30]`
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -3288,6 +3678,7 @@ impl M1TimingVal {
     }
 
     /// Read **PAGEBREAK** `[29:28]`
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -3297,6 +3688,7 @@ impl M1TimingVal {
     }
 
     /// Read **SELECT_SETUP** `[25:25]`
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -3305,6 +3697,7 @@ impl M1TimingVal {
     }
 
     /// Read **SELECT_HOLD** `[24:23]`
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -3315,6 +3708,7 @@ impl M1TimingVal {
     }
 
     /// Read **MAX_SELECT** `[22:17]`
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -3324,6 +3718,7 @@ impl M1TimingVal {
     }
 
     /// Read **MIN_DESELECT** `[16:12]`
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -3332,6 +3727,7 @@ impl M1TimingVal {
     }
 
     /// Read **RXDELAY** `[10:8]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -3340,6 +3736,7 @@ impl M1TimingVal {
     }
 
     /// Read **CLKDIV** `[7:0]`
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -3349,6 +3746,7 @@ impl M1TimingVal {
     }
 
     /// Set **COOLDOWN** `[31:30]`
+    ///
     /// Chip select cooldown period. When a memory transfer finishes, the chip select remains asserted for 64 x COOLDOWN system clock cycles, plus half an SCK clock period (rounded up for odd SCK divisors). After this cooldown expires, the chip select is always deasserted to save power.
     /// If the next memory access arrives within the cooldown period, the QMI may be able to append more SCK cycles to the currently ongoing SPI transfer, rather than starting a new transfer. This reduces access latency and increases bus throughput.
     /// Specifically, the next access must be in the same direction (read/write), access the same memory window (chip select 0/1), and follow sequentially the address of the last transfer. If any of these are false, the new access will first deassert the chip select, then begin a new transfer.
@@ -3361,6 +3759,7 @@ impl M1TimingVal {
     }
 
     /// Set **PAGEBREAK** `[29:28]`
+    ///
     /// When page break is enabled, chip select will automatically deassert when crossing certain power-of-2-aligned address boundaries. The next access will always begin a new read/write SPI burst, even if the address of the next access follows in sequence with the last access before the page boundary.
     /// Some flash and PSRAM devices forbid crossing page boundaries with a single read/write transfer, or restrict the operating frequency for transfers that do cross page a boundary. This option allows the QMI to safely support those devices.
     /// This field has no effect when COOLDOWN is disabled.
@@ -3372,6 +3771,7 @@ impl M1TimingVal {
     }
 
     /// Set **SELECT_SETUP** `[25:25]`
+    ///
     /// Add up to one additional system clock cycle of setup between chip select assertion and the first rising edge of SCK.
     /// The default setup time is one half SCK period, which is usually sufficient except for very high SCK frequencies with some flash devices.
     #[inline(always)]
@@ -3386,6 +3786,7 @@ impl M1TimingVal {
     }
 
     /// Set **SELECT_HOLD** `[24:23]`
+    ///
     /// Add up to three additional system clock cycles of active hold between the last falling edge of SCK and the deassertion of this window's chip select.
     /// The default hold time is one system clock cycle. Note that flash datasheets usually give chip select active hold time from the last *rising* edge of SCK, and so even zero hold from the last falling edge would be safe.
     /// Note that this is a minimum hold time guaranteed by the QMI: the actual chip select active hold may be slightly longer for read transfers with low clock divisors and/or high sample delays. Specifically, if the point two cycles after the last RX data sample is later than the last SCK falling edge, then the hold time is measured from *this* point.
@@ -3398,6 +3799,7 @@ impl M1TimingVal {
     }
 
     /// Set **MAX_SELECT** `[22:17]`
+    ///
     /// Enforce a maximum assertion duration for this window's chip select, in units of 64 system clock cycles. If 0, the QMI is permitted to keep the chip select asserted indefinitely when servicing sequential memory accesses (see COOLDOWN).
     /// This feature is required to meet timing constraints of PSRAM devices, which specify a maximum chip select assertion so they can perform DRAM refresh cycles. See also MIN_DESELECT, which can enforce a minimum deselect time.
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
@@ -3409,6 +3811,7 @@ impl M1TimingVal {
     }
 
     /// Set **MIN_DESELECT** `[16:12]`
+    ///
     /// After this window's chip select is deasserted, it remains deasserted for half an SCK cycle (rounded up to an integer number of system clock cycles), plus MIN_DESELECT additional system clock cycles, before the QMI reasserts either chip select pin.
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
@@ -3419,6 +3822,7 @@ impl M1TimingVal {
     }
 
     /// Set **RXDELAY** `[10:8]`
+    ///
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.) An RXDELAY of 0 means the sample is captured at the SDI input registers simultaneously with the rising edge of SCK launched from the SCK output register.
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
@@ -3429,6 +3833,7 @@ impl M1TimingVal {
     }
 
     /// Set **CLKDIV** `[7:0]`
+    ///
     /// Clock divisor. Odd and even divisors are supported. Defines the SCK clock period in units of 1 system clock cycle. Divisors 1..255 are encoded directly, and a divisor of 256 is encoded with a value of CLKDIV=0.
     /// The clock divisor can be changed on-the-fly, even when the QMI is currently accessing memory in this address window. All other parameters must only be changed when the QMI is idle.
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
@@ -3480,26 +3885,43 @@ impl M1Timing {
 /// ## Fields
 ///
 /// - **DTR** `[28]` (RW)
+///
 ///   Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
 ///   DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
 ///   If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+///
 /// - **DUMMY_LEN** `[18:16]` (RW)
+///
 ///   Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+///
 /// - **SUFFIX_LEN** `[15:14]` (RW)
+///
 ///   Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
 ///   Only values of 0 and 8 bits are supported.
+///
 /// - **PREFIX_LEN** `[12]` (RW)
+///
 ///   Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+///
 /// - **DATA_WIDTH** `[9:8]` (RW)
+///
 ///   The width used for the data transfer
+///
 /// - **DUMMY_WIDTH** `[7:6]` (RW)
+///
 ///   The width used for the dummy phase, if any.
 ///   If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+///
 /// - **SUFFIX_WIDTH** `[5:4]` (RW)
+///
 ///   The width used for the post-address command suffix, if any
+///
 /// - **ADDR_WIDTH** `[3:2]` (RW)
+///
 ///   The transfer width used for the address. The address phase always transfers 24 bits in total.
+///
 /// - **PREFIX_WIDTH** `[1:0]` (RW)
+///
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M1Rfmt {
@@ -3518,16 +3940,20 @@ impl M1Rfmt {
     // ======== Field Constants ========
 
     /// **DTR**
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const DTR_OFFSET: u32 = 28;
     pub const DTR_MASK: u32 = 0x10000000;
     pub const DTR: u32 = 1 << 28;
 
     /// **DUMMY_LEN**
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const DUMMY_LEN_OFFSET: u32 = 16;
     pub const DUMMY_LEN_MASK: u32 = 0x00070000;
@@ -3565,8 +3991,10 @@ impl M1Rfmt {
     pub const DUMMY_LEN_28_VAL: u32 = 7;
 
     /// **SUFFIX_LEN**
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const SUFFIX_LEN_OFFSET: u32 = 14;
     pub const SUFFIX_LEN_MASK: u32 = 0x0000c000;
@@ -3580,7 +4008,9 @@ impl M1Rfmt {
     pub const SUFFIX_LEN_8_VAL: u32 = 2;
 
     /// **PREFIX_LEN**
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const PREFIX_LEN_OFFSET: u32 = 12;
     pub const PREFIX_LEN_MASK: u32 = 0x00001000;
@@ -3595,7 +4025,9 @@ impl M1Rfmt {
     pub const PREFIX_LEN_8_VAL: u32 = 1;
 
     /// **DATA_WIDTH**
+    ///
     /// The width used for the data transfer
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DATA_WIDTH_OFFSET: u32 = 8;
     pub const DATA_WIDTH_MASK: u32 = 0x00000300;
@@ -3613,8 +4045,10 @@ impl M1Rfmt {
     pub const DATA_WIDTH_Q_VAL: u32 = 2;
 
     /// **DUMMY_WIDTH**
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const DUMMY_WIDTH_OFFSET: u32 = 6;
     pub const DUMMY_WIDTH_MASK: u32 = 0x000000c0;
@@ -3632,7 +4066,9 @@ impl M1Rfmt {
     pub const DUMMY_WIDTH_Q_VAL: u32 = 2;
 
     /// **SUFFIX_WIDTH**
+    ///
     /// The width used for the post-address command suffix, if any
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const SUFFIX_WIDTH_OFFSET: u32 = 4;
     pub const SUFFIX_WIDTH_MASK: u32 = 0x00000030;
@@ -3650,7 +4086,9 @@ impl M1Rfmt {
     pub const SUFFIX_WIDTH_Q_VAL: u32 = 2;
 
     /// **ADDR_WIDTH**
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const ADDR_WIDTH_OFFSET: u32 = 2;
     pub const ADDR_WIDTH_MASK: u32 = 0x0000000c;
@@ -3668,7 +4106,9 @@ impl M1Rfmt {
     pub const ADDR_WIDTH_Q_VAL: u32 = 2;
 
     /// **PREFIX_WIDTH**
+    ///
     /// The transfer width used for the command prefix, if any
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const PREFIX_WIDTH_OFFSET: u32 = 0;
     pub const PREFIX_WIDTH_MASK: u32 = 0x00000003;
@@ -3688,6 +4128,7 @@ impl M1Rfmt {
     // ======== Field Accessors ========
 
     /// **DTR** `[28]` (RW)
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -3709,6 +4150,7 @@ impl M1Rfmt {
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn dummy_len(&self) -> u32 {
@@ -3716,6 +4158,7 @@ impl M1Rfmt {
     }
 
     /// Write **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
@@ -3723,6 +4166,7 @@ impl M1Rfmt {
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -3731,6 +4175,7 @@ impl M1Rfmt {
     }
 
     /// Write **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -3739,6 +4184,7 @@ impl M1Rfmt {
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub fn prefix_len(&self) -> bool {
@@ -3758,6 +4204,7 @@ impl M1Rfmt {
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn data_width(&self) -> u32 {
@@ -3765,6 +4212,7 @@ impl M1Rfmt {
     }
 
     /// Write **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
@@ -3772,6 +4220,7 @@ impl M1Rfmt {
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -3780,6 +4229,7 @@ impl M1Rfmt {
     }
 
     /// Write **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -3788,6 +4238,7 @@ impl M1Rfmt {
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn suffix_width(&self) -> u32 {
@@ -3795,6 +4246,7 @@ impl M1Rfmt {
     }
 
     /// Write **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
@@ -3802,6 +4254,7 @@ impl M1Rfmt {
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn addr_width(&self) -> u32 {
@@ -3809,6 +4262,7 @@ impl M1Rfmt {
     }
 
     /// Write **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
@@ -3816,6 +4270,7 @@ impl M1Rfmt {
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn prefix_width(&self) -> u32 {
@@ -3823,6 +4278,7 @@ impl M1Rfmt {
     }
 
     /// Write **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
@@ -3860,6 +4316,7 @@ impl M1RfmtVal {
     }
 
     /// Read **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -3869,6 +4326,7 @@ impl M1RfmtVal {
     }
 
     /// Read **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn dummy_len(&self) -> u32 {
@@ -3876,6 +4334,7 @@ impl M1RfmtVal {
     }
 
     /// Read **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -3884,6 +4343,7 @@ impl M1RfmtVal {
     }
 
     /// Read **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn prefix_len(&self) -> bool {
@@ -3891,6 +4351,7 @@ impl M1RfmtVal {
     }
 
     /// Read **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn data_width(&self) -> u32 {
@@ -3898,6 +4359,7 @@ impl M1RfmtVal {
     }
 
     /// Read **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -3906,6 +4368,7 @@ impl M1RfmtVal {
     }
 
     /// Read **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn suffix_width(&self) -> u32 {
@@ -3913,6 +4376,7 @@ impl M1RfmtVal {
     }
 
     /// Read **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn addr_width(&self) -> u32 {
@@ -3920,6 +4384,7 @@ impl M1RfmtVal {
     }
 
     /// Read **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn prefix_width(&self) -> u32 {
@@ -3927,6 +4392,7 @@ impl M1RfmtVal {
     }
 
     /// Set **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for read commands: address, suffix and read data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -3942,6 +4408,7 @@ impl M1RfmtVal {
     }
 
     /// Set **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
@@ -3951,6 +4418,7 @@ impl M1RfmtVal {
     }
 
     /// Set **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -3961,6 +4429,7 @@ impl M1RfmtVal {
     }
 
     /// Set **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn with_prefix_len(self, value: bool) -> Self {
@@ -3974,6 +4443,7 @@ impl M1RfmtVal {
     }
 
     /// Set **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
@@ -3983,6 +4453,7 @@ impl M1RfmtVal {
     }
 
     /// Set **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -3993,6 +4464,7 @@ impl M1RfmtVal {
     }
 
     /// Set **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
@@ -4002,6 +4474,7 @@ impl M1RfmtVal {
     }
 
     /// Set **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
@@ -4011,6 +4484,7 @@ impl M1RfmtVal {
     }
 
     /// Set **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
@@ -4059,8 +4533,11 @@ impl M1Rfmt {
 /// ## Fields
 ///
 /// - **SUFFIX** `[15:8]` (RW)
+///
 ///   The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
+///
 /// - **PREFIX** `[7:0]` (RW)
+///
 ///   The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M1Rcmd {
@@ -4079,13 +4556,17 @@ impl M1Rcmd {
     // ======== Field Constants ========
 
     /// **SUFFIX**
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SUFFIX_OFFSET: u32 = 8;
     pub const SUFFIX_MASK: u32 = 0x0000ff00;
 
     /// **PREFIX**
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PREFIX_OFFSET: u32 = 0;
     pub const PREFIX_MASK: u32 = 0x000000ff;
@@ -4093,6 +4574,7 @@ impl M1Rcmd {
     // ======== Field Accessors ========
 
     /// **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn suffix(&self) -> u32 {
@@ -4100,6 +4582,7 @@ impl M1Rcmd {
     }
 
     /// Write **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
@@ -4107,6 +4590,7 @@ impl M1Rcmd {
     }
 
     /// **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn prefix(&self) -> u32 {
@@ -4114,6 +4598,7 @@ impl M1Rcmd {
     }
 
     /// Write **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
@@ -4151,6 +4636,7 @@ impl M1RcmdVal {
     }
 
     /// Read **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn suffix(&self) -> u32 {
@@ -4158,6 +4644,7 @@ impl M1RcmdVal {
     }
 
     /// Read **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn prefix(&self) -> u32 {
@@ -4165,6 +4652,7 @@ impl M1RcmdVal {
     }
 
     /// Set **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
@@ -4174,6 +4662,7 @@ impl M1RcmdVal {
     }
 
     /// Set **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
@@ -4223,26 +4712,43 @@ impl M1Rcmd {
 /// ## Fields
 ///
 /// - **DTR** `[28]` (RW)
+///
 ///   Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
 ///   DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
 ///   If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+///
 /// - **DUMMY_LEN** `[18:16]` (RW)
+///
 ///   Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+///
 /// - **SUFFIX_LEN** `[15:14]` (RW)
+///
 ///   Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
 ///   Only values of 0 and 8 bits are supported.
+///
 /// - **PREFIX_LEN** `[12]` (RW)
+///
 ///   Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+///
 /// - **DATA_WIDTH** `[9:8]` (RW)
+///
 ///   The width used for the data transfer
+///
 /// - **DUMMY_WIDTH** `[7:6]` (RW)
+///
 ///   The width used for the dummy phase, if any.
 ///   If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+///
 /// - **SUFFIX_WIDTH** `[5:4]` (RW)
+///
 ///   The width used for the post-address command suffix, if any
+///
 /// - **ADDR_WIDTH** `[3:2]` (RW)
+///
 ///   The transfer width used for the address. The address phase always transfers 24 bits in total.
+///
 /// - **PREFIX_WIDTH** `[1:0]` (RW)
+///
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M1Wfmt {
@@ -4261,16 +4767,20 @@ impl M1Wfmt {
     // ======== Field Constants ========
 
     /// **DTR**
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
+    ///
     /// Bits `[28:28]`, mask `0x10000000`
     pub const DTR_OFFSET: u32 = 28;
     pub const DTR_MASK: u32 = 0x10000000;
     pub const DTR: u32 = 1 << 28;
 
     /// **DUMMY_LEN**
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
+    ///
     /// Bits `[18:16]`, mask `0x00070000`
     pub const DUMMY_LEN_OFFSET: u32 = 16;
     pub const DUMMY_LEN_MASK: u32 = 0x00070000;
@@ -4308,8 +4818,10 @@ impl M1Wfmt {
     pub const DUMMY_LEN_28_VAL: u32 = 7;
 
     /// **SUFFIX_LEN**
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
+    ///
     /// Bits `[15:14]`, mask `0x0000c000`
     pub const SUFFIX_LEN_OFFSET: u32 = 14;
     pub const SUFFIX_LEN_MASK: u32 = 0x0000c000;
@@ -4323,7 +4835,9 @@ impl M1Wfmt {
     pub const SUFFIX_LEN_8_VAL: u32 = 2;
 
     /// **PREFIX_LEN**
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
+    ///
     /// Bits `[12:12]`, mask `0x00001000`
     pub const PREFIX_LEN_OFFSET: u32 = 12;
     pub const PREFIX_LEN_MASK: u32 = 0x00001000;
@@ -4338,7 +4852,9 @@ impl M1Wfmt {
     pub const PREFIX_LEN_8_VAL: u32 = 1;
 
     /// **DATA_WIDTH**
+    ///
     /// The width used for the data transfer
+    ///
     /// Bits `[9:8]`, mask `0x00000300`
     pub const DATA_WIDTH_OFFSET: u32 = 8;
     pub const DATA_WIDTH_MASK: u32 = 0x00000300;
@@ -4356,8 +4872,10 @@ impl M1Wfmt {
     pub const DATA_WIDTH_Q_VAL: u32 = 2;
 
     /// **DUMMY_WIDTH**
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
+    ///
     /// Bits `[7:6]`, mask `0x000000c0`
     pub const DUMMY_WIDTH_OFFSET: u32 = 6;
     pub const DUMMY_WIDTH_MASK: u32 = 0x000000c0;
@@ -4375,7 +4893,9 @@ impl M1Wfmt {
     pub const DUMMY_WIDTH_Q_VAL: u32 = 2;
 
     /// **SUFFIX_WIDTH**
+    ///
     /// The width used for the post-address command suffix, if any
+    ///
     /// Bits `[5:4]`, mask `0x00000030`
     pub const SUFFIX_WIDTH_OFFSET: u32 = 4;
     pub const SUFFIX_WIDTH_MASK: u32 = 0x00000030;
@@ -4393,7 +4913,9 @@ impl M1Wfmt {
     pub const SUFFIX_WIDTH_Q_VAL: u32 = 2;
 
     /// **ADDR_WIDTH**
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
+    ///
     /// Bits `[3:2]`, mask `0x0000000c`
     pub const ADDR_WIDTH_OFFSET: u32 = 2;
     pub const ADDR_WIDTH_MASK: u32 = 0x0000000c;
@@ -4411,7 +4933,9 @@ impl M1Wfmt {
     pub const ADDR_WIDTH_Q_VAL: u32 = 2;
 
     /// **PREFIX_WIDTH**
+    ///
     /// The transfer width used for the command prefix, if any
+    ///
     /// Bits `[1:0]`, mask `0x00000003`
     pub const PREFIX_WIDTH_OFFSET: u32 = 0;
     pub const PREFIX_WIDTH_MASK: u32 = 0x00000003;
@@ -4431,6 +4955,7 @@ impl M1Wfmt {
     // ======== Field Accessors ========
 
     /// **DTR** `[28]` (RW)
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -4452,6 +4977,7 @@ impl M1Wfmt {
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn dummy_len(&self) -> u32 {
@@ -4459,6 +4985,7 @@ impl M1Wfmt {
     }
 
     /// Write **DUMMY_LEN** `[18:16]` (RW)
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
@@ -4466,6 +4993,7 @@ impl M1Wfmt {
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -4474,6 +5002,7 @@ impl M1Wfmt {
     }
 
     /// Write **SUFFIX_LEN** `[15:14]` (RW)
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -4482,6 +5011,7 @@ impl M1Wfmt {
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub fn prefix_len(&self) -> bool {
@@ -4501,6 +5031,7 @@ impl M1Wfmt {
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn data_width(&self) -> u32 {
@@ -4508,6 +5039,7 @@ impl M1Wfmt {
     }
 
     /// Write **DATA_WIDTH** `[9:8]` (RW)
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
@@ -4515,6 +5047,7 @@ impl M1Wfmt {
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -4523,6 +5056,7 @@ impl M1Wfmt {
     }
 
     /// Write **DUMMY_WIDTH** `[7:6]` (RW)
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -4531,6 +5065,7 @@ impl M1Wfmt {
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn suffix_width(&self) -> u32 {
@@ -4538,6 +5073,7 @@ impl M1Wfmt {
     }
 
     /// Write **SUFFIX_WIDTH** `[5:4]` (RW)
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
@@ -4545,6 +5081,7 @@ impl M1Wfmt {
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn addr_width(&self) -> u32 {
@@ -4552,6 +5089,7 @@ impl M1Wfmt {
     }
 
     /// Write **ADDR_WIDTH** `[3:2]` (RW)
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
@@ -4559,6 +5097,7 @@ impl M1Wfmt {
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn prefix_width(&self) -> u32 {
@@ -4566,6 +5105,7 @@ impl M1Wfmt {
     }
 
     /// Write **PREFIX_WIDTH** `[1:0]` (RW)
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
@@ -4603,6 +5143,7 @@ impl M1WfmtVal {
     }
 
     /// Read **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -4612,6 +5153,7 @@ impl M1WfmtVal {
     }
 
     /// Read **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn dummy_len(&self) -> u32 {
@@ -4619,6 +5161,7 @@ impl M1WfmtVal {
     }
 
     /// Read **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -4627,6 +5170,7 @@ impl M1WfmtVal {
     }
 
     /// Read **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn prefix_len(&self) -> bool {
@@ -4634,6 +5178,7 @@ impl M1WfmtVal {
     }
 
     /// Read **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn data_width(&self) -> u32 {
@@ -4641,6 +5186,7 @@ impl M1WfmtVal {
     }
 
     /// Read **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -4649,6 +5195,7 @@ impl M1WfmtVal {
     }
 
     /// Read **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn suffix_width(&self) -> u32 {
@@ -4656,6 +5203,7 @@ impl M1WfmtVal {
     }
 
     /// Read **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn addr_width(&self) -> u32 {
@@ -4663,6 +5211,7 @@ impl M1WfmtVal {
     }
 
     /// Read **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn prefix_width(&self) -> u32 {
@@ -4670,6 +5219,7 @@ impl M1WfmtVal {
     }
 
     /// Set **DTR** `[28:28]`
+    ///
     /// Enable double transfer rate (DTR) for write commands: address, suffix and write data phases are active on both edges of SCK. SDO data is launched centre-aligned on each SCK edge, and SDI data is captured on the SCK edge that follows its launch.
     /// DTR is implemented by halving the clock rate; SCK has a period of 2 x CLK_DIV throughout the transfer. The prefix and dummy phases are still single transfer rate.
     /// If the suffix is quad-width, it must be 0 or 8 bits in length, to ensure an even number of SCK edges.
@@ -4685,6 +5235,7 @@ impl M1WfmtVal {
     }
 
     /// Set **DUMMY_LEN** `[18:16]`
+    ///
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
@@ -4694,6 +5245,7 @@ impl M1WfmtVal {
     }
 
     /// Set **SUFFIX_LEN** `[15:14]`
+    ///
     /// Length of post-address command suffix, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
@@ -4704,6 +5256,7 @@ impl M1WfmtVal {
     }
 
     /// Set **PREFIX_LEN** `[12:12]`
+    ///
     /// Length of command prefix, in units of 8 bits. (i.e. 2 cycles for quad width, 4 for dual, 8 for single)
     #[inline(always)]
     pub const fn with_prefix_len(self, value: bool) -> Self {
@@ -4717,6 +5270,7 @@ impl M1WfmtVal {
     }
 
     /// Set **DATA_WIDTH** `[9:8]`
+    ///
     /// The width used for the data transfer
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
@@ -4726,6 +5280,7 @@ impl M1WfmtVal {
     }
 
     /// Set **DUMMY_WIDTH** `[7:6]`
+    ///
     /// The width used for the dummy phase, if any.
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
@@ -4736,6 +5291,7 @@ impl M1WfmtVal {
     }
 
     /// Set **SUFFIX_WIDTH** `[5:4]`
+    ///
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
@@ -4745,6 +5301,7 @@ impl M1WfmtVal {
     }
 
     /// Set **ADDR_WIDTH** `[3:2]`
+    ///
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
@@ -4754,6 +5311,7 @@ impl M1WfmtVal {
     }
 
     /// Set **PREFIX_WIDTH** `[1:0]`
+    ///
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
@@ -4802,8 +5360,11 @@ impl M1Wfmt {
 /// ## Fields
 ///
 /// - **SUFFIX** `[15:8]` (RW)
+///
 ///   The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
+///
 /// - **PREFIX** `[7:0]` (RW)
+///
 ///   The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M1Wcmd {
@@ -4822,13 +5383,17 @@ impl M1Wcmd {
     // ======== Field Constants ========
 
     /// **SUFFIX**
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
+    ///
     /// Bits `[15:8]`, mask `0x0000ff00`
     pub const SUFFIX_OFFSET: u32 = 8;
     pub const SUFFIX_MASK: u32 = 0x0000ff00;
 
     /// **PREFIX**
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
+    ///
     /// Bits `[7:0]`, mask `0x000000ff`
     pub const PREFIX_OFFSET: u32 = 0;
     pub const PREFIX_MASK: u32 = 0x000000ff;
@@ -4836,6 +5401,7 @@ impl M1Wcmd {
     // ======== Field Accessors ========
 
     /// **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn suffix(&self) -> u32 {
@@ -4843,6 +5409,7 @@ impl M1Wcmd {
     }
 
     /// Write **SUFFIX** `[15:8]` (RW)
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
@@ -4850,6 +5417,7 @@ impl M1Wcmd {
     }
 
     /// **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn prefix(&self) -> u32 {
@@ -4857,6 +5425,7 @@ impl M1Wcmd {
     }
 
     /// Write **PREFIX** `[7:0]` (RW)
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
@@ -4894,6 +5463,7 @@ impl M1WcmdVal {
     }
 
     /// Read **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn suffix(&self) -> u32 {
@@ -4901,6 +5471,7 @@ impl M1WcmdVal {
     }
 
     /// Read **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn prefix(&self) -> u32 {
@@ -4908,6 +5479,7 @@ impl M1WcmdVal {
     }
 
     /// Set **SUFFIX** `[15:8]`
+    ///
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
@@ -4917,6 +5489,7 @@ impl M1WcmdVal {
     }
 
     /// Set **PREFIX** `[7:0]`
+    ///
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
@@ -4967,9 +5540,12 @@ impl M1Wcmd {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -4989,15 +5565,19 @@ impl Atrans0 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5005,6 +5585,7 @@ impl Atrans0 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5013,6 +5594,7 @@ impl Atrans0 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5021,6 +5603,7 @@ impl Atrans0 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5029,6 +5612,7 @@ impl Atrans0 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5067,6 +5651,7 @@ impl Atrans0Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5075,6 +5660,7 @@ impl Atrans0Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5083,6 +5669,7 @@ impl Atrans0Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5093,6 +5680,7 @@ impl Atrans0Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5144,9 +5732,12 @@ impl Atrans0 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -5166,15 +5757,19 @@ impl Atrans1 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5182,6 +5777,7 @@ impl Atrans1 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5190,6 +5786,7 @@ impl Atrans1 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5198,6 +5795,7 @@ impl Atrans1 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5206,6 +5804,7 @@ impl Atrans1 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5244,6 +5843,7 @@ impl Atrans1Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5252,6 +5852,7 @@ impl Atrans1Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5260,6 +5861,7 @@ impl Atrans1Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5270,6 +5872,7 @@ impl Atrans1Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5321,9 +5924,12 @@ impl Atrans1 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -5343,15 +5949,19 @@ impl Atrans2 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5359,6 +5969,7 @@ impl Atrans2 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5367,6 +5978,7 @@ impl Atrans2 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5375,6 +5987,7 @@ impl Atrans2 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5383,6 +5996,7 @@ impl Atrans2 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5421,6 +6035,7 @@ impl Atrans2Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5429,6 +6044,7 @@ impl Atrans2Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5437,6 +6053,7 @@ impl Atrans2Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5447,6 +6064,7 @@ impl Atrans2Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5498,9 +6116,12 @@ impl Atrans2 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -5520,15 +6141,19 @@ impl Atrans3 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5536,6 +6161,7 @@ impl Atrans3 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5544,6 +6170,7 @@ impl Atrans3 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5552,6 +6179,7 @@ impl Atrans3 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5560,6 +6188,7 @@ impl Atrans3 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5598,6 +6227,7 @@ impl Atrans3Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5606,6 +6236,7 @@ impl Atrans3Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5614,6 +6245,7 @@ impl Atrans3Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5624,6 +6256,7 @@ impl Atrans3Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5675,9 +6308,12 @@ impl Atrans3 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -5697,15 +6333,19 @@ impl Atrans4 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5713,6 +6353,7 @@ impl Atrans4 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5721,6 +6362,7 @@ impl Atrans4 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5729,6 +6371,7 @@ impl Atrans4 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5737,6 +6380,7 @@ impl Atrans4 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5775,6 +6419,7 @@ impl Atrans4Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5783,6 +6428,7 @@ impl Atrans4Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5791,6 +6437,7 @@ impl Atrans4Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5801,6 +6448,7 @@ impl Atrans4Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5852,9 +6500,12 @@ impl Atrans4 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -5874,15 +6525,19 @@ impl Atrans5 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -5890,6 +6545,7 @@ impl Atrans5 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5898,6 +6554,7 @@ impl Atrans5 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5906,6 +6563,7 @@ impl Atrans5 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5914,6 +6572,7 @@ impl Atrans5 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5952,6 +6611,7 @@ impl Atrans5Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5960,6 +6620,7 @@ impl Atrans5Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -5968,6 +6629,7 @@ impl Atrans5Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -5978,6 +6640,7 @@ impl Atrans5Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6029,9 +6692,12 @@ impl Atrans5 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -6051,15 +6717,19 @@ impl Atrans6 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -6067,6 +6737,7 @@ impl Atrans6 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6075,6 +6746,7 @@ impl Atrans6 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6083,6 +6755,7 @@ impl Atrans6 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6091,6 +6764,7 @@ impl Atrans6 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6129,6 +6803,7 @@ impl Atrans6Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6137,6 +6812,7 @@ impl Atrans6Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6145,6 +6821,7 @@ impl Atrans6Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6155,6 +6832,7 @@ impl Atrans6Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6206,9 +6884,12 @@ impl Atrans6 {
 /// ## Fields
 ///
 /// - **SIZE** `[26:16]` (RW)
+///
 ///   Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+///
 /// - **BASE** `[11:0]` (RW)
+///
 ///   Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
@@ -6228,15 +6909,19 @@ impl Atrans7 {
     // ======== Field Constants ========
 
     /// **SIZE**
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
+    ///
     /// Bits `[26:16]`, mask `0x07ff0000`
     pub const SIZE_OFFSET: u32 = 16;
     pub const SIZE_MASK: u32 = 0x07ff0000;
 
     /// **BASE**
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
+    ///
     /// Bits `[11:0]`, mask `0x00000fff`
     pub const BASE_OFFSET: u32 = 0;
     pub const BASE_MASK: u32 = 0x00000fff;
@@ -6244,6 +6929,7 @@ impl Atrans7 {
     // ======== Field Accessors ========
 
     /// **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6252,6 +6938,7 @@ impl Atrans7 {
     }
 
     /// Write **SIZE** `[26:16]` (RW)
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6260,6 +6947,7 @@ impl Atrans7 {
     }
 
     /// **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6268,6 +6956,7 @@ impl Atrans7 {
     }
 
     /// Write **BASE** `[11:0]` (RW)
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6306,6 +6995,7 @@ impl Atrans7Val {
     }
 
     /// Read **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6314,6 +7004,7 @@ impl Atrans7Val {
     }
 
     /// Read **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
@@ -6322,6 +7013,7 @@ impl Atrans7Val {
     }
 
     /// Set **SIZE** `[26:16]`
+    ///
     /// Translation aperture size for this virtual address range, in units of 4 kiB (one flash sector).
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
@@ -6332,6 +7024,7 @@ impl Atrans7Val {
     }
 
     /// Set **BASE** `[11:0]`
+    ///
     /// Physical address base for this virtual address range, in units of 4 kiB (one flash sector).
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
