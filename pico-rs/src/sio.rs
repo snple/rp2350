@@ -613,10 +613,11 @@ impl<'a> Interp0<'a> {
     /// Enable or disable BLEND mode (interpolator 0 only)
     #[inline]
     pub fn set_blend(&self, enable: bool) {
+        // Note: SIO does not support atomic SET/CLR aliases
         if enable {
-            self.sio.interp0_ctrl_lane0.set_bits(1 << 21);
+            self.sio.interp0_ctrl_lane0.modify_bits(|r| r | (1 << 21));
         } else {
-            self.sio.interp0_ctrl_lane0.clr_bits(1 << 21);
+            self.sio.interp0_ctrl_lane0.modify_bits(|r| r & !(1 << 21));
         }
     }
 
@@ -866,10 +867,11 @@ impl<'a> Interp1<'a> {
     /// Enable or disable CLAMP mode (interpolator 1 only)
     #[inline]
     pub fn set_clamp(&self, enable: bool) {
+        // Note: SIO does not support atomic SET/CLR aliases
         if enable {
-            self.sio.interp1_ctrl_lane0.set_bits(1 << 22);
+            self.sio.interp1_ctrl_lane0.modify_bits(|r| r | (1 << 22));
         } else {
-            self.sio.interp1_ctrl_lane0.clr_bits(1 << 22);
+            self.sio.interp1_ctrl_lane0.modify_bits(|r| r & !(1 << 22));
         }
     }
 

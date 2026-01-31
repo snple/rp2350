@@ -1,10 +1,25 @@
 //! USB Bus implementation for RP2350
 //!
 //! This module provides the low-level hardware abstraction for the RP2350's USB controller.
+//!
+//! ## Hardware Errata
+//!
+//! The RP2350 USB controller requires special handling when setting up buffer control
+//! registers. Specifically, you must:
+//! 1. Write all fields EXCEPT the AVAILABLE bit first
+//! 2. Wait at least 12 CPU cycles
+//! 3. Then set only the AVAILABLE bit (using read-modify-write)
+//!
+//! This module uses the PAC's `modify_val` pattern to ensure correct operation.
 
 use core::cell::UnsafeCell;
 use core::sync::atomic::{AtomicBool, AtomicU8, Ordering};
 
+use pico_rs_pac::usb_dpram::{
+    Ep0InBufferControl, Ep0InBufferControlVal, Ep0OutBufferControl, Ep0OutBufferControlVal,
+    Ep1InBufferControl, Ep1OutBufferControl, Ep2InBufferControl, Ep2OutBufferControl,
+    Ep3InBufferControl, Ep3OutBufferControl,
+};
 use pico_rs_pac::{RESETS, USB, USB_DPRAM};
 
 use crate::CONTROL_MAX_PACKET_SIZE;
@@ -17,6 +32,9 @@ use crate::error::{UsbError, UsbResult};
 /// USBCTRL reset bit
 const USBCTRL_RESET_BIT: u32 = 1 << 28;
 
+/// Delay cycles required between buffer control writes (RP2350 errata)
+const BUFFER_CONTROL_DELAY_CYCLES: u32 = 12;
+
 /// Bring USB controller out of reset
 fn unreset_usb() {
     let resets = unsafe { &*RESETS::PTR };
@@ -27,6 +45,110 @@ fn unreset_usb() {
     // Wait for reset to complete
     while resets.reset_done.read_bits() & USBCTRL_RESET_BIT == 0 {
         cortex_m::asm::nop();
+    }
+}
+
+/// Buffer control register helper trait
+///
+/// This trait provides a common interface for all EP buffer control registers.
+/// The RP2350 USB errata requires:
+/// 1. Write configuration WITHOUT AVAILABLE bit
+/// 2. DSB + delay
+/// 3. Set AVAILABLE bit via read-modify-write
+trait BufferControlOps {
+    /// Write buffer control value (without AVAILABLE bit)
+    fn write_config(&self, val: u32);
+    /// Read current buffer control value
+    fn read_config(&self) -> u32;
+    /// Set only the AVAILABLE bit (atomic-like operation)
+    fn set_available(&self);
+}
+
+/// Macro to implement BufferControlOps for all EP buffer control registers
+macro_rules! impl_buffer_control_ops {
+    ($type:ty) => {
+        impl BufferControlOps for $type {
+            #[inline(always)]
+            fn write_config(&self, val: u32) {
+                // Write without AVAILABLE bit
+                self.write_bits(val & !Self::AVAILABLE_0);
+            }
+
+            #[inline(always)]
+            fn read_config(&self) -> u32 {
+                self.read_bits()
+            }
+
+            #[inline(always)]
+            fn set_available(&self) {
+                // Read-modify-write to set only AVAILABLE bit
+                self.modify_bits(|v| v | Self::AVAILABLE_0);
+            }
+        }
+    };
+}
+
+impl_buffer_control_ops!(Ep0InBufferControl);
+impl_buffer_control_ops!(Ep0OutBufferControl);
+impl_buffer_control_ops!(Ep1InBufferControl);
+impl_buffer_control_ops!(Ep1OutBufferControl);
+impl_buffer_control_ops!(Ep2InBufferControl);
+impl_buffer_control_ops!(Ep2OutBufferControl);
+impl_buffer_control_ops!(Ep3InBufferControl);
+impl_buffer_control_ops!(Ep3OutBufferControl);
+
+/// Write buffer control with proper errata handling
+///
+/// This function:
+/// 1. Writes all fields EXCEPT AVAILABLE
+/// 2. DSB to ensure write completes
+/// 3. Delay for buffer control to settle
+/// 4. Read-modify-write to set AVAILABLE bit only
+#[inline(never)] // Prevent inlining to ensure proper sequencing
+fn write_buffer_control_with_errata<T: BufferControlOps>(reg: &T, val: u32) {
+    const AVAILABLE_BIT: u32 = 1 << 10;
+
+    // Step 1: Write configuration without AVAILABLE bit
+    reg.write_config(val & !AVAILABLE_BIT);
+
+    // Step 2: Memory barrier to ensure write is complete
+    cortex_m::asm::dsb();
+
+    // Step 3: Wait for buffer control to settle (RP2350 errata)
+    cortex_m::asm::delay(BUFFER_CONTROL_DELAY_CYCLES);
+
+    // Step 4: Set only AVAILABLE bit via read-modify-write
+    // This preserves all other bits we just wrote
+    reg.set_available();
+
+    // Final barrier to ensure AVAILABLE write is visible
+    cortex_m::asm::dsb();
+}
+
+/// Generic buffer control write with errata handling (for non-EP0 endpoints)
+///
+/// Uses raw pointer access but implements proper read-modify-write for AVAILABLE bit
+#[inline(never)] // Prevent inlining to ensure proper sequencing
+fn write_buffer_control_generic(ctrl: *mut u32, val: u32) {
+    const AVAILABLE_BIT: u32 = 1 << 10;
+
+    unsafe {
+        // Step 1: Write configuration without AVAILABLE bit
+        core::ptr::write_volatile(ctrl, val & !AVAILABLE_BIT);
+
+        // Step 2: Memory barrier to ensure write is complete
+        cortex_m::asm::dsb();
+
+        // Step 3: Wait for buffer control to settle (RP2350 errata)
+        cortex_m::asm::delay(BUFFER_CONTROL_DELAY_CYCLES);
+
+        // Step 4: Read-modify-write to set AVAILABLE bit only
+        // This preserves all other bits we just wrote
+        let current = core::ptr::read_volatile(ctrl);
+        core::ptr::write_volatile(ctrl, current | AVAILABLE_BIT);
+
+        // Final barrier to ensure AVAILABLE write is visible
+        cortex_m::asm::dsb();
     }
 }
 
@@ -393,11 +515,9 @@ impl UsbBus {
         // For OUT endpoints, also arm the buffer control to receive data
         if ep_addr.direction().is_out() {
             let buf_ctrl = self.get_ep_buffer_control(ep_addr);
-            let buf_ctrl_val = (max_packet_size as u32) & 0x3FF  // LENGTH
-                | (1 << 10); // AVAILABLE
-            unsafe {
-                core::ptr::write_volatile(buf_ctrl, buf_ctrl_val);
-            }
+            let buf_ctrl_val = (max_packet_size as u32) & 0x3FF; // LENGTH only
+            // Use errata-safe write sequence
+            write_buffer_control_generic(buf_ctrl, buf_ctrl_val);
         }
 
         #[cfg(feature = "defmt")]
@@ -508,19 +628,8 @@ impl UsbBus {
         let buf_ptr = buffer.dpram_address() as *mut u8;
         unsafe {
             core::ptr::copy_nonoverlapping(data.as_ptr(), buf_ptr, len);
-        }
-
-        // Set up buffer control for transmission
-        // Bit 15: FULL_0 - Buffer is full
-        // Bit 13: PID_0 - DATA toggle (DATA1 if set, DATA0 if clear)
-        // Bit 10: AVAILABLE_0 - Buffer available for hardware
-        let ctrl = self.get_ep_buffer_control(ep_addr);
-        let mut ctrl_val = (len as u32)  // LENGTH_0
-            | (1 << 10)                   // AVAILABLE_0
-            | (1 << 15); // FULL_0
-
-        if data_toggle {
-            ctrl_val |= 1 << 13; // PID_0 = DATA1
+            // DSB ensures data is written before we configure buffer control
+            cortex_m::asm::dsb();
         }
 
         // Toggle for next transfer
@@ -540,8 +649,20 @@ impl UsbBus {
             data_toggle
         );
 
-        unsafe {
-            core::ptr::write_volatile(ctrl, ctrl_val);
+        // Build buffer control value
+        let mut ctrl_val = (len as u32)  // LENGTH_0
+            | (1 << 15); // FULL_0
+        if data_toggle {
+            ctrl_val |= 1 << 13; // PID_0 = DATA1
+        }
+
+        // Use errata-safe write sequence for all endpoints
+        if ep_addr.number() == 0 {
+            write_buffer_control_with_errata(&self.dpram.ep0_in_buffer_control, ctrl_val);
+        } else {
+            // For non-EP0 endpoints, use write_buffer_control_generic
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            write_buffer_control_generic(ctrl, ctrl_val);
         }
 
         Ok(len)
@@ -563,8 +684,12 @@ impl UsbBus {
         };
 
         // Read buffer control to check if data is available
-        let ctrl = self.get_ep_buffer_control(ep_addr);
-        let ctrl_val = unsafe { core::ptr::read_volatile(ctrl) };
+        let ctrl_val = if ep_addr.number() == 0 {
+            self.dpram.ep0_out_buffer_control.read_bits()
+        } else {
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            unsafe { core::ptr::read_volatile(ctrl) }
+        };
 
         // Check if buffer has data (FULL bit should be set by hardware when data received)
         if (ctrl_val & (1 << 15)) == 0 {
@@ -596,14 +721,17 @@ impl UsbBus {
             self.ep_data_toggles[idx].load(Ordering::SeqCst)
         };
 
-        let mut new_ctrl = (buffer.size as u32) & 0x3FF  // Max length
-            | (1 << 10); // AVAILABLE_0
+        let mut new_ctrl = (buffer.size as u32) & 0x3FF; // Max length
         if toggle {
             new_ctrl |= 1 << 13; // PID_0 = DATA1
         }
 
-        unsafe {
-            core::ptr::write_volatile(ctrl, new_ctrl);
+        // Use errata-safe write for re-arming endpoint
+        if ep_addr.number() == 0 {
+            write_buffer_control_with_errata(&self.dpram.ep0_out_buffer_control, new_ctrl);
+        } else {
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            write_buffer_control_generic(ctrl, new_ctrl);
         }
 
         #[cfg(feature = "defmt")]
@@ -624,44 +752,35 @@ impl UsbBus {
 
     /// Start EP0 IN transaction with proper DATA toggle
     pub fn ep0_start_in(&self, len: usize, is_last: bool) {
-        let buffer = unsafe { *self.ep0_in_buffer.get() };
-        let ctrl = self.get_ep_buffer_control(EndpointAddress::in_(0));
-
         // Get current data toggle and flip it for next time
         let data1 = self.ep0_in_data_toggle.load(Ordering::SeqCst);
         self.ep0_in_data_toggle.store(!data1, Ordering::SeqCst);
 
-        // Buffer control bits for EP0 IN:
+        // Build buffer control value using PAC constants
         // Bit 15: FULL_0 - Buffer is full (for IN/TX)
         // Bit 14: LAST_0 - Last buffer of transfer
         // Bit 13: PID_0 - DATA1 PID (set for DATA1, clear for DATA0)
-        // Bit 10: AVAILABLE_0 - Buffer is available
+        // Bit 10: AVAILABLE_0 - Buffer is available (set via errata-safe method)
         // Bits 9:0: LENGTH_0 - Data length
-
-        let mut ctrl_val = (len as u32) & 0x3FF; // LENGTH_0
-        ctrl_val |= 1 << 10; // AVAILABLE_0
-        ctrl_val |= 1 << 15; // FULL_0 (buffer is full, ready to send)
-
-        if data1 {
-            ctrl_val |= 1 << 13; // PID_0 = DATA1
-        }
-        // else PID_0 = 0 (DATA0)
-
-        if is_last {
-            ctrl_val |= 1 << 14; // LAST_0
-        }
+        let val = Ep0InBufferControlVal::from_bits(0)
+            .with_length_0(len as u32)
+            .with_full_0(true)
+            .with_pid_0(data1)
+            .with_last_0(is_last);
 
         #[cfg(feature = "defmt")]
         defmt::debug!(
             "EP0 IN: len={}, ctrl={:#010x}, data1={}",
             len,
-            ctrl_val,
+            val.bits() | Ep0InBufferControl::AVAILABLE_0,
             data1
         );
 
-        unsafe {
-            core::ptr::write_volatile(ctrl, ctrl_val);
-        }
+        // Use errata-safe write sequence:
+        // 1. Write config without AVAILABLE
+        // 2. DSB + delay
+        // 3. Set AVAILABLE via read-modify-write
+        write_buffer_control_with_errata(&self.dpram.ep0_in_buffer_control, val.bits());
     }
 
     /// Write data to EP0 IN buffer and start the transfer
@@ -672,11 +791,16 @@ impl UsbBus {
         let buffer = unsafe { *self.ep0_in_buffer.get() };
         let len = core::cmp::min(data.len(), buffer.size as usize);
 
-        // Write data to DPRAM buffer
+        // Write data to DPRAM buffer using volatile writes to ensure
+        // data is actually written to memory (not just cached)
         let buf_ptr = buffer.dpram_address() as *mut u8;
-        unsafe {
-            core::ptr::copy_nonoverlapping(data.as_ptr(), buf_ptr, len);
+        for i in 0..len {
+            unsafe {
+                core::ptr::write_volatile(buf_ptr.add(i), data[i]);
+            }
         }
+        // DSB ensures all data writes complete before we configure buffer control
+        cortex_m::asm::dsb();
 
         #[cfg(feature = "defmt")]
         {
@@ -697,23 +821,20 @@ impl UsbBus {
 
     /// Prepare EP0 OUT for receiving data
     pub fn ep0_expect_out(&self, max_len: usize) {
-        let ctrl = self.get_ep_buffer_control(EndpointAddress::out(0));
-
         // For status ZLP, use DATA1 PID
-        let ctrl_val = (max_len as u32) & 0x3FF  // Length
-            | (1 << 10)                           // AVAILABLE_0
-            | (1 << 13); // PID_0 = DATA1 (for status stage)
+        let val = Ep0OutBufferControlVal::from_bits(0)
+            .with_length_0(max_len as u32)
+            .with_pid_0(true); // DATA1 for status stage
 
         #[cfg(feature = "defmt")]
         defmt::trace!(
             "USB: ep0_expect_out max_len={} ctrl={:#010x}",
             max_len,
-            ctrl_val
+            val.bits() | Ep0OutBufferControl::AVAILABLE_0
         );
 
-        unsafe {
-            core::ptr::write_volatile(ctrl, ctrl_val);
-        }
+        // Use errata-safe write sequence
+        write_buffer_control_with_errata(&self.dpram.ep0_out_buffer_control, val.bits());
     }
 
     /// Send a zero-length packet on EP0 IN (status stage)
@@ -727,14 +848,13 @@ impl UsbBus {
             pico_rs_pac::usb::EpStallArm::EP0_IN | pico_rs_pac::usb::EpStallArm::EP0_OUT,
         );
 
-        // Set STALL bit in buffer control
-        let ctrl_in = self.get_ep_buffer_control(EndpointAddress::in_(0));
-        let ctrl_out = self.get_ep_buffer_control(EndpointAddress::out(0));
-
-        unsafe {
-            core::ptr::write_volatile(ctrl_in, 1 << 11); // STALL
-            core::ptr::write_volatile(ctrl_out, 1 << 11); // STALL
-        }
+        // Set STALL bit in buffer control using PAC methods
+        self.dpram
+            .ep0_in_buffer_control
+            .write_bits(Ep0InBufferControl::STALL);
+        self.dpram
+            .ep0_out_buffer_control
+            .write_bits(Ep0OutBufferControl::STALL);
 
         #[cfg(feature = "defmt")]
         defmt::warn!("USB: EP0 stalled");
@@ -742,20 +862,39 @@ impl UsbBus {
 
     /// Stall an endpoint
     pub fn stall(&self, ep_addr: EndpointAddress) {
-        let ctrl = self.get_ep_buffer_control(ep_addr);
-        unsafe {
-            let val = core::ptr::read_volatile(ctrl);
-            core::ptr::write_volatile(ctrl, val | (1 << 11)); // STALL bit
+        // For EP0, use PAC methods
+        if ep_addr.number() == 0 {
+            if ep_addr.direction().is_in() {
+                self.dpram.ep0_in_buffer_control.set_stall();
+            } else {
+                self.dpram.ep0_out_buffer_control.set_stall();
+            }
+        } else {
+            // For non-EP0, use read-modify-write to avoid clobbering other bits
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            unsafe {
+                let val = core::ptr::read_volatile(ctrl);
+                core::ptr::write_volatile(ctrl, val | (1 << 11)); // STALL bit
+            }
         }
     }
 
     /// Clear stall on an endpoint and reset data toggle
     pub fn unstall(&self, ep_addr: EndpointAddress) {
-        // Clear STALL bit
-        let ctrl = self.get_ep_buffer_control(ep_addr);
-        unsafe {
-            let val = core::ptr::read_volatile(ctrl);
-            core::ptr::write_volatile(ctrl, val & !(1 << 11)); // Clear STALL bit
+        // For EP0, use PAC methods
+        if ep_addr.number() == 0 {
+            if ep_addr.direction().is_in() {
+                self.dpram.ep0_in_buffer_control.clr_stall();
+            } else {
+                self.dpram.ep0_out_buffer_control.clr_stall();
+            }
+        } else {
+            // For non-EP0, use read-modify-write
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            unsafe {
+                let val = core::ptr::read_volatile(ctrl);
+                core::ptr::write_volatile(ctrl, val & !(1 << 11)); // Clear STALL bit
+            }
         }
 
         // Reset data toggle to DATA0 per USB spec
@@ -767,9 +906,17 @@ impl UsbBus {
 
     /// Check if an endpoint is stalled
     pub fn is_stalled(&self, ep_addr: EndpointAddress) -> bool {
-        let ctrl = self.get_ep_buffer_control(ep_addr);
-        let val = unsafe { core::ptr::read_volatile(ctrl) };
-        (val & (1 << 11)) != 0
+        if ep_addr.number() == 0 {
+            if ep_addr.direction().is_in() {
+                self.dpram.ep0_in_buffer_control.stall()
+            } else {
+                self.dpram.ep0_out_buffer_control.stall()
+            }
+        } else {
+            let ctrl = self.get_ep_buffer_control(ep_addr);
+            let val = unsafe { core::ptr::read_volatile(ctrl) };
+            (val & (1 << 11)) != 0
+        }
     }
 
     /// Get access to the raw USB registers

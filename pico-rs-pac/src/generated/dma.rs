@@ -1,5 +1,7 @@
 //! DMA
 //! DMA with separate read and write masters
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -19,11 +21,11 @@ pub const BASE: u32 = 0x50000000;
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch0ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -150,11 +152,11 @@ impl Ch0ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch0WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -292,11 +294,11 @@ impl Ch0WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch0TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -591,11 +593,11 @@ impl Ch0TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch0CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1050,13 +1052,13 @@ impl Ch0CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -1071,13 +1073,13 @@ impl Ch0CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -1101,13 +1103,13 @@ impl Ch0CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -1122,13 +1124,13 @@ impl Ch0CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -1143,13 +1145,13 @@ impl Ch0CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -1202,13 +1204,13 @@ impl Ch0CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -1241,13 +1243,13 @@ impl Ch0CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -1262,13 +1264,13 @@ impl Ch0CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -1283,13 +1285,13 @@ impl Ch0CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -1304,13 +1306,13 @@ impl Ch0CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -1341,13 +1343,13 @@ impl Ch0CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -1362,13 +1364,13 @@ impl Ch0CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -1826,11 +1828,11 @@ impl Ch0CtrlTrig {
 /// - **CH0_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1937,11 +1939,11 @@ impl Ch0Al1Ctrl {
 /// - **CH0_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2048,11 +2050,11 @@ impl Ch0Al1ReadAddr {
 /// - **CH0_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2161,11 +2163,11 @@ impl Ch0Al1WriteAddr {
 /// - **CH0_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2272,11 +2274,11 @@ impl Ch0Al1TransCountTrig {
 /// - **CH0_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2383,11 +2385,11 @@ impl Ch0Al2Ctrl {
 /// - **CH0_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2494,11 +2496,11 @@ impl Ch0Al2TransCount {
 /// - **CH0_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2607,11 +2609,11 @@ impl Ch0Al2ReadAddr {
 /// - **CH0_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2718,11 +2720,11 @@ impl Ch0Al2WriteAddrTrig {
 /// - **CH0_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2829,11 +2831,11 @@ impl Ch0Al3Ctrl {
 /// - **CH0_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2940,11 +2942,11 @@ impl Ch0Al3WriteAddr {
 /// - **CH0_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3053,11 +3055,11 @@ impl Ch0Al3TransCount {
 /// - **CH0_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3167,11 +3169,11 @@ impl Ch0Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3298,11 +3300,11 @@ impl Ch1ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3440,11 +3442,11 @@ impl Ch1WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch1TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3739,11 +3741,11 @@ impl Ch1TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch1CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4198,13 +4200,13 @@ impl Ch1CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -4219,13 +4221,13 @@ impl Ch1CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -4249,13 +4251,13 @@ impl Ch1CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -4270,13 +4272,13 @@ impl Ch1CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -4291,13 +4293,13 @@ impl Ch1CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -4350,13 +4352,13 @@ impl Ch1CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -4389,13 +4391,13 @@ impl Ch1CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -4410,13 +4412,13 @@ impl Ch1CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -4431,13 +4433,13 @@ impl Ch1CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -4452,13 +4454,13 @@ impl Ch1CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -4489,13 +4491,13 @@ impl Ch1CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -4510,13 +4512,13 @@ impl Ch1CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -4974,11 +4976,11 @@ impl Ch1CtrlTrig {
 /// - **CH1_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5085,11 +5087,11 @@ impl Ch1Al1Ctrl {
 /// - **CH1_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5196,11 +5198,11 @@ impl Ch1Al1ReadAddr {
 /// - **CH1_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5309,11 +5311,11 @@ impl Ch1Al1WriteAddr {
 /// - **CH1_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5420,11 +5422,11 @@ impl Ch1Al1TransCountTrig {
 /// - **CH1_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5531,11 +5533,11 @@ impl Ch1Al2Ctrl {
 /// - **CH1_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5642,11 +5644,11 @@ impl Ch1Al2TransCount {
 /// - **CH1_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5755,11 +5757,11 @@ impl Ch1Al2ReadAddr {
 /// - **CH1_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5866,11 +5868,11 @@ impl Ch1Al2WriteAddrTrig {
 /// - **CH1_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5977,11 +5979,11 @@ impl Ch1Al3Ctrl {
 /// - **CH1_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6088,11 +6090,11 @@ impl Ch1Al3WriteAddr {
 /// - **CH1_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6201,11 +6203,11 @@ impl Ch1Al3TransCount {
 /// - **CH1_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6315,11 +6317,11 @@ impl Ch1Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6446,11 +6448,11 @@ impl Ch2ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch2WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6588,11 +6590,11 @@ impl Ch2WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6887,11 +6889,11 @@ impl Ch2TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch2CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7346,13 +7348,13 @@ impl Ch2CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -7367,13 +7369,13 @@ impl Ch2CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -7397,13 +7399,13 @@ impl Ch2CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -7418,13 +7420,13 @@ impl Ch2CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -7439,13 +7441,13 @@ impl Ch2CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -7498,13 +7500,13 @@ impl Ch2CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -7537,13 +7539,13 @@ impl Ch2CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -7558,13 +7560,13 @@ impl Ch2CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -7579,13 +7581,13 @@ impl Ch2CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -7600,13 +7602,13 @@ impl Ch2CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -7637,13 +7639,13 @@ impl Ch2CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -7658,13 +7660,13 @@ impl Ch2CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -8122,11 +8124,11 @@ impl Ch2CtrlTrig {
 /// - **CH2_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8233,11 +8235,11 @@ impl Ch2Al1Ctrl {
 /// - **CH2_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8344,11 +8346,11 @@ impl Ch2Al1ReadAddr {
 /// - **CH2_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8457,11 +8459,11 @@ impl Ch2Al1WriteAddr {
 /// - **CH2_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8568,11 +8570,11 @@ impl Ch2Al1TransCountTrig {
 /// - **CH2_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8679,11 +8681,11 @@ impl Ch2Al2Ctrl {
 /// - **CH2_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8790,11 +8792,11 @@ impl Ch2Al2TransCount {
 /// - **CH2_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8903,11 +8905,11 @@ impl Ch2Al2ReadAddr {
 /// - **CH2_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9014,11 +9016,11 @@ impl Ch2Al2WriteAddrTrig {
 /// - **CH2_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9125,11 +9127,11 @@ impl Ch2Al3Ctrl {
 /// - **CH2_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9236,11 +9238,11 @@ impl Ch2Al3WriteAddr {
 /// - **CH2_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9349,11 +9351,11 @@ impl Ch2Al3TransCount {
 /// - **CH2_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9463,11 +9465,11 @@ impl Ch2Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch3ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9594,11 +9596,11 @@ impl Ch3ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9736,11 +9738,11 @@ impl Ch3WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10035,11 +10037,11 @@ impl Ch3TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch3CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10494,13 +10496,13 @@ impl Ch3CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -10515,13 +10517,13 @@ impl Ch3CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -10545,13 +10547,13 @@ impl Ch3CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -10566,13 +10568,13 @@ impl Ch3CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -10587,13 +10589,13 @@ impl Ch3CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -10646,13 +10648,13 @@ impl Ch3CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -10685,13 +10687,13 @@ impl Ch3CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -10706,13 +10708,13 @@ impl Ch3CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -10727,13 +10729,13 @@ impl Ch3CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -10748,13 +10750,13 @@ impl Ch3CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -10785,13 +10787,13 @@ impl Ch3CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -10806,13 +10808,13 @@ impl Ch3CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -11270,11 +11272,11 @@ impl Ch3CtrlTrig {
 /// - **CH3_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11381,11 +11383,11 @@ impl Ch3Al1Ctrl {
 /// - **CH3_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11492,11 +11494,11 @@ impl Ch3Al1ReadAddr {
 /// - **CH3_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11605,11 +11607,11 @@ impl Ch3Al1WriteAddr {
 /// - **CH3_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11716,11 +11718,11 @@ impl Ch3Al1TransCountTrig {
 /// - **CH3_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11827,11 +11829,11 @@ impl Ch3Al2Ctrl {
 /// - **CH3_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11938,11 +11940,11 @@ impl Ch3Al2TransCount {
 /// - **CH3_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12051,11 +12053,11 @@ impl Ch3Al2ReadAddr {
 /// - **CH3_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12162,11 +12164,11 @@ impl Ch3Al2WriteAddrTrig {
 /// - **CH3_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12273,11 +12275,11 @@ impl Ch3Al3Ctrl {
 /// - **CH3_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12384,11 +12386,11 @@ impl Ch3Al3WriteAddr {
 /// - **CH3_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12497,11 +12499,11 @@ impl Ch3Al3TransCount {
 /// - **CH3_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12611,11 +12613,11 @@ impl Ch3Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch4ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12742,11 +12744,11 @@ impl Ch4ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch4WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12884,11 +12886,11 @@ impl Ch4WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch4TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13183,11 +13185,11 @@ impl Ch4TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch4CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13642,13 +13644,13 @@ impl Ch4CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -13663,13 +13665,13 @@ impl Ch4CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -13693,13 +13695,13 @@ impl Ch4CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -13714,13 +13716,13 @@ impl Ch4CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -13735,13 +13737,13 @@ impl Ch4CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -13794,13 +13796,13 @@ impl Ch4CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -13833,13 +13835,13 @@ impl Ch4CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -13854,13 +13856,13 @@ impl Ch4CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -13875,13 +13877,13 @@ impl Ch4CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -13896,13 +13898,13 @@ impl Ch4CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -13933,13 +13935,13 @@ impl Ch4CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -13954,13 +13956,13 @@ impl Ch4CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -14418,11 +14420,11 @@ impl Ch4CtrlTrig {
 /// - **CH4_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14529,11 +14531,11 @@ impl Ch4Al1Ctrl {
 /// - **CH4_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14640,11 +14642,11 @@ impl Ch4Al1ReadAddr {
 /// - **CH4_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14753,11 +14755,11 @@ impl Ch4Al1WriteAddr {
 /// - **CH4_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14864,11 +14866,11 @@ impl Ch4Al1TransCountTrig {
 /// - **CH4_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14975,11 +14977,11 @@ impl Ch4Al2Ctrl {
 /// - **CH4_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15086,11 +15088,11 @@ impl Ch4Al2TransCount {
 /// - **CH4_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15199,11 +15201,11 @@ impl Ch4Al2ReadAddr {
 /// - **CH4_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15310,11 +15312,11 @@ impl Ch4Al2WriteAddrTrig {
 /// - **CH4_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15421,11 +15423,11 @@ impl Ch4Al3Ctrl {
 /// - **CH4_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15532,11 +15534,11 @@ impl Ch4Al3WriteAddr {
 /// - **CH4_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15645,11 +15647,11 @@ impl Ch4Al3TransCount {
 /// - **CH4_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15759,11 +15761,11 @@ impl Ch4Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch5ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15890,11 +15892,11 @@ impl Ch5ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch5WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16032,11 +16034,11 @@ impl Ch5WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch5TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16331,11 +16333,11 @@ impl Ch5TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch5CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16790,13 +16792,13 @@ impl Ch5CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -16811,13 +16813,13 @@ impl Ch5CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -16841,13 +16843,13 @@ impl Ch5CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -16862,13 +16864,13 @@ impl Ch5CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -16883,13 +16885,13 @@ impl Ch5CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -16942,13 +16944,13 @@ impl Ch5CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -16981,13 +16983,13 @@ impl Ch5CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -17002,13 +17004,13 @@ impl Ch5CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -17023,13 +17025,13 @@ impl Ch5CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -17044,13 +17046,13 @@ impl Ch5CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -17081,13 +17083,13 @@ impl Ch5CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -17102,13 +17104,13 @@ impl Ch5CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -17566,11 +17568,11 @@ impl Ch5CtrlTrig {
 /// - **CH5_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17677,11 +17679,11 @@ impl Ch5Al1Ctrl {
 /// - **CH5_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17788,11 +17790,11 @@ impl Ch5Al1ReadAddr {
 /// - **CH5_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17901,11 +17903,11 @@ impl Ch5Al1WriteAddr {
 /// - **CH5_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18012,11 +18014,11 @@ impl Ch5Al1TransCountTrig {
 /// - **CH5_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18123,11 +18125,11 @@ impl Ch5Al2Ctrl {
 /// - **CH5_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18234,11 +18236,11 @@ impl Ch5Al2TransCount {
 /// - **CH5_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18347,11 +18349,11 @@ impl Ch5Al2ReadAddr {
 /// - **CH5_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18458,11 +18460,11 @@ impl Ch5Al2WriteAddrTrig {
 /// - **CH5_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18569,11 +18571,11 @@ impl Ch5Al3Ctrl {
 /// - **CH5_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18680,11 +18682,11 @@ impl Ch5Al3WriteAddr {
 /// - **CH5_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18793,11 +18795,11 @@ impl Ch5Al3TransCount {
 /// - **CH5_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18907,11 +18909,11 @@ impl Ch5Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch6ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19038,11 +19040,11 @@ impl Ch6ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch6WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19180,11 +19182,11 @@ impl Ch6WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch6TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19479,11 +19481,11 @@ impl Ch6TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch6CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19938,13 +19940,13 @@ impl Ch6CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -19959,13 +19961,13 @@ impl Ch6CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -19989,13 +19991,13 @@ impl Ch6CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -20010,13 +20012,13 @@ impl Ch6CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -20031,13 +20033,13 @@ impl Ch6CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -20090,13 +20092,13 @@ impl Ch6CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -20129,13 +20131,13 @@ impl Ch6CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -20150,13 +20152,13 @@ impl Ch6CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -20171,13 +20173,13 @@ impl Ch6CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -20192,13 +20194,13 @@ impl Ch6CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -20229,13 +20231,13 @@ impl Ch6CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -20250,13 +20252,13 @@ impl Ch6CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -20714,11 +20716,11 @@ impl Ch6CtrlTrig {
 /// - **CH6_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20825,11 +20827,11 @@ impl Ch6Al1Ctrl {
 /// - **CH6_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20936,11 +20938,11 @@ impl Ch6Al1ReadAddr {
 /// - **CH6_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21049,11 +21051,11 @@ impl Ch6Al1WriteAddr {
 /// - **CH6_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21160,11 +21162,11 @@ impl Ch6Al1TransCountTrig {
 /// - **CH6_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21271,11 +21273,11 @@ impl Ch6Al2Ctrl {
 /// - **CH6_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21382,11 +21384,11 @@ impl Ch6Al2TransCount {
 /// - **CH6_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21495,11 +21497,11 @@ impl Ch6Al2ReadAddr {
 /// - **CH6_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21606,11 +21608,11 @@ impl Ch6Al2WriteAddrTrig {
 /// - **CH6_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21717,11 +21719,11 @@ impl Ch6Al3Ctrl {
 /// - **CH6_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21828,11 +21830,11 @@ impl Ch6Al3WriteAddr {
 /// - **CH6_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21941,11 +21943,11 @@ impl Ch6Al3TransCount {
 /// - **CH6_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22055,11 +22057,11 @@ impl Ch6Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch7ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22186,11 +22188,11 @@ impl Ch7ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch7WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22328,11 +22330,11 @@ impl Ch7WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch7TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22627,11 +22629,11 @@ impl Ch7TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch7CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23086,13 +23088,13 @@ impl Ch7CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -23107,13 +23109,13 @@ impl Ch7CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -23137,13 +23139,13 @@ impl Ch7CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -23158,13 +23160,13 @@ impl Ch7CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -23179,13 +23181,13 @@ impl Ch7CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -23238,13 +23240,13 @@ impl Ch7CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -23277,13 +23279,13 @@ impl Ch7CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -23298,13 +23300,13 @@ impl Ch7CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -23319,13 +23321,13 @@ impl Ch7CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -23340,13 +23342,13 @@ impl Ch7CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -23377,13 +23379,13 @@ impl Ch7CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -23398,13 +23400,13 @@ impl Ch7CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -23862,11 +23864,11 @@ impl Ch7CtrlTrig {
 /// - **CH7_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23973,11 +23975,11 @@ impl Ch7Al1Ctrl {
 /// - **CH7_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24084,11 +24086,11 @@ impl Ch7Al1ReadAddr {
 /// - **CH7_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24197,11 +24199,11 @@ impl Ch7Al1WriteAddr {
 /// - **CH7_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24308,11 +24310,11 @@ impl Ch7Al1TransCountTrig {
 /// - **CH7_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24419,11 +24421,11 @@ impl Ch7Al2Ctrl {
 /// - **CH7_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24530,11 +24532,11 @@ impl Ch7Al2TransCount {
 /// - **CH7_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24643,11 +24645,11 @@ impl Ch7Al2ReadAddr {
 /// - **CH7_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24754,11 +24756,11 @@ impl Ch7Al2WriteAddrTrig {
 /// - **CH7_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24865,11 +24867,11 @@ impl Ch7Al3Ctrl {
 /// - **CH7_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24976,11 +24978,11 @@ impl Ch7Al3WriteAddr {
 /// - **CH7_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25089,11 +25091,11 @@ impl Ch7Al3TransCount {
 /// - **CH7_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25203,11 +25205,11 @@ impl Ch7Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch8ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25334,11 +25336,11 @@ impl Ch8ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch8WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25476,11 +25478,11 @@ impl Ch8WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch8TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25775,11 +25777,11 @@ impl Ch8TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch8CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26234,13 +26236,13 @@ impl Ch8CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -26255,13 +26257,13 @@ impl Ch8CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -26285,13 +26287,13 @@ impl Ch8CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -26306,13 +26308,13 @@ impl Ch8CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -26327,13 +26329,13 @@ impl Ch8CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -26386,13 +26388,13 @@ impl Ch8CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -26425,13 +26427,13 @@ impl Ch8CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -26446,13 +26448,13 @@ impl Ch8CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -26467,13 +26469,13 @@ impl Ch8CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -26488,13 +26490,13 @@ impl Ch8CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -26525,13 +26527,13 @@ impl Ch8CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -26546,13 +26548,13 @@ impl Ch8CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -27010,11 +27012,11 @@ impl Ch8CtrlTrig {
 /// - **CH8_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27121,11 +27123,11 @@ impl Ch8Al1Ctrl {
 /// - **CH8_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27232,11 +27234,11 @@ impl Ch8Al1ReadAddr {
 /// - **CH8_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27345,11 +27347,11 @@ impl Ch8Al1WriteAddr {
 /// - **CH8_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27456,11 +27458,11 @@ impl Ch8Al1TransCountTrig {
 /// - **CH8_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27567,11 +27569,11 @@ impl Ch8Al2Ctrl {
 /// - **CH8_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27678,11 +27680,11 @@ impl Ch8Al2TransCount {
 /// - **CH8_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27791,11 +27793,11 @@ impl Ch8Al2ReadAddr {
 /// - **CH8_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27902,11 +27904,11 @@ impl Ch8Al2WriteAddrTrig {
 /// - **CH8_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28013,11 +28015,11 @@ impl Ch8Al3Ctrl {
 /// - **CH8_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28124,11 +28126,11 @@ impl Ch8Al3WriteAddr {
 /// - **CH8_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28237,11 +28239,11 @@ impl Ch8Al3TransCount {
 /// - **CH8_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28351,11 +28353,11 @@ impl Ch8Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch9ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28482,11 +28484,11 @@ impl Ch9ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch9WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28624,11 +28626,11 @@ impl Ch9WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch9TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28923,11 +28925,11 @@ impl Ch9TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch9CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29382,13 +29384,13 @@ impl Ch9CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -29403,13 +29405,13 @@ impl Ch9CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -29433,13 +29435,13 @@ impl Ch9CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -29454,13 +29456,13 @@ impl Ch9CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -29475,13 +29477,13 @@ impl Ch9CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -29534,13 +29536,13 @@ impl Ch9CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -29573,13 +29575,13 @@ impl Ch9CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -29594,13 +29596,13 @@ impl Ch9CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -29615,13 +29617,13 @@ impl Ch9CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -29636,13 +29638,13 @@ impl Ch9CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -29673,13 +29675,13 @@ impl Ch9CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -29694,13 +29696,13 @@ impl Ch9CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -30158,11 +30160,11 @@ impl Ch9CtrlTrig {
 /// - **CH9_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30269,11 +30271,11 @@ impl Ch9Al1Ctrl {
 /// - **CH9_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30380,11 +30382,11 @@ impl Ch9Al1ReadAddr {
 /// - **CH9_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30493,11 +30495,11 @@ impl Ch9Al1WriteAddr {
 /// - **CH9_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30604,11 +30606,11 @@ impl Ch9Al1TransCountTrig {
 /// - **CH9_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30715,11 +30717,11 @@ impl Ch9Al2Ctrl {
 /// - **CH9_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30826,11 +30828,11 @@ impl Ch9Al2TransCount {
 /// - **CH9_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30939,11 +30941,11 @@ impl Ch9Al2ReadAddr {
 /// - **CH9_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31050,11 +31052,11 @@ impl Ch9Al2WriteAddrTrig {
 /// - **CH9_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31161,11 +31163,11 @@ impl Ch9Al3Ctrl {
 /// - **CH9_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31272,11 +31274,11 @@ impl Ch9Al3WriteAddr {
 /// - **CH9_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31385,11 +31387,11 @@ impl Ch9Al3TransCount {
 /// - **CH9_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31499,11 +31501,11 @@ impl Ch9Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch10ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31630,11 +31632,11 @@ impl Ch10ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch10WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31772,11 +31774,11 @@ impl Ch10WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch10TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32071,11 +32073,11 @@ impl Ch10TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch10CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32530,13 +32532,13 @@ impl Ch10CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -32551,13 +32553,13 @@ impl Ch10CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -32581,13 +32583,13 @@ impl Ch10CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -32602,13 +32604,13 @@ impl Ch10CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -32623,13 +32625,13 @@ impl Ch10CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -32682,13 +32684,13 @@ impl Ch10CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -32721,13 +32723,13 @@ impl Ch10CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -32742,13 +32744,13 @@ impl Ch10CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -32763,13 +32765,13 @@ impl Ch10CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -32784,13 +32786,13 @@ impl Ch10CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -32821,13 +32823,13 @@ impl Ch10CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -32842,13 +32844,13 @@ impl Ch10CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -33306,11 +33308,11 @@ impl Ch10CtrlTrig {
 /// - **CH10_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33417,11 +33419,11 @@ impl Ch10Al1Ctrl {
 /// - **CH10_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33528,11 +33530,11 @@ impl Ch10Al1ReadAddr {
 /// - **CH10_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33641,11 +33643,11 @@ impl Ch10Al1WriteAddr {
 /// - **CH10_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33752,11 +33754,11 @@ impl Ch10Al1TransCountTrig {
 /// - **CH10_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33863,11 +33865,11 @@ impl Ch10Al2Ctrl {
 /// - **CH10_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33974,11 +33976,11 @@ impl Ch10Al2TransCount {
 /// - **CH10_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34087,11 +34089,11 @@ impl Ch10Al2ReadAddr {
 /// - **CH10_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34198,11 +34200,11 @@ impl Ch10Al2WriteAddrTrig {
 /// - **CH10_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34309,11 +34311,11 @@ impl Ch10Al3Ctrl {
 /// - **CH10_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34420,11 +34422,11 @@ impl Ch10Al3WriteAddr {
 /// - **CH10_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34533,11 +34535,11 @@ impl Ch10Al3TransCount {
 /// - **CH10_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34647,11 +34649,11 @@ impl Ch10Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch11ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34778,11 +34780,11 @@ impl Ch11ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch11WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34920,11 +34922,11 @@ impl Ch11WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch11TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -35219,11 +35221,11 @@ impl Ch11TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch11CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -35678,13 +35680,13 @@ impl Ch11CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -35699,13 +35701,13 @@ impl Ch11CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -35729,13 +35731,13 @@ impl Ch11CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -35750,13 +35752,13 @@ impl Ch11CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -35771,13 +35773,13 @@ impl Ch11CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -35830,13 +35832,13 @@ impl Ch11CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -35869,13 +35871,13 @@ impl Ch11CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -35890,13 +35892,13 @@ impl Ch11CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -35911,13 +35913,13 @@ impl Ch11CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -35932,13 +35934,13 @@ impl Ch11CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -35969,13 +35971,13 @@ impl Ch11CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -35990,13 +35992,13 @@ impl Ch11CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -36454,11 +36456,11 @@ impl Ch11CtrlTrig {
 /// - **CH11_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36565,11 +36567,11 @@ impl Ch11Al1Ctrl {
 /// - **CH11_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36676,11 +36678,11 @@ impl Ch11Al1ReadAddr {
 /// - **CH11_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36789,11 +36791,11 @@ impl Ch11Al1WriteAddr {
 /// - **CH11_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36900,11 +36902,11 @@ impl Ch11Al1TransCountTrig {
 /// - **CH11_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37011,11 +37013,11 @@ impl Ch11Al2Ctrl {
 /// - **CH11_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37122,11 +37124,11 @@ impl Ch11Al2TransCount {
 /// - **CH11_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37235,11 +37237,11 @@ impl Ch11Al2ReadAddr {
 /// - **CH11_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37346,11 +37348,11 @@ impl Ch11Al2WriteAddrTrig {
 /// - **CH11_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37457,11 +37459,11 @@ impl Ch11Al3Ctrl {
 /// - **CH11_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37568,11 +37570,11 @@ impl Ch11Al3WriteAddr {
 /// - **CH11_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37681,11 +37683,11 @@ impl Ch11Al3TransCount {
 /// - **CH11_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37795,11 +37797,11 @@ impl Ch11Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch12ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37926,11 +37928,11 @@ impl Ch12ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch12WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -38068,11 +38070,11 @@ impl Ch12WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch12TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -38367,11 +38369,11 @@ impl Ch12TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch12CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -38826,13 +38828,13 @@ impl Ch12CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -38847,13 +38849,13 @@ impl Ch12CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -38877,13 +38879,13 @@ impl Ch12CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -38898,13 +38900,13 @@ impl Ch12CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -38919,13 +38921,13 @@ impl Ch12CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -38978,13 +38980,13 @@ impl Ch12CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -39017,13 +39019,13 @@ impl Ch12CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -39038,13 +39040,13 @@ impl Ch12CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -39059,13 +39061,13 @@ impl Ch12CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -39080,13 +39082,13 @@ impl Ch12CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -39117,13 +39119,13 @@ impl Ch12CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -39138,13 +39140,13 @@ impl Ch12CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -39602,11 +39604,11 @@ impl Ch12CtrlTrig {
 /// - **CH12_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39713,11 +39715,11 @@ impl Ch12Al1Ctrl {
 /// - **CH12_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39824,11 +39826,11 @@ impl Ch12Al1ReadAddr {
 /// - **CH12_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39937,11 +39939,11 @@ impl Ch12Al1WriteAddr {
 /// - **CH12_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40048,11 +40050,11 @@ impl Ch12Al1TransCountTrig {
 /// - **CH12_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40159,11 +40161,11 @@ impl Ch12Al2Ctrl {
 /// - **CH12_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40270,11 +40272,11 @@ impl Ch12Al2TransCount {
 /// - **CH12_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40383,11 +40385,11 @@ impl Ch12Al2ReadAddr {
 /// - **CH12_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40494,11 +40496,11 @@ impl Ch12Al2WriteAddrTrig {
 /// - **CH12_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40605,11 +40607,11 @@ impl Ch12Al3Ctrl {
 /// - **CH12_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40716,11 +40718,11 @@ impl Ch12Al3WriteAddr {
 /// - **CH12_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40829,11 +40831,11 @@ impl Ch12Al3TransCount {
 /// - **CH12_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40943,11 +40945,11 @@ impl Ch12Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch13ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -41074,11 +41076,11 @@ impl Ch13ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch13WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -41216,11 +41218,11 @@ impl Ch13WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch13TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -41515,11 +41517,11 @@ impl Ch13TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch13CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -41974,13 +41976,13 @@ impl Ch13CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -41995,13 +41997,13 @@ impl Ch13CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -42025,13 +42027,13 @@ impl Ch13CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -42046,13 +42048,13 @@ impl Ch13CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -42067,13 +42069,13 @@ impl Ch13CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -42126,13 +42128,13 @@ impl Ch13CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -42165,13 +42167,13 @@ impl Ch13CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -42186,13 +42188,13 @@ impl Ch13CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -42207,13 +42209,13 @@ impl Ch13CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -42228,13 +42230,13 @@ impl Ch13CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -42265,13 +42267,13 @@ impl Ch13CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -42286,13 +42288,13 @@ impl Ch13CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -42750,11 +42752,11 @@ impl Ch13CtrlTrig {
 /// - **CH13_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -42861,11 +42863,11 @@ impl Ch13Al1Ctrl {
 /// - **CH13_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -42972,11 +42974,11 @@ impl Ch13Al1ReadAddr {
 /// - **CH13_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43085,11 +43087,11 @@ impl Ch13Al1WriteAddr {
 /// - **CH13_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43196,11 +43198,11 @@ impl Ch13Al1TransCountTrig {
 /// - **CH13_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43307,11 +43309,11 @@ impl Ch13Al2Ctrl {
 /// - **CH13_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43418,11 +43420,11 @@ impl Ch13Al2TransCount {
 /// - **CH13_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43531,11 +43533,11 @@ impl Ch13Al2ReadAddr {
 /// - **CH13_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43642,11 +43644,11 @@ impl Ch13Al2WriteAddrTrig {
 /// - **CH13_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43753,11 +43755,11 @@ impl Ch13Al3Ctrl {
 /// - **CH13_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43864,11 +43866,11 @@ impl Ch13Al3WriteAddr {
 /// - **CH13_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43977,11 +43979,11 @@ impl Ch13Al3TransCount {
 /// - **CH13_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -44091,11 +44093,11 @@ impl Ch13Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch14ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -44222,11 +44224,11 @@ impl Ch14ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch14WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -44364,11 +44366,11 @@ impl Ch14WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch14TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -44663,11 +44665,11 @@ impl Ch14TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch14CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -45122,13 +45124,13 @@ impl Ch14CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -45143,13 +45145,13 @@ impl Ch14CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -45173,13 +45175,13 @@ impl Ch14CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -45194,13 +45196,13 @@ impl Ch14CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -45215,13 +45217,13 @@ impl Ch14CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -45274,13 +45276,13 @@ impl Ch14CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -45313,13 +45315,13 @@ impl Ch14CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -45334,13 +45336,13 @@ impl Ch14CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -45355,13 +45357,13 @@ impl Ch14CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -45376,13 +45378,13 @@ impl Ch14CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -45413,13 +45415,13 @@ impl Ch14CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -45434,13 +45436,13 @@ impl Ch14CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -45898,11 +45900,11 @@ impl Ch14CtrlTrig {
 /// - **CH14_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46009,11 +46011,11 @@ impl Ch14Al1Ctrl {
 /// - **CH14_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46120,11 +46122,11 @@ impl Ch14Al1ReadAddr {
 /// - **CH14_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46233,11 +46235,11 @@ impl Ch14Al1WriteAddr {
 /// - **CH14_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46344,11 +46346,11 @@ impl Ch14Al1TransCountTrig {
 /// - **CH14_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46455,11 +46457,11 @@ impl Ch14Al2Ctrl {
 /// - **CH14_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46566,11 +46568,11 @@ impl Ch14Al2TransCount {
 /// - **CH14_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46679,11 +46681,11 @@ impl Ch14Al2ReadAddr {
 /// - **CH14_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46790,11 +46792,11 @@ impl Ch14Al2WriteAddrTrig {
 /// - **CH14_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46901,11 +46903,11 @@ impl Ch14Al3Ctrl {
 /// - **CH14_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47012,11 +47014,11 @@ impl Ch14Al3WriteAddr {
 /// - **CH14_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47125,11 +47127,11 @@ impl Ch14Al3TransCount {
 /// - **CH14_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47239,11 +47241,11 @@ impl Ch14Al3ReadAddrTrig {
 ///   This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
 #[repr(transparent)]
 pub struct Ch15ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47370,11 +47372,11 @@ impl Ch15ReadAddr {
 ///   This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
 #[repr(transparent)]
 pub struct Ch15WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47512,11 +47514,11 @@ impl Ch15WriteAddr {
 ///   The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
 #[repr(transparent)]
 pub struct Ch15TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47811,11 +47813,11 @@ impl Ch15TransCount {
 ///   When 1, the channel will respond to triggering events, which will cause it to become BUSY and start transferring data. When 0, the channel will ignore triggers, stop issuing transfers, and pause the current transfer sequence (i.e. BUSY will remain high if already high)
 #[repr(transparent)]
 pub struct Ch15CtrlTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15CtrlTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -48270,13 +48272,13 @@ impl Ch15CtrlTrig {
     /// Set READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_read_error(&self) {
-        self.value.set_bits(Self::READ_ERROR_MASK);
+        self.set_bits(Self::READ_ERROR_MASK);
     }
 
     /// Clear READ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_read_error(&self) {
-        self.value.clr_bits(Self::READ_ERROR_MASK);
+        self.clr_bits(Self::READ_ERROR_MASK);
     }
 
     /// **WRITE_ERROR** `[29]` (RW)
@@ -48291,13 +48293,13 @@ impl Ch15CtrlTrig {
     /// Set WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_write_error(&self) {
-        self.value.set_bits(Self::WRITE_ERROR_MASK);
+        self.set_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// Clear WRITE_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_write_error(&self) {
-        self.value.clr_bits(Self::WRITE_ERROR_MASK);
+        self.clr_bits(Self::WRITE_ERROR_MASK);
     }
 
     /// **BUSY** `[26]` (RO)
@@ -48321,13 +48323,13 @@ impl Ch15CtrlTrig {
     /// Set SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_en(&self) {
-        self.value.set_bits(Self::SNIFF_EN_MASK);
+        self.set_bits(Self::SNIFF_EN_MASK);
     }
 
     /// Clear SNIFF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_en(&self) {
-        self.value.clr_bits(Self::SNIFF_EN_MASK);
+        self.clr_bits(Self::SNIFF_EN_MASK);
     }
 
     /// **BSWAP** `[24]` (RW)
@@ -48342,13 +48344,13 @@ impl Ch15CtrlTrig {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **IRQ_QUIET** `[23]` (RW)
@@ -48363,13 +48365,13 @@ impl Ch15CtrlTrig {
     /// Set IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn set_irq_quiet(&self) {
-        self.value.set_bits(Self::IRQ_QUIET_MASK);
+        self.set_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// Clear IRQ_QUIET bit atomically (RW)
     #[inline(always)]
     pub fn clr_irq_quiet(&self) {
-        self.value.clr_bits(Self::IRQ_QUIET_MASK);
+        self.clr_bits(Self::IRQ_QUIET_MASK);
     }
 
     /// **TREQ_SEL** `[22:17]` (RW)
@@ -48422,13 +48424,13 @@ impl Ch15CtrlTrig {
     /// Set RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn set_ring_sel(&self) {
-        self.value.set_bits(Self::RING_SEL_MASK);
+        self.set_bits(Self::RING_SEL_MASK);
     }
 
     /// Clear RING_SEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ring_sel(&self) {
-        self.value.clr_bits(Self::RING_SEL_MASK);
+        self.clr_bits(Self::RING_SEL_MASK);
     }
 
     /// **RING_SIZE** `[11:8]` (RW)
@@ -48461,13 +48463,13 @@ impl Ch15CtrlTrig {
     /// Set INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write_rev(&self) {
-        self.value.set_bits(Self::INCR_WRITE_REV_MASK);
+        self.set_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// Clear INCR_WRITE_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write_rev(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_REV_MASK);
+        self.clr_bits(Self::INCR_WRITE_REV_MASK);
     }
 
     /// **INCR_WRITE** `[6]` (RW)
@@ -48482,13 +48484,13 @@ impl Ch15CtrlTrig {
     /// Set INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_write(&self) {
-        self.value.set_bits(Self::INCR_WRITE_MASK);
+        self.set_bits(Self::INCR_WRITE_MASK);
     }
 
     /// Clear INCR_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_write(&self) {
-        self.value.clr_bits(Self::INCR_WRITE_MASK);
+        self.clr_bits(Self::INCR_WRITE_MASK);
     }
 
     /// **INCR_READ_REV** `[5]` (RW)
@@ -48503,13 +48505,13 @@ impl Ch15CtrlTrig {
     /// Set INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read_rev(&self) {
-        self.value.set_bits(Self::INCR_READ_REV_MASK);
+        self.set_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// Clear INCR_READ_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read_rev(&self) {
-        self.value.clr_bits(Self::INCR_READ_REV_MASK);
+        self.clr_bits(Self::INCR_READ_REV_MASK);
     }
 
     /// **INCR_READ** `[4]` (RW)
@@ -48524,13 +48526,13 @@ impl Ch15CtrlTrig {
     /// Set INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn set_incr_read(&self) {
-        self.value.set_bits(Self::INCR_READ_MASK);
+        self.set_bits(Self::INCR_READ_MASK);
     }
 
     /// Clear INCR_READ bit atomically (RW)
     #[inline(always)]
     pub fn clr_incr_read(&self) {
-        self.value.clr_bits(Self::INCR_READ_MASK);
+        self.clr_bits(Self::INCR_READ_MASK);
     }
 
     /// **DATA_SIZE** `[3:2]` (RW)
@@ -48561,13 +48563,13 @@ impl Ch15CtrlTrig {
     /// Set HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn set_high_priority(&self) {
-        self.value.set_bits(Self::HIGH_PRIORITY_MASK);
+        self.set_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// Clear HIGH_PRIORITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_high_priority(&self) {
-        self.value.clr_bits(Self::HIGH_PRIORITY_MASK);
+        self.clr_bits(Self::HIGH_PRIORITY_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -48582,13 +48584,13 @@ impl Ch15CtrlTrig {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -49046,11 +49048,11 @@ impl Ch15CtrlTrig {
 /// - **CH15_AL1_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49157,11 +49159,11 @@ impl Ch15Al1Ctrl {
 /// - **CH15_AL1_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al1ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al1ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49268,11 +49270,11 @@ impl Ch15Al1ReadAddr {
 /// - **CH15_AL1_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al1WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al1WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49381,11 +49383,11 @@ impl Ch15Al1WriteAddr {
 /// - **CH15_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al1TransCountTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al1TransCountTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49492,11 +49494,11 @@ impl Ch15Al1TransCountTrig {
 /// - **CH15_AL2_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49603,11 +49605,11 @@ impl Ch15Al2Ctrl {
 /// - **CH15_AL2_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al2TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al2TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49714,11 +49716,11 @@ impl Ch15Al2TransCount {
 /// - **CH15_AL2_READ_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al2ReadAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al2ReadAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49827,11 +49829,11 @@ impl Ch15Al2ReadAddr {
 /// - **CH15_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al2WriteAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al2WriteAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49938,11 +49940,11 @@ impl Ch15Al2WriteAddrTrig {
 /// - **CH15_AL3_CTRL** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50049,11 +50051,11 @@ impl Ch15Al3Ctrl {
 /// - **CH15_AL3_WRITE_ADDR** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al3WriteAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al3WriteAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50160,11 +50162,11 @@ impl Ch15Al3WriteAddr {
 /// - **CH15_AL3_TRANS_COUNT** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al3TransCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al3TransCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50273,11 +50275,11 @@ impl Ch15Al3TransCount {
 /// - **CH15_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15Al3ReadAddrTrig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15Al3ReadAddrTrig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50391,11 +50393,11 @@ impl Ch15Al3ReadAddrTrig {
 ///   If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50543,11 +50545,11 @@ impl Intr {
 ///   Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ0.
 #[repr(transparent)]
 pub struct Inte0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50679,11 +50681,11 @@ impl Inte0 {
 ///   Write 1s to force the corresponding bits in INTS0. The interrupt remains asserted until INTF0 is cleared.
 #[repr(transparent)]
 pub struct Intf0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50812,11 +50814,11 @@ impl Intf0 {
 ///   Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ0) read as 0 in this register, and ignore writes.
 #[repr(transparent)]
 pub struct Ints0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50957,11 +50959,11 @@ impl Ints0 {
 ///   If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
 #[repr(transparent)]
 pub struct Intr1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51109,11 +51111,11 @@ impl Intr1 {
 ///   Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ1.
 #[repr(transparent)]
 pub struct Inte1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51245,11 +51247,11 @@ impl Inte1 {
 ///   Write 1s to force the corresponding bits in INTS1. The interrupt remains asserted until INTF1 is cleared.
 #[repr(transparent)]
 pub struct Intf1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51378,11 +51380,11 @@ impl Intf1 {
 ///   Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ1) read as 0 in this register, and ignore writes.
 #[repr(transparent)]
 pub struct Ints1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51523,11 +51525,11 @@ impl Ints1 {
 ///   If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
 #[repr(transparent)]
 pub struct Intr2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51675,11 +51677,11 @@ impl Intr2 {
 ///   Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ2.
 #[repr(transparent)]
 pub struct Inte2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51811,11 +51813,11 @@ impl Inte2 {
 ///   Write 1s to force the corresponding bits in INTS2. The interrupt remains asserted until INTF2 is cleared.
 #[repr(transparent)]
 pub struct Intf2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -51944,11 +51946,11 @@ impl Intf2 {
 ///   Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ2) read as 0 in this register, and ignore writes.
 #[repr(transparent)]
 pub struct Ints2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52089,11 +52091,11 @@ impl Ints2 {
 ///   If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
 #[repr(transparent)]
 pub struct Intr3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52241,11 +52243,11 @@ impl Intr3 {
 ///   Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ3.
 #[repr(transparent)]
 pub struct Inte3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52377,11 +52379,11 @@ impl Inte3 {
 ///   Write 1s to force the corresponding bits in INTS3. The interrupt remains asserted until INTF3 is cleared.
 #[repr(transparent)]
 pub struct Intf3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52510,11 +52512,11 @@ impl Intf3 {
 ///   Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ3) read as 0 in this register, and ignore writes.
 #[repr(transparent)]
 pub struct Ints3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52656,11 +52658,11 @@ impl Ints3 {
 ///   Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
 #[repr(transparent)]
 pub struct Timer0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52834,11 +52836,11 @@ impl Timer0 {
 ///   Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
 #[repr(transparent)]
 pub struct Timer1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53012,11 +53014,11 @@ impl Timer1 {
 ///   Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
 #[repr(transparent)]
 pub struct Timer2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53190,11 +53192,11 @@ impl Timer2 {
 ///   Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
 #[repr(transparent)]
 pub struct Timer3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53363,11 +53365,11 @@ impl Timer3 {
 ///   Each bit in this register corresponds to a DMA channel. Writing a 1 to the relevant bit is the same as writing to that channel's trigger register; the channel will start if it is currently enabled and not already busy.
 #[repr(transparent)]
 pub struct MultiChanTrigger {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MultiChanTrigger {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53497,11 +53499,11 @@ impl MultiChanTrigger {
 ///   Enable sniffer
 #[repr(transparent)]
 pub struct SniffCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SniffCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53598,13 +53600,13 @@ impl SniffCtrl {
     /// Set OUT_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_out_inv(&self) {
-        self.value.set_bits(Self::OUT_INV_MASK);
+        self.set_bits(Self::OUT_INV_MASK);
     }
 
     /// Clear OUT_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_out_inv(&self) {
-        self.value.clr_bits(Self::OUT_INV_MASK);
+        self.clr_bits(Self::OUT_INV_MASK);
     }
 
     /// **OUT_REV** `[10]` (RW)
@@ -53618,13 +53620,13 @@ impl SniffCtrl {
     /// Set OUT_REV bit atomically (RW)
     #[inline(always)]
     pub fn set_out_rev(&self) {
-        self.value.set_bits(Self::OUT_REV_MASK);
+        self.set_bits(Self::OUT_REV_MASK);
     }
 
     /// Clear OUT_REV bit atomically (RW)
     #[inline(always)]
     pub fn clr_out_rev(&self) {
-        self.value.clr_bits(Self::OUT_REV_MASK);
+        self.clr_bits(Self::OUT_REV_MASK);
     }
 
     /// **BSWAP** `[9]` (RW)
@@ -53639,13 +53641,13 @@ impl SniffCtrl {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **CALC** `[8:5]` (RW)
@@ -53687,13 +53689,13 @@ impl SniffCtrl {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -53891,11 +53893,11 @@ impl SniffCtrl {
 ///   Write an initial seed value here before starting a DMA transfer on the channel indicated by SNIFF_CTRL_DMACH. The hardware will update this register each time it observes a read from the indicated channel. Once the channel completes, the final result can be read from this register.
 #[repr(transparent)]
 pub struct SniffData {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SniffData {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54030,11 +54032,11 @@ impl SniffData {
 ///   Current Transfer-Data-FIFO fill level
 #[repr(transparent)]
 pub struct FifoLevels {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for FifoLevels {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54192,11 +54194,11 @@ impl FifoLevels {
 ///   After writing, this register must be polled until it returns all-zero. Until this point, it is unsafe to restart the channel.
 #[repr(transparent)]
 pub struct ChanAbort {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ChanAbort {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54325,11 +54327,11 @@ impl ChanAbort {
 /// - **N_CHANNELS** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct NChannels {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for NChannels {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54440,11 +54442,11 @@ impl NChannels {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54500,13 +54502,13 @@ impl SeccfgCh0 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -54521,13 +54523,13 @@ impl SeccfgCh0 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -54542,13 +54544,13 @@ impl SeccfgCh0 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -54713,11 +54715,11 @@ impl SeccfgCh0 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -54773,13 +54775,13 @@ impl SeccfgCh1 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -54794,13 +54796,13 @@ impl SeccfgCh1 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -54815,13 +54817,13 @@ impl SeccfgCh1 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -54986,11 +54988,11 @@ impl SeccfgCh1 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55046,13 +55048,13 @@ impl SeccfgCh2 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -55067,13 +55069,13 @@ impl SeccfgCh2 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -55088,13 +55090,13 @@ impl SeccfgCh2 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -55259,11 +55261,11 @@ impl SeccfgCh2 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55319,13 +55321,13 @@ impl SeccfgCh3 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -55340,13 +55342,13 @@ impl SeccfgCh3 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -55361,13 +55363,13 @@ impl SeccfgCh3 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -55532,11 +55534,11 @@ impl SeccfgCh3 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55592,13 +55594,13 @@ impl SeccfgCh4 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -55613,13 +55615,13 @@ impl SeccfgCh4 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -55634,13 +55636,13 @@ impl SeccfgCh4 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -55805,11 +55807,11 @@ impl SeccfgCh4 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55865,13 +55867,13 @@ impl SeccfgCh5 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -55886,13 +55888,13 @@ impl SeccfgCh5 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -55907,13 +55909,13 @@ impl SeccfgCh5 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -56078,11 +56080,11 @@ impl SeccfgCh5 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -56138,13 +56140,13 @@ impl SeccfgCh6 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -56159,13 +56161,13 @@ impl SeccfgCh6 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -56180,13 +56182,13 @@ impl SeccfgCh6 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -56351,11 +56353,11 @@ impl SeccfgCh6 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -56411,13 +56413,13 @@ impl SeccfgCh7 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -56432,13 +56434,13 @@ impl SeccfgCh7 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -56453,13 +56455,13 @@ impl SeccfgCh7 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -56624,11 +56626,11 @@ impl SeccfgCh7 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh8 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh8 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -56684,13 +56686,13 @@ impl SeccfgCh8 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -56705,13 +56707,13 @@ impl SeccfgCh8 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -56726,13 +56728,13 @@ impl SeccfgCh8 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -56897,11 +56899,11 @@ impl SeccfgCh8 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh9 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh9 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -56957,13 +56959,13 @@ impl SeccfgCh9 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -56978,13 +56980,13 @@ impl SeccfgCh9 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -56999,13 +57001,13 @@ impl SeccfgCh9 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -57170,11 +57172,11 @@ impl SeccfgCh9 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh10 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh10 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -57230,13 +57232,13 @@ impl SeccfgCh10 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -57251,13 +57253,13 @@ impl SeccfgCh10 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -57272,13 +57274,13 @@ impl SeccfgCh10 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -57443,11 +57445,11 @@ impl SeccfgCh10 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh11 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh11 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -57503,13 +57505,13 @@ impl SeccfgCh11 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -57524,13 +57526,13 @@ impl SeccfgCh11 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -57545,13 +57547,13 @@ impl SeccfgCh11 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -57716,11 +57718,11 @@ impl SeccfgCh11 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh12 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh12 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -57776,13 +57778,13 @@ impl SeccfgCh12 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -57797,13 +57799,13 @@ impl SeccfgCh12 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -57818,13 +57820,13 @@ impl SeccfgCh12 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -57989,11 +57991,11 @@ impl SeccfgCh12 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh13 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh13 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58049,13 +58051,13 @@ impl SeccfgCh13 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -58070,13 +58072,13 @@ impl SeccfgCh13 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -58091,13 +58093,13 @@ impl SeccfgCh13 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -58262,11 +58264,11 @@ impl SeccfgCh13 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh14 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh14 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58322,13 +58324,13 @@ impl SeccfgCh14 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -58343,13 +58345,13 @@ impl SeccfgCh14 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -58364,13 +58366,13 @@ impl SeccfgCh14 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -58535,11 +58537,11 @@ impl SeccfgCh14 {
 ///   If 1, this channel is controllable only from a Privileged context of the same Secure/Non-secure level, or any context of a higher Secure/Non-secure level.
 #[repr(transparent)]
 pub struct SeccfgCh15 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgCh15 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58595,13 +58597,13 @@ impl SeccfgCh15 {
     /// Set LOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_lock(&self) {
-        self.value.set_bits(Self::LOCK_MASK);
+        self.set_bits(Self::LOCK_MASK);
     }
 
     /// Clear LOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock(&self) {
-        self.value.clr_bits(Self::LOCK_MASK);
+        self.clr_bits(Self::LOCK_MASK);
     }
 
     /// **S** `[1]` (RW)
@@ -58616,13 +58618,13 @@ impl SeccfgCh15 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -58637,13 +58639,13 @@ impl SeccfgCh15 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -58799,11 +58801,11 @@ impl SeccfgCh15 {
 ///   If 0, this IRQ's control registers can be accessed from an Unprivileged context, but Privileged channels (as per SECCFG_CHx) are masked from the IRQ status, and this IRQ's registers can not be used to acknowledge the channel interrupts of Privileged channels.
 #[repr(transparent)]
 pub struct SeccfgIrq0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgIrq0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58847,13 +58849,13 @@ impl SeccfgIrq0 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -58868,13 +58870,13 @@ impl SeccfgIrq0 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -59004,11 +59006,11 @@ impl SeccfgIrq0 {
 ///   If 0, this IRQ's control registers can be accessed from an Unprivileged context, but Privileged channels (as per SECCFG_CHx) are masked from the IRQ status, and this IRQ's registers can not be used to acknowledge the channel interrupts of Privileged channels.
 #[repr(transparent)]
 pub struct SeccfgIrq1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgIrq1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59052,13 +59054,13 @@ impl SeccfgIrq1 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -59073,13 +59075,13 @@ impl SeccfgIrq1 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -59209,11 +59211,11 @@ impl SeccfgIrq1 {
 ///   If 0, this IRQ's control registers can be accessed from an Unprivileged context, but Privileged channels (as per SECCFG_CHx) are masked from the IRQ status, and this IRQ's registers can not be used to acknowledge the channel interrupts of Privileged channels.
 #[repr(transparent)]
 pub struct SeccfgIrq2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgIrq2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59257,13 +59259,13 @@ impl SeccfgIrq2 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -59278,13 +59280,13 @@ impl SeccfgIrq2 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -59414,11 +59416,11 @@ impl SeccfgIrq2 {
 ///   If 0, this IRQ's control registers can be accessed from an Unprivileged context, but Privileged channels (as per SECCFG_CHx) are masked from the IRQ status, and this IRQ's registers can not be used to acknowledge the channel interrupts of Privileged channels.
 #[repr(transparent)]
 pub struct SeccfgIrq3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgIrq3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59462,13 +59464,13 @@ impl SeccfgIrq3 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[0]` (RW)
@@ -59483,13 +59485,13 @@ impl SeccfgIrq3 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -59651,11 +59653,11 @@ impl SeccfgIrq3 {
 ///   If 0, the sniffer can be accessed from either a Privileged or Unprivileged context (with sufficient security level) but can not see transfers from Privileged channels.
 #[repr(transparent)]
 pub struct SeccfgMisc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeccfgMisc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59770,13 +59772,13 @@ impl SeccfgMisc {
     /// Set TIMER3_S bit atomically (RW)
     #[inline(always)]
     pub fn set_timer3_s(&self) {
-        self.value.set_bits(Self::TIMER3_S_MASK);
+        self.set_bits(Self::TIMER3_S_MASK);
     }
 
     /// Clear TIMER3_S bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer3_s(&self) {
-        self.value.clr_bits(Self::TIMER3_S_MASK);
+        self.clr_bits(Self::TIMER3_S_MASK);
     }
 
     /// **TIMER3_P** `[8]` (RW)
@@ -59790,13 +59792,13 @@ impl SeccfgMisc {
     /// Set TIMER3_P bit atomically (RW)
     #[inline(always)]
     pub fn set_timer3_p(&self) {
-        self.value.set_bits(Self::TIMER3_P_MASK);
+        self.set_bits(Self::TIMER3_P_MASK);
     }
 
     /// Clear TIMER3_P bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer3_p(&self) {
-        self.value.clr_bits(Self::TIMER3_P_MASK);
+        self.clr_bits(Self::TIMER3_P_MASK);
     }
 
     /// **TIMER2_S** `[7]` (RW)
@@ -59810,13 +59812,13 @@ impl SeccfgMisc {
     /// Set TIMER2_S bit atomically (RW)
     #[inline(always)]
     pub fn set_timer2_s(&self) {
-        self.value.set_bits(Self::TIMER2_S_MASK);
+        self.set_bits(Self::TIMER2_S_MASK);
     }
 
     /// Clear TIMER2_S bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer2_s(&self) {
-        self.value.clr_bits(Self::TIMER2_S_MASK);
+        self.clr_bits(Self::TIMER2_S_MASK);
     }
 
     /// **TIMER2_P** `[6]` (RW)
@@ -59830,13 +59832,13 @@ impl SeccfgMisc {
     /// Set TIMER2_P bit atomically (RW)
     #[inline(always)]
     pub fn set_timer2_p(&self) {
-        self.value.set_bits(Self::TIMER2_P_MASK);
+        self.set_bits(Self::TIMER2_P_MASK);
     }
 
     /// Clear TIMER2_P bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer2_p(&self) {
-        self.value.clr_bits(Self::TIMER2_P_MASK);
+        self.clr_bits(Self::TIMER2_P_MASK);
     }
 
     /// **TIMER1_S** `[5]` (RW)
@@ -59850,13 +59852,13 @@ impl SeccfgMisc {
     /// Set TIMER1_S bit atomically (RW)
     #[inline(always)]
     pub fn set_timer1_s(&self) {
-        self.value.set_bits(Self::TIMER1_S_MASK);
+        self.set_bits(Self::TIMER1_S_MASK);
     }
 
     /// Clear TIMER1_S bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer1_s(&self) {
-        self.value.clr_bits(Self::TIMER1_S_MASK);
+        self.clr_bits(Self::TIMER1_S_MASK);
     }
 
     /// **TIMER1_P** `[4]` (RW)
@@ -59870,13 +59872,13 @@ impl SeccfgMisc {
     /// Set TIMER1_P bit atomically (RW)
     #[inline(always)]
     pub fn set_timer1_p(&self) {
-        self.value.set_bits(Self::TIMER1_P_MASK);
+        self.set_bits(Self::TIMER1_P_MASK);
     }
 
     /// Clear TIMER1_P bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer1_p(&self) {
-        self.value.clr_bits(Self::TIMER1_P_MASK);
+        self.clr_bits(Self::TIMER1_P_MASK);
     }
 
     /// **TIMER0_S** `[3]` (RW)
@@ -59890,13 +59892,13 @@ impl SeccfgMisc {
     /// Set TIMER0_S bit atomically (RW)
     #[inline(always)]
     pub fn set_timer0_s(&self) {
-        self.value.set_bits(Self::TIMER0_S_MASK);
+        self.set_bits(Self::TIMER0_S_MASK);
     }
 
     /// Clear TIMER0_S bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer0_s(&self) {
-        self.value.clr_bits(Self::TIMER0_S_MASK);
+        self.clr_bits(Self::TIMER0_S_MASK);
     }
 
     /// **TIMER0_P** `[2]` (RW)
@@ -59910,13 +59912,13 @@ impl SeccfgMisc {
     /// Set TIMER0_P bit atomically (RW)
     #[inline(always)]
     pub fn set_timer0_p(&self) {
-        self.value.set_bits(Self::TIMER0_P_MASK);
+        self.set_bits(Self::TIMER0_P_MASK);
     }
 
     /// Clear TIMER0_P bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer0_p(&self) {
-        self.value.clr_bits(Self::TIMER0_P_MASK);
+        self.clr_bits(Self::TIMER0_P_MASK);
     }
 
     /// **SNIFF_S** `[1]` (RW)
@@ -59931,13 +59933,13 @@ impl SeccfgMisc {
     /// Set SNIFF_S bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_s(&self) {
-        self.value.set_bits(Self::SNIFF_S_MASK);
+        self.set_bits(Self::SNIFF_S_MASK);
     }
 
     /// Clear SNIFF_S bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_s(&self) {
-        self.value.clr_bits(Self::SNIFF_S_MASK);
+        self.clr_bits(Self::SNIFF_S_MASK);
     }
 
     /// **SNIFF_P** `[0]` (RW)
@@ -59952,13 +59954,13 @@ impl SeccfgMisc {
     /// Set SNIFF_P bit atomically (RW)
     #[inline(always)]
     pub fn set_sniff_p(&self) {
-        self.value.set_bits(Self::SNIFF_P_MASK);
+        self.set_bits(Self::SNIFF_P_MASK);
     }
 
     /// Clear SNIFF_P bit atomically (RW)
     #[inline(always)]
     pub fn clr_sniff_p(&self) {
-        self.value.clr_bits(Self::SNIFF_P_MASK);
+        self.clr_bits(Self::SNIFF_P_MASK);
     }
 
 }
@@ -60266,11 +60268,11 @@ impl SeccfgMisc {
 ///   Determine whether an address not covered by an active MPU region is Privileged (1) or Unprivileged (0)
 #[repr(transparent)]
 pub struct MpuCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60320,13 +60322,13 @@ impl MpuCtrl {
     /// Set NS_HIDE_ADDR bit atomically (RW)
     #[inline(always)]
     pub fn set_ns_hide_addr(&self) {
-        self.value.set_bits(Self::NS_HIDE_ADDR_MASK);
+        self.set_bits(Self::NS_HIDE_ADDR_MASK);
     }
 
     /// Clear NS_HIDE_ADDR bit atomically (RW)
     #[inline(always)]
     pub fn clr_ns_hide_addr(&self) {
-        self.value.clr_bits(Self::NS_HIDE_ADDR_MASK);
+        self.clr_bits(Self::NS_HIDE_ADDR_MASK);
     }
 
     /// **S** `[2]` (RW)
@@ -60340,13 +60342,13 @@ impl MpuCtrl {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -60360,13 +60362,13 @@ impl MpuCtrl {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
 }
@@ -60509,11 +60511,11 @@ impl MpuCtrl {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60657,11 +60659,11 @@ impl MpuBar0 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60735,13 +60737,13 @@ impl MpuLar0 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -60755,13 +60757,13 @@ impl MpuLar0 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -60775,13 +60777,13 @@ impl MpuLar0 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -60942,11 +60944,11 @@ impl MpuLar0 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61090,11 +61092,11 @@ impl MpuBar1 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61168,13 +61170,13 @@ impl MpuLar1 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -61188,13 +61190,13 @@ impl MpuLar1 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -61208,13 +61210,13 @@ impl MpuLar1 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -61375,11 +61377,11 @@ impl MpuLar1 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61523,11 +61525,11 @@ impl MpuBar2 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61601,13 +61603,13 @@ impl MpuLar2 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -61621,13 +61623,13 @@ impl MpuLar2 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -61641,13 +61643,13 @@ impl MpuLar2 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -61808,11 +61810,11 @@ impl MpuLar2 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61956,11 +61958,11 @@ impl MpuBar3 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62034,13 +62036,13 @@ impl MpuLar3 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -62054,13 +62056,13 @@ impl MpuLar3 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -62074,13 +62076,13 @@ impl MpuLar3 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -62241,11 +62243,11 @@ impl MpuLar3 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62389,11 +62391,11 @@ impl MpuBar4 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62467,13 +62469,13 @@ impl MpuLar4 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -62487,13 +62489,13 @@ impl MpuLar4 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -62507,13 +62509,13 @@ impl MpuLar4 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -62674,11 +62676,11 @@ impl MpuLar4 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62822,11 +62824,11 @@ impl MpuBar5 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62900,13 +62902,13 @@ impl MpuLar5 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -62920,13 +62922,13 @@ impl MpuLar5 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -62940,13 +62942,13 @@ impl MpuLar5 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -63107,11 +63109,11 @@ impl MpuLar5 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -63255,11 +63257,11 @@ impl MpuBar6 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -63333,13 +63335,13 @@ impl MpuLar6 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -63353,13 +63355,13 @@ impl MpuLar6 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -63373,13 +63375,13 @@ impl MpuLar6 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -63540,11 +63542,11 @@ impl MpuLar6 {
 ///   Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
 #[repr(transparent)]
 pub struct MpuBar7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuBar7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -63688,11 +63690,11 @@ impl MpuBar7 {
 ///   Region enable. If 1, any address within range specified by the base address (BAR_ADDR) and limit address (LAR_ADDR) has the attributes specified by S and P.
 #[repr(transparent)]
 pub struct MpuLar7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MpuLar7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -63766,13 +63768,13 @@ impl MpuLar7 {
     /// Set S bit atomically (RW)
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.set_bits(Self::S_MASK);
     }
 
     /// Clear S bit atomically (RW)
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.clr_bits(Self::S_MASK);
     }
 
     /// **P** `[1]` (RW)
@@ -63786,13 +63788,13 @@ impl MpuLar7 {
     /// Set P bit atomically (RW)
     #[inline(always)]
     pub fn set_p(&self) {
-        self.value.set_bits(Self::P_MASK);
+        self.set_bits(Self::P_MASK);
     }
 
     /// Clear P bit atomically (RW)
     #[inline(always)]
     pub fn clr_p(&self) {
-        self.value.clr_bits(Self::P_MASK);
+        self.clr_bits(Self::P_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -63806,13 +63808,13 @@ impl MpuLar7 {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -63970,11 +63972,11 @@ impl MpuLar7 {
 /// - **CH0_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64088,11 +64090,11 @@ impl Ch0DbgCtdreq {
 /// - **CH0_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch0DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64192,11 +64194,11 @@ impl Ch0DbgTcr {
 /// - **CH1_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64310,11 +64312,11 @@ impl Ch1DbgCtdreq {
 /// - **CH1_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch1DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64414,11 +64416,11 @@ impl Ch1DbgTcr {
 /// - **CH2_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64532,11 +64534,11 @@ impl Ch2DbgCtdreq {
 /// - **CH2_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch2DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64636,11 +64638,11 @@ impl Ch2DbgTcr {
 /// - **CH3_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64754,11 +64756,11 @@ impl Ch3DbgCtdreq {
 /// - **CH3_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch3DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64858,11 +64860,11 @@ impl Ch3DbgTcr {
 /// - **CH4_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64976,11 +64978,11 @@ impl Ch4DbgCtdreq {
 /// - **CH4_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch4DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65080,11 +65082,11 @@ impl Ch4DbgTcr {
 /// - **CH5_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65198,11 +65200,11 @@ impl Ch5DbgCtdreq {
 /// - **CH5_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch5DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65302,11 +65304,11 @@ impl Ch5DbgTcr {
 /// - **CH6_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65420,11 +65422,11 @@ impl Ch6DbgCtdreq {
 /// - **CH6_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch6DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65524,11 +65526,11 @@ impl Ch6DbgTcr {
 /// - **CH7_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65642,11 +65644,11 @@ impl Ch7DbgCtdreq {
 /// - **CH7_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch7DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65746,11 +65748,11 @@ impl Ch7DbgTcr {
 /// - **CH8_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65864,11 +65866,11 @@ impl Ch8DbgCtdreq {
 /// - **CH8_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch8DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65968,11 +65970,11 @@ impl Ch8DbgTcr {
 /// - **CH9_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66086,11 +66088,11 @@ impl Ch9DbgCtdreq {
 /// - **CH9_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch9DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66190,11 +66192,11 @@ impl Ch9DbgTcr {
 /// - **CH10_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66308,11 +66310,11 @@ impl Ch10DbgCtdreq {
 /// - **CH10_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch10DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66412,11 +66414,11 @@ impl Ch10DbgTcr {
 /// - **CH11_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66530,11 +66532,11 @@ impl Ch11DbgCtdreq {
 /// - **CH11_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch11DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66634,11 +66636,11 @@ impl Ch11DbgTcr {
 /// - **CH12_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch12DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66752,11 +66754,11 @@ impl Ch12DbgCtdreq {
 /// - **CH12_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch12DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch12DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66856,11 +66858,11 @@ impl Ch12DbgTcr {
 /// - **CH13_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch13DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66974,11 +66976,11 @@ impl Ch13DbgCtdreq {
 /// - **CH13_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch13DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch13DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67078,11 +67080,11 @@ impl Ch13DbgTcr {
 /// - **CH14_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch14DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67196,11 +67198,11 @@ impl Ch14DbgCtdreq {
 /// - **CH14_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch14DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch14DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67300,11 +67302,11 @@ impl Ch14DbgTcr {
 /// - **CH15_DBG_CTDREQ** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Ch15DbgCtdreq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15DbgCtdreq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67418,11 +67420,11 @@ impl Ch15DbgCtdreq {
 /// - **CH15_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch15DbgTcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch15DbgTcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

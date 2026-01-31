@@ -1,4 +1,6 @@
 //! WATCHDOG
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -40,11 +42,11 @@ pub const BASE: u32 = 0x400d8000;
 ///   Indicates the time in usec before a watchdog reset will be triggered
 #[repr(transparent)]
 pub struct Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -128,13 +130,13 @@ impl Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **PAUSE_DBG1** `[26]` (RW)
@@ -148,13 +150,13 @@ impl Ctrl {
     /// Set PAUSE_DBG1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pause_dbg1(&self) {
-        self.value.set_bits(Self::PAUSE_DBG1_MASK);
+        self.set_bits(Self::PAUSE_DBG1_MASK);
     }
 
     /// Clear PAUSE_DBG1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pause_dbg1(&self) {
-        self.value.clr_bits(Self::PAUSE_DBG1_MASK);
+        self.clr_bits(Self::PAUSE_DBG1_MASK);
     }
 
     /// **PAUSE_DBG0** `[25]` (RW)
@@ -168,13 +170,13 @@ impl Ctrl {
     /// Set PAUSE_DBG0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pause_dbg0(&self) {
-        self.value.set_bits(Self::PAUSE_DBG0_MASK);
+        self.set_bits(Self::PAUSE_DBG0_MASK);
     }
 
     /// Clear PAUSE_DBG0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pause_dbg0(&self) {
-        self.value.clr_bits(Self::PAUSE_DBG0_MASK);
+        self.clr_bits(Self::PAUSE_DBG0_MASK);
     }
 
     /// **PAUSE_JTAG** `[24]` (RW)
@@ -188,13 +190,13 @@ impl Ctrl {
     /// Set PAUSE_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn set_pause_jtag(&self) {
-        self.value.set_bits(Self::PAUSE_JTAG_MASK);
+        self.set_bits(Self::PAUSE_JTAG_MASK);
     }
 
     /// Clear PAUSE_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_pause_jtag(&self) {
-        self.value.clr_bits(Self::PAUSE_JTAG_MASK);
+        self.clr_bits(Self::PAUSE_JTAG_MASK);
     }
 
     /// **TIME** `[23:0]` (RO)
@@ -386,11 +388,11 @@ impl Ctrl {
 /// - **LOAD** `[23:0]` (WO)
 #[repr(transparent)]
 pub struct Load {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Load {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -495,11 +497,11 @@ impl Load {
 /// - **TIMER** `[0]` (RO)
 #[repr(transparent)]
 pub struct Reason {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Reason {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -618,11 +620,11 @@ impl Reason {
 /// - **SCRATCH0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -736,11 +738,11 @@ impl Scratch0 {
 /// - **SCRATCH1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -854,11 +856,11 @@ impl Scratch1 {
 /// - **SCRATCH2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -972,11 +974,11 @@ impl Scratch2 {
 /// - **SCRATCH3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1090,11 +1092,11 @@ impl Scratch3 {
 /// - **SCRATCH4** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1208,11 +1210,11 @@ impl Scratch4 {
 /// - **SCRATCH5** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1326,11 +1328,11 @@ impl Scratch5 {
 /// - **SCRATCH6** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1444,11 +1446,11 @@ impl Scratch6 {
 /// - **SCRATCH7** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

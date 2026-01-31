@@ -1,5 +1,7 @@
 //! BOOTRAM
 //! Additional registers mapped adjacent to the bootram, for use by the bootrom.
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -17,11 +19,11 @@ pub const BASE: u32 = 0x400e0000;
 /// - **WRITE_ONCE0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct WriteOnce0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WriteOnce0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -135,11 +137,11 @@ impl WriteOnce0 {
 /// - **WRITE_ONCE1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct WriteOnce1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WriteOnce1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -253,11 +255,11 @@ impl WriteOnce1 {
 /// - **BOOTLOCK_STAT** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct BootlockStat {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BootlockStat {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -371,11 +373,11 @@ impl BootlockStat {
 /// - **BOOTLOCK0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -489,11 +491,11 @@ impl Bootlock0 {
 /// - **BOOTLOCK1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -607,11 +609,11 @@ impl Bootlock1 {
 /// - **BOOTLOCK2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -725,11 +727,11 @@ impl Bootlock2 {
 /// - **BOOTLOCK3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -843,11 +845,11 @@ impl Bootlock3 {
 /// - **BOOTLOCK4** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -961,11 +963,11 @@ impl Bootlock4 {
 /// - **BOOTLOCK5** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1079,11 +1081,11 @@ impl Bootlock5 {
 /// - **BOOTLOCK6** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1197,11 +1199,11 @@ impl Bootlock6 {
 /// - **BOOTLOCK7** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootlock7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

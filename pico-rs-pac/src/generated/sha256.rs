@@ -1,5 +1,7 @@
 //! SHA256
 //! SHA-256 hash function implementation
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -47,11 +49,11 @@ pub const BASE: u32 = 0x400f8000;
 ///   START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
 #[repr(transparent)]
 pub struct Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -144,13 +146,13 @@ impl Csr {
     /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.value.set_bits(Self::BSWAP_MASK);
+        self.set_bits(Self::BSWAP_MASK);
     }
 
     /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.value.clr_bits(Self::BSWAP_MASK);
+        self.clr_bits(Self::BSWAP_MASK);
     }
 
     /// **DMA_SIZE** `[9:8]` (RW)
@@ -182,13 +184,13 @@ impl Csr {
     /// Set ERR_WDATA_NOT_RDY bit atomically (RW)
     #[inline(always)]
     pub fn set_err_wdata_not_rdy(&self) {
-        self.value.set_bits(Self::ERR_WDATA_NOT_RDY_MASK);
+        self.set_bits(Self::ERR_WDATA_NOT_RDY_MASK);
     }
 
     /// Clear ERR_WDATA_NOT_RDY bit atomically (RW)
     #[inline(always)]
     pub fn clr_err_wdata_not_rdy(&self) {
-        self.value.clr_bits(Self::ERR_WDATA_NOT_RDY_MASK);
+        self.clr_bits(Self::ERR_WDATA_NOT_RDY_MASK);
     }
 
     /// **SUM_VLD** `[2]` (RO)
@@ -399,11 +401,11 @@ impl Csr {
 ///   This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
 #[repr(transparent)]
 pub struct Wdata {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Wdata {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -521,11 +523,11 @@ impl Wdata {
 /// - **SUM0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -625,11 +627,11 @@ impl Sum0 {
 /// - **SUM1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -729,11 +731,11 @@ impl Sum1 {
 /// - **SUM2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -833,11 +835,11 @@ impl Sum2 {
 /// - **SUM3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -937,11 +939,11 @@ impl Sum3 {
 /// - **SUM4** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1041,11 +1043,11 @@ impl Sum4 {
 /// - **SUM5** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1145,11 +1147,11 @@ impl Sum5 {
 /// - **SUM6** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1249,11 +1251,11 @@ impl Sum6 {
 /// - **SUM7** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sum7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

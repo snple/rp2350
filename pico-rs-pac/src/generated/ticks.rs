@@ -1,4 +1,6 @@
 //! TICKS
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -22,11 +24,11 @@ pub const BASE: u32 = 0x40108000;
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc0Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -75,13 +77,13 @@ impl Proc0Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -185,11 +187,11 @@ impl Proc0Ctrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc0Cycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Cycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -313,11 +315,11 @@ impl Proc0Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc0Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -424,11 +426,11 @@ impl Proc0Count {
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -477,13 +479,13 @@ impl Proc1Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -587,11 +589,11 @@ impl Proc1Ctrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc1Cycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Cycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -715,11 +717,11 @@ impl Proc1Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc1Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -826,11 +828,11 @@ impl Proc1Count {
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer0Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer0Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -879,13 +881,13 @@ impl Timer0Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -989,11 +991,11 @@ impl Timer0Ctrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer0Cycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer0Cycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1117,11 +1119,11 @@ impl Timer0Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer0Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer0Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1228,11 +1230,11 @@ impl Timer0Count {
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1281,13 +1283,13 @@ impl Timer1Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -1391,11 +1393,11 @@ impl Timer1Ctrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer1Cycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer1Cycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1519,11 +1521,11 @@ impl Timer1Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer1Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer1Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1630,11 +1632,11 @@ impl Timer1Count {
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct WatchdogCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WatchdogCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1683,13 +1685,13 @@ impl WatchdogCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -1793,11 +1795,11 @@ impl WatchdogCtrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct WatchdogCycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WatchdogCycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1921,11 +1923,11 @@ impl WatchdogCycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct WatchdogCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WatchdogCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2032,11 +2034,11 @@ impl WatchdogCount {
 ///   start / stop tick generation
 #[repr(transparent)]
 pub struct RiscvCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RiscvCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2085,13 +2087,13 @@ impl RiscvCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -2195,11 +2197,11 @@ impl RiscvCtrl {
 ///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct RiscvCycles {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RiscvCycles {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2323,11 +2325,11 @@ impl RiscvCycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct RiscvCount {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RiscvCount {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

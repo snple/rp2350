@@ -1,5 +1,7 @@
 //! GLITCH_DETECTOR
 //! Glitch detector controls
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -19,11 +21,11 @@ pub const BASE: u32 = 0x40158000;
 /// - **ARM** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Arm {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Arm {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -146,11 +148,11 @@ impl Arm {
 ///   This register is Secure read/write only.
 #[repr(transparent)]
 pub struct Disarm {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Disarm {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -321,11 +323,11 @@ impl Disarm {
 ///   Set sensitivity for detector 0. Higher values are more sensitive.
 #[repr(transparent)]
 pub struct Sensitivity {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sensitivity {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -783,11 +785,11 @@ impl Sensitivity {
 ///   Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
 #[repr(transparent)]
 pub struct Lock {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Lock {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -920,11 +922,11 @@ impl Lock {
 /// - **DET0** `[0]` (RW)
 #[repr(transparent)]
 pub struct TrigStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrigStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -969,13 +971,13 @@ impl TrigStatus {
     /// Set DET3 bit atomically (RW)
     #[inline(always)]
     pub fn set_det3(&self) {
-        self.value.set_bits(Self::DET3_MASK);
+        self.set_bits(Self::DET3_MASK);
     }
 
     /// Clear DET3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_det3(&self) {
-        self.value.clr_bits(Self::DET3_MASK);
+        self.clr_bits(Self::DET3_MASK);
     }
 
     /// **DET2** `[2]` (RW)
@@ -987,13 +989,13 @@ impl TrigStatus {
     /// Set DET2 bit atomically (RW)
     #[inline(always)]
     pub fn set_det2(&self) {
-        self.value.set_bits(Self::DET2_MASK);
+        self.set_bits(Self::DET2_MASK);
     }
 
     /// Clear DET2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_det2(&self) {
-        self.value.clr_bits(Self::DET2_MASK);
+        self.clr_bits(Self::DET2_MASK);
     }
 
     /// **DET1** `[1]` (RW)
@@ -1005,13 +1007,13 @@ impl TrigStatus {
     /// Set DET1 bit atomically (RW)
     #[inline(always)]
     pub fn set_det1(&self) {
-        self.value.set_bits(Self::DET1_MASK);
+        self.set_bits(Self::DET1_MASK);
     }
 
     /// Clear DET1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_det1(&self) {
-        self.value.clr_bits(Self::DET1_MASK);
+        self.clr_bits(Self::DET1_MASK);
     }
 
     /// **DET0** `[0]` (RW)
@@ -1023,13 +1025,13 @@ impl TrigStatus {
     /// Set DET0 bit atomically (RW)
     #[inline(always)]
     pub fn set_det0(&self) {
-        self.value.set_bits(Self::DET0_MASK);
+        self.set_bits(Self::DET0_MASK);
     }
 
     /// Clear DET0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_det0(&self) {
-        self.value.clr_bits(Self::DET0_MASK);
+        self.clr_bits(Self::DET0_MASK);
     }
 
 }
@@ -1177,11 +1179,11 @@ impl TrigStatus {
 /// - **TRIG_FORCE** `[3:0]` (WO)
 #[repr(transparent)]
 pub struct TrigForce {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrigForce {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

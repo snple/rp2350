@@ -1,5 +1,7 @@
 //! TRNG
 //! ARM TrustZone RNG register block
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -35,11 +37,11 @@ pub const BASE: u32 = 0x400f0000;
 ///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
 #[repr(transparent)]
 pub struct RngImr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngImr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -114,13 +116,13 @@ impl RngImr {
     /// Set VN_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_vn_err_int_mask(&self) {
-        self.value.set_bits(Self::VN_ERR_INT_MASK_MASK);
+        self.set_bits(Self::VN_ERR_INT_MASK_MASK);
     }
 
     /// Clear VN_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_vn_err_int_mask(&self) {
-        self.value.clr_bits(Self::VN_ERR_INT_MASK_MASK);
+        self.clr_bits(Self::VN_ERR_INT_MASK_MASK);
     }
 
     /// **CRNGT_ERR_INT_MASK** `[2]` (RW)
@@ -134,13 +136,13 @@ impl RngImr {
     /// Set CRNGT_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_crngt_err_int_mask(&self) {
-        self.value.set_bits(Self::CRNGT_ERR_INT_MASK_MASK);
+        self.set_bits(Self::CRNGT_ERR_INT_MASK_MASK);
     }
 
     /// Clear CRNGT_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_crngt_err_int_mask(&self) {
-        self.value.clr_bits(Self::CRNGT_ERR_INT_MASK_MASK);
+        self.clr_bits(Self::CRNGT_ERR_INT_MASK_MASK);
     }
 
     /// **AUTOCORR_ERR_INT_MASK** `[1]` (RW)
@@ -154,13 +156,13 @@ impl RngImr {
     /// Set AUTOCORR_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_autocorr_err_int_mask(&self) {
-        self.value.set_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
+        self.set_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
     }
 
     /// Clear AUTOCORR_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_autocorr_err_int_mask(&self) {
-        self.value.clr_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
+        self.clr_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
     }
 
     /// **EHR_VALID_INT_MASK** `[0]` (RW)
@@ -174,13 +176,13 @@ impl RngImr {
     /// Set EHR_VALID_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_ehr_valid_int_mask(&self) {
-        self.value.set_bits(Self::EHR_VALID_INT_MASK_MASK);
+        self.set_bits(Self::EHR_VALID_INT_MASK_MASK);
     }
 
     /// Clear EHR_VALID_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_ehr_valid_int_mask(&self) {
-        self.value.clr_bits(Self::EHR_VALID_INT_MASK_MASK);
+        self.clr_bits(Self::EHR_VALID_INT_MASK_MASK);
     }
 
 }
@@ -368,11 +370,11 @@ impl RngImr {
 ///   1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
 #[repr(transparent)]
 pub struct RngIsr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngIsr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -597,11 +599,11 @@ impl RngIsr {
 ///   Write 1'b1 - clear corresponding bit in RNG_ISR.
 #[repr(transparent)]
 pub struct RngIcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngIcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -676,13 +678,13 @@ impl RngIcr {
     /// Set VN_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_vn_err(&self) {
-        self.value.set_bits(Self::VN_ERR_MASK);
+        self.set_bits(Self::VN_ERR_MASK);
     }
 
     /// Clear VN_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_vn_err(&self) {
-        self.value.clr_bits(Self::VN_ERR_MASK);
+        self.clr_bits(Self::VN_ERR_MASK);
     }
 
     /// **CRNGT_ERR** `[2]` (RW)
@@ -696,13 +698,13 @@ impl RngIcr {
     /// Set CRNGT_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_crngt_err(&self) {
-        self.value.set_bits(Self::CRNGT_ERR_MASK);
+        self.set_bits(Self::CRNGT_ERR_MASK);
     }
 
     /// Clear CRNGT_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_crngt_err(&self) {
-        self.value.clr_bits(Self::CRNGT_ERR_MASK);
+        self.clr_bits(Self::CRNGT_ERR_MASK);
     }
 
     /// **AUTOCORR_ERR** `[1]` (RW)
@@ -716,13 +718,13 @@ impl RngIcr {
     /// Set AUTOCORR_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_autocorr_err(&self) {
-        self.value.set_bits(Self::AUTOCORR_ERR_MASK);
+        self.set_bits(Self::AUTOCORR_ERR_MASK);
     }
 
     /// Clear AUTOCORR_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_autocorr_err(&self) {
-        self.value.clr_bits(Self::AUTOCORR_ERR_MASK);
+        self.clr_bits(Self::AUTOCORR_ERR_MASK);
     }
 
     /// **EHR_VALID** `[0]` (RW)
@@ -736,13 +738,13 @@ impl RngIcr {
     /// Set EHR_VALID bit atomically (RW)
     #[inline(always)]
     pub fn set_ehr_valid(&self) {
-        self.value.set_bits(Self::EHR_VALID_MASK);
+        self.set_bits(Self::EHR_VALID_MASK);
     }
 
     /// Clear EHR_VALID bit atomically (RW)
     #[inline(always)]
     pub fn clr_ehr_valid(&self) {
-        self.value.clr_bits(Self::EHR_VALID_MASK);
+        self.clr_bits(Self::EHR_VALID_MASK);
     }
 
 }
@@ -918,11 +920,11 @@ impl RngIcr {
 ///   Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
 #[repr(transparent)]
 pub struct TrngConfig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrngConfig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1077,11 +1079,11 @@ impl TrngConfig {
 ///   1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
 #[repr(transparent)]
 pub struct TrngValid {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrngValid {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1215,11 +1217,11 @@ impl TrngValid {
 ///   Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1328,11 +1330,11 @@ impl EhrData0 {
 ///   Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1441,11 +1443,11 @@ impl EhrData1 {
 ///   Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1554,11 +1556,11 @@ impl EhrData2 {
 ///   Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1667,11 +1669,11 @@ impl EhrData3 {
 ///   Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1780,11 +1782,11 @@ impl EhrData4 {
 ///   Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EhrData5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1897,11 +1899,11 @@ impl EhrData5 {
 ///   * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
 #[repr(transparent)]
 pub struct RndSourceEnable {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RndSourceEnable {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1949,13 +1951,13 @@ impl RndSourceEnable {
     /// Set RND_SRC_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rnd_src_en(&self) {
-        self.value.set_bits(Self::RND_SRC_EN_MASK);
+        self.set_bits(Self::RND_SRC_EN_MASK);
     }
 
     /// Clear RND_SRC_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rnd_src_en(&self) {
-        self.value.clr_bits(Self::RND_SRC_EN_MASK);
+        self.clr_bits(Self::RND_SRC_EN_MASK);
     }
 
 }
@@ -2061,11 +2063,11 @@ impl RndSourceEnable {
 ///   Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
 #[repr(transparent)]
 pub struct SampleCnt1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SampleCnt1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2200,11 +2202,11 @@ impl SampleCnt1 {
 ///   Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
 #[repr(transparent)]
 pub struct AutocorrStatistic {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AutocorrStatistic {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2409,11 +2411,11 @@ impl AutocorrStatistic {
 ///   N/A
 #[repr(transparent)]
 pub struct TrngDebugControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrngDebugControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2472,13 +2474,13 @@ impl TrngDebugControl {
     /// Set AUTO_CORRELATE_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_auto_correlate_bypass(&self) {
-        self.value.set_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
+        self.set_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
     }
 
     /// Clear AUTO_CORRELATE_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_auto_correlate_bypass(&self) {
-        self.value.clr_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
+        self.clr_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
     }
 
     /// **TRNG_CRNGT_BYPASS** `[2]` (RW)
@@ -2492,13 +2494,13 @@ impl TrngDebugControl {
     /// Set TRNG_CRNGT_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_trng_crngt_bypass(&self) {
-        self.value.set_bits(Self::TRNG_CRNGT_BYPASS_MASK);
+        self.set_bits(Self::TRNG_CRNGT_BYPASS_MASK);
     }
 
     /// Clear TRNG_CRNGT_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng_crngt_bypass(&self) {
-        self.value.clr_bits(Self::TRNG_CRNGT_BYPASS_MASK);
+        self.clr_bits(Self::TRNG_CRNGT_BYPASS_MASK);
     }
 
     /// **VNC_BYPASS** `[1]` (RW)
@@ -2512,13 +2514,13 @@ impl TrngDebugControl {
     /// Set VNC_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_vnc_bypass(&self) {
-        self.value.set_bits(Self::VNC_BYPASS_MASK);
+        self.set_bits(Self::VNC_BYPASS_MASK);
     }
 
     /// Clear VNC_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_vnc_bypass(&self) {
-        self.value.clr_bits(Self::VNC_BYPASS_MASK);
+        self.clr_bits(Self::VNC_BYPASS_MASK);
     }
 
     /// **RESERVED** `[0]` (RO)
@@ -2680,11 +2682,11 @@ impl TrngDebugControl {
 ///   Writing 1'b1 to this register causes an internal RNG reset.
 #[repr(transparent)]
 pub struct TrngSwReset {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrngSwReset {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2732,13 +2734,13 @@ impl TrngSwReset {
     /// Set TRNG_SW_RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_trng_sw_reset(&self) {
-        self.value.set_bits(Self::TRNG_SW_RESET_MASK);
+        self.set_bits(Self::TRNG_SW_RESET_MASK);
     }
 
     /// Clear TRNG_SW_RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng_sw_reset(&self) {
-        self.value.clr_bits(Self::TRNG_SW_RESET_MASK);
+        self.clr_bits(Self::TRNG_SW_RESET_MASK);
     }
 
 }
@@ -2848,11 +2850,11 @@ impl TrngSwReset {
 ///   * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
 #[repr(transparent)]
 pub struct RngDebugEnInput {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngDebugEnInput {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2900,13 +2902,13 @@ impl RngDebugEnInput {
     /// Set RNG_DEBUG_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rng_debug_en(&self) {
-        self.value.set_bits(Self::RNG_DEBUG_EN_MASK);
+        self.set_bits(Self::RNG_DEBUG_EN_MASK);
     }
 
     /// Clear RNG_DEBUG_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rng_debug_en(&self) {
-        self.value.clr_bits(Self::RNG_DEBUG_EN_MASK);
+        self.clr_bits(Self::RNG_DEBUG_EN_MASK);
     }
 
 }
@@ -3016,11 +3018,11 @@ impl RngDebugEnInput {
 ///   Reflects rng_busy status.
 #[repr(transparent)]
 pub struct TrngBusy {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TrngBusy {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3158,11 +3160,11 @@ impl TrngBusy {
 ///   Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
 #[repr(transparent)]
 pub struct RstBitsCounter {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RstBitsCounter {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3210,13 +3212,13 @@ impl RstBitsCounter {
     /// Set RST_BITS_COUNTER bit atomically (RW)
     #[inline(always)]
     pub fn set_rst_bits_counter(&self) {
-        self.value.set_bits(Self::RST_BITS_COUNTER_MASK);
+        self.set_bits(Self::RST_BITS_COUNTER_MASK);
     }
 
     /// Clear RST_BITS_COUNTER bit atomically (RW)
     #[inline(always)]
     pub fn clr_rst_bits_counter(&self) {
-        self.value.clr_bits(Self::RST_BITS_COUNTER_MASK);
+        self.clr_bits(Self::RST_BITS_COUNTER_MASK);
     }
 
 }
@@ -3354,11 +3356,11 @@ impl RstBitsCounter {
 ///   * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
 #[repr(transparent)]
 pub struct RngVersion {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngVersion {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3671,11 +3673,11 @@ impl RngVersion {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3812,11 +3814,11 @@ impl RngBistCntr0 {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3953,11 +3955,11 @@ impl RngBistCntr1 {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

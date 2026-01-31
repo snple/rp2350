@@ -1,5 +1,7 @@
 //! ACCESSCTRL
 //! Hardware access control registers
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -25,11 +27,11 @@ pub const BASE: u32 = 0x40060000;
 /// - **CORE0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Lock {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Lock {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -74,13 +76,13 @@ impl Lock {
     /// Set DEBUG bit atomically (RW)
     #[inline(always)]
     pub fn set_debug(&self) {
-        self.value.set_bits(Self::DEBUG_MASK);
+        self.set_bits(Self::DEBUG_MASK);
     }
 
     /// Clear DEBUG bit atomically (RW)
     #[inline(always)]
     pub fn clr_debug(&self) {
-        self.value.clr_bits(Self::DEBUG_MASK);
+        self.clr_bits(Self::DEBUG_MASK);
     }
 
     /// **DMA** `[2]` (RO)
@@ -98,13 +100,13 @@ impl Lock {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[0]` (RW)
@@ -116,13 +118,13 @@ impl Lock {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
 }
@@ -257,11 +259,11 @@ impl Lock {
 /// - **CORE1** `[1]` (RW)
 #[repr(transparent)]
 pub struct ForceCoreNs {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ForceCoreNs {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -288,13 +290,13 @@ impl ForceCoreNs {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
 }
@@ -388,11 +390,11 @@ impl ForceCoreNs {
 /// - **CFGRESET** `[0]` (WO)
 #[repr(transparent)]
 pub struct Cfgreset {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Cfgreset {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -501,11 +503,11 @@ impl Cfgreset {
 /// - **GPIO_NSMASK0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct GpioNsmask0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioNsmask0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -629,11 +631,11 @@ impl GpioNsmask0 {
 /// - **GPIO** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct GpioNsmask1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioNsmask1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -700,13 +702,13 @@ impl GpioNsmask1 {
     /// Set QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_csn(&self) {
-        self.value.set_bits(Self::QSPI_CSN_MASK);
+        self.set_bits(Self::QSPI_CSN_MASK);
     }
 
     /// Clear QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_csn(&self) {
-        self.value.clr_bits(Self::QSPI_CSN_MASK);
+        self.clr_bits(Self::QSPI_CSN_MASK);
     }
 
     /// **QSPI_SCK** `[26]` (RW)
@@ -718,13 +720,13 @@ impl GpioNsmask1 {
     /// Set QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_sck(&self) {
-        self.value.set_bits(Self::QSPI_SCK_MASK);
+        self.set_bits(Self::QSPI_SCK_MASK);
     }
 
     /// Clear QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_sck(&self) {
-        self.value.clr_bits(Self::QSPI_SCK_MASK);
+        self.clr_bits(Self::QSPI_SCK_MASK);
     }
 
     /// **USB_DM** `[25]` (RW)
@@ -736,13 +738,13 @@ impl GpioNsmask1 {
     /// Set USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dm(&self) {
-        self.value.set_bits(Self::USB_DM_MASK);
+        self.set_bits(Self::USB_DM_MASK);
     }
 
     /// Clear USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dm(&self) {
-        self.value.clr_bits(Self::USB_DM_MASK);
+        self.clr_bits(Self::USB_DM_MASK);
     }
 
     /// **USB_DP** `[24]` (RW)
@@ -754,13 +756,13 @@ impl GpioNsmask1 {
     /// Set USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dp(&self) {
-        self.value.set_bits(Self::USB_DP_MASK);
+        self.set_bits(Self::USB_DP_MASK);
     }
 
     /// Clear USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dp(&self) {
-        self.value.clr_bits(Self::USB_DP_MASK);
+        self.clr_bits(Self::USB_DP_MASK);
     }
 
     /// **GPIO** `[15:0]` (RW)
@@ -979,11 +981,11 @@ impl GpioNsmask1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Rom {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Rom {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1079,13 +1081,13 @@ impl Rom {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -1099,13 +1101,13 @@ impl Rom {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -1119,13 +1121,13 @@ impl Rom {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -1139,13 +1141,13 @@ impl Rom {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -1159,13 +1161,13 @@ impl Rom {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -1179,13 +1181,13 @@ impl Rom {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -1199,13 +1201,13 @@ impl Rom {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -1220,13 +1222,13 @@ impl Rom {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -1511,11 +1513,11 @@ impl Rom {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct XipMain {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XipMain {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1611,13 +1613,13 @@ impl XipMain {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -1631,13 +1633,13 @@ impl XipMain {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -1651,13 +1653,13 @@ impl XipMain {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -1671,13 +1673,13 @@ impl XipMain {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -1691,13 +1693,13 @@ impl XipMain {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -1711,13 +1713,13 @@ impl XipMain {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -1731,13 +1733,13 @@ impl XipMain {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -1752,13 +1754,13 @@ impl XipMain {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -2043,11 +2045,11 @@ impl XipMain {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2143,13 +2145,13 @@ impl Sram0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -2163,13 +2165,13 @@ impl Sram0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -2183,13 +2185,13 @@ impl Sram0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -2203,13 +2205,13 @@ impl Sram0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -2223,13 +2225,13 @@ impl Sram0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -2243,13 +2245,13 @@ impl Sram0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -2263,13 +2265,13 @@ impl Sram0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -2284,13 +2286,13 @@ impl Sram0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -2575,11 +2577,11 @@ impl Sram0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2675,13 +2677,13 @@ impl Sram1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -2695,13 +2697,13 @@ impl Sram1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -2715,13 +2717,13 @@ impl Sram1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -2735,13 +2737,13 @@ impl Sram1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -2755,13 +2757,13 @@ impl Sram1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -2775,13 +2777,13 @@ impl Sram1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -2795,13 +2797,13 @@ impl Sram1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -2816,13 +2818,13 @@ impl Sram1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -3107,11 +3109,11 @@ impl Sram1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3207,13 +3209,13 @@ impl Sram2 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -3227,13 +3229,13 @@ impl Sram2 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -3247,13 +3249,13 @@ impl Sram2 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -3267,13 +3269,13 @@ impl Sram2 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -3287,13 +3289,13 @@ impl Sram2 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -3307,13 +3309,13 @@ impl Sram2 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -3327,13 +3329,13 @@ impl Sram2 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -3348,13 +3350,13 @@ impl Sram2 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -3639,11 +3641,11 @@ impl Sram2 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3739,13 +3741,13 @@ impl Sram3 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -3759,13 +3761,13 @@ impl Sram3 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -3779,13 +3781,13 @@ impl Sram3 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -3799,13 +3801,13 @@ impl Sram3 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -3819,13 +3821,13 @@ impl Sram3 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -3839,13 +3841,13 @@ impl Sram3 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -3859,13 +3861,13 @@ impl Sram3 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -3880,13 +3882,13 @@ impl Sram3 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -4171,11 +4173,11 @@ impl Sram3 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4271,13 +4273,13 @@ impl Sram4 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -4291,13 +4293,13 @@ impl Sram4 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -4311,13 +4313,13 @@ impl Sram4 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -4331,13 +4333,13 @@ impl Sram4 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -4351,13 +4353,13 @@ impl Sram4 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -4371,13 +4373,13 @@ impl Sram4 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -4391,13 +4393,13 @@ impl Sram4 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -4412,13 +4414,13 @@ impl Sram4 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -4703,11 +4705,11 @@ impl Sram4 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4803,13 +4805,13 @@ impl Sram5 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -4823,13 +4825,13 @@ impl Sram5 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -4843,13 +4845,13 @@ impl Sram5 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -4863,13 +4865,13 @@ impl Sram5 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -4883,13 +4885,13 @@ impl Sram5 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -4903,13 +4905,13 @@ impl Sram5 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -4923,13 +4925,13 @@ impl Sram5 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -4944,13 +4946,13 @@ impl Sram5 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -5235,11 +5237,11 @@ impl Sram5 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5335,13 +5337,13 @@ impl Sram6 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -5355,13 +5357,13 @@ impl Sram6 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -5375,13 +5377,13 @@ impl Sram6 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -5395,13 +5397,13 @@ impl Sram6 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -5415,13 +5417,13 @@ impl Sram6 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -5435,13 +5437,13 @@ impl Sram6 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -5455,13 +5457,13 @@ impl Sram6 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -5476,13 +5478,13 @@ impl Sram6 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -5767,11 +5769,11 @@ impl Sram6 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5867,13 +5869,13 @@ impl Sram7 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -5887,13 +5889,13 @@ impl Sram7 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -5907,13 +5909,13 @@ impl Sram7 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -5927,13 +5929,13 @@ impl Sram7 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -5947,13 +5949,13 @@ impl Sram7 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -5967,13 +5969,13 @@ impl Sram7 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -5987,13 +5989,13 @@ impl Sram7 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -6008,13 +6010,13 @@ impl Sram7 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -6299,11 +6301,11 @@ impl Sram7 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram8 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram8 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6399,13 +6401,13 @@ impl Sram8 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -6419,13 +6421,13 @@ impl Sram8 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -6439,13 +6441,13 @@ impl Sram8 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -6459,13 +6461,13 @@ impl Sram8 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -6479,13 +6481,13 @@ impl Sram8 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -6499,13 +6501,13 @@ impl Sram8 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -6519,13 +6521,13 @@ impl Sram8 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -6540,13 +6542,13 @@ impl Sram8 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -6831,11 +6833,11 @@ impl Sram8 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sram9 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sram9 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6931,13 +6933,13 @@ impl Sram9 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -6951,13 +6953,13 @@ impl Sram9 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -6971,13 +6973,13 @@ impl Sram9 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -6991,13 +6993,13 @@ impl Sram9 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -7011,13 +7013,13 @@ impl Sram9 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -7031,13 +7033,13 @@ impl Sram9 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -7051,13 +7053,13 @@ impl Sram9 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -7072,13 +7074,13 @@ impl Sram9 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -7363,11 +7365,11 @@ impl Sram9 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Dma {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dma {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7463,13 +7465,13 @@ impl Dma {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -7483,13 +7485,13 @@ impl Dma {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -7503,13 +7505,13 @@ impl Dma {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -7523,13 +7525,13 @@ impl Dma {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -7543,13 +7545,13 @@ impl Dma {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -7563,13 +7565,13 @@ impl Dma {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -7583,13 +7585,13 @@ impl Dma {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -7604,13 +7606,13 @@ impl Dma {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -7895,11 +7897,11 @@ impl Dma {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Usbctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Usbctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7995,13 +7997,13 @@ impl Usbctrl {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -8015,13 +8017,13 @@ impl Usbctrl {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -8035,13 +8037,13 @@ impl Usbctrl {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -8055,13 +8057,13 @@ impl Usbctrl {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -8075,13 +8077,13 @@ impl Usbctrl {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -8095,13 +8097,13 @@ impl Usbctrl {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -8115,13 +8117,13 @@ impl Usbctrl {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -8136,13 +8138,13 @@ impl Usbctrl {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -8427,11 +8429,11 @@ impl Usbctrl {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Pio0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pio0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8527,13 +8529,13 @@ impl Pio0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -8547,13 +8549,13 @@ impl Pio0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -8567,13 +8569,13 @@ impl Pio0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -8587,13 +8589,13 @@ impl Pio0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -8607,13 +8609,13 @@ impl Pio0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -8627,13 +8629,13 @@ impl Pio0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -8647,13 +8649,13 @@ impl Pio0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -8668,13 +8670,13 @@ impl Pio0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -8959,11 +8961,11 @@ impl Pio0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Pio1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pio1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9059,13 +9061,13 @@ impl Pio1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -9079,13 +9081,13 @@ impl Pio1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -9099,13 +9101,13 @@ impl Pio1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -9119,13 +9121,13 @@ impl Pio1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -9139,13 +9141,13 @@ impl Pio1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -9159,13 +9161,13 @@ impl Pio1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -9179,13 +9181,13 @@ impl Pio1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -9200,13 +9202,13 @@ impl Pio1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -9491,11 +9493,11 @@ impl Pio1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Pio2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pio2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9591,13 +9593,13 @@ impl Pio2 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -9611,13 +9613,13 @@ impl Pio2 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -9631,13 +9633,13 @@ impl Pio2 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -9651,13 +9653,13 @@ impl Pio2 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -9671,13 +9673,13 @@ impl Pio2 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -9691,13 +9693,13 @@ impl Pio2 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -9711,13 +9713,13 @@ impl Pio2 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -9732,13 +9734,13 @@ impl Pio2 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -10023,11 +10025,11 @@ impl Pio2 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct CoresightTrace {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CoresightTrace {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10123,13 +10125,13 @@ impl CoresightTrace {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -10143,13 +10145,13 @@ impl CoresightTrace {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -10163,13 +10165,13 @@ impl CoresightTrace {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -10183,13 +10185,13 @@ impl CoresightTrace {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -10203,13 +10205,13 @@ impl CoresightTrace {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -10223,13 +10225,13 @@ impl CoresightTrace {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -10243,13 +10245,13 @@ impl CoresightTrace {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -10264,13 +10266,13 @@ impl CoresightTrace {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -10555,11 +10557,11 @@ impl CoresightTrace {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct CoresightPeriph {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CoresightPeriph {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10655,13 +10657,13 @@ impl CoresightPeriph {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -10675,13 +10677,13 @@ impl CoresightPeriph {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -10695,13 +10697,13 @@ impl CoresightPeriph {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -10715,13 +10717,13 @@ impl CoresightPeriph {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -10735,13 +10737,13 @@ impl CoresightPeriph {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -10755,13 +10757,13 @@ impl CoresightPeriph {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -10775,13 +10777,13 @@ impl CoresightPeriph {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -10796,13 +10798,13 @@ impl CoresightPeriph {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -11087,11 +11089,11 @@ impl CoresightPeriph {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sysinfo {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sysinfo {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11187,13 +11189,13 @@ impl Sysinfo {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -11207,13 +11209,13 @@ impl Sysinfo {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -11227,13 +11229,13 @@ impl Sysinfo {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -11247,13 +11249,13 @@ impl Sysinfo {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -11267,13 +11269,13 @@ impl Sysinfo {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -11287,13 +11289,13 @@ impl Sysinfo {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -11307,13 +11309,13 @@ impl Sysinfo {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -11328,13 +11330,13 @@ impl Sysinfo {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -11619,11 +11621,11 @@ impl Sysinfo {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Resets {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Resets {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11719,13 +11721,13 @@ impl Resets {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -11739,13 +11741,13 @@ impl Resets {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -11759,13 +11761,13 @@ impl Resets {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -11779,13 +11781,13 @@ impl Resets {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -11799,13 +11801,13 @@ impl Resets {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -11819,13 +11821,13 @@ impl Resets {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -11839,13 +11841,13 @@ impl Resets {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -11860,13 +11862,13 @@ impl Resets {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -12151,11 +12153,11 @@ impl Resets {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct IoBank0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IoBank0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12251,13 +12253,13 @@ impl IoBank0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -12271,13 +12273,13 @@ impl IoBank0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -12291,13 +12293,13 @@ impl IoBank0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -12311,13 +12313,13 @@ impl IoBank0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -12331,13 +12333,13 @@ impl IoBank0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -12351,13 +12353,13 @@ impl IoBank0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -12371,13 +12373,13 @@ impl IoBank0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -12392,13 +12394,13 @@ impl IoBank0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -12683,11 +12685,11 @@ impl IoBank0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct IoBank1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IoBank1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12783,13 +12785,13 @@ impl IoBank1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -12803,13 +12805,13 @@ impl IoBank1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -12823,13 +12825,13 @@ impl IoBank1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -12843,13 +12845,13 @@ impl IoBank1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -12863,13 +12865,13 @@ impl IoBank1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -12883,13 +12885,13 @@ impl IoBank1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -12903,13 +12905,13 @@ impl IoBank1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -12924,13 +12926,13 @@ impl IoBank1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -13215,11 +13217,11 @@ impl IoBank1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct PadsBank0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PadsBank0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13315,13 +13317,13 @@ impl PadsBank0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -13335,13 +13337,13 @@ impl PadsBank0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -13355,13 +13357,13 @@ impl PadsBank0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -13375,13 +13377,13 @@ impl PadsBank0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -13395,13 +13397,13 @@ impl PadsBank0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -13415,13 +13417,13 @@ impl PadsBank0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -13435,13 +13437,13 @@ impl PadsBank0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -13456,13 +13458,13 @@ impl PadsBank0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -13747,11 +13749,11 @@ impl PadsBank0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct PadsQspi {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PadsQspi {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13847,13 +13849,13 @@ impl PadsQspi {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -13867,13 +13869,13 @@ impl PadsQspi {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -13887,13 +13889,13 @@ impl PadsQspi {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -13907,13 +13909,13 @@ impl PadsQspi {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -13927,13 +13929,13 @@ impl PadsQspi {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -13947,13 +13949,13 @@ impl PadsQspi {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -13967,13 +13969,13 @@ impl PadsQspi {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -13988,13 +13990,13 @@ impl PadsQspi {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -14279,11 +14281,11 @@ impl PadsQspi {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Busctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Busctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14379,13 +14381,13 @@ impl Busctrl {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -14399,13 +14401,13 @@ impl Busctrl {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -14419,13 +14421,13 @@ impl Busctrl {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -14439,13 +14441,13 @@ impl Busctrl {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -14459,13 +14461,13 @@ impl Busctrl {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -14479,13 +14481,13 @@ impl Busctrl {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -14499,13 +14501,13 @@ impl Busctrl {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -14520,13 +14522,13 @@ impl Busctrl {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -14811,11 +14813,11 @@ impl Busctrl {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Adc0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Adc0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14911,13 +14913,13 @@ impl Adc0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -14931,13 +14933,13 @@ impl Adc0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -14951,13 +14953,13 @@ impl Adc0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -14971,13 +14973,13 @@ impl Adc0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -14991,13 +14993,13 @@ impl Adc0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -15011,13 +15013,13 @@ impl Adc0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -15031,13 +15033,13 @@ impl Adc0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -15052,13 +15054,13 @@ impl Adc0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -15343,11 +15345,11 @@ impl Adc0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Hstx {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Hstx {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15443,13 +15445,13 @@ impl Hstx {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -15463,13 +15465,13 @@ impl Hstx {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -15483,13 +15485,13 @@ impl Hstx {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -15503,13 +15505,13 @@ impl Hstx {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -15523,13 +15525,13 @@ impl Hstx {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -15543,13 +15545,13 @@ impl Hstx {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -15563,13 +15565,13 @@ impl Hstx {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -15584,13 +15586,13 @@ impl Hstx {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -15875,11 +15877,11 @@ impl Hstx {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct I2c0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for I2c0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15975,13 +15977,13 @@ impl I2c0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -15995,13 +15997,13 @@ impl I2c0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -16015,13 +16017,13 @@ impl I2c0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -16035,13 +16037,13 @@ impl I2c0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -16055,13 +16057,13 @@ impl I2c0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -16075,13 +16077,13 @@ impl I2c0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -16095,13 +16097,13 @@ impl I2c0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -16116,13 +16118,13 @@ impl I2c0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -16407,11 +16409,11 @@ impl I2c0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct I2c1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for I2c1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16507,13 +16509,13 @@ impl I2c1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -16527,13 +16529,13 @@ impl I2c1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -16547,13 +16549,13 @@ impl I2c1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -16567,13 +16569,13 @@ impl I2c1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -16587,13 +16589,13 @@ impl I2c1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -16607,13 +16609,13 @@ impl I2c1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -16627,13 +16629,13 @@ impl I2c1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -16648,13 +16650,13 @@ impl I2c1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -16939,11 +16941,11 @@ impl I2c1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Pwm {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwm {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17039,13 +17041,13 @@ impl Pwm {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -17059,13 +17061,13 @@ impl Pwm {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -17079,13 +17081,13 @@ impl Pwm {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -17099,13 +17101,13 @@ impl Pwm {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -17119,13 +17121,13 @@ impl Pwm {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -17139,13 +17141,13 @@ impl Pwm {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -17159,13 +17161,13 @@ impl Pwm {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -17180,13 +17182,13 @@ impl Pwm {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -17471,11 +17473,11 @@ impl Pwm {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Spi0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Spi0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17571,13 +17573,13 @@ impl Spi0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -17591,13 +17593,13 @@ impl Spi0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -17611,13 +17613,13 @@ impl Spi0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -17631,13 +17633,13 @@ impl Spi0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -17651,13 +17653,13 @@ impl Spi0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -17671,13 +17673,13 @@ impl Spi0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -17691,13 +17693,13 @@ impl Spi0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -17712,13 +17714,13 @@ impl Spi0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -18003,11 +18005,11 @@ impl Spi0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Spi1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Spi1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18103,13 +18105,13 @@ impl Spi1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -18123,13 +18125,13 @@ impl Spi1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -18143,13 +18145,13 @@ impl Spi1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -18163,13 +18165,13 @@ impl Spi1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -18183,13 +18185,13 @@ impl Spi1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -18203,13 +18205,13 @@ impl Spi1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -18223,13 +18225,13 @@ impl Spi1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -18244,13 +18246,13 @@ impl Spi1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -18535,11 +18537,11 @@ impl Spi1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Timer0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18635,13 +18637,13 @@ impl Timer0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -18655,13 +18657,13 @@ impl Timer0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -18675,13 +18677,13 @@ impl Timer0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -18695,13 +18697,13 @@ impl Timer0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -18715,13 +18717,13 @@ impl Timer0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -18735,13 +18737,13 @@ impl Timer0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -18755,13 +18757,13 @@ impl Timer0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -18776,13 +18778,13 @@ impl Timer0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -19067,11 +19069,11 @@ impl Timer0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Timer1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19167,13 +19169,13 @@ impl Timer1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -19187,13 +19189,13 @@ impl Timer1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -19207,13 +19209,13 @@ impl Timer1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -19227,13 +19229,13 @@ impl Timer1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -19247,13 +19249,13 @@ impl Timer1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -19267,13 +19269,13 @@ impl Timer1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -19287,13 +19289,13 @@ impl Timer1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -19308,13 +19310,13 @@ impl Timer1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -19599,11 +19601,11 @@ impl Timer1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Uart0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uart0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19699,13 +19701,13 @@ impl Uart0 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -19719,13 +19721,13 @@ impl Uart0 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -19739,13 +19741,13 @@ impl Uart0 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -19759,13 +19761,13 @@ impl Uart0 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -19779,13 +19781,13 @@ impl Uart0 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -19799,13 +19801,13 @@ impl Uart0 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -19819,13 +19821,13 @@ impl Uart0 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -19840,13 +19842,13 @@ impl Uart0 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -20131,11 +20133,11 @@ impl Uart0 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Uart1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uart1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20231,13 +20233,13 @@ impl Uart1 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -20251,13 +20253,13 @@ impl Uart1 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -20271,13 +20273,13 @@ impl Uart1 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -20291,13 +20293,13 @@ impl Uart1 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -20311,13 +20313,13 @@ impl Uart1 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -20331,13 +20333,13 @@ impl Uart1 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -20351,13 +20353,13 @@ impl Uart1 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -20372,13 +20374,13 @@ impl Uart1 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -20663,11 +20665,11 @@ impl Uart1 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Otp {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Otp {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20763,13 +20765,13 @@ impl Otp {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -20783,13 +20785,13 @@ impl Otp {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -20803,13 +20805,13 @@ impl Otp {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -20823,13 +20825,13 @@ impl Otp {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -20843,13 +20845,13 @@ impl Otp {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -20863,13 +20865,13 @@ impl Otp {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -20883,13 +20885,13 @@ impl Otp {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -20904,13 +20906,13 @@ impl Otp {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -21195,11 +21197,11 @@ impl Otp {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Tbman {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Tbman {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21295,13 +21297,13 @@ impl Tbman {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -21315,13 +21317,13 @@ impl Tbman {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -21335,13 +21337,13 @@ impl Tbman {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -21355,13 +21357,13 @@ impl Tbman {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -21375,13 +21377,13 @@ impl Tbman {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -21395,13 +21397,13 @@ impl Tbman {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -21415,13 +21417,13 @@ impl Tbman {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -21436,13 +21438,13 @@ impl Tbman {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -21727,11 +21729,11 @@ impl Tbman {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Powman {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Powman {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21827,13 +21829,13 @@ impl Powman {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -21847,13 +21849,13 @@ impl Powman {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -21867,13 +21869,13 @@ impl Powman {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -21887,13 +21889,13 @@ impl Powman {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -21907,13 +21909,13 @@ impl Powman {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -21927,13 +21929,13 @@ impl Powman {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -21947,13 +21949,13 @@ impl Powman {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -21968,13 +21970,13 @@ impl Powman {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -22259,11 +22261,11 @@ impl Powman {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Trng {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Trng {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22359,13 +22361,13 @@ impl Trng {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -22379,13 +22381,13 @@ impl Trng {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -22399,13 +22401,13 @@ impl Trng {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -22419,13 +22421,13 @@ impl Trng {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -22439,13 +22441,13 @@ impl Trng {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -22459,13 +22461,13 @@ impl Trng {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -22479,13 +22481,13 @@ impl Trng {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -22500,13 +22502,13 @@ impl Trng {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -22791,11 +22793,11 @@ impl Trng {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Sha256 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sha256 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22891,13 +22893,13 @@ impl Sha256 {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -22911,13 +22913,13 @@ impl Sha256 {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -22931,13 +22933,13 @@ impl Sha256 {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -22951,13 +22953,13 @@ impl Sha256 {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -22971,13 +22973,13 @@ impl Sha256 {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -22991,13 +22993,13 @@ impl Sha256 {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -23011,13 +23013,13 @@ impl Sha256 {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -23032,13 +23034,13 @@ impl Sha256 {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -23323,11 +23325,11 @@ impl Sha256 {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Syscfg {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Syscfg {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23423,13 +23425,13 @@ impl Syscfg {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -23443,13 +23445,13 @@ impl Syscfg {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -23463,13 +23465,13 @@ impl Syscfg {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -23483,13 +23485,13 @@ impl Syscfg {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -23503,13 +23505,13 @@ impl Syscfg {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -23523,13 +23525,13 @@ impl Syscfg {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -23543,13 +23545,13 @@ impl Syscfg {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -23564,13 +23566,13 @@ impl Syscfg {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -23855,11 +23857,11 @@ impl Syscfg {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Clocks {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Clocks {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23955,13 +23957,13 @@ impl Clocks {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -23975,13 +23977,13 @@ impl Clocks {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -23995,13 +23997,13 @@ impl Clocks {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -24015,13 +24017,13 @@ impl Clocks {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -24035,13 +24037,13 @@ impl Clocks {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -24055,13 +24057,13 @@ impl Clocks {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -24075,13 +24077,13 @@ impl Clocks {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -24096,13 +24098,13 @@ impl Clocks {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -24387,11 +24389,11 @@ impl Clocks {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Xosc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Xosc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24487,13 +24489,13 @@ impl Xosc {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -24507,13 +24509,13 @@ impl Xosc {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -24527,13 +24529,13 @@ impl Xosc {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -24547,13 +24549,13 @@ impl Xosc {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -24567,13 +24569,13 @@ impl Xosc {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -24587,13 +24589,13 @@ impl Xosc {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -24607,13 +24609,13 @@ impl Xosc {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -24628,13 +24630,13 @@ impl Xosc {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -24919,11 +24921,11 @@ impl Xosc {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Rosc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Rosc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25019,13 +25021,13 @@ impl Rosc {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -25039,13 +25041,13 @@ impl Rosc {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -25059,13 +25061,13 @@ impl Rosc {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -25079,13 +25081,13 @@ impl Rosc {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -25099,13 +25101,13 @@ impl Rosc {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -25119,13 +25121,13 @@ impl Rosc {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -25139,13 +25141,13 @@ impl Rosc {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -25160,13 +25162,13 @@ impl Rosc {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -25451,11 +25453,11 @@ impl Rosc {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct PllSys {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PllSys {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25551,13 +25553,13 @@ impl PllSys {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -25571,13 +25573,13 @@ impl PllSys {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -25591,13 +25593,13 @@ impl PllSys {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -25611,13 +25613,13 @@ impl PllSys {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -25631,13 +25633,13 @@ impl PllSys {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -25651,13 +25653,13 @@ impl PllSys {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -25671,13 +25673,13 @@ impl PllSys {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -25692,13 +25694,13 @@ impl PllSys {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -25983,11 +25985,11 @@ impl PllSys {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct PllUsb {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PllUsb {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26083,13 +26085,13 @@ impl PllUsb {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -26103,13 +26105,13 @@ impl PllUsb {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -26123,13 +26125,13 @@ impl PllUsb {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -26143,13 +26145,13 @@ impl PllUsb {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -26163,13 +26165,13 @@ impl PllUsb {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -26183,13 +26185,13 @@ impl PllUsb {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -26203,13 +26205,13 @@ impl PllUsb {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -26224,13 +26226,13 @@ impl PllUsb {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -26515,11 +26517,11 @@ impl PllUsb {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Ticks {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ticks {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26615,13 +26617,13 @@ impl Ticks {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -26635,13 +26637,13 @@ impl Ticks {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -26655,13 +26657,13 @@ impl Ticks {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -26675,13 +26677,13 @@ impl Ticks {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -26695,13 +26697,13 @@ impl Ticks {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -26715,13 +26717,13 @@ impl Ticks {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -26735,13 +26737,13 @@ impl Ticks {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -26756,13 +26758,13 @@ impl Ticks {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -27047,11 +27049,11 @@ impl Ticks {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Watchdog {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Watchdog {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27147,13 +27149,13 @@ impl Watchdog {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -27167,13 +27169,13 @@ impl Watchdog {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -27187,13 +27189,13 @@ impl Watchdog {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -27207,13 +27209,13 @@ impl Watchdog {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -27227,13 +27229,13 @@ impl Watchdog {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -27247,13 +27249,13 @@ impl Watchdog {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -27267,13 +27269,13 @@ impl Watchdog {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -27288,13 +27290,13 @@ impl Watchdog {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -27579,11 +27581,11 @@ impl Watchdog {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct Rsm {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Rsm {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27679,13 +27681,13 @@ impl Rsm {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -27699,13 +27701,13 @@ impl Rsm {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -27719,13 +27721,13 @@ impl Rsm {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -27739,13 +27741,13 @@ impl Rsm {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -27759,13 +27761,13 @@ impl Rsm {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -27779,13 +27781,13 @@ impl Rsm {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -27799,13 +27801,13 @@ impl Rsm {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -27820,13 +27822,13 @@ impl Rsm {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -28111,11 +28113,11 @@ impl Rsm {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct XipCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XipCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28211,13 +28213,13 @@ impl XipCtrl {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -28231,13 +28233,13 @@ impl XipCtrl {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -28251,13 +28253,13 @@ impl XipCtrl {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -28271,13 +28273,13 @@ impl XipCtrl {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -28291,13 +28293,13 @@ impl XipCtrl {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -28311,13 +28313,13 @@ impl XipCtrl {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -28331,13 +28333,13 @@ impl XipCtrl {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -28352,13 +28354,13 @@ impl XipCtrl {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -28643,11 +28645,11 @@ impl XipCtrl {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct XipQmi {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XipQmi {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28743,13 +28745,13 @@ impl XipQmi {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -28763,13 +28765,13 @@ impl XipQmi {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -28783,13 +28785,13 @@ impl XipQmi {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -28803,13 +28805,13 @@ impl XipQmi {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -28823,13 +28825,13 @@ impl XipQmi {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -28843,13 +28845,13 @@ impl XipQmi {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -28863,13 +28865,13 @@ impl XipQmi {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -28884,13 +28886,13 @@ impl XipQmi {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }
@@ -29175,11 +29177,11 @@ impl XipQmi {
 ///   This bit is writable from a Non-secure, Privileged context, if and only if the NSP bit is set.
 #[repr(transparent)]
 pub struct XipAux {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XipAux {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29275,13 +29277,13 @@ impl XipAux {
     /// Set DBG bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg(&self) {
-        self.value.set_bits(Self::DBG_MASK);
+        self.set_bits(Self::DBG_MASK);
     }
 
     /// Clear DBG bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg(&self) {
-        self.value.clr_bits(Self::DBG_MASK);
+        self.clr_bits(Self::DBG_MASK);
     }
 
     /// **DMA** `[6]` (RW)
@@ -29295,13 +29297,13 @@ impl XipAux {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **CORE1** `[5]` (RW)
@@ -29315,13 +29317,13 @@ impl XipAux {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[4]` (RW)
@@ -29335,13 +29337,13 @@ impl XipAux {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
     /// **SP** `[3]` (RW)
@@ -29355,13 +29357,13 @@ impl XipAux {
     /// Set SP bit atomically (RW)
     #[inline(always)]
     pub fn set_sp(&self) {
-        self.value.set_bits(Self::SP_MASK);
+        self.set_bits(Self::SP_MASK);
     }
 
     /// Clear SP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sp(&self) {
-        self.value.clr_bits(Self::SP_MASK);
+        self.clr_bits(Self::SP_MASK);
     }
 
     /// **SU** `[2]` (RW)
@@ -29375,13 +29377,13 @@ impl XipAux {
     /// Set SU bit atomically (RW)
     #[inline(always)]
     pub fn set_su(&self) {
-        self.value.set_bits(Self::SU_MASK);
+        self.set_bits(Self::SU_MASK);
     }
 
     /// Clear SU bit atomically (RW)
     #[inline(always)]
     pub fn clr_su(&self) {
-        self.value.clr_bits(Self::SU_MASK);
+        self.clr_bits(Self::SU_MASK);
     }
 
     /// **NSP** `[1]` (RW)
@@ -29395,13 +29397,13 @@ impl XipAux {
     /// Set NSP bit atomically (RW)
     #[inline(always)]
     pub fn set_nsp(&self) {
-        self.value.set_bits(Self::NSP_MASK);
+        self.set_bits(Self::NSP_MASK);
     }
 
     /// Clear NSP bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsp(&self) {
-        self.value.clr_bits(Self::NSP_MASK);
+        self.clr_bits(Self::NSP_MASK);
     }
 
     /// **NSU** `[0]` (RW)
@@ -29416,13 +29418,13 @@ impl XipAux {
     /// Set NSU bit atomically (RW)
     #[inline(always)]
     pub fn set_nsu(&self) {
-        self.value.set_bits(Self::NSU_MASK);
+        self.set_bits(Self::NSU_MASK);
     }
 
     /// Clear NSU bit atomically (RW)
     #[inline(always)]
     pub fn clr_nsu(&self) {
-        self.value.clr_bits(Self::NSU_MASK);
+        self.clr_bits(Self::NSU_MASK);
     }
 
 }

@@ -425,8 +425,63 @@ impl VolatileCell<u32> {
     pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
         self.write_bits(f(self.read_bits()));
     }
+}
+
+/// A volatile cell with atomic SET/CLR/XOR support.
+///
+/// This wrapper provides atomic bit manipulation via RP2350 hardware aliases.
+/// Use this for registers in APB/AHB peripherals (0x40000000-0x50ffffff).
+///
+/// Atomic operations use hardware address aliases:
+/// - SET: base + 0x2000 - sets bits that are 1
+/// - CLR: base + 0x3000 - clears bits that are 1
+/// - XOR: base + 0x1000 - toggles bits that are 1
+#[repr(transparent)]
+pub struct AtomicCell<T> {
+    value: UnsafeCell<T>,
+}
+
+unsafe impl<T: Send> Send for AtomicCell<T> {}
+unsafe impl<T> Sync for AtomicCell<T> {}
+
+impl<T> AtomicCell<T> {
+    /// Create a new AtomicCell
+    #[inline(always)]
+    pub const fn new(value: T) -> Self {
+        Self {
+            value: UnsafeCell::new(value),
+        }
+    }
+
+    /// Get a raw pointer to the underlying value
+    #[inline(always)]
+    pub const fn as_ptr(&self) -> *mut T {
+        self.value.get()
+    }
+}
+
+impl AtomicCell<u32> {
+    /// Read the value with volatile semantics
+    #[inline(always)]
+    pub fn read_bits(&self) -> u32 {
+        unsafe { read_volatile(self.value.get()) }
+    }
+
+    /// Write the value with volatile semantics
+    #[inline(always)]
+    pub fn write_bits(&self, value: u32) {
+        unsafe { write_volatile(self.value.get(), value) }
+    }
+
+    /// Modify the value using a closure
+    #[inline(always)]
+    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
+        self.write_bits(f(self.read_bits()));
+    }
 
     /// Atomic SET - sets bits that are 1 (RP2350 hardware alias at +0x2000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn set_bits(&self, bits: u32) {
         unsafe {
@@ -436,6 +491,8 @@ impl VolatileCell<u32> {
     }
 
     /// Atomic CLR - clears bits that are 1 (RP2350 hardware alias at +0x3000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn clr_bits(&self, bits: u32) {
         unsafe {
@@ -445,6 +502,8 @@ impl VolatileCell<u32> {
     }
 
     /// Atomic XOR - toggles bits that are 1 (RP2350 hardware alias at +0x1000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn xor_bits(&self, bits: u32) {
         unsafe {
@@ -502,6 +561,22 @@ impl Spinlock {
     .to_string()
 }
 
+/// Check if a peripheral supports atomic register aliases based on its base address.
+///
+/// RP2350 atomic SET/CLR/XOR aliases are supported for:
+/// - APB peripherals at 0x40000000 - 0x401fffff
+/// - AHB-Lite peripherals at 0x50000000 - 0x50ffffff
+///
+/// NOT supported:
+/// - SIO at 0xd0000000 (Single-cycle IO, has its own atomic mechanisms)
+/// - PPB at 0xe0000000 (Private Peripheral Bus, Cortex-M internal)
+fn supports_atomic_aliases(base_address: u32) -> bool {
+    matches!(
+        base_address,
+        0x40000000..=0x401fffff | 0x50000000..=0x50ffffff
+    )
+}
+
 fn generate_peripheral(
     periph: &Peripheral,
     periph_map: &HashMap<&str, &Peripheral>,
@@ -522,23 +597,29 @@ fn generate_peripheral(
 fn generate_generic(periph: &Peripheral, registers: &[Register]) -> Result<String> {
     let mut out = String::new();
 
-    write_header(&mut out, periph)?;
+    // Check if this peripheral supports atomic aliases
+    let supports_atomic = periph
+        .base_address
+        .map(supports_atomic_aliases)
+        .unwrap_or(false);
+
+    write_header(&mut out, periph, supports_atomic)?;
 
     // Generate each register struct with field accessors
     for reg in registers {
-        write_register_struct(&mut out, reg)?;
+        write_register_struct(&mut out, reg, supports_atomic)?;
         // Generate the value struct for batch read/write operations
         write_register_value_struct(&mut out, reg)?;
     }
 
     // Generate RegisterBlock
-    write_register_block(&mut out, &periph.name, registers)?;
+    write_register_block(&mut out, &periph.name, registers, supports_atomic)?;
 
     Ok(out)
 }
 
 /// Generate a single register struct with all field accessors
-fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
+fn write_register_struct(out: &mut String, reg: &Register, supports_atomic: bool) -> Result<()> {
     let struct_name = reg.name.to_upper_camel_case();
 
     // Document the register
@@ -590,14 +671,21 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
         }
     }
 
+    // Use AtomicCell for peripherals that support atomic aliases, VolatileCell otherwise
+    let cell_type = if supports_atomic {
+        "crate::common::AtomicCell<u32>"
+    } else {
+        "crate::common::VolatileCell<u32>"
+    };
+
     writeln!(out, "#[repr(transparent)]")?;
     writeln!(out, "pub struct {} {{", struct_name)?;
-    writeln!(out, "    value: crate::common::VolatileCell<u32>,")?;
+    writeln!(out, "    value: {},", cell_type)?;
     writeln!(out, "}}")?;
     writeln!(out)?;
 
     writeln!(out, "impl core::ops::Deref for {} {{", struct_name)?;
-    writeln!(out, "    type Target = crate::common::VolatileCell<u32>;")?;
+    writeln!(out, "    type Target = {};", cell_type)?;
     writeln!(out, "    #[inline(always)]")?;
     writeln!(out, "    fn deref(&self) -> &Self::Target {{")?;
     writeln!(out, "        &self.value")?;
@@ -769,40 +857,66 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                 writeln!(out)?;
             }
 
-            // Write accessor (for RW single-bit fields in RW register) - use atomic set/clr
+            // Write accessor (for RW single-bit fields in RW register)
             if matches!(field.access, Access::ReadWrite)
                 && matches!(reg.access, Access::ReadWrite)
                 && width == 1
             {
-                writeln!(out, "    /// Set {} bit atomically (RW)", field.name)?;
-                writeln!(out, "    #[inline(always)]")?;
-                writeln!(
-                    out,
-                    "    pub fn {}(&self) {{",
-                    prefixed_method_name("set", &field.name)
-                )?;
-                writeln!(
-                    out,
-                    "        self.value.set_bits(Self::{}_MASK);",
-                    field_shouty
-                )?;
-                writeln!(out, "    }}")?;
-                writeln!(out)?;
+                if supports_atomic {
+                    // Use atomic set/clr methods (generated on the register struct)
+                    writeln!(out, "    /// Set {} bit atomically (RW)", field.name)?;
+                    writeln!(out, "    #[inline(always)]")?;
+                    writeln!(
+                        out,
+                        "    pub fn {}(&self) {{",
+                        prefixed_method_name("set", &field.name)
+                    )?;
+                    writeln!(out, "        self.set_bits(Self::{}_MASK);", field_shouty)?;
+                    writeln!(out, "    }}")?;
+                    writeln!(out)?;
 
-                writeln!(out, "    /// Clear {} bit atomically (RW)", field.name)?;
-                writeln!(out, "    #[inline(always)]")?;
-                writeln!(
-                    out,
-                    "    pub fn {}(&self) {{",
-                    prefixed_method_name("clr", &field.name)
-                )?;
-                writeln!(
-                    out,
-                    "        self.value.clr_bits(Self::{}_MASK);",
-                    field_shouty
-                )?;
-                writeln!(out, "    }}")?;
-                writeln!(out)?;
+                    writeln!(out, "    /// Clear {} bit atomically (RW)", field.name)?;
+                    writeln!(out, "    #[inline(always)]")?;
+                    writeln!(
+                        out,
+                        "    pub fn {}(&self) {{",
+                        prefixed_method_name("clr", &field.name)
+                    )?;
+                    writeln!(out, "        self.clr_bits(Self::{}_MASK);", field_shouty)?;
+                    writeln!(out, "    }}")?;
+                    writeln!(out)?;
+                } else {
+                    // No atomic support - use read-modify-write
+                    writeln!(out, "    /// Set {} bit (RW) - NOT atomic", field.name)?;
+                    writeln!(out, "    #[inline(always)]")?;
+                    writeln!(
+                        out,
+                        "    pub fn {}(&self) {{",
+                        prefixed_method_name("set", &field.name)
+                    )?;
+                    writeln!(
+                        out,
+                        "        self.value.modify_bits(|r| r | Self::{}_MASK);",
+                        field_shouty
+                    )?;
+                    writeln!(out, "    }}")?;
+                    writeln!(out)?;
+
+                    writeln!(out, "    /// Clear {} bit (RW) - NOT atomic", field.name)?;
+                    writeln!(out, "    #[inline(always)]")?;
+                    writeln!(
+                        out,
+                        "    pub fn {}(&self) {{",
+                        prefixed_method_name("clr", &field.name)
+                    )?;
+                    writeln!(
+                        out,
+                        "        self.value.modify_bits(|r| r & !Self::{}_MASK);",
+                        field_shouty
+                    )?;
+                    writeln!(out, "    }}")?;
+                    writeln!(out)?;
+                }
             }
 
             // Write accessor (for RW multi-bit fields in RW register) - use modify
@@ -881,6 +995,9 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             }
         }
     }
+
+    // Note: For peripherals that support atomic operations, the AtomicCell type
+    // provides set_bits/clr_bits/xor_bits via Deref
 
     writeln!(out, "}}")?;
     writeln!(out)?;
@@ -1118,7 +1235,12 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
 }
 
 /// Generate the RegisterBlock struct
-fn write_register_block(out: &mut String, periph_name: &str, registers: &[Register]) -> Result<()> {
+fn write_register_block(
+    out: &mut String,
+    periph_name: &str,
+    registers: &[Register],
+    _supports_atomic: bool,
+) -> Result<()> {
     writeln!(out, "/// Register block")?;
     writeln!(out, "#[repr(C)]")?;
     writeln!(out, "pub struct RegisterBlock {{")?;
@@ -1312,12 +1434,34 @@ fn prefixed_method_name(prefix: &str, field_name: &str) -> String {
     }
 }
 
-fn write_header(out: &mut String, periph: &Peripheral) -> Result<()> {
+fn write_header(out: &mut String, periph: &Peripheral, supports_atomic: bool) -> Result<()> {
     writeln!(out, "//! {}", periph.name)?;
     if !periph.description.is_empty() {
-        for line in clean_desc(&periph.description).lines() {
+        // Only include first few meaningful lines of description
+        // Skip configuration constant lists and boilerplate
+        let desc = clean_desc(&periph.description);
+        let meaningful_lines: Vec<&str> = desc
+            .lines()
+            .filter(|line| {
+                // Skip lines that indicate a list of constants follows
+                !line.contains("List of configuration") && !line.contains("you may see references")
+            })
+            .take_while(|line| {
+                // Stop at configuration constant lists (lines with lots of dots or equals)
+                !line.contains("....") && !line.contains(" = ")
+            })
+            .take(3) // Max 3 lines
+            .collect();
+        for line in meaningful_lines {
             writeln!(out, "//! {}", line)?;
         }
+    }
+    if supports_atomic {
+        writeln!(out, "//!")?;
+        writeln!(
+            out,
+            "//! This peripheral supports atomic SET/CLR/XOR register aliases."
+        )?;
     }
     writeln!(out)?;
     writeln!(out, "#![allow(dead_code)]")?;

@@ -1,5 +1,7 @@
 //! OTP
 //! SNPS OTP control IF (SBPI and RPi wrapper control)
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -24,11 +26,11 @@ pub const BASE: u32 = 0x40120000;
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -214,11 +216,11 @@ impl SwLock0 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -404,11 +406,11 @@ impl SwLock1 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -594,11 +596,11 @@ impl SwLock2 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -784,11 +786,11 @@ impl SwLock3 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -974,11 +976,11 @@ impl SwLock4 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1164,11 +1166,11 @@ impl SwLock5 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1354,11 +1356,11 @@ impl SwLock6 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1544,11 +1546,11 @@ impl SwLock7 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock8 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock8 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1734,11 +1736,11 @@ impl SwLock8 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock9 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock9 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1924,11 +1926,11 @@ impl SwLock9 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock10 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock10 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2114,11 +2116,11 @@ impl SwLock10 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock11 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock11 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2304,11 +2306,11 @@ impl SwLock11 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock12 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock12 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2494,11 +2496,11 @@ impl SwLock12 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock13 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock13 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2684,11 +2686,11 @@ impl SwLock13 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock14 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock14 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2874,11 +2876,11 @@ impl SwLock14 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock15 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock15 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3064,11 +3066,11 @@ impl SwLock15 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock16 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock16 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3254,11 +3256,11 @@ impl SwLock16 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock17 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock17 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3444,11 +3446,11 @@ impl SwLock17 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock18 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock18 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3634,11 +3636,11 @@ impl SwLock18 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock19 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock19 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3824,11 +3826,11 @@ impl SwLock19 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock20 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock20 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4014,11 +4016,11 @@ impl SwLock20 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock21 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock21 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4204,11 +4206,11 @@ impl SwLock21 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock22 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock22 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4394,11 +4396,11 @@ impl SwLock22 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock23 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock23 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4584,11 +4586,11 @@ impl SwLock23 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock24 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock24 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4774,11 +4776,11 @@ impl SwLock24 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock25 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock25 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4964,11 +4966,11 @@ impl SwLock25 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock26 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock26 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5154,11 +5156,11 @@ impl SwLock26 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock27 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock27 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5344,11 +5346,11 @@ impl SwLock27 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock28 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock28 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5534,11 +5536,11 @@ impl SwLock28 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock29 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock29 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5724,11 +5726,11 @@ impl SwLock29 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock30 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock30 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5914,11 +5916,11 @@ impl SwLock30 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock31 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock31 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6104,11 +6106,11 @@ impl SwLock31 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock32 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock32 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6294,11 +6296,11 @@ impl SwLock32 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock33 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock33 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6484,11 +6486,11 @@ impl SwLock33 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock34 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock34 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6674,11 +6676,11 @@ impl SwLock34 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock35 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock35 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6864,11 +6866,11 @@ impl SwLock35 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock36 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock36 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7054,11 +7056,11 @@ impl SwLock36 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock37 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock37 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7244,11 +7246,11 @@ impl SwLock37 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock38 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock38 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7434,11 +7436,11 @@ impl SwLock38 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock39 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock39 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7624,11 +7626,11 @@ impl SwLock39 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock40 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock40 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7814,11 +7816,11 @@ impl SwLock40 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock41 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock41 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8004,11 +8006,11 @@ impl SwLock41 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock42 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock42 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8194,11 +8196,11 @@ impl SwLock42 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock43 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock43 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8384,11 +8386,11 @@ impl SwLock43 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock44 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock44 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8574,11 +8576,11 @@ impl SwLock44 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock45 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock45 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8764,11 +8766,11 @@ impl SwLock45 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock46 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock46 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8954,11 +8956,11 @@ impl SwLock46 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock47 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock47 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9144,11 +9146,11 @@ impl SwLock47 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock48 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock48 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9334,11 +9336,11 @@ impl SwLock48 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock49 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock49 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9524,11 +9526,11 @@ impl SwLock49 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock50 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock50 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9714,11 +9716,11 @@ impl SwLock50 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock51 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock51 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9904,11 +9906,11 @@ impl SwLock51 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock52 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock52 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10094,11 +10096,11 @@ impl SwLock52 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock53 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock53 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10284,11 +10286,11 @@ impl SwLock53 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock54 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock54 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10474,11 +10476,11 @@ impl SwLock54 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock55 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock55 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10664,11 +10666,11 @@ impl SwLock55 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock56 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock56 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10854,11 +10856,11 @@ impl SwLock56 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock57 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock57 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11044,11 +11046,11 @@ impl SwLock57 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock58 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock58 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11234,11 +11236,11 @@ impl SwLock58 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock59 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock59 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11424,11 +11426,11 @@ impl SwLock59 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock60 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock60 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11614,11 +11616,11 @@ impl SwLock60 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock61 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock61 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11804,11 +11806,11 @@ impl SwLock61 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock62 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock62 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11994,11 +11996,11 @@ impl SwLock62 {
 ///   Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
 #[repr(transparent)]
 pub struct SwLock63 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SwLock63 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12201,11 +12203,11 @@ impl SwLock63 {
 ///   wdata to be used only when payload_size_m1=0
 #[repr(transparent)]
 pub struct SbpiInstr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiInstr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12292,13 +12294,13 @@ impl SbpiInstr {
     /// Set IS_WR bit atomically (RW)
     #[inline(always)]
     pub fn set_is_wr(&self) {
-        self.value.set_bits(Self::IS_WR_MASK);
+        self.set_bits(Self::IS_WR_MASK);
     }
 
     /// Clear IS_WR bit atomically (RW)
     #[inline(always)]
     pub fn clr_is_wr(&self) {
-        self.value.clr_bits(Self::IS_WR_MASK);
+        self.clr_bits(Self::IS_WR_MASK);
     }
 
     /// **HAS_PAYLOAD** `[28]` (RW)
@@ -12312,13 +12314,13 @@ impl SbpiInstr {
     /// Set HAS_PAYLOAD bit atomically (RW)
     #[inline(always)]
     pub fn set_has_payload(&self) {
-        self.value.set_bits(Self::HAS_PAYLOAD_MASK);
+        self.set_bits(Self::HAS_PAYLOAD_MASK);
     }
 
     /// Clear HAS_PAYLOAD bit atomically (RW)
     #[inline(always)]
     pub fn clr_has_payload(&self) {
-        self.value.clr_bits(Self::HAS_PAYLOAD_MASK);
+        self.clr_bits(Self::HAS_PAYLOAD_MASK);
     }
 
     /// **PAYLOAD_SIZE_M1** `[27:24]` (RW)
@@ -12578,11 +12580,11 @@ impl SbpiInstr {
 /// - **SBPI_WDATA_0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct SbpiWdata0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiWdata0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12696,11 +12698,11 @@ impl SbpiWdata0 {
 /// - **SBPI_WDATA_1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct SbpiWdata1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiWdata1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12814,11 +12816,11 @@ impl SbpiWdata1 {
 /// - **SBPI_WDATA_2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct SbpiWdata2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiWdata2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12932,11 +12934,11 @@ impl SbpiWdata2 {
 /// - **SBPI_WDATA_3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct SbpiWdata3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiWdata3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13050,11 +13052,11 @@ impl SbpiWdata3 {
 /// - **SBPI_RDATA_0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13154,11 +13156,11 @@ impl SbpiRdata0 {
 /// - **SBPI_RDATA_1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13258,11 +13260,11 @@ impl SbpiRdata1 {
 /// - **SBPI_RDATA_2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13362,11 +13364,11 @@ impl SbpiRdata2 {
 /// - **SBPI_RDATA_3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13482,11 +13484,11 @@ impl SbpiRdata3 {
 ///   Read command has returned data
 #[repr(transparent)]
 pub struct SbpiStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SbpiStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13569,13 +13571,13 @@ impl SbpiStatus {
     /// Set INSTR_MISS bit atomically (RW)
     #[inline(always)]
     pub fn set_instr_miss(&self) {
-        self.value.set_bits(Self::INSTR_MISS_MASK);
+        self.set_bits(Self::INSTR_MISS_MASK);
     }
 
     /// Clear INSTR_MISS bit atomically (RW)
     #[inline(always)]
     pub fn clr_instr_miss(&self) {
-        self.value.clr_bits(Self::INSTR_MISS_MASK);
+        self.clr_bits(Self::INSTR_MISS_MASK);
     }
 
     /// **INSTR_DONE** `[4]` (RW)
@@ -13589,13 +13591,13 @@ impl SbpiStatus {
     /// Set INSTR_DONE bit atomically (RW)
     #[inline(always)]
     pub fn set_instr_done(&self) {
-        self.value.set_bits(Self::INSTR_DONE_MASK);
+        self.set_bits(Self::INSTR_DONE_MASK);
     }
 
     /// Clear INSTR_DONE bit atomically (RW)
     #[inline(always)]
     pub fn clr_instr_done(&self) {
-        self.value.clr_bits(Self::INSTR_DONE_MASK);
+        self.clr_bits(Self::INSTR_DONE_MASK);
     }
 
     /// **RDATA_VLD** `[0]` (RW)
@@ -13609,13 +13611,13 @@ impl SbpiStatus {
     /// Set RDATA_VLD bit atomically (RW)
     #[inline(always)]
     pub fn set_rdata_vld(&self) {
-        self.value.set_bits(Self::RDATA_VLD_MASK);
+        self.set_bits(Self::RDATA_VLD_MASK);
     }
 
     /// Clear RDATA_VLD bit atomically (RW)
     #[inline(always)]
     pub fn clr_rdata_vld(&self) {
-        self.value.clr_bits(Self::RDATA_VLD_MASK);
+        self.clr_bits(Self::RDATA_VLD_MASK);
     }
 
 }
@@ -13778,11 +13780,11 @@ impl SbpiStatus {
 ///   This bit must be cleared before performing any SBPI access, such as when programming the OTP. The APB data read interface (USER interface) will be inaccessible during this time, and will return a bus error if any read is attempted.
 #[repr(transparent)]
 pub struct Usr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Usr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13824,13 +13826,13 @@ impl Usr {
     /// Set PD bit atomically (RW)
     #[inline(always)]
     pub fn set_pd(&self) {
-        self.value.set_bits(Self::PD_MASK);
+        self.set_bits(Self::PD_MASK);
     }
 
     /// Clear PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_pd(&self) {
-        self.value.clr_bits(Self::PD_MASK);
+        self.clr_bits(Self::PD_MASK);
     }
 
     /// **DCTRL** `[0]` (RW)
@@ -13845,13 +13847,13 @@ impl Usr {
     /// Set DCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_dctrl(&self) {
-        self.value.set_bits(Self::DCTRL_MASK);
+        self.set_bits(Self::DCTRL_MASK);
     }
 
     /// Clear DCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_dctrl(&self) {
-        self.value.clr_bits(Self::DCTRL_MASK);
+        self.clr_bits(Self::DCTRL_MASK);
     }
 
 }
@@ -13993,11 +13995,11 @@ impl Usr {
 ///   PSM done status flag
 #[repr(transparent)]
 pub struct Dbg {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dbg {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14097,13 +14099,13 @@ impl Dbg {
     /// Set ROSC_UP_SEEN bit atomically (RW)
     #[inline(always)]
     pub fn set_rosc_up_seen(&self) {
-        self.value.set_bits(Self::ROSC_UP_SEEN_MASK);
+        self.set_bits(Self::ROSC_UP_SEEN_MASK);
     }
 
     /// Clear ROSC_UP_SEEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rosc_up_seen(&self) {
-        self.value.clr_bits(Self::ROSC_UP_SEEN_MASK);
+        self.clr_bits(Self::ROSC_UP_SEEN_MASK);
     }
 
     /// **BOOT_DONE** `[1]` (RO)
@@ -14273,11 +14275,11 @@ impl Dbg {
 ///   Number of locations that have at least one leaky bit. Note: This count is true only if the BIST was initiated without the fix option.
 #[repr(transparent)]
 pub struct Bist {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bist {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14359,13 +14361,13 @@ impl Bist {
     /// Set CNT_ENA bit atomically (RW)
     #[inline(always)]
     pub fn set_cnt_ena(&self) {
-        self.value.set_bits(Self::CNT_ENA_MASK);
+        self.set_bits(Self::CNT_ENA_MASK);
     }
 
     /// Clear CNT_ENA bit atomically (RW)
     #[inline(always)]
     pub fn clr_cnt_ena(&self) {
-        self.value.clr_bits(Self::CNT_ENA_MASK);
+        self.clr_bits(Self::CNT_ENA_MASK);
     }
 
     /// **CNT_MAX** `[27:16]` (RW)
@@ -14533,11 +14535,11 @@ impl Bist {
 /// - **CRT_KEY_W0** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct CrtKeyW0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CrtKeyW0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14639,11 +14641,11 @@ impl CrtKeyW0 {
 /// - **CRT_KEY_W1** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct CrtKeyW1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CrtKeyW1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14745,11 +14747,11 @@ impl CrtKeyW1 {
 /// - **CRT_KEY_W2** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct CrtKeyW2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CrtKeyW2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14851,11 +14853,11 @@ impl CrtKeyW2 {
 /// - **CRT_KEY_W3** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct CrtKeyW3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CrtKeyW3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14971,11 +14973,11 @@ impl CrtKeyW3 {
 /// - **SECURE_BOOT_ENABLE** `[0]` (RO)
 #[repr(transparent)]
 pub struct Critical {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Critical {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15201,11 +15203,11 @@ impl Critical {
 /// - **KEY_VALID** `[7:0]` (RO)
 #[repr(transparent)]
 pub struct KeyValid {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for KeyValid {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15336,11 +15338,11 @@ impl KeyValid {
 ///   Note also that core Mem-APs are unconditionally disabled when a core is switched to RISC-V mode (by setting the ARCHSEL bit and performing a warm reset of the core).
 #[repr(transparent)]
 pub struct Debugen {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Debugen {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15416,13 +15418,13 @@ impl Debugen {
     /// Set MISC bit atomically (RW)
     #[inline(always)]
     pub fn set_misc(&self) {
-        self.value.set_bits(Self::MISC_MASK);
+        self.set_bits(Self::MISC_MASK);
     }
 
     /// Clear MISC bit atomically (RW)
     #[inline(always)]
     pub fn clr_misc(&self) {
-        self.value.clr_bits(Self::MISC_MASK);
+        self.clr_bits(Self::MISC_MASK);
     }
 
     /// **PROC1_SECURE** `[3]` (RW)
@@ -15437,13 +15439,13 @@ impl Debugen {
     /// Set PROC1_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1_secure(&self) {
-        self.value.set_bits(Self::PROC1_SECURE_MASK);
+        self.set_bits(Self::PROC1_SECURE_MASK);
     }
 
     /// Clear PROC1_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1_secure(&self) {
-        self.value.clr_bits(Self::PROC1_SECURE_MASK);
+        self.clr_bits(Self::PROC1_SECURE_MASK);
     }
 
     /// **PROC1** `[2]` (RW)
@@ -15458,13 +15460,13 @@ impl Debugen {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0_SECURE** `[1]` (RW)
@@ -15480,13 +15482,13 @@ impl Debugen {
     /// Set PROC0_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0_secure(&self) {
-        self.value.set_bits(Self::PROC0_SECURE_MASK);
+        self.set_bits(Self::PROC0_SECURE_MASK);
     }
 
     /// Clear PROC0_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0_secure(&self) {
-        self.value.clr_bits(Self::PROC0_SECURE_MASK);
+        self.clr_bits(Self::PROC0_SECURE_MASK);
     }
 
     /// **PROC0** `[0]` (RW)
@@ -15502,13 +15504,13 @@ impl Debugen {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
 }
@@ -15724,11 +15726,11 @@ impl Debugen {
 ///   Write 1 to lock the PROC0 bit of DEBUGEN. Can't be cleared once set.
 #[repr(transparent)]
 pub struct DebugenLock {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DebugenLock {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15796,13 +15798,13 @@ impl DebugenLock {
     /// Set MISC bit atomically (RW)
     #[inline(always)]
     pub fn set_misc(&self) {
-        self.value.set_bits(Self::MISC_MASK);
+        self.set_bits(Self::MISC_MASK);
     }
 
     /// Clear MISC bit atomically (RW)
     #[inline(always)]
     pub fn clr_misc(&self) {
-        self.value.clr_bits(Self::MISC_MASK);
+        self.clr_bits(Self::MISC_MASK);
     }
 
     /// **PROC1_SECURE** `[3]` (RW)
@@ -15816,13 +15818,13 @@ impl DebugenLock {
     /// Set PROC1_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1_secure(&self) {
-        self.value.set_bits(Self::PROC1_SECURE_MASK);
+        self.set_bits(Self::PROC1_SECURE_MASK);
     }
 
     /// Clear PROC1_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1_secure(&self) {
-        self.value.clr_bits(Self::PROC1_SECURE_MASK);
+        self.clr_bits(Self::PROC1_SECURE_MASK);
     }
 
     /// **PROC1** `[2]` (RW)
@@ -15836,13 +15838,13 @@ impl DebugenLock {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0_SECURE** `[1]` (RW)
@@ -15856,13 +15858,13 @@ impl DebugenLock {
     /// Set PROC0_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0_secure(&self) {
-        self.value.set_bits(Self::PROC0_SECURE_MASK);
+        self.set_bits(Self::PROC0_SECURE_MASK);
     }
 
     /// Clear PROC0_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0_secure(&self) {
-        self.value.clr_bits(Self::PROC0_SECURE_MASK);
+        self.clr_bits(Self::PROC0_SECURE_MASK);
     }
 
     /// **PROC0** `[0]` (RW)
@@ -15876,13 +15878,13 @@ impl DebugenLock {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
 }
@@ -16075,11 +16077,11 @@ impl DebugenLock {
 ///   Select architecture for core 0.
 #[repr(transparent)]
 pub struct Archsel {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Archsel {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16136,13 +16138,13 @@ impl Archsel {
     /// Set CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_core1(&self) {
-        self.value.set_bits(Self::CORE1_MASK);
+        self.set_bits(Self::CORE1_MASK);
     }
 
     /// Clear CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1(&self) {
-        self.value.clr_bits(Self::CORE1_MASK);
+        self.clr_bits(Self::CORE1_MASK);
     }
 
     /// **CORE0** `[0]` (RW)
@@ -16156,13 +16158,13 @@ impl Archsel {
     /// Set CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_core0(&self) {
-        self.value.set_bits(Self::CORE0_MASK);
+        self.set_bits(Self::CORE0_MASK);
     }
 
     /// Clear CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0(&self) {
-        self.value.clr_bits(Self::CORE0_MASK);
+        self.clr_bits(Self::CORE0_MASK);
     }
 
 }
@@ -16286,11 +16288,11 @@ impl Archsel {
 ///   Current architecture for core 0. Updated on processor warm reset.
 #[repr(transparent)]
 pub struct ArchselStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ArchselStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16451,11 +16453,11 @@ impl ArchselStatus {
 ///   The bootrom checks this flag before reading the boot scratch registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
 #[repr(transparent)]
 pub struct Bootdis {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootdis {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16501,13 +16503,13 @@ impl Bootdis {
     /// Set NEXT bit atomically (RW)
     #[inline(always)]
     pub fn set_next(&self) {
-        self.value.set_bits(Self::NEXT_MASK);
+        self.set_bits(Self::NEXT_MASK);
     }
 
     /// Clear NEXT bit atomically (RW)
     #[inline(always)]
     pub fn clr_next(&self) {
-        self.value.clr_bits(Self::NEXT_MASK);
+        self.clr_bits(Self::NEXT_MASK);
     }
 
     /// **NOW** `[0]` (RW)
@@ -16522,13 +16524,13 @@ impl Bootdis {
     /// Set NOW bit atomically (RW)
     #[inline(always)]
     pub fn set_now(&self) {
-        self.value.set_bits(Self::NOW_MASK);
+        self.set_bits(Self::NOW_MASK);
     }
 
     /// Clear NOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_now(&self) {
-        self.value.clr_bits(Self::NOW_MASK);
+        self.clr_bits(Self::NOW_MASK);
     }
 
 }
@@ -16660,11 +16662,11 @@ impl Bootdis {
 /// - **SBPI_FLAG_N** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16715,13 +16717,13 @@ impl Intr {
     /// Set APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_nsec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_nsec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// **APB_RD_SEC_FAIL** `[3]` (RW)
@@ -16733,13 +16735,13 @@ impl Intr {
     /// Set APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_sec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_sec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// **APB_DCTRL_FAIL** `[2]` (RW)
@@ -16751,13 +16753,13 @@ impl Intr {
     /// Set APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_dctrl_fail(&self) {
-        self.value.set_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.set_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// Clear APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_dctrl_fail(&self) {
-        self.value.clr_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.clr_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// **SBPI_WR_FAIL** `[1]` (RW)
@@ -16769,13 +16771,13 @@ impl Intr {
     /// Set SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_sbpi_wr_fail(&self) {
-        self.value.set_bits(Self::SBPI_WR_FAIL_MASK);
+        self.set_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// Clear SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_sbpi_wr_fail(&self) {
-        self.value.clr_bits(Self::SBPI_WR_FAIL_MASK);
+        self.clr_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// **SBPI_FLAG_N** `[0]` (RO)
@@ -16941,11 +16943,11 @@ impl Intr {
 /// - **SBPI_FLAG_N** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16996,13 +16998,13 @@ impl Inte {
     /// Set APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_nsec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_nsec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// **APB_RD_SEC_FAIL** `[3]` (RW)
@@ -17014,13 +17016,13 @@ impl Inte {
     /// Set APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_sec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_sec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// **APB_DCTRL_FAIL** `[2]` (RW)
@@ -17032,13 +17034,13 @@ impl Inte {
     /// Set APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_dctrl_fail(&self) {
-        self.value.set_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.set_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// Clear APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_dctrl_fail(&self) {
-        self.value.clr_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.clr_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// **SBPI_WR_FAIL** `[1]` (RW)
@@ -17050,13 +17052,13 @@ impl Inte {
     /// Set SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_sbpi_wr_fail(&self) {
-        self.value.set_bits(Self::SBPI_WR_FAIL_MASK);
+        self.set_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// Clear SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_sbpi_wr_fail(&self) {
-        self.value.clr_bits(Self::SBPI_WR_FAIL_MASK);
+        self.clr_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// **SBPI_FLAG_N** `[0]` (RW)
@@ -17068,13 +17070,13 @@ impl Inte {
     /// Set SBPI_FLAG_N bit atomically (RW)
     #[inline(always)]
     pub fn set_sbpi_flag_n(&self) {
-        self.value.set_bits(Self::SBPI_FLAG_N_MASK);
+        self.set_bits(Self::SBPI_FLAG_N_MASK);
     }
 
     /// Clear SBPI_FLAG_N bit atomically (RW)
     #[inline(always)]
     pub fn clr_sbpi_flag_n(&self) {
-        self.value.clr_bits(Self::SBPI_FLAG_N_MASK);
+        self.clr_bits(Self::SBPI_FLAG_N_MASK);
     }
 
 }
@@ -17246,11 +17248,11 @@ impl Inte {
 /// - **SBPI_FLAG_N** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17301,13 +17303,13 @@ impl Intf {
     /// Set APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_nsec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_NSEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_nsec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_NSEC_FAIL_MASK);
     }
 
     /// **APB_RD_SEC_FAIL** `[3]` (RW)
@@ -17319,13 +17321,13 @@ impl Intf {
     /// Set APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_rd_sec_fail(&self) {
-        self.value.set_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.set_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// Clear APB_RD_SEC_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_rd_sec_fail(&self) {
-        self.value.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
+        self.clr_bits(Self::APB_RD_SEC_FAIL_MASK);
     }
 
     /// **APB_DCTRL_FAIL** `[2]` (RW)
@@ -17337,13 +17339,13 @@ impl Intf {
     /// Set APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_apb_dctrl_fail(&self) {
-        self.value.set_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.set_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// Clear APB_DCTRL_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_apb_dctrl_fail(&self) {
-        self.value.clr_bits(Self::APB_DCTRL_FAIL_MASK);
+        self.clr_bits(Self::APB_DCTRL_FAIL_MASK);
     }
 
     /// **SBPI_WR_FAIL** `[1]` (RW)
@@ -17355,13 +17357,13 @@ impl Intf {
     /// Set SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn set_sbpi_wr_fail(&self) {
-        self.value.set_bits(Self::SBPI_WR_FAIL_MASK);
+        self.set_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// Clear SBPI_WR_FAIL bit atomically (RW)
     #[inline(always)]
     pub fn clr_sbpi_wr_fail(&self) {
-        self.value.clr_bits(Self::SBPI_WR_FAIL_MASK);
+        self.clr_bits(Self::SBPI_WR_FAIL_MASK);
     }
 
     /// **SBPI_FLAG_N** `[0]` (RW)
@@ -17373,13 +17375,13 @@ impl Intf {
     /// Set SBPI_FLAG_N bit atomically (RW)
     #[inline(always)]
     pub fn set_sbpi_flag_n(&self) {
-        self.value.set_bits(Self::SBPI_FLAG_N_MASK);
+        self.set_bits(Self::SBPI_FLAG_N_MASK);
     }
 
     /// Clear SBPI_FLAG_N bit atomically (RW)
     #[inline(always)]
     pub fn clr_sbpi_flag_n(&self) {
-        self.value.clr_bits(Self::SBPI_FLAG_N_MASK);
+        self.clr_bits(Self::SBPI_FLAG_N_MASK);
     }
 
 }
@@ -17551,11 +17553,11 @@ impl Intf {
 /// - **SBPI_FLAG_N** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

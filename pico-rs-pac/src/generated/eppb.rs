@@ -324,16 +324,16 @@ impl Sleepctrl {
         (self.value.read_bits() & Self::WICENREQ_MASK) != 0
     }
 
-    /// Set WICENREQ bit atomically (RW)
+    /// Set WICENREQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_wicenreq(&self) {
-        self.value.set_bits(Self::WICENREQ_MASK);
+        self.value.modify_bits(|r| r | Self::WICENREQ_MASK);
     }
 
-    /// Clear WICENREQ bit atomically (RW)
+    /// Clear WICENREQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_wicenreq(&self) {
-        self.value.clr_bits(Self::WICENREQ_MASK);
+        self.value.modify_bits(|r| r & !Self::WICENREQ_MASK);
     }
 
     /// **LIGHT_SLEEP** `[0]` (RW)
@@ -345,16 +345,16 @@ impl Sleepctrl {
         (self.value.read_bits() & Self::LIGHT_SLEEP_MASK) != 0
     }
 
-    /// Set LIGHT_SLEEP bit atomically (RW)
+    /// Set LIGHT_SLEEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_light_sleep(&self) {
-        self.value.set_bits(Self::LIGHT_SLEEP_MASK);
+        self.value.modify_bits(|r| r | Self::LIGHT_SLEEP_MASK);
     }
 
-    /// Clear LIGHT_SLEEP bit atomically (RW)
+    /// Clear LIGHT_SLEEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_light_sleep(&self) {
-        self.value.clr_bits(Self::LIGHT_SLEEP_MASK);
+        self.value.modify_bits(|r| r & !Self::LIGHT_SLEEP_MASK);
     }
 
 }

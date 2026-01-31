@@ -1,5 +1,7 @@
 //! POWMAN
 //! Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides scratch register for general use and for bootcode use
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -17,11 +19,11 @@ pub const BASE: u32 = 0x40100000;
 /// - **BADPASSWD** `[0]` (RW)
 #[repr(transparent)]
 pub struct Badpasswd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Badpasswd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -48,13 +50,13 @@ impl Badpasswd {
     /// Set BADPASSWD bit atomically (RW)
     #[inline(always)]
     pub fn set_badpasswd(&self) {
-        self.value.set_bits(Self::BADPASSWD_MASK);
+        self.set_bits(Self::BADPASSWD_MASK);
     }
 
     /// Clear BADPASSWD bit atomically (RW)
     #[inline(always)]
     pub fn clr_badpasswd(&self) {
-        self.value.clr_bits(Self::BADPASSWD_MASK);
+        self.clr_bits(Self::BADPASSWD_MASK);
     }
 
 }
@@ -180,11 +182,11 @@ impl Badpasswd {
 ///   111 - 150C
 #[repr(transparent)]
 pub struct VregCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for VregCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -269,13 +271,13 @@ impl VregCtrl {
     /// Set RST_N bit atomically (RW)
     #[inline(always)]
     pub fn set_rst_n(&self) {
-        self.value.set_bits(Self::RST_N_MASK);
+        self.set_bits(Self::RST_N_MASK);
     }
 
     /// Clear RST_N bit atomically (RW)
     #[inline(always)]
     pub fn clr_rst_n(&self) {
-        self.value.clr_bits(Self::RST_N_MASK);
+        self.clr_bits(Self::RST_N_MASK);
     }
 
     /// **UNLOCK** `[13]` (RW)
@@ -292,13 +294,13 @@ impl VregCtrl {
     /// Set UNLOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_unlock(&self) {
-        self.value.set_bits(Self::UNLOCK_MASK);
+        self.set_bits(Self::UNLOCK_MASK);
     }
 
     /// Clear UNLOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_unlock(&self) {
-        self.value.clr_bits(Self::UNLOCK_MASK);
+        self.clr_bits(Self::UNLOCK_MASK);
     }
 
     /// **ISOLATE** `[12]` (RW)
@@ -314,13 +316,13 @@ impl VregCtrl {
     /// Set ISOLATE bit atomically (RW)
     #[inline(always)]
     pub fn set_isolate(&self) {
-        self.value.set_bits(Self::ISOLATE_MASK);
+        self.set_bits(Self::ISOLATE_MASK);
     }
 
     /// Clear ISOLATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_isolate(&self) {
-        self.value.clr_bits(Self::ISOLATE_MASK);
+        self.clr_bits(Self::ISOLATE_MASK);
     }
 
     /// **DISABLE_VOLTAGE_LIMIT** `[8]` (RW)
@@ -334,13 +336,13 @@ impl VregCtrl {
     /// Set DISABLE_VOLTAGE_LIMIT bit atomically (RW)
     #[inline(always)]
     pub fn set_disable_voltage_limit(&self) {
-        self.value.set_bits(Self::DISABLE_VOLTAGE_LIMIT_MASK);
+        self.set_bits(Self::DISABLE_VOLTAGE_LIMIT_MASK);
     }
 
     /// Clear DISABLE_VOLTAGE_LIMIT bit atomically (RW)
     #[inline(always)]
     pub fn clr_disable_voltage_limit(&self) {
-        self.value.clr_bits(Self::DISABLE_VOLTAGE_LIMIT_MASK);
+        self.clr_bits(Self::DISABLE_VOLTAGE_LIMIT_MASK);
     }
 
     /// **HT_TH** `[6:4]` (RW)
@@ -594,11 +596,11 @@ impl VregCtrl {
 ///   0=startup complete, 1=starting up
 #[repr(transparent)]
 pub struct VregSts {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for VregSts {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -783,11 +785,11 @@ impl VregSts {
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
 pub struct Vreg {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Vreg {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -966,13 +968,13 @@ impl Vreg {
     /// Set HIZ bit atomically (RW)
     #[inline(always)]
     pub fn set_hiz(&self) {
-        self.value.set_bits(Self::HIZ_MASK);
+        self.set_bits(Self::HIZ_MASK);
     }
 
     /// Clear HIZ bit atomically (RW)
     #[inline(always)]
     pub fn clr_hiz(&self) {
-        self.value.clr_bits(Self::HIZ_MASK);
+        self.clr_bits(Self::HIZ_MASK);
     }
 
 }
@@ -1213,11 +1215,11 @@ impl Vreg {
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
 pub struct VregLpEntry {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for VregLpEntry {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1391,13 +1393,13 @@ impl VregLpEntry {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **HIZ** `[1]` (RW)
@@ -1412,13 +1414,13 @@ impl VregLpEntry {
     /// Set HIZ bit atomically (RW)
     #[inline(always)]
     pub fn set_hiz(&self) {
-        self.value.set_bits(Self::HIZ_MASK);
+        self.set_bits(Self::HIZ_MASK);
     }
 
     /// Clear HIZ bit atomically (RW)
     #[inline(always)]
     pub fn clr_hiz(&self) {
-        self.value.clr_bits(Self::HIZ_MASK);
+        self.clr_bits(Self::HIZ_MASK);
     }
 
 }
@@ -1678,11 +1680,11 @@ impl VregLpEntry {
 ///   0=not in high impedance mode, 1=in high impedance mode
 #[repr(transparent)]
 pub struct VregLpExit {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for VregLpExit {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1856,13 +1858,13 @@ impl VregLpExit {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **HIZ** `[1]` (RW)
@@ -1877,13 +1879,13 @@ impl VregLpExit {
     /// Set HIZ bit atomically (RW)
     #[inline(always)]
     pub fn set_hiz(&self) {
-        self.value.set_bits(Self::HIZ_MASK);
+        self.set_bits(Self::HIZ_MASK);
     }
 
     /// Clear HIZ bit atomically (RW)
     #[inline(always)]
     pub fn clr_hiz(&self) {
-        self.value.clr_bits(Self::HIZ_MASK);
+        self.clr_bits(Self::HIZ_MASK);
     }
 
 }
@@ -2099,11 +2101,11 @@ impl VregLpExit {
 ///   1 - isolated
 #[repr(transparent)]
 pub struct BodCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BodCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2139,13 +2141,13 @@ impl BodCtrl {
     /// Set ISOLATE bit atomically (RW)
     #[inline(always)]
     pub fn set_isolate(&self) {
-        self.value.set_bits(Self::ISOLATE_MASK);
+        self.set_bits(Self::ISOLATE_MASK);
     }
 
     /// Clear ISOLATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_isolate(&self) {
-        self.value.clr_bits(Self::ISOLATE_MASK);
+        self.clr_bits(Self::ISOLATE_MASK);
     }
 
 }
@@ -2270,11 +2272,11 @@ impl BodCtrl {
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
 pub struct Bod {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bod {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2386,13 +2388,13 @@ impl Bod {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -2569,11 +2571,11 @@ impl Bod {
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
 pub struct BodLpEntry {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BodLpEntry {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2685,13 +2687,13 @@ impl BodLpEntry {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -2868,11 +2870,11 @@ impl BodLpEntry {
 ///   0=not enabled, 1=enabled
 #[repr(transparent)]
 pub struct BodLpExit {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BodLpExit {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2984,13 +2986,13 @@ impl BodLpExit {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -3148,11 +3150,11 @@ impl BodLpExit {
 ///   This feature has been removed
 #[repr(transparent)]
 pub struct Lposc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Lposc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3495,11 +3497,11 @@ impl Lposc {
 ///   This flag is set by double-tapping RUN. It tells bootcode to go into the bootloader.
 #[repr(transparent)]
 pub struct ChipReset {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ChipReset {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3988,13 +3990,13 @@ impl ChipReset {
     /// Set RESCUE_FLAG bit atomically (RW)
     #[inline(always)]
     pub fn set_rescue_flag(&self) {
-        self.value.set_bits(Self::RESCUE_FLAG_MASK);
+        self.set_bits(Self::RESCUE_FLAG_MASK);
     }
 
     /// Clear RESCUE_FLAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_rescue_flag(&self) {
-        self.value.clr_bits(Self::RESCUE_FLAG_MASK);
+        self.clr_bits(Self::RESCUE_FLAG_MASK);
     }
 
     /// **DOUBLE_TAP** `[0]` (RW)
@@ -4008,13 +4010,13 @@ impl ChipReset {
     /// Set DOUBLE_TAP bit atomically (RW)
     #[inline(always)]
     pub fn set_double_tap(&self) {
-        self.value.set_bits(Self::DOUBLE_TAP_MASK);
+        self.set_bits(Self::DOUBLE_TAP_MASK);
     }
 
     /// Clear DOUBLE_TAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_tap(&self) {
-        self.value.clr_bits(Self::DOUBLE_TAP_MASK);
+        self.clr_bits(Self::DOUBLE_TAP_MASK);
     }
 
 }
@@ -4375,11 +4377,11 @@ impl ChipReset {
 ///   This does not rely on clk_ref running
 #[repr(transparent)]
 pub struct Wdsel {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Wdsel {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4448,13 +4450,13 @@ impl Wdsel {
     /// Set RESET_RSM bit atomically (RW)
     #[inline(always)]
     pub fn set_reset_rsm(&self) {
-        self.value.set_bits(Self::RESET_RSM_MASK);
+        self.set_bits(Self::RESET_RSM_MASK);
     }
 
     /// Clear RESET_RSM bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset_rsm(&self) {
-        self.value.clr_bits(Self::RESET_RSM_MASK);
+        self.clr_bits(Self::RESET_RSM_MASK);
     }
 
     /// **RESET_SWCORE** `[8]` (RW)
@@ -4470,13 +4472,13 @@ impl Wdsel {
     /// Set RESET_SWCORE bit atomically (RW)
     #[inline(always)]
     pub fn set_reset_swcore(&self) {
-        self.value.set_bits(Self::RESET_SWCORE_MASK);
+        self.set_bits(Self::RESET_SWCORE_MASK);
     }
 
     /// Clear RESET_SWCORE bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset_swcore(&self) {
-        self.value.clr_bits(Self::RESET_SWCORE_MASK);
+        self.clr_bits(Self::RESET_SWCORE_MASK);
     }
 
     /// **RESET_POWMAN** `[4]` (RW)
@@ -4492,13 +4494,13 @@ impl Wdsel {
     /// Set RESET_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_reset_powman(&self) {
-        self.value.set_bits(Self::RESET_POWMAN_MASK);
+        self.set_bits(Self::RESET_POWMAN_MASK);
     }
 
     /// Clear RESET_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset_powman(&self) {
-        self.value.clr_bits(Self::RESET_POWMAN_MASK);
+        self.clr_bits(Self::RESET_POWMAN_MASK);
     }
 
     /// **RESET_POWMAN_ASYNC** `[0]` (RW)
@@ -4514,13 +4516,13 @@ impl Wdsel {
     /// Set RESET_POWMAN_ASYNC bit atomically (RW)
     #[inline(always)]
     pub fn set_reset_powman_async(&self) {
-        self.value.set_bits(Self::RESET_POWMAN_ASYNC_MASK);
+        self.set_bits(Self::RESET_POWMAN_ASYNC_MASK);
     }
 
     /// Clear RESET_POWMAN_ASYNC bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset_powman_async(&self) {
-        self.value.clr_bits(Self::RESET_POWMAN_ASYNC_MASK);
+        self.clr_bits(Self::RESET_POWMAN_ASYNC_MASK);
     }
 
 }
@@ -4758,11 +4760,11 @@ impl Wdsel {
 ///   1=no change
 #[repr(transparent)]
 pub struct SeqCfg {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SeqCfg {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4933,13 +4935,13 @@ impl SeqCfg {
     /// Set USE_FAST_POWCK bit atomically (RW)
     #[inline(always)]
     pub fn set_use_fast_powck(&self) {
-        self.value.set_bits(Self::USE_FAST_POWCK_MASK);
+        self.set_bits(Self::USE_FAST_POWCK_MASK);
     }
 
     /// Clear USE_FAST_POWCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_fast_powck(&self) {
-        self.value.clr_bits(Self::USE_FAST_POWCK_MASK);
+        self.clr_bits(Self::USE_FAST_POWCK_MASK);
     }
 
     /// **RUN_LPOSC_IN_LP** `[8]` (RW)
@@ -4954,13 +4956,13 @@ impl SeqCfg {
     /// Set RUN_LPOSC_IN_LP bit atomically (RW)
     #[inline(always)]
     pub fn set_run_lposc_in_lp(&self) {
-        self.value.set_bits(Self::RUN_LPOSC_IN_LP_MASK);
+        self.set_bits(Self::RUN_LPOSC_IN_LP_MASK);
     }
 
     /// Clear RUN_LPOSC_IN_LP bit atomically (RW)
     #[inline(always)]
     pub fn clr_run_lposc_in_lp(&self) {
-        self.value.clr_bits(Self::RUN_LPOSC_IN_LP_MASK);
+        self.clr_bits(Self::RUN_LPOSC_IN_LP_MASK);
     }
 
     /// **USE_BOD_HP** `[7]` (RW)
@@ -4975,13 +4977,13 @@ impl SeqCfg {
     /// Set USE_BOD_HP bit atomically (RW)
     #[inline(always)]
     pub fn set_use_bod_hp(&self) {
-        self.value.set_bits(Self::USE_BOD_HP_MASK);
+        self.set_bits(Self::USE_BOD_HP_MASK);
     }
 
     /// Clear USE_BOD_HP bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_bod_hp(&self) {
-        self.value.clr_bits(Self::USE_BOD_HP_MASK);
+        self.clr_bits(Self::USE_BOD_HP_MASK);
     }
 
     /// **USE_BOD_LP** `[6]` (RW)
@@ -4996,13 +4998,13 @@ impl SeqCfg {
     /// Set USE_BOD_LP bit atomically (RW)
     #[inline(always)]
     pub fn set_use_bod_lp(&self) {
-        self.value.set_bits(Self::USE_BOD_LP_MASK);
+        self.set_bits(Self::USE_BOD_LP_MASK);
     }
 
     /// Clear USE_BOD_LP bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_bod_lp(&self) {
-        self.value.clr_bits(Self::USE_BOD_LP_MASK);
+        self.clr_bits(Self::USE_BOD_LP_MASK);
     }
 
     /// **USE_VREG_HP** `[5]` (RW)
@@ -5017,13 +5019,13 @@ impl SeqCfg {
     /// Set USE_VREG_HP bit atomically (RW)
     #[inline(always)]
     pub fn set_use_vreg_hp(&self) {
-        self.value.set_bits(Self::USE_VREG_HP_MASK);
+        self.set_bits(Self::USE_VREG_HP_MASK);
     }
 
     /// Clear USE_VREG_HP bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_vreg_hp(&self) {
-        self.value.clr_bits(Self::USE_VREG_HP_MASK);
+        self.clr_bits(Self::USE_VREG_HP_MASK);
     }
 
     /// **USE_VREG_LP** `[4]` (RW)
@@ -5038,13 +5040,13 @@ impl SeqCfg {
     /// Set USE_VREG_LP bit atomically (RW)
     #[inline(always)]
     pub fn set_use_vreg_lp(&self) {
-        self.value.set_bits(Self::USE_VREG_LP_MASK);
+        self.set_bits(Self::USE_VREG_LP_MASK);
     }
 
     /// Clear USE_VREG_LP bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_vreg_lp(&self) {
-        self.value.clr_bits(Self::USE_VREG_LP_MASK);
+        self.clr_bits(Self::USE_VREG_LP_MASK);
     }
 
     /// **HW_PWRUP_SRAM0** `[1]` (RW)
@@ -5060,13 +5062,13 @@ impl SeqCfg {
     /// Set HW_PWRUP_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_hw_pwrup_sram0(&self) {
-        self.value.set_bits(Self::HW_PWRUP_SRAM0_MASK);
+        self.set_bits(Self::HW_PWRUP_SRAM0_MASK);
     }
 
     /// Clear HW_PWRUP_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_hw_pwrup_sram0(&self) {
-        self.value.clr_bits(Self::HW_PWRUP_SRAM0_MASK);
+        self.clr_bits(Self::HW_PWRUP_SRAM0_MASK);
     }
 
     /// **HW_PWRUP_SRAM1** `[0]` (RW)
@@ -5082,13 +5084,13 @@ impl SeqCfg {
     /// Set HW_PWRUP_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_hw_pwrup_sram1(&self) {
-        self.value.set_bits(Self::HW_PWRUP_SRAM1_MASK);
+        self.set_bits(Self::HW_PWRUP_SRAM1_MASK);
     }
 
     /// Clear HW_PWRUP_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_hw_pwrup_sram1(&self) {
-        self.value.clr_bits(Self::HW_PWRUP_SRAM1_MASK);
+        self.clr_bits(Self::HW_PWRUP_SRAM1_MASK);
     }
 
 }
@@ -5432,11 +5434,11 @@ impl SeqCfg {
 ///   Indicates the current power state
 #[repr(transparent)]
 pub struct State {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for State {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5561,13 +5563,13 @@ impl State {
     /// Set PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn set_pwrup_while_waiting(&self) {
-        self.value.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// Clear PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwrup_while_waiting(&self) {
-        self.value.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// **REQ_IGNORED** `[8]` (RW)
@@ -5581,13 +5583,13 @@ impl State {
     /// Set REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn set_req_ignored(&self) {
-        self.value.set_bits(Self::REQ_IGNORED_MASK);
+        self.set_bits(Self::REQ_IGNORED_MASK);
     }
 
     /// Clear REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn clr_req_ignored(&self) {
-        self.value.clr_bits(Self::REQ_IGNORED_MASK);
+        self.clr_bits(Self::REQ_IGNORED_MASK);
     }
 
     /// **REQ** `[7:4]` (RW)
@@ -5789,11 +5791,11 @@ impl State {
 ///   when clk_pow is running from the fast clock it is divided by tick_div
 #[repr(transparent)]
 pub struct PowFastdiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PowFastdiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5941,11 +5943,11 @@ impl PowFastdiv {
 ///   measured in units of the lposc period, 0 gives a delay of 1 unit
 #[repr(transparent)]
 pub struct PowDelay {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PowDelay {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6184,11 +6186,11 @@ impl PowDelay {
 ///   set to 31 to disable this feature
 #[repr(transparent)]
 pub struct ExtCtrl0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ExtCtrl0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6250,13 +6252,13 @@ impl ExtCtrl0 {
     /// Set LP_EXIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_lp_exit_state(&self) {
-        self.value.set_bits(Self::LP_EXIT_STATE_MASK);
+        self.set_bits(Self::LP_EXIT_STATE_MASK);
     }
 
     /// Clear LP_EXIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_lp_exit_state(&self) {
-        self.value.clr_bits(Self::LP_EXIT_STATE_MASK);
+        self.clr_bits(Self::LP_EXIT_STATE_MASK);
     }
 
     /// **LP_ENTRY_STATE** `[13]` (RW)
@@ -6270,13 +6272,13 @@ impl ExtCtrl0 {
     /// Set LP_ENTRY_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_lp_entry_state(&self) {
-        self.value.set_bits(Self::LP_ENTRY_STATE_MASK);
+        self.set_bits(Self::LP_ENTRY_STATE_MASK);
     }
 
     /// Clear LP_ENTRY_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_lp_entry_state(&self) {
-        self.value.clr_bits(Self::LP_ENTRY_STATE_MASK);
+        self.clr_bits(Self::LP_ENTRY_STATE_MASK);
     }
 
     /// **INIT_STATE** `[12]` (RW)
@@ -6288,13 +6290,13 @@ impl ExtCtrl0 {
     /// Set INIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_init_state(&self) {
-        self.value.set_bits(Self::INIT_STATE_MASK);
+        self.set_bits(Self::INIT_STATE_MASK);
     }
 
     /// Clear INIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_init_state(&self) {
-        self.value.clr_bits(Self::INIT_STATE_MASK);
+        self.clr_bits(Self::INIT_STATE_MASK);
     }
 
     /// **INIT** `[8]` (RW)
@@ -6306,13 +6308,13 @@ impl ExtCtrl0 {
     /// Set INIT bit atomically (RW)
     #[inline(always)]
     pub fn set_init(&self) {
-        self.value.set_bits(Self::INIT_MASK);
+        self.set_bits(Self::INIT_MASK);
     }
 
     /// Clear INIT bit atomically (RW)
     #[inline(always)]
     pub fn clr_init(&self) {
-        self.value.clr_bits(Self::INIT_MASK);
+        self.clr_bits(Self::INIT_MASK);
     }
 
     /// **GPIO_SELECT** `[5:0]` (RW)
@@ -6519,11 +6521,11 @@ impl ExtCtrl0 {
 ///   set to 31 to disable this feature
 #[repr(transparent)]
 pub struct ExtCtrl1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ExtCtrl1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6585,13 +6587,13 @@ impl ExtCtrl1 {
     /// Set LP_EXIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_lp_exit_state(&self) {
-        self.value.set_bits(Self::LP_EXIT_STATE_MASK);
+        self.set_bits(Self::LP_EXIT_STATE_MASK);
     }
 
     /// Clear LP_EXIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_lp_exit_state(&self) {
-        self.value.clr_bits(Self::LP_EXIT_STATE_MASK);
+        self.clr_bits(Self::LP_EXIT_STATE_MASK);
     }
 
     /// **LP_ENTRY_STATE** `[13]` (RW)
@@ -6605,13 +6607,13 @@ impl ExtCtrl1 {
     /// Set LP_ENTRY_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_lp_entry_state(&self) {
-        self.value.set_bits(Self::LP_ENTRY_STATE_MASK);
+        self.set_bits(Self::LP_ENTRY_STATE_MASK);
     }
 
     /// Clear LP_ENTRY_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_lp_entry_state(&self) {
-        self.value.clr_bits(Self::LP_ENTRY_STATE_MASK);
+        self.clr_bits(Self::LP_ENTRY_STATE_MASK);
     }
 
     /// **INIT_STATE** `[12]` (RW)
@@ -6623,13 +6625,13 @@ impl ExtCtrl1 {
     /// Set INIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn set_init_state(&self) {
-        self.value.set_bits(Self::INIT_STATE_MASK);
+        self.set_bits(Self::INIT_STATE_MASK);
     }
 
     /// Clear INIT_STATE bit atomically (RW)
     #[inline(always)]
     pub fn clr_init_state(&self) {
-        self.value.clr_bits(Self::INIT_STATE_MASK);
+        self.clr_bits(Self::INIT_STATE_MASK);
     }
 
     /// **INIT** `[8]` (RW)
@@ -6641,13 +6643,13 @@ impl ExtCtrl1 {
     /// Set INIT bit atomically (RW)
     #[inline(always)]
     pub fn set_init(&self) {
-        self.value.set_bits(Self::INIT_MASK);
+        self.set_bits(Self::INIT_MASK);
     }
 
     /// Clear INIT bit atomically (RW)
     #[inline(always)]
     pub fn clr_init(&self) {
-        self.value.clr_bits(Self::INIT_MASK);
+        self.clr_bits(Self::INIT_MASK);
     }
 
     /// **GPIO_SELECT** `[5:0]` (RW)
@@ -6848,11 +6850,11 @@ impl ExtCtrl1 {
 ///   3 -> gpio22
 #[repr(transparent)]
 pub struct ExtTimeRef {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ExtTimeRef {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6895,13 +6897,13 @@ impl ExtTimeRef {
     /// Set DRIVE_LPCK bit atomically (RW)
     #[inline(always)]
     pub fn set_drive_lpck(&self) {
-        self.value.set_bits(Self::DRIVE_LPCK_MASK);
+        self.set_bits(Self::DRIVE_LPCK_MASK);
     }
 
     /// Clear DRIVE_LPCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_drive_lpck(&self) {
-        self.value.clr_bits(Self::DRIVE_LPCK_MASK);
+        self.clr_bits(Self::DRIVE_LPCK_MASK);
     }
 
     /// **SOURCE_SEL** `[1:0]` (RW)
@@ -7045,11 +7047,11 @@ impl ExtTimeRef {
 ///   Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
 #[repr(transparent)]
 pub struct LposcFreqKhzInt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for LposcFreqKhzInt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7176,11 +7178,11 @@ impl LposcFreqKhzInt {
 ///   Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
 #[repr(transparent)]
 pub struct LposcFreqKhzFrac {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for LposcFreqKhzFrac {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7307,11 +7309,11 @@ impl LposcFreqKhzFrac {
 ///   Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
 #[repr(transparent)]
 pub struct XoscFreqKhzInt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XoscFreqKhzInt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7438,11 +7440,11 @@ impl XoscFreqKhzInt {
 ///   Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
 #[repr(transparent)]
 pub struct XoscFreqKhzFrac {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for XoscFreqKhzFrac {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7567,11 +7569,11 @@ impl XoscFreqKhzFrac {
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime63to48 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetTime63to48 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7696,11 +7698,11 @@ impl SetTime63to48 {
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime47to32 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetTime47to32 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7825,11 +7827,11 @@ impl SetTime47to32 {
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime31to16 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetTime31to16 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7954,11 +7956,11 @@ impl SetTime31to16 {
 ///   For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
 #[repr(transparent)]
 pub struct SetTime15to0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetTime15to0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8083,11 +8085,11 @@ impl SetTime15to0 {
 ///   For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
 #[repr(transparent)]
 pub struct ReadTimeUpper {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ReadTimeUpper {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8194,11 +8196,11 @@ impl ReadTimeUpper {
 ///   For reading bits 31:0 of the timer.
 #[repr(transparent)]
 pub struct ReadTimeLower {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ReadTimeLower {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8305,11 +8307,11 @@ impl ReadTimeLower {
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime63to48 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AlarmTime63to48 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8434,11 +8436,11 @@ impl AlarmTime63to48 {
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime47to32 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AlarmTime47to32 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8563,11 +8565,11 @@ impl AlarmTime47to32 {
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime31to16 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AlarmTime31to16 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8692,11 +8694,11 @@ impl AlarmTime31to16 {
 ///   This field must only be written when POWMAN_ALARM_ENAB=0
 #[repr(transparent)]
 pub struct AlarmTime15to0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AlarmTime15to0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8875,11 +8877,11 @@ impl AlarmTime15to0 {
 ///   Control whether Non-secure software can write to the timer registers. All other registers are hardwired to be inaccessible to Non-secure.
 #[repr(transparent)]
 pub struct Timer {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timer {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9062,13 +9064,13 @@ impl Timer {
     /// Set USE_GPIO_1HZ bit atomically (RW)
     #[inline(always)]
     pub fn set_use_gpio_1hz(&self) {
-        self.value.set_bits(Self::USE_GPIO_1HZ_MASK);
+        self.set_bits(Self::USE_GPIO_1HZ_MASK);
     }
 
     /// Clear USE_GPIO_1HZ bit atomically (RW)
     #[inline(always)]
     pub fn clr_use_gpio_1hz(&self) {
-        self.value.clr_bits(Self::USE_GPIO_1HZ_MASK);
+        self.clr_bits(Self::USE_GPIO_1HZ_MASK);
     }
 
     /// Trigger **USE_GPIO_1KHZ** (WO)
@@ -9106,13 +9108,13 @@ impl Timer {
     /// Set ALARM bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm(&self) {
-        self.value.set_bits(Self::ALARM_MASK);
+        self.set_bits(Self::ALARM_MASK);
     }
 
     /// Clear ALARM bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm(&self) {
-        self.value.clr_bits(Self::ALARM_MASK);
+        self.clr_bits(Self::ALARM_MASK);
     }
 
     /// **PWRUP_ON_ALARM** `[5]` (RW)
@@ -9126,13 +9128,13 @@ impl Timer {
     /// Set PWRUP_ON_ALARM bit atomically (RW)
     #[inline(always)]
     pub fn set_pwrup_on_alarm(&self) {
-        self.value.set_bits(Self::PWRUP_ON_ALARM_MASK);
+        self.set_bits(Self::PWRUP_ON_ALARM_MASK);
     }
 
     /// Clear PWRUP_ON_ALARM bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwrup_on_alarm(&self) {
-        self.value.clr_bits(Self::PWRUP_ON_ALARM_MASK);
+        self.clr_bits(Self::PWRUP_ON_ALARM_MASK);
     }
 
     /// **ALARM_ENAB** `[4]` (RW)
@@ -9146,13 +9148,13 @@ impl Timer {
     /// Set ALARM_ENAB bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_enab(&self) {
-        self.value.set_bits(Self::ALARM_ENAB_MASK);
+        self.set_bits(Self::ALARM_ENAB_MASK);
     }
 
     /// Clear ALARM_ENAB bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_enab(&self) {
-        self.value.clr_bits(Self::ALARM_ENAB_MASK);
+        self.clr_bits(Self::ALARM_ENAB_MASK);
     }
 
     /// Trigger **CLEAR** (WO)
@@ -9176,13 +9178,13 @@ impl Timer {
     /// Set RUN bit atomically (RW)
     #[inline(always)]
     pub fn set_run(&self) {
-        self.value.set_bits(Self::RUN_MASK);
+        self.set_bits(Self::RUN_MASK);
     }
 
     /// Clear RUN bit atomically (RW)
     #[inline(always)]
     pub fn clr_run(&self) {
-        self.value.clr_bits(Self::RUN_MASK);
+        self.clr_bits(Self::RUN_MASK);
     }
 
     /// **NONSEC_WRITE** `[0]` (RW)
@@ -9196,13 +9198,13 @@ impl Timer {
     /// Set NONSEC_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_nonsec_write(&self) {
-        self.value.set_bits(Self::NONSEC_WRITE_MASK);
+        self.set_bits(Self::NONSEC_WRITE_MASK);
     }
 
     /// Clear NONSEC_WRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nonsec_write(&self) {
-        self.value.clr_bits(Self::NONSEC_WRITE_MASK);
+        self.clr_bits(Self::NONSEC_WRITE_MASK);
     }
 
 }
@@ -9533,11 +9535,11 @@ impl Timer {
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwrup0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9624,13 +9626,13 @@ impl Pwrup0 {
     /// Set STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_status(&self) {
-        self.value.set_bits(Self::STATUS_MASK);
+        self.set_bits(Self::STATUS_MASK);
     }
 
     /// Clear STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_status(&self) {
-        self.value.clr_bits(Self::STATUS_MASK);
+        self.clr_bits(Self::STATUS_MASK);
     }
 
     /// **MODE** `[8]` (RW)
@@ -9644,13 +9646,13 @@ impl Pwrup0 {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **DIRECTION** `[7]` (RW)
@@ -9662,13 +9664,13 @@ impl Pwrup0 {
     /// Set DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn set_direction(&self) {
-        self.value.set_bits(Self::DIRECTION_MASK);
+        self.set_bits(Self::DIRECTION_MASK);
     }
 
     /// Clear DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_direction(&self) {
-        self.value.clr_bits(Self::DIRECTION_MASK);
+        self.clr_bits(Self::DIRECTION_MASK);
     }
 
     /// **ENABLE** `[6]` (RW)
@@ -9683,13 +9685,13 @@ impl Pwrup0 {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **SOURCE** `[5:0]` (RW)
@@ -9916,11 +9918,11 @@ impl Pwrup0 {
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwrup1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10007,13 +10009,13 @@ impl Pwrup1 {
     /// Set STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_status(&self) {
-        self.value.set_bits(Self::STATUS_MASK);
+        self.set_bits(Self::STATUS_MASK);
     }
 
     /// Clear STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_status(&self) {
-        self.value.clr_bits(Self::STATUS_MASK);
+        self.clr_bits(Self::STATUS_MASK);
     }
 
     /// **MODE** `[8]` (RW)
@@ -10027,13 +10029,13 @@ impl Pwrup1 {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **DIRECTION** `[7]` (RW)
@@ -10045,13 +10047,13 @@ impl Pwrup1 {
     /// Set DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn set_direction(&self) {
-        self.value.set_bits(Self::DIRECTION_MASK);
+        self.set_bits(Self::DIRECTION_MASK);
     }
 
     /// Clear DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_direction(&self) {
-        self.value.clr_bits(Self::DIRECTION_MASK);
+        self.clr_bits(Self::DIRECTION_MASK);
     }
 
     /// **ENABLE** `[6]` (RW)
@@ -10066,13 +10068,13 @@ impl Pwrup1 {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **SOURCE** `[5:0]` (RW)
@@ -10299,11 +10301,11 @@ impl Pwrup1 {
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwrup2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10390,13 +10392,13 @@ impl Pwrup2 {
     /// Set STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_status(&self) {
-        self.value.set_bits(Self::STATUS_MASK);
+        self.set_bits(Self::STATUS_MASK);
     }
 
     /// Clear STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_status(&self) {
-        self.value.clr_bits(Self::STATUS_MASK);
+        self.clr_bits(Self::STATUS_MASK);
     }
 
     /// **MODE** `[8]` (RW)
@@ -10410,13 +10412,13 @@ impl Pwrup2 {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **DIRECTION** `[7]` (RW)
@@ -10428,13 +10430,13 @@ impl Pwrup2 {
     /// Set DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn set_direction(&self) {
-        self.value.set_bits(Self::DIRECTION_MASK);
+        self.set_bits(Self::DIRECTION_MASK);
     }
 
     /// Clear DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_direction(&self) {
-        self.value.clr_bits(Self::DIRECTION_MASK);
+        self.clr_bits(Self::DIRECTION_MASK);
     }
 
     /// **ENABLE** `[6]` (RW)
@@ -10449,13 +10451,13 @@ impl Pwrup2 {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **SOURCE** `[5:0]` (RW)
@@ -10682,11 +10684,11 @@ impl Pwrup2 {
 /// - **SOURCE** `[5:0]` (RW)
 #[repr(transparent)]
 pub struct Pwrup3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwrup3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10773,13 +10775,13 @@ impl Pwrup3 {
     /// Set STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_status(&self) {
-        self.value.set_bits(Self::STATUS_MASK);
+        self.set_bits(Self::STATUS_MASK);
     }
 
     /// Clear STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_status(&self) {
-        self.value.clr_bits(Self::STATUS_MASK);
+        self.clr_bits(Self::STATUS_MASK);
     }
 
     /// **MODE** `[8]` (RW)
@@ -10793,13 +10795,13 @@ impl Pwrup3 {
     /// Set MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_mode(&self) {
-        self.value.set_bits(Self::MODE_MASK);
+        self.set_bits(Self::MODE_MASK);
     }
 
     /// Clear MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_mode(&self) {
-        self.value.clr_bits(Self::MODE_MASK);
+        self.clr_bits(Self::MODE_MASK);
     }
 
     /// **DIRECTION** `[7]` (RW)
@@ -10811,13 +10813,13 @@ impl Pwrup3 {
     /// Set DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn set_direction(&self) {
-        self.value.set_bits(Self::DIRECTION_MASK);
+        self.set_bits(Self::DIRECTION_MASK);
     }
 
     /// Clear DIRECTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_direction(&self) {
-        self.value.clr_bits(Self::DIRECTION_MASK);
+        self.clr_bits(Self::DIRECTION_MASK);
     }
 
     /// **ENABLE** `[6]` (RW)
@@ -10832,13 +10834,13 @@ impl Pwrup3 {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **SOURCE** `[5:0]` (RW)
@@ -11040,11 +11042,11 @@ impl Pwrup3 {
 /// - **CURRENT_PWRUP_REQ** `[6:0]` (RO)
 #[repr(transparent)]
 pub struct CurrentPwrupReq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CurrentPwrupReq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11151,11 +11153,11 @@ impl CurrentPwrupReq {
 /// - **LAST_SWCORE_PWRUP** `[6:0]` (RO)
 #[repr(transparent)]
 pub struct LastSwcorePwrup {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for LastSwcorePwrup {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11255,11 +11257,11 @@ impl LastSwcorePwrup {
 ///   Ignore pwrup req from debugger. If pwrup req is asserted then this will prevent power down and set powerdown blocked. Set ignore to stop paying attention to pwrup_req
 #[repr(transparent)]
 pub struct DbgPwrcfg {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DbgPwrcfg {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11291,13 +11293,13 @@ impl DbgPwrcfg {
     /// Set IGNORE bit atomically (RW)
     #[inline(always)]
     pub fn set_ignore(&self) {
-        self.value.set_bits(Self::IGNORE_MASK);
+        self.set_bits(Self::IGNORE_MASK);
     }
 
     /// Clear IGNORE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ignore(&self) {
-        self.value.clr_bits(Self::IGNORE_MASK);
+        self.clr_bits(Self::IGNORE_MASK);
     }
 
 }
@@ -11405,11 +11407,11 @@ impl DbgPwrcfg {
 ///   The bootrom checks this flag before reading the BOOT0..3 registers. If it is set, the bootrom clears it, and ignores the BOOT registers. This prevents Secure software from diverting the boot path before a bootloader has had the chance to soft lock OTP pages containing sensitive data.
 #[repr(transparent)]
 pub struct Bootdis {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bootdis {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11455,13 +11457,13 @@ impl Bootdis {
     /// Set NEXT bit atomically (RW)
     #[inline(always)]
     pub fn set_next(&self) {
-        self.value.set_bits(Self::NEXT_MASK);
+        self.set_bits(Self::NEXT_MASK);
     }
 
     /// Clear NEXT bit atomically (RW)
     #[inline(always)]
     pub fn clr_next(&self) {
-        self.value.clr_bits(Self::NEXT_MASK);
+        self.clr_bits(Self::NEXT_MASK);
     }
 
     /// **NOW** `[0]` (RW)
@@ -11476,13 +11478,13 @@ impl Bootdis {
     /// Set NOW bit atomically (RW)
     #[inline(always)]
     pub fn set_now(&self) {
-        self.value.set_bits(Self::NOW_MASK);
+        self.set_bits(Self::NOW_MASK);
     }
 
     /// Clear NOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_now(&self) {
-        self.value.clr_bits(Self::NOW_MASK);
+        self.clr_bits(Self::NOW_MASK);
     }
 
 }
@@ -11607,11 +11609,11 @@ impl Bootdis {
 ///   Recommend that this is NOT changed until you require debug access in multi-chip environment
 #[repr(transparent)]
 pub struct Dbgconfig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dbgconfig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11741,11 +11743,11 @@ impl Dbgconfig {
 /// - **SCRATCH0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11859,11 +11861,11 @@ impl Scratch0 {
 /// - **SCRATCH1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11977,11 +11979,11 @@ impl Scratch1 {
 /// - **SCRATCH2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12095,11 +12097,11 @@ impl Scratch2 {
 /// - **SCRATCH3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12213,11 +12215,11 @@ impl Scratch3 {
 /// - **SCRATCH4** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12331,11 +12333,11 @@ impl Scratch4 {
 /// - **SCRATCH5** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12449,11 +12451,11 @@ impl Scratch5 {
 /// - **SCRATCH6** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12567,11 +12569,11 @@ impl Scratch6 {
 /// - **SCRATCH7** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Scratch7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Scratch7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12685,11 +12687,11 @@ impl Scratch7 {
 /// - **BOOT0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Boot0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Boot0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12803,11 +12805,11 @@ impl Boot0 {
 /// - **BOOT1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Boot1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Boot1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12921,11 +12923,11 @@ impl Boot1 {
 /// - **BOOT2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Boot2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Boot2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13039,11 +13041,11 @@ impl Boot2 {
 /// - **BOOT3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Boot3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Boot3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13167,11 +13169,11 @@ impl Boot3 {
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13244,13 +13246,13 @@ impl Intr {
     /// Set VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_vreg_output_low(&self) {
-        self.value.set_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.set_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
     /// Clear VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_vreg_output_low(&self) {
-        self.value.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
 }
@@ -13374,11 +13376,11 @@ impl Intr {
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13431,13 +13433,13 @@ impl Inte {
     /// Set PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn set_pwrup_while_waiting(&self) {
-        self.value.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// Clear PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwrup_while_waiting(&self) {
-        self.value.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RW)
@@ -13451,13 +13453,13 @@ impl Inte {
     /// Set STATE_REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn set_state_req_ignored(&self) {
-        self.value.set_bits(Self::STATE_REQ_IGNORED_MASK);
+        self.set_bits(Self::STATE_REQ_IGNORED_MASK);
     }
 
     /// Clear STATE_REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn clr_state_req_ignored(&self) {
-        self.value.clr_bits(Self::STATE_REQ_IGNORED_MASK);
+        self.clr_bits(Self::STATE_REQ_IGNORED_MASK);
     }
 
     /// **TIMER** `[1]` (RW)
@@ -13469,13 +13471,13 @@ impl Inte {
     /// Set TIMER bit atomically (RW)
     #[inline(always)]
     pub fn set_timer(&self) {
-        self.value.set_bits(Self::TIMER_MASK);
+        self.set_bits(Self::TIMER_MASK);
     }
 
     /// Clear TIMER bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer(&self) {
-        self.value.clr_bits(Self::TIMER_MASK);
+        self.clr_bits(Self::TIMER_MASK);
     }
 
     /// **VREG_OUTPUT_LOW** `[0]` (RW)
@@ -13487,13 +13489,13 @@ impl Inte {
     /// Set VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_vreg_output_low(&self) {
-        self.value.set_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.set_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
     /// Clear VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_vreg_output_low(&self) {
-        self.value.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
 }
@@ -13657,11 +13659,11 @@ impl Inte {
 /// - **VREG_OUTPUT_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13714,13 +13716,13 @@ impl Intf {
     /// Set PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn set_pwrup_while_waiting(&self) {
-        self.value.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.set_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// Clear PWRUP_WHILE_WAITING bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwrup_while_waiting(&self) {
-        self.value.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
+        self.clr_bits(Self::PWRUP_WHILE_WAITING_MASK);
     }
 
     /// **STATE_REQ_IGNORED** `[2]` (RW)
@@ -13734,13 +13736,13 @@ impl Intf {
     /// Set STATE_REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn set_state_req_ignored(&self) {
-        self.value.set_bits(Self::STATE_REQ_IGNORED_MASK);
+        self.set_bits(Self::STATE_REQ_IGNORED_MASK);
     }
 
     /// Clear STATE_REQ_IGNORED bit atomically (RW)
     #[inline(always)]
     pub fn clr_state_req_ignored(&self) {
-        self.value.clr_bits(Self::STATE_REQ_IGNORED_MASK);
+        self.clr_bits(Self::STATE_REQ_IGNORED_MASK);
     }
 
     /// **TIMER** `[1]` (RW)
@@ -13752,13 +13754,13 @@ impl Intf {
     /// Set TIMER bit atomically (RW)
     #[inline(always)]
     pub fn set_timer(&self) {
-        self.value.set_bits(Self::TIMER_MASK);
+        self.set_bits(Self::TIMER_MASK);
     }
 
     /// Clear TIMER bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer(&self) {
-        self.value.clr_bits(Self::TIMER_MASK);
+        self.clr_bits(Self::TIMER_MASK);
     }
 
     /// **VREG_OUTPUT_LOW** `[0]` (RW)
@@ -13770,13 +13772,13 @@ impl Intf {
     /// Set VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_vreg_output_low(&self) {
-        self.value.set_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.set_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
     /// Clear VREG_OUTPUT_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_vreg_output_low(&self) {
-        self.value.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
+        self.clr_bits(Self::VREG_OUTPUT_LOW_MASK);
     }
 
 }
@@ -13940,11 +13942,11 @@ impl Intf {
 /// - **VREG_OUTPUT_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

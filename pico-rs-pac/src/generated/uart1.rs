@@ -1,4 +1,6 @@
 //! UART1
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -34,11 +36,11 @@ pub const BASE: u32 = 0x40078000;
 ///   Receive (read) data character. Transmit (write) data character.
 #[repr(transparent)]
 pub struct Uartdr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartdr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -277,11 +279,11 @@ impl Uartdr {
 ///   Framing error. When set to 1, it indicates that the received character did not have a valid stop bit (a valid stop bit is 1). This bit is cleared to 0 by a write to UARTECR. In FIFO mode, this error is associated with the character at the top of the FIFO.
 #[repr(transparent)]
 pub struct Uartrsr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartrsr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -340,13 +342,13 @@ impl Uartrsr {
     /// Set OE bit atomically (RW)
     #[inline(always)]
     pub fn set_oe(&self) {
-        self.value.set_bits(Self::OE_MASK);
+        self.set_bits(Self::OE_MASK);
     }
 
     /// Clear OE bit atomically (RW)
     #[inline(always)]
     pub fn clr_oe(&self) {
-        self.value.clr_bits(Self::OE_MASK);
+        self.clr_bits(Self::OE_MASK);
     }
 
     /// **BE** `[2]` (RW)
@@ -360,13 +362,13 @@ impl Uartrsr {
     /// Set BE bit atomically (RW)
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.set_bits(Self::BE_MASK);
     }
 
     /// Clear BE bit atomically (RW)
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.clr_bits(Self::BE_MASK);
     }
 
     /// **PE** `[1]` (RW)
@@ -380,13 +382,13 @@ impl Uartrsr {
     /// Set PE bit atomically (RW)
     #[inline(always)]
     pub fn set_pe(&self) {
-        self.value.set_bits(Self::PE_MASK);
+        self.set_bits(Self::PE_MASK);
     }
 
     /// Clear PE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pe(&self) {
-        self.value.clr_bits(Self::PE_MASK);
+        self.clr_bits(Self::PE_MASK);
     }
 
     /// **FE** `[0]` (RW)
@@ -400,13 +402,13 @@ impl Uartrsr {
     /// Set FE bit atomically (RW)
     #[inline(always)]
     pub fn set_fe(&self) {
-        self.value.set_bits(Self::FE_MASK);
+        self.set_bits(Self::FE_MASK);
     }
 
     /// Clear FE bit atomically (RW)
     #[inline(always)]
     pub fn clr_fe(&self) {
-        self.value.clr_bits(Self::FE_MASK);
+        self.clr_bits(Self::FE_MASK);
     }
 
 }
@@ -602,11 +604,11 @@ impl Uartrsr {
 ///   Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
 #[repr(transparent)]
 pub struct Uartfr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartfr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -916,11 +918,11 @@ impl Uartfr {
 ///   8-bit low-power divisor value. These bits are cleared to 0 at reset.
 #[repr(transparent)]
 pub struct Uartilpr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartilpr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1047,11 +1049,11 @@ impl Uartilpr {
 ///   The integer baud rate divisor. These bits are cleared to 0 on reset.
 #[repr(transparent)]
 pub struct Uartibrd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartibrd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1178,11 +1180,11 @@ impl Uartibrd {
 ///   The fractional baud rate divisor. These bits are cleared to 0 on reset.
 #[repr(transparent)]
 pub struct Uartfbrd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartfbrd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1333,11 +1335,11 @@ impl Uartfbrd {
 ///   Send break. If this bit is set to 1, a low-level is continually output on the UARTTXD output, after completing transmission of the current character. For the proper execution of the break command, the software must set this bit for at least two complete frames. For normal use, this bit must be cleared to 0.
 #[repr(transparent)]
 pub struct UartlcrH {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UartlcrH {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1422,13 +1424,13 @@ impl UartlcrH {
     /// Set SPS bit atomically (RW)
     #[inline(always)]
     pub fn set_sps(&self) {
-        self.value.set_bits(Self::SPS_MASK);
+        self.set_bits(Self::SPS_MASK);
     }
 
     /// Clear SPS bit atomically (RW)
     #[inline(always)]
     pub fn clr_sps(&self) {
-        self.value.clr_bits(Self::SPS_MASK);
+        self.clr_bits(Self::SPS_MASK);
     }
 
     /// **WLEN** `[6:5]` (RW)
@@ -1458,13 +1460,13 @@ impl UartlcrH {
     /// Set FEN bit atomically (RW)
     #[inline(always)]
     pub fn set_fen(&self) {
-        self.value.set_bits(Self::FEN_MASK);
+        self.set_bits(Self::FEN_MASK);
     }
 
     /// Clear FEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_fen(&self) {
-        self.value.clr_bits(Self::FEN_MASK);
+        self.clr_bits(Self::FEN_MASK);
     }
 
     /// **STP2** `[3]` (RW)
@@ -1478,13 +1480,13 @@ impl UartlcrH {
     /// Set STP2 bit atomically (RW)
     #[inline(always)]
     pub fn set_stp2(&self) {
-        self.value.set_bits(Self::STP2_MASK);
+        self.set_bits(Self::STP2_MASK);
     }
 
     /// Clear STP2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_stp2(&self) {
-        self.value.clr_bits(Self::STP2_MASK);
+        self.clr_bits(Self::STP2_MASK);
     }
 
     /// **EPS** `[2]` (RW)
@@ -1498,13 +1500,13 @@ impl UartlcrH {
     /// Set EPS bit atomically (RW)
     #[inline(always)]
     pub fn set_eps(&self) {
-        self.value.set_bits(Self::EPS_MASK);
+        self.set_bits(Self::EPS_MASK);
     }
 
     /// Clear EPS bit atomically (RW)
     #[inline(always)]
     pub fn clr_eps(&self) {
-        self.value.clr_bits(Self::EPS_MASK);
+        self.clr_bits(Self::EPS_MASK);
     }
 
     /// **PEN** `[1]` (RW)
@@ -1518,13 +1520,13 @@ impl UartlcrH {
     /// Set PEN bit atomically (RW)
     #[inline(always)]
     pub fn set_pen(&self) {
-        self.value.set_bits(Self::PEN_MASK);
+        self.set_bits(Self::PEN_MASK);
     }
 
     /// Clear PEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_pen(&self) {
-        self.value.clr_bits(Self::PEN_MASK);
+        self.clr_bits(Self::PEN_MASK);
     }
 
     /// **BRK** `[0]` (RW)
@@ -1538,13 +1540,13 @@ impl UartlcrH {
     /// Set BRK bit atomically (RW)
     #[inline(always)]
     pub fn set_brk(&self) {
-        self.value.set_bits(Self::BRK_MASK);
+        self.set_bits(Self::BRK_MASK);
     }
 
     /// Clear BRK bit atomically (RW)
     #[inline(always)]
     pub fn clr_brk(&self) {
-        self.value.clr_bits(Self::BRK_MASK);
+        self.clr_bits(Self::BRK_MASK);
     }
 
 }
@@ -1814,11 +1816,11 @@ impl UartlcrH {
 ///   UART enable: 0 = UART is disabled. If the UART is disabled in the middle of transmission or reception, it completes the current character before stopping. 1 = the UART is enabled. Data transmission and reception occurs for either UART signals or SIR signals depending on the setting of the SIREN bit.
 #[repr(transparent)]
 pub struct Uartcr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartcr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1949,13 +1951,13 @@ impl Uartcr {
     /// Set CTSEN bit atomically (RW)
     #[inline(always)]
     pub fn set_ctsen(&self) {
-        self.value.set_bits(Self::CTSEN_MASK);
+        self.set_bits(Self::CTSEN_MASK);
     }
 
     /// Clear CTSEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ctsen(&self) {
-        self.value.clr_bits(Self::CTSEN_MASK);
+        self.clr_bits(Self::CTSEN_MASK);
     }
 
     /// **RTSEN** `[14]` (RW)
@@ -1969,13 +1971,13 @@ impl Uartcr {
     /// Set RTSEN bit atomically (RW)
     #[inline(always)]
     pub fn set_rtsen(&self) {
-        self.value.set_bits(Self::RTSEN_MASK);
+        self.set_bits(Self::RTSEN_MASK);
     }
 
     /// Clear RTSEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rtsen(&self) {
-        self.value.clr_bits(Self::RTSEN_MASK);
+        self.clr_bits(Self::RTSEN_MASK);
     }
 
     /// **OUT2** `[13]` (RW)
@@ -1989,13 +1991,13 @@ impl Uartcr {
     /// Set OUT2 bit atomically (RW)
     #[inline(always)]
     pub fn set_out2(&self) {
-        self.value.set_bits(Self::OUT2_MASK);
+        self.set_bits(Self::OUT2_MASK);
     }
 
     /// Clear OUT2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_out2(&self) {
-        self.value.clr_bits(Self::OUT2_MASK);
+        self.clr_bits(Self::OUT2_MASK);
     }
 
     /// **OUT1** `[12]` (RW)
@@ -2009,13 +2011,13 @@ impl Uartcr {
     /// Set OUT1 bit atomically (RW)
     #[inline(always)]
     pub fn set_out1(&self) {
-        self.value.set_bits(Self::OUT1_MASK);
+        self.set_bits(Self::OUT1_MASK);
     }
 
     /// Clear OUT1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_out1(&self) {
-        self.value.clr_bits(Self::OUT1_MASK);
+        self.clr_bits(Self::OUT1_MASK);
     }
 
     /// **RTS** `[11]` (RW)
@@ -2029,13 +2031,13 @@ impl Uartcr {
     /// Set RTS bit atomically (RW)
     #[inline(always)]
     pub fn set_rts(&self) {
-        self.value.set_bits(Self::RTS_MASK);
+        self.set_bits(Self::RTS_MASK);
     }
 
     /// Clear RTS bit atomically (RW)
     #[inline(always)]
     pub fn clr_rts(&self) {
-        self.value.clr_bits(Self::RTS_MASK);
+        self.clr_bits(Self::RTS_MASK);
     }
 
     /// **DTR** `[10]` (RW)
@@ -2049,13 +2051,13 @@ impl Uartcr {
     /// Set DTR bit atomically (RW)
     #[inline(always)]
     pub fn set_dtr(&self) {
-        self.value.set_bits(Self::DTR_MASK);
+        self.set_bits(Self::DTR_MASK);
     }
 
     /// Clear DTR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dtr(&self) {
-        self.value.clr_bits(Self::DTR_MASK);
+        self.clr_bits(Self::DTR_MASK);
     }
 
     /// **RXE** `[9]` (RW)
@@ -2069,13 +2071,13 @@ impl Uartcr {
     /// Set RXE bit atomically (RW)
     #[inline(always)]
     pub fn set_rxe(&self) {
-        self.value.set_bits(Self::RXE_MASK);
+        self.set_bits(Self::RXE_MASK);
     }
 
     /// Clear RXE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxe(&self) {
-        self.value.clr_bits(Self::RXE_MASK);
+        self.clr_bits(Self::RXE_MASK);
     }
 
     /// **TXE** `[8]` (RW)
@@ -2089,13 +2091,13 @@ impl Uartcr {
     /// Set TXE bit atomically (RW)
     #[inline(always)]
     pub fn set_txe(&self) {
-        self.value.set_bits(Self::TXE_MASK);
+        self.set_bits(Self::TXE_MASK);
     }
 
     /// Clear TXE bit atomically (RW)
     #[inline(always)]
     pub fn clr_txe(&self) {
-        self.value.clr_bits(Self::TXE_MASK);
+        self.clr_bits(Self::TXE_MASK);
     }
 
     /// **LBE** `[7]` (RW)
@@ -2109,13 +2111,13 @@ impl Uartcr {
     /// Set LBE bit atomically (RW)
     #[inline(always)]
     pub fn set_lbe(&self) {
-        self.value.set_bits(Self::LBE_MASK);
+        self.set_bits(Self::LBE_MASK);
     }
 
     /// Clear LBE bit atomically (RW)
     #[inline(always)]
     pub fn clr_lbe(&self) {
-        self.value.clr_bits(Self::LBE_MASK);
+        self.clr_bits(Self::LBE_MASK);
     }
 
     /// **SIRLP** `[2]` (RW)
@@ -2129,13 +2131,13 @@ impl Uartcr {
     /// Set SIRLP bit atomically (RW)
     #[inline(always)]
     pub fn set_sirlp(&self) {
-        self.value.set_bits(Self::SIRLP_MASK);
+        self.set_bits(Self::SIRLP_MASK);
     }
 
     /// Clear SIRLP bit atomically (RW)
     #[inline(always)]
     pub fn clr_sirlp(&self) {
-        self.value.clr_bits(Self::SIRLP_MASK);
+        self.clr_bits(Self::SIRLP_MASK);
     }
 
     /// **SIREN** `[1]` (RW)
@@ -2149,13 +2151,13 @@ impl Uartcr {
     /// Set SIREN bit atomically (RW)
     #[inline(always)]
     pub fn set_siren(&self) {
-        self.value.set_bits(Self::SIREN_MASK);
+        self.set_bits(Self::SIREN_MASK);
     }
 
     /// Clear SIREN bit atomically (RW)
     #[inline(always)]
     pub fn clr_siren(&self) {
-        self.value.clr_bits(Self::SIREN_MASK);
+        self.clr_bits(Self::SIREN_MASK);
     }
 
     /// **UARTEN** `[0]` (RW)
@@ -2169,13 +2171,13 @@ impl Uartcr {
     /// Set UARTEN bit atomically (RW)
     #[inline(always)]
     pub fn set_uarten(&self) {
-        self.value.set_bits(Self::UARTEN_MASK);
+        self.set_bits(Self::UARTEN_MASK);
     }
 
     /// Clear UARTEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_uarten(&self) {
-        self.value.clr_bits(Self::UARTEN_MASK);
+        self.clr_bits(Self::UARTEN_MASK);
     }
 
 }
@@ -2519,11 +2521,11 @@ impl Uartcr {
 ///   Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
 #[repr(transparent)]
 pub struct Uartifls {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartifls {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2732,11 +2734,11 @@ impl Uartifls {
 ///   nUARTRI modem interrupt mask. A read returns the current mask for the UARTRIINTR interrupt. On a write of 1, the mask of the UARTRIINTR interrupt is set. A write of 0 clears the mask.
 #[repr(transparent)]
 pub struct Uartimsc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartimsc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2858,13 +2860,13 @@ impl Uartimsc {
     /// Set OEIM bit atomically (RW)
     #[inline(always)]
     pub fn set_oeim(&self) {
-        self.value.set_bits(Self::OEIM_MASK);
+        self.set_bits(Self::OEIM_MASK);
     }
 
     /// Clear OEIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_oeim(&self) {
-        self.value.clr_bits(Self::OEIM_MASK);
+        self.clr_bits(Self::OEIM_MASK);
     }
 
     /// **BEIM** `[9]` (RW)
@@ -2878,13 +2880,13 @@ impl Uartimsc {
     /// Set BEIM bit atomically (RW)
     #[inline(always)]
     pub fn set_beim(&self) {
-        self.value.set_bits(Self::BEIM_MASK);
+        self.set_bits(Self::BEIM_MASK);
     }
 
     /// Clear BEIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_beim(&self) {
-        self.value.clr_bits(Self::BEIM_MASK);
+        self.clr_bits(Self::BEIM_MASK);
     }
 
     /// **PEIM** `[8]` (RW)
@@ -2898,13 +2900,13 @@ impl Uartimsc {
     /// Set PEIM bit atomically (RW)
     #[inline(always)]
     pub fn set_peim(&self) {
-        self.value.set_bits(Self::PEIM_MASK);
+        self.set_bits(Self::PEIM_MASK);
     }
 
     /// Clear PEIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_peim(&self) {
-        self.value.clr_bits(Self::PEIM_MASK);
+        self.clr_bits(Self::PEIM_MASK);
     }
 
     /// **FEIM** `[7]` (RW)
@@ -2918,13 +2920,13 @@ impl Uartimsc {
     /// Set FEIM bit atomically (RW)
     #[inline(always)]
     pub fn set_feim(&self) {
-        self.value.set_bits(Self::FEIM_MASK);
+        self.set_bits(Self::FEIM_MASK);
     }
 
     /// Clear FEIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_feim(&self) {
-        self.value.clr_bits(Self::FEIM_MASK);
+        self.clr_bits(Self::FEIM_MASK);
     }
 
     /// **RTIM** `[6]` (RW)
@@ -2938,13 +2940,13 @@ impl Uartimsc {
     /// Set RTIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rtim(&self) {
-        self.value.set_bits(Self::RTIM_MASK);
+        self.set_bits(Self::RTIM_MASK);
     }
 
     /// Clear RTIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rtim(&self) {
-        self.value.clr_bits(Self::RTIM_MASK);
+        self.clr_bits(Self::RTIM_MASK);
     }
 
     /// **TXIM** `[5]` (RW)
@@ -2958,13 +2960,13 @@ impl Uartimsc {
     /// Set TXIM bit atomically (RW)
     #[inline(always)]
     pub fn set_txim(&self) {
-        self.value.set_bits(Self::TXIM_MASK);
+        self.set_bits(Self::TXIM_MASK);
     }
 
     /// Clear TXIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_txim(&self) {
-        self.value.clr_bits(Self::TXIM_MASK);
+        self.clr_bits(Self::TXIM_MASK);
     }
 
     /// **RXIM** `[4]` (RW)
@@ -2978,13 +2980,13 @@ impl Uartimsc {
     /// Set RXIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rxim(&self) {
-        self.value.set_bits(Self::RXIM_MASK);
+        self.set_bits(Self::RXIM_MASK);
     }
 
     /// Clear RXIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxim(&self) {
-        self.value.clr_bits(Self::RXIM_MASK);
+        self.clr_bits(Self::RXIM_MASK);
     }
 
     /// **DSRMIM** `[3]` (RW)
@@ -2998,13 +3000,13 @@ impl Uartimsc {
     /// Set DSRMIM bit atomically (RW)
     #[inline(always)]
     pub fn set_dsrmim(&self) {
-        self.value.set_bits(Self::DSRMIM_MASK);
+        self.set_bits(Self::DSRMIM_MASK);
     }
 
     /// Clear DSRMIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_dsrmim(&self) {
-        self.value.clr_bits(Self::DSRMIM_MASK);
+        self.clr_bits(Self::DSRMIM_MASK);
     }
 
     /// **DCDMIM** `[2]` (RW)
@@ -3018,13 +3020,13 @@ impl Uartimsc {
     /// Set DCDMIM bit atomically (RW)
     #[inline(always)]
     pub fn set_dcdmim(&self) {
-        self.value.set_bits(Self::DCDMIM_MASK);
+        self.set_bits(Self::DCDMIM_MASK);
     }
 
     /// Clear DCDMIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_dcdmim(&self) {
-        self.value.clr_bits(Self::DCDMIM_MASK);
+        self.clr_bits(Self::DCDMIM_MASK);
     }
 
     /// **CTSMIM** `[1]` (RW)
@@ -3038,13 +3040,13 @@ impl Uartimsc {
     /// Set CTSMIM bit atomically (RW)
     #[inline(always)]
     pub fn set_ctsmim(&self) {
-        self.value.set_bits(Self::CTSMIM_MASK);
+        self.set_bits(Self::CTSMIM_MASK);
     }
 
     /// Clear CTSMIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_ctsmim(&self) {
-        self.value.clr_bits(Self::CTSMIM_MASK);
+        self.clr_bits(Self::CTSMIM_MASK);
     }
 
     /// **RIMIM** `[0]` (RW)
@@ -3058,13 +3060,13 @@ impl Uartimsc {
     /// Set RIMIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rimim(&self) {
-        self.value.set_bits(Self::RIMIM_MASK);
+        self.set_bits(Self::RIMIM_MASK);
     }
 
     /// Clear RIMIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rimim(&self) {
-        self.value.clr_bits(Self::RIMIM_MASK);
+        self.clr_bits(Self::RIMIM_MASK);
     }
 
 }
@@ -3422,11 +3424,11 @@ impl Uartimsc {
 ///   nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartris {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartris {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3826,11 +3828,11 @@ impl Uartris {
 ///   nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartmis {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartmis {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4230,11 +4232,11 @@ impl Uartmis {
 ///   nUARTRI modem interrupt clear. Clears the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uarticr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uarticr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4356,13 +4358,13 @@ impl Uarticr {
     /// Set OEIC bit atomically (RW)
     #[inline(always)]
     pub fn set_oeic(&self) {
-        self.value.set_bits(Self::OEIC_MASK);
+        self.set_bits(Self::OEIC_MASK);
     }
 
     /// Clear OEIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_oeic(&self) {
-        self.value.clr_bits(Self::OEIC_MASK);
+        self.clr_bits(Self::OEIC_MASK);
     }
 
     /// **BEIC** `[9]` (RW)
@@ -4376,13 +4378,13 @@ impl Uarticr {
     /// Set BEIC bit atomically (RW)
     #[inline(always)]
     pub fn set_beic(&self) {
-        self.value.set_bits(Self::BEIC_MASK);
+        self.set_bits(Self::BEIC_MASK);
     }
 
     /// Clear BEIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_beic(&self) {
-        self.value.clr_bits(Self::BEIC_MASK);
+        self.clr_bits(Self::BEIC_MASK);
     }
 
     /// **PEIC** `[8]` (RW)
@@ -4396,13 +4398,13 @@ impl Uarticr {
     /// Set PEIC bit atomically (RW)
     #[inline(always)]
     pub fn set_peic(&self) {
-        self.value.set_bits(Self::PEIC_MASK);
+        self.set_bits(Self::PEIC_MASK);
     }
 
     /// Clear PEIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_peic(&self) {
-        self.value.clr_bits(Self::PEIC_MASK);
+        self.clr_bits(Self::PEIC_MASK);
     }
 
     /// **FEIC** `[7]` (RW)
@@ -4416,13 +4418,13 @@ impl Uarticr {
     /// Set FEIC bit atomically (RW)
     #[inline(always)]
     pub fn set_feic(&self) {
-        self.value.set_bits(Self::FEIC_MASK);
+        self.set_bits(Self::FEIC_MASK);
     }
 
     /// Clear FEIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_feic(&self) {
-        self.value.clr_bits(Self::FEIC_MASK);
+        self.clr_bits(Self::FEIC_MASK);
     }
 
     /// **RTIC** `[6]` (RW)
@@ -4436,13 +4438,13 @@ impl Uarticr {
     /// Set RTIC bit atomically (RW)
     #[inline(always)]
     pub fn set_rtic(&self) {
-        self.value.set_bits(Self::RTIC_MASK);
+        self.set_bits(Self::RTIC_MASK);
     }
 
     /// Clear RTIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rtic(&self) {
-        self.value.clr_bits(Self::RTIC_MASK);
+        self.clr_bits(Self::RTIC_MASK);
     }
 
     /// **TXIC** `[5]` (RW)
@@ -4456,13 +4458,13 @@ impl Uarticr {
     /// Set TXIC bit atomically (RW)
     #[inline(always)]
     pub fn set_txic(&self) {
-        self.value.set_bits(Self::TXIC_MASK);
+        self.set_bits(Self::TXIC_MASK);
     }
 
     /// Clear TXIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_txic(&self) {
-        self.value.clr_bits(Self::TXIC_MASK);
+        self.clr_bits(Self::TXIC_MASK);
     }
 
     /// **RXIC** `[4]` (RW)
@@ -4476,13 +4478,13 @@ impl Uarticr {
     /// Set RXIC bit atomically (RW)
     #[inline(always)]
     pub fn set_rxic(&self) {
-        self.value.set_bits(Self::RXIC_MASK);
+        self.set_bits(Self::RXIC_MASK);
     }
 
     /// Clear RXIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxic(&self) {
-        self.value.clr_bits(Self::RXIC_MASK);
+        self.clr_bits(Self::RXIC_MASK);
     }
 
     /// **DSRMIC** `[3]` (RW)
@@ -4496,13 +4498,13 @@ impl Uarticr {
     /// Set DSRMIC bit atomically (RW)
     #[inline(always)]
     pub fn set_dsrmic(&self) {
-        self.value.set_bits(Self::DSRMIC_MASK);
+        self.set_bits(Self::DSRMIC_MASK);
     }
 
     /// Clear DSRMIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_dsrmic(&self) {
-        self.value.clr_bits(Self::DSRMIC_MASK);
+        self.clr_bits(Self::DSRMIC_MASK);
     }
 
     /// **DCDMIC** `[2]` (RW)
@@ -4516,13 +4518,13 @@ impl Uarticr {
     /// Set DCDMIC bit atomically (RW)
     #[inline(always)]
     pub fn set_dcdmic(&self) {
-        self.value.set_bits(Self::DCDMIC_MASK);
+        self.set_bits(Self::DCDMIC_MASK);
     }
 
     /// Clear DCDMIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_dcdmic(&self) {
-        self.value.clr_bits(Self::DCDMIC_MASK);
+        self.clr_bits(Self::DCDMIC_MASK);
     }
 
     /// **CTSMIC** `[1]` (RW)
@@ -4536,13 +4538,13 @@ impl Uarticr {
     /// Set CTSMIC bit atomically (RW)
     #[inline(always)]
     pub fn set_ctsmic(&self) {
-        self.value.set_bits(Self::CTSMIC_MASK);
+        self.set_bits(Self::CTSMIC_MASK);
     }
 
     /// Clear CTSMIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_ctsmic(&self) {
-        self.value.clr_bits(Self::CTSMIC_MASK);
+        self.clr_bits(Self::CTSMIC_MASK);
     }
 
     /// **RIMIC** `[0]` (RW)
@@ -4556,13 +4558,13 @@ impl Uarticr {
     /// Set RIMIC bit atomically (RW)
     #[inline(always)]
     pub fn set_rimic(&self) {
-        self.value.set_bits(Self::RIMIC_MASK);
+        self.set_bits(Self::RIMIC_MASK);
     }
 
     /// Clear RIMIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rimic(&self) {
-        self.value.clr_bits(Self::RIMIC_MASK);
+        self.clr_bits(Self::RIMIC_MASK);
     }
 
 }
@@ -4888,11 +4890,11 @@ impl Uarticr {
 ///   Receive DMA enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
 #[repr(transparent)]
 pub struct Uartdmacr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartdmacr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4942,13 +4944,13 @@ impl Uartdmacr {
     /// Set DMAONERR bit atomically (RW)
     #[inline(always)]
     pub fn set_dmaonerr(&self) {
-        self.value.set_bits(Self::DMAONERR_MASK);
+        self.set_bits(Self::DMAONERR_MASK);
     }
 
     /// Clear DMAONERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dmaonerr(&self) {
-        self.value.clr_bits(Self::DMAONERR_MASK);
+        self.clr_bits(Self::DMAONERR_MASK);
     }
 
     /// **TXDMAE** `[1]` (RW)
@@ -4962,13 +4964,13 @@ impl Uartdmacr {
     /// Set TXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_txdmae(&self) {
-        self.value.set_bits(Self::TXDMAE_MASK);
+        self.set_bits(Self::TXDMAE_MASK);
     }
 
     /// Clear TXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_txdmae(&self) {
-        self.value.clr_bits(Self::TXDMAE_MASK);
+        self.clr_bits(Self::TXDMAE_MASK);
     }
 
     /// **RXDMAE** `[0]` (RW)
@@ -4982,13 +4984,13 @@ impl Uartdmacr {
     /// Set RXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_rxdmae(&self) {
-        self.value.set_bits(Self::RXDMAE_MASK);
+        self.set_bits(Self::RXDMAE_MASK);
     }
 
     /// Clear RXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxdmae(&self) {
-        self.value.clr_bits(Self::RXDMAE_MASK);
+        self.clr_bits(Self::RXDMAE_MASK);
     }
 
 }
@@ -5130,11 +5132,11 @@ impl Uartdmacr {
 ///   These bits read back as 0x11
 #[repr(transparent)]
 pub struct Uartperiphid0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5247,11 +5249,11 @@ impl Uartperiphid0 {
 ///   These bits read back as 0x0
 #[repr(transparent)]
 pub struct Uartperiphid1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5388,11 +5390,11 @@ impl Uartperiphid1 {
 ///   These bits read back as 0x4
 #[repr(transparent)]
 pub struct Uartperiphid2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5525,11 +5527,11 @@ impl Uartperiphid2 {
 ///   These bits read back as 0x00
 #[repr(transparent)]
 pub struct Uartperiphid3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5638,11 +5640,11 @@ impl Uartperiphid3 {
 ///   These bits read back as 0x0D
 #[repr(transparent)]
 pub struct Uartpcellid0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5751,11 +5753,11 @@ impl Uartpcellid0 {
 ///   These bits read back as 0xF0
 #[repr(transparent)]
 pub struct Uartpcellid1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5864,11 +5866,11 @@ impl Uartpcellid1 {
 ///   These bits read back as 0x05
 #[repr(transparent)]
 pub struct Uartpcellid2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5977,11 +5979,11 @@ impl Uartpcellid2 {
 ///   These bits read back as 0xB1
 #[repr(transparent)]
 pub struct Uartpcellid3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

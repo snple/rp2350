@@ -4675,16 +4675,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::STALLENA_MASK) != 0
     }
 
-    /// Set STALLENA bit atomically (RW)
+    /// Set STALLENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_stallena(&self) {
-        self.value.set_bits(Self::STALLENA_MASK);
+        self.value.modify_bits(|r| r | Self::STALLENA_MASK);
     }
 
-    /// Clear STALLENA bit atomically (RW)
+    /// Clear STALLENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_stallena(&self) {
-        self.value.clr_bits(Self::STALLENA_MASK);
+        self.value.modify_bits(|r| r & !Self::STALLENA_MASK);
     }
 
     /// **SWOENA** `[4]` (RW)
@@ -4695,16 +4695,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::SWOENA_MASK) != 0
     }
 
-    /// Set SWOENA bit atomically (RW)
+    /// Set SWOENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_swoena(&self) {
-        self.value.set_bits(Self::SWOENA_MASK);
+        self.value.modify_bits(|r| r | Self::SWOENA_MASK);
     }
 
-    /// Clear SWOENA bit atomically (RW)
+    /// Clear SWOENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_swoena(&self) {
-        self.value.clr_bits(Self::SWOENA_MASK);
+        self.value.modify_bits(|r| r & !Self::SWOENA_MASK);
     }
 
     /// **TXENA** `[3]` (RW)
@@ -4715,16 +4715,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::TXENA_MASK) != 0
     }
 
-    /// Set TXENA bit atomically (RW)
+    /// Set TXENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_txena(&self) {
-        self.value.set_bits(Self::TXENA_MASK);
+        self.value.modify_bits(|r| r | Self::TXENA_MASK);
     }
 
-    /// Clear TXENA bit atomically (RW)
+    /// Clear TXENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_txena(&self) {
-        self.value.clr_bits(Self::TXENA_MASK);
+        self.value.modify_bits(|r| r & !Self::TXENA_MASK);
     }
 
     /// **SYNCENA** `[2]` (RW)
@@ -4735,16 +4735,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::SYNCENA_MASK) != 0
     }
 
-    /// Set SYNCENA bit atomically (RW)
+    /// Set SYNCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_syncena(&self) {
-        self.value.set_bits(Self::SYNCENA_MASK);
+        self.value.modify_bits(|r| r | Self::SYNCENA_MASK);
     }
 
-    /// Clear SYNCENA bit atomically (RW)
+    /// Clear SYNCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_syncena(&self) {
-        self.value.clr_bits(Self::SYNCENA_MASK);
+        self.value.modify_bits(|r| r & !Self::SYNCENA_MASK);
     }
 
     /// **TSENA** `[1]` (RW)
@@ -4755,16 +4755,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::TSENA_MASK) != 0
     }
 
-    /// Set TSENA bit atomically (RW)
+    /// Set TSENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_tsena(&self) {
-        self.value.set_bits(Self::TSENA_MASK);
+        self.value.modify_bits(|r| r | Self::TSENA_MASK);
     }
 
-    /// Clear TSENA bit atomically (RW)
+    /// Clear TSENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_tsena(&self) {
-        self.value.clr_bits(Self::TSENA_MASK);
+        self.value.modify_bits(|r| r & !Self::TSENA_MASK);
     }
 
     /// **ITMENA** `[0]` (RW)
@@ -4775,16 +4775,16 @@ impl ItmTcr {
         (self.value.read_bits() & Self::ITMENA_MASK) != 0
     }
 
-    /// Set ITMENA bit atomically (RW)
+    /// Set ITMENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_itmena(&self) {
-        self.value.set_bits(Self::ITMENA_MASK);
+        self.value.modify_bits(|r| r | Self::ITMENA_MASK);
     }
 
-    /// Clear ITMENA bit atomically (RW)
+    /// Clear ITMENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_itmena(&self) {
-        self.value.clr_bits(Self::ITMENA_MASK);
+        self.value.modify_bits(|r| r & !Self::ITMENA_MASK);
     }
 
 }
@@ -5243,16 +5243,16 @@ impl IntAtvalid {
         (self.value.read_bits() & Self::AFREADY_MASK) != 0
     }
 
-    /// Set AFREADY bit atomically (RW)
+    /// Set AFREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_afready(&self) {
-        self.value.set_bits(Self::AFREADY_MASK);
+        self.value.modify_bits(|r| r | Self::AFREADY_MASK);
     }
 
-    /// Clear AFREADY bit atomically (RW)
+    /// Clear AFREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_afready(&self) {
-        self.value.clr_bits(Self::AFREADY_MASK);
+        self.value.modify_bits(|r| r & !Self::AFREADY_MASK);
     }
 
     /// **ATREADY** `[0]` (RW)
@@ -5263,16 +5263,16 @@ impl IntAtvalid {
         (self.value.read_bits() & Self::ATREADY_MASK) != 0
     }
 
-    /// Set ATREADY bit atomically (RW)
+    /// Set ATREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_atready(&self) {
-        self.value.set_bits(Self::ATREADY_MASK);
+        self.value.modify_bits(|r| r | Self::ATREADY_MASK);
     }
 
-    /// Clear ATREADY bit atomically (RW)
+    /// Clear ATREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_atready(&self) {
-        self.value.clr_bits(Self::ATREADY_MASK);
+        self.value.modify_bits(|r| r & !Self::ATREADY_MASK);
     }
 
 }
@@ -5425,16 +5425,16 @@ impl ItmItctrl {
         (self.value.read_bits() & Self::IME_MASK) != 0
     }
 
-    /// Set IME bit atomically (RW)
+    /// Set IME bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ime(&self) {
-        self.value.set_bits(Self::IME_MASK);
+        self.value.modify_bits(|r| r | Self::IME_MASK);
     }
 
-    /// Clear IME bit atomically (RW)
+    /// Clear IME bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ime(&self) {
-        self.value.clr_bits(Self::IME_MASK);
+        self.value.modify_bits(|r| r & !Self::IME_MASK);
     }
 
 }
@@ -7742,16 +7742,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::CYCDISS_MASK) != 0
     }
 
-    /// Set CYCDISS bit atomically (RW)
+    /// Set CYCDISS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cycdiss(&self) {
-        self.value.set_bits(Self::CYCDISS_MASK);
+        self.value.modify_bits(|r| r | Self::CYCDISS_MASK);
     }
 
-    /// Clear CYCDISS bit atomically (RW)
+    /// Clear CYCDISS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cycdiss(&self) {
-        self.value.clr_bits(Self::CYCDISS_MASK);
+        self.value.modify_bits(|r| r & !Self::CYCDISS_MASK);
     }
 
     /// **CYCEVTENA** `[22]` (RW)
@@ -7762,16 +7762,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::CYCEVTENA_MASK) != 0
     }
 
-    /// Set CYCEVTENA bit atomically (RW)
+    /// Set CYCEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cycevtena(&self) {
-        self.value.set_bits(Self::CYCEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::CYCEVTENA_MASK);
     }
 
-    /// Clear CYCEVTENA bit atomically (RW)
+    /// Clear CYCEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cycevtena(&self) {
-        self.value.clr_bits(Self::CYCEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::CYCEVTENA_MASK);
     }
 
     /// **FOLDEVTENA** `[21]` (RW)
@@ -7782,16 +7782,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::FOLDEVTENA_MASK) != 0
     }
 
-    /// Set FOLDEVTENA bit atomically (RW)
+    /// Set FOLDEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_foldevtena(&self) {
-        self.value.set_bits(Self::FOLDEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::FOLDEVTENA_MASK);
     }
 
-    /// Clear FOLDEVTENA bit atomically (RW)
+    /// Clear FOLDEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_foldevtena(&self) {
-        self.value.clr_bits(Self::FOLDEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::FOLDEVTENA_MASK);
     }
 
     /// **LSUEVTENA** `[20]` (RW)
@@ -7802,16 +7802,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::LSUEVTENA_MASK) != 0
     }
 
-    /// Set LSUEVTENA bit atomically (RW)
+    /// Set LSUEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lsuevtena(&self) {
-        self.value.set_bits(Self::LSUEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::LSUEVTENA_MASK);
     }
 
-    /// Clear LSUEVTENA bit atomically (RW)
+    /// Clear LSUEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lsuevtena(&self) {
-        self.value.clr_bits(Self::LSUEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::LSUEVTENA_MASK);
     }
 
     /// **SLEEPEVTENA** `[19]` (RW)
@@ -7822,16 +7822,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::SLEEPEVTENA_MASK) != 0
     }
 
-    /// Set SLEEPEVTENA bit atomically (RW)
+    /// Set SLEEPEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sleepevtena(&self) {
-        self.value.set_bits(Self::SLEEPEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::SLEEPEVTENA_MASK);
     }
 
-    /// Clear SLEEPEVTENA bit atomically (RW)
+    /// Clear SLEEPEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sleepevtena(&self) {
-        self.value.clr_bits(Self::SLEEPEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::SLEEPEVTENA_MASK);
     }
 
     /// **EXCEVTENA** `[18]` (RW)
@@ -7842,16 +7842,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::EXCEVTENA_MASK) != 0
     }
 
-    /// Set EXCEVTENA bit atomically (RW)
+    /// Set EXCEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_excevtena(&self) {
-        self.value.set_bits(Self::EXCEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::EXCEVTENA_MASK);
     }
 
-    /// Clear EXCEVTENA bit atomically (RW)
+    /// Clear EXCEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_excevtena(&self) {
-        self.value.clr_bits(Self::EXCEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::EXCEVTENA_MASK);
     }
 
     /// **CPIEVTENA** `[17]` (RW)
@@ -7862,16 +7862,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::CPIEVTENA_MASK) != 0
     }
 
-    /// Set CPIEVTENA bit atomically (RW)
+    /// Set CPIEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cpievtena(&self) {
-        self.value.set_bits(Self::CPIEVTENA_MASK);
+        self.value.modify_bits(|r| r | Self::CPIEVTENA_MASK);
     }
 
-    /// Clear CPIEVTENA bit atomically (RW)
+    /// Clear CPIEVTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cpievtena(&self) {
-        self.value.clr_bits(Self::CPIEVTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::CPIEVTENA_MASK);
     }
 
     /// **EXTTRCENA** `[16]` (RW)
@@ -7882,16 +7882,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::EXTTRCENA_MASK) != 0
     }
 
-    /// Set EXTTRCENA bit atomically (RW)
+    /// Set EXTTRCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_exttrcena(&self) {
-        self.value.set_bits(Self::EXTTRCENA_MASK);
+        self.value.modify_bits(|r| r | Self::EXTTRCENA_MASK);
     }
 
-    /// Clear EXTTRCENA bit atomically (RW)
+    /// Clear EXTTRCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_exttrcena(&self) {
-        self.value.clr_bits(Self::EXTTRCENA_MASK);
+        self.value.modify_bits(|r| r & !Self::EXTTRCENA_MASK);
     }
 
     /// **PCSAMPLENA** `[12]` (RW)
@@ -7902,16 +7902,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::PCSAMPLENA_MASK) != 0
     }
 
-    /// Set PCSAMPLENA bit atomically (RW)
+    /// Set PCSAMPLENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pcsamplena(&self) {
-        self.value.set_bits(Self::PCSAMPLENA_MASK);
+        self.value.modify_bits(|r| r | Self::PCSAMPLENA_MASK);
     }
 
-    /// Clear PCSAMPLENA bit atomically (RW)
+    /// Clear PCSAMPLENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pcsamplena(&self) {
-        self.value.clr_bits(Self::PCSAMPLENA_MASK);
+        self.value.modify_bits(|r| r & !Self::PCSAMPLENA_MASK);
     }
 
     /// **SYNCTAP** `[11:10]` (RW)
@@ -7938,16 +7938,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::CYCTAP_MASK) != 0
     }
 
-    /// Set CYCTAP bit atomically (RW)
+    /// Set CYCTAP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cyctap(&self) {
-        self.value.set_bits(Self::CYCTAP_MASK);
+        self.value.modify_bits(|r| r | Self::CYCTAP_MASK);
     }
 
-    /// Clear CYCTAP bit atomically (RW)
+    /// Clear CYCTAP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cyctap(&self) {
-        self.value.clr_bits(Self::CYCTAP_MASK);
+        self.value.modify_bits(|r| r & !Self::CYCTAP_MASK);
     }
 
     /// **POSTINIT** `[8:5]` (RW)
@@ -7990,16 +7990,16 @@ impl DwtCtrl {
         (self.value.read_bits() & Self::CYCCNTENA_MASK) != 0
     }
 
-    /// Set CYCCNTENA bit atomically (RW)
+    /// Set CYCCNTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cyccntena(&self) {
-        self.value.set_bits(Self::CYCCNTENA_MASK);
+        self.value.modify_bits(|r| r | Self::CYCCNTENA_MASK);
     }
 
-    /// Clear CYCCNTENA bit atomically (RW)
+    /// Clear CYCCNTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cyccntena(&self) {
-        self.value.clr_bits(Self::CYCCNTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::CYCCNTENA_MASK);
     }
 
 }
@@ -12560,16 +12560,16 @@ impl FpCtrl {
         (self.value.read_bits() & Self::KEY_MASK) != 0
     }
 
-    /// Set KEY bit atomically (RW)
+    /// Set KEY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_key(&self) {
-        self.value.set_bits(Self::KEY_MASK);
+        self.value.modify_bits(|r| r | Self::KEY_MASK);
     }
 
-    /// Clear KEY bit atomically (RW)
+    /// Clear KEY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_key(&self) {
-        self.value.clr_bits(Self::KEY_MASK);
+        self.value.modify_bits(|r| r & !Self::KEY_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -12580,16 +12580,16 @@ impl FpCtrl {
         (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit atomically (RW)
+    /// Set ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r | Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit atomically (RW)
+    /// Clear ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
 
 }
@@ -12916,16 +12916,16 @@ impl FpComp0 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13056,16 +13056,16 @@ impl FpComp1 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13196,16 +13196,16 @@ impl FpComp2 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13336,16 +13336,16 @@ impl FpComp3 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13476,16 +13476,16 @@ impl FpComp4 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13616,16 +13616,16 @@ impl FpComp5 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13756,16 +13756,16 @@ impl FpComp6 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -13896,16 +13896,16 @@ impl FpComp7 {
         (self.value.read_bits() & Self::BE_MASK) != 0
     }
 
-    /// Set BE bit atomically (RW)
+    /// Set BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_be(&self) {
-        self.value.set_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r | Self::BE_MASK);
     }
 
-    /// Clear BE bit atomically (RW)
+    /// Clear BE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_be(&self) {
-        self.value.clr_bits(Self::BE_MASK);
+        self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
 
 }
@@ -16121,16 +16121,16 @@ impl Actlr {
         (self.value.read_bits() & Self::EXTEXCLALL_MASK) != 0
     }
 
-    /// Set EXTEXCLALL bit atomically (RW)
+    /// Set EXTEXCLALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_extexclall(&self) {
-        self.value.set_bits(Self::EXTEXCLALL_MASK);
+        self.value.modify_bits(|r| r | Self::EXTEXCLALL_MASK);
     }
 
-    /// Clear EXTEXCLALL bit atomically (RW)
+    /// Clear EXTEXCLALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_extexclall(&self) {
-        self.value.clr_bits(Self::EXTEXCLALL_MASK);
+        self.value.modify_bits(|r| r & !Self::EXTEXCLALL_MASK);
     }
 
     /// **DISITMATBFLUSH** `[12]` (RW)
@@ -16141,16 +16141,16 @@ impl Actlr {
         (self.value.read_bits() & Self::DISITMATBFLUSH_MASK) != 0
     }
 
-    /// Set DISITMATBFLUSH bit atomically (RW)
+    /// Set DISITMATBFLUSH bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_disitmatbflush(&self) {
-        self.value.set_bits(Self::DISITMATBFLUSH_MASK);
+        self.value.modify_bits(|r| r | Self::DISITMATBFLUSH_MASK);
     }
 
-    /// Clear DISITMATBFLUSH bit atomically (RW)
+    /// Clear DISITMATBFLUSH bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_disitmatbflush(&self) {
-        self.value.clr_bits(Self::DISITMATBFLUSH_MASK);
+        self.value.modify_bits(|r| r & !Self::DISITMATBFLUSH_MASK);
     }
 
     /// **FPEXCODIS** `[10]` (RW)
@@ -16161,16 +16161,16 @@ impl Actlr {
         (self.value.read_bits() & Self::FPEXCODIS_MASK) != 0
     }
 
-    /// Set FPEXCODIS bit atomically (RW)
+    /// Set FPEXCODIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_fpexcodis(&self) {
-        self.value.set_bits(Self::FPEXCODIS_MASK);
+        self.value.modify_bits(|r| r | Self::FPEXCODIS_MASK);
     }
 
-    /// Clear FPEXCODIS bit atomically (RW)
+    /// Clear FPEXCODIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_fpexcodis(&self) {
-        self.value.clr_bits(Self::FPEXCODIS_MASK);
+        self.value.modify_bits(|r| r & !Self::FPEXCODIS_MASK);
     }
 
     /// **DISOOFP** `[9]` (RW)
@@ -16181,16 +16181,16 @@ impl Actlr {
         (self.value.read_bits() & Self::DISOOFP_MASK) != 0
     }
 
-    /// Set DISOOFP bit atomically (RW)
+    /// Set DISOOFP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_disoofp(&self) {
-        self.value.set_bits(Self::DISOOFP_MASK);
+        self.value.modify_bits(|r| r | Self::DISOOFP_MASK);
     }
 
-    /// Clear DISOOFP bit atomically (RW)
+    /// Clear DISOOFP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_disoofp(&self) {
-        self.value.clr_bits(Self::DISOOFP_MASK);
+        self.value.modify_bits(|r| r & !Self::DISOOFP_MASK);
     }
 
     /// **DISFOLD** `[2]` (RW)
@@ -16201,16 +16201,16 @@ impl Actlr {
         (self.value.read_bits() & Self::DISFOLD_MASK) != 0
     }
 
-    /// Set DISFOLD bit atomically (RW)
+    /// Set DISFOLD bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_disfold(&self) {
-        self.value.set_bits(Self::DISFOLD_MASK);
+        self.value.modify_bits(|r| r | Self::DISFOLD_MASK);
     }
 
-    /// Clear DISFOLD bit atomically (RW)
+    /// Clear DISFOLD bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_disfold(&self) {
-        self.value.clr_bits(Self::DISFOLD_MASK);
+        self.value.modify_bits(|r| r & !Self::DISFOLD_MASK);
     }
 
     /// **DISMCYCINT** `[0]` (RW)
@@ -16221,16 +16221,16 @@ impl Actlr {
         (self.value.read_bits() & Self::DISMCYCINT_MASK) != 0
     }
 
-    /// Set DISMCYCINT bit atomically (RW)
+    /// Set DISMCYCINT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_dismcycint(&self) {
-        self.value.set_bits(Self::DISMCYCINT_MASK);
+        self.value.modify_bits(|r| r | Self::DISMCYCINT_MASK);
     }
 
-    /// Clear DISMCYCINT bit atomically (RW)
+    /// Clear DISMCYCINT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_dismcycint(&self) {
-        self.value.clr_bits(Self::DISMCYCINT_MASK);
+        self.value.modify_bits(|r| r & !Self::DISMCYCINT_MASK);
     }
 
 }
@@ -16535,16 +16535,16 @@ impl SystCsr {
         (self.value.read_bits() & Self::CLKSOURCE_MASK) != 0
     }
 
-    /// Set CLKSOURCE bit atomically (RW)
+    /// Set CLKSOURCE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clksource(&self) {
-        self.value.set_bits(Self::CLKSOURCE_MASK);
+        self.value.modify_bits(|r| r | Self::CLKSOURCE_MASK);
     }
 
-    /// Clear CLKSOURCE bit atomically (RW)
+    /// Clear CLKSOURCE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clksource(&self) {
-        self.value.clr_bits(Self::CLKSOURCE_MASK);
+        self.value.modify_bits(|r| r & !Self::CLKSOURCE_MASK);
     }
 
     /// **TICKINT** `[1]` (RW)
@@ -16557,16 +16557,16 @@ impl SystCsr {
         (self.value.read_bits() & Self::TICKINT_MASK) != 0
     }
 
-    /// Set TICKINT bit atomically (RW)
+    /// Set TICKINT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_tickint(&self) {
-        self.value.set_bits(Self::TICKINT_MASK);
+        self.value.modify_bits(|r| r | Self::TICKINT_MASK);
     }
 
-    /// Clear TICKINT bit atomically (RW)
+    /// Clear TICKINT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_tickint(&self) {
-        self.value.clr_bits(Self::TICKINT_MASK);
+        self.value.modify_bits(|r| r & !Self::TICKINT_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -16579,16 +16579,16 @@ impl SystCsr {
         (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit atomically (RW)
+    /// Set ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r | Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit atomically (RW)
+    /// Clear ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
 
 }
@@ -23469,16 +23469,16 @@ impl Icsr {
         (self.value.read_bits() & Self::PENDNMICLR_MASK) != 0
     }
 
-    /// Set PENDNMICLR bit atomically (RW)
+    /// Set PENDNMICLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pendnmiclr(&self) {
-        self.value.set_bits(Self::PENDNMICLR_MASK);
+        self.value.modify_bits(|r| r | Self::PENDNMICLR_MASK);
     }
 
-    /// Clear PENDNMICLR bit atomically (RW)
+    /// Clear PENDNMICLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pendnmiclr(&self) {
-        self.value.clr_bits(Self::PENDNMICLR_MASK);
+        self.value.modify_bits(|r| r & !Self::PENDNMICLR_MASK);
     }
 
     /// **PENDSVSET** `[28]` (RO)
@@ -23497,16 +23497,16 @@ impl Icsr {
         (self.value.read_bits() & Self::PENDSVCLR_MASK) != 0
     }
 
-    /// Set PENDSVCLR bit atomically (RW)
+    /// Set PENDSVCLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pendsvclr(&self) {
-        self.value.set_bits(Self::PENDSVCLR_MASK);
+        self.value.modify_bits(|r| r | Self::PENDSVCLR_MASK);
     }
 
-    /// Clear PENDSVCLR bit atomically (RW)
+    /// Clear PENDSVCLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pendsvclr(&self) {
-        self.value.clr_bits(Self::PENDSVCLR_MASK);
+        self.value.modify_bits(|r| r & !Self::PENDSVCLR_MASK);
     }
 
     /// **PENDSTSET** `[26]` (RO)
@@ -23525,16 +23525,16 @@ impl Icsr {
         (self.value.read_bits() & Self::PENDSTCLR_MASK) != 0
     }
 
-    /// Set PENDSTCLR bit atomically (RW)
+    /// Set PENDSTCLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pendstclr(&self) {
-        self.value.set_bits(Self::PENDSTCLR_MASK);
+        self.value.modify_bits(|r| r | Self::PENDSTCLR_MASK);
     }
 
-    /// Clear PENDSTCLR bit atomically (RW)
+    /// Clear PENDSTCLR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pendstclr(&self) {
-        self.value.clr_bits(Self::PENDSTCLR_MASK);
+        self.value.modify_bits(|r| r & !Self::PENDSTCLR_MASK);
     }
 
     /// **STTNS** `[24]` (RW)
@@ -23545,16 +23545,16 @@ impl Icsr {
         (self.value.read_bits() & Self::STTNS_MASK) != 0
     }
 
-    /// Set STTNS bit atomically (RW)
+    /// Set STTNS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sttns(&self) {
-        self.value.set_bits(Self::STTNS_MASK);
+        self.value.modify_bits(|r| r | Self::STTNS_MASK);
     }
 
-    /// Clear STTNS bit atomically (RW)
+    /// Clear STTNS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sttns(&self) {
-        self.value.clr_bits(Self::STTNS_MASK);
+        self.value.modify_bits(|r| r & !Self::STTNS_MASK);
     }
 
     /// **ISRPREEMPT** `[23]` (RO)
@@ -24126,16 +24126,16 @@ impl Aircr {
         (self.value.read_bits() & Self::PRIS_MASK) != 0
     }
 
-    /// Set PRIS bit atomically (RW)
+    /// Set PRIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pris(&self) {
-        self.value.set_bits(Self::PRIS_MASK);
+        self.value.modify_bits(|r| r | Self::PRIS_MASK);
     }
 
-    /// Clear PRIS bit atomically (RW)
+    /// Clear PRIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pris(&self) {
-        self.value.clr_bits(Self::PRIS_MASK);
+        self.value.modify_bits(|r| r & !Self::PRIS_MASK);
     }
 
     /// **BFHFNMINS** `[13]` (RW)
@@ -24148,16 +24148,16 @@ impl Aircr {
         (self.value.read_bits() & Self::BFHFNMINS_MASK) != 0
     }
 
-    /// Set BFHFNMINS bit atomically (RW)
+    /// Set BFHFNMINS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfhfnmins(&self) {
-        self.value.set_bits(Self::BFHFNMINS_MASK);
+        self.value.modify_bits(|r| r | Self::BFHFNMINS_MASK);
     }
 
-    /// Clear BFHFNMINS bit atomically (RW)
+    /// Clear BFHFNMINS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfhfnmins(&self) {
-        self.value.clr_bits(Self::BFHFNMINS_MASK);
+        self.value.modify_bits(|r| r & !Self::BFHFNMINS_MASK);
     }
 
     /// **PRIGROUP** `[10:8]` (RW)
@@ -24188,16 +24188,16 @@ impl Aircr {
         (self.value.read_bits() & Self::SYSRESETREQS_MASK) != 0
     }
 
-    /// Set SYSRESETREQS bit atomically (RW)
+    /// Set SYSRESETREQS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sysresetreqs(&self) {
-        self.value.set_bits(Self::SYSRESETREQS_MASK);
+        self.value.modify_bits(|r| r | Self::SYSRESETREQS_MASK);
     }
 
-    /// Clear SYSRESETREQS bit atomically (RW)
+    /// Clear SYSRESETREQS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sysresetreqs(&self) {
-        self.value.clr_bits(Self::SYSRESETREQS_MASK);
+        self.value.modify_bits(|r| r & !Self::SYSRESETREQS_MASK);
     }
 
     /// **SYSRESETREQ** `[2]` (RW)
@@ -24208,16 +24208,16 @@ impl Aircr {
         (self.value.read_bits() & Self::SYSRESETREQ_MASK) != 0
     }
 
-    /// Set SYSRESETREQ bit atomically (RW)
+    /// Set SYSRESETREQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sysresetreq(&self) {
-        self.value.set_bits(Self::SYSRESETREQ_MASK);
+        self.value.modify_bits(|r| r | Self::SYSRESETREQ_MASK);
     }
 
-    /// Clear SYSRESETREQ bit atomically (RW)
+    /// Clear SYSRESETREQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sysresetreq(&self) {
-        self.value.clr_bits(Self::SYSRESETREQ_MASK);
+        self.value.modify_bits(|r| r & !Self::SYSRESETREQ_MASK);
     }
 
     /// **VECTCLRACTIVE** `[1]` (RW)
@@ -24228,16 +24228,16 @@ impl Aircr {
         (self.value.read_bits() & Self::VECTCLRACTIVE_MASK) != 0
     }
 
-    /// Set VECTCLRACTIVE bit atomically (RW)
+    /// Set VECTCLRACTIVE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vectclractive(&self) {
-        self.value.set_bits(Self::VECTCLRACTIVE_MASK);
+        self.value.modify_bits(|r| r | Self::VECTCLRACTIVE_MASK);
     }
 
-    /// Clear VECTCLRACTIVE bit atomically (RW)
+    /// Clear VECTCLRACTIVE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vectclractive(&self) {
-        self.value.clr_bits(Self::VECTCLRACTIVE_MASK);
+        self.value.modify_bits(|r| r & !Self::VECTCLRACTIVE_MASK);
     }
 
 }
@@ -24585,16 +24585,16 @@ impl Scr {
         (self.value.read_bits() & Self::SEVONPEND_MASK) != 0
     }
 
-    /// Set SEVONPEND bit atomically (RW)
+    /// Set SEVONPEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sevonpend(&self) {
-        self.value.set_bits(Self::SEVONPEND_MASK);
+        self.value.modify_bits(|r| r | Self::SEVONPEND_MASK);
     }
 
-    /// Clear SEVONPEND bit atomically (RW)
+    /// Clear SEVONPEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sevonpend(&self) {
-        self.value.clr_bits(Self::SEVONPEND_MASK);
+        self.value.modify_bits(|r| r & !Self::SEVONPEND_MASK);
     }
 
     /// **SLEEPDEEPS** `[3]` (RW)
@@ -24606,16 +24606,16 @@ impl Scr {
         (self.value.read_bits() & Self::SLEEPDEEPS_MASK) != 0
     }
 
-    /// Set SLEEPDEEPS bit atomically (RW)
+    /// Set SLEEPDEEPS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sleepdeeps(&self) {
-        self.value.set_bits(Self::SLEEPDEEPS_MASK);
+        self.value.modify_bits(|r| r | Self::SLEEPDEEPS_MASK);
     }
 
-    /// Clear SLEEPDEEPS bit atomically (RW)
+    /// Clear SLEEPDEEPS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sleepdeeps(&self) {
-        self.value.clr_bits(Self::SLEEPDEEPS_MASK);
+        self.value.modify_bits(|r| r & !Self::SLEEPDEEPS_MASK);
     }
 
     /// **SLEEPDEEP** `[2]` (RW)
@@ -24628,16 +24628,16 @@ impl Scr {
         (self.value.read_bits() & Self::SLEEPDEEP_MASK) != 0
     }
 
-    /// Set SLEEPDEEP bit atomically (RW)
+    /// Set SLEEPDEEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sleepdeep(&self) {
-        self.value.set_bits(Self::SLEEPDEEP_MASK);
+        self.value.modify_bits(|r| r | Self::SLEEPDEEP_MASK);
     }
 
-    /// Clear SLEEPDEEP bit atomically (RW)
+    /// Clear SLEEPDEEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sleepdeep(&self) {
-        self.value.clr_bits(Self::SLEEPDEEP_MASK);
+        self.value.modify_bits(|r| r & !Self::SLEEPDEEP_MASK);
     }
 
     /// **SLEEPONEXIT** `[1]` (RW)
@@ -24651,16 +24651,16 @@ impl Scr {
         (self.value.read_bits() & Self::SLEEPONEXIT_MASK) != 0
     }
 
-    /// Set SLEEPONEXIT bit atomically (RW)
+    /// Set SLEEPONEXIT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sleeponexit(&self) {
-        self.value.set_bits(Self::SLEEPONEXIT_MASK);
+        self.value.modify_bits(|r| r | Self::SLEEPONEXIT_MASK);
     }
 
-    /// Clear SLEEPONEXIT bit atomically (RW)
+    /// Clear SLEEPONEXIT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sleeponexit(&self) {
-        self.value.clr_bits(Self::SLEEPONEXIT_MASK);
+        self.value.modify_bits(|r| r & !Self::SLEEPONEXIT_MASK);
     }
 
 }
@@ -25020,16 +25020,16 @@ impl Ccr {
         (self.value.read_bits() & Self::STKOFHFNMIGN_MASK) != 0
     }
 
-    /// Set STKOFHFNMIGN bit atomically (RW)
+    /// Set STKOFHFNMIGN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_stkofhfnmign(&self) {
-        self.value.set_bits(Self::STKOFHFNMIGN_MASK);
+        self.value.modify_bits(|r| r | Self::STKOFHFNMIGN_MASK);
     }
 
-    /// Clear STKOFHFNMIGN bit atomically (RW)
+    /// Clear STKOFHFNMIGN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_stkofhfnmign(&self) {
-        self.value.clr_bits(Self::STKOFHFNMIGN_MASK);
+        self.value.modify_bits(|r| r & !Self::STKOFHFNMIGN_MASK);
     }
 
     /// **RES1** `[9]` (RO)
@@ -25048,16 +25048,16 @@ impl Ccr {
         (self.value.read_bits() & Self::BFHFNMIGN_MASK) != 0
     }
 
-    /// Set BFHFNMIGN bit atomically (RW)
+    /// Set BFHFNMIGN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfhfnmign(&self) {
-        self.value.set_bits(Self::BFHFNMIGN_MASK);
+        self.value.modify_bits(|r| r | Self::BFHFNMIGN_MASK);
     }
 
-    /// Clear BFHFNMIGN bit atomically (RW)
+    /// Clear BFHFNMIGN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfhfnmign(&self) {
-        self.value.clr_bits(Self::BFHFNMIGN_MASK);
+        self.value.modify_bits(|r| r & !Self::BFHFNMIGN_MASK);
     }
 
     /// **DIV_0_TRP** `[4]` (RW)
@@ -25068,16 +25068,16 @@ impl Ccr {
         (self.value.read_bits() & Self::DIV_0_TRP_MASK) != 0
     }
 
-    /// Set DIV_0_TRP bit atomically (RW)
+    /// Set DIV_0_TRP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_div_0_trp(&self) {
-        self.value.set_bits(Self::DIV_0_TRP_MASK);
+        self.value.modify_bits(|r| r | Self::DIV_0_TRP_MASK);
     }
 
-    /// Clear DIV_0_TRP bit atomically (RW)
+    /// Clear DIV_0_TRP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_div_0_trp(&self) {
-        self.value.clr_bits(Self::DIV_0_TRP_MASK);
+        self.value.modify_bits(|r| r & !Self::DIV_0_TRP_MASK);
     }
 
     /// **UNALIGN_TRP** `[3]` (RW)
@@ -25088,16 +25088,16 @@ impl Ccr {
         (self.value.read_bits() & Self::UNALIGN_TRP_MASK) != 0
     }
 
-    /// Set UNALIGN_TRP bit atomically (RW)
+    /// Set UNALIGN_TRP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_unalign_trp(&self) {
-        self.value.set_bits(Self::UNALIGN_TRP_MASK);
+        self.value.modify_bits(|r| r | Self::UNALIGN_TRP_MASK);
     }
 
-    /// Clear UNALIGN_TRP bit atomically (RW)
+    /// Clear UNALIGN_TRP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_unalign_trp(&self) {
-        self.value.clr_bits(Self::UNALIGN_TRP_MASK);
+        self.value.modify_bits(|r| r & !Self::UNALIGN_TRP_MASK);
     }
 
     /// **USERSETMPEND** `[1]` (RW)
@@ -25108,16 +25108,16 @@ impl Ccr {
         (self.value.read_bits() & Self::USERSETMPEND_MASK) != 0
     }
 
-    /// Set USERSETMPEND bit atomically (RW)
+    /// Set USERSETMPEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_usersetmpend(&self) {
-        self.value.set_bits(Self::USERSETMPEND_MASK);
+        self.value.modify_bits(|r| r | Self::USERSETMPEND_MASK);
     }
 
-    /// Clear USERSETMPEND bit atomically (RW)
+    /// Clear USERSETMPEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_usersetmpend(&self) {
-        self.value.clr_bits(Self::USERSETMPEND_MASK);
+        self.value.modify_bits(|r| r & !Self::USERSETMPEND_MASK);
     }
 
     /// **RES1_1** `[0]` (RO)
@@ -26366,16 +26366,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::HARDFAULTPENDED_MASK) != 0
     }
 
-    /// Set HARDFAULTPENDED bit atomically (RW)
+    /// Set HARDFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_hardfaultpended(&self) {
-        self.value.set_bits(Self::HARDFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::HARDFAULTPENDED_MASK);
     }
 
-    /// Clear HARDFAULTPENDED bit atomically (RW)
+    /// Clear HARDFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_hardfaultpended(&self) {
-        self.value.clr_bits(Self::HARDFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::HARDFAULTPENDED_MASK);
     }
 
     /// **SECUREFAULTPENDED** `[20]` (RW)
@@ -26386,16 +26386,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SECUREFAULTPENDED_MASK) != 0
     }
 
-    /// Set SECUREFAULTPENDED bit atomically (RW)
+    /// Set SECUREFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_securefaultpended(&self) {
-        self.value.set_bits(Self::SECUREFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::SECUREFAULTPENDED_MASK);
     }
 
-    /// Clear SECUREFAULTPENDED bit atomically (RW)
+    /// Clear SECUREFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_securefaultpended(&self) {
-        self.value.clr_bits(Self::SECUREFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::SECUREFAULTPENDED_MASK);
     }
 
     /// **SECUREFAULTENA** `[19]` (RW)
@@ -26406,16 +26406,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SECUREFAULTENA_MASK) != 0
     }
 
-    /// Set SECUREFAULTENA bit atomically (RW)
+    /// Set SECUREFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_securefaultena(&self) {
-        self.value.set_bits(Self::SECUREFAULTENA_MASK);
+        self.value.modify_bits(|r| r | Self::SECUREFAULTENA_MASK);
     }
 
-    /// Clear SECUREFAULTENA bit atomically (RW)
+    /// Clear SECUREFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_securefaultena(&self) {
-        self.value.clr_bits(Self::SECUREFAULTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::SECUREFAULTENA_MASK);
     }
 
     /// **USGFAULTENA** `[18]` (RW)
@@ -26426,16 +26426,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::USGFAULTENA_MASK) != 0
     }
 
-    /// Set USGFAULTENA bit atomically (RW)
+    /// Set USGFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_usgfaultena(&self) {
-        self.value.set_bits(Self::USGFAULTENA_MASK);
+        self.value.modify_bits(|r| r | Self::USGFAULTENA_MASK);
     }
 
-    /// Clear USGFAULTENA bit atomically (RW)
+    /// Clear USGFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_usgfaultena(&self) {
-        self.value.clr_bits(Self::USGFAULTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::USGFAULTENA_MASK);
     }
 
     /// **BUSFAULTENA** `[17]` (RW)
@@ -26446,16 +26446,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::BUSFAULTENA_MASK) != 0
     }
 
-    /// Set BUSFAULTENA bit atomically (RW)
+    /// Set BUSFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_busfaultena(&self) {
-        self.value.set_bits(Self::BUSFAULTENA_MASK);
+        self.value.modify_bits(|r| r | Self::BUSFAULTENA_MASK);
     }
 
-    /// Clear BUSFAULTENA bit atomically (RW)
+    /// Clear BUSFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_busfaultena(&self) {
-        self.value.clr_bits(Self::BUSFAULTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::BUSFAULTENA_MASK);
     }
 
     /// **MEMFAULTENA** `[16]` (RW)
@@ -26466,16 +26466,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::MEMFAULTENA_MASK) != 0
     }
 
-    /// Set MEMFAULTENA bit atomically (RW)
+    /// Set MEMFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_memfaultena(&self) {
-        self.value.set_bits(Self::MEMFAULTENA_MASK);
+        self.value.modify_bits(|r| r | Self::MEMFAULTENA_MASK);
     }
 
-    /// Clear MEMFAULTENA bit atomically (RW)
+    /// Clear MEMFAULTENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_memfaultena(&self) {
-        self.value.clr_bits(Self::MEMFAULTENA_MASK);
+        self.value.modify_bits(|r| r & !Self::MEMFAULTENA_MASK);
     }
 
     /// **SVCALLPENDED** `[15]` (RW)
@@ -26486,16 +26486,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SVCALLPENDED_MASK) != 0
     }
 
-    /// Set SVCALLPENDED bit atomically (RW)
+    /// Set SVCALLPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_svcallpended(&self) {
-        self.value.set_bits(Self::SVCALLPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::SVCALLPENDED_MASK);
     }
 
-    /// Clear SVCALLPENDED bit atomically (RW)
+    /// Clear SVCALLPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_svcallpended(&self) {
-        self.value.clr_bits(Self::SVCALLPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::SVCALLPENDED_MASK);
     }
 
     /// **BUSFAULTPENDED** `[14]` (RW)
@@ -26506,16 +26506,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::BUSFAULTPENDED_MASK) != 0
     }
 
-    /// Set BUSFAULTPENDED bit atomically (RW)
+    /// Set BUSFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_busfaultpended(&self) {
-        self.value.set_bits(Self::BUSFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::BUSFAULTPENDED_MASK);
     }
 
-    /// Clear BUSFAULTPENDED bit atomically (RW)
+    /// Clear BUSFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_busfaultpended(&self) {
-        self.value.clr_bits(Self::BUSFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::BUSFAULTPENDED_MASK);
     }
 
     /// **MEMFAULTPENDED** `[13]` (RW)
@@ -26526,16 +26526,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::MEMFAULTPENDED_MASK) != 0
     }
 
-    /// Set MEMFAULTPENDED bit atomically (RW)
+    /// Set MEMFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_memfaultpended(&self) {
-        self.value.set_bits(Self::MEMFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::MEMFAULTPENDED_MASK);
     }
 
-    /// Clear MEMFAULTPENDED bit atomically (RW)
+    /// Clear MEMFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_memfaultpended(&self) {
-        self.value.clr_bits(Self::MEMFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::MEMFAULTPENDED_MASK);
     }
 
     /// **USGFAULTPENDED** `[12]` (RW)
@@ -26546,16 +26546,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::USGFAULTPENDED_MASK) != 0
     }
 
-    /// Set USGFAULTPENDED bit atomically (RW)
+    /// Set USGFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_usgfaultpended(&self) {
-        self.value.set_bits(Self::USGFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r | Self::USGFAULTPENDED_MASK);
     }
 
-    /// Clear USGFAULTPENDED bit atomically (RW)
+    /// Clear USGFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_usgfaultpended(&self) {
-        self.value.clr_bits(Self::USGFAULTPENDED_MASK);
+        self.value.modify_bits(|r| r & !Self::USGFAULTPENDED_MASK);
     }
 
     /// **SYSTICKACT** `[11]` (RW)
@@ -26566,16 +26566,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SYSTICKACT_MASK) != 0
     }
 
-    /// Set SYSTICKACT bit atomically (RW)
+    /// Set SYSTICKACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_systickact(&self) {
-        self.value.set_bits(Self::SYSTICKACT_MASK);
+        self.value.modify_bits(|r| r | Self::SYSTICKACT_MASK);
     }
 
-    /// Clear SYSTICKACT bit atomically (RW)
+    /// Clear SYSTICKACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_systickact(&self) {
-        self.value.clr_bits(Self::SYSTICKACT_MASK);
+        self.value.modify_bits(|r| r & !Self::SYSTICKACT_MASK);
     }
 
     /// **PENDSVACT** `[10]` (RW)
@@ -26586,16 +26586,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::PENDSVACT_MASK) != 0
     }
 
-    /// Set PENDSVACT bit atomically (RW)
+    /// Set PENDSVACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pendsvact(&self) {
-        self.value.set_bits(Self::PENDSVACT_MASK);
+        self.value.modify_bits(|r| r | Self::PENDSVACT_MASK);
     }
 
-    /// Clear PENDSVACT bit atomically (RW)
+    /// Clear PENDSVACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pendsvact(&self) {
-        self.value.clr_bits(Self::PENDSVACT_MASK);
+        self.value.modify_bits(|r| r & !Self::PENDSVACT_MASK);
     }
 
     /// **MONITORACT** `[8]` (RW)
@@ -26606,16 +26606,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::MONITORACT_MASK) != 0
     }
 
-    /// Set MONITORACT bit atomically (RW)
+    /// Set MONITORACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_monitoract(&self) {
-        self.value.set_bits(Self::MONITORACT_MASK);
+        self.value.modify_bits(|r| r | Self::MONITORACT_MASK);
     }
 
-    /// Clear MONITORACT bit atomically (RW)
+    /// Clear MONITORACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_monitoract(&self) {
-        self.value.clr_bits(Self::MONITORACT_MASK);
+        self.value.modify_bits(|r| r & !Self::MONITORACT_MASK);
     }
 
     /// **SVCALLACT** `[7]` (RW)
@@ -26626,16 +26626,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SVCALLACT_MASK) != 0
     }
 
-    /// Set SVCALLACT bit atomically (RW)
+    /// Set SVCALLACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_svcallact(&self) {
-        self.value.set_bits(Self::SVCALLACT_MASK);
+        self.value.modify_bits(|r| r | Self::SVCALLACT_MASK);
     }
 
-    /// Clear SVCALLACT bit atomically (RW)
+    /// Clear SVCALLACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_svcallact(&self) {
-        self.value.clr_bits(Self::SVCALLACT_MASK);
+        self.value.modify_bits(|r| r & !Self::SVCALLACT_MASK);
     }
 
     /// **NMIACT** `[5]` (RW)
@@ -26646,16 +26646,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::NMIACT_MASK) != 0
     }
 
-    /// Set NMIACT bit atomically (RW)
+    /// Set NMIACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_nmiact(&self) {
-        self.value.set_bits(Self::NMIACT_MASK);
+        self.value.modify_bits(|r| r | Self::NMIACT_MASK);
     }
 
-    /// Clear NMIACT bit atomically (RW)
+    /// Clear NMIACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_nmiact(&self) {
-        self.value.clr_bits(Self::NMIACT_MASK);
+        self.value.modify_bits(|r| r & !Self::NMIACT_MASK);
     }
 
     /// **SECUREFAULTACT** `[4]` (RW)
@@ -26666,16 +26666,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::SECUREFAULTACT_MASK) != 0
     }
 
-    /// Set SECUREFAULTACT bit atomically (RW)
+    /// Set SECUREFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_securefaultact(&self) {
-        self.value.set_bits(Self::SECUREFAULTACT_MASK);
+        self.value.modify_bits(|r| r | Self::SECUREFAULTACT_MASK);
     }
 
-    /// Clear SECUREFAULTACT bit atomically (RW)
+    /// Clear SECUREFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_securefaultact(&self) {
-        self.value.clr_bits(Self::SECUREFAULTACT_MASK);
+        self.value.modify_bits(|r| r & !Self::SECUREFAULTACT_MASK);
     }
 
     /// **USGFAULTACT** `[3]` (RW)
@@ -26686,16 +26686,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::USGFAULTACT_MASK) != 0
     }
 
-    /// Set USGFAULTACT bit atomically (RW)
+    /// Set USGFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_usgfaultact(&self) {
-        self.value.set_bits(Self::USGFAULTACT_MASK);
+        self.value.modify_bits(|r| r | Self::USGFAULTACT_MASK);
     }
 
-    /// Clear USGFAULTACT bit atomically (RW)
+    /// Clear USGFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_usgfaultact(&self) {
-        self.value.clr_bits(Self::USGFAULTACT_MASK);
+        self.value.modify_bits(|r| r & !Self::USGFAULTACT_MASK);
     }
 
     /// **HARDFAULTACT** `[2]` (RW)
@@ -26706,16 +26706,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::HARDFAULTACT_MASK) != 0
     }
 
-    /// Set HARDFAULTACT bit atomically (RW)
+    /// Set HARDFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_hardfaultact(&self) {
-        self.value.set_bits(Self::HARDFAULTACT_MASK);
+        self.value.modify_bits(|r| r | Self::HARDFAULTACT_MASK);
     }
 
-    /// Clear HARDFAULTACT bit atomically (RW)
+    /// Clear HARDFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_hardfaultact(&self) {
-        self.value.clr_bits(Self::HARDFAULTACT_MASK);
+        self.value.modify_bits(|r| r & !Self::HARDFAULTACT_MASK);
     }
 
     /// **BUSFAULTACT** `[1]` (RW)
@@ -26726,16 +26726,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::BUSFAULTACT_MASK) != 0
     }
 
-    /// Set BUSFAULTACT bit atomically (RW)
+    /// Set BUSFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_busfaultact(&self) {
-        self.value.set_bits(Self::BUSFAULTACT_MASK);
+        self.value.modify_bits(|r| r | Self::BUSFAULTACT_MASK);
     }
 
-    /// Clear BUSFAULTACT bit atomically (RW)
+    /// Clear BUSFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_busfaultact(&self) {
-        self.value.clr_bits(Self::BUSFAULTACT_MASK);
+        self.value.modify_bits(|r| r & !Self::BUSFAULTACT_MASK);
     }
 
     /// **MEMFAULTACT** `[0]` (RW)
@@ -26746,16 +26746,16 @@ impl Shcsr {
         (self.value.read_bits() & Self::MEMFAULTACT_MASK) != 0
     }
 
-    /// Set MEMFAULTACT bit atomically (RW)
+    /// Set MEMFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_memfaultact(&self) {
-        self.value.set_bits(Self::MEMFAULTACT_MASK);
+        self.value.modify_bits(|r| r | Self::MEMFAULTACT_MASK);
     }
 
-    /// Clear MEMFAULTACT bit atomically (RW)
+    /// Clear MEMFAULTACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_memfaultact(&self) {
-        self.value.clr_bits(Self::MEMFAULTACT_MASK);
+        self.value.modify_bits(|r| r & !Self::MEMFAULTACT_MASK);
     }
 
 }
@@ -27488,16 +27488,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_DIVBYZERO_MASK) != 0
     }
 
-    /// Set UFSR_DIVBYZERO bit atomically (RW)
+    /// Set UFSR_DIVBYZERO bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_divbyzero(&self) {
-        self.value.set_bits(Self::UFSR_DIVBYZERO_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_DIVBYZERO_MASK);
     }
 
-    /// Clear UFSR_DIVBYZERO bit atomically (RW)
+    /// Clear UFSR_DIVBYZERO bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_divbyzero(&self) {
-        self.value.clr_bits(Self::UFSR_DIVBYZERO_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_DIVBYZERO_MASK);
     }
 
     /// **UFSR_UNALIGNED** `[24]` (RW)
@@ -27508,16 +27508,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_UNALIGNED_MASK) != 0
     }
 
-    /// Set UFSR_UNALIGNED bit atomically (RW)
+    /// Set UFSR_UNALIGNED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_unaligned(&self) {
-        self.value.set_bits(Self::UFSR_UNALIGNED_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_UNALIGNED_MASK);
     }
 
-    /// Clear UFSR_UNALIGNED bit atomically (RW)
+    /// Clear UFSR_UNALIGNED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_unaligned(&self) {
-        self.value.clr_bits(Self::UFSR_UNALIGNED_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_UNALIGNED_MASK);
     }
 
     /// **UFSR_STKOF** `[20]` (RW)
@@ -27528,16 +27528,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_STKOF_MASK) != 0
     }
 
-    /// Set UFSR_STKOF bit atomically (RW)
+    /// Set UFSR_STKOF bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_stkof(&self) {
-        self.value.set_bits(Self::UFSR_STKOF_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_STKOF_MASK);
     }
 
-    /// Clear UFSR_STKOF bit atomically (RW)
+    /// Clear UFSR_STKOF bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_stkof(&self) {
-        self.value.clr_bits(Self::UFSR_STKOF_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_STKOF_MASK);
     }
 
     /// **UFSR_NOCP** `[19]` (RW)
@@ -27548,16 +27548,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_NOCP_MASK) != 0
     }
 
-    /// Set UFSR_NOCP bit atomically (RW)
+    /// Set UFSR_NOCP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_nocp(&self) {
-        self.value.set_bits(Self::UFSR_NOCP_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_NOCP_MASK);
     }
 
-    /// Clear UFSR_NOCP bit atomically (RW)
+    /// Clear UFSR_NOCP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_nocp(&self) {
-        self.value.clr_bits(Self::UFSR_NOCP_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_NOCP_MASK);
     }
 
     /// **UFSR_INVPC** `[18]` (RW)
@@ -27568,16 +27568,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_INVPC_MASK) != 0
     }
 
-    /// Set UFSR_INVPC bit atomically (RW)
+    /// Set UFSR_INVPC bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_invpc(&self) {
-        self.value.set_bits(Self::UFSR_INVPC_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_INVPC_MASK);
     }
 
-    /// Clear UFSR_INVPC bit atomically (RW)
+    /// Clear UFSR_INVPC bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_invpc(&self) {
-        self.value.clr_bits(Self::UFSR_INVPC_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_INVPC_MASK);
     }
 
     /// **UFSR_INVSTATE** `[17]` (RW)
@@ -27588,16 +27588,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_INVSTATE_MASK) != 0
     }
 
-    /// Set UFSR_INVSTATE bit atomically (RW)
+    /// Set UFSR_INVSTATE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_invstate(&self) {
-        self.value.set_bits(Self::UFSR_INVSTATE_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_INVSTATE_MASK);
     }
 
-    /// Clear UFSR_INVSTATE bit atomically (RW)
+    /// Clear UFSR_INVSTATE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_invstate(&self) {
-        self.value.clr_bits(Self::UFSR_INVSTATE_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_INVSTATE_MASK);
     }
 
     /// **UFSR_UNDEFINSTR** `[16]` (RW)
@@ -27608,16 +27608,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::UFSR_UNDEFINSTR_MASK) != 0
     }
 
-    /// Set UFSR_UNDEFINSTR bit atomically (RW)
+    /// Set UFSR_UNDEFINSTR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufsr_undefinstr(&self) {
-        self.value.set_bits(Self::UFSR_UNDEFINSTR_MASK);
+        self.value.modify_bits(|r| r | Self::UFSR_UNDEFINSTR_MASK);
     }
 
-    /// Clear UFSR_UNDEFINSTR bit atomically (RW)
+    /// Clear UFSR_UNDEFINSTR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufsr_undefinstr(&self) {
-        self.value.clr_bits(Self::UFSR_UNDEFINSTR_MASK);
+        self.value.modify_bits(|r| r & !Self::UFSR_UNDEFINSTR_MASK);
     }
 
     /// **BFSR_BFARVALID** `[15]` (RW)
@@ -27628,16 +27628,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_BFARVALID_MASK) != 0
     }
 
-    /// Set BFSR_BFARVALID bit atomically (RW)
+    /// Set BFSR_BFARVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_bfarvalid(&self) {
-        self.value.set_bits(Self::BFSR_BFARVALID_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_BFARVALID_MASK);
     }
 
-    /// Clear BFSR_BFARVALID bit atomically (RW)
+    /// Clear BFSR_BFARVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_bfarvalid(&self) {
-        self.value.clr_bits(Self::BFSR_BFARVALID_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_BFARVALID_MASK);
     }
 
     /// **BFSR_LSPERR** `[13]` (RW)
@@ -27648,16 +27648,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_LSPERR_MASK) != 0
     }
 
-    /// Set BFSR_LSPERR bit atomically (RW)
+    /// Set BFSR_LSPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_lsperr(&self) {
-        self.value.set_bits(Self::BFSR_LSPERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_LSPERR_MASK);
     }
 
-    /// Clear BFSR_LSPERR bit atomically (RW)
+    /// Clear BFSR_LSPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_lsperr(&self) {
-        self.value.clr_bits(Self::BFSR_LSPERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_LSPERR_MASK);
     }
 
     /// **BFSR_STKERR** `[12]` (RW)
@@ -27668,16 +27668,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_STKERR_MASK) != 0
     }
 
-    /// Set BFSR_STKERR bit atomically (RW)
+    /// Set BFSR_STKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_stkerr(&self) {
-        self.value.set_bits(Self::BFSR_STKERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_STKERR_MASK);
     }
 
-    /// Clear BFSR_STKERR bit atomically (RW)
+    /// Clear BFSR_STKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_stkerr(&self) {
-        self.value.clr_bits(Self::BFSR_STKERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_STKERR_MASK);
     }
 
     /// **BFSR_UNSTKERR** `[11]` (RW)
@@ -27688,16 +27688,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_UNSTKERR_MASK) != 0
     }
 
-    /// Set BFSR_UNSTKERR bit atomically (RW)
+    /// Set BFSR_UNSTKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_unstkerr(&self) {
-        self.value.set_bits(Self::BFSR_UNSTKERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_UNSTKERR_MASK);
     }
 
-    /// Clear BFSR_UNSTKERR bit atomically (RW)
+    /// Clear BFSR_UNSTKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_unstkerr(&self) {
-        self.value.clr_bits(Self::BFSR_UNSTKERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_UNSTKERR_MASK);
     }
 
     /// **BFSR_IMPRECISERR** `[10]` (RW)
@@ -27708,16 +27708,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_IMPRECISERR_MASK) != 0
     }
 
-    /// Set BFSR_IMPRECISERR bit atomically (RW)
+    /// Set BFSR_IMPRECISERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_impreciserr(&self) {
-        self.value.set_bits(Self::BFSR_IMPRECISERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_IMPRECISERR_MASK);
     }
 
-    /// Clear BFSR_IMPRECISERR bit atomically (RW)
+    /// Clear BFSR_IMPRECISERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_impreciserr(&self) {
-        self.value.clr_bits(Self::BFSR_IMPRECISERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_IMPRECISERR_MASK);
     }
 
     /// **BFSR_PRECISERR** `[9]` (RW)
@@ -27728,16 +27728,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_PRECISERR_MASK) != 0
     }
 
-    /// Set BFSR_PRECISERR bit atomically (RW)
+    /// Set BFSR_PRECISERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_preciserr(&self) {
-        self.value.set_bits(Self::BFSR_PRECISERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_PRECISERR_MASK);
     }
 
-    /// Clear BFSR_PRECISERR bit atomically (RW)
+    /// Clear BFSR_PRECISERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_preciserr(&self) {
-        self.value.clr_bits(Self::BFSR_PRECISERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_PRECISERR_MASK);
     }
 
     /// **BFSR_IBUSERR** `[8]` (RW)
@@ -27748,16 +27748,16 @@ impl Cfsr {
         (self.value.read_bits() & Self::BFSR_IBUSERR_MASK) != 0
     }
 
-    /// Set BFSR_IBUSERR bit atomically (RW)
+    /// Set BFSR_IBUSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfsr_ibuserr(&self) {
-        self.value.set_bits(Self::BFSR_IBUSERR_MASK);
+        self.value.modify_bits(|r| r | Self::BFSR_IBUSERR_MASK);
     }
 
-    /// Clear BFSR_IBUSERR bit atomically (RW)
+    /// Clear BFSR_IBUSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfsr_ibuserr(&self) {
-        self.value.clr_bits(Self::BFSR_IBUSERR_MASK);
+        self.value.modify_bits(|r| r & !Self::BFSR_IBUSERR_MASK);
     }
 
     /// **MMFSR** `[7:0]` (RW)
@@ -28234,16 +28234,16 @@ impl Hfsr {
         (self.value.read_bits() & Self::DEBUGEVT_MASK) != 0
     }
 
-    /// Set DEBUGEVT bit atomically (RW)
+    /// Set DEBUGEVT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_debugevt(&self) {
-        self.value.set_bits(Self::DEBUGEVT_MASK);
+        self.value.modify_bits(|r| r | Self::DEBUGEVT_MASK);
     }
 
-    /// Clear DEBUGEVT bit atomically (RW)
+    /// Clear DEBUGEVT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_debugevt(&self) {
-        self.value.clr_bits(Self::DEBUGEVT_MASK);
+        self.value.modify_bits(|r| r & !Self::DEBUGEVT_MASK);
     }
 
     /// **FORCED** `[30]` (RW)
@@ -28254,16 +28254,16 @@ impl Hfsr {
         (self.value.read_bits() & Self::FORCED_MASK) != 0
     }
 
-    /// Set FORCED bit atomically (RW)
+    /// Set FORCED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_forced(&self) {
-        self.value.set_bits(Self::FORCED_MASK);
+        self.value.modify_bits(|r| r | Self::FORCED_MASK);
     }
 
-    /// Clear FORCED bit atomically (RW)
+    /// Clear FORCED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_forced(&self) {
-        self.value.clr_bits(Self::FORCED_MASK);
+        self.value.modify_bits(|r| r & !Self::FORCED_MASK);
     }
 
     /// **VECTTBL** `[1]` (RW)
@@ -28274,16 +28274,16 @@ impl Hfsr {
         (self.value.read_bits() & Self::VECTTBL_MASK) != 0
     }
 
-    /// Set VECTTBL bit atomically (RW)
+    /// Set VECTTBL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vecttbl(&self) {
-        self.value.set_bits(Self::VECTTBL_MASK);
+        self.value.modify_bits(|r| r | Self::VECTTBL_MASK);
     }
 
-    /// Clear VECTTBL bit atomically (RW)
+    /// Clear VECTTBL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vecttbl(&self) {
-        self.value.clr_bits(Self::VECTTBL_MASK);
+        self.value.modify_bits(|r| r & !Self::VECTTBL_MASK);
     }
 
 }
@@ -28510,16 +28510,16 @@ impl Dfsr {
         (self.value.read_bits() & Self::EXTERNAL_MASK) != 0
     }
 
-    /// Set EXTERNAL bit atomically (RW)
+    /// Set EXTERNAL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_external(&self) {
-        self.value.set_bits(Self::EXTERNAL_MASK);
+        self.value.modify_bits(|r| r | Self::EXTERNAL_MASK);
     }
 
-    /// Clear EXTERNAL bit atomically (RW)
+    /// Clear EXTERNAL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_external(&self) {
-        self.value.clr_bits(Self::EXTERNAL_MASK);
+        self.value.modify_bits(|r| r & !Self::EXTERNAL_MASK);
     }
 
     /// **VCATCH** `[3]` (RW)
@@ -28530,16 +28530,16 @@ impl Dfsr {
         (self.value.read_bits() & Self::VCATCH_MASK) != 0
     }
 
-    /// Set VCATCH bit atomically (RW)
+    /// Set VCATCH bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vcatch(&self) {
-        self.value.set_bits(Self::VCATCH_MASK);
+        self.value.modify_bits(|r| r | Self::VCATCH_MASK);
     }
 
-    /// Clear VCATCH bit atomically (RW)
+    /// Clear VCATCH bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vcatch(&self) {
-        self.value.clr_bits(Self::VCATCH_MASK);
+        self.value.modify_bits(|r| r & !Self::VCATCH_MASK);
     }
 
     /// **DWTTRAP** `[2]` (RW)
@@ -28550,16 +28550,16 @@ impl Dfsr {
         (self.value.read_bits() & Self::DWTTRAP_MASK) != 0
     }
 
-    /// Set DWTTRAP bit atomically (RW)
+    /// Set DWTTRAP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_dwttrap(&self) {
-        self.value.set_bits(Self::DWTTRAP_MASK);
+        self.value.modify_bits(|r| r | Self::DWTTRAP_MASK);
     }
 
-    /// Clear DWTTRAP bit atomically (RW)
+    /// Clear DWTTRAP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_dwttrap(&self) {
-        self.value.clr_bits(Self::DWTTRAP_MASK);
+        self.value.modify_bits(|r| r & !Self::DWTTRAP_MASK);
     }
 
     /// **BKPT** `[1]` (RW)
@@ -28570,16 +28570,16 @@ impl Dfsr {
         (self.value.read_bits() & Self::BKPT_MASK) != 0
     }
 
-    /// Set BKPT bit atomically (RW)
+    /// Set BKPT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bkpt(&self) {
-        self.value.set_bits(Self::BKPT_MASK);
+        self.value.modify_bits(|r| r | Self::BKPT_MASK);
     }
 
-    /// Clear BKPT bit atomically (RW)
+    /// Clear BKPT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bkpt(&self) {
-        self.value.clr_bits(Self::BKPT_MASK);
+        self.value.modify_bits(|r| r & !Self::BKPT_MASK);
     }
 
     /// **HALTED** `[0]` (RW)
@@ -28590,16 +28590,16 @@ impl Dfsr {
         (self.value.read_bits() & Self::HALTED_MASK) != 0
     }
 
-    /// Set HALTED bit atomically (RW)
+    /// Set HALTED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_halted(&self) {
-        self.value.set_bits(Self::HALTED_MASK);
+        self.value.modify_bits(|r| r | Self::HALTED_MASK);
     }
 
-    /// Clear HALTED bit atomically (RW)
+    /// Clear HALTED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_halted(&self) {
-        self.value.clr_bits(Self::HALTED_MASK);
+        self.value.modify_bits(|r| r & !Self::HALTED_MASK);
     }
 
 }
@@ -32596,16 +32596,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP11_MASK) != 0
     }
 
-    /// Set CP11 bit atomically (RW)
+    /// Set CP11 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp11(&self) {
-        self.value.set_bits(Self::CP11_MASK);
+        self.value.modify_bits(|r| r | Self::CP11_MASK);
     }
 
-    /// Clear CP11 bit atomically (RW)
+    /// Clear CP11 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp11(&self) {
-        self.value.clr_bits(Self::CP11_MASK);
+        self.value.modify_bits(|r| r & !Self::CP11_MASK);
     }
 
     /// **CP10** `[10]` (RW)
@@ -32616,16 +32616,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP10_MASK) != 0
     }
 
-    /// Set CP10 bit atomically (RW)
+    /// Set CP10 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp10(&self) {
-        self.value.set_bits(Self::CP10_MASK);
+        self.value.modify_bits(|r| r | Self::CP10_MASK);
     }
 
-    /// Clear CP10 bit atomically (RW)
+    /// Clear CP10 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp10(&self) {
-        self.value.clr_bits(Self::CP10_MASK);
+        self.value.modify_bits(|r| r & !Self::CP10_MASK);
     }
 
     /// **CP7** `[7]` (RW)
@@ -32636,16 +32636,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP7_MASK) != 0
     }
 
-    /// Set CP7 bit atomically (RW)
+    /// Set CP7 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp7(&self) {
-        self.value.set_bits(Self::CP7_MASK);
+        self.value.modify_bits(|r| r | Self::CP7_MASK);
     }
 
-    /// Clear CP7 bit atomically (RW)
+    /// Clear CP7 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp7(&self) {
-        self.value.clr_bits(Self::CP7_MASK);
+        self.value.modify_bits(|r| r & !Self::CP7_MASK);
     }
 
     /// **CP6** `[6]` (RW)
@@ -32656,16 +32656,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP6_MASK) != 0
     }
 
-    /// Set CP6 bit atomically (RW)
+    /// Set CP6 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp6(&self) {
-        self.value.set_bits(Self::CP6_MASK);
+        self.value.modify_bits(|r| r | Self::CP6_MASK);
     }
 
-    /// Clear CP6 bit atomically (RW)
+    /// Clear CP6 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp6(&self) {
-        self.value.clr_bits(Self::CP6_MASK);
+        self.value.modify_bits(|r| r & !Self::CP6_MASK);
     }
 
     /// **CP5** `[5]` (RW)
@@ -32676,16 +32676,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP5_MASK) != 0
     }
 
-    /// Set CP5 bit atomically (RW)
+    /// Set CP5 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp5(&self) {
-        self.value.set_bits(Self::CP5_MASK);
+        self.value.modify_bits(|r| r | Self::CP5_MASK);
     }
 
-    /// Clear CP5 bit atomically (RW)
+    /// Clear CP5 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp5(&self) {
-        self.value.clr_bits(Self::CP5_MASK);
+        self.value.modify_bits(|r| r & !Self::CP5_MASK);
     }
 
     /// **CP4** `[4]` (RW)
@@ -32696,16 +32696,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP4_MASK) != 0
     }
 
-    /// Set CP4 bit atomically (RW)
+    /// Set CP4 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp4(&self) {
-        self.value.set_bits(Self::CP4_MASK);
+        self.value.modify_bits(|r| r | Self::CP4_MASK);
     }
 
-    /// Clear CP4 bit atomically (RW)
+    /// Clear CP4 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp4(&self) {
-        self.value.clr_bits(Self::CP4_MASK);
+        self.value.modify_bits(|r| r & !Self::CP4_MASK);
     }
 
     /// **CP3** `[3]` (RW)
@@ -32716,16 +32716,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP3_MASK) != 0
     }
 
-    /// Set CP3 bit atomically (RW)
+    /// Set CP3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp3(&self) {
-        self.value.set_bits(Self::CP3_MASK);
+        self.value.modify_bits(|r| r | Self::CP3_MASK);
     }
 
-    /// Clear CP3 bit atomically (RW)
+    /// Clear CP3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp3(&self) {
-        self.value.clr_bits(Self::CP3_MASK);
+        self.value.modify_bits(|r| r & !Self::CP3_MASK);
     }
 
     /// **CP2** `[2]` (RW)
@@ -32736,16 +32736,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP2_MASK) != 0
     }
 
-    /// Set CP2 bit atomically (RW)
+    /// Set CP2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp2(&self) {
-        self.value.set_bits(Self::CP2_MASK);
+        self.value.modify_bits(|r| r | Self::CP2_MASK);
     }
 
-    /// Clear CP2 bit atomically (RW)
+    /// Clear CP2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp2(&self) {
-        self.value.clr_bits(Self::CP2_MASK);
+        self.value.modify_bits(|r| r & !Self::CP2_MASK);
     }
 
     /// **CP1** `[1]` (RW)
@@ -32756,16 +32756,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP1_MASK) != 0
     }
 
-    /// Set CP1 bit atomically (RW)
+    /// Set CP1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp1(&self) {
-        self.value.set_bits(Self::CP1_MASK);
+        self.value.modify_bits(|r| r | Self::CP1_MASK);
     }
 
-    /// Clear CP1 bit atomically (RW)
+    /// Clear CP1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp1(&self) {
-        self.value.clr_bits(Self::CP1_MASK);
+        self.value.modify_bits(|r| r & !Self::CP1_MASK);
     }
 
     /// **CP0** `[0]` (RW)
@@ -32776,16 +32776,16 @@ impl Nsacr {
         (self.value.read_bits() & Self::CP0_MASK) != 0
     }
 
-    /// Set CP0 bit atomically (RW)
+    /// Set CP0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cp0(&self) {
-        self.value.set_bits(Self::CP0_MASK);
+        self.value.modify_bits(|r| r | Self::CP0_MASK);
     }
 
-    /// Clear CP0 bit atomically (RW)
+    /// Clear CP0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cp0(&self) {
-        self.value.clr_bits(Self::CP0_MASK);
+        self.value.modify_bits(|r| r & !Self::CP0_MASK);
     }
 
 }
@@ -33282,16 +33282,16 @@ impl MpuCtrl {
         (self.value.read_bits() & Self::PRIVDEFENA_MASK) != 0
     }
 
-    /// Set PRIVDEFENA bit atomically (RW)
+    /// Set PRIVDEFENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_privdefena(&self) {
-        self.value.set_bits(Self::PRIVDEFENA_MASK);
+        self.value.modify_bits(|r| r | Self::PRIVDEFENA_MASK);
     }
 
-    /// Clear PRIVDEFENA bit atomically (RW)
+    /// Clear PRIVDEFENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_privdefena(&self) {
-        self.value.clr_bits(Self::PRIVDEFENA_MASK);
+        self.value.modify_bits(|r| r & !Self::PRIVDEFENA_MASK);
     }
 
     /// **HFNMIENA** `[1]` (RW)
@@ -33302,16 +33302,16 @@ impl MpuCtrl {
         (self.value.read_bits() & Self::HFNMIENA_MASK) != 0
     }
 
-    /// Set HFNMIENA bit atomically (RW)
+    /// Set HFNMIENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_hfnmiena(&self) {
-        self.value.set_bits(Self::HFNMIENA_MASK);
+        self.value.modify_bits(|r| r | Self::HFNMIENA_MASK);
     }
 
-    /// Clear HFNMIENA bit atomically (RW)
+    /// Clear HFNMIENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_hfnmiena(&self) {
-        self.value.clr_bits(Self::HFNMIENA_MASK);
+        self.value.modify_bits(|r| r & !Self::HFNMIENA_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -33322,16 +33322,16 @@ impl MpuCtrl {
         (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit atomically (RW)
+    /// Set ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r | Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit atomically (RW)
+    /// Clear ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
 
 }
@@ -33721,16 +33721,16 @@ impl MpuRbar {
         (self.value.read_bits() & Self::XN_MASK) != 0
     }
 
-    /// Set XN bit atomically (RW)
+    /// Set XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_xn(&self) {
-        self.value.set_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r | Self::XN_MASK);
     }
 
-    /// Clear XN bit atomically (RW)
+    /// Clear XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_xn(&self) {
-        self.value.clr_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
 
 }
@@ -33971,16 +33971,16 @@ impl MpuRlar {
         (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit atomically (RW)
+    /// Set EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r | Self::EN_MASK);
     }
 
-    /// Clear EN bit atomically (RW)
+    /// Clear EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
 
 }
@@ -34231,16 +34231,16 @@ impl MpuRbarA1 {
         (self.value.read_bits() & Self::XN_MASK) != 0
     }
 
-    /// Set XN bit atomically (RW)
+    /// Set XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_xn(&self) {
-        self.value.set_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r | Self::XN_MASK);
     }
 
-    /// Clear XN bit atomically (RW)
+    /// Clear XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_xn(&self) {
-        self.value.clr_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
 
 }
@@ -34481,16 +34481,16 @@ impl MpuRlarA1 {
         (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit atomically (RW)
+    /// Set EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r | Self::EN_MASK);
     }
 
-    /// Clear EN bit atomically (RW)
+    /// Clear EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
 
 }
@@ -34741,16 +34741,16 @@ impl MpuRbarA2 {
         (self.value.read_bits() & Self::XN_MASK) != 0
     }
 
-    /// Set XN bit atomically (RW)
+    /// Set XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_xn(&self) {
-        self.value.set_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r | Self::XN_MASK);
     }
 
-    /// Clear XN bit atomically (RW)
+    /// Clear XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_xn(&self) {
-        self.value.clr_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
 
 }
@@ -34991,16 +34991,16 @@ impl MpuRlarA2 {
         (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit atomically (RW)
+    /// Set EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r | Self::EN_MASK);
     }
 
-    /// Clear EN bit atomically (RW)
+    /// Clear EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
 
 }
@@ -35251,16 +35251,16 @@ impl MpuRbarA3 {
         (self.value.read_bits() & Self::XN_MASK) != 0
     }
 
-    /// Set XN bit atomically (RW)
+    /// Set XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_xn(&self) {
-        self.value.set_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r | Self::XN_MASK);
     }
 
-    /// Clear XN bit atomically (RW)
+    /// Clear XN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_xn(&self) {
-        self.value.clr_bits(Self::XN_MASK);
+        self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
 
 }
@@ -35501,16 +35501,16 @@ impl MpuRlarA3 {
         (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit atomically (RW)
+    /// Set EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r | Self::EN_MASK);
     }
 
-    /// Clear EN bit atomically (RW)
+    /// Clear EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
 
 }
@@ -36228,16 +36228,16 @@ impl SauCtrl {
         (self.value.read_bits() & Self::ALLNS_MASK) != 0
     }
 
-    /// Set ALLNS bit atomically (RW)
+    /// Set ALLNS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_allns(&self) {
-        self.value.set_bits(Self::ALLNS_MASK);
+        self.value.modify_bits(|r| r | Self::ALLNS_MASK);
     }
 
-    /// Clear ALLNS bit atomically (RW)
+    /// Clear ALLNS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_allns(&self) {
-        self.value.clr_bits(Self::ALLNS_MASK);
+        self.value.modify_bits(|r| r & !Self::ALLNS_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -36248,16 +36248,16 @@ impl SauCtrl {
         (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit atomically (RW)
+    /// Set ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r | Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit atomically (RW)
+    /// Clear ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
 
 }
@@ -36826,16 +36826,16 @@ impl SauRlar {
         (self.value.read_bits() & Self::NSC_MASK) != 0
     }
 
-    /// Set NSC bit atomically (RW)
+    /// Set NSC bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_nsc(&self) {
-        self.value.set_bits(Self::NSC_MASK);
+        self.value.modify_bits(|r| r | Self::NSC_MASK);
     }
 
-    /// Clear NSC bit atomically (RW)
+    /// Clear NSC bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_nsc(&self) {
-        self.value.clr_bits(Self::NSC_MASK);
+        self.value.modify_bits(|r| r & !Self::NSC_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -36846,16 +36846,16 @@ impl SauRlar {
         (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit atomically (RW)
+    /// Set ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r | Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit atomically (RW)
+    /// Clear ENABLE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
 
 }
@@ -37117,16 +37117,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::LSERR_MASK) != 0
     }
 
-    /// Set LSERR bit atomically (RW)
+    /// Set LSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lserr(&self) {
-        self.value.set_bits(Self::LSERR_MASK);
+        self.value.modify_bits(|r| r | Self::LSERR_MASK);
     }
 
-    /// Clear LSERR bit atomically (RW)
+    /// Clear LSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lserr(&self) {
-        self.value.clr_bits(Self::LSERR_MASK);
+        self.value.modify_bits(|r| r & !Self::LSERR_MASK);
     }
 
     /// **SFARVALID** `[6]` (RW)
@@ -37137,16 +37137,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::SFARVALID_MASK) != 0
     }
 
-    /// Set SFARVALID bit atomically (RW)
+    /// Set SFARVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sfarvalid(&self) {
-        self.value.set_bits(Self::SFARVALID_MASK);
+        self.value.modify_bits(|r| r | Self::SFARVALID_MASK);
     }
 
-    /// Clear SFARVALID bit atomically (RW)
+    /// Clear SFARVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sfarvalid(&self) {
-        self.value.clr_bits(Self::SFARVALID_MASK);
+        self.value.modify_bits(|r| r & !Self::SFARVALID_MASK);
     }
 
     /// **LSPERR** `[5]` (RW)
@@ -37157,16 +37157,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::LSPERR_MASK) != 0
     }
 
-    /// Set LSPERR bit atomically (RW)
+    /// Set LSPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lsperr(&self) {
-        self.value.set_bits(Self::LSPERR_MASK);
+        self.value.modify_bits(|r| r | Self::LSPERR_MASK);
     }
 
-    /// Clear LSPERR bit atomically (RW)
+    /// Clear LSPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lsperr(&self) {
-        self.value.clr_bits(Self::LSPERR_MASK);
+        self.value.modify_bits(|r| r & !Self::LSPERR_MASK);
     }
 
     /// **INVTRAN** `[4]` (RW)
@@ -37177,16 +37177,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::INVTRAN_MASK) != 0
     }
 
-    /// Set INVTRAN bit atomically (RW)
+    /// Set INVTRAN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_invtran(&self) {
-        self.value.set_bits(Self::INVTRAN_MASK);
+        self.value.modify_bits(|r| r | Self::INVTRAN_MASK);
     }
 
-    /// Clear INVTRAN bit atomically (RW)
+    /// Clear INVTRAN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_invtran(&self) {
-        self.value.clr_bits(Self::INVTRAN_MASK);
+        self.value.modify_bits(|r| r & !Self::INVTRAN_MASK);
     }
 
     /// **AUVIOL** `[3]` (RW)
@@ -37197,16 +37197,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::AUVIOL_MASK) != 0
     }
 
-    /// Set AUVIOL bit atomically (RW)
+    /// Set AUVIOL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_auviol(&self) {
-        self.value.set_bits(Self::AUVIOL_MASK);
+        self.value.modify_bits(|r| r | Self::AUVIOL_MASK);
     }
 
-    /// Clear AUVIOL bit atomically (RW)
+    /// Clear AUVIOL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_auviol(&self) {
-        self.value.clr_bits(Self::AUVIOL_MASK);
+        self.value.modify_bits(|r| r & !Self::AUVIOL_MASK);
     }
 
     /// **INVER** `[2]` (RW)
@@ -37217,16 +37217,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::INVER_MASK) != 0
     }
 
-    /// Set INVER bit atomically (RW)
+    /// Set INVER bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_inver(&self) {
-        self.value.set_bits(Self::INVER_MASK);
+        self.value.modify_bits(|r| r | Self::INVER_MASK);
     }
 
-    /// Clear INVER bit atomically (RW)
+    /// Clear INVER bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_inver(&self) {
-        self.value.clr_bits(Self::INVER_MASK);
+        self.value.modify_bits(|r| r & !Self::INVER_MASK);
     }
 
     /// **INVIS** `[1]` (RW)
@@ -37237,16 +37237,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::INVIS_MASK) != 0
     }
 
-    /// Set INVIS bit atomically (RW)
+    /// Set INVIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_invis(&self) {
-        self.value.set_bits(Self::INVIS_MASK);
+        self.value.modify_bits(|r| r | Self::INVIS_MASK);
     }
 
-    /// Clear INVIS bit atomically (RW)
+    /// Clear INVIS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_invis(&self) {
-        self.value.clr_bits(Self::INVIS_MASK);
+        self.value.modify_bits(|r| r & !Self::INVIS_MASK);
     }
 
     /// **INVEP** `[0]` (RW)
@@ -37257,16 +37257,16 @@ impl Sfsr {
         (self.value.read_bits() & Self::INVEP_MASK) != 0
     }
 
-    /// Set INVEP bit atomically (RW)
+    /// Set INVEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_invep(&self) {
-        self.value.set_bits(Self::INVEP_MASK);
+        self.value.modify_bits(|r| r | Self::INVEP_MASK);
     }
 
-    /// Clear INVEP bit atomically (RW)
+    /// Clear INVEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_invep(&self) {
-        self.value.clr_bits(Self::INVEP_MASK);
+        self.value.modify_bits(|r| r & !Self::INVEP_MASK);
     }
 
 }
@@ -37902,16 +37902,16 @@ impl Dhcsr {
         (self.value.read_bits() & Self::C_SNAPSTALL_MASK) != 0
     }
 
-    /// Set C_SNAPSTALL bit atomically (RW)
+    /// Set C_SNAPSTALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_c_snapstall(&self) {
-        self.value.set_bits(Self::C_SNAPSTALL_MASK);
+        self.value.modify_bits(|r| r | Self::C_SNAPSTALL_MASK);
     }
 
-    /// Clear C_SNAPSTALL bit atomically (RW)
+    /// Clear C_SNAPSTALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_c_snapstall(&self) {
-        self.value.clr_bits(Self::C_SNAPSTALL_MASK);
+        self.value.modify_bits(|r| r & !Self::C_SNAPSTALL_MASK);
     }
 
     /// **C_MASKINTS** `[3]` (RW)
@@ -37922,16 +37922,16 @@ impl Dhcsr {
         (self.value.read_bits() & Self::C_MASKINTS_MASK) != 0
     }
 
-    /// Set C_MASKINTS bit atomically (RW)
+    /// Set C_MASKINTS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_c_maskints(&self) {
-        self.value.set_bits(Self::C_MASKINTS_MASK);
+        self.value.modify_bits(|r| r | Self::C_MASKINTS_MASK);
     }
 
-    /// Clear C_MASKINTS bit atomically (RW)
+    /// Clear C_MASKINTS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_c_maskints(&self) {
-        self.value.clr_bits(Self::C_MASKINTS_MASK);
+        self.value.modify_bits(|r| r & !Self::C_MASKINTS_MASK);
     }
 
     /// **C_STEP** `[2]` (RW)
@@ -37942,16 +37942,16 @@ impl Dhcsr {
         (self.value.read_bits() & Self::C_STEP_MASK) != 0
     }
 
-    /// Set C_STEP bit atomically (RW)
+    /// Set C_STEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_c_step(&self) {
-        self.value.set_bits(Self::C_STEP_MASK);
+        self.value.modify_bits(|r| r | Self::C_STEP_MASK);
     }
 
-    /// Clear C_STEP bit atomically (RW)
+    /// Clear C_STEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_c_step(&self) {
-        self.value.clr_bits(Self::C_STEP_MASK);
+        self.value.modify_bits(|r| r & !Self::C_STEP_MASK);
     }
 
     /// **C_HALT** `[1]` (RW)
@@ -37962,16 +37962,16 @@ impl Dhcsr {
         (self.value.read_bits() & Self::C_HALT_MASK) != 0
     }
 
-    /// Set C_HALT bit atomically (RW)
+    /// Set C_HALT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_c_halt(&self) {
-        self.value.set_bits(Self::C_HALT_MASK);
+        self.value.modify_bits(|r| r | Self::C_HALT_MASK);
     }
 
-    /// Clear C_HALT bit atomically (RW)
+    /// Clear C_HALT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_c_halt(&self) {
-        self.value.clr_bits(Self::C_HALT_MASK);
+        self.value.modify_bits(|r| r & !Self::C_HALT_MASK);
     }
 
     /// **C_DEBUGEN** `[0]` (RW)
@@ -37982,16 +37982,16 @@ impl Dhcsr {
         (self.value.read_bits() & Self::C_DEBUGEN_MASK) != 0
     }
 
-    /// Set C_DEBUGEN bit atomically (RW)
+    /// Set C_DEBUGEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_c_debugen(&self) {
-        self.value.set_bits(Self::C_DEBUGEN_MASK);
+        self.value.modify_bits(|r| r | Self::C_DEBUGEN_MASK);
     }
 
-    /// Clear C_DEBUGEN bit atomically (RW)
+    /// Clear C_DEBUGEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_c_debugen(&self) {
-        self.value.clr_bits(Self::C_DEBUGEN_MASK);
+        self.value.modify_bits(|r| r & !Self::C_DEBUGEN_MASK);
     }
 
 }
@@ -38286,16 +38286,16 @@ impl Dcrsr {
         (self.value.read_bits() & Self::REGWNR_MASK) != 0
     }
 
-    /// Set REGWNR bit atomically (RW)
+    /// Set REGWNR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_regwnr(&self) {
-        self.value.set_bits(Self::REGWNR_MASK);
+        self.value.modify_bits(|r| r | Self::REGWNR_MASK);
     }
 
-    /// Clear REGWNR bit atomically (RW)
+    /// Clear REGWNR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_regwnr(&self) {
-        self.value.clr_bits(Self::REGWNR_MASK);
+        self.value.modify_bits(|r| r & !Self::REGWNR_MASK);
     }
 
     /// **REGSEL** `[6:0]` (RW)
@@ -38773,16 +38773,16 @@ impl Demcr {
         (self.value.read_bits() & Self::TRCENA_MASK) != 0
     }
 
-    /// Set TRCENA bit atomically (RW)
+    /// Set TRCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_trcena(&self) {
-        self.value.set_bits(Self::TRCENA_MASK);
+        self.value.modify_bits(|r| r | Self::TRCENA_MASK);
     }
 
-    /// Clear TRCENA bit atomically (RW)
+    /// Clear TRCENA bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_trcena(&self) {
-        self.value.clr_bits(Self::TRCENA_MASK);
+        self.value.modify_bits(|r| r & !Self::TRCENA_MASK);
     }
 
     /// **SDME** `[20]` (RO)
@@ -38801,16 +38801,16 @@ impl Demcr {
         (self.value.read_bits() & Self::MON_REQ_MASK) != 0
     }
 
-    /// Set MON_REQ bit atomically (RW)
+    /// Set MON_REQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_mon_req(&self) {
-        self.value.set_bits(Self::MON_REQ_MASK);
+        self.value.modify_bits(|r| r | Self::MON_REQ_MASK);
     }
 
-    /// Clear MON_REQ bit atomically (RW)
+    /// Clear MON_REQ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_mon_req(&self) {
-        self.value.clr_bits(Self::MON_REQ_MASK);
+        self.value.modify_bits(|r| r & !Self::MON_REQ_MASK);
     }
 
     /// **MON_STEP** `[18]` (RW)
@@ -38821,16 +38821,16 @@ impl Demcr {
         (self.value.read_bits() & Self::MON_STEP_MASK) != 0
     }
 
-    /// Set MON_STEP bit atomically (RW)
+    /// Set MON_STEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_mon_step(&self) {
-        self.value.set_bits(Self::MON_STEP_MASK);
+        self.value.modify_bits(|r| r | Self::MON_STEP_MASK);
     }
 
-    /// Clear MON_STEP bit atomically (RW)
+    /// Clear MON_STEP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_mon_step(&self) {
-        self.value.clr_bits(Self::MON_STEP_MASK);
+        self.value.modify_bits(|r| r & !Self::MON_STEP_MASK);
     }
 
     /// **MON_PEND** `[17]` (RW)
@@ -38841,16 +38841,16 @@ impl Demcr {
         (self.value.read_bits() & Self::MON_PEND_MASK) != 0
     }
 
-    /// Set MON_PEND bit atomically (RW)
+    /// Set MON_PEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_mon_pend(&self) {
-        self.value.set_bits(Self::MON_PEND_MASK);
+        self.value.modify_bits(|r| r | Self::MON_PEND_MASK);
     }
 
-    /// Clear MON_PEND bit atomically (RW)
+    /// Clear MON_PEND bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_mon_pend(&self) {
-        self.value.clr_bits(Self::MON_PEND_MASK);
+        self.value.modify_bits(|r| r & !Self::MON_PEND_MASK);
     }
 
     /// **MON_EN** `[16]` (RW)
@@ -38861,16 +38861,16 @@ impl Demcr {
         (self.value.read_bits() & Self::MON_EN_MASK) != 0
     }
 
-    /// Set MON_EN bit atomically (RW)
+    /// Set MON_EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_mon_en(&self) {
-        self.value.set_bits(Self::MON_EN_MASK);
+        self.value.modify_bits(|r| r | Self::MON_EN_MASK);
     }
 
-    /// Clear MON_EN bit atomically (RW)
+    /// Clear MON_EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_mon_en(&self) {
-        self.value.clr_bits(Self::MON_EN_MASK);
+        self.value.modify_bits(|r| r & !Self::MON_EN_MASK);
     }
 
     /// **VC_SFERR** `[11]` (RW)
@@ -38881,16 +38881,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_SFERR_MASK) != 0
     }
 
-    /// Set VC_SFERR bit atomically (RW)
+    /// Set VC_SFERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_sferr(&self) {
-        self.value.set_bits(Self::VC_SFERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_SFERR_MASK);
     }
 
-    /// Clear VC_SFERR bit atomically (RW)
+    /// Clear VC_SFERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_sferr(&self) {
-        self.value.clr_bits(Self::VC_SFERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_SFERR_MASK);
     }
 
     /// **VC_HARDERR** `[10]` (RW)
@@ -38901,16 +38901,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_HARDERR_MASK) != 0
     }
 
-    /// Set VC_HARDERR bit atomically (RW)
+    /// Set VC_HARDERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_harderr(&self) {
-        self.value.set_bits(Self::VC_HARDERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_HARDERR_MASK);
     }
 
-    /// Clear VC_HARDERR bit atomically (RW)
+    /// Clear VC_HARDERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_harderr(&self) {
-        self.value.clr_bits(Self::VC_HARDERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_HARDERR_MASK);
     }
 
     /// **VC_INTERR** `[9]` (RW)
@@ -38921,16 +38921,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_INTERR_MASK) != 0
     }
 
-    /// Set VC_INTERR bit atomically (RW)
+    /// Set VC_INTERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_interr(&self) {
-        self.value.set_bits(Self::VC_INTERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_INTERR_MASK);
     }
 
-    /// Clear VC_INTERR bit atomically (RW)
+    /// Clear VC_INTERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_interr(&self) {
-        self.value.clr_bits(Self::VC_INTERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_INTERR_MASK);
     }
 
     /// **VC_BUSERR** `[8]` (RW)
@@ -38941,16 +38941,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_BUSERR_MASK) != 0
     }
 
-    /// Set VC_BUSERR bit atomically (RW)
+    /// Set VC_BUSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_buserr(&self) {
-        self.value.set_bits(Self::VC_BUSERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_BUSERR_MASK);
     }
 
-    /// Clear VC_BUSERR bit atomically (RW)
+    /// Clear VC_BUSERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_buserr(&self) {
-        self.value.clr_bits(Self::VC_BUSERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_BUSERR_MASK);
     }
 
     /// **VC_STATERR** `[7]` (RW)
@@ -38961,16 +38961,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_STATERR_MASK) != 0
     }
 
-    /// Set VC_STATERR bit atomically (RW)
+    /// Set VC_STATERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_staterr(&self) {
-        self.value.set_bits(Self::VC_STATERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_STATERR_MASK);
     }
 
-    /// Clear VC_STATERR bit atomically (RW)
+    /// Clear VC_STATERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_staterr(&self) {
-        self.value.clr_bits(Self::VC_STATERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_STATERR_MASK);
     }
 
     /// **VC_CHKERR** `[6]` (RW)
@@ -38981,16 +38981,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_CHKERR_MASK) != 0
     }
 
-    /// Set VC_CHKERR bit atomically (RW)
+    /// Set VC_CHKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_chkerr(&self) {
-        self.value.set_bits(Self::VC_CHKERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_CHKERR_MASK);
     }
 
-    /// Clear VC_CHKERR bit atomically (RW)
+    /// Clear VC_CHKERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_chkerr(&self) {
-        self.value.clr_bits(Self::VC_CHKERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_CHKERR_MASK);
     }
 
     /// **VC_NOCPERR** `[5]` (RW)
@@ -39001,16 +39001,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_NOCPERR_MASK) != 0
     }
 
-    /// Set VC_NOCPERR bit atomically (RW)
+    /// Set VC_NOCPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_nocperr(&self) {
-        self.value.set_bits(Self::VC_NOCPERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_NOCPERR_MASK);
     }
 
-    /// Clear VC_NOCPERR bit atomically (RW)
+    /// Clear VC_NOCPERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_nocperr(&self) {
-        self.value.clr_bits(Self::VC_NOCPERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_NOCPERR_MASK);
     }
 
     /// **VC_MMERR** `[4]` (RW)
@@ -39021,16 +39021,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_MMERR_MASK) != 0
     }
 
-    /// Set VC_MMERR bit atomically (RW)
+    /// Set VC_MMERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_mmerr(&self) {
-        self.value.set_bits(Self::VC_MMERR_MASK);
+        self.value.modify_bits(|r| r | Self::VC_MMERR_MASK);
     }
 
-    /// Clear VC_MMERR bit atomically (RW)
+    /// Clear VC_MMERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_mmerr(&self) {
-        self.value.clr_bits(Self::VC_MMERR_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_MMERR_MASK);
     }
 
     /// **VC_CORERESET** `[0]` (RW)
@@ -39041,16 +39041,16 @@ impl Demcr {
         (self.value.read_bits() & Self::VC_CORERESET_MASK) != 0
     }
 
-    /// Set VC_CORERESET bit atomically (RW)
+    /// Set VC_CORERESET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_vc_corereset(&self) {
-        self.value.set_bits(Self::VC_CORERESET_MASK);
+        self.value.modify_bits(|r| r | Self::VC_CORERESET_MASK);
     }
 
-    /// Clear VC_CORERESET bit atomically (RW)
+    /// Clear VC_CORERESET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_vc_corereset(&self) {
-        self.value.clr_bits(Self::VC_CORERESET_MASK);
+        self.value.modify_bits(|r| r & !Self::VC_CORERESET_MASK);
     }
 
 }
@@ -39514,16 +39514,16 @@ impl Dscsr {
         (self.value.read_bits() & Self::CDSKEY_MASK) != 0
     }
 
-    /// Set CDSKEY bit atomically (RW)
+    /// Set CDSKEY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cdskey(&self) {
-        self.value.set_bits(Self::CDSKEY_MASK);
+        self.value.modify_bits(|r| r | Self::CDSKEY_MASK);
     }
 
-    /// Clear CDSKEY bit atomically (RW)
+    /// Clear CDSKEY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cdskey(&self) {
-        self.value.clr_bits(Self::CDSKEY_MASK);
+        self.value.modify_bits(|r| r & !Self::CDSKEY_MASK);
     }
 
     /// **CDS** `[16]` (RW)
@@ -39534,16 +39534,16 @@ impl Dscsr {
         (self.value.read_bits() & Self::CDS_MASK) != 0
     }
 
-    /// Set CDS bit atomically (RW)
+    /// Set CDS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cds(&self) {
-        self.value.set_bits(Self::CDS_MASK);
+        self.value.modify_bits(|r| r | Self::CDS_MASK);
     }
 
-    /// Clear CDS bit atomically (RW)
+    /// Clear CDS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cds(&self) {
-        self.value.clr_bits(Self::CDS_MASK);
+        self.value.modify_bits(|r| r & !Self::CDS_MASK);
     }
 
     /// **SBRSEL** `[1]` (RW)
@@ -39554,16 +39554,16 @@ impl Dscsr {
         (self.value.read_bits() & Self::SBRSEL_MASK) != 0
     }
 
-    /// Set SBRSEL bit atomically (RW)
+    /// Set SBRSEL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sbrsel(&self) {
-        self.value.set_bits(Self::SBRSEL_MASK);
+        self.value.modify_bits(|r| r | Self::SBRSEL_MASK);
     }
 
-    /// Clear SBRSEL bit atomically (RW)
+    /// Clear SBRSEL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sbrsel(&self) {
-        self.value.clr_bits(Self::SBRSEL_MASK);
+        self.value.modify_bits(|r| r & !Self::SBRSEL_MASK);
     }
 
     /// **SBRSELEN** `[0]` (RW)
@@ -39574,16 +39574,16 @@ impl Dscsr {
         (self.value.read_bits() & Self::SBRSELEN_MASK) != 0
     }
 
-    /// Set SBRSELEN bit atomically (RW)
+    /// Set SBRSELEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sbrselen(&self) {
-        self.value.set_bits(Self::SBRSELEN_MASK);
+        self.value.modify_bits(|r| r | Self::SBRSELEN_MASK);
     }
 
-    /// Clear SBRSELEN bit atomically (RW)
+    /// Clear SBRSELEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sbrselen(&self) {
-        self.value.clr_bits(Self::SBRSELEN_MASK);
+        self.value.modify_bits(|r| r & !Self::SBRSELEN_MASK);
     }
 
 }
@@ -40119,16 +40119,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::ASPEN_MASK) != 0
     }
 
-    /// Set ASPEN bit atomically (RW)
+    /// Set ASPEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_aspen(&self) {
-        self.value.set_bits(Self::ASPEN_MASK);
+        self.value.modify_bits(|r| r | Self::ASPEN_MASK);
     }
 
-    /// Clear ASPEN bit atomically (RW)
+    /// Clear ASPEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_aspen(&self) {
-        self.value.clr_bits(Self::ASPEN_MASK);
+        self.value.modify_bits(|r| r & !Self::ASPEN_MASK);
     }
 
     /// **LSPEN** `[30]` (RW)
@@ -40139,16 +40139,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::LSPEN_MASK) != 0
     }
 
-    /// Set LSPEN bit atomically (RW)
+    /// Set LSPEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lspen(&self) {
-        self.value.set_bits(Self::LSPEN_MASK);
+        self.value.modify_bits(|r| r | Self::LSPEN_MASK);
     }
 
-    /// Clear LSPEN bit atomically (RW)
+    /// Clear LSPEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lspen(&self) {
-        self.value.clr_bits(Self::LSPEN_MASK);
+        self.value.modify_bits(|r| r & !Self::LSPEN_MASK);
     }
 
     /// **LSPENS** `[29]` (RW)
@@ -40159,16 +40159,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::LSPENS_MASK) != 0
     }
 
-    /// Set LSPENS bit atomically (RW)
+    /// Set LSPENS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lspens(&self) {
-        self.value.set_bits(Self::LSPENS_MASK);
+        self.value.modify_bits(|r| r | Self::LSPENS_MASK);
     }
 
-    /// Clear LSPENS bit atomically (RW)
+    /// Clear LSPENS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lspens(&self) {
-        self.value.clr_bits(Self::LSPENS_MASK);
+        self.value.modify_bits(|r| r & !Self::LSPENS_MASK);
     }
 
     /// **CLRONRET** `[28]` (RW)
@@ -40179,16 +40179,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::CLRONRET_MASK) != 0
     }
 
-    /// Set CLRONRET bit atomically (RW)
+    /// Set CLRONRET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clronret(&self) {
-        self.value.set_bits(Self::CLRONRET_MASK);
+        self.value.modify_bits(|r| r | Self::CLRONRET_MASK);
     }
 
-    /// Clear CLRONRET bit atomically (RW)
+    /// Clear CLRONRET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clronret(&self) {
-        self.value.clr_bits(Self::CLRONRET_MASK);
+        self.value.modify_bits(|r| r & !Self::CLRONRET_MASK);
     }
 
     /// **CLRONRETS** `[27]` (RW)
@@ -40199,16 +40199,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::CLRONRETS_MASK) != 0
     }
 
-    /// Set CLRONRETS bit atomically (RW)
+    /// Set CLRONRETS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clronrets(&self) {
-        self.value.set_bits(Self::CLRONRETS_MASK);
+        self.value.modify_bits(|r| r | Self::CLRONRETS_MASK);
     }
 
-    /// Clear CLRONRETS bit atomically (RW)
+    /// Clear CLRONRETS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clronrets(&self) {
-        self.value.clr_bits(Self::CLRONRETS_MASK);
+        self.value.modify_bits(|r| r & !Self::CLRONRETS_MASK);
     }
 
     /// **TS** `[26]` (RW)
@@ -40219,16 +40219,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::TS_MASK) != 0
     }
 
-    /// Set TS bit atomically (RW)
+    /// Set TS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ts(&self) {
-        self.value.set_bits(Self::TS_MASK);
+        self.value.modify_bits(|r| r | Self::TS_MASK);
     }
 
-    /// Clear TS bit atomically (RW)
+    /// Clear TS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ts(&self) {
-        self.value.clr_bits(Self::TS_MASK);
+        self.value.modify_bits(|r| r & !Self::TS_MASK);
     }
 
     /// **UFRDY** `[10]` (RW)
@@ -40239,16 +40239,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::UFRDY_MASK) != 0
     }
 
-    /// Set UFRDY bit atomically (RW)
+    /// Set UFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ufrdy(&self) {
-        self.value.set_bits(Self::UFRDY_MASK);
+        self.value.modify_bits(|r| r | Self::UFRDY_MASK);
     }
 
-    /// Clear UFRDY bit atomically (RW)
+    /// Clear UFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ufrdy(&self) {
-        self.value.clr_bits(Self::UFRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::UFRDY_MASK);
     }
 
     /// **SPLIMVIOL** `[9]` (RW)
@@ -40259,16 +40259,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::SPLIMVIOL_MASK) != 0
     }
 
-    /// Set SPLIMVIOL bit atomically (RW)
+    /// Set SPLIMVIOL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_splimviol(&self) {
-        self.value.set_bits(Self::SPLIMVIOL_MASK);
+        self.value.modify_bits(|r| r | Self::SPLIMVIOL_MASK);
     }
 
-    /// Clear SPLIMVIOL bit atomically (RW)
+    /// Clear SPLIMVIOL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_splimviol(&self) {
-        self.value.clr_bits(Self::SPLIMVIOL_MASK);
+        self.value.modify_bits(|r| r & !Self::SPLIMVIOL_MASK);
     }
 
     /// **MONRDY** `[8]` (RW)
@@ -40279,16 +40279,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::MONRDY_MASK) != 0
     }
 
-    /// Set MONRDY bit atomically (RW)
+    /// Set MONRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_monrdy(&self) {
-        self.value.set_bits(Self::MONRDY_MASK);
+        self.value.modify_bits(|r| r | Self::MONRDY_MASK);
     }
 
-    /// Clear MONRDY bit atomically (RW)
+    /// Clear MONRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_monrdy(&self) {
-        self.value.clr_bits(Self::MONRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::MONRDY_MASK);
     }
 
     /// **SFRDY** `[7]` (RW)
@@ -40299,16 +40299,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::SFRDY_MASK) != 0
     }
 
-    /// Set SFRDY bit atomically (RW)
+    /// Set SFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_sfrdy(&self) {
-        self.value.set_bits(Self::SFRDY_MASK);
+        self.value.modify_bits(|r| r | Self::SFRDY_MASK);
     }
 
-    /// Clear SFRDY bit atomically (RW)
+    /// Clear SFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_sfrdy(&self) {
-        self.value.clr_bits(Self::SFRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::SFRDY_MASK);
     }
 
     /// **BFRDY** `[6]` (RW)
@@ -40319,16 +40319,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::BFRDY_MASK) != 0
     }
 
-    /// Set BFRDY bit atomically (RW)
+    /// Set BFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bfrdy(&self) {
-        self.value.set_bits(Self::BFRDY_MASK);
+        self.value.modify_bits(|r| r | Self::BFRDY_MASK);
     }
 
-    /// Clear BFRDY bit atomically (RW)
+    /// Clear BFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bfrdy(&self) {
-        self.value.clr_bits(Self::BFRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::BFRDY_MASK);
     }
 
     /// **MMRDY** `[5]` (RW)
@@ -40339,16 +40339,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::MMRDY_MASK) != 0
     }
 
-    /// Set MMRDY bit atomically (RW)
+    /// Set MMRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_mmrdy(&self) {
-        self.value.set_bits(Self::MMRDY_MASK);
+        self.value.modify_bits(|r| r | Self::MMRDY_MASK);
     }
 
-    /// Clear MMRDY bit atomically (RW)
+    /// Clear MMRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_mmrdy(&self) {
-        self.value.clr_bits(Self::MMRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::MMRDY_MASK);
     }
 
     /// **HFRDY** `[4]` (RW)
@@ -40359,16 +40359,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::HFRDY_MASK) != 0
     }
 
-    /// Set HFRDY bit atomically (RW)
+    /// Set HFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_hfrdy(&self) {
-        self.value.set_bits(Self::HFRDY_MASK);
+        self.value.modify_bits(|r| r | Self::HFRDY_MASK);
     }
 
-    /// Clear HFRDY bit atomically (RW)
+    /// Clear HFRDY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_hfrdy(&self) {
-        self.value.clr_bits(Self::HFRDY_MASK);
+        self.value.modify_bits(|r| r & !Self::HFRDY_MASK);
     }
 
     /// **THREAD** `[3]` (RW)
@@ -40379,16 +40379,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::THREAD_MASK) != 0
     }
 
-    /// Set THREAD bit atomically (RW)
+    /// Set THREAD bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_thread(&self) {
-        self.value.set_bits(Self::THREAD_MASK);
+        self.value.modify_bits(|r| r | Self::THREAD_MASK);
     }
 
-    /// Clear THREAD bit atomically (RW)
+    /// Clear THREAD bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_thread(&self) {
-        self.value.clr_bits(Self::THREAD_MASK);
+        self.value.modify_bits(|r| r & !Self::THREAD_MASK);
     }
 
     /// **S** `[2]` (RW)
@@ -40399,16 +40399,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::S_MASK) != 0
     }
 
-    /// Set S bit atomically (RW)
+    /// Set S bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_s(&self) {
-        self.value.set_bits(Self::S_MASK);
+        self.value.modify_bits(|r| r | Self::S_MASK);
     }
 
-    /// Clear S bit atomically (RW)
+    /// Clear S bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_s(&self) {
-        self.value.clr_bits(Self::S_MASK);
+        self.value.modify_bits(|r| r & !Self::S_MASK);
     }
 
     /// **USER** `[1]` (RW)
@@ -40419,16 +40419,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::USER_MASK) != 0
     }
 
-    /// Set USER bit atomically (RW)
+    /// Set USER bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_user(&self) {
-        self.value.set_bits(Self::USER_MASK);
+        self.value.modify_bits(|r| r | Self::USER_MASK);
     }
 
-    /// Clear USER bit atomically (RW)
+    /// Clear USER bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_user(&self) {
-        self.value.clr_bits(Self::USER_MASK);
+        self.value.modify_bits(|r| r & !Self::USER_MASK);
     }
 
     /// **LSPACT** `[0]` (RW)
@@ -40439,16 +40439,16 @@ impl Fpccr {
         (self.value.read_bits() & Self::LSPACT_MASK) != 0
     }
 
-    /// Set LSPACT bit atomically (RW)
+    /// Set LSPACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lspact(&self) {
-        self.value.set_bits(Self::LSPACT_MASK);
+        self.value.modify_bits(|r| r | Self::LSPACT_MASK);
     }
 
-    /// Clear LSPACT bit atomically (RW)
+    /// Clear LSPACT bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lspact(&self) {
-        self.value.clr_bits(Self::LSPACT_MASK);
+        self.value.modify_bits(|r| r & !Self::LSPACT_MASK);
     }
 
 }
@@ -41100,16 +41100,16 @@ impl Fpdscr {
         (self.value.read_bits() & Self::AHP_MASK) != 0
     }
 
-    /// Set AHP bit atomically (RW)
+    /// Set AHP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ahp(&self) {
-        self.value.set_bits(Self::AHP_MASK);
+        self.value.modify_bits(|r| r | Self::AHP_MASK);
     }
 
-    /// Clear AHP bit atomically (RW)
+    /// Clear AHP bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ahp(&self) {
-        self.value.clr_bits(Self::AHP_MASK);
+        self.value.modify_bits(|r| r & !Self::AHP_MASK);
     }
 
     /// **DN** `[25]` (RW)
@@ -41120,16 +41120,16 @@ impl Fpdscr {
         (self.value.read_bits() & Self::DN_MASK) != 0
     }
 
-    /// Set DN bit atomically (RW)
+    /// Set DN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_dn(&self) {
-        self.value.set_bits(Self::DN_MASK);
+        self.value.modify_bits(|r| r | Self::DN_MASK);
     }
 
-    /// Clear DN bit atomically (RW)
+    /// Clear DN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_dn(&self) {
-        self.value.clr_bits(Self::DN_MASK);
+        self.value.modify_bits(|r| r & !Self::DN_MASK);
     }
 
     /// **FZ** `[24]` (RW)
@@ -41140,16 +41140,16 @@ impl Fpdscr {
         (self.value.read_bits() & Self::FZ_MASK) != 0
     }
 
-    /// Set FZ bit atomically (RW)
+    /// Set FZ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_fz(&self) {
-        self.value.set_bits(Self::FZ_MASK);
+        self.value.modify_bits(|r| r | Self::FZ_MASK);
     }
 
-    /// Clear FZ bit atomically (RW)
+    /// Clear FZ bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_fz(&self) {
-        self.value.clr_bits(Self::FZ_MASK);
+        self.value.modify_bits(|r| r & !Self::FZ_MASK);
     }
 
     /// **RMODE** `[23:22]` (RW)
@@ -43828,16 +43828,16 @@ impl Trcprgctlr {
         (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit atomically (RW)
+    /// Set EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r | Self::EN_MASK);
     }
 
-    /// Clear EN bit atomically (RW)
+    /// Clear EN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
 
 }
@@ -44162,16 +44162,16 @@ impl Trcconfigr {
         (self.value.read_bits() & Self::RS_MASK) != 0
     }
 
-    /// Set RS bit atomically (RW)
+    /// Set RS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_rs(&self) {
-        self.value.set_bits(Self::RS_MASK);
+        self.value.modify_bits(|r| r | Self::RS_MASK);
     }
 
-    /// Clear RS bit atomically (RW)
+    /// Clear RS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_rs(&self) {
-        self.value.clr_bits(Self::RS_MASK);
+        self.value.modify_bits(|r| r & !Self::RS_MASK);
     }
 
     /// **TS** `[11]` (RW)
@@ -44182,16 +44182,16 @@ impl Trcconfigr {
         (self.value.read_bits() & Self::TS_MASK) != 0
     }
 
-    /// Set TS bit atomically (RW)
+    /// Set TS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ts(&self) {
-        self.value.set_bits(Self::TS_MASK);
+        self.value.modify_bits(|r| r | Self::TS_MASK);
     }
 
-    /// Clear TS bit atomically (RW)
+    /// Clear TS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ts(&self) {
-        self.value.clr_bits(Self::TS_MASK);
+        self.value.modify_bits(|r| r & !Self::TS_MASK);
     }
 
     /// **COND** `[10:5]` (RW)
@@ -44218,16 +44218,16 @@ impl Trcconfigr {
         (self.value.read_bits() & Self::CCI_MASK) != 0
     }
 
-    /// Set CCI bit atomically (RW)
+    /// Set CCI bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_cci(&self) {
-        self.value.set_bits(Self::CCI_MASK);
+        self.value.modify_bits(|r| r | Self::CCI_MASK);
     }
 
-    /// Clear CCI bit atomically (RW)
+    /// Clear CCI bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_cci(&self) {
-        self.value.clr_bits(Self::CCI_MASK);
+        self.value.modify_bits(|r| r & !Self::CCI_MASK);
     }
 
     /// **BB** `[3]` (RW)
@@ -44238,16 +44238,16 @@ impl Trcconfigr {
         (self.value.read_bits() & Self::BB_MASK) != 0
     }
 
-    /// Set BB bit atomically (RW)
+    /// Set BB bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_bb(&self) {
-        self.value.set_bits(Self::BB_MASK);
+        self.value.modify_bits(|r| r | Self::BB_MASK);
     }
 
-    /// Clear BB bit atomically (RW)
+    /// Clear BB bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_bb(&self) {
-        self.value.clr_bits(Self::BB_MASK);
+        self.value.modify_bits(|r| r & !Self::BB_MASK);
     }
 
 }
@@ -44499,16 +44499,16 @@ impl Trceventctl0r {
         (self.value.read_bits() & Self::TYPE1_MASK) != 0
     }
 
-    /// Set TYPE1 bit atomically (RW)
+    /// Set TYPE1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_type1(&self) {
-        self.value.set_bits(Self::TYPE1_MASK);
+        self.value.modify_bits(|r| r | Self::TYPE1_MASK);
     }
 
-    /// Clear TYPE1 bit atomically (RW)
+    /// Clear TYPE1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_type1(&self) {
-        self.value.clr_bits(Self::TYPE1_MASK);
+        self.value.modify_bits(|r| r & !Self::TYPE1_MASK);
     }
 
     /// **SEL1** `[10:8]` (RW)
@@ -44535,16 +44535,16 @@ impl Trceventctl0r {
         (self.value.read_bits() & Self::TYPE0_MASK) != 0
     }
 
-    /// Set TYPE0 bit atomically (RW)
+    /// Set TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_type0(&self) {
-        self.value.set_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r | Self::TYPE0_MASK);
     }
 
-    /// Clear TYPE0 bit atomically (RW)
+    /// Clear TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_type0(&self) {
-        self.value.clr_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r & !Self::TYPE0_MASK);
     }
 
     /// **SEL0** `[2:0]` (RW)
@@ -44788,16 +44788,16 @@ impl Trceventctl1r {
         (self.value.read_bits() & Self::LPOVERRIDE_MASK) != 0
     }
 
-    /// Set LPOVERRIDE bit atomically (RW)
+    /// Set LPOVERRIDE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_lpoverride(&self) {
-        self.value.set_bits(Self::LPOVERRIDE_MASK);
+        self.value.modify_bits(|r| r | Self::LPOVERRIDE_MASK);
     }
 
-    /// Clear LPOVERRIDE bit atomically (RW)
+    /// Clear LPOVERRIDE bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_lpoverride(&self) {
-        self.value.clr_bits(Self::LPOVERRIDE_MASK);
+        self.value.modify_bits(|r| r & !Self::LPOVERRIDE_MASK);
     }
 
     /// **ATB** `[11]` (RW)
@@ -44808,16 +44808,16 @@ impl Trceventctl1r {
         (self.value.read_bits() & Self::ATB_MASK) != 0
     }
 
-    /// Set ATB bit atomically (RW)
+    /// Set ATB bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_atb(&self) {
-        self.value.set_bits(Self::ATB_MASK);
+        self.value.modify_bits(|r| r | Self::ATB_MASK);
     }
 
-    /// Clear ATB bit atomically (RW)
+    /// Clear ATB bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_atb(&self) {
-        self.value.clr_bits(Self::ATB_MASK);
+        self.value.modify_bits(|r| r & !Self::ATB_MASK);
     }
 
     /// **INSTEN1** `[1]` (RW)
@@ -44828,16 +44828,16 @@ impl Trceventctl1r {
         (self.value.read_bits() & Self::INSTEN1_MASK) != 0
     }
 
-    /// Set INSTEN1 bit atomically (RW)
+    /// Set INSTEN1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_insten1(&self) {
-        self.value.set_bits(Self::INSTEN1_MASK);
+        self.value.modify_bits(|r| r | Self::INSTEN1_MASK);
     }
 
-    /// Clear INSTEN1 bit atomically (RW)
+    /// Clear INSTEN1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_insten1(&self) {
-        self.value.clr_bits(Self::INSTEN1_MASK);
+        self.value.modify_bits(|r| r & !Self::INSTEN1_MASK);
     }
 
     /// **INSTEN0** `[0]` (RW)
@@ -44848,16 +44848,16 @@ impl Trceventctl1r {
         (self.value.read_bits() & Self::INSTEN0_MASK) != 0
     }
 
-    /// Set INSTEN0 bit atomically (RW)
+    /// Set INSTEN0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_insten0(&self) {
-        self.value.set_bits(Self::INSTEN0_MASK);
+        self.value.modify_bits(|r| r | Self::INSTEN0_MASK);
     }
 
-    /// Clear INSTEN0 bit atomically (RW)
+    /// Clear INSTEN0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_insten0(&self) {
-        self.value.clr_bits(Self::INSTEN0_MASK);
+        self.value.modify_bits(|r| r & !Self::INSTEN0_MASK);
     }
 
 }
@@ -45087,16 +45087,16 @@ impl Trcstallctlr {
         (self.value.read_bits() & Self::ISTALL_MASK) != 0
     }
 
-    /// Set ISTALL bit atomically (RW)
+    /// Set ISTALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_istall(&self) {
-        self.value.set_bits(Self::ISTALL_MASK);
+        self.value.modify_bits(|r| r | Self::ISTALL_MASK);
     }
 
-    /// Clear ISTALL bit atomically (RW)
+    /// Clear ISTALL bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_istall(&self) {
-        self.value.clr_bits(Self::ISTALL_MASK);
+        self.value.modify_bits(|r| r & !Self::ISTALL_MASK);
     }
 
     /// **LEVEL** `[3:2]` (RW)
@@ -45281,16 +45281,16 @@ impl Trctsctlr {
         (self.value.read_bits() & Self::TYPE0_MASK) != 0
     }
 
-    /// Set TYPE0 bit atomically (RW)
+    /// Set TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_type0(&self) {
-        self.value.set_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r | Self::TYPE0_MASK);
     }
 
-    /// Clear TYPE0 bit atomically (RW)
+    /// Clear TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_type0(&self) {
-        self.value.clr_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r & !Self::TYPE0_MASK);
     }
 
     /// **SEL0** `[1:0]` (RW)
@@ -45776,16 +45776,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::EXLEVEL_S3_MASK) != 0
     }
 
-    /// Set EXLEVEL_S3 bit atomically (RW)
+    /// Set EXLEVEL_S3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_exlevel_s3(&self) {
-        self.value.set_bits(Self::EXLEVEL_S3_MASK);
+        self.value.modify_bits(|r| r | Self::EXLEVEL_S3_MASK);
     }
 
-    /// Clear EXLEVEL_S3 bit atomically (RW)
+    /// Clear EXLEVEL_S3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_exlevel_s3(&self) {
-        self.value.clr_bits(Self::EXLEVEL_S3_MASK);
+        self.value.modify_bits(|r| r & !Self::EXLEVEL_S3_MASK);
     }
 
     /// **EXLEVEL_S0** `[16]` (RW)
@@ -45796,16 +45796,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::EXLEVEL_S0_MASK) != 0
     }
 
-    /// Set EXLEVEL_S0 bit atomically (RW)
+    /// Set EXLEVEL_S0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_exlevel_s0(&self) {
-        self.value.set_bits(Self::EXLEVEL_S0_MASK);
+        self.value.modify_bits(|r| r | Self::EXLEVEL_S0_MASK);
     }
 
-    /// Clear EXLEVEL_S0 bit atomically (RW)
+    /// Clear EXLEVEL_S0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_exlevel_s0(&self) {
-        self.value.clr_bits(Self::EXLEVEL_S0_MASK);
+        self.value.modify_bits(|r| r & !Self::EXLEVEL_S0_MASK);
     }
 
     /// **TRCERR** `[11]` (RW)
@@ -45816,16 +45816,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::TRCERR_MASK) != 0
     }
 
-    /// Set TRCERR bit atomically (RW)
+    /// Set TRCERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_trcerr(&self) {
-        self.value.set_bits(Self::TRCERR_MASK);
+        self.value.modify_bits(|r| r | Self::TRCERR_MASK);
     }
 
-    /// Clear TRCERR bit atomically (RW)
+    /// Clear TRCERR bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_trcerr(&self) {
-        self.value.clr_bits(Self::TRCERR_MASK);
+        self.value.modify_bits(|r| r & !Self::TRCERR_MASK);
     }
 
     /// **TRCRESET** `[10]` (RW)
@@ -45836,16 +45836,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::TRCRESET_MASK) != 0
     }
 
-    /// Set TRCRESET bit atomically (RW)
+    /// Set TRCRESET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_trcreset(&self) {
-        self.value.set_bits(Self::TRCRESET_MASK);
+        self.value.modify_bits(|r| r | Self::TRCRESET_MASK);
     }
 
-    /// Clear TRCRESET bit atomically (RW)
+    /// Clear TRCRESET bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_trcreset(&self) {
-        self.value.clr_bits(Self::TRCRESET_MASK);
+        self.value.modify_bits(|r| r & !Self::TRCRESET_MASK);
     }
 
     /// **SSSTATUS** `[9]` (RW)
@@ -45856,16 +45856,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::SSSTATUS_MASK) != 0
     }
 
-    /// Set SSSTATUS bit atomically (RW)
+    /// Set SSSTATUS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ssstatus(&self) {
-        self.value.set_bits(Self::SSSTATUS_MASK);
+        self.value.modify_bits(|r| r | Self::SSSTATUS_MASK);
     }
 
-    /// Clear SSSTATUS bit atomically (RW)
+    /// Clear SSSTATUS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ssstatus(&self) {
-        self.value.clr_bits(Self::SSSTATUS_MASK);
+        self.value.modify_bits(|r| r & !Self::SSSTATUS_MASK);
     }
 
     /// **TYPE0** `[7]` (RW)
@@ -45876,16 +45876,16 @@ impl Trcvictlr {
         (self.value.read_bits() & Self::TYPE0_MASK) != 0
     }
 
-    /// Set TYPE0 bit atomically (RW)
+    /// Set TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_type0(&self) {
-        self.value.set_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r | Self::TYPE0_MASK);
     }
 
-    /// Clear TYPE0 bit atomically (RW)
+    /// Clear TYPE0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_type0(&self) {
-        self.value.clr_bits(Self::TYPE0_MASK);
+        self.value.modify_bits(|r| r & !Self::TYPE0_MASK);
     }
 
     /// **SEL0** `[1:0]` (RW)
@@ -49282,16 +49282,16 @@ impl Trcrsctlr2 {
         (self.value.read_bits() & Self::PAIRINV_MASK) != 0
     }
 
-    /// Set PAIRINV bit atomically (RW)
+    /// Set PAIRINV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pairinv(&self) {
-        self.value.set_bits(Self::PAIRINV_MASK);
+        self.value.modify_bits(|r| r | Self::PAIRINV_MASK);
     }
 
-    /// Clear PAIRINV bit atomically (RW)
+    /// Clear PAIRINV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pairinv(&self) {
-        self.value.clr_bits(Self::PAIRINV_MASK);
+        self.value.modify_bits(|r| r & !Self::PAIRINV_MASK);
     }
 
     /// **INV** `[20]` (RW)
@@ -49302,16 +49302,16 @@ impl Trcrsctlr2 {
         (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit atomically (RW)
+    /// Set INV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.value.modify_bits(|r| r | Self::INV_MASK);
     }
 
-    /// Clear INV bit atomically (RW)
+    /// Clear INV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.value.modify_bits(|r| r & !Self::INV_MASK);
     }
 
     /// **GROUP** `[18:16]` (RW)
@@ -49569,16 +49569,16 @@ impl Trcrsctlr3 {
         (self.value.read_bits() & Self::PAIRINV_MASK) != 0
     }
 
-    /// Set PAIRINV bit atomically (RW)
+    /// Set PAIRINV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pairinv(&self) {
-        self.value.set_bits(Self::PAIRINV_MASK);
+        self.value.modify_bits(|r| r | Self::PAIRINV_MASK);
     }
 
-    /// Clear PAIRINV bit atomically (RW)
+    /// Clear PAIRINV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pairinv(&self) {
-        self.value.clr_bits(Self::PAIRINV_MASK);
+        self.value.modify_bits(|r| r & !Self::PAIRINV_MASK);
     }
 
     /// **INV** `[20]` (RW)
@@ -49589,16 +49589,16 @@ impl Trcrsctlr3 {
         (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit atomically (RW)
+    /// Set INV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.value.modify_bits(|r| r | Self::INV_MASK);
     }
 
-    /// Clear INV bit atomically (RW)
+    /// Clear INV bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.value.modify_bits(|r| r & !Self::INV_MASK);
     }
 
     /// **GROUP** `[18:16]` (RW)
@@ -49871,16 +49871,16 @@ impl Trcsscsr {
         (self.value.read_bits() & Self::STATUS_MASK) != 0
     }
 
-    /// Set STATUS bit atomically (RW)
+    /// Set STATUS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_status(&self) {
-        self.value.set_bits(Self::STATUS_MASK);
+        self.value.modify_bits(|r| r | Self::STATUS_MASK);
     }
 
-    /// Clear STATUS bit atomically (RW)
+    /// Clear STATUS bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_status(&self) {
-        self.value.clr_bits(Self::STATUS_MASK);
+        self.value.modify_bits(|r| r & !Self::STATUS_MASK);
     }
 
     /// **PC** `[3]` (RO)
@@ -50206,16 +50206,16 @@ impl Trcpdcr {
         (self.value.read_bits() & Self::PU_MASK) != 0
     }
 
-    /// Set PU bit atomically (RW)
+    /// Set PU bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_pu(&self) {
-        self.value.set_bits(Self::PU_MASK);
+        self.value.modify_bits(|r| r | Self::PU_MASK);
     }
 
-    /// Clear PU bit atomically (RW)
+    /// Clear PU bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_pu(&self) {
-        self.value.clr_bits(Self::PU_MASK);
+        self.value.modify_bits(|r| r & !Self::PU_MASK);
     }
 
 }
@@ -50662,16 +50662,16 @@ impl Trcitiatbinr {
         (self.value.read_bits() & Self::AFVALIDM_MASK) != 0
     }
 
-    /// Set AFVALIDM bit atomically (RW)
+    /// Set AFVALIDM bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_afvalidm(&self) {
-        self.value.set_bits(Self::AFVALIDM_MASK);
+        self.value.modify_bits(|r| r | Self::AFVALIDM_MASK);
     }
 
-    /// Clear AFVALIDM bit atomically (RW)
+    /// Clear AFVALIDM bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_afvalidm(&self) {
-        self.value.clr_bits(Self::AFVALIDM_MASK);
+        self.value.modify_bits(|r| r & !Self::AFVALIDM_MASK);
     }
 
     /// **ATREADYM** `[0]` (RW)
@@ -50682,16 +50682,16 @@ impl Trcitiatbinr {
         (self.value.read_bits() & Self::ATREADYM_MASK) != 0
     }
 
-    /// Set ATREADYM bit atomically (RW)
+    /// Set ATREADYM bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_atreadym(&self) {
-        self.value.set_bits(Self::ATREADYM_MASK);
+        self.value.modify_bits(|r| r | Self::ATREADYM_MASK);
     }
 
-    /// Clear ATREADYM bit atomically (RW)
+    /// Clear ATREADYM bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_atreadym(&self) {
-        self.value.clr_bits(Self::ATREADYM_MASK);
+        self.value.modify_bits(|r| r & !Self::ATREADYM_MASK);
     }
 
 }
@@ -50857,16 +50857,16 @@ impl Trcitiatboutr {
         (self.value.read_bits() & Self::AFREADY_MASK) != 0
     }
 
-    /// Set AFREADY bit atomically (RW)
+    /// Set AFREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_afready(&self) {
-        self.value.set_bits(Self::AFREADY_MASK);
+        self.value.modify_bits(|r| r | Self::AFREADY_MASK);
     }
 
-    /// Clear AFREADY bit atomically (RW)
+    /// Clear AFREADY bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_afready(&self) {
-        self.value.clr_bits(Self::AFREADY_MASK);
+        self.value.modify_bits(|r| r & !Self::AFREADY_MASK);
     }
 
     /// **ATVALID** `[0]` (RW)
@@ -50877,16 +50877,16 @@ impl Trcitiatboutr {
         (self.value.read_bits() & Self::ATVALID_MASK) != 0
     }
 
-    /// Set ATVALID bit atomically (RW)
+    /// Set ATVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_atvalid(&self) {
-        self.value.set_bits(Self::ATVALID_MASK);
+        self.value.modify_bits(|r| r | Self::ATVALID_MASK);
     }
 
-    /// Clear ATVALID bit atomically (RW)
+    /// Clear ATVALID bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_atvalid(&self) {
-        self.value.clr_bits(Self::ATVALID_MASK);
+        self.value.modify_bits(|r| r & !Self::ATVALID_MASK);
     }
 
 }
@@ -51078,16 +51078,16 @@ impl Trcclaimset {
         (self.value.read_bits() & Self::SET3_MASK) != 0
     }
 
-    /// Set SET3 bit atomically (RW)
+    /// Set SET3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_set3(&self) {
-        self.value.set_bits(Self::SET3_MASK);
+        self.value.modify_bits(|r| r | Self::SET3_MASK);
     }
 
-    /// Clear SET3 bit atomically (RW)
+    /// Clear SET3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_set3(&self) {
-        self.value.clr_bits(Self::SET3_MASK);
+        self.value.modify_bits(|r| r & !Self::SET3_MASK);
     }
 
     /// **SET2** `[2]` (RW)
@@ -51098,16 +51098,16 @@ impl Trcclaimset {
         (self.value.read_bits() & Self::SET2_MASK) != 0
     }
 
-    /// Set SET2 bit atomically (RW)
+    /// Set SET2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_set2(&self) {
-        self.value.set_bits(Self::SET2_MASK);
+        self.value.modify_bits(|r| r | Self::SET2_MASK);
     }
 
-    /// Clear SET2 bit atomically (RW)
+    /// Clear SET2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_set2(&self) {
-        self.value.clr_bits(Self::SET2_MASK);
+        self.value.modify_bits(|r| r & !Self::SET2_MASK);
     }
 
     /// **SET1** `[1]` (RW)
@@ -51118,16 +51118,16 @@ impl Trcclaimset {
         (self.value.read_bits() & Self::SET1_MASK) != 0
     }
 
-    /// Set SET1 bit atomically (RW)
+    /// Set SET1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_set1(&self) {
-        self.value.set_bits(Self::SET1_MASK);
+        self.value.modify_bits(|r| r | Self::SET1_MASK);
     }
 
-    /// Clear SET1 bit atomically (RW)
+    /// Clear SET1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_set1(&self) {
-        self.value.clr_bits(Self::SET1_MASK);
+        self.value.modify_bits(|r| r & !Self::SET1_MASK);
     }
 
     /// **SET0** `[0]` (RW)
@@ -51138,16 +51138,16 @@ impl Trcclaimset {
         (self.value.read_bits() & Self::SET0_MASK) != 0
     }
 
-    /// Set SET0 bit atomically (RW)
+    /// Set SET0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_set0(&self) {
-        self.value.set_bits(Self::SET0_MASK);
+        self.value.modify_bits(|r| r | Self::SET0_MASK);
     }
 
-    /// Clear SET0 bit atomically (RW)
+    /// Clear SET0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_set0(&self) {
-        self.value.clr_bits(Self::SET0_MASK);
+        self.value.modify_bits(|r| r & !Self::SET0_MASK);
     }
 
 }
@@ -51383,16 +51383,16 @@ impl Trcclaimclr {
         (self.value.read_bits() & Self::CLR3_MASK) != 0
     }
 
-    /// Set CLR3 bit atomically (RW)
+    /// Set CLR3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clr3(&self) {
-        self.value.set_bits(Self::CLR3_MASK);
+        self.value.modify_bits(|r| r | Self::CLR3_MASK);
     }
 
-    /// Clear CLR3 bit atomically (RW)
+    /// Clear CLR3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clr3(&self) {
-        self.value.clr_bits(Self::CLR3_MASK);
+        self.value.modify_bits(|r| r & !Self::CLR3_MASK);
     }
 
     /// **CLR2** `[2]` (RW)
@@ -51403,16 +51403,16 @@ impl Trcclaimclr {
         (self.value.read_bits() & Self::CLR2_MASK) != 0
     }
 
-    /// Set CLR2 bit atomically (RW)
+    /// Set CLR2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clr2(&self) {
-        self.value.set_bits(Self::CLR2_MASK);
+        self.value.modify_bits(|r| r | Self::CLR2_MASK);
     }
 
-    /// Clear CLR2 bit atomically (RW)
+    /// Clear CLR2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clr2(&self) {
-        self.value.clr_bits(Self::CLR2_MASK);
+        self.value.modify_bits(|r| r & !Self::CLR2_MASK);
     }
 
     /// **CLR1** `[1]` (RW)
@@ -51423,16 +51423,16 @@ impl Trcclaimclr {
         (self.value.read_bits() & Self::CLR1_MASK) != 0
     }
 
-    /// Set CLR1 bit atomically (RW)
+    /// Set CLR1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clr1(&self) {
-        self.value.set_bits(Self::CLR1_MASK);
+        self.value.modify_bits(|r| r | Self::CLR1_MASK);
     }
 
-    /// Clear CLR1 bit atomically (RW)
+    /// Clear CLR1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clr1(&self) {
-        self.value.clr_bits(Self::CLR1_MASK);
+        self.value.modify_bits(|r| r & !Self::CLR1_MASK);
     }
 
     /// **CLR0** `[0]` (RW)
@@ -51443,16 +51443,16 @@ impl Trcclaimclr {
         (self.value.read_bits() & Self::CLR0_MASK) != 0
     }
 
-    /// Set CLR0 bit atomically (RW)
+    /// Set CLR0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_clr0(&self) {
-        self.value.set_bits(Self::CLR0_MASK);
+        self.value.modify_bits(|r| r | Self::CLR0_MASK);
     }
 
-    /// Clear CLR0 bit atomically (RW)
+    /// Clear CLR0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_clr0(&self) {
-        self.value.clr_bits(Self::CLR0_MASK);
+        self.value.modify_bits(|r| r & !Self::CLR0_MASK);
     }
 
 }
@@ -53843,16 +53843,16 @@ impl Cticontrol {
         (self.value.read_bits() & Self::GLBEN_MASK) != 0
     }
 
-    /// Set GLBEN bit atomically (RW)
+    /// Set GLBEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_glben(&self) {
-        self.value.set_bits(Self::GLBEN_MASK);
+        self.value.modify_bits(|r| r | Self::GLBEN_MASK);
     }
 
-    /// Clear GLBEN bit atomically (RW)
+    /// Clear GLBEN bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_glben(&self) {
-        self.value.clr_bits(Self::GLBEN_MASK);
+        self.value.modify_bits(|r| r & !Self::GLBEN_MASK);
     }
 
 }
@@ -56981,16 +56981,16 @@ impl Ctigate {
         (self.value.read_bits() & Self::CTIGATEEN3_MASK) != 0
     }
 
-    /// Set CTIGATEEN3 bit atomically (RW)
+    /// Set CTIGATEEN3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ctigateen3(&self) {
-        self.value.set_bits(Self::CTIGATEEN3_MASK);
+        self.value.modify_bits(|r| r | Self::CTIGATEEN3_MASK);
     }
 
-    /// Clear CTIGATEEN3 bit atomically (RW)
+    /// Clear CTIGATEEN3 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ctigateen3(&self) {
-        self.value.clr_bits(Self::CTIGATEEN3_MASK);
+        self.value.modify_bits(|r| r & !Self::CTIGATEEN3_MASK);
     }
 
     /// **CTIGATEEN2** `[2]` (RW)
@@ -57001,16 +57001,16 @@ impl Ctigate {
         (self.value.read_bits() & Self::CTIGATEEN2_MASK) != 0
     }
 
-    /// Set CTIGATEEN2 bit atomically (RW)
+    /// Set CTIGATEEN2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ctigateen2(&self) {
-        self.value.set_bits(Self::CTIGATEEN2_MASK);
+        self.value.modify_bits(|r| r | Self::CTIGATEEN2_MASK);
     }
 
-    /// Clear CTIGATEEN2 bit atomically (RW)
+    /// Clear CTIGATEEN2 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ctigateen2(&self) {
-        self.value.clr_bits(Self::CTIGATEEN2_MASK);
+        self.value.modify_bits(|r| r & !Self::CTIGATEEN2_MASK);
     }
 
     /// **CTIGATEEN1** `[1]` (RW)
@@ -57021,16 +57021,16 @@ impl Ctigate {
         (self.value.read_bits() & Self::CTIGATEEN1_MASK) != 0
     }
 
-    /// Set CTIGATEEN1 bit atomically (RW)
+    /// Set CTIGATEEN1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ctigateen1(&self) {
-        self.value.set_bits(Self::CTIGATEEN1_MASK);
+        self.value.modify_bits(|r| r | Self::CTIGATEEN1_MASK);
     }
 
-    /// Clear CTIGATEEN1 bit atomically (RW)
+    /// Clear CTIGATEEN1 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ctigateen1(&self) {
-        self.value.clr_bits(Self::CTIGATEEN1_MASK);
+        self.value.modify_bits(|r| r & !Self::CTIGATEEN1_MASK);
     }
 
     /// **CTIGATEEN0** `[0]` (RW)
@@ -57041,16 +57041,16 @@ impl Ctigate {
         (self.value.read_bits() & Self::CTIGATEEN0_MASK) != 0
     }
 
-    /// Set CTIGATEEN0 bit atomically (RW)
+    /// Set CTIGATEEN0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ctigateen0(&self) {
-        self.value.set_bits(Self::CTIGATEEN0_MASK);
+        self.value.modify_bits(|r| r | Self::CTIGATEEN0_MASK);
     }
 
-    /// Clear CTIGATEEN0 bit atomically (RW)
+    /// Clear CTIGATEEN0 bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ctigateen0(&self) {
-        self.value.clr_bits(Self::CTIGATEEN0_MASK);
+        self.value.modify_bits(|r| r & !Self::CTIGATEEN0_MASK);
     }
 
 }
@@ -57740,16 +57740,16 @@ impl Itctrl {
         (self.value.read_bits() & Self::IME_MASK) != 0
     }
 
-    /// Set IME bit atomically (RW)
+    /// Set IME bit (RW) - NOT atomic
     #[inline(always)]
     pub fn set_ime(&self) {
-        self.value.set_bits(Self::IME_MASK);
+        self.value.modify_bits(|r| r | Self::IME_MASK);
     }
 
-    /// Clear IME bit atomically (RW)
+    /// Clear IME bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_ime(&self) {
-        self.value.clr_bits(Self::IME_MASK);
+        self.value.modify_bits(|r| r & !Self::IME_MASK);
     }
 
 }

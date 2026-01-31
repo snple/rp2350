@@ -1,4 +1,6 @@
 //! PSM
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -64,11 +66,11 @@ pub const BASE: u32 = 0x40018000;
 /// - **PROC_COLD** `[0]` (RW)
 #[repr(transparent)]
 pub struct FrceOn {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for FrceOn {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -239,13 +241,13 @@ impl FrceOn {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0** `[23]` (RW)
@@ -257,13 +259,13 @@ impl FrceOn {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
     /// **ACCESSCTRL** `[22]` (RW)
@@ -275,13 +277,13 @@ impl FrceOn {
     /// Set ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_accessctrl(&self) {
-        self.value.set_bits(Self::ACCESSCTRL_MASK);
+        self.set_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// Clear ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_accessctrl(&self) {
-        self.value.clr_bits(Self::ACCESSCTRL_MASK);
+        self.clr_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// **SIO** `[21]` (RW)
@@ -293,13 +295,13 @@ impl FrceOn {
     /// Set SIO bit atomically (RW)
     #[inline(always)]
     pub fn set_sio(&self) {
-        self.value.set_bits(Self::SIO_MASK);
+        self.set_bits(Self::SIO_MASK);
     }
 
     /// Clear SIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_sio(&self) {
-        self.value.clr_bits(Self::SIO_MASK);
+        self.clr_bits(Self::SIO_MASK);
     }
 
     /// **XIP** `[20]` (RW)
@@ -311,13 +313,13 @@ impl FrceOn {
     /// Set XIP bit atomically (RW)
     #[inline(always)]
     pub fn set_xip(&self) {
-        self.value.set_bits(Self::XIP_MASK);
+        self.set_bits(Self::XIP_MASK);
     }
 
     /// Clear XIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_xip(&self) {
-        self.value.clr_bits(Self::XIP_MASK);
+        self.clr_bits(Self::XIP_MASK);
     }
 
     /// **SRAM9** `[19]` (RW)
@@ -329,13 +331,13 @@ impl FrceOn {
     /// Set SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram9(&self) {
-        self.value.set_bits(Self::SRAM9_MASK);
+        self.set_bits(Self::SRAM9_MASK);
     }
 
     /// Clear SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram9(&self) {
-        self.value.clr_bits(Self::SRAM9_MASK);
+        self.clr_bits(Self::SRAM9_MASK);
     }
 
     /// **SRAM8** `[18]` (RW)
@@ -347,13 +349,13 @@ impl FrceOn {
     /// Set SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram8(&self) {
-        self.value.set_bits(Self::SRAM8_MASK);
+        self.set_bits(Self::SRAM8_MASK);
     }
 
     /// Clear SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram8(&self) {
-        self.value.clr_bits(Self::SRAM8_MASK);
+        self.clr_bits(Self::SRAM8_MASK);
     }
 
     /// **SRAM7** `[17]` (RW)
@@ -365,13 +367,13 @@ impl FrceOn {
     /// Set SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram7(&self) {
-        self.value.set_bits(Self::SRAM7_MASK);
+        self.set_bits(Self::SRAM7_MASK);
     }
 
     /// Clear SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram7(&self) {
-        self.value.clr_bits(Self::SRAM7_MASK);
+        self.clr_bits(Self::SRAM7_MASK);
     }
 
     /// **SRAM6** `[16]` (RW)
@@ -383,13 +385,13 @@ impl FrceOn {
     /// Set SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram6(&self) {
-        self.value.set_bits(Self::SRAM6_MASK);
+        self.set_bits(Self::SRAM6_MASK);
     }
 
     /// Clear SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram6(&self) {
-        self.value.clr_bits(Self::SRAM6_MASK);
+        self.clr_bits(Self::SRAM6_MASK);
     }
 
     /// **SRAM5** `[15]` (RW)
@@ -401,13 +403,13 @@ impl FrceOn {
     /// Set SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram5(&self) {
-        self.value.set_bits(Self::SRAM5_MASK);
+        self.set_bits(Self::SRAM5_MASK);
     }
 
     /// Clear SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram5(&self) {
-        self.value.clr_bits(Self::SRAM5_MASK);
+        self.clr_bits(Self::SRAM5_MASK);
     }
 
     /// **SRAM4** `[14]` (RW)
@@ -419,13 +421,13 @@ impl FrceOn {
     /// Set SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram4(&self) {
-        self.value.set_bits(Self::SRAM4_MASK);
+        self.set_bits(Self::SRAM4_MASK);
     }
 
     /// Clear SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram4(&self) {
-        self.value.clr_bits(Self::SRAM4_MASK);
+        self.clr_bits(Self::SRAM4_MASK);
     }
 
     /// **SRAM3** `[13]` (RW)
@@ -437,13 +439,13 @@ impl FrceOn {
     /// Set SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram3(&self) {
-        self.value.set_bits(Self::SRAM3_MASK);
+        self.set_bits(Self::SRAM3_MASK);
     }
 
     /// Clear SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram3(&self) {
-        self.value.clr_bits(Self::SRAM3_MASK);
+        self.clr_bits(Self::SRAM3_MASK);
     }
 
     /// **SRAM2** `[12]` (RW)
@@ -455,13 +457,13 @@ impl FrceOn {
     /// Set SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram2(&self) {
-        self.value.set_bits(Self::SRAM2_MASK);
+        self.set_bits(Self::SRAM2_MASK);
     }
 
     /// Clear SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram2(&self) {
-        self.value.clr_bits(Self::SRAM2_MASK);
+        self.clr_bits(Self::SRAM2_MASK);
     }
 
     /// **SRAM1** `[11]` (RW)
@@ -473,13 +475,13 @@ impl FrceOn {
     /// Set SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram1(&self) {
-        self.value.set_bits(Self::SRAM1_MASK);
+        self.set_bits(Self::SRAM1_MASK);
     }
 
     /// Clear SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram1(&self) {
-        self.value.clr_bits(Self::SRAM1_MASK);
+        self.clr_bits(Self::SRAM1_MASK);
     }
 
     /// **SRAM0** `[10]` (RW)
@@ -491,13 +493,13 @@ impl FrceOn {
     /// Set SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram0(&self) {
-        self.value.set_bits(Self::SRAM0_MASK);
+        self.set_bits(Self::SRAM0_MASK);
     }
 
     /// Clear SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram0(&self) {
-        self.value.clr_bits(Self::SRAM0_MASK);
+        self.clr_bits(Self::SRAM0_MASK);
     }
 
     /// **BOOTRAM** `[9]` (RW)
@@ -509,13 +511,13 @@ impl FrceOn {
     /// Set BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_bootram(&self) {
-        self.value.set_bits(Self::BOOTRAM_MASK);
+        self.set_bits(Self::BOOTRAM_MASK);
     }
 
     /// Clear BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_bootram(&self) {
-        self.value.clr_bits(Self::BOOTRAM_MASK);
+        self.clr_bits(Self::BOOTRAM_MASK);
     }
 
     /// **ROM** `[8]` (RW)
@@ -527,13 +529,13 @@ impl FrceOn {
     /// Set ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_rom(&self) {
-        self.value.set_bits(Self::ROM_MASK);
+        self.set_bits(Self::ROM_MASK);
     }
 
     /// Clear ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rom(&self) {
-        self.value.clr_bits(Self::ROM_MASK);
+        self.clr_bits(Self::ROM_MASK);
     }
 
     /// **BUSFABRIC** `[7]` (RW)
@@ -545,13 +547,13 @@ impl FrceOn {
     /// Set BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn set_busfabric(&self) {
-        self.value.set_bits(Self::BUSFABRIC_MASK);
+        self.set_bits(Self::BUSFABRIC_MASK);
     }
 
     /// Clear BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_busfabric(&self) {
-        self.value.clr_bits(Self::BUSFABRIC_MASK);
+        self.clr_bits(Self::BUSFABRIC_MASK);
     }
 
     /// **PSM_READY** `[6]` (RW)
@@ -563,13 +565,13 @@ impl FrceOn {
     /// Set PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn set_psm_ready(&self) {
-        self.value.set_bits(Self::PSM_READY_MASK);
+        self.set_bits(Self::PSM_READY_MASK);
     }
 
     /// Clear PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn clr_psm_ready(&self) {
-        self.value.clr_bits(Self::PSM_READY_MASK);
+        self.clr_bits(Self::PSM_READY_MASK);
     }
 
     /// **CLOCKS** `[5]` (RW)
@@ -581,13 +583,13 @@ impl FrceOn {
     /// Set CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clocks(&self) {
-        self.value.set_bits(Self::CLOCKS_MASK);
+        self.set_bits(Self::CLOCKS_MASK);
     }
 
     /// Clear CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clocks(&self) {
-        self.value.clr_bits(Self::CLOCKS_MASK);
+        self.clr_bits(Self::CLOCKS_MASK);
     }
 
     /// **RESETS** `[4]` (RW)
@@ -599,13 +601,13 @@ impl FrceOn {
     /// Set RESETS bit atomically (RW)
     #[inline(always)]
     pub fn set_resets(&self) {
-        self.value.set_bits(Self::RESETS_MASK);
+        self.set_bits(Self::RESETS_MASK);
     }
 
     /// Clear RESETS bit atomically (RW)
     #[inline(always)]
     pub fn clr_resets(&self) {
-        self.value.clr_bits(Self::RESETS_MASK);
+        self.clr_bits(Self::RESETS_MASK);
     }
 
     /// **XOSC** `[3]` (RW)
@@ -617,13 +619,13 @@ impl FrceOn {
     /// Set XOSC bit atomically (RW)
     #[inline(always)]
     pub fn set_xosc(&self) {
-        self.value.set_bits(Self::XOSC_MASK);
+        self.set_bits(Self::XOSC_MASK);
     }
 
     /// Clear XOSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_xosc(&self) {
-        self.value.clr_bits(Self::XOSC_MASK);
+        self.clr_bits(Self::XOSC_MASK);
     }
 
     /// **ROSC** `[2]` (RW)
@@ -635,13 +637,13 @@ impl FrceOn {
     /// Set ROSC bit atomically (RW)
     #[inline(always)]
     pub fn set_rosc(&self) {
-        self.value.set_bits(Self::ROSC_MASK);
+        self.set_bits(Self::ROSC_MASK);
     }
 
     /// Clear ROSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rosc(&self) {
-        self.value.clr_bits(Self::ROSC_MASK);
+        self.clr_bits(Self::ROSC_MASK);
     }
 
     /// **OTP** `[1]` (RW)
@@ -653,13 +655,13 @@ impl FrceOn {
     /// Set OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_otp(&self) {
-        self.value.set_bits(Self::OTP_MASK);
+        self.set_bits(Self::OTP_MASK);
     }
 
     /// Clear OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_otp(&self) {
-        self.value.clr_bits(Self::OTP_MASK);
+        self.clr_bits(Self::OTP_MASK);
     }
 
     /// **PROC_COLD** `[0]` (RW)
@@ -671,13 +673,13 @@ impl FrceOn {
     /// Set PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn set_proc_cold(&self) {
-        self.value.set_bits(Self::PROC_COLD_MASK);
+        self.set_bits(Self::PROC_COLD_MASK);
     }
 
     /// Clear PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc_cold(&self) {
-        self.value.clr_bits(Self::PROC_COLD_MASK);
+        self.clr_bits(Self::PROC_COLD_MASK);
     }
 
 }
@@ -1249,11 +1251,11 @@ impl FrceOn {
 /// - **PROC_COLD** `[0]` (RW)
 #[repr(transparent)]
 pub struct FrceOff {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for FrceOff {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1424,13 +1426,13 @@ impl FrceOff {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0** `[23]` (RW)
@@ -1442,13 +1444,13 @@ impl FrceOff {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
     /// **ACCESSCTRL** `[22]` (RW)
@@ -1460,13 +1462,13 @@ impl FrceOff {
     /// Set ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_accessctrl(&self) {
-        self.value.set_bits(Self::ACCESSCTRL_MASK);
+        self.set_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// Clear ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_accessctrl(&self) {
-        self.value.clr_bits(Self::ACCESSCTRL_MASK);
+        self.clr_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// **SIO** `[21]` (RW)
@@ -1478,13 +1480,13 @@ impl FrceOff {
     /// Set SIO bit atomically (RW)
     #[inline(always)]
     pub fn set_sio(&self) {
-        self.value.set_bits(Self::SIO_MASK);
+        self.set_bits(Self::SIO_MASK);
     }
 
     /// Clear SIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_sio(&self) {
-        self.value.clr_bits(Self::SIO_MASK);
+        self.clr_bits(Self::SIO_MASK);
     }
 
     /// **XIP** `[20]` (RW)
@@ -1496,13 +1498,13 @@ impl FrceOff {
     /// Set XIP bit atomically (RW)
     #[inline(always)]
     pub fn set_xip(&self) {
-        self.value.set_bits(Self::XIP_MASK);
+        self.set_bits(Self::XIP_MASK);
     }
 
     /// Clear XIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_xip(&self) {
-        self.value.clr_bits(Self::XIP_MASK);
+        self.clr_bits(Self::XIP_MASK);
     }
 
     /// **SRAM9** `[19]` (RW)
@@ -1514,13 +1516,13 @@ impl FrceOff {
     /// Set SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram9(&self) {
-        self.value.set_bits(Self::SRAM9_MASK);
+        self.set_bits(Self::SRAM9_MASK);
     }
 
     /// Clear SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram9(&self) {
-        self.value.clr_bits(Self::SRAM9_MASK);
+        self.clr_bits(Self::SRAM9_MASK);
     }
 
     /// **SRAM8** `[18]` (RW)
@@ -1532,13 +1534,13 @@ impl FrceOff {
     /// Set SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram8(&self) {
-        self.value.set_bits(Self::SRAM8_MASK);
+        self.set_bits(Self::SRAM8_MASK);
     }
 
     /// Clear SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram8(&self) {
-        self.value.clr_bits(Self::SRAM8_MASK);
+        self.clr_bits(Self::SRAM8_MASK);
     }
 
     /// **SRAM7** `[17]` (RW)
@@ -1550,13 +1552,13 @@ impl FrceOff {
     /// Set SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram7(&self) {
-        self.value.set_bits(Self::SRAM7_MASK);
+        self.set_bits(Self::SRAM7_MASK);
     }
 
     /// Clear SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram7(&self) {
-        self.value.clr_bits(Self::SRAM7_MASK);
+        self.clr_bits(Self::SRAM7_MASK);
     }
 
     /// **SRAM6** `[16]` (RW)
@@ -1568,13 +1570,13 @@ impl FrceOff {
     /// Set SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram6(&self) {
-        self.value.set_bits(Self::SRAM6_MASK);
+        self.set_bits(Self::SRAM6_MASK);
     }
 
     /// Clear SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram6(&self) {
-        self.value.clr_bits(Self::SRAM6_MASK);
+        self.clr_bits(Self::SRAM6_MASK);
     }
 
     /// **SRAM5** `[15]` (RW)
@@ -1586,13 +1588,13 @@ impl FrceOff {
     /// Set SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram5(&self) {
-        self.value.set_bits(Self::SRAM5_MASK);
+        self.set_bits(Self::SRAM5_MASK);
     }
 
     /// Clear SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram5(&self) {
-        self.value.clr_bits(Self::SRAM5_MASK);
+        self.clr_bits(Self::SRAM5_MASK);
     }
 
     /// **SRAM4** `[14]` (RW)
@@ -1604,13 +1606,13 @@ impl FrceOff {
     /// Set SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram4(&self) {
-        self.value.set_bits(Self::SRAM4_MASK);
+        self.set_bits(Self::SRAM4_MASK);
     }
 
     /// Clear SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram4(&self) {
-        self.value.clr_bits(Self::SRAM4_MASK);
+        self.clr_bits(Self::SRAM4_MASK);
     }
 
     /// **SRAM3** `[13]` (RW)
@@ -1622,13 +1624,13 @@ impl FrceOff {
     /// Set SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram3(&self) {
-        self.value.set_bits(Self::SRAM3_MASK);
+        self.set_bits(Self::SRAM3_MASK);
     }
 
     /// Clear SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram3(&self) {
-        self.value.clr_bits(Self::SRAM3_MASK);
+        self.clr_bits(Self::SRAM3_MASK);
     }
 
     /// **SRAM2** `[12]` (RW)
@@ -1640,13 +1642,13 @@ impl FrceOff {
     /// Set SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram2(&self) {
-        self.value.set_bits(Self::SRAM2_MASK);
+        self.set_bits(Self::SRAM2_MASK);
     }
 
     /// Clear SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram2(&self) {
-        self.value.clr_bits(Self::SRAM2_MASK);
+        self.clr_bits(Self::SRAM2_MASK);
     }
 
     /// **SRAM1** `[11]` (RW)
@@ -1658,13 +1660,13 @@ impl FrceOff {
     /// Set SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram1(&self) {
-        self.value.set_bits(Self::SRAM1_MASK);
+        self.set_bits(Self::SRAM1_MASK);
     }
 
     /// Clear SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram1(&self) {
-        self.value.clr_bits(Self::SRAM1_MASK);
+        self.clr_bits(Self::SRAM1_MASK);
     }
 
     /// **SRAM0** `[10]` (RW)
@@ -1676,13 +1678,13 @@ impl FrceOff {
     /// Set SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram0(&self) {
-        self.value.set_bits(Self::SRAM0_MASK);
+        self.set_bits(Self::SRAM0_MASK);
     }
 
     /// Clear SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram0(&self) {
-        self.value.clr_bits(Self::SRAM0_MASK);
+        self.clr_bits(Self::SRAM0_MASK);
     }
 
     /// **BOOTRAM** `[9]` (RW)
@@ -1694,13 +1696,13 @@ impl FrceOff {
     /// Set BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_bootram(&self) {
-        self.value.set_bits(Self::BOOTRAM_MASK);
+        self.set_bits(Self::BOOTRAM_MASK);
     }
 
     /// Clear BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_bootram(&self) {
-        self.value.clr_bits(Self::BOOTRAM_MASK);
+        self.clr_bits(Self::BOOTRAM_MASK);
     }
 
     /// **ROM** `[8]` (RW)
@@ -1712,13 +1714,13 @@ impl FrceOff {
     /// Set ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_rom(&self) {
-        self.value.set_bits(Self::ROM_MASK);
+        self.set_bits(Self::ROM_MASK);
     }
 
     /// Clear ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rom(&self) {
-        self.value.clr_bits(Self::ROM_MASK);
+        self.clr_bits(Self::ROM_MASK);
     }
 
     /// **BUSFABRIC** `[7]` (RW)
@@ -1730,13 +1732,13 @@ impl FrceOff {
     /// Set BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn set_busfabric(&self) {
-        self.value.set_bits(Self::BUSFABRIC_MASK);
+        self.set_bits(Self::BUSFABRIC_MASK);
     }
 
     /// Clear BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_busfabric(&self) {
-        self.value.clr_bits(Self::BUSFABRIC_MASK);
+        self.clr_bits(Self::BUSFABRIC_MASK);
     }
 
     /// **PSM_READY** `[6]` (RW)
@@ -1748,13 +1750,13 @@ impl FrceOff {
     /// Set PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn set_psm_ready(&self) {
-        self.value.set_bits(Self::PSM_READY_MASK);
+        self.set_bits(Self::PSM_READY_MASK);
     }
 
     /// Clear PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn clr_psm_ready(&self) {
-        self.value.clr_bits(Self::PSM_READY_MASK);
+        self.clr_bits(Self::PSM_READY_MASK);
     }
 
     /// **CLOCKS** `[5]` (RW)
@@ -1766,13 +1768,13 @@ impl FrceOff {
     /// Set CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clocks(&self) {
-        self.value.set_bits(Self::CLOCKS_MASK);
+        self.set_bits(Self::CLOCKS_MASK);
     }
 
     /// Clear CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clocks(&self) {
-        self.value.clr_bits(Self::CLOCKS_MASK);
+        self.clr_bits(Self::CLOCKS_MASK);
     }
 
     /// **RESETS** `[4]` (RW)
@@ -1784,13 +1786,13 @@ impl FrceOff {
     /// Set RESETS bit atomically (RW)
     #[inline(always)]
     pub fn set_resets(&self) {
-        self.value.set_bits(Self::RESETS_MASK);
+        self.set_bits(Self::RESETS_MASK);
     }
 
     /// Clear RESETS bit atomically (RW)
     #[inline(always)]
     pub fn clr_resets(&self) {
-        self.value.clr_bits(Self::RESETS_MASK);
+        self.clr_bits(Self::RESETS_MASK);
     }
 
     /// **XOSC** `[3]` (RW)
@@ -1802,13 +1804,13 @@ impl FrceOff {
     /// Set XOSC bit atomically (RW)
     #[inline(always)]
     pub fn set_xosc(&self) {
-        self.value.set_bits(Self::XOSC_MASK);
+        self.set_bits(Self::XOSC_MASK);
     }
 
     /// Clear XOSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_xosc(&self) {
-        self.value.clr_bits(Self::XOSC_MASK);
+        self.clr_bits(Self::XOSC_MASK);
     }
 
     /// **ROSC** `[2]` (RW)
@@ -1820,13 +1822,13 @@ impl FrceOff {
     /// Set ROSC bit atomically (RW)
     #[inline(always)]
     pub fn set_rosc(&self) {
-        self.value.set_bits(Self::ROSC_MASK);
+        self.set_bits(Self::ROSC_MASK);
     }
 
     /// Clear ROSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rosc(&self) {
-        self.value.clr_bits(Self::ROSC_MASK);
+        self.clr_bits(Self::ROSC_MASK);
     }
 
     /// **OTP** `[1]` (RW)
@@ -1838,13 +1840,13 @@ impl FrceOff {
     /// Set OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_otp(&self) {
-        self.value.set_bits(Self::OTP_MASK);
+        self.set_bits(Self::OTP_MASK);
     }
 
     /// Clear OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_otp(&self) {
-        self.value.clr_bits(Self::OTP_MASK);
+        self.clr_bits(Self::OTP_MASK);
     }
 
     /// **PROC_COLD** `[0]` (RW)
@@ -1856,13 +1858,13 @@ impl FrceOff {
     /// Set PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn set_proc_cold(&self) {
-        self.value.set_bits(Self::PROC_COLD_MASK);
+        self.set_bits(Self::PROC_COLD_MASK);
     }
 
     /// Clear PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc_cold(&self) {
-        self.value.clr_bits(Self::PROC_COLD_MASK);
+        self.clr_bits(Self::PROC_COLD_MASK);
     }
 
 }
@@ -2434,11 +2436,11 @@ impl FrceOff {
 /// - **PROC_COLD** `[0]` (RW)
 #[repr(transparent)]
 pub struct Wdsel {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Wdsel {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2609,13 +2611,13 @@ impl Wdsel {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0** `[23]` (RW)
@@ -2627,13 +2629,13 @@ impl Wdsel {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
     /// **ACCESSCTRL** `[22]` (RW)
@@ -2645,13 +2647,13 @@ impl Wdsel {
     /// Set ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_accessctrl(&self) {
-        self.value.set_bits(Self::ACCESSCTRL_MASK);
+        self.set_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// Clear ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_accessctrl(&self) {
-        self.value.clr_bits(Self::ACCESSCTRL_MASK);
+        self.clr_bits(Self::ACCESSCTRL_MASK);
     }
 
     /// **SIO** `[21]` (RW)
@@ -2663,13 +2665,13 @@ impl Wdsel {
     /// Set SIO bit atomically (RW)
     #[inline(always)]
     pub fn set_sio(&self) {
-        self.value.set_bits(Self::SIO_MASK);
+        self.set_bits(Self::SIO_MASK);
     }
 
     /// Clear SIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_sio(&self) {
-        self.value.clr_bits(Self::SIO_MASK);
+        self.clr_bits(Self::SIO_MASK);
     }
 
     /// **XIP** `[20]` (RW)
@@ -2681,13 +2683,13 @@ impl Wdsel {
     /// Set XIP bit atomically (RW)
     #[inline(always)]
     pub fn set_xip(&self) {
-        self.value.set_bits(Self::XIP_MASK);
+        self.set_bits(Self::XIP_MASK);
     }
 
     /// Clear XIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_xip(&self) {
-        self.value.clr_bits(Self::XIP_MASK);
+        self.clr_bits(Self::XIP_MASK);
     }
 
     /// **SRAM9** `[19]` (RW)
@@ -2699,13 +2701,13 @@ impl Wdsel {
     /// Set SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram9(&self) {
-        self.value.set_bits(Self::SRAM9_MASK);
+        self.set_bits(Self::SRAM9_MASK);
     }
 
     /// Clear SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram9(&self) {
-        self.value.clr_bits(Self::SRAM9_MASK);
+        self.clr_bits(Self::SRAM9_MASK);
     }
 
     /// **SRAM8** `[18]` (RW)
@@ -2717,13 +2719,13 @@ impl Wdsel {
     /// Set SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram8(&self) {
-        self.value.set_bits(Self::SRAM8_MASK);
+        self.set_bits(Self::SRAM8_MASK);
     }
 
     /// Clear SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram8(&self) {
-        self.value.clr_bits(Self::SRAM8_MASK);
+        self.clr_bits(Self::SRAM8_MASK);
     }
 
     /// **SRAM7** `[17]` (RW)
@@ -2735,13 +2737,13 @@ impl Wdsel {
     /// Set SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram7(&self) {
-        self.value.set_bits(Self::SRAM7_MASK);
+        self.set_bits(Self::SRAM7_MASK);
     }
 
     /// Clear SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram7(&self) {
-        self.value.clr_bits(Self::SRAM7_MASK);
+        self.clr_bits(Self::SRAM7_MASK);
     }
 
     /// **SRAM6** `[16]` (RW)
@@ -2753,13 +2755,13 @@ impl Wdsel {
     /// Set SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram6(&self) {
-        self.value.set_bits(Self::SRAM6_MASK);
+        self.set_bits(Self::SRAM6_MASK);
     }
 
     /// Clear SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram6(&self) {
-        self.value.clr_bits(Self::SRAM6_MASK);
+        self.clr_bits(Self::SRAM6_MASK);
     }
 
     /// **SRAM5** `[15]` (RW)
@@ -2771,13 +2773,13 @@ impl Wdsel {
     /// Set SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram5(&self) {
-        self.value.set_bits(Self::SRAM5_MASK);
+        self.set_bits(Self::SRAM5_MASK);
     }
 
     /// Clear SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram5(&self) {
-        self.value.clr_bits(Self::SRAM5_MASK);
+        self.clr_bits(Self::SRAM5_MASK);
     }
 
     /// **SRAM4** `[14]` (RW)
@@ -2789,13 +2791,13 @@ impl Wdsel {
     /// Set SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram4(&self) {
-        self.value.set_bits(Self::SRAM4_MASK);
+        self.set_bits(Self::SRAM4_MASK);
     }
 
     /// Clear SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram4(&self) {
-        self.value.clr_bits(Self::SRAM4_MASK);
+        self.clr_bits(Self::SRAM4_MASK);
     }
 
     /// **SRAM3** `[13]` (RW)
@@ -2807,13 +2809,13 @@ impl Wdsel {
     /// Set SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram3(&self) {
-        self.value.set_bits(Self::SRAM3_MASK);
+        self.set_bits(Self::SRAM3_MASK);
     }
 
     /// Clear SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram3(&self) {
-        self.value.clr_bits(Self::SRAM3_MASK);
+        self.clr_bits(Self::SRAM3_MASK);
     }
 
     /// **SRAM2** `[12]` (RW)
@@ -2825,13 +2827,13 @@ impl Wdsel {
     /// Set SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram2(&self) {
-        self.value.set_bits(Self::SRAM2_MASK);
+        self.set_bits(Self::SRAM2_MASK);
     }
 
     /// Clear SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram2(&self) {
-        self.value.clr_bits(Self::SRAM2_MASK);
+        self.clr_bits(Self::SRAM2_MASK);
     }
 
     /// **SRAM1** `[11]` (RW)
@@ -2843,13 +2845,13 @@ impl Wdsel {
     /// Set SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram1(&self) {
-        self.value.set_bits(Self::SRAM1_MASK);
+        self.set_bits(Self::SRAM1_MASK);
     }
 
     /// Clear SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram1(&self) {
-        self.value.clr_bits(Self::SRAM1_MASK);
+        self.clr_bits(Self::SRAM1_MASK);
     }
 
     /// **SRAM0** `[10]` (RW)
@@ -2861,13 +2863,13 @@ impl Wdsel {
     /// Set SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram0(&self) {
-        self.value.set_bits(Self::SRAM0_MASK);
+        self.set_bits(Self::SRAM0_MASK);
     }
 
     /// Clear SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram0(&self) {
-        self.value.clr_bits(Self::SRAM0_MASK);
+        self.clr_bits(Self::SRAM0_MASK);
     }
 
     /// **BOOTRAM** `[9]` (RW)
@@ -2879,13 +2881,13 @@ impl Wdsel {
     /// Set BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_bootram(&self) {
-        self.value.set_bits(Self::BOOTRAM_MASK);
+        self.set_bits(Self::BOOTRAM_MASK);
     }
 
     /// Clear BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_bootram(&self) {
-        self.value.clr_bits(Self::BOOTRAM_MASK);
+        self.clr_bits(Self::BOOTRAM_MASK);
     }
 
     /// **ROM** `[8]` (RW)
@@ -2897,13 +2899,13 @@ impl Wdsel {
     /// Set ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_rom(&self) {
-        self.value.set_bits(Self::ROM_MASK);
+        self.set_bits(Self::ROM_MASK);
     }
 
     /// Clear ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rom(&self) {
-        self.value.clr_bits(Self::ROM_MASK);
+        self.clr_bits(Self::ROM_MASK);
     }
 
     /// **BUSFABRIC** `[7]` (RW)
@@ -2915,13 +2917,13 @@ impl Wdsel {
     /// Set BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn set_busfabric(&self) {
-        self.value.set_bits(Self::BUSFABRIC_MASK);
+        self.set_bits(Self::BUSFABRIC_MASK);
     }
 
     /// Clear BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_busfabric(&self) {
-        self.value.clr_bits(Self::BUSFABRIC_MASK);
+        self.clr_bits(Self::BUSFABRIC_MASK);
     }
 
     /// **PSM_READY** `[6]` (RW)
@@ -2933,13 +2935,13 @@ impl Wdsel {
     /// Set PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn set_psm_ready(&self) {
-        self.value.set_bits(Self::PSM_READY_MASK);
+        self.set_bits(Self::PSM_READY_MASK);
     }
 
     /// Clear PSM_READY bit atomically (RW)
     #[inline(always)]
     pub fn clr_psm_ready(&self) {
-        self.value.clr_bits(Self::PSM_READY_MASK);
+        self.clr_bits(Self::PSM_READY_MASK);
     }
 
     /// **CLOCKS** `[5]` (RW)
@@ -2951,13 +2953,13 @@ impl Wdsel {
     /// Set CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clocks(&self) {
-        self.value.set_bits(Self::CLOCKS_MASK);
+        self.set_bits(Self::CLOCKS_MASK);
     }
 
     /// Clear CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clocks(&self) {
-        self.value.clr_bits(Self::CLOCKS_MASK);
+        self.clr_bits(Self::CLOCKS_MASK);
     }
 
     /// **RESETS** `[4]` (RW)
@@ -2969,13 +2971,13 @@ impl Wdsel {
     /// Set RESETS bit atomically (RW)
     #[inline(always)]
     pub fn set_resets(&self) {
-        self.value.set_bits(Self::RESETS_MASK);
+        self.set_bits(Self::RESETS_MASK);
     }
 
     /// Clear RESETS bit atomically (RW)
     #[inline(always)]
     pub fn clr_resets(&self) {
-        self.value.clr_bits(Self::RESETS_MASK);
+        self.clr_bits(Self::RESETS_MASK);
     }
 
     /// **XOSC** `[3]` (RW)
@@ -2987,13 +2989,13 @@ impl Wdsel {
     /// Set XOSC bit atomically (RW)
     #[inline(always)]
     pub fn set_xosc(&self) {
-        self.value.set_bits(Self::XOSC_MASK);
+        self.set_bits(Self::XOSC_MASK);
     }
 
     /// Clear XOSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_xosc(&self) {
-        self.value.clr_bits(Self::XOSC_MASK);
+        self.clr_bits(Self::XOSC_MASK);
     }
 
     /// **ROSC** `[2]` (RW)
@@ -3005,13 +3007,13 @@ impl Wdsel {
     /// Set ROSC bit atomically (RW)
     #[inline(always)]
     pub fn set_rosc(&self) {
-        self.value.set_bits(Self::ROSC_MASK);
+        self.set_bits(Self::ROSC_MASK);
     }
 
     /// Clear ROSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rosc(&self) {
-        self.value.clr_bits(Self::ROSC_MASK);
+        self.clr_bits(Self::ROSC_MASK);
     }
 
     /// **OTP** `[1]` (RW)
@@ -3023,13 +3025,13 @@ impl Wdsel {
     /// Set OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_otp(&self) {
-        self.value.set_bits(Self::OTP_MASK);
+        self.set_bits(Self::OTP_MASK);
     }
 
     /// Clear OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_otp(&self) {
-        self.value.clr_bits(Self::OTP_MASK);
+        self.clr_bits(Self::OTP_MASK);
     }
 
     /// **PROC_COLD** `[0]` (RW)
@@ -3041,13 +3043,13 @@ impl Wdsel {
     /// Set PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn set_proc_cold(&self) {
-        self.value.set_bits(Self::PROC_COLD_MASK);
+        self.set_bits(Self::PROC_COLD_MASK);
     }
 
     /// Clear PROC_COLD bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc_cold(&self) {
-        self.value.clr_bits(Self::PROC_COLD_MASK);
+        self.clr_bits(Self::PROC_COLD_MASK);
     }
 
 }
@@ -3619,11 +3621,11 @@ impl Wdsel {
 /// - **PROC_COLD** `[0]` (RO)
 #[repr(transparent)]
 pub struct Done {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Done {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -74,6 +74,21 @@ impl DeviceDescriptor {
     pub fn to_bytes(&self) -> [u8; Self::SIZE] {
         unsafe { core::mem::transmute(*self) }
     }
+
+    /// Set manufacturer string index
+    pub fn set_manufacturer_index(&mut self, index: u8) {
+        self.i_manufacturer = index;
+    }
+
+    /// Set product string index
+    pub fn set_product_index(&mut self, index: u8) {
+        self.i_product = index;
+    }
+
+    /// Set serial number string index
+    pub fn set_serial_number_index(&mut self, index: u8) {
+        self.i_serial_number = index;
+    }
 }
 
 /// Configuration descriptor header (9 bytes)

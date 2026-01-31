@@ -1,5 +1,7 @@
 //! HSTX_CTRL
 //! Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -62,11 +64,11 @@ pub const BASE: u32 = 0x400c0000;
 ///   Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
 #[repr(transparent)]
 pub struct Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -278,13 +280,13 @@ impl Csr {
     /// Set COUPLED_MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_coupled_mode(&self) {
-        self.value.set_bits(Self::COUPLED_MODE_MASK);
+        self.set_bits(Self::COUPLED_MODE_MASK);
     }
 
     /// Clear COUPLED_MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_coupled_mode(&self) {
-        self.value.clr_bits(Self::COUPLED_MODE_MASK);
+        self.clr_bits(Self::COUPLED_MODE_MASK);
     }
 
     /// **EXPAND_EN** `[1]` (RW)
@@ -299,13 +301,13 @@ impl Csr {
     /// Set EXPAND_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_expand_en(&self) {
-        self.value.set_bits(Self::EXPAND_EN_MASK);
+        self.set_bits(Self::EXPAND_EN_MASK);
     }
 
     /// Clear EXPAND_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_expand_en(&self) {
-        self.value.clr_bits(Self::EXPAND_EN_MASK);
+        self.clr_bits(Self::EXPAND_EN_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -321,13 +323,13 @@ impl Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -605,11 +607,11 @@ impl Csr {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -666,13 +668,13 @@ impl Bit0 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -686,13 +688,13 @@ impl Bit0 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -892,11 +894,11 @@ impl Bit0 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -953,13 +955,13 @@ impl Bit1 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -973,13 +975,13 @@ impl Bit1 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -1179,11 +1181,11 @@ impl Bit1 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1240,13 +1242,13 @@ impl Bit2 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -1260,13 +1262,13 @@ impl Bit2 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -1466,11 +1468,11 @@ impl Bit2 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1527,13 +1529,13 @@ impl Bit3 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -1547,13 +1549,13 @@ impl Bit3 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -1753,11 +1755,11 @@ impl Bit3 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1814,13 +1816,13 @@ impl Bit4 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -1834,13 +1836,13 @@ impl Bit4 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -2040,11 +2042,11 @@ impl Bit4 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2101,13 +2103,13 @@ impl Bit5 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -2121,13 +2123,13 @@ impl Bit5 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -2327,11 +2329,11 @@ impl Bit5 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2388,13 +2390,13 @@ impl Bit6 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -2408,13 +2410,13 @@ impl Bit6 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -2614,11 +2616,11 @@ impl Bit6 {
 ///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Bit7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2675,13 +2677,13 @@ impl Bit7 {
     /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.value.set_bits(Self::CLK_MASK);
+        self.set_bits(Self::CLK_MASK);
     }
 
     /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.value.clr_bits(Self::CLK_MASK);
+        self.clr_bits(Self::CLK_MASK);
     }
 
     /// **INV** `[16]` (RW)
@@ -2695,13 +2697,13 @@ impl Bit7 {
     /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.value.set_bits(Self::INV_MASK);
+        self.set_bits(Self::INV_MASK);
     }
 
     /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.value.clr_bits(Self::INV_MASK);
+        self.clr_bits(Self::INV_MASK);
     }
 
     /// **SEL_N** `[12:8]` (RW)
@@ -2901,11 +2903,11 @@ impl Bit7 {
 ///   How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
 #[repr(transparent)]
 pub struct ExpandShift {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ExpandShift {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3178,11 +3180,11 @@ impl ExpandShift {
 ///   Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
 #[repr(transparent)]
 pub struct ExpandTmds {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ExpandTmds {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

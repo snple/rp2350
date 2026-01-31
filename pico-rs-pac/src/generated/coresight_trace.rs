@@ -1,5 +1,7 @@
 //! CORESIGHT_TRACE
 //! Coresight block - RP specific registers
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -25,11 +27,11 @@ pub const BASE: u32 = 0x50700000;
 ///   Clear this flag to begin sampling trace data, and set once again once the trace capture buffer is full. You must configure the TPIU in order to generate trace packets to be captured, as well as components like the ETM further upstream to generate the event stream propagated to the TPIU.
 #[repr(transparent)]
 pub struct CtrlStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CtrlStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -72,13 +74,13 @@ impl CtrlStatus {
     /// Set TRACE_CAPTURE_FIFO_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn set_trace_capture_fifo_overflow(&self) {
-        self.value.set_bits(Self::TRACE_CAPTURE_FIFO_OVERFLOW_MASK);
+        self.set_bits(Self::TRACE_CAPTURE_FIFO_OVERFLOW_MASK);
     }
 
     /// Clear TRACE_CAPTURE_FIFO_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_trace_capture_fifo_overflow(&self) {
-        self.value.clr_bits(Self::TRACE_CAPTURE_FIFO_OVERFLOW_MASK);
+        self.clr_bits(Self::TRACE_CAPTURE_FIFO_OVERFLOW_MASK);
     }
 
     /// **TRACE_CAPTURE_FIFO_FLUSH** `[0]` (RW)
@@ -94,13 +96,13 @@ impl CtrlStatus {
     /// Set TRACE_CAPTURE_FIFO_FLUSH bit atomically (RW)
     #[inline(always)]
     pub fn set_trace_capture_fifo_flush(&self) {
-        self.value.set_bits(Self::TRACE_CAPTURE_FIFO_FLUSH_MASK);
+        self.set_bits(Self::TRACE_CAPTURE_FIFO_FLUSH_MASK);
     }
 
     /// Clear TRACE_CAPTURE_FIFO_FLUSH bit atomically (RW)
     #[inline(always)]
     pub fn clr_trace_capture_fifo_flush(&self) {
-        self.value.clr_bits(Self::TRACE_CAPTURE_FIFO_FLUSH_MASK);
+        self.clr_bits(Self::TRACE_CAPTURE_FIFO_FLUSH_MASK);
     }
 
 }
@@ -229,11 +231,11 @@ impl CtrlStatus {
 ///   The data captured into the FIFO is the full 32-bit TRACEDATA bus output by the TPIU. Note that the TPIU is a DDR output at half of clk_sys, therefore this interface can capture the full 32-bit TPIU DDR output bandwidth as it samples once per active edge of the TPIU output clock.
 #[repr(transparent)]
 pub struct TraceCaptureFifo {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for TraceCaptureFifo {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

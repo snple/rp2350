@@ -1,5 +1,7 @@
 //! XIP_CTRL
 //! QSPI flash execute-in-place block
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -76,11 +78,11 @@ pub const BASE: u32 = 0x400c8000;
 ///   There is no cache-as-SRAM address window. Cache lines are allocated for SRAM-like use by individually pinning them, and keeping the cache enabled.
 #[repr(transparent)]
 pub struct Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -223,13 +225,13 @@ impl Ctrl {
     /// Set WRITABLE_M1 bit atomically (RW)
     #[inline(always)]
     pub fn set_writable_m1(&self) {
-        self.value.set_bits(Self::WRITABLE_M1_MASK);
+        self.set_bits(Self::WRITABLE_M1_MASK);
     }
 
     /// Clear WRITABLE_M1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_writable_m1(&self) {
-        self.value.clr_bits(Self::WRITABLE_M1_MASK);
+        self.clr_bits(Self::WRITABLE_M1_MASK);
     }
 
     /// **WRITABLE_M0** `[10]` (RW)
@@ -247,13 +249,13 @@ impl Ctrl {
     /// Set WRITABLE_M0 bit atomically (RW)
     #[inline(always)]
     pub fn set_writable_m0(&self) {
-        self.value.set_bits(Self::WRITABLE_M0_MASK);
+        self.set_bits(Self::WRITABLE_M0_MASK);
     }
 
     /// Clear WRITABLE_M0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_writable_m0(&self) {
-        self.value.clr_bits(Self::WRITABLE_M0_MASK);
+        self.clr_bits(Self::WRITABLE_M0_MASK);
     }
 
     /// **SPLIT_WAYS** `[9]` (RW)
@@ -269,13 +271,13 @@ impl Ctrl {
     /// Set SPLIT_WAYS bit atomically (RW)
     #[inline(always)]
     pub fn set_split_ways(&self) {
-        self.value.set_bits(Self::SPLIT_WAYS_MASK);
+        self.set_bits(Self::SPLIT_WAYS_MASK);
     }
 
     /// Clear SPLIT_WAYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_split_ways(&self) {
-        self.value.clr_bits(Self::SPLIT_WAYS_MASK);
+        self.clr_bits(Self::SPLIT_WAYS_MASK);
     }
 
     /// **MAINT_NONSEC** `[8]` (RW)
@@ -291,13 +293,13 @@ impl Ctrl {
     /// Set MAINT_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn set_maint_nonsec(&self) {
-        self.value.set_bits(Self::MAINT_NONSEC_MASK);
+        self.set_bits(Self::MAINT_NONSEC_MASK);
     }
 
     /// Clear MAINT_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn clr_maint_nonsec(&self) {
-        self.value.clr_bits(Self::MAINT_NONSEC_MASK);
+        self.clr_bits(Self::MAINT_NONSEC_MASK);
     }
 
     /// **NO_UNTRANSLATED_NONSEC** `[7]` (RW)
@@ -311,13 +313,13 @@ impl Ctrl {
     /// Set NO_UNTRANSLATED_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn set_no_untranslated_nonsec(&self) {
-        self.value.set_bits(Self::NO_UNTRANSLATED_NONSEC_MASK);
+        self.set_bits(Self::NO_UNTRANSLATED_NONSEC_MASK);
     }
 
     /// Clear NO_UNTRANSLATED_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn clr_no_untranslated_nonsec(&self) {
-        self.value.clr_bits(Self::NO_UNTRANSLATED_NONSEC_MASK);
+        self.clr_bits(Self::NO_UNTRANSLATED_NONSEC_MASK);
     }
 
     /// **NO_UNTRANSLATED_SEC** `[6]` (RW)
@@ -331,13 +333,13 @@ impl Ctrl {
     /// Set NO_UNTRANSLATED_SEC bit atomically (RW)
     #[inline(always)]
     pub fn set_no_untranslated_sec(&self) {
-        self.value.set_bits(Self::NO_UNTRANSLATED_SEC_MASK);
+        self.set_bits(Self::NO_UNTRANSLATED_SEC_MASK);
     }
 
     /// Clear NO_UNTRANSLATED_SEC bit atomically (RW)
     #[inline(always)]
     pub fn clr_no_untranslated_sec(&self) {
-        self.value.clr_bits(Self::NO_UNTRANSLATED_SEC_MASK);
+        self.clr_bits(Self::NO_UNTRANSLATED_SEC_MASK);
     }
 
     /// **NO_UNCACHED_NONSEC** `[5]` (RW)
@@ -352,13 +354,13 @@ impl Ctrl {
     /// Set NO_UNCACHED_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn set_no_uncached_nonsec(&self) {
-        self.value.set_bits(Self::NO_UNCACHED_NONSEC_MASK);
+        self.set_bits(Self::NO_UNCACHED_NONSEC_MASK);
     }
 
     /// Clear NO_UNCACHED_NONSEC bit atomically (RW)
     #[inline(always)]
     pub fn clr_no_uncached_nonsec(&self) {
-        self.value.clr_bits(Self::NO_UNCACHED_NONSEC_MASK);
+        self.clr_bits(Self::NO_UNCACHED_NONSEC_MASK);
     }
 
     /// **NO_UNCACHED_SEC** `[4]` (RW)
@@ -373,13 +375,13 @@ impl Ctrl {
     /// Set NO_UNCACHED_SEC bit atomically (RW)
     #[inline(always)]
     pub fn set_no_uncached_sec(&self) {
-        self.value.set_bits(Self::NO_UNCACHED_SEC_MASK);
+        self.set_bits(Self::NO_UNCACHED_SEC_MASK);
     }
 
     /// Clear NO_UNCACHED_SEC bit atomically (RW)
     #[inline(always)]
     pub fn clr_no_uncached_sec(&self) {
-        self.value.clr_bits(Self::NO_UNCACHED_SEC_MASK);
+        self.clr_bits(Self::NO_UNCACHED_SEC_MASK);
     }
 
     /// **POWER_DOWN** `[3]` (RW)
@@ -393,13 +395,13 @@ impl Ctrl {
     /// Set POWER_DOWN bit atomically (RW)
     #[inline(always)]
     pub fn set_power_down(&self) {
-        self.value.set_bits(Self::POWER_DOWN_MASK);
+        self.set_bits(Self::POWER_DOWN_MASK);
     }
 
     /// Clear POWER_DOWN bit atomically (RW)
     #[inline(always)]
     pub fn clr_power_down(&self) {
-        self.value.clr_bits(Self::POWER_DOWN_MASK);
+        self.clr_bits(Self::POWER_DOWN_MASK);
     }
 
     /// **EN_NONSECURE** `[1]` (RW)
@@ -414,13 +416,13 @@ impl Ctrl {
     /// Set EN_NONSECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_en_nonsecure(&self) {
-        self.value.set_bits(Self::EN_NONSECURE_MASK);
+        self.set_bits(Self::EN_NONSECURE_MASK);
     }
 
     /// Clear EN_NONSECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_en_nonsecure(&self) {
-        self.value.clr_bits(Self::EN_NONSECURE_MASK);
+        self.clr_bits(Self::EN_NONSECURE_MASK);
     }
 
     /// **EN_SECURE** `[0]` (RW)
@@ -436,13 +438,13 @@ impl Ctrl {
     /// Set EN_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn set_en_secure(&self) {
-        self.value.set_bits(Self::EN_SECURE_MASK);
+        self.set_bits(Self::EN_SECURE_MASK);
     }
 
     /// Clear EN_SECURE bit atomically (RW)
     #[inline(always)]
     pub fn clr_en_secure(&self) {
-        self.value.clr_bits(Self::EN_SECURE_MASK);
+        self.clr_bits(Self::EN_SECURE_MASK);
     }
 
 }
@@ -798,11 +800,11 @@ impl Ctrl {
 ///   When 1, indicates the XIP streaming FIFO is completely empty.
 #[repr(transparent)]
 pub struct Stat {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Stat {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -945,11 +947,11 @@ impl Stat {
 ///   Write any value to clear.
 #[repr(transparent)]
 pub struct CtrHit {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CtrHit {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1088,11 +1090,11 @@ impl CtrHit {
 ///   Write any value to clear.
 #[repr(transparent)]
 pub struct CtrAcc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for CtrAcc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1231,11 +1233,11 @@ impl CtrAcc {
 ///   Write the initial access address here before starting a streaming read.
 #[repr(transparent)]
 pub struct StreamAddr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for StreamAddr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1379,11 +1381,11 @@ impl StreamAddr {
 ///   draining the FIFO and reinitialising STREAM_ADDR)
 #[repr(transparent)]
 pub struct StreamCtr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for StreamCtr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1547,11 +1549,11 @@ impl StreamCtr {
 ///   the DMA to bus stalls caused by other XIP traffic.
 #[repr(transparent)]
 pub struct StreamFifo {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for StreamFifo {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -1,4 +1,6 @@
 //! PLL_SYS
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -37,11 +39,11 @@ pub const BASE: u32 = 0x40050000;
 ///   PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
 #[repr(transparent)]
 pub struct Cs {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Cs {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -111,13 +113,13 @@ impl Cs {
     /// Set LOCK_N bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n(&self) {
-        self.value.set_bits(Self::LOCK_N_MASK);
+        self.set_bits(Self::LOCK_N_MASK);
     }
 
     /// Clear LOCK_N bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n(&self) {
-        self.value.clr_bits(Self::LOCK_N_MASK);
+        self.clr_bits(Self::LOCK_N_MASK);
     }
 
     /// **BYPASS** `[8]` (RW)
@@ -131,13 +133,13 @@ impl Cs {
     /// Set BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_bypass(&self) {
-        self.value.set_bits(Self::BYPASS_MASK);
+        self.set_bits(Self::BYPASS_MASK);
     }
 
     /// Clear BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_bypass(&self) {
-        self.value.clr_bits(Self::BYPASS_MASK);
+        self.clr_bits(Self::BYPASS_MASK);
     }
 
     /// **REFDIV** `[5:0]` (RW)
@@ -325,11 +327,11 @@ impl Cs {
 ///   To save power set high when PLL output not required.
 #[repr(transparent)]
 pub struct Pwr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pwr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -393,13 +395,13 @@ impl Pwr {
     /// Set VCOPD bit atomically (RW)
     #[inline(always)]
     pub fn set_vcopd(&self) {
-        self.value.set_bits(Self::VCOPD_MASK);
+        self.set_bits(Self::VCOPD_MASK);
     }
 
     /// Clear VCOPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_vcopd(&self) {
-        self.value.clr_bits(Self::VCOPD_MASK);
+        self.clr_bits(Self::VCOPD_MASK);
     }
 
     /// **POSTDIVPD** `[3]` (RW)
@@ -414,13 +416,13 @@ impl Pwr {
     /// Set POSTDIVPD bit atomically (RW)
     #[inline(always)]
     pub fn set_postdivpd(&self) {
-        self.value.set_bits(Self::POSTDIVPD_MASK);
+        self.set_bits(Self::POSTDIVPD_MASK);
     }
 
     /// Clear POSTDIVPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_postdivpd(&self) {
-        self.value.clr_bits(Self::POSTDIVPD_MASK);
+        self.clr_bits(Self::POSTDIVPD_MASK);
     }
 
     /// **DSMPD** `[2]` (RW)
@@ -435,13 +437,13 @@ impl Pwr {
     /// Set DSMPD bit atomically (RW)
     #[inline(always)]
     pub fn set_dsmpd(&self) {
-        self.value.set_bits(Self::DSMPD_MASK);
+        self.set_bits(Self::DSMPD_MASK);
     }
 
     /// Clear DSMPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_dsmpd(&self) {
-        self.value.clr_bits(Self::DSMPD_MASK);
+        self.clr_bits(Self::DSMPD_MASK);
     }
 
     /// **PD** `[0]` (RW)
@@ -456,13 +458,13 @@ impl Pwr {
     /// Set PD bit atomically (RW)
     #[inline(always)]
     pub fn set_pd(&self) {
-        self.value.set_bits(Self::PD_MASK);
+        self.set_bits(Self::PD_MASK);
     }
 
     /// Clear PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_pd(&self) {
-        self.value.clr_bits(Self::PD_MASK);
+        self.clr_bits(Self::PD_MASK);
     }
 
 }
@@ -635,11 +637,11 @@ impl Pwr {
 ///   see ctrl reg description for constraints
 #[repr(transparent)]
 pub struct FbdivInt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for FbdivInt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -772,11 +774,11 @@ impl FbdivInt {
 ///   divide by 1-7
 #[repr(transparent)]
 pub struct Prim {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Prim {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -943,11 +945,11 @@ impl Prim {
 /// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -974,13 +976,13 @@ impl Intr {
     /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
     /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1072,11 +1074,11 @@ impl Intr {
 /// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1103,13 +1105,13 @@ impl Inte {
     /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
     /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1201,11 +1203,11 @@ impl Inte {
 /// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1232,13 +1234,13 @@ impl Intf {
     /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
     /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1330,11 +1332,11 @@ impl Intf {
 /// - **LOCK_N_STICKY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

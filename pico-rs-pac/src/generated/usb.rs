@@ -1,5 +1,7 @@
 //! USB
 //! USB FS/LS controller device registers
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -23,11 +25,11 @@ pub const BASE: u32 = 0x50110000;
 ///   In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
 #[repr(transparent)]
 pub struct AddrEndp {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -208,11 +210,11 @@ impl AddrEndp {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -269,13 +271,13 @@ impl AddrEndp1 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -289,13 +291,13 @@ impl AddrEndp1 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -495,11 +497,11 @@ impl AddrEndp1 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -556,13 +558,13 @@ impl AddrEndp2 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -576,13 +578,13 @@ impl AddrEndp2 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -782,11 +784,11 @@ impl AddrEndp2 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -843,13 +845,13 @@ impl AddrEndp3 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -863,13 +865,13 @@ impl AddrEndp3 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -1069,11 +1071,11 @@ impl AddrEndp3 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1130,13 +1132,13 @@ impl AddrEndp4 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -1150,13 +1152,13 @@ impl AddrEndp4 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -1356,11 +1358,11 @@ impl AddrEndp4 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1417,13 +1419,13 @@ impl AddrEndp5 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -1437,13 +1439,13 @@ impl AddrEndp5 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -1643,11 +1645,11 @@ impl AddrEndp5 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1704,13 +1706,13 @@ impl AddrEndp6 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -1724,13 +1726,13 @@ impl AddrEndp6 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -1930,11 +1932,11 @@ impl AddrEndp6 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1991,13 +1993,13 @@ impl AddrEndp7 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -2011,13 +2013,13 @@ impl AddrEndp7 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -2217,11 +2219,11 @@ impl AddrEndp7 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp8 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp8 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2278,13 +2280,13 @@ impl AddrEndp8 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -2298,13 +2300,13 @@ impl AddrEndp8 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -2504,11 +2506,11 @@ impl AddrEndp8 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp9 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp9 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2565,13 +2567,13 @@ impl AddrEndp9 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -2585,13 +2587,13 @@ impl AddrEndp9 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -2791,11 +2793,11 @@ impl AddrEndp9 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp10 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp10 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2852,13 +2854,13 @@ impl AddrEndp10 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -2872,13 +2874,13 @@ impl AddrEndp10 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -3078,11 +3080,11 @@ impl AddrEndp10 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp11 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp11 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3139,13 +3141,13 @@ impl AddrEndp11 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -3159,13 +3161,13 @@ impl AddrEndp11 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -3365,11 +3367,11 @@ impl AddrEndp11 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp12 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp12 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3426,13 +3428,13 @@ impl AddrEndp12 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -3446,13 +3448,13 @@ impl AddrEndp12 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -3652,11 +3654,11 @@ impl AddrEndp12 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp13 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp13 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3713,13 +3715,13 @@ impl AddrEndp13 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -3733,13 +3735,13 @@ impl AddrEndp13 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -3939,11 +3941,11 @@ impl AddrEndp13 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp14 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp14 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4000,13 +4002,13 @@ impl AddrEndp14 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -4020,13 +4022,13 @@ impl AddrEndp14 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -4226,11 +4228,11 @@ impl AddrEndp14 {
 ///   Device address
 #[repr(transparent)]
 pub struct AddrEndp15 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for AddrEndp15 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4287,13 +4289,13 @@ impl AddrEndp15 {
     /// Set INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_preamble(&self) {
-        self.value.set_bits(Self::INTEP_PREAMBLE_MASK);
+        self.set_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// Clear INTEP_PREAMBLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_preamble(&self) {
-        self.value.clr_bits(Self::INTEP_PREAMBLE_MASK);
+        self.clr_bits(Self::INTEP_PREAMBLE_MASK);
     }
 
     /// **INTEP_DIR** `[25]` (RW)
@@ -4307,13 +4309,13 @@ impl AddrEndp15 {
     /// Set INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn set_intep_dir(&self) {
-        self.value.set_bits(Self::INTEP_DIR_MASK);
+        self.set_bits(Self::INTEP_DIR_MASK);
     }
 
     /// Clear INTEP_DIR bit atomically (RW)
     #[inline(always)]
     pub fn clr_intep_dir(&self) {
-        self.value.clr_bits(Self::INTEP_DIR_MASK);
+        self.clr_bits(Self::INTEP_DIR_MASK);
     }
 
     /// **ENDPOINT** `[19:16]` (RW)
@@ -4515,11 +4517,11 @@ impl AddrEndp15 {
 ///   Enable controller
 #[repr(transparent)]
 pub struct MainCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for MainCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4580,13 +4582,13 @@ impl MainCtrl {
     /// Set SIM_TIMING bit atomically (RW)
     #[inline(always)]
     pub fn set_sim_timing(&self) {
-        self.value.set_bits(Self::SIM_TIMING_MASK);
+        self.set_bits(Self::SIM_TIMING_MASK);
     }
 
     /// Clear SIM_TIMING bit atomically (RW)
     #[inline(always)]
     pub fn clr_sim_timing(&self) {
-        self.value.clr_bits(Self::SIM_TIMING_MASK);
+        self.clr_bits(Self::SIM_TIMING_MASK);
     }
 
     /// **PHY_ISO** `[2]` (RW)
@@ -4602,13 +4604,13 @@ impl MainCtrl {
     /// Set PHY_ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_phy_iso(&self) {
-        self.value.set_bits(Self::PHY_ISO_MASK);
+        self.set_bits(Self::PHY_ISO_MASK);
     }
 
     /// Clear PHY_ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_phy_iso(&self) {
-        self.value.clr_bits(Self::PHY_ISO_MASK);
+        self.clr_bits(Self::PHY_ISO_MASK);
     }
 
     /// **HOST_NDEVICE** `[1]` (RW)
@@ -4622,13 +4624,13 @@ impl MainCtrl {
     /// Set HOST_NDEVICE bit atomically (RW)
     #[inline(always)]
     pub fn set_host_ndevice(&self) {
-        self.value.set_bits(Self::HOST_NDEVICE_MASK);
+        self.set_bits(Self::HOST_NDEVICE_MASK);
     }
 
     /// Clear HOST_NDEVICE bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_ndevice(&self) {
-        self.value.clr_bits(Self::HOST_NDEVICE_MASK);
+        self.clr_bits(Self::HOST_NDEVICE_MASK);
     }
 
     /// **CONTROLLER_EN** `[0]` (RW)
@@ -4642,13 +4644,13 @@ impl MainCtrl {
     /// Set CONTROLLER_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_controller_en(&self) {
-        self.value.set_bits(Self::CONTROLLER_EN_MASK);
+        self.set_bits(Self::CONTROLLER_EN_MASK);
     }
 
     /// Clear CONTROLLER_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_controller_en(&self) {
-        self.value.clr_bits(Self::CONTROLLER_EN_MASK);
+        self.clr_bits(Self::CONTROLLER_EN_MASK);
     }
 
 }
@@ -4814,11 +4816,11 @@ impl MainCtrl {
 /// - **COUNT** `[10:0]` (WO)
 #[repr(transparent)]
 pub struct SofWr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SofWr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4920,11 +4922,11 @@ impl SofWr {
 /// - **COUNT** `[10:0]` (RO)
 #[repr(transparent)]
 pub struct SofRd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SofRd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5122,11 +5124,11 @@ impl SofRd {
 ///   Host: Start transaction
 #[repr(transparent)]
 pub struct SieCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SieCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5374,13 +5376,13 @@ impl SieCtrl {
     /// Set EP0_INT_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_int_stall(&self) {
-        self.value.set_bits(Self::EP0_INT_STALL_MASK);
+        self.set_bits(Self::EP0_INT_STALL_MASK);
     }
 
     /// Clear EP0_INT_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_int_stall(&self) {
-        self.value.clr_bits(Self::EP0_INT_STALL_MASK);
+        self.clr_bits(Self::EP0_INT_STALL_MASK);
     }
 
     /// **EP0_DOUBLE_BUF** `[30]` (RW)
@@ -5394,13 +5396,13 @@ impl SieCtrl {
     /// Set EP0_DOUBLE_BUF bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_double_buf(&self) {
-        self.value.set_bits(Self::EP0_DOUBLE_BUF_MASK);
+        self.set_bits(Self::EP0_DOUBLE_BUF_MASK);
     }
 
     /// Clear EP0_DOUBLE_BUF bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_double_buf(&self) {
-        self.value.clr_bits(Self::EP0_DOUBLE_BUF_MASK);
+        self.clr_bits(Self::EP0_DOUBLE_BUF_MASK);
     }
 
     /// **EP0_INT_1BUF** `[29]` (RW)
@@ -5414,13 +5416,13 @@ impl SieCtrl {
     /// Set EP0_INT_1BUF bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_int_1buf(&self) {
-        self.value.set_bits(Self::EP0_INT_1BUF_MASK);
+        self.set_bits(Self::EP0_INT_1BUF_MASK);
     }
 
     /// Clear EP0_INT_1BUF bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_int_1buf(&self) {
-        self.value.clr_bits(Self::EP0_INT_1BUF_MASK);
+        self.clr_bits(Self::EP0_INT_1BUF_MASK);
     }
 
     /// **EP0_INT_2BUF** `[28]` (RW)
@@ -5434,13 +5436,13 @@ impl SieCtrl {
     /// Set EP0_INT_2BUF bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_int_2buf(&self) {
-        self.value.set_bits(Self::EP0_INT_2BUF_MASK);
+        self.set_bits(Self::EP0_INT_2BUF_MASK);
     }
 
     /// Clear EP0_INT_2BUF bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_int_2buf(&self) {
-        self.value.clr_bits(Self::EP0_INT_2BUF_MASK);
+        self.clr_bits(Self::EP0_INT_2BUF_MASK);
     }
 
     /// **EP0_INT_NAK** `[27]` (RW)
@@ -5454,13 +5456,13 @@ impl SieCtrl {
     /// Set EP0_INT_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_int_nak(&self) {
-        self.value.set_bits(Self::EP0_INT_NAK_MASK);
+        self.set_bits(Self::EP0_INT_NAK_MASK);
     }
 
     /// Clear EP0_INT_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_int_nak(&self) {
-        self.value.clr_bits(Self::EP0_INT_NAK_MASK);
+        self.clr_bits(Self::EP0_INT_NAK_MASK);
     }
 
     /// **DIRECT_EN** `[26]` (RW)
@@ -5474,13 +5476,13 @@ impl SieCtrl {
     /// Set DIRECT_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_direct_en(&self) {
-        self.value.set_bits(Self::DIRECT_EN_MASK);
+        self.set_bits(Self::DIRECT_EN_MASK);
     }
 
     /// Clear DIRECT_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_direct_en(&self) {
-        self.value.clr_bits(Self::DIRECT_EN_MASK);
+        self.clr_bits(Self::DIRECT_EN_MASK);
     }
 
     /// **DIRECT_DP** `[25]` (RW)
@@ -5494,13 +5496,13 @@ impl SieCtrl {
     /// Set DIRECT_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_direct_dp(&self) {
-        self.value.set_bits(Self::DIRECT_DP_MASK);
+        self.set_bits(Self::DIRECT_DP_MASK);
     }
 
     /// Clear DIRECT_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_direct_dp(&self) {
-        self.value.clr_bits(Self::DIRECT_DP_MASK);
+        self.clr_bits(Self::DIRECT_DP_MASK);
     }
 
     /// **DIRECT_DM** `[24]` (RW)
@@ -5514,13 +5516,13 @@ impl SieCtrl {
     /// Set DIRECT_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_direct_dm(&self) {
-        self.value.set_bits(Self::DIRECT_DM_MASK);
+        self.set_bits(Self::DIRECT_DM_MASK);
     }
 
     /// Clear DIRECT_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_direct_dm(&self) {
-        self.value.clr_bits(Self::DIRECT_DM_MASK);
+        self.clr_bits(Self::DIRECT_DM_MASK);
     }
 
     /// **EP0_STOP_ON_SHORT_PACKET** `[19]` (RW)
@@ -5534,13 +5536,13 @@ impl SieCtrl {
     /// Set EP0_STOP_ON_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_stop_on_short_packet(&self) {
-        self.value.set_bits(Self::EP0_STOP_ON_SHORT_PACKET_MASK);
+        self.set_bits(Self::EP0_STOP_ON_SHORT_PACKET_MASK);
     }
 
     /// Clear EP0_STOP_ON_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_stop_on_short_packet(&self) {
-        self.value.clr_bits(Self::EP0_STOP_ON_SHORT_PACKET_MASK);
+        self.clr_bits(Self::EP0_STOP_ON_SHORT_PACKET_MASK);
     }
 
     /// **TRANSCEIVER_PD** `[18]` (RW)
@@ -5554,13 +5556,13 @@ impl SieCtrl {
     /// Set TRANSCEIVER_PD bit atomically (RW)
     #[inline(always)]
     pub fn set_transceiver_pd(&self) {
-        self.value.set_bits(Self::TRANSCEIVER_PD_MASK);
+        self.set_bits(Self::TRANSCEIVER_PD_MASK);
     }
 
     /// Clear TRANSCEIVER_PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_transceiver_pd(&self) {
-        self.value.clr_bits(Self::TRANSCEIVER_PD_MASK);
+        self.clr_bits(Self::TRANSCEIVER_PD_MASK);
     }
 
     /// **RPU_OPT** `[17]` (RW)
@@ -5574,13 +5576,13 @@ impl SieCtrl {
     /// Set RPU_OPT bit atomically (RW)
     #[inline(always)]
     pub fn set_rpu_opt(&self) {
-        self.value.set_bits(Self::RPU_OPT_MASK);
+        self.set_bits(Self::RPU_OPT_MASK);
     }
 
     /// Clear RPU_OPT bit atomically (RW)
     #[inline(always)]
     pub fn clr_rpu_opt(&self) {
-        self.value.clr_bits(Self::RPU_OPT_MASK);
+        self.clr_bits(Self::RPU_OPT_MASK);
     }
 
     /// **PULLUP_EN** `[16]` (RW)
@@ -5594,13 +5596,13 @@ impl SieCtrl {
     /// Set PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_pullup_en(&self) {
-        self.value.set_bits(Self::PULLUP_EN_MASK);
+        self.set_bits(Self::PULLUP_EN_MASK);
     }
 
     /// Clear PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_pullup_en(&self) {
-        self.value.clr_bits(Self::PULLUP_EN_MASK);
+        self.clr_bits(Self::PULLUP_EN_MASK);
     }
 
     /// **PULLDOWN_EN** `[15]` (RW)
@@ -5614,13 +5616,13 @@ impl SieCtrl {
     /// Set PULLDOWN_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_pulldown_en(&self) {
-        self.value.set_bits(Self::PULLDOWN_EN_MASK);
+        self.set_bits(Self::PULLDOWN_EN_MASK);
     }
 
     /// Clear PULLDOWN_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_pulldown_en(&self) {
-        self.value.clr_bits(Self::PULLDOWN_EN_MASK);
+        self.clr_bits(Self::PULLDOWN_EN_MASK);
     }
 
     /// Trigger **RESET_BUS** (WO)
@@ -5650,13 +5652,13 @@ impl SieCtrl {
     /// Set VBUS_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_en(&self) {
-        self.value.set_bits(Self::VBUS_EN_MASK);
+        self.set_bits(Self::VBUS_EN_MASK);
     }
 
     /// Clear VBUS_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_en(&self) {
-        self.value.clr_bits(Self::VBUS_EN_MASK);
+        self.clr_bits(Self::VBUS_EN_MASK);
     }
 
     /// **KEEP_ALIVE_EN** `[10]` (RW)
@@ -5670,13 +5672,13 @@ impl SieCtrl {
     /// Set KEEP_ALIVE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_keep_alive_en(&self) {
-        self.value.set_bits(Self::KEEP_ALIVE_EN_MASK);
+        self.set_bits(Self::KEEP_ALIVE_EN_MASK);
     }
 
     /// Clear KEEP_ALIVE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_keep_alive_en(&self) {
-        self.value.clr_bits(Self::KEEP_ALIVE_EN_MASK);
+        self.clr_bits(Self::KEEP_ALIVE_EN_MASK);
     }
 
     /// **SOF_EN** `[9]` (RW)
@@ -5690,13 +5692,13 @@ impl SieCtrl {
     /// Set SOF_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_sof_en(&self) {
-        self.value.set_bits(Self::SOF_EN_MASK);
+        self.set_bits(Self::SOF_EN_MASK);
     }
 
     /// Clear SOF_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_sof_en(&self) {
-        self.value.clr_bits(Self::SOF_EN_MASK);
+        self.clr_bits(Self::SOF_EN_MASK);
     }
 
     /// **SOF_SYNC** `[8]` (RW)
@@ -5710,13 +5712,13 @@ impl SieCtrl {
     /// Set SOF_SYNC bit atomically (RW)
     #[inline(always)]
     pub fn set_sof_sync(&self) {
-        self.value.set_bits(Self::SOF_SYNC_MASK);
+        self.set_bits(Self::SOF_SYNC_MASK);
     }
 
     /// Clear SOF_SYNC bit atomically (RW)
     #[inline(always)]
     pub fn clr_sof_sync(&self) {
-        self.value.clr_bits(Self::SOF_SYNC_MASK);
+        self.clr_bits(Self::SOF_SYNC_MASK);
     }
 
     /// **PREAMBLE_EN** `[6]` (RW)
@@ -5730,13 +5732,13 @@ impl SieCtrl {
     /// Set PREAMBLE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_preamble_en(&self) {
-        self.value.set_bits(Self::PREAMBLE_EN_MASK);
+        self.set_bits(Self::PREAMBLE_EN_MASK);
     }
 
     /// Clear PREAMBLE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_preamble_en(&self) {
-        self.value.clr_bits(Self::PREAMBLE_EN_MASK);
+        self.clr_bits(Self::PREAMBLE_EN_MASK);
     }
 
     /// Trigger **STOP_TRANS** (WO)
@@ -5758,13 +5760,13 @@ impl SieCtrl {
     /// Set RECEIVE_DATA bit atomically (RW)
     #[inline(always)]
     pub fn set_receive_data(&self) {
-        self.value.set_bits(Self::RECEIVE_DATA_MASK);
+        self.set_bits(Self::RECEIVE_DATA_MASK);
     }
 
     /// Clear RECEIVE_DATA bit atomically (RW)
     #[inline(always)]
     pub fn clr_receive_data(&self) {
-        self.value.clr_bits(Self::RECEIVE_DATA_MASK);
+        self.clr_bits(Self::RECEIVE_DATA_MASK);
     }
 
     /// **SEND_DATA** `[2]` (RW)
@@ -5778,13 +5780,13 @@ impl SieCtrl {
     /// Set SEND_DATA bit atomically (RW)
     #[inline(always)]
     pub fn set_send_data(&self) {
-        self.value.set_bits(Self::SEND_DATA_MASK);
+        self.set_bits(Self::SEND_DATA_MASK);
     }
 
     /// Clear SEND_DATA bit atomically (RW)
     #[inline(always)]
     pub fn clr_send_data(&self) {
-        self.value.clr_bits(Self::SEND_DATA_MASK);
+        self.clr_bits(Self::SEND_DATA_MASK);
     }
 
     /// **SEND_SETUP** `[1]` (RW)
@@ -5798,13 +5800,13 @@ impl SieCtrl {
     /// Set SEND_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn set_send_setup(&self) {
-        self.value.set_bits(Self::SEND_SETUP_MASK);
+        self.set_bits(Self::SEND_SETUP_MASK);
     }
 
     /// Clear SEND_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn clr_send_setup(&self) {
-        self.value.clr_bits(Self::SEND_SETUP_MASK);
+        self.clr_bits(Self::SEND_SETUP_MASK);
     }
 
     /// Trigger **START_TRANS** (WO)
@@ -6490,11 +6492,11 @@ impl SieCtrl {
 ///   Device: VBUS Detected
 #[repr(transparent)]
 pub struct SieStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SieStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6707,13 +6709,13 @@ impl SieStatus {
     /// Set DATA_SEQ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_data_seq_error(&self) {
-        self.value.set_bits(Self::DATA_SEQ_ERROR_MASK);
+        self.set_bits(Self::DATA_SEQ_ERROR_MASK);
     }
 
     /// Clear DATA_SEQ_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_data_seq_error(&self) {
-        self.value.clr_bits(Self::DATA_SEQ_ERROR_MASK);
+        self.clr_bits(Self::DATA_SEQ_ERROR_MASK);
     }
 
     /// **ACK_REC** `[30]` (RW)
@@ -6727,13 +6729,13 @@ impl SieStatus {
     /// Set ACK_REC bit atomically (RW)
     #[inline(always)]
     pub fn set_ack_rec(&self) {
-        self.value.set_bits(Self::ACK_REC_MASK);
+        self.set_bits(Self::ACK_REC_MASK);
     }
 
     /// Clear ACK_REC bit atomically (RW)
     #[inline(always)]
     pub fn clr_ack_rec(&self) {
-        self.value.clr_bits(Self::ACK_REC_MASK);
+        self.clr_bits(Self::ACK_REC_MASK);
     }
 
     /// **STALL_REC** `[29]` (RW)
@@ -6747,13 +6749,13 @@ impl SieStatus {
     /// Set STALL_REC bit atomically (RW)
     #[inline(always)]
     pub fn set_stall_rec(&self) {
-        self.value.set_bits(Self::STALL_REC_MASK);
+        self.set_bits(Self::STALL_REC_MASK);
     }
 
     /// Clear STALL_REC bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall_rec(&self) {
-        self.value.clr_bits(Self::STALL_REC_MASK);
+        self.clr_bits(Self::STALL_REC_MASK);
     }
 
     /// **NAK_REC** `[28]` (RW)
@@ -6767,13 +6769,13 @@ impl SieStatus {
     /// Set NAK_REC bit atomically (RW)
     #[inline(always)]
     pub fn set_nak_rec(&self) {
-        self.value.set_bits(Self::NAK_REC_MASK);
+        self.set_bits(Self::NAK_REC_MASK);
     }
 
     /// Clear NAK_REC bit atomically (RW)
     #[inline(always)]
     pub fn clr_nak_rec(&self) {
-        self.value.clr_bits(Self::NAK_REC_MASK);
+        self.clr_bits(Self::NAK_REC_MASK);
     }
 
     /// **RX_TIMEOUT** `[27]` (RW)
@@ -6787,13 +6789,13 @@ impl SieStatus {
     /// Set RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_timeout(&self) {
-        self.value.set_bits(Self::RX_TIMEOUT_MASK);
+        self.set_bits(Self::RX_TIMEOUT_MASK);
     }
 
     /// Clear RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_timeout(&self) {
-        self.value.clr_bits(Self::RX_TIMEOUT_MASK);
+        self.clr_bits(Self::RX_TIMEOUT_MASK);
     }
 
     /// **RX_OVERFLOW** `[26]` (RW)
@@ -6807,13 +6809,13 @@ impl SieStatus {
     /// Set RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_overflow(&self) {
-        self.value.set_bits(Self::RX_OVERFLOW_MASK);
+        self.set_bits(Self::RX_OVERFLOW_MASK);
     }
 
     /// Clear RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_overflow(&self) {
-        self.value.clr_bits(Self::RX_OVERFLOW_MASK);
+        self.clr_bits(Self::RX_OVERFLOW_MASK);
     }
 
     /// **BIT_STUFF_ERROR** `[25]` (RW)
@@ -6827,13 +6829,13 @@ impl SieStatus {
     /// Set BIT_STUFF_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_bit_stuff_error(&self) {
-        self.value.set_bits(Self::BIT_STUFF_ERROR_MASK);
+        self.set_bits(Self::BIT_STUFF_ERROR_MASK);
     }
 
     /// Clear BIT_STUFF_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_bit_stuff_error(&self) {
-        self.value.clr_bits(Self::BIT_STUFF_ERROR_MASK);
+        self.clr_bits(Self::BIT_STUFF_ERROR_MASK);
     }
 
     /// **CRC_ERROR** `[24]` (RW)
@@ -6847,13 +6849,13 @@ impl SieStatus {
     /// Set CRC_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_crc_error(&self) {
-        self.value.set_bits(Self::CRC_ERROR_MASK);
+        self.set_bits(Self::CRC_ERROR_MASK);
     }
 
     /// Clear CRC_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_crc_error(&self) {
-        self.value.clr_bits(Self::CRC_ERROR_MASK);
+        self.clr_bits(Self::CRC_ERROR_MASK);
     }
 
     /// **ENDPOINT_ERROR** `[23]` (RW)
@@ -6867,13 +6869,13 @@ impl SieStatus {
     /// Set ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_endpoint_error(&self) {
-        self.value.set_bits(Self::ENDPOINT_ERROR_MASK);
+        self.set_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// Clear ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_endpoint_error(&self) {
-        self.value.clr_bits(Self::ENDPOINT_ERROR_MASK);
+        self.clr_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// **BUS_RESET** `[19]` (RW)
@@ -6887,13 +6889,13 @@ impl SieStatus {
     /// Set BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_bus_reset(&self) {
-        self.value.set_bits(Self::BUS_RESET_MASK);
+        self.set_bits(Self::BUS_RESET_MASK);
     }
 
     /// Clear BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_bus_reset(&self) {
-        self.value.clr_bits(Self::BUS_RESET_MASK);
+        self.clr_bits(Self::BUS_RESET_MASK);
     }
 
     /// **TRANS_COMPLETE** `[18]` (RW)
@@ -6911,13 +6913,13 @@ impl SieStatus {
     /// Set TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn set_trans_complete(&self) {
-        self.value.set_bits(Self::TRANS_COMPLETE_MASK);
+        self.set_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// Clear TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn clr_trans_complete(&self) {
-        self.value.clr_bits(Self::TRANS_COMPLETE_MASK);
+        self.clr_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// **SETUP_REC** `[17]` (RW)
@@ -6931,13 +6933,13 @@ impl SieStatus {
     /// Set SETUP_REC bit atomically (RW)
     #[inline(always)]
     pub fn set_setup_rec(&self) {
-        self.value.set_bits(Self::SETUP_REC_MASK);
+        self.set_bits(Self::SETUP_REC_MASK);
     }
 
     /// Clear SETUP_REC bit atomically (RW)
     #[inline(always)]
     pub fn clr_setup_rec(&self) {
-        self.value.clr_bits(Self::SETUP_REC_MASK);
+        self.clr_bits(Self::SETUP_REC_MASK);
     }
 
     /// **CONNECTED** `[16]` (RO)
@@ -6959,13 +6961,13 @@ impl SieStatus {
     /// Set RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_short_packet(&self) {
-        self.value.set_bits(Self::RX_SHORT_PACKET_MASK);
+        self.set_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// Clear RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_short_packet(&self) {
-        self.value.clr_bits(Self::RX_SHORT_PACKET_MASK);
+        self.clr_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// **RESUME** `[11]` (RW)
@@ -6979,13 +6981,13 @@ impl SieStatus {
     /// Set RESUME bit atomically (RW)
     #[inline(always)]
     pub fn set_resume(&self) {
-        self.value.set_bits(Self::RESUME_MASK);
+        self.set_bits(Self::RESUME_MASK);
     }
 
     /// Clear RESUME bit atomically (RW)
     #[inline(always)]
     pub fn clr_resume(&self) {
-        self.value.clr_bits(Self::RESUME_MASK);
+        self.clr_bits(Self::RESUME_MASK);
     }
 
     /// **VBUS_OVER_CURR** `[10]` (RO)
@@ -7015,13 +7017,13 @@ impl SieStatus {
     /// Set SUSPENDED bit atomically (RW)
     #[inline(always)]
     pub fn set_suspended(&self) {
-        self.value.set_bits(Self::SUSPENDED_MASK);
+        self.set_bits(Self::SUSPENDED_MASK);
     }
 
     /// Clear SUSPENDED bit atomically (RW)
     #[inline(always)]
     pub fn clr_suspended(&self) {
-        self.value.clr_bits(Self::SUSPENDED_MASK);
+        self.clr_bits(Self::SUSPENDED_MASK);
     }
 
     /// **LINE_STATE** `[3:2]` (RO)
@@ -7499,11 +7501,11 @@ impl SieStatus {
 ///   Host: Enable interrupt endpoint 1 -> 15
 #[repr(transparent)]
 pub struct IntEpCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IntEpCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7690,11 +7692,11 @@ impl IntEpCtrl {
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct BuffStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BuffStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7907,13 +7909,13 @@ impl BuffStatus {
     /// Set EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_out(&self) {
-        self.value.set_bits(Self::EP15_OUT_MASK);
+        self.set_bits(Self::EP15_OUT_MASK);
     }
 
     /// Clear EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_out(&self) {
-        self.value.clr_bits(Self::EP15_OUT_MASK);
+        self.clr_bits(Self::EP15_OUT_MASK);
     }
 
     /// **EP15_IN** `[30]` (RW)
@@ -7925,13 +7927,13 @@ impl BuffStatus {
     /// Set EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_in(&self) {
-        self.value.set_bits(Self::EP15_IN_MASK);
+        self.set_bits(Self::EP15_IN_MASK);
     }
 
     /// Clear EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_in(&self) {
-        self.value.clr_bits(Self::EP15_IN_MASK);
+        self.clr_bits(Self::EP15_IN_MASK);
     }
 
     /// **EP14_OUT** `[29]` (RW)
@@ -7943,13 +7945,13 @@ impl BuffStatus {
     /// Set EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_out(&self) {
-        self.value.set_bits(Self::EP14_OUT_MASK);
+        self.set_bits(Self::EP14_OUT_MASK);
     }
 
     /// Clear EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_out(&self) {
-        self.value.clr_bits(Self::EP14_OUT_MASK);
+        self.clr_bits(Self::EP14_OUT_MASK);
     }
 
     /// **EP14_IN** `[28]` (RW)
@@ -7961,13 +7963,13 @@ impl BuffStatus {
     /// Set EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_in(&self) {
-        self.value.set_bits(Self::EP14_IN_MASK);
+        self.set_bits(Self::EP14_IN_MASK);
     }
 
     /// Clear EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_in(&self) {
-        self.value.clr_bits(Self::EP14_IN_MASK);
+        self.clr_bits(Self::EP14_IN_MASK);
     }
 
     /// **EP13_OUT** `[27]` (RW)
@@ -7979,13 +7981,13 @@ impl BuffStatus {
     /// Set EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_out(&self) {
-        self.value.set_bits(Self::EP13_OUT_MASK);
+        self.set_bits(Self::EP13_OUT_MASK);
     }
 
     /// Clear EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_out(&self) {
-        self.value.clr_bits(Self::EP13_OUT_MASK);
+        self.clr_bits(Self::EP13_OUT_MASK);
     }
 
     /// **EP13_IN** `[26]` (RW)
@@ -7997,13 +7999,13 @@ impl BuffStatus {
     /// Set EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_in(&self) {
-        self.value.set_bits(Self::EP13_IN_MASK);
+        self.set_bits(Self::EP13_IN_MASK);
     }
 
     /// Clear EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_in(&self) {
-        self.value.clr_bits(Self::EP13_IN_MASK);
+        self.clr_bits(Self::EP13_IN_MASK);
     }
 
     /// **EP12_OUT** `[25]` (RW)
@@ -8015,13 +8017,13 @@ impl BuffStatus {
     /// Set EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_out(&self) {
-        self.value.set_bits(Self::EP12_OUT_MASK);
+        self.set_bits(Self::EP12_OUT_MASK);
     }
 
     /// Clear EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_out(&self) {
-        self.value.clr_bits(Self::EP12_OUT_MASK);
+        self.clr_bits(Self::EP12_OUT_MASK);
     }
 
     /// **EP12_IN** `[24]` (RW)
@@ -8033,13 +8035,13 @@ impl BuffStatus {
     /// Set EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_in(&self) {
-        self.value.set_bits(Self::EP12_IN_MASK);
+        self.set_bits(Self::EP12_IN_MASK);
     }
 
     /// Clear EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_in(&self) {
-        self.value.clr_bits(Self::EP12_IN_MASK);
+        self.clr_bits(Self::EP12_IN_MASK);
     }
 
     /// **EP11_OUT** `[23]` (RW)
@@ -8051,13 +8053,13 @@ impl BuffStatus {
     /// Set EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_out(&self) {
-        self.value.set_bits(Self::EP11_OUT_MASK);
+        self.set_bits(Self::EP11_OUT_MASK);
     }
 
     /// Clear EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_out(&self) {
-        self.value.clr_bits(Self::EP11_OUT_MASK);
+        self.clr_bits(Self::EP11_OUT_MASK);
     }
 
     /// **EP11_IN** `[22]` (RW)
@@ -8069,13 +8071,13 @@ impl BuffStatus {
     /// Set EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_in(&self) {
-        self.value.set_bits(Self::EP11_IN_MASK);
+        self.set_bits(Self::EP11_IN_MASK);
     }
 
     /// Clear EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_in(&self) {
-        self.value.clr_bits(Self::EP11_IN_MASK);
+        self.clr_bits(Self::EP11_IN_MASK);
     }
 
     /// **EP10_OUT** `[21]` (RW)
@@ -8087,13 +8089,13 @@ impl BuffStatus {
     /// Set EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_out(&self) {
-        self.value.set_bits(Self::EP10_OUT_MASK);
+        self.set_bits(Self::EP10_OUT_MASK);
     }
 
     /// Clear EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_out(&self) {
-        self.value.clr_bits(Self::EP10_OUT_MASK);
+        self.clr_bits(Self::EP10_OUT_MASK);
     }
 
     /// **EP10_IN** `[20]` (RW)
@@ -8105,13 +8107,13 @@ impl BuffStatus {
     /// Set EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_in(&self) {
-        self.value.set_bits(Self::EP10_IN_MASK);
+        self.set_bits(Self::EP10_IN_MASK);
     }
 
     /// Clear EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_in(&self) {
-        self.value.clr_bits(Self::EP10_IN_MASK);
+        self.clr_bits(Self::EP10_IN_MASK);
     }
 
     /// **EP9_OUT** `[19]` (RW)
@@ -8123,13 +8125,13 @@ impl BuffStatus {
     /// Set EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_out(&self) {
-        self.value.set_bits(Self::EP9_OUT_MASK);
+        self.set_bits(Self::EP9_OUT_MASK);
     }
 
     /// Clear EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_out(&self) {
-        self.value.clr_bits(Self::EP9_OUT_MASK);
+        self.clr_bits(Self::EP9_OUT_MASK);
     }
 
     /// **EP9_IN** `[18]` (RW)
@@ -8141,13 +8143,13 @@ impl BuffStatus {
     /// Set EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_in(&self) {
-        self.value.set_bits(Self::EP9_IN_MASK);
+        self.set_bits(Self::EP9_IN_MASK);
     }
 
     /// Clear EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_in(&self) {
-        self.value.clr_bits(Self::EP9_IN_MASK);
+        self.clr_bits(Self::EP9_IN_MASK);
     }
 
     /// **EP8_OUT** `[17]` (RW)
@@ -8159,13 +8161,13 @@ impl BuffStatus {
     /// Set EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_out(&self) {
-        self.value.set_bits(Self::EP8_OUT_MASK);
+        self.set_bits(Self::EP8_OUT_MASK);
     }
 
     /// Clear EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_out(&self) {
-        self.value.clr_bits(Self::EP8_OUT_MASK);
+        self.clr_bits(Self::EP8_OUT_MASK);
     }
 
     /// **EP8_IN** `[16]` (RW)
@@ -8177,13 +8179,13 @@ impl BuffStatus {
     /// Set EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_in(&self) {
-        self.value.set_bits(Self::EP8_IN_MASK);
+        self.set_bits(Self::EP8_IN_MASK);
     }
 
     /// Clear EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_in(&self) {
-        self.value.clr_bits(Self::EP8_IN_MASK);
+        self.clr_bits(Self::EP8_IN_MASK);
     }
 
     /// **EP7_OUT** `[15]` (RW)
@@ -8195,13 +8197,13 @@ impl BuffStatus {
     /// Set EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_out(&self) {
-        self.value.set_bits(Self::EP7_OUT_MASK);
+        self.set_bits(Self::EP7_OUT_MASK);
     }
 
     /// Clear EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_out(&self) {
-        self.value.clr_bits(Self::EP7_OUT_MASK);
+        self.clr_bits(Self::EP7_OUT_MASK);
     }
 
     /// **EP7_IN** `[14]` (RW)
@@ -8213,13 +8215,13 @@ impl BuffStatus {
     /// Set EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_in(&self) {
-        self.value.set_bits(Self::EP7_IN_MASK);
+        self.set_bits(Self::EP7_IN_MASK);
     }
 
     /// Clear EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_in(&self) {
-        self.value.clr_bits(Self::EP7_IN_MASK);
+        self.clr_bits(Self::EP7_IN_MASK);
     }
 
     /// **EP6_OUT** `[13]` (RW)
@@ -8231,13 +8233,13 @@ impl BuffStatus {
     /// Set EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_out(&self) {
-        self.value.set_bits(Self::EP6_OUT_MASK);
+        self.set_bits(Self::EP6_OUT_MASK);
     }
 
     /// Clear EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_out(&self) {
-        self.value.clr_bits(Self::EP6_OUT_MASK);
+        self.clr_bits(Self::EP6_OUT_MASK);
     }
 
     /// **EP6_IN** `[12]` (RW)
@@ -8249,13 +8251,13 @@ impl BuffStatus {
     /// Set EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_in(&self) {
-        self.value.set_bits(Self::EP6_IN_MASK);
+        self.set_bits(Self::EP6_IN_MASK);
     }
 
     /// Clear EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_in(&self) {
-        self.value.clr_bits(Self::EP6_IN_MASK);
+        self.clr_bits(Self::EP6_IN_MASK);
     }
 
     /// **EP5_OUT** `[11]` (RW)
@@ -8267,13 +8269,13 @@ impl BuffStatus {
     /// Set EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_out(&self) {
-        self.value.set_bits(Self::EP5_OUT_MASK);
+        self.set_bits(Self::EP5_OUT_MASK);
     }
 
     /// Clear EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_out(&self) {
-        self.value.clr_bits(Self::EP5_OUT_MASK);
+        self.clr_bits(Self::EP5_OUT_MASK);
     }
 
     /// **EP5_IN** `[10]` (RW)
@@ -8285,13 +8287,13 @@ impl BuffStatus {
     /// Set EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_in(&self) {
-        self.value.set_bits(Self::EP5_IN_MASK);
+        self.set_bits(Self::EP5_IN_MASK);
     }
 
     /// Clear EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_in(&self) {
-        self.value.clr_bits(Self::EP5_IN_MASK);
+        self.clr_bits(Self::EP5_IN_MASK);
     }
 
     /// **EP4_OUT** `[9]` (RW)
@@ -8303,13 +8305,13 @@ impl BuffStatus {
     /// Set EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_out(&self) {
-        self.value.set_bits(Self::EP4_OUT_MASK);
+        self.set_bits(Self::EP4_OUT_MASK);
     }
 
     /// Clear EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_out(&self) {
-        self.value.clr_bits(Self::EP4_OUT_MASK);
+        self.clr_bits(Self::EP4_OUT_MASK);
     }
 
     /// **EP4_IN** `[8]` (RW)
@@ -8321,13 +8323,13 @@ impl BuffStatus {
     /// Set EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_in(&self) {
-        self.value.set_bits(Self::EP4_IN_MASK);
+        self.set_bits(Self::EP4_IN_MASK);
     }
 
     /// Clear EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_in(&self) {
-        self.value.clr_bits(Self::EP4_IN_MASK);
+        self.clr_bits(Self::EP4_IN_MASK);
     }
 
     /// **EP3_OUT** `[7]` (RW)
@@ -8339,13 +8341,13 @@ impl BuffStatus {
     /// Set EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_out(&self) {
-        self.value.set_bits(Self::EP3_OUT_MASK);
+        self.set_bits(Self::EP3_OUT_MASK);
     }
 
     /// Clear EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_out(&self) {
-        self.value.clr_bits(Self::EP3_OUT_MASK);
+        self.clr_bits(Self::EP3_OUT_MASK);
     }
 
     /// **EP3_IN** `[6]` (RW)
@@ -8357,13 +8359,13 @@ impl BuffStatus {
     /// Set EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_in(&self) {
-        self.value.set_bits(Self::EP3_IN_MASK);
+        self.set_bits(Self::EP3_IN_MASK);
     }
 
     /// Clear EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_in(&self) {
-        self.value.clr_bits(Self::EP3_IN_MASK);
+        self.clr_bits(Self::EP3_IN_MASK);
     }
 
     /// **EP2_OUT** `[5]` (RW)
@@ -8375,13 +8377,13 @@ impl BuffStatus {
     /// Set EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_out(&self) {
-        self.value.set_bits(Self::EP2_OUT_MASK);
+        self.set_bits(Self::EP2_OUT_MASK);
     }
 
     /// Clear EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_out(&self) {
-        self.value.clr_bits(Self::EP2_OUT_MASK);
+        self.clr_bits(Self::EP2_OUT_MASK);
     }
 
     /// **EP2_IN** `[4]` (RW)
@@ -8393,13 +8395,13 @@ impl BuffStatus {
     /// Set EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_in(&self) {
-        self.value.set_bits(Self::EP2_IN_MASK);
+        self.set_bits(Self::EP2_IN_MASK);
     }
 
     /// Clear EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_in(&self) {
-        self.value.clr_bits(Self::EP2_IN_MASK);
+        self.clr_bits(Self::EP2_IN_MASK);
     }
 
     /// **EP1_OUT** `[3]` (RW)
@@ -8411,13 +8413,13 @@ impl BuffStatus {
     /// Set EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_out(&self) {
-        self.value.set_bits(Self::EP1_OUT_MASK);
+        self.set_bits(Self::EP1_OUT_MASK);
     }
 
     /// Clear EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_out(&self) {
-        self.value.clr_bits(Self::EP1_OUT_MASK);
+        self.clr_bits(Self::EP1_OUT_MASK);
     }
 
     /// **EP1_IN** `[2]` (RW)
@@ -8429,13 +8431,13 @@ impl BuffStatus {
     /// Set EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_in(&self) {
-        self.value.set_bits(Self::EP1_IN_MASK);
+        self.set_bits(Self::EP1_IN_MASK);
     }
 
     /// Clear EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_in(&self) {
-        self.value.clr_bits(Self::EP1_IN_MASK);
+        self.clr_bits(Self::EP1_IN_MASK);
     }
 
     /// **EP0_OUT** `[1]` (RW)
@@ -8447,13 +8449,13 @@ impl BuffStatus {
     /// Set EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_out(&self) {
-        self.value.set_bits(Self::EP0_OUT_MASK);
+        self.set_bits(Self::EP0_OUT_MASK);
     }
 
     /// Clear EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_out(&self) {
-        self.value.clr_bits(Self::EP0_OUT_MASK);
+        self.clr_bits(Self::EP0_OUT_MASK);
     }
 
     /// **EP0_IN** `[0]` (RW)
@@ -8465,13 +8467,13 @@ impl BuffStatus {
     /// Set EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_in(&self) {
-        self.value.set_bits(Self::EP0_IN_MASK);
+        self.set_bits(Self::EP0_IN_MASK);
     }
 
     /// Clear EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_in(&self) {
-        self.value.clr_bits(Self::EP0_IN_MASK);
+        self.clr_bits(Self::EP0_IN_MASK);
     }
 
 }
@@ -9183,11 +9185,11 @@ impl BuffStatus {
 /// - **EP0_IN** `[0]` (RO)
 #[repr(transparent)]
 pub struct BuffCpuShouldHandle {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BuffCpuShouldHandle {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9908,11 +9910,11 @@ impl BuffCpuShouldHandle {
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpAbort {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpAbort {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10125,13 +10127,13 @@ impl EpAbort {
     /// Set EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_out(&self) {
-        self.value.set_bits(Self::EP15_OUT_MASK);
+        self.set_bits(Self::EP15_OUT_MASK);
     }
 
     /// Clear EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_out(&self) {
-        self.value.clr_bits(Self::EP15_OUT_MASK);
+        self.clr_bits(Self::EP15_OUT_MASK);
     }
 
     /// **EP15_IN** `[30]` (RW)
@@ -10143,13 +10145,13 @@ impl EpAbort {
     /// Set EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_in(&self) {
-        self.value.set_bits(Self::EP15_IN_MASK);
+        self.set_bits(Self::EP15_IN_MASK);
     }
 
     /// Clear EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_in(&self) {
-        self.value.clr_bits(Self::EP15_IN_MASK);
+        self.clr_bits(Self::EP15_IN_MASK);
     }
 
     /// **EP14_OUT** `[29]` (RW)
@@ -10161,13 +10163,13 @@ impl EpAbort {
     /// Set EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_out(&self) {
-        self.value.set_bits(Self::EP14_OUT_MASK);
+        self.set_bits(Self::EP14_OUT_MASK);
     }
 
     /// Clear EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_out(&self) {
-        self.value.clr_bits(Self::EP14_OUT_MASK);
+        self.clr_bits(Self::EP14_OUT_MASK);
     }
 
     /// **EP14_IN** `[28]` (RW)
@@ -10179,13 +10181,13 @@ impl EpAbort {
     /// Set EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_in(&self) {
-        self.value.set_bits(Self::EP14_IN_MASK);
+        self.set_bits(Self::EP14_IN_MASK);
     }
 
     /// Clear EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_in(&self) {
-        self.value.clr_bits(Self::EP14_IN_MASK);
+        self.clr_bits(Self::EP14_IN_MASK);
     }
 
     /// **EP13_OUT** `[27]` (RW)
@@ -10197,13 +10199,13 @@ impl EpAbort {
     /// Set EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_out(&self) {
-        self.value.set_bits(Self::EP13_OUT_MASK);
+        self.set_bits(Self::EP13_OUT_MASK);
     }
 
     /// Clear EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_out(&self) {
-        self.value.clr_bits(Self::EP13_OUT_MASK);
+        self.clr_bits(Self::EP13_OUT_MASK);
     }
 
     /// **EP13_IN** `[26]` (RW)
@@ -10215,13 +10217,13 @@ impl EpAbort {
     /// Set EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_in(&self) {
-        self.value.set_bits(Self::EP13_IN_MASK);
+        self.set_bits(Self::EP13_IN_MASK);
     }
 
     /// Clear EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_in(&self) {
-        self.value.clr_bits(Self::EP13_IN_MASK);
+        self.clr_bits(Self::EP13_IN_MASK);
     }
 
     /// **EP12_OUT** `[25]` (RW)
@@ -10233,13 +10235,13 @@ impl EpAbort {
     /// Set EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_out(&self) {
-        self.value.set_bits(Self::EP12_OUT_MASK);
+        self.set_bits(Self::EP12_OUT_MASK);
     }
 
     /// Clear EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_out(&self) {
-        self.value.clr_bits(Self::EP12_OUT_MASK);
+        self.clr_bits(Self::EP12_OUT_MASK);
     }
 
     /// **EP12_IN** `[24]` (RW)
@@ -10251,13 +10253,13 @@ impl EpAbort {
     /// Set EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_in(&self) {
-        self.value.set_bits(Self::EP12_IN_MASK);
+        self.set_bits(Self::EP12_IN_MASK);
     }
 
     /// Clear EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_in(&self) {
-        self.value.clr_bits(Self::EP12_IN_MASK);
+        self.clr_bits(Self::EP12_IN_MASK);
     }
 
     /// **EP11_OUT** `[23]` (RW)
@@ -10269,13 +10271,13 @@ impl EpAbort {
     /// Set EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_out(&self) {
-        self.value.set_bits(Self::EP11_OUT_MASK);
+        self.set_bits(Self::EP11_OUT_MASK);
     }
 
     /// Clear EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_out(&self) {
-        self.value.clr_bits(Self::EP11_OUT_MASK);
+        self.clr_bits(Self::EP11_OUT_MASK);
     }
 
     /// **EP11_IN** `[22]` (RW)
@@ -10287,13 +10289,13 @@ impl EpAbort {
     /// Set EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_in(&self) {
-        self.value.set_bits(Self::EP11_IN_MASK);
+        self.set_bits(Self::EP11_IN_MASK);
     }
 
     /// Clear EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_in(&self) {
-        self.value.clr_bits(Self::EP11_IN_MASK);
+        self.clr_bits(Self::EP11_IN_MASK);
     }
 
     /// **EP10_OUT** `[21]` (RW)
@@ -10305,13 +10307,13 @@ impl EpAbort {
     /// Set EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_out(&self) {
-        self.value.set_bits(Self::EP10_OUT_MASK);
+        self.set_bits(Self::EP10_OUT_MASK);
     }
 
     /// Clear EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_out(&self) {
-        self.value.clr_bits(Self::EP10_OUT_MASK);
+        self.clr_bits(Self::EP10_OUT_MASK);
     }
 
     /// **EP10_IN** `[20]` (RW)
@@ -10323,13 +10325,13 @@ impl EpAbort {
     /// Set EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_in(&self) {
-        self.value.set_bits(Self::EP10_IN_MASK);
+        self.set_bits(Self::EP10_IN_MASK);
     }
 
     /// Clear EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_in(&self) {
-        self.value.clr_bits(Self::EP10_IN_MASK);
+        self.clr_bits(Self::EP10_IN_MASK);
     }
 
     /// **EP9_OUT** `[19]` (RW)
@@ -10341,13 +10343,13 @@ impl EpAbort {
     /// Set EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_out(&self) {
-        self.value.set_bits(Self::EP9_OUT_MASK);
+        self.set_bits(Self::EP9_OUT_MASK);
     }
 
     /// Clear EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_out(&self) {
-        self.value.clr_bits(Self::EP9_OUT_MASK);
+        self.clr_bits(Self::EP9_OUT_MASK);
     }
 
     /// **EP9_IN** `[18]` (RW)
@@ -10359,13 +10361,13 @@ impl EpAbort {
     /// Set EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_in(&self) {
-        self.value.set_bits(Self::EP9_IN_MASK);
+        self.set_bits(Self::EP9_IN_MASK);
     }
 
     /// Clear EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_in(&self) {
-        self.value.clr_bits(Self::EP9_IN_MASK);
+        self.clr_bits(Self::EP9_IN_MASK);
     }
 
     /// **EP8_OUT** `[17]` (RW)
@@ -10377,13 +10379,13 @@ impl EpAbort {
     /// Set EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_out(&self) {
-        self.value.set_bits(Self::EP8_OUT_MASK);
+        self.set_bits(Self::EP8_OUT_MASK);
     }
 
     /// Clear EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_out(&self) {
-        self.value.clr_bits(Self::EP8_OUT_MASK);
+        self.clr_bits(Self::EP8_OUT_MASK);
     }
 
     /// **EP8_IN** `[16]` (RW)
@@ -10395,13 +10397,13 @@ impl EpAbort {
     /// Set EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_in(&self) {
-        self.value.set_bits(Self::EP8_IN_MASK);
+        self.set_bits(Self::EP8_IN_MASK);
     }
 
     /// Clear EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_in(&self) {
-        self.value.clr_bits(Self::EP8_IN_MASK);
+        self.clr_bits(Self::EP8_IN_MASK);
     }
 
     /// **EP7_OUT** `[15]` (RW)
@@ -10413,13 +10415,13 @@ impl EpAbort {
     /// Set EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_out(&self) {
-        self.value.set_bits(Self::EP7_OUT_MASK);
+        self.set_bits(Self::EP7_OUT_MASK);
     }
 
     /// Clear EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_out(&self) {
-        self.value.clr_bits(Self::EP7_OUT_MASK);
+        self.clr_bits(Self::EP7_OUT_MASK);
     }
 
     /// **EP7_IN** `[14]` (RW)
@@ -10431,13 +10433,13 @@ impl EpAbort {
     /// Set EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_in(&self) {
-        self.value.set_bits(Self::EP7_IN_MASK);
+        self.set_bits(Self::EP7_IN_MASK);
     }
 
     /// Clear EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_in(&self) {
-        self.value.clr_bits(Self::EP7_IN_MASK);
+        self.clr_bits(Self::EP7_IN_MASK);
     }
 
     /// **EP6_OUT** `[13]` (RW)
@@ -10449,13 +10451,13 @@ impl EpAbort {
     /// Set EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_out(&self) {
-        self.value.set_bits(Self::EP6_OUT_MASK);
+        self.set_bits(Self::EP6_OUT_MASK);
     }
 
     /// Clear EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_out(&self) {
-        self.value.clr_bits(Self::EP6_OUT_MASK);
+        self.clr_bits(Self::EP6_OUT_MASK);
     }
 
     /// **EP6_IN** `[12]` (RW)
@@ -10467,13 +10469,13 @@ impl EpAbort {
     /// Set EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_in(&self) {
-        self.value.set_bits(Self::EP6_IN_MASK);
+        self.set_bits(Self::EP6_IN_MASK);
     }
 
     /// Clear EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_in(&self) {
-        self.value.clr_bits(Self::EP6_IN_MASK);
+        self.clr_bits(Self::EP6_IN_MASK);
     }
 
     /// **EP5_OUT** `[11]` (RW)
@@ -10485,13 +10487,13 @@ impl EpAbort {
     /// Set EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_out(&self) {
-        self.value.set_bits(Self::EP5_OUT_MASK);
+        self.set_bits(Self::EP5_OUT_MASK);
     }
 
     /// Clear EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_out(&self) {
-        self.value.clr_bits(Self::EP5_OUT_MASK);
+        self.clr_bits(Self::EP5_OUT_MASK);
     }
 
     /// **EP5_IN** `[10]` (RW)
@@ -10503,13 +10505,13 @@ impl EpAbort {
     /// Set EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_in(&self) {
-        self.value.set_bits(Self::EP5_IN_MASK);
+        self.set_bits(Self::EP5_IN_MASK);
     }
 
     /// Clear EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_in(&self) {
-        self.value.clr_bits(Self::EP5_IN_MASK);
+        self.clr_bits(Self::EP5_IN_MASK);
     }
 
     /// **EP4_OUT** `[9]` (RW)
@@ -10521,13 +10523,13 @@ impl EpAbort {
     /// Set EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_out(&self) {
-        self.value.set_bits(Self::EP4_OUT_MASK);
+        self.set_bits(Self::EP4_OUT_MASK);
     }
 
     /// Clear EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_out(&self) {
-        self.value.clr_bits(Self::EP4_OUT_MASK);
+        self.clr_bits(Self::EP4_OUT_MASK);
     }
 
     /// **EP4_IN** `[8]` (RW)
@@ -10539,13 +10541,13 @@ impl EpAbort {
     /// Set EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_in(&self) {
-        self.value.set_bits(Self::EP4_IN_MASK);
+        self.set_bits(Self::EP4_IN_MASK);
     }
 
     /// Clear EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_in(&self) {
-        self.value.clr_bits(Self::EP4_IN_MASK);
+        self.clr_bits(Self::EP4_IN_MASK);
     }
 
     /// **EP3_OUT** `[7]` (RW)
@@ -10557,13 +10559,13 @@ impl EpAbort {
     /// Set EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_out(&self) {
-        self.value.set_bits(Self::EP3_OUT_MASK);
+        self.set_bits(Self::EP3_OUT_MASK);
     }
 
     /// Clear EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_out(&self) {
-        self.value.clr_bits(Self::EP3_OUT_MASK);
+        self.clr_bits(Self::EP3_OUT_MASK);
     }
 
     /// **EP3_IN** `[6]` (RW)
@@ -10575,13 +10577,13 @@ impl EpAbort {
     /// Set EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_in(&self) {
-        self.value.set_bits(Self::EP3_IN_MASK);
+        self.set_bits(Self::EP3_IN_MASK);
     }
 
     /// Clear EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_in(&self) {
-        self.value.clr_bits(Self::EP3_IN_MASK);
+        self.clr_bits(Self::EP3_IN_MASK);
     }
 
     /// **EP2_OUT** `[5]` (RW)
@@ -10593,13 +10595,13 @@ impl EpAbort {
     /// Set EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_out(&self) {
-        self.value.set_bits(Self::EP2_OUT_MASK);
+        self.set_bits(Self::EP2_OUT_MASK);
     }
 
     /// Clear EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_out(&self) {
-        self.value.clr_bits(Self::EP2_OUT_MASK);
+        self.clr_bits(Self::EP2_OUT_MASK);
     }
 
     /// **EP2_IN** `[4]` (RW)
@@ -10611,13 +10613,13 @@ impl EpAbort {
     /// Set EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_in(&self) {
-        self.value.set_bits(Self::EP2_IN_MASK);
+        self.set_bits(Self::EP2_IN_MASK);
     }
 
     /// Clear EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_in(&self) {
-        self.value.clr_bits(Self::EP2_IN_MASK);
+        self.clr_bits(Self::EP2_IN_MASK);
     }
 
     /// **EP1_OUT** `[3]` (RW)
@@ -10629,13 +10631,13 @@ impl EpAbort {
     /// Set EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_out(&self) {
-        self.value.set_bits(Self::EP1_OUT_MASK);
+        self.set_bits(Self::EP1_OUT_MASK);
     }
 
     /// Clear EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_out(&self) {
-        self.value.clr_bits(Self::EP1_OUT_MASK);
+        self.clr_bits(Self::EP1_OUT_MASK);
     }
 
     /// **EP1_IN** `[2]` (RW)
@@ -10647,13 +10649,13 @@ impl EpAbort {
     /// Set EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_in(&self) {
-        self.value.set_bits(Self::EP1_IN_MASK);
+        self.set_bits(Self::EP1_IN_MASK);
     }
 
     /// Clear EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_in(&self) {
-        self.value.clr_bits(Self::EP1_IN_MASK);
+        self.clr_bits(Self::EP1_IN_MASK);
     }
 
     /// **EP0_OUT** `[1]` (RW)
@@ -10665,13 +10667,13 @@ impl EpAbort {
     /// Set EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_out(&self) {
-        self.value.set_bits(Self::EP0_OUT_MASK);
+        self.set_bits(Self::EP0_OUT_MASK);
     }
 
     /// Clear EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_out(&self) {
-        self.value.clr_bits(Self::EP0_OUT_MASK);
+        self.clr_bits(Self::EP0_OUT_MASK);
     }
 
     /// **EP0_IN** `[0]` (RW)
@@ -10683,13 +10685,13 @@ impl EpAbort {
     /// Set EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_in(&self) {
-        self.value.set_bits(Self::EP0_IN_MASK);
+        self.set_bits(Self::EP0_IN_MASK);
     }
 
     /// Clear EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_in(&self) {
-        self.value.clr_bits(Self::EP0_IN_MASK);
+        self.clr_bits(Self::EP0_IN_MASK);
     }
 
 }
@@ -11401,11 +11403,11 @@ impl EpAbort {
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpAbortDone {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpAbortDone {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11618,13 +11620,13 @@ impl EpAbortDone {
     /// Set EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_out(&self) {
-        self.value.set_bits(Self::EP15_OUT_MASK);
+        self.set_bits(Self::EP15_OUT_MASK);
     }
 
     /// Clear EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_out(&self) {
-        self.value.clr_bits(Self::EP15_OUT_MASK);
+        self.clr_bits(Self::EP15_OUT_MASK);
     }
 
     /// **EP15_IN** `[30]` (RW)
@@ -11636,13 +11638,13 @@ impl EpAbortDone {
     /// Set EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_in(&self) {
-        self.value.set_bits(Self::EP15_IN_MASK);
+        self.set_bits(Self::EP15_IN_MASK);
     }
 
     /// Clear EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_in(&self) {
-        self.value.clr_bits(Self::EP15_IN_MASK);
+        self.clr_bits(Self::EP15_IN_MASK);
     }
 
     /// **EP14_OUT** `[29]` (RW)
@@ -11654,13 +11656,13 @@ impl EpAbortDone {
     /// Set EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_out(&self) {
-        self.value.set_bits(Self::EP14_OUT_MASK);
+        self.set_bits(Self::EP14_OUT_MASK);
     }
 
     /// Clear EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_out(&self) {
-        self.value.clr_bits(Self::EP14_OUT_MASK);
+        self.clr_bits(Self::EP14_OUT_MASK);
     }
 
     /// **EP14_IN** `[28]` (RW)
@@ -11672,13 +11674,13 @@ impl EpAbortDone {
     /// Set EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_in(&self) {
-        self.value.set_bits(Self::EP14_IN_MASK);
+        self.set_bits(Self::EP14_IN_MASK);
     }
 
     /// Clear EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_in(&self) {
-        self.value.clr_bits(Self::EP14_IN_MASK);
+        self.clr_bits(Self::EP14_IN_MASK);
     }
 
     /// **EP13_OUT** `[27]` (RW)
@@ -11690,13 +11692,13 @@ impl EpAbortDone {
     /// Set EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_out(&self) {
-        self.value.set_bits(Self::EP13_OUT_MASK);
+        self.set_bits(Self::EP13_OUT_MASK);
     }
 
     /// Clear EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_out(&self) {
-        self.value.clr_bits(Self::EP13_OUT_MASK);
+        self.clr_bits(Self::EP13_OUT_MASK);
     }
 
     /// **EP13_IN** `[26]` (RW)
@@ -11708,13 +11710,13 @@ impl EpAbortDone {
     /// Set EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_in(&self) {
-        self.value.set_bits(Self::EP13_IN_MASK);
+        self.set_bits(Self::EP13_IN_MASK);
     }
 
     /// Clear EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_in(&self) {
-        self.value.clr_bits(Self::EP13_IN_MASK);
+        self.clr_bits(Self::EP13_IN_MASK);
     }
 
     /// **EP12_OUT** `[25]` (RW)
@@ -11726,13 +11728,13 @@ impl EpAbortDone {
     /// Set EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_out(&self) {
-        self.value.set_bits(Self::EP12_OUT_MASK);
+        self.set_bits(Self::EP12_OUT_MASK);
     }
 
     /// Clear EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_out(&self) {
-        self.value.clr_bits(Self::EP12_OUT_MASK);
+        self.clr_bits(Self::EP12_OUT_MASK);
     }
 
     /// **EP12_IN** `[24]` (RW)
@@ -11744,13 +11746,13 @@ impl EpAbortDone {
     /// Set EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_in(&self) {
-        self.value.set_bits(Self::EP12_IN_MASK);
+        self.set_bits(Self::EP12_IN_MASK);
     }
 
     /// Clear EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_in(&self) {
-        self.value.clr_bits(Self::EP12_IN_MASK);
+        self.clr_bits(Self::EP12_IN_MASK);
     }
 
     /// **EP11_OUT** `[23]` (RW)
@@ -11762,13 +11764,13 @@ impl EpAbortDone {
     /// Set EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_out(&self) {
-        self.value.set_bits(Self::EP11_OUT_MASK);
+        self.set_bits(Self::EP11_OUT_MASK);
     }
 
     /// Clear EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_out(&self) {
-        self.value.clr_bits(Self::EP11_OUT_MASK);
+        self.clr_bits(Self::EP11_OUT_MASK);
     }
 
     /// **EP11_IN** `[22]` (RW)
@@ -11780,13 +11782,13 @@ impl EpAbortDone {
     /// Set EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_in(&self) {
-        self.value.set_bits(Self::EP11_IN_MASK);
+        self.set_bits(Self::EP11_IN_MASK);
     }
 
     /// Clear EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_in(&self) {
-        self.value.clr_bits(Self::EP11_IN_MASK);
+        self.clr_bits(Self::EP11_IN_MASK);
     }
 
     /// **EP10_OUT** `[21]` (RW)
@@ -11798,13 +11800,13 @@ impl EpAbortDone {
     /// Set EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_out(&self) {
-        self.value.set_bits(Self::EP10_OUT_MASK);
+        self.set_bits(Self::EP10_OUT_MASK);
     }
 
     /// Clear EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_out(&self) {
-        self.value.clr_bits(Self::EP10_OUT_MASK);
+        self.clr_bits(Self::EP10_OUT_MASK);
     }
 
     /// **EP10_IN** `[20]` (RW)
@@ -11816,13 +11818,13 @@ impl EpAbortDone {
     /// Set EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_in(&self) {
-        self.value.set_bits(Self::EP10_IN_MASK);
+        self.set_bits(Self::EP10_IN_MASK);
     }
 
     /// Clear EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_in(&self) {
-        self.value.clr_bits(Self::EP10_IN_MASK);
+        self.clr_bits(Self::EP10_IN_MASK);
     }
 
     /// **EP9_OUT** `[19]` (RW)
@@ -11834,13 +11836,13 @@ impl EpAbortDone {
     /// Set EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_out(&self) {
-        self.value.set_bits(Self::EP9_OUT_MASK);
+        self.set_bits(Self::EP9_OUT_MASK);
     }
 
     /// Clear EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_out(&self) {
-        self.value.clr_bits(Self::EP9_OUT_MASK);
+        self.clr_bits(Self::EP9_OUT_MASK);
     }
 
     /// **EP9_IN** `[18]` (RW)
@@ -11852,13 +11854,13 @@ impl EpAbortDone {
     /// Set EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_in(&self) {
-        self.value.set_bits(Self::EP9_IN_MASK);
+        self.set_bits(Self::EP9_IN_MASK);
     }
 
     /// Clear EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_in(&self) {
-        self.value.clr_bits(Self::EP9_IN_MASK);
+        self.clr_bits(Self::EP9_IN_MASK);
     }
 
     /// **EP8_OUT** `[17]` (RW)
@@ -11870,13 +11872,13 @@ impl EpAbortDone {
     /// Set EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_out(&self) {
-        self.value.set_bits(Self::EP8_OUT_MASK);
+        self.set_bits(Self::EP8_OUT_MASK);
     }
 
     /// Clear EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_out(&self) {
-        self.value.clr_bits(Self::EP8_OUT_MASK);
+        self.clr_bits(Self::EP8_OUT_MASK);
     }
 
     /// **EP8_IN** `[16]` (RW)
@@ -11888,13 +11890,13 @@ impl EpAbortDone {
     /// Set EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_in(&self) {
-        self.value.set_bits(Self::EP8_IN_MASK);
+        self.set_bits(Self::EP8_IN_MASK);
     }
 
     /// Clear EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_in(&self) {
-        self.value.clr_bits(Self::EP8_IN_MASK);
+        self.clr_bits(Self::EP8_IN_MASK);
     }
 
     /// **EP7_OUT** `[15]` (RW)
@@ -11906,13 +11908,13 @@ impl EpAbortDone {
     /// Set EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_out(&self) {
-        self.value.set_bits(Self::EP7_OUT_MASK);
+        self.set_bits(Self::EP7_OUT_MASK);
     }
 
     /// Clear EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_out(&self) {
-        self.value.clr_bits(Self::EP7_OUT_MASK);
+        self.clr_bits(Self::EP7_OUT_MASK);
     }
 
     /// **EP7_IN** `[14]` (RW)
@@ -11924,13 +11926,13 @@ impl EpAbortDone {
     /// Set EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_in(&self) {
-        self.value.set_bits(Self::EP7_IN_MASK);
+        self.set_bits(Self::EP7_IN_MASK);
     }
 
     /// Clear EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_in(&self) {
-        self.value.clr_bits(Self::EP7_IN_MASK);
+        self.clr_bits(Self::EP7_IN_MASK);
     }
 
     /// **EP6_OUT** `[13]` (RW)
@@ -11942,13 +11944,13 @@ impl EpAbortDone {
     /// Set EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_out(&self) {
-        self.value.set_bits(Self::EP6_OUT_MASK);
+        self.set_bits(Self::EP6_OUT_MASK);
     }
 
     /// Clear EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_out(&self) {
-        self.value.clr_bits(Self::EP6_OUT_MASK);
+        self.clr_bits(Self::EP6_OUT_MASK);
     }
 
     /// **EP6_IN** `[12]` (RW)
@@ -11960,13 +11962,13 @@ impl EpAbortDone {
     /// Set EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_in(&self) {
-        self.value.set_bits(Self::EP6_IN_MASK);
+        self.set_bits(Self::EP6_IN_MASK);
     }
 
     /// Clear EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_in(&self) {
-        self.value.clr_bits(Self::EP6_IN_MASK);
+        self.clr_bits(Self::EP6_IN_MASK);
     }
 
     /// **EP5_OUT** `[11]` (RW)
@@ -11978,13 +11980,13 @@ impl EpAbortDone {
     /// Set EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_out(&self) {
-        self.value.set_bits(Self::EP5_OUT_MASK);
+        self.set_bits(Self::EP5_OUT_MASK);
     }
 
     /// Clear EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_out(&self) {
-        self.value.clr_bits(Self::EP5_OUT_MASK);
+        self.clr_bits(Self::EP5_OUT_MASK);
     }
 
     /// **EP5_IN** `[10]` (RW)
@@ -11996,13 +11998,13 @@ impl EpAbortDone {
     /// Set EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_in(&self) {
-        self.value.set_bits(Self::EP5_IN_MASK);
+        self.set_bits(Self::EP5_IN_MASK);
     }
 
     /// Clear EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_in(&self) {
-        self.value.clr_bits(Self::EP5_IN_MASK);
+        self.clr_bits(Self::EP5_IN_MASK);
     }
 
     /// **EP4_OUT** `[9]` (RW)
@@ -12014,13 +12016,13 @@ impl EpAbortDone {
     /// Set EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_out(&self) {
-        self.value.set_bits(Self::EP4_OUT_MASK);
+        self.set_bits(Self::EP4_OUT_MASK);
     }
 
     /// Clear EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_out(&self) {
-        self.value.clr_bits(Self::EP4_OUT_MASK);
+        self.clr_bits(Self::EP4_OUT_MASK);
     }
 
     /// **EP4_IN** `[8]` (RW)
@@ -12032,13 +12034,13 @@ impl EpAbortDone {
     /// Set EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_in(&self) {
-        self.value.set_bits(Self::EP4_IN_MASK);
+        self.set_bits(Self::EP4_IN_MASK);
     }
 
     /// Clear EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_in(&self) {
-        self.value.clr_bits(Self::EP4_IN_MASK);
+        self.clr_bits(Self::EP4_IN_MASK);
     }
 
     /// **EP3_OUT** `[7]` (RW)
@@ -12050,13 +12052,13 @@ impl EpAbortDone {
     /// Set EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_out(&self) {
-        self.value.set_bits(Self::EP3_OUT_MASK);
+        self.set_bits(Self::EP3_OUT_MASK);
     }
 
     /// Clear EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_out(&self) {
-        self.value.clr_bits(Self::EP3_OUT_MASK);
+        self.clr_bits(Self::EP3_OUT_MASK);
     }
 
     /// **EP3_IN** `[6]` (RW)
@@ -12068,13 +12070,13 @@ impl EpAbortDone {
     /// Set EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_in(&self) {
-        self.value.set_bits(Self::EP3_IN_MASK);
+        self.set_bits(Self::EP3_IN_MASK);
     }
 
     /// Clear EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_in(&self) {
-        self.value.clr_bits(Self::EP3_IN_MASK);
+        self.clr_bits(Self::EP3_IN_MASK);
     }
 
     /// **EP2_OUT** `[5]` (RW)
@@ -12086,13 +12088,13 @@ impl EpAbortDone {
     /// Set EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_out(&self) {
-        self.value.set_bits(Self::EP2_OUT_MASK);
+        self.set_bits(Self::EP2_OUT_MASK);
     }
 
     /// Clear EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_out(&self) {
-        self.value.clr_bits(Self::EP2_OUT_MASK);
+        self.clr_bits(Self::EP2_OUT_MASK);
     }
 
     /// **EP2_IN** `[4]` (RW)
@@ -12104,13 +12106,13 @@ impl EpAbortDone {
     /// Set EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_in(&self) {
-        self.value.set_bits(Self::EP2_IN_MASK);
+        self.set_bits(Self::EP2_IN_MASK);
     }
 
     /// Clear EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_in(&self) {
-        self.value.clr_bits(Self::EP2_IN_MASK);
+        self.clr_bits(Self::EP2_IN_MASK);
     }
 
     /// **EP1_OUT** `[3]` (RW)
@@ -12122,13 +12124,13 @@ impl EpAbortDone {
     /// Set EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_out(&self) {
-        self.value.set_bits(Self::EP1_OUT_MASK);
+        self.set_bits(Self::EP1_OUT_MASK);
     }
 
     /// Clear EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_out(&self) {
-        self.value.clr_bits(Self::EP1_OUT_MASK);
+        self.clr_bits(Self::EP1_OUT_MASK);
     }
 
     /// **EP1_IN** `[2]` (RW)
@@ -12140,13 +12142,13 @@ impl EpAbortDone {
     /// Set EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_in(&self) {
-        self.value.set_bits(Self::EP1_IN_MASK);
+        self.set_bits(Self::EP1_IN_MASK);
     }
 
     /// Clear EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_in(&self) {
-        self.value.clr_bits(Self::EP1_IN_MASK);
+        self.clr_bits(Self::EP1_IN_MASK);
     }
 
     /// **EP0_OUT** `[1]` (RW)
@@ -12158,13 +12160,13 @@ impl EpAbortDone {
     /// Set EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_out(&self) {
-        self.value.set_bits(Self::EP0_OUT_MASK);
+        self.set_bits(Self::EP0_OUT_MASK);
     }
 
     /// Clear EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_out(&self) {
-        self.value.clr_bits(Self::EP0_OUT_MASK);
+        self.clr_bits(Self::EP0_OUT_MASK);
     }
 
     /// **EP0_IN** `[0]` (RW)
@@ -12176,13 +12178,13 @@ impl EpAbortDone {
     /// Set EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_in(&self) {
-        self.value.set_bits(Self::EP0_IN_MASK);
+        self.set_bits(Self::EP0_IN_MASK);
     }
 
     /// Clear EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_in(&self) {
-        self.value.clr_bits(Self::EP0_IN_MASK);
+        self.clr_bits(Self::EP0_IN_MASK);
     }
 
 }
@@ -12834,11 +12836,11 @@ impl EpAbortDone {
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpStallArm {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpStallArm {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12871,13 +12873,13 @@ impl EpStallArm {
     /// Set EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_out(&self) {
-        self.value.set_bits(Self::EP0_OUT_MASK);
+        self.set_bits(Self::EP0_OUT_MASK);
     }
 
     /// Clear EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_out(&self) {
-        self.value.clr_bits(Self::EP0_OUT_MASK);
+        self.clr_bits(Self::EP0_OUT_MASK);
     }
 
     /// **EP0_IN** `[0]` (RW)
@@ -12889,13 +12891,13 @@ impl EpStallArm {
     /// Set EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_in(&self) {
-        self.value.set_bits(Self::EP0_IN_MASK);
+        self.set_bits(Self::EP0_IN_MASK);
     }
 
     /// Clear EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_in(&self) {
-        self.value.clr_bits(Self::EP0_IN_MASK);
+        self.clr_bits(Self::EP0_IN_MASK);
     }
 
 }
@@ -13027,11 +13029,11 @@ impl EpStallArm {
 ///   NAK polling interval for a low speed device
 #[repr(transparent)]
 pub struct NakPoll {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for NakPoll {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13112,13 +13114,13 @@ impl NakPoll {
     /// Set EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_epx_stopped_on_nak(&self) {
-        self.value.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// Clear EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_epx_stopped_on_nak(&self) {
-        self.value.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// **STOP_EPX_ON_NAK** `[26]` (RW)
@@ -13132,13 +13134,13 @@ impl NakPoll {
     /// Set STOP_EPX_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_stop_epx_on_nak(&self) {
-        self.value.set_bits(Self::STOP_EPX_ON_NAK_MASK);
+        self.set_bits(Self::STOP_EPX_ON_NAK_MASK);
     }
 
     /// Clear STOP_EPX_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_stop_epx_on_nak(&self) {
-        self.value.clr_bits(Self::STOP_EPX_ON_NAK_MASK);
+        self.clr_bits(Self::STOP_EPX_ON_NAK_MASK);
     }
 
     /// **DELAY_FS** `[25:16]` (RW)
@@ -13410,11 +13412,11 @@ impl NakPoll {
 /// - **EP0_IN** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpStatusStallNak {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpStatusStallNak {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13627,13 +13629,13 @@ impl EpStatusStallNak {
     /// Set EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_out(&self) {
-        self.value.set_bits(Self::EP15_OUT_MASK);
+        self.set_bits(Self::EP15_OUT_MASK);
     }
 
     /// Clear EP15_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_out(&self) {
-        self.value.clr_bits(Self::EP15_OUT_MASK);
+        self.clr_bits(Self::EP15_OUT_MASK);
     }
 
     /// **EP15_IN** `[30]` (RW)
@@ -13645,13 +13647,13 @@ impl EpStatusStallNak {
     /// Set EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_in(&self) {
-        self.value.set_bits(Self::EP15_IN_MASK);
+        self.set_bits(Self::EP15_IN_MASK);
     }
 
     /// Clear EP15_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_in(&self) {
-        self.value.clr_bits(Self::EP15_IN_MASK);
+        self.clr_bits(Self::EP15_IN_MASK);
     }
 
     /// **EP14_OUT** `[29]` (RW)
@@ -13663,13 +13665,13 @@ impl EpStatusStallNak {
     /// Set EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_out(&self) {
-        self.value.set_bits(Self::EP14_OUT_MASK);
+        self.set_bits(Self::EP14_OUT_MASK);
     }
 
     /// Clear EP14_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_out(&self) {
-        self.value.clr_bits(Self::EP14_OUT_MASK);
+        self.clr_bits(Self::EP14_OUT_MASK);
     }
 
     /// **EP14_IN** `[28]` (RW)
@@ -13681,13 +13683,13 @@ impl EpStatusStallNak {
     /// Set EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_in(&self) {
-        self.value.set_bits(Self::EP14_IN_MASK);
+        self.set_bits(Self::EP14_IN_MASK);
     }
 
     /// Clear EP14_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_in(&self) {
-        self.value.clr_bits(Self::EP14_IN_MASK);
+        self.clr_bits(Self::EP14_IN_MASK);
     }
 
     /// **EP13_OUT** `[27]` (RW)
@@ -13699,13 +13701,13 @@ impl EpStatusStallNak {
     /// Set EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_out(&self) {
-        self.value.set_bits(Self::EP13_OUT_MASK);
+        self.set_bits(Self::EP13_OUT_MASK);
     }
 
     /// Clear EP13_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_out(&self) {
-        self.value.clr_bits(Self::EP13_OUT_MASK);
+        self.clr_bits(Self::EP13_OUT_MASK);
     }
 
     /// **EP13_IN** `[26]` (RW)
@@ -13717,13 +13719,13 @@ impl EpStatusStallNak {
     /// Set EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_in(&self) {
-        self.value.set_bits(Self::EP13_IN_MASK);
+        self.set_bits(Self::EP13_IN_MASK);
     }
 
     /// Clear EP13_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_in(&self) {
-        self.value.clr_bits(Self::EP13_IN_MASK);
+        self.clr_bits(Self::EP13_IN_MASK);
     }
 
     /// **EP12_OUT** `[25]` (RW)
@@ -13735,13 +13737,13 @@ impl EpStatusStallNak {
     /// Set EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_out(&self) {
-        self.value.set_bits(Self::EP12_OUT_MASK);
+        self.set_bits(Self::EP12_OUT_MASK);
     }
 
     /// Clear EP12_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_out(&self) {
-        self.value.clr_bits(Self::EP12_OUT_MASK);
+        self.clr_bits(Self::EP12_OUT_MASK);
     }
 
     /// **EP12_IN** `[24]` (RW)
@@ -13753,13 +13755,13 @@ impl EpStatusStallNak {
     /// Set EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_in(&self) {
-        self.value.set_bits(Self::EP12_IN_MASK);
+        self.set_bits(Self::EP12_IN_MASK);
     }
 
     /// Clear EP12_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_in(&self) {
-        self.value.clr_bits(Self::EP12_IN_MASK);
+        self.clr_bits(Self::EP12_IN_MASK);
     }
 
     /// **EP11_OUT** `[23]` (RW)
@@ -13771,13 +13773,13 @@ impl EpStatusStallNak {
     /// Set EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_out(&self) {
-        self.value.set_bits(Self::EP11_OUT_MASK);
+        self.set_bits(Self::EP11_OUT_MASK);
     }
 
     /// Clear EP11_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_out(&self) {
-        self.value.clr_bits(Self::EP11_OUT_MASK);
+        self.clr_bits(Self::EP11_OUT_MASK);
     }
 
     /// **EP11_IN** `[22]` (RW)
@@ -13789,13 +13791,13 @@ impl EpStatusStallNak {
     /// Set EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_in(&self) {
-        self.value.set_bits(Self::EP11_IN_MASK);
+        self.set_bits(Self::EP11_IN_MASK);
     }
 
     /// Clear EP11_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_in(&self) {
-        self.value.clr_bits(Self::EP11_IN_MASK);
+        self.clr_bits(Self::EP11_IN_MASK);
     }
 
     /// **EP10_OUT** `[21]` (RW)
@@ -13807,13 +13809,13 @@ impl EpStatusStallNak {
     /// Set EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_out(&self) {
-        self.value.set_bits(Self::EP10_OUT_MASK);
+        self.set_bits(Self::EP10_OUT_MASK);
     }
 
     /// Clear EP10_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_out(&self) {
-        self.value.clr_bits(Self::EP10_OUT_MASK);
+        self.clr_bits(Self::EP10_OUT_MASK);
     }
 
     /// **EP10_IN** `[20]` (RW)
@@ -13825,13 +13827,13 @@ impl EpStatusStallNak {
     /// Set EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_in(&self) {
-        self.value.set_bits(Self::EP10_IN_MASK);
+        self.set_bits(Self::EP10_IN_MASK);
     }
 
     /// Clear EP10_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_in(&self) {
-        self.value.clr_bits(Self::EP10_IN_MASK);
+        self.clr_bits(Self::EP10_IN_MASK);
     }
 
     /// **EP9_OUT** `[19]` (RW)
@@ -13843,13 +13845,13 @@ impl EpStatusStallNak {
     /// Set EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_out(&self) {
-        self.value.set_bits(Self::EP9_OUT_MASK);
+        self.set_bits(Self::EP9_OUT_MASK);
     }
 
     /// Clear EP9_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_out(&self) {
-        self.value.clr_bits(Self::EP9_OUT_MASK);
+        self.clr_bits(Self::EP9_OUT_MASK);
     }
 
     /// **EP9_IN** `[18]` (RW)
@@ -13861,13 +13863,13 @@ impl EpStatusStallNak {
     /// Set EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_in(&self) {
-        self.value.set_bits(Self::EP9_IN_MASK);
+        self.set_bits(Self::EP9_IN_MASK);
     }
 
     /// Clear EP9_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_in(&self) {
-        self.value.clr_bits(Self::EP9_IN_MASK);
+        self.clr_bits(Self::EP9_IN_MASK);
     }
 
     /// **EP8_OUT** `[17]` (RW)
@@ -13879,13 +13881,13 @@ impl EpStatusStallNak {
     /// Set EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_out(&self) {
-        self.value.set_bits(Self::EP8_OUT_MASK);
+        self.set_bits(Self::EP8_OUT_MASK);
     }
 
     /// Clear EP8_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_out(&self) {
-        self.value.clr_bits(Self::EP8_OUT_MASK);
+        self.clr_bits(Self::EP8_OUT_MASK);
     }
 
     /// **EP8_IN** `[16]` (RW)
@@ -13897,13 +13899,13 @@ impl EpStatusStallNak {
     /// Set EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_in(&self) {
-        self.value.set_bits(Self::EP8_IN_MASK);
+        self.set_bits(Self::EP8_IN_MASK);
     }
 
     /// Clear EP8_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_in(&self) {
-        self.value.clr_bits(Self::EP8_IN_MASK);
+        self.clr_bits(Self::EP8_IN_MASK);
     }
 
     /// **EP7_OUT** `[15]` (RW)
@@ -13915,13 +13917,13 @@ impl EpStatusStallNak {
     /// Set EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_out(&self) {
-        self.value.set_bits(Self::EP7_OUT_MASK);
+        self.set_bits(Self::EP7_OUT_MASK);
     }
 
     /// Clear EP7_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_out(&self) {
-        self.value.clr_bits(Self::EP7_OUT_MASK);
+        self.clr_bits(Self::EP7_OUT_MASK);
     }
 
     /// **EP7_IN** `[14]` (RW)
@@ -13933,13 +13935,13 @@ impl EpStatusStallNak {
     /// Set EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_in(&self) {
-        self.value.set_bits(Self::EP7_IN_MASK);
+        self.set_bits(Self::EP7_IN_MASK);
     }
 
     /// Clear EP7_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_in(&self) {
-        self.value.clr_bits(Self::EP7_IN_MASK);
+        self.clr_bits(Self::EP7_IN_MASK);
     }
 
     /// **EP6_OUT** `[13]` (RW)
@@ -13951,13 +13953,13 @@ impl EpStatusStallNak {
     /// Set EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_out(&self) {
-        self.value.set_bits(Self::EP6_OUT_MASK);
+        self.set_bits(Self::EP6_OUT_MASK);
     }
 
     /// Clear EP6_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_out(&self) {
-        self.value.clr_bits(Self::EP6_OUT_MASK);
+        self.clr_bits(Self::EP6_OUT_MASK);
     }
 
     /// **EP6_IN** `[12]` (RW)
@@ -13969,13 +13971,13 @@ impl EpStatusStallNak {
     /// Set EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_in(&self) {
-        self.value.set_bits(Self::EP6_IN_MASK);
+        self.set_bits(Self::EP6_IN_MASK);
     }
 
     /// Clear EP6_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_in(&self) {
-        self.value.clr_bits(Self::EP6_IN_MASK);
+        self.clr_bits(Self::EP6_IN_MASK);
     }
 
     /// **EP5_OUT** `[11]` (RW)
@@ -13987,13 +13989,13 @@ impl EpStatusStallNak {
     /// Set EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_out(&self) {
-        self.value.set_bits(Self::EP5_OUT_MASK);
+        self.set_bits(Self::EP5_OUT_MASK);
     }
 
     /// Clear EP5_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_out(&self) {
-        self.value.clr_bits(Self::EP5_OUT_MASK);
+        self.clr_bits(Self::EP5_OUT_MASK);
     }
 
     /// **EP5_IN** `[10]` (RW)
@@ -14005,13 +14007,13 @@ impl EpStatusStallNak {
     /// Set EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_in(&self) {
-        self.value.set_bits(Self::EP5_IN_MASK);
+        self.set_bits(Self::EP5_IN_MASK);
     }
 
     /// Clear EP5_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_in(&self) {
-        self.value.clr_bits(Self::EP5_IN_MASK);
+        self.clr_bits(Self::EP5_IN_MASK);
     }
 
     /// **EP4_OUT** `[9]` (RW)
@@ -14023,13 +14025,13 @@ impl EpStatusStallNak {
     /// Set EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_out(&self) {
-        self.value.set_bits(Self::EP4_OUT_MASK);
+        self.set_bits(Self::EP4_OUT_MASK);
     }
 
     /// Clear EP4_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_out(&self) {
-        self.value.clr_bits(Self::EP4_OUT_MASK);
+        self.clr_bits(Self::EP4_OUT_MASK);
     }
 
     /// **EP4_IN** `[8]` (RW)
@@ -14041,13 +14043,13 @@ impl EpStatusStallNak {
     /// Set EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_in(&self) {
-        self.value.set_bits(Self::EP4_IN_MASK);
+        self.set_bits(Self::EP4_IN_MASK);
     }
 
     /// Clear EP4_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_in(&self) {
-        self.value.clr_bits(Self::EP4_IN_MASK);
+        self.clr_bits(Self::EP4_IN_MASK);
     }
 
     /// **EP3_OUT** `[7]` (RW)
@@ -14059,13 +14061,13 @@ impl EpStatusStallNak {
     /// Set EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_out(&self) {
-        self.value.set_bits(Self::EP3_OUT_MASK);
+        self.set_bits(Self::EP3_OUT_MASK);
     }
 
     /// Clear EP3_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_out(&self) {
-        self.value.clr_bits(Self::EP3_OUT_MASK);
+        self.clr_bits(Self::EP3_OUT_MASK);
     }
 
     /// **EP3_IN** `[6]` (RW)
@@ -14077,13 +14079,13 @@ impl EpStatusStallNak {
     /// Set EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_in(&self) {
-        self.value.set_bits(Self::EP3_IN_MASK);
+        self.set_bits(Self::EP3_IN_MASK);
     }
 
     /// Clear EP3_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_in(&self) {
-        self.value.clr_bits(Self::EP3_IN_MASK);
+        self.clr_bits(Self::EP3_IN_MASK);
     }
 
     /// **EP2_OUT** `[5]` (RW)
@@ -14095,13 +14097,13 @@ impl EpStatusStallNak {
     /// Set EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_out(&self) {
-        self.value.set_bits(Self::EP2_OUT_MASK);
+        self.set_bits(Self::EP2_OUT_MASK);
     }
 
     /// Clear EP2_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_out(&self) {
-        self.value.clr_bits(Self::EP2_OUT_MASK);
+        self.clr_bits(Self::EP2_OUT_MASK);
     }
 
     /// **EP2_IN** `[4]` (RW)
@@ -14113,13 +14115,13 @@ impl EpStatusStallNak {
     /// Set EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_in(&self) {
-        self.value.set_bits(Self::EP2_IN_MASK);
+        self.set_bits(Self::EP2_IN_MASK);
     }
 
     /// Clear EP2_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_in(&self) {
-        self.value.clr_bits(Self::EP2_IN_MASK);
+        self.clr_bits(Self::EP2_IN_MASK);
     }
 
     /// **EP1_OUT** `[3]` (RW)
@@ -14131,13 +14133,13 @@ impl EpStatusStallNak {
     /// Set EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_out(&self) {
-        self.value.set_bits(Self::EP1_OUT_MASK);
+        self.set_bits(Self::EP1_OUT_MASK);
     }
 
     /// Clear EP1_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_out(&self) {
-        self.value.clr_bits(Self::EP1_OUT_MASK);
+        self.clr_bits(Self::EP1_OUT_MASK);
     }
 
     /// **EP1_IN** `[2]` (RW)
@@ -14149,13 +14151,13 @@ impl EpStatusStallNak {
     /// Set EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_in(&self) {
-        self.value.set_bits(Self::EP1_IN_MASK);
+        self.set_bits(Self::EP1_IN_MASK);
     }
 
     /// Clear EP1_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_in(&self) {
-        self.value.clr_bits(Self::EP1_IN_MASK);
+        self.clr_bits(Self::EP1_IN_MASK);
     }
 
     /// **EP0_OUT** `[1]` (RW)
@@ -14167,13 +14169,13 @@ impl EpStatusStallNak {
     /// Set EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_out(&self) {
-        self.value.set_bits(Self::EP0_OUT_MASK);
+        self.set_bits(Self::EP0_OUT_MASK);
     }
 
     /// Clear EP0_OUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_out(&self) {
-        self.value.clr_bits(Self::EP0_OUT_MASK);
+        self.clr_bits(Self::EP0_OUT_MASK);
     }
 
     /// **EP0_IN** `[0]` (RW)
@@ -14185,13 +14187,13 @@ impl EpStatusStallNak {
     /// Set EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_in(&self) {
-        self.value.set_bits(Self::EP0_IN_MASK);
+        self.set_bits(Self::EP0_IN_MASK);
     }
 
     /// Clear EP0_IN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_in(&self) {
-        self.value.clr_bits(Self::EP0_IN_MASK);
+        self.clr_bits(Self::EP0_IN_MASK);
     }
 
 }
@@ -14856,11 +14858,11 @@ impl EpStatusStallNak {
 /// - **TO_PHY** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbMuxing {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbMuxing {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14927,13 +14929,13 @@ impl UsbMuxing {
     /// Set SWAP_DPDM bit atomically (RW)
     #[inline(always)]
     pub fn set_swap_dpdm(&self) {
-        self.value.set_bits(Self::SWAP_DPDM_MASK);
+        self.set_bits(Self::SWAP_DPDM_MASK);
     }
 
     /// Clear SWAP_DPDM bit atomically (RW)
     #[inline(always)]
     pub fn clr_swap_dpdm(&self) {
-        self.value.clr_bits(Self::SWAP_DPDM_MASK);
+        self.clr_bits(Self::SWAP_DPDM_MASK);
     }
 
     /// **USBPHY_AS_GPIO** `[4]` (RW)
@@ -14947,13 +14949,13 @@ impl UsbMuxing {
     /// Set USBPHY_AS_GPIO bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_as_gpio(&self) {
-        self.value.set_bits(Self::USBPHY_AS_GPIO_MASK);
+        self.set_bits(Self::USBPHY_AS_GPIO_MASK);
     }
 
     /// Clear USBPHY_AS_GPIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_as_gpio(&self) {
-        self.value.clr_bits(Self::USBPHY_AS_GPIO_MASK);
+        self.clr_bits(Self::USBPHY_AS_GPIO_MASK);
     }
 
     /// **SOFTCON** `[3]` (RW)
@@ -14965,13 +14967,13 @@ impl UsbMuxing {
     /// Set SOFTCON bit atomically (RW)
     #[inline(always)]
     pub fn set_softcon(&self) {
-        self.value.set_bits(Self::SOFTCON_MASK);
+        self.set_bits(Self::SOFTCON_MASK);
     }
 
     /// Clear SOFTCON bit atomically (RW)
     #[inline(always)]
     pub fn clr_softcon(&self) {
-        self.value.clr_bits(Self::SOFTCON_MASK);
+        self.clr_bits(Self::SOFTCON_MASK);
     }
 
     /// **TO_DIGITAL_PAD** `[2]` (RW)
@@ -14983,13 +14985,13 @@ impl UsbMuxing {
     /// Set TO_DIGITAL_PAD bit atomically (RW)
     #[inline(always)]
     pub fn set_to_digital_pad(&self) {
-        self.value.set_bits(Self::TO_DIGITAL_PAD_MASK);
+        self.set_bits(Self::TO_DIGITAL_PAD_MASK);
     }
 
     /// Clear TO_DIGITAL_PAD bit atomically (RW)
     #[inline(always)]
     pub fn clr_to_digital_pad(&self) {
-        self.value.clr_bits(Self::TO_DIGITAL_PAD_MASK);
+        self.clr_bits(Self::TO_DIGITAL_PAD_MASK);
     }
 
     /// **TO_EXTPHY** `[1]` (RW)
@@ -15001,13 +15003,13 @@ impl UsbMuxing {
     /// Set TO_EXTPHY bit atomically (RW)
     #[inline(always)]
     pub fn set_to_extphy(&self) {
-        self.value.set_bits(Self::TO_EXTPHY_MASK);
+        self.set_bits(Self::TO_EXTPHY_MASK);
     }
 
     /// Clear TO_EXTPHY bit atomically (RW)
     #[inline(always)]
     pub fn clr_to_extphy(&self) {
-        self.value.clr_bits(Self::TO_EXTPHY_MASK);
+        self.clr_bits(Self::TO_EXTPHY_MASK);
     }
 
     /// **TO_PHY** `[0]` (RW)
@@ -15019,13 +15021,13 @@ impl UsbMuxing {
     /// Set TO_PHY bit atomically (RW)
     #[inline(always)]
     pub fn set_to_phy(&self) {
-        self.value.set_bits(Self::TO_PHY_MASK);
+        self.set_bits(Self::TO_PHY_MASK);
     }
 
     /// Clear TO_PHY bit atomically (RW)
     #[inline(always)]
     pub fn clr_to_phy(&self) {
-        self.value.clr_bits(Self::TO_PHY_MASK);
+        self.clr_bits(Self::TO_PHY_MASK);
     }
 
 }
@@ -15227,11 +15229,11 @@ impl UsbMuxing {
 /// - **VBUS_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbPwr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbPwr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15288,13 +15290,13 @@ impl UsbPwr {
     /// Set OVERCURR_DETECT_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_overcurr_detect_en(&self) {
-        self.value.set_bits(Self::OVERCURR_DETECT_EN_MASK);
+        self.set_bits(Self::OVERCURR_DETECT_EN_MASK);
     }
 
     /// Clear OVERCURR_DETECT_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_overcurr_detect_en(&self) {
-        self.value.clr_bits(Self::OVERCURR_DETECT_EN_MASK);
+        self.clr_bits(Self::OVERCURR_DETECT_EN_MASK);
     }
 
     /// **OVERCURR_DETECT** `[4]` (RW)
@@ -15306,13 +15308,13 @@ impl UsbPwr {
     /// Set OVERCURR_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn set_overcurr_detect(&self) {
-        self.value.set_bits(Self::OVERCURR_DETECT_MASK);
+        self.set_bits(Self::OVERCURR_DETECT_MASK);
     }
 
     /// Clear OVERCURR_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_overcurr_detect(&self) {
-        self.value.clr_bits(Self::OVERCURR_DETECT_MASK);
+        self.clr_bits(Self::OVERCURR_DETECT_MASK);
     }
 
     /// **VBUS_DETECT_OVERRIDE_EN** `[3]` (RW)
@@ -15324,13 +15326,13 @@ impl UsbPwr {
     /// Set VBUS_DETECT_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_detect_override_en(&self) {
-        self.value.set_bits(Self::VBUS_DETECT_OVERRIDE_EN_MASK);
+        self.set_bits(Self::VBUS_DETECT_OVERRIDE_EN_MASK);
     }
 
     /// Clear VBUS_DETECT_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_detect_override_en(&self) {
-        self.value.clr_bits(Self::VBUS_DETECT_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::VBUS_DETECT_OVERRIDE_EN_MASK);
     }
 
     /// **VBUS_DETECT** `[2]` (RW)
@@ -15342,13 +15344,13 @@ impl UsbPwr {
     /// Set VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_detect(&self) {
-        self.value.set_bits(Self::VBUS_DETECT_MASK);
+        self.set_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// Clear VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_detect(&self) {
-        self.value.clr_bits(Self::VBUS_DETECT_MASK);
+        self.clr_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// **VBUS_EN_OVERRIDE_EN** `[1]` (RW)
@@ -15360,13 +15362,13 @@ impl UsbPwr {
     /// Set VBUS_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_en_override_en(&self) {
-        self.value.set_bits(Self::VBUS_EN_OVERRIDE_EN_MASK);
+        self.set_bits(Self::VBUS_EN_OVERRIDE_EN_MASK);
     }
 
     /// Clear VBUS_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_en_override_en(&self) {
-        self.value.clr_bits(Self::VBUS_EN_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::VBUS_EN_OVERRIDE_EN_MASK);
     }
 
     /// **VBUS_EN** `[0]` (RW)
@@ -15378,13 +15380,13 @@ impl UsbPwr {
     /// Set VBUS_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_en(&self) {
-        self.value.set_bits(Self::VBUS_EN_MASK);
+        self.set_bits(Self::VBUS_EN_MASK);
     }
 
     /// Clear VBUS_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_en(&self) {
-        self.value.clr_bits(Self::VBUS_EN_MASK);
+        self.clr_bits(Self::VBUS_EN_MASK);
     }
 
 }
@@ -15666,11 +15668,11 @@ impl UsbPwr {
 ///   Enable the second DP pull up resistor. 0 - Pull = Rpu2; 1 - Pull = Rpu1 + Rpu2
 #[repr(transparent)]
 pub struct UsbphyDirect {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDirect {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15915,13 +15917,13 @@ impl UsbphyDirect {
     /// Set RX_DM_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dm_override(&self) {
-        self.value.set_bits(Self::RX_DM_OVERRIDE_MASK);
+        self.set_bits(Self::RX_DM_OVERRIDE_MASK);
     }
 
     /// Clear RX_DM_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dm_override(&self) {
-        self.value.clr_bits(Self::RX_DM_OVERRIDE_MASK);
+        self.clr_bits(Self::RX_DM_OVERRIDE_MASK);
     }
 
     /// **RX_DP_OVERRIDE** `[24]` (RW)
@@ -15935,13 +15937,13 @@ impl UsbphyDirect {
     /// Set RX_DP_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dp_override(&self) {
-        self.value.set_bits(Self::RX_DP_OVERRIDE_MASK);
+        self.set_bits(Self::RX_DP_OVERRIDE_MASK);
     }
 
     /// Clear RX_DP_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dp_override(&self) {
-        self.value.clr_bits(Self::RX_DP_OVERRIDE_MASK);
+        self.clr_bits(Self::RX_DP_OVERRIDE_MASK);
     }
 
     /// **RX_DD_OVERRIDE** `[23]` (RW)
@@ -15955,13 +15957,13 @@ impl UsbphyDirect {
     /// Set RX_DD_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dd_override(&self) {
-        self.value.set_bits(Self::RX_DD_OVERRIDE_MASK);
+        self.set_bits(Self::RX_DD_OVERRIDE_MASK);
     }
 
     /// Clear RX_DD_OVERRIDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dd_override(&self) {
-        self.value.clr_bits(Self::RX_DD_OVERRIDE_MASK);
+        self.clr_bits(Self::RX_DD_OVERRIDE_MASK);
     }
 
     /// **DM_OVV** `[22]` (RO)
@@ -16032,13 +16034,13 @@ impl UsbphyDirect {
     /// Set TX_DIFFMODE bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_diffmode(&self) {
-        self.value.set_bits(Self::TX_DIFFMODE_MASK);
+        self.set_bits(Self::TX_DIFFMODE_MASK);
     }
 
     /// Clear TX_DIFFMODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_diffmode(&self) {
-        self.value.clr_bits(Self::TX_DIFFMODE_MASK);
+        self.clr_bits(Self::TX_DIFFMODE_MASK);
     }
 
     /// **TX_FSSLEW** `[14]` (RW)
@@ -16053,13 +16055,13 @@ impl UsbphyDirect {
     /// Set TX_FSSLEW bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_fsslew(&self) {
-        self.value.set_bits(Self::TX_FSSLEW_MASK);
+        self.set_bits(Self::TX_FSSLEW_MASK);
     }
 
     /// Clear TX_FSSLEW bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_fsslew(&self) {
-        self.value.clr_bits(Self::TX_FSSLEW_MASK);
+        self.clr_bits(Self::TX_FSSLEW_MASK);
     }
 
     /// **TX_PD** `[13]` (RW)
@@ -16073,13 +16075,13 @@ impl UsbphyDirect {
     /// Set TX_PD bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_pd(&self) {
-        self.value.set_bits(Self::TX_PD_MASK);
+        self.set_bits(Self::TX_PD_MASK);
     }
 
     /// Clear TX_PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_pd(&self) {
-        self.value.clr_bits(Self::TX_PD_MASK);
+        self.clr_bits(Self::TX_PD_MASK);
     }
 
     /// **RX_PD** `[12]` (RW)
@@ -16093,13 +16095,13 @@ impl UsbphyDirect {
     /// Set RX_PD bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_pd(&self) {
-        self.value.set_bits(Self::RX_PD_MASK);
+        self.set_bits(Self::RX_PD_MASK);
     }
 
     /// Clear RX_PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_pd(&self) {
-        self.value.clr_bits(Self::RX_PD_MASK);
+        self.clr_bits(Self::RX_PD_MASK);
     }
 
     /// **TX_DM** `[11]` (RW)
@@ -16114,13 +16116,13 @@ impl UsbphyDirect {
     /// Set TX_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dm(&self) {
-        self.value.set_bits(Self::TX_DM_MASK);
+        self.set_bits(Self::TX_DM_MASK);
     }
 
     /// Clear TX_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dm(&self) {
-        self.value.clr_bits(Self::TX_DM_MASK);
+        self.clr_bits(Self::TX_DM_MASK);
     }
 
     /// **TX_DP** `[10]` (RW)
@@ -16135,13 +16137,13 @@ impl UsbphyDirect {
     /// Set TX_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dp(&self) {
-        self.value.set_bits(Self::TX_DP_MASK);
+        self.set_bits(Self::TX_DP_MASK);
     }
 
     /// Clear TX_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dp(&self) {
-        self.value.clr_bits(Self::TX_DP_MASK);
+        self.clr_bits(Self::TX_DP_MASK);
     }
 
     /// **TX_DM_OE** `[9]` (RW)
@@ -16156,13 +16158,13 @@ impl UsbphyDirect {
     /// Set TX_DM_OE bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dm_oe(&self) {
-        self.value.set_bits(Self::TX_DM_OE_MASK);
+        self.set_bits(Self::TX_DM_OE_MASK);
     }
 
     /// Clear TX_DM_OE bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dm_oe(&self) {
-        self.value.clr_bits(Self::TX_DM_OE_MASK);
+        self.clr_bits(Self::TX_DM_OE_MASK);
     }
 
     /// **TX_DP_OE** `[8]` (RW)
@@ -16177,13 +16179,13 @@ impl UsbphyDirect {
     /// Set TX_DP_OE bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dp_oe(&self) {
-        self.value.set_bits(Self::TX_DP_OE_MASK);
+        self.set_bits(Self::TX_DP_OE_MASK);
     }
 
     /// Clear TX_DP_OE bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dp_oe(&self) {
-        self.value.clr_bits(Self::TX_DP_OE_MASK);
+        self.clr_bits(Self::TX_DP_OE_MASK);
     }
 
     /// **DM_PULLDN_EN** `[6]` (RW)
@@ -16197,13 +16199,13 @@ impl UsbphyDirect {
     /// Set DM_PULLDN_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pulldn_en(&self) {
-        self.value.set_bits(Self::DM_PULLDN_EN_MASK);
+        self.set_bits(Self::DM_PULLDN_EN_MASK);
     }
 
     /// Clear DM_PULLDN_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pulldn_en(&self) {
-        self.value.clr_bits(Self::DM_PULLDN_EN_MASK);
+        self.clr_bits(Self::DM_PULLDN_EN_MASK);
     }
 
     /// **DM_PULLUP_EN** `[5]` (RW)
@@ -16217,13 +16219,13 @@ impl UsbphyDirect {
     /// Set DM_PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pullup_en(&self) {
-        self.value.set_bits(Self::DM_PULLUP_EN_MASK);
+        self.set_bits(Self::DM_PULLUP_EN_MASK);
     }
 
     /// Clear DM_PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pullup_en(&self) {
-        self.value.clr_bits(Self::DM_PULLUP_EN_MASK);
+        self.clr_bits(Self::DM_PULLUP_EN_MASK);
     }
 
     /// **DM_PULLUP_HISEL** `[4]` (RW)
@@ -16237,13 +16239,13 @@ impl UsbphyDirect {
     /// Set DM_PULLUP_HISEL bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pullup_hisel(&self) {
-        self.value.set_bits(Self::DM_PULLUP_HISEL_MASK);
+        self.set_bits(Self::DM_PULLUP_HISEL_MASK);
     }
 
     /// Clear DM_PULLUP_HISEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pullup_hisel(&self) {
-        self.value.clr_bits(Self::DM_PULLUP_HISEL_MASK);
+        self.clr_bits(Self::DM_PULLUP_HISEL_MASK);
     }
 
     /// **DP_PULLDN_EN** `[2]` (RW)
@@ -16257,13 +16259,13 @@ impl UsbphyDirect {
     /// Set DP_PULLDN_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pulldn_en(&self) {
-        self.value.set_bits(Self::DP_PULLDN_EN_MASK);
+        self.set_bits(Self::DP_PULLDN_EN_MASK);
     }
 
     /// Clear DP_PULLDN_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pulldn_en(&self) {
-        self.value.clr_bits(Self::DP_PULLDN_EN_MASK);
+        self.clr_bits(Self::DP_PULLDN_EN_MASK);
     }
 
     /// **DP_PULLUP_EN** `[1]` (RW)
@@ -16277,13 +16279,13 @@ impl UsbphyDirect {
     /// Set DP_PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pullup_en(&self) {
-        self.value.set_bits(Self::DP_PULLUP_EN_MASK);
+        self.set_bits(Self::DP_PULLUP_EN_MASK);
     }
 
     /// Clear DP_PULLUP_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pullup_en(&self) {
-        self.value.clr_bits(Self::DP_PULLUP_EN_MASK);
+        self.clr_bits(Self::DP_PULLUP_EN_MASK);
     }
 
     /// **DP_PULLUP_HISEL** `[0]` (RW)
@@ -16297,13 +16299,13 @@ impl UsbphyDirect {
     /// Set DP_PULLUP_HISEL bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pullup_hisel(&self) {
-        self.value.set_bits(Self::DP_PULLUP_HISEL_MASK);
+        self.set_bits(Self::DP_PULLUP_HISEL_MASK);
     }
 
     /// Clear DP_PULLUP_HISEL bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pullup_hisel(&self) {
-        self.value.clr_bits(Self::DP_PULLUP_HISEL_MASK);
+        self.clr_bits(Self::DP_PULLUP_HISEL_MASK);
     }
 
 }
@@ -16851,11 +16853,11 @@ impl UsbphyDirect {
 /// - **DP_PULLUP_HISEL_OVERRIDE_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct UsbphyDirectOverride {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDirectOverride {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16978,13 +16980,13 @@ impl UsbphyDirectOverride {
     /// Set RX_DM_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dm_override_en(&self) {
-        self.value.set_bits(Self::RX_DM_OVERRIDE_EN_MASK);
+        self.set_bits(Self::RX_DM_OVERRIDE_EN_MASK);
     }
 
     /// Clear RX_DM_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dm_override_en(&self) {
-        self.value.clr_bits(Self::RX_DM_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::RX_DM_OVERRIDE_EN_MASK);
     }
 
     /// **RX_DP_OVERRIDE_EN** `[17]` (RW)
@@ -16996,13 +16998,13 @@ impl UsbphyDirectOverride {
     /// Set RX_DP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dp_override_en(&self) {
-        self.value.set_bits(Self::RX_DP_OVERRIDE_EN_MASK);
+        self.set_bits(Self::RX_DP_OVERRIDE_EN_MASK);
     }
 
     /// Clear RX_DP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dp_override_en(&self) {
-        self.value.clr_bits(Self::RX_DP_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::RX_DP_OVERRIDE_EN_MASK);
     }
 
     /// **RX_DD_OVERRIDE_EN** `[16]` (RW)
@@ -17014,13 +17016,13 @@ impl UsbphyDirectOverride {
     /// Set RX_DD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_dd_override_en(&self) {
-        self.value.set_bits(Self::RX_DD_OVERRIDE_EN_MASK);
+        self.set_bits(Self::RX_DD_OVERRIDE_EN_MASK);
     }
 
     /// Clear RX_DD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_dd_override_en(&self) {
-        self.value.clr_bits(Self::RX_DD_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::RX_DD_OVERRIDE_EN_MASK);
     }
 
     /// **TX_DIFFMODE_OVERRIDE_EN** `[15]` (RW)
@@ -17032,13 +17034,13 @@ impl UsbphyDirectOverride {
     /// Set TX_DIFFMODE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_diffmode_override_en(&self) {
-        self.value.set_bits(Self::TX_DIFFMODE_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_DIFFMODE_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_DIFFMODE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_diffmode_override_en(&self) {
-        self.value.clr_bits(Self::TX_DIFFMODE_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_DIFFMODE_OVERRIDE_EN_MASK);
     }
 
     /// **DM_PULLUP_OVERRIDE_EN** `[12]` (RW)
@@ -17050,13 +17052,13 @@ impl UsbphyDirectOverride {
     /// Set DM_PULLUP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pullup_override_en(&self) {
-        self.value.set_bits(Self::DM_PULLUP_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DM_PULLUP_OVERRIDE_EN_MASK);
     }
 
     /// Clear DM_PULLUP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pullup_override_en(&self) {
-        self.value.clr_bits(Self::DM_PULLUP_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DM_PULLUP_OVERRIDE_EN_MASK);
     }
 
     /// **TX_FSSLEW_OVERRIDE_EN** `[11]` (RW)
@@ -17068,13 +17070,13 @@ impl UsbphyDirectOverride {
     /// Set TX_FSSLEW_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_fsslew_override_en(&self) {
-        self.value.set_bits(Self::TX_FSSLEW_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_FSSLEW_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_FSSLEW_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_fsslew_override_en(&self) {
-        self.value.clr_bits(Self::TX_FSSLEW_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_FSSLEW_OVERRIDE_EN_MASK);
     }
 
     /// **TX_PD_OVERRIDE_EN** `[10]` (RW)
@@ -17086,13 +17088,13 @@ impl UsbphyDirectOverride {
     /// Set TX_PD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_pd_override_en(&self) {
-        self.value.set_bits(Self::TX_PD_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_PD_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_PD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_pd_override_en(&self) {
-        self.value.clr_bits(Self::TX_PD_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_PD_OVERRIDE_EN_MASK);
     }
 
     /// **RX_PD_OVERRIDE_EN** `[9]` (RW)
@@ -17104,13 +17106,13 @@ impl UsbphyDirectOverride {
     /// Set RX_PD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_pd_override_en(&self) {
-        self.value.set_bits(Self::RX_PD_OVERRIDE_EN_MASK);
+        self.set_bits(Self::RX_PD_OVERRIDE_EN_MASK);
     }
 
     /// Clear RX_PD_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_pd_override_en(&self) {
-        self.value.clr_bits(Self::RX_PD_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::RX_PD_OVERRIDE_EN_MASK);
     }
 
     /// **TX_DM_OVERRIDE_EN** `[8]` (RW)
@@ -17122,13 +17124,13 @@ impl UsbphyDirectOverride {
     /// Set TX_DM_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dm_override_en(&self) {
-        self.value.set_bits(Self::TX_DM_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_DM_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_DM_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dm_override_en(&self) {
-        self.value.clr_bits(Self::TX_DM_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_DM_OVERRIDE_EN_MASK);
     }
 
     /// **TX_DP_OVERRIDE_EN** `[7]` (RW)
@@ -17140,13 +17142,13 @@ impl UsbphyDirectOverride {
     /// Set TX_DP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dp_override_en(&self) {
-        self.value.set_bits(Self::TX_DP_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_DP_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_DP_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dp_override_en(&self) {
-        self.value.clr_bits(Self::TX_DP_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_DP_OVERRIDE_EN_MASK);
     }
 
     /// **TX_DM_OE_OVERRIDE_EN** `[6]` (RW)
@@ -17158,13 +17160,13 @@ impl UsbphyDirectOverride {
     /// Set TX_DM_OE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dm_oe_override_en(&self) {
-        self.value.set_bits(Self::TX_DM_OE_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_DM_OE_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_DM_OE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dm_oe_override_en(&self) {
-        self.value.clr_bits(Self::TX_DM_OE_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_DM_OE_OVERRIDE_EN_MASK);
     }
 
     /// **TX_DP_OE_OVERRIDE_EN** `[5]` (RW)
@@ -17176,13 +17178,13 @@ impl UsbphyDirectOverride {
     /// Set TX_DP_OE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_dp_oe_override_en(&self) {
-        self.value.set_bits(Self::TX_DP_OE_OVERRIDE_EN_MASK);
+        self.set_bits(Self::TX_DP_OE_OVERRIDE_EN_MASK);
     }
 
     /// Clear TX_DP_OE_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_dp_oe_override_en(&self) {
-        self.value.clr_bits(Self::TX_DP_OE_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::TX_DP_OE_OVERRIDE_EN_MASK);
     }
 
     /// **DM_PULLDN_EN_OVERRIDE_EN** `[4]` (RW)
@@ -17194,13 +17196,13 @@ impl UsbphyDirectOverride {
     /// Set DM_PULLDN_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pulldn_en_override_en(&self) {
-        self.value.set_bits(Self::DM_PULLDN_EN_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DM_PULLDN_EN_OVERRIDE_EN_MASK);
     }
 
     /// Clear DM_PULLDN_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pulldn_en_override_en(&self) {
-        self.value.clr_bits(Self::DM_PULLDN_EN_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DM_PULLDN_EN_OVERRIDE_EN_MASK);
     }
 
     /// **DP_PULLDN_EN_OVERRIDE_EN** `[3]` (RW)
@@ -17212,13 +17214,13 @@ impl UsbphyDirectOverride {
     /// Set DP_PULLDN_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pulldn_en_override_en(&self) {
-        self.value.set_bits(Self::DP_PULLDN_EN_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DP_PULLDN_EN_OVERRIDE_EN_MASK);
     }
 
     /// Clear DP_PULLDN_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pulldn_en_override_en(&self) {
-        self.value.clr_bits(Self::DP_PULLDN_EN_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DP_PULLDN_EN_OVERRIDE_EN_MASK);
     }
 
     /// **DP_PULLUP_EN_OVERRIDE_EN** `[2]` (RW)
@@ -17230,13 +17232,13 @@ impl UsbphyDirectOverride {
     /// Set DP_PULLUP_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pullup_en_override_en(&self) {
-        self.value.set_bits(Self::DP_PULLUP_EN_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DP_PULLUP_EN_OVERRIDE_EN_MASK);
     }
 
     /// Clear DP_PULLUP_EN_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pullup_en_override_en(&self) {
-        self.value.clr_bits(Self::DP_PULLUP_EN_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DP_PULLUP_EN_OVERRIDE_EN_MASK);
     }
 
     /// **DM_PULLUP_HISEL_OVERRIDE_EN** `[1]` (RW)
@@ -17248,13 +17250,13 @@ impl UsbphyDirectOverride {
     /// Set DM_PULLUP_HISEL_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dm_pullup_hisel_override_en(&self) {
-        self.value.set_bits(Self::DM_PULLUP_HISEL_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DM_PULLUP_HISEL_OVERRIDE_EN_MASK);
     }
 
     /// Clear DM_PULLUP_HISEL_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dm_pullup_hisel_override_en(&self) {
-        self.value.clr_bits(Self::DM_PULLUP_HISEL_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DM_PULLUP_HISEL_OVERRIDE_EN_MASK);
     }
 
     /// **DP_PULLUP_HISEL_OVERRIDE_EN** `[0]` (RW)
@@ -17266,13 +17268,13 @@ impl UsbphyDirectOverride {
     /// Set DP_PULLUP_HISEL_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dp_pullup_hisel_override_en(&self) {
-        self.value.set_bits(Self::DP_PULLUP_HISEL_OVERRIDE_EN_MASK);
+        self.set_bits(Self::DP_PULLUP_HISEL_OVERRIDE_EN_MASK);
     }
 
     /// Clear DP_PULLUP_HISEL_OVERRIDE_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dp_pullup_hisel_override_en(&self) {
-        self.value.clr_bits(Self::DP_PULLUP_HISEL_OVERRIDE_EN_MASK);
+        self.clr_bits(Self::DP_PULLUP_HISEL_OVERRIDE_EN_MASK);
     }
 
 }
@@ -17662,11 +17664,11 @@ impl UsbphyDirectOverride {
 ///   Experimental data suggests that the reset value will work, but this register allows adjustment if required
 #[repr(transparent)]
 pub struct UsbphyTrim {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyTrim {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17888,11 +17890,11 @@ impl UsbphyTrim {
 ///   Device - register the received data to account for hub bit dribble before EOP. Only affects certain hubs.
 #[repr(transparent)]
 pub struct LinestateTuning {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for LinestateTuning {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18007,13 +18009,13 @@ impl LinestateTuning {
     /// Set DEV_LS_WAKE_FIX bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_ls_wake_fix(&self) {
-        self.value.set_bits(Self::DEV_LS_WAKE_FIX_MASK);
+        self.set_bits(Self::DEV_LS_WAKE_FIX_MASK);
     }
 
     /// Clear DEV_LS_WAKE_FIX bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_ls_wake_fix(&self) {
-        self.value.clr_bits(Self::DEV_LS_WAKE_FIX_MASK);
+        self.clr_bits(Self::DEV_LS_WAKE_FIX_MASK);
     }
 
     /// **DEV_RX_ERR_QUIESCE** `[6]` (RW)
@@ -18027,13 +18029,13 @@ impl LinestateTuning {
     /// Set DEV_RX_ERR_QUIESCE bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_rx_err_quiesce(&self) {
-        self.value.set_bits(Self::DEV_RX_ERR_QUIESCE_MASK);
+        self.set_bits(Self::DEV_RX_ERR_QUIESCE_MASK);
     }
 
     /// Clear DEV_RX_ERR_QUIESCE bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_rx_err_quiesce(&self) {
-        self.value.clr_bits(Self::DEV_RX_ERR_QUIESCE_MASK);
+        self.clr_bits(Self::DEV_RX_ERR_QUIESCE_MASK);
     }
 
     /// **SIE_RX_CHATTER_SE0_FIX** `[5]` (RW)
@@ -18048,13 +18050,13 @@ impl LinestateTuning {
     /// Set SIE_RX_CHATTER_SE0_FIX bit atomically (RW)
     #[inline(always)]
     pub fn set_sie_rx_chatter_se0_fix(&self) {
-        self.value.set_bits(Self::SIE_RX_CHATTER_SE0_FIX_MASK);
+        self.set_bits(Self::SIE_RX_CHATTER_SE0_FIX_MASK);
     }
 
     /// Clear SIE_RX_CHATTER_SE0_FIX bit atomically (RW)
     #[inline(always)]
     pub fn clr_sie_rx_chatter_se0_fix(&self) {
-        self.value.clr_bits(Self::SIE_RX_CHATTER_SE0_FIX_MASK);
+        self.clr_bits(Self::SIE_RX_CHATTER_SE0_FIX_MASK);
     }
 
     /// **SIE_RX_BITSTUFF_FIX** `[4]` (RW)
@@ -18069,13 +18071,13 @@ impl LinestateTuning {
     /// Set SIE_RX_BITSTUFF_FIX bit atomically (RW)
     #[inline(always)]
     pub fn set_sie_rx_bitstuff_fix(&self) {
-        self.value.set_bits(Self::SIE_RX_BITSTUFF_FIX_MASK);
+        self.set_bits(Self::SIE_RX_BITSTUFF_FIX_MASK);
     }
 
     /// Clear SIE_RX_BITSTUFF_FIX bit atomically (RW)
     #[inline(always)]
     pub fn clr_sie_rx_bitstuff_fix(&self) {
-        self.value.clr_bits(Self::SIE_RX_BITSTUFF_FIX_MASK);
+        self.clr_bits(Self::SIE_RX_BITSTUFF_FIX_MASK);
     }
 
     /// **DEV_BUFF_CONTROL_DOUBLE_READ_FIX** `[3]` (RW)
@@ -18090,13 +18092,13 @@ impl LinestateTuning {
     /// Set DEV_BUFF_CONTROL_DOUBLE_READ_FIX bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_buff_control_double_read_fix(&self) {
-        self.value.set_bits(Self::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK);
+        self.set_bits(Self::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK);
     }
 
     /// Clear DEV_BUFF_CONTROL_DOUBLE_READ_FIX bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_buff_control_double_read_fix(&self) {
-        self.value.clr_bits(Self::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK);
+        self.clr_bits(Self::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK);
     }
 
     /// **MULTI_HUB_FIX** `[2]` (RW)
@@ -18110,13 +18112,13 @@ impl LinestateTuning {
     /// Set MULTI_HUB_FIX bit atomically (RW)
     #[inline(always)]
     pub fn set_multi_hub_fix(&self) {
-        self.value.set_bits(Self::MULTI_HUB_FIX_MASK);
+        self.set_bits(Self::MULTI_HUB_FIX_MASK);
     }
 
     /// Clear MULTI_HUB_FIX bit atomically (RW)
     #[inline(always)]
     pub fn clr_multi_hub_fix(&self) {
-        self.value.clr_bits(Self::MULTI_HUB_FIX_MASK);
+        self.clr_bits(Self::MULTI_HUB_FIX_MASK);
     }
 
     /// **LINESTATE_DELAY** `[1]` (RW)
@@ -18130,13 +18132,13 @@ impl LinestateTuning {
     /// Set LINESTATE_DELAY bit atomically (RW)
     #[inline(always)]
     pub fn set_linestate_delay(&self) {
-        self.value.set_bits(Self::LINESTATE_DELAY_MASK);
+        self.set_bits(Self::LINESTATE_DELAY_MASK);
     }
 
     /// Clear LINESTATE_DELAY bit atomically (RW)
     #[inline(always)]
     pub fn clr_linestate_delay(&self) {
-        self.value.clr_bits(Self::LINESTATE_DELAY_MASK);
+        self.clr_bits(Self::LINESTATE_DELAY_MASK);
     }
 
     /// **RCV_DELAY** `[0]` (RW)
@@ -18150,13 +18152,13 @@ impl LinestateTuning {
     /// Set RCV_DELAY bit atomically (RW)
     #[inline(always)]
     pub fn set_rcv_delay(&self) {
-        self.value.set_bits(Self::RCV_DELAY_MASK);
+        self.set_bits(Self::RCV_DELAY_MASK);
     }
 
     /// Clear RCV_DELAY bit atomically (RW)
     #[inline(always)]
     pub fn clr_rcv_delay(&self) {
-        self.value.clr_bits(Self::RCV_DELAY_MASK);
+        self.clr_bits(Self::RCV_DELAY_MASK);
     }
 
 }
@@ -18520,11 +18522,11 @@ impl LinestateTuning {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19301,11 +19303,11 @@ impl Intr {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19544,13 +19546,13 @@ impl Inte {
     /// Set EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_epx_stopped_on_nak(&self) {
-        self.value.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// Clear EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_epx_stopped_on_nak(&self) {
-        self.value.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
@@ -19564,13 +19566,13 @@ impl Inte {
     /// Set DEV_SM_WATCHDOG_FIRED bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_sm_watchdog_fired(&self) {
-        self.value.set_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
+        self.set_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
     }
 
     /// Clear DEV_SM_WATCHDOG_FIRED bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_sm_watchdog_fired(&self) {
-        self.value.clr_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
+        self.clr_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RW)
@@ -19584,13 +19586,13 @@ impl Inte {
     /// Set ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_endpoint_error(&self) {
-        self.value.set_bits(Self::ENDPOINT_ERROR_MASK);
+        self.set_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// Clear ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_endpoint_error(&self) {
-        self.value.clr_bits(Self::ENDPOINT_ERROR_MASK);
+        self.clr_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RW)
@@ -19604,13 +19606,13 @@ impl Inte {
     /// Set RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_short_packet(&self) {
-        self.value.set_bits(Self::RX_SHORT_PACKET_MASK);
+        self.set_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// Clear RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_short_packet(&self) {
-        self.value.clr_bits(Self::RX_SHORT_PACKET_MASK);
+        self.clr_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// **EP_STALL_NAK** `[19]` (RW)
@@ -19624,13 +19626,13 @@ impl Inte {
     /// Set EP_STALL_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_ep_stall_nak(&self) {
-        self.value.set_bits(Self::EP_STALL_NAK_MASK);
+        self.set_bits(Self::EP_STALL_NAK_MASK);
     }
 
     /// Clear EP_STALL_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep_stall_nak(&self) {
-        self.value.clr_bits(Self::EP_STALL_NAK_MASK);
+        self.clr_bits(Self::EP_STALL_NAK_MASK);
     }
 
     /// **ABORT_DONE** `[18]` (RW)
@@ -19644,13 +19646,13 @@ impl Inte {
     /// Set ABORT_DONE bit atomically (RW)
     #[inline(always)]
     pub fn set_abort_done(&self) {
-        self.value.set_bits(Self::ABORT_DONE_MASK);
+        self.set_bits(Self::ABORT_DONE_MASK);
     }
 
     /// Clear ABORT_DONE bit atomically (RW)
     #[inline(always)]
     pub fn clr_abort_done(&self) {
-        self.value.clr_bits(Self::ABORT_DONE_MASK);
+        self.clr_bits(Self::ABORT_DONE_MASK);
     }
 
     /// **DEV_SOF** `[17]` (RW)
@@ -19664,13 +19666,13 @@ impl Inte {
     /// Set DEV_SOF bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_sof(&self) {
-        self.value.set_bits(Self::DEV_SOF_MASK);
+        self.set_bits(Self::DEV_SOF_MASK);
     }
 
     /// Clear DEV_SOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_sof(&self) {
-        self.value.clr_bits(Self::DEV_SOF_MASK);
+        self.clr_bits(Self::DEV_SOF_MASK);
     }
 
     /// **SETUP_REQ** `[16]` (RW)
@@ -19684,13 +19686,13 @@ impl Inte {
     /// Set SETUP_REQ bit atomically (RW)
     #[inline(always)]
     pub fn set_setup_req(&self) {
-        self.value.set_bits(Self::SETUP_REQ_MASK);
+        self.set_bits(Self::SETUP_REQ_MASK);
     }
 
     /// Clear SETUP_REQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_setup_req(&self) {
-        self.value.clr_bits(Self::SETUP_REQ_MASK);
+        self.clr_bits(Self::SETUP_REQ_MASK);
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RW)
@@ -19704,13 +19706,13 @@ impl Inte {
     /// Set DEV_RESUME_FROM_HOST bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_resume_from_host(&self) {
-        self.value.set_bits(Self::DEV_RESUME_FROM_HOST_MASK);
+        self.set_bits(Self::DEV_RESUME_FROM_HOST_MASK);
     }
 
     /// Clear DEV_RESUME_FROM_HOST bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_resume_from_host(&self) {
-        self.value.clr_bits(Self::DEV_RESUME_FROM_HOST_MASK);
+        self.clr_bits(Self::DEV_RESUME_FROM_HOST_MASK);
     }
 
     /// **DEV_SUSPEND** `[14]` (RW)
@@ -19724,13 +19726,13 @@ impl Inte {
     /// Set DEV_SUSPEND bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_suspend(&self) {
-        self.value.set_bits(Self::DEV_SUSPEND_MASK);
+        self.set_bits(Self::DEV_SUSPEND_MASK);
     }
 
     /// Clear DEV_SUSPEND bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_suspend(&self) {
-        self.value.clr_bits(Self::DEV_SUSPEND_MASK);
+        self.clr_bits(Self::DEV_SUSPEND_MASK);
     }
 
     /// **DEV_CONN_DIS** `[13]` (RW)
@@ -19744,13 +19746,13 @@ impl Inte {
     /// Set DEV_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_conn_dis(&self) {
-        self.value.set_bits(Self::DEV_CONN_DIS_MASK);
+        self.set_bits(Self::DEV_CONN_DIS_MASK);
     }
 
     /// Clear DEV_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_conn_dis(&self) {
-        self.value.clr_bits(Self::DEV_CONN_DIS_MASK);
+        self.clr_bits(Self::DEV_CONN_DIS_MASK);
     }
 
     /// **BUS_RESET** `[12]` (RW)
@@ -19764,13 +19766,13 @@ impl Inte {
     /// Set BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_bus_reset(&self) {
-        self.value.set_bits(Self::BUS_RESET_MASK);
+        self.set_bits(Self::BUS_RESET_MASK);
     }
 
     /// Clear BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_bus_reset(&self) {
-        self.value.clr_bits(Self::BUS_RESET_MASK);
+        self.clr_bits(Self::BUS_RESET_MASK);
     }
 
     /// **VBUS_DETECT** `[11]` (RW)
@@ -19784,13 +19786,13 @@ impl Inte {
     /// Set VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_detect(&self) {
-        self.value.set_bits(Self::VBUS_DETECT_MASK);
+        self.set_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// Clear VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_detect(&self) {
-        self.value.clr_bits(Self::VBUS_DETECT_MASK);
+        self.clr_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// **STALL** `[10]` (RW)
@@ -19804,13 +19806,13 @@ impl Inte {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **ERROR_CRC** `[9]` (RW)
@@ -19824,13 +19826,13 @@ impl Inte {
     /// Set ERROR_CRC bit atomically (RW)
     #[inline(always)]
     pub fn set_error_crc(&self) {
-        self.value.set_bits(Self::ERROR_CRC_MASK);
+        self.set_bits(Self::ERROR_CRC_MASK);
     }
 
     /// Clear ERROR_CRC bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_crc(&self) {
-        self.value.clr_bits(Self::ERROR_CRC_MASK);
+        self.clr_bits(Self::ERROR_CRC_MASK);
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RW)
@@ -19844,13 +19846,13 @@ impl Inte {
     /// Set ERROR_BIT_STUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_error_bit_stuff(&self) {
-        self.value.set_bits(Self::ERROR_BIT_STUFF_MASK);
+        self.set_bits(Self::ERROR_BIT_STUFF_MASK);
     }
 
     /// Clear ERROR_BIT_STUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_bit_stuff(&self) {
-        self.value.clr_bits(Self::ERROR_BIT_STUFF_MASK);
+        self.clr_bits(Self::ERROR_BIT_STUFF_MASK);
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RW)
@@ -19864,13 +19866,13 @@ impl Inte {
     /// Set ERROR_RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn set_error_rx_overflow(&self) {
-        self.value.set_bits(Self::ERROR_RX_OVERFLOW_MASK);
+        self.set_bits(Self::ERROR_RX_OVERFLOW_MASK);
     }
 
     /// Clear ERROR_RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_rx_overflow(&self) {
-        self.value.clr_bits(Self::ERROR_RX_OVERFLOW_MASK);
+        self.clr_bits(Self::ERROR_RX_OVERFLOW_MASK);
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RW)
@@ -19884,13 +19886,13 @@ impl Inte {
     /// Set ERROR_RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn set_error_rx_timeout(&self) {
-        self.value.set_bits(Self::ERROR_RX_TIMEOUT_MASK);
+        self.set_bits(Self::ERROR_RX_TIMEOUT_MASK);
     }
 
     /// Clear ERROR_RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_rx_timeout(&self) {
-        self.value.clr_bits(Self::ERROR_RX_TIMEOUT_MASK);
+        self.clr_bits(Self::ERROR_RX_TIMEOUT_MASK);
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RW)
@@ -19904,13 +19906,13 @@ impl Inte {
     /// Set ERROR_DATA_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_error_data_seq(&self) {
-        self.value.set_bits(Self::ERROR_DATA_SEQ_MASK);
+        self.set_bits(Self::ERROR_DATA_SEQ_MASK);
     }
 
     /// Clear ERROR_DATA_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_data_seq(&self) {
-        self.value.clr_bits(Self::ERROR_DATA_SEQ_MASK);
+        self.clr_bits(Self::ERROR_DATA_SEQ_MASK);
     }
 
     /// **BUFF_STATUS** `[4]` (RW)
@@ -19924,13 +19926,13 @@ impl Inte {
     /// Set BUFF_STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_buff_status(&self) {
-        self.value.set_bits(Self::BUFF_STATUS_MASK);
+        self.set_bits(Self::BUFF_STATUS_MASK);
     }
 
     /// Clear BUFF_STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_buff_status(&self) {
-        self.value.clr_bits(Self::BUFF_STATUS_MASK);
+        self.clr_bits(Self::BUFF_STATUS_MASK);
     }
 
     /// **TRANS_COMPLETE** `[3]` (RW)
@@ -19944,13 +19946,13 @@ impl Inte {
     /// Set TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn set_trans_complete(&self) {
-        self.value.set_bits(Self::TRANS_COMPLETE_MASK);
+        self.set_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// Clear TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn clr_trans_complete(&self) {
-        self.value.clr_bits(Self::TRANS_COMPLETE_MASK);
+        self.clr_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// **HOST_SOF** `[2]` (RW)
@@ -19964,13 +19966,13 @@ impl Inte {
     /// Set HOST_SOF bit atomically (RW)
     #[inline(always)]
     pub fn set_host_sof(&self) {
-        self.value.set_bits(Self::HOST_SOF_MASK);
+        self.set_bits(Self::HOST_SOF_MASK);
     }
 
     /// Clear HOST_SOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_sof(&self) {
-        self.value.clr_bits(Self::HOST_SOF_MASK);
+        self.clr_bits(Self::HOST_SOF_MASK);
     }
 
     /// **HOST_RESUME** `[1]` (RW)
@@ -19984,13 +19986,13 @@ impl Inte {
     /// Set HOST_RESUME bit atomically (RW)
     #[inline(always)]
     pub fn set_host_resume(&self) {
-        self.value.set_bits(Self::HOST_RESUME_MASK);
+        self.set_bits(Self::HOST_RESUME_MASK);
     }
 
     /// Clear HOST_RESUME bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_resume(&self) {
-        self.value.clr_bits(Self::HOST_RESUME_MASK);
+        self.clr_bits(Self::HOST_RESUME_MASK);
     }
 
     /// **HOST_CONN_DIS** `[0]` (RW)
@@ -20004,13 +20006,13 @@ impl Inte {
     /// Set HOST_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn set_host_conn_dis(&self) {
-        self.value.set_bits(Self::HOST_CONN_DIS_MASK);
+        self.set_bits(Self::HOST_CONN_DIS_MASK);
     }
 
     /// Clear HOST_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_conn_dis(&self) {
-        self.value.clr_bits(Self::HOST_CONN_DIS_MASK);
+        self.clr_bits(Self::HOST_CONN_DIS_MASK);
     }
 
 }
@@ -20706,11 +20708,11 @@ impl Inte {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20949,13 +20951,13 @@ impl Intf {
     /// Set EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_epx_stopped_on_nak(&self) {
-        self.value.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.set_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// Clear EPX_STOPPED_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_epx_stopped_on_nak(&self) {
-        self.value.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
+        self.clr_bits(Self::EPX_STOPPED_ON_NAK_MASK);
     }
 
     /// **DEV_SM_WATCHDOG_FIRED** `[22]` (RW)
@@ -20969,13 +20971,13 @@ impl Intf {
     /// Set DEV_SM_WATCHDOG_FIRED bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_sm_watchdog_fired(&self) {
-        self.value.set_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
+        self.set_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
     }
 
     /// Clear DEV_SM_WATCHDOG_FIRED bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_sm_watchdog_fired(&self) {
-        self.value.clr_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
+        self.clr_bits(Self::DEV_SM_WATCHDOG_FIRED_MASK);
     }
 
     /// **ENDPOINT_ERROR** `[21]` (RW)
@@ -20989,13 +20991,13 @@ impl Intf {
     /// Set ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn set_endpoint_error(&self) {
-        self.value.set_bits(Self::ENDPOINT_ERROR_MASK);
+        self.set_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// Clear ENDPOINT_ERROR bit atomically (RW)
     #[inline(always)]
     pub fn clr_endpoint_error(&self) {
-        self.value.clr_bits(Self::ENDPOINT_ERROR_MASK);
+        self.clr_bits(Self::ENDPOINT_ERROR_MASK);
     }
 
     /// **RX_SHORT_PACKET** `[20]` (RW)
@@ -21009,13 +21011,13 @@ impl Intf {
     /// Set RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_short_packet(&self) {
-        self.value.set_bits(Self::RX_SHORT_PACKET_MASK);
+        self.set_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// Clear RX_SHORT_PACKET bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_short_packet(&self) {
-        self.value.clr_bits(Self::RX_SHORT_PACKET_MASK);
+        self.clr_bits(Self::RX_SHORT_PACKET_MASK);
     }
 
     /// **EP_STALL_NAK** `[19]` (RW)
@@ -21029,13 +21031,13 @@ impl Intf {
     /// Set EP_STALL_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_ep_stall_nak(&self) {
-        self.value.set_bits(Self::EP_STALL_NAK_MASK);
+        self.set_bits(Self::EP_STALL_NAK_MASK);
     }
 
     /// Clear EP_STALL_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep_stall_nak(&self) {
-        self.value.clr_bits(Self::EP_STALL_NAK_MASK);
+        self.clr_bits(Self::EP_STALL_NAK_MASK);
     }
 
     /// **ABORT_DONE** `[18]` (RW)
@@ -21049,13 +21051,13 @@ impl Intf {
     /// Set ABORT_DONE bit atomically (RW)
     #[inline(always)]
     pub fn set_abort_done(&self) {
-        self.value.set_bits(Self::ABORT_DONE_MASK);
+        self.set_bits(Self::ABORT_DONE_MASK);
     }
 
     /// Clear ABORT_DONE bit atomically (RW)
     #[inline(always)]
     pub fn clr_abort_done(&self) {
-        self.value.clr_bits(Self::ABORT_DONE_MASK);
+        self.clr_bits(Self::ABORT_DONE_MASK);
     }
 
     /// **DEV_SOF** `[17]` (RW)
@@ -21069,13 +21071,13 @@ impl Intf {
     /// Set DEV_SOF bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_sof(&self) {
-        self.value.set_bits(Self::DEV_SOF_MASK);
+        self.set_bits(Self::DEV_SOF_MASK);
     }
 
     /// Clear DEV_SOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_sof(&self) {
-        self.value.clr_bits(Self::DEV_SOF_MASK);
+        self.clr_bits(Self::DEV_SOF_MASK);
     }
 
     /// **SETUP_REQ** `[16]` (RW)
@@ -21089,13 +21091,13 @@ impl Intf {
     /// Set SETUP_REQ bit atomically (RW)
     #[inline(always)]
     pub fn set_setup_req(&self) {
-        self.value.set_bits(Self::SETUP_REQ_MASK);
+        self.set_bits(Self::SETUP_REQ_MASK);
     }
 
     /// Clear SETUP_REQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_setup_req(&self) {
-        self.value.clr_bits(Self::SETUP_REQ_MASK);
+        self.clr_bits(Self::SETUP_REQ_MASK);
     }
 
     /// **DEV_RESUME_FROM_HOST** `[15]` (RW)
@@ -21109,13 +21111,13 @@ impl Intf {
     /// Set DEV_RESUME_FROM_HOST bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_resume_from_host(&self) {
-        self.value.set_bits(Self::DEV_RESUME_FROM_HOST_MASK);
+        self.set_bits(Self::DEV_RESUME_FROM_HOST_MASK);
     }
 
     /// Clear DEV_RESUME_FROM_HOST bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_resume_from_host(&self) {
-        self.value.clr_bits(Self::DEV_RESUME_FROM_HOST_MASK);
+        self.clr_bits(Self::DEV_RESUME_FROM_HOST_MASK);
     }
 
     /// **DEV_SUSPEND** `[14]` (RW)
@@ -21129,13 +21131,13 @@ impl Intf {
     /// Set DEV_SUSPEND bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_suspend(&self) {
-        self.value.set_bits(Self::DEV_SUSPEND_MASK);
+        self.set_bits(Self::DEV_SUSPEND_MASK);
     }
 
     /// Clear DEV_SUSPEND bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_suspend(&self) {
-        self.value.clr_bits(Self::DEV_SUSPEND_MASK);
+        self.clr_bits(Self::DEV_SUSPEND_MASK);
     }
 
     /// **DEV_CONN_DIS** `[13]` (RW)
@@ -21149,13 +21151,13 @@ impl Intf {
     /// Set DEV_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn set_dev_conn_dis(&self) {
-        self.value.set_bits(Self::DEV_CONN_DIS_MASK);
+        self.set_bits(Self::DEV_CONN_DIS_MASK);
     }
 
     /// Clear DEV_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn clr_dev_conn_dis(&self) {
-        self.value.clr_bits(Self::DEV_CONN_DIS_MASK);
+        self.clr_bits(Self::DEV_CONN_DIS_MASK);
     }
 
     /// **BUS_RESET** `[12]` (RW)
@@ -21169,13 +21171,13 @@ impl Intf {
     /// Set BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_bus_reset(&self) {
-        self.value.set_bits(Self::BUS_RESET_MASK);
+        self.set_bits(Self::BUS_RESET_MASK);
     }
 
     /// Clear BUS_RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_bus_reset(&self) {
-        self.value.clr_bits(Self::BUS_RESET_MASK);
+        self.clr_bits(Self::BUS_RESET_MASK);
     }
 
     /// **VBUS_DETECT** `[11]` (RW)
@@ -21189,13 +21191,13 @@ impl Intf {
     /// Set VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn set_vbus_detect(&self) {
-        self.value.set_bits(Self::VBUS_DETECT_MASK);
+        self.set_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// Clear VBUS_DETECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_vbus_detect(&self) {
-        self.value.clr_bits(Self::VBUS_DETECT_MASK);
+        self.clr_bits(Self::VBUS_DETECT_MASK);
     }
 
     /// **STALL** `[10]` (RW)
@@ -21209,13 +21211,13 @@ impl Intf {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **ERROR_CRC** `[9]` (RW)
@@ -21229,13 +21231,13 @@ impl Intf {
     /// Set ERROR_CRC bit atomically (RW)
     #[inline(always)]
     pub fn set_error_crc(&self) {
-        self.value.set_bits(Self::ERROR_CRC_MASK);
+        self.set_bits(Self::ERROR_CRC_MASK);
     }
 
     /// Clear ERROR_CRC bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_crc(&self) {
-        self.value.clr_bits(Self::ERROR_CRC_MASK);
+        self.clr_bits(Self::ERROR_CRC_MASK);
     }
 
     /// **ERROR_BIT_STUFF** `[8]` (RW)
@@ -21249,13 +21251,13 @@ impl Intf {
     /// Set ERROR_BIT_STUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_error_bit_stuff(&self) {
-        self.value.set_bits(Self::ERROR_BIT_STUFF_MASK);
+        self.set_bits(Self::ERROR_BIT_STUFF_MASK);
     }
 
     /// Clear ERROR_BIT_STUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_bit_stuff(&self) {
-        self.value.clr_bits(Self::ERROR_BIT_STUFF_MASK);
+        self.clr_bits(Self::ERROR_BIT_STUFF_MASK);
     }
 
     /// **ERROR_RX_OVERFLOW** `[7]` (RW)
@@ -21269,13 +21271,13 @@ impl Intf {
     /// Set ERROR_RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn set_error_rx_overflow(&self) {
-        self.value.set_bits(Self::ERROR_RX_OVERFLOW_MASK);
+        self.set_bits(Self::ERROR_RX_OVERFLOW_MASK);
     }
 
     /// Clear ERROR_RX_OVERFLOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_rx_overflow(&self) {
-        self.value.clr_bits(Self::ERROR_RX_OVERFLOW_MASK);
+        self.clr_bits(Self::ERROR_RX_OVERFLOW_MASK);
     }
 
     /// **ERROR_RX_TIMEOUT** `[6]` (RW)
@@ -21289,13 +21291,13 @@ impl Intf {
     /// Set ERROR_RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn set_error_rx_timeout(&self) {
-        self.value.set_bits(Self::ERROR_RX_TIMEOUT_MASK);
+        self.set_bits(Self::ERROR_RX_TIMEOUT_MASK);
     }
 
     /// Clear ERROR_RX_TIMEOUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_rx_timeout(&self) {
-        self.value.clr_bits(Self::ERROR_RX_TIMEOUT_MASK);
+        self.clr_bits(Self::ERROR_RX_TIMEOUT_MASK);
     }
 
     /// **ERROR_DATA_SEQ** `[5]` (RW)
@@ -21309,13 +21311,13 @@ impl Intf {
     /// Set ERROR_DATA_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_error_data_seq(&self) {
-        self.value.set_bits(Self::ERROR_DATA_SEQ_MASK);
+        self.set_bits(Self::ERROR_DATA_SEQ_MASK);
     }
 
     /// Clear ERROR_DATA_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_error_data_seq(&self) {
-        self.value.clr_bits(Self::ERROR_DATA_SEQ_MASK);
+        self.clr_bits(Self::ERROR_DATA_SEQ_MASK);
     }
 
     /// **BUFF_STATUS** `[4]` (RW)
@@ -21329,13 +21331,13 @@ impl Intf {
     /// Set BUFF_STATUS bit atomically (RW)
     #[inline(always)]
     pub fn set_buff_status(&self) {
-        self.value.set_bits(Self::BUFF_STATUS_MASK);
+        self.set_bits(Self::BUFF_STATUS_MASK);
     }
 
     /// Clear BUFF_STATUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_buff_status(&self) {
-        self.value.clr_bits(Self::BUFF_STATUS_MASK);
+        self.clr_bits(Self::BUFF_STATUS_MASK);
     }
 
     /// **TRANS_COMPLETE** `[3]` (RW)
@@ -21349,13 +21351,13 @@ impl Intf {
     /// Set TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn set_trans_complete(&self) {
-        self.value.set_bits(Self::TRANS_COMPLETE_MASK);
+        self.set_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// Clear TRANS_COMPLETE bit atomically (RW)
     #[inline(always)]
     pub fn clr_trans_complete(&self) {
-        self.value.clr_bits(Self::TRANS_COMPLETE_MASK);
+        self.clr_bits(Self::TRANS_COMPLETE_MASK);
     }
 
     /// **HOST_SOF** `[2]` (RW)
@@ -21369,13 +21371,13 @@ impl Intf {
     /// Set HOST_SOF bit atomically (RW)
     #[inline(always)]
     pub fn set_host_sof(&self) {
-        self.value.set_bits(Self::HOST_SOF_MASK);
+        self.set_bits(Self::HOST_SOF_MASK);
     }
 
     /// Clear HOST_SOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_sof(&self) {
-        self.value.clr_bits(Self::HOST_SOF_MASK);
+        self.clr_bits(Self::HOST_SOF_MASK);
     }
 
     /// **HOST_RESUME** `[1]` (RW)
@@ -21389,13 +21391,13 @@ impl Intf {
     /// Set HOST_RESUME bit atomically (RW)
     #[inline(always)]
     pub fn set_host_resume(&self) {
-        self.value.set_bits(Self::HOST_RESUME_MASK);
+        self.set_bits(Self::HOST_RESUME_MASK);
     }
 
     /// Clear HOST_RESUME bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_resume(&self) {
-        self.value.clr_bits(Self::HOST_RESUME_MASK);
+        self.clr_bits(Self::HOST_RESUME_MASK);
     }
 
     /// **HOST_CONN_DIS** `[0]` (RW)
@@ -21409,13 +21411,13 @@ impl Intf {
     /// Set HOST_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn set_host_conn_dis(&self) {
-        self.value.set_bits(Self::HOST_CONN_DIS_MASK);
+        self.set_bits(Self::HOST_CONN_DIS_MASK);
     }
 
     /// Clear HOST_CONN_DIS bit atomically (RW)
     #[inline(always)]
     pub fn clr_host_conn_dis(&self) {
-        self.value.clr_bits(Self::HOST_CONN_DIS_MASK);
+        self.clr_bits(Self::HOST_CONN_DIS_MASK);
     }
 
 }
@@ -22111,11 +22113,11 @@ impl Intf {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22798,11 +22800,11 @@ impl Ints {
 /// - **SOF_TIMESTAMP_RAW** `[20:0]` (RO)
 #[repr(transparent)]
 pub struct SofTimestampRaw {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SofTimestampRaw {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22902,11 +22904,11 @@ impl SofTimestampRaw {
 /// - **SOF_TIMESTAMP_LAST** `[20:0]` (RO)
 #[repr(transparent)]
 pub struct SofTimestampLast {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SofTimestampLast {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23008,11 +23010,11 @@ impl SofTimestampLast {
 /// - **STATE** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct SmState {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SmState {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23176,11 +23178,11 @@ impl SmState {
 /// - **EP0** `[1:0]` (RW)
 #[repr(transparent)]
 pub struct EpTxError {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpTxError {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23821,11 +23823,11 @@ impl EpTxError {
 /// - **EP0_TRANSACTION** `[0]` (RW)
 #[repr(transparent)]
 pub struct EpRxError {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for EpRxError {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24038,13 +24040,13 @@ impl EpRxError {
     /// Set EP15_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_seq(&self) {
-        self.value.set_bits(Self::EP15_SEQ_MASK);
+        self.set_bits(Self::EP15_SEQ_MASK);
     }
 
     /// Clear EP15_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_seq(&self) {
-        self.value.clr_bits(Self::EP15_SEQ_MASK);
+        self.clr_bits(Self::EP15_SEQ_MASK);
     }
 
     /// **EP15_TRANSACTION** `[30]` (RW)
@@ -24056,13 +24058,13 @@ impl EpRxError {
     /// Set EP15_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep15_transaction(&self) {
-        self.value.set_bits(Self::EP15_TRANSACTION_MASK);
+        self.set_bits(Self::EP15_TRANSACTION_MASK);
     }
 
     /// Clear EP15_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep15_transaction(&self) {
-        self.value.clr_bits(Self::EP15_TRANSACTION_MASK);
+        self.clr_bits(Self::EP15_TRANSACTION_MASK);
     }
 
     /// **EP14_SEQ** `[29]` (RW)
@@ -24074,13 +24076,13 @@ impl EpRxError {
     /// Set EP14_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_seq(&self) {
-        self.value.set_bits(Self::EP14_SEQ_MASK);
+        self.set_bits(Self::EP14_SEQ_MASK);
     }
 
     /// Clear EP14_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_seq(&self) {
-        self.value.clr_bits(Self::EP14_SEQ_MASK);
+        self.clr_bits(Self::EP14_SEQ_MASK);
     }
 
     /// **EP14_TRANSACTION** `[28]` (RW)
@@ -24092,13 +24094,13 @@ impl EpRxError {
     /// Set EP14_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep14_transaction(&self) {
-        self.value.set_bits(Self::EP14_TRANSACTION_MASK);
+        self.set_bits(Self::EP14_TRANSACTION_MASK);
     }
 
     /// Clear EP14_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep14_transaction(&self) {
-        self.value.clr_bits(Self::EP14_TRANSACTION_MASK);
+        self.clr_bits(Self::EP14_TRANSACTION_MASK);
     }
 
     /// **EP13_SEQ** `[27]` (RW)
@@ -24110,13 +24112,13 @@ impl EpRxError {
     /// Set EP13_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_seq(&self) {
-        self.value.set_bits(Self::EP13_SEQ_MASK);
+        self.set_bits(Self::EP13_SEQ_MASK);
     }
 
     /// Clear EP13_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_seq(&self) {
-        self.value.clr_bits(Self::EP13_SEQ_MASK);
+        self.clr_bits(Self::EP13_SEQ_MASK);
     }
 
     /// **EP13_TRANSACTION** `[26]` (RW)
@@ -24128,13 +24130,13 @@ impl EpRxError {
     /// Set EP13_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep13_transaction(&self) {
-        self.value.set_bits(Self::EP13_TRANSACTION_MASK);
+        self.set_bits(Self::EP13_TRANSACTION_MASK);
     }
 
     /// Clear EP13_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep13_transaction(&self) {
-        self.value.clr_bits(Self::EP13_TRANSACTION_MASK);
+        self.clr_bits(Self::EP13_TRANSACTION_MASK);
     }
 
     /// **EP12_SEQ** `[25]` (RW)
@@ -24146,13 +24148,13 @@ impl EpRxError {
     /// Set EP12_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_seq(&self) {
-        self.value.set_bits(Self::EP12_SEQ_MASK);
+        self.set_bits(Self::EP12_SEQ_MASK);
     }
 
     /// Clear EP12_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_seq(&self) {
-        self.value.clr_bits(Self::EP12_SEQ_MASK);
+        self.clr_bits(Self::EP12_SEQ_MASK);
     }
 
     /// **EP12_TRANSACTION** `[24]` (RW)
@@ -24164,13 +24166,13 @@ impl EpRxError {
     /// Set EP12_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep12_transaction(&self) {
-        self.value.set_bits(Self::EP12_TRANSACTION_MASK);
+        self.set_bits(Self::EP12_TRANSACTION_MASK);
     }
 
     /// Clear EP12_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep12_transaction(&self) {
-        self.value.clr_bits(Self::EP12_TRANSACTION_MASK);
+        self.clr_bits(Self::EP12_TRANSACTION_MASK);
     }
 
     /// **EP11_SEQ** `[23]` (RW)
@@ -24182,13 +24184,13 @@ impl EpRxError {
     /// Set EP11_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_seq(&self) {
-        self.value.set_bits(Self::EP11_SEQ_MASK);
+        self.set_bits(Self::EP11_SEQ_MASK);
     }
 
     /// Clear EP11_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_seq(&self) {
-        self.value.clr_bits(Self::EP11_SEQ_MASK);
+        self.clr_bits(Self::EP11_SEQ_MASK);
     }
 
     /// **EP11_TRANSACTION** `[22]` (RW)
@@ -24200,13 +24202,13 @@ impl EpRxError {
     /// Set EP11_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep11_transaction(&self) {
-        self.value.set_bits(Self::EP11_TRANSACTION_MASK);
+        self.set_bits(Self::EP11_TRANSACTION_MASK);
     }
 
     /// Clear EP11_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep11_transaction(&self) {
-        self.value.clr_bits(Self::EP11_TRANSACTION_MASK);
+        self.clr_bits(Self::EP11_TRANSACTION_MASK);
     }
 
     /// **EP10_SEQ** `[21]` (RW)
@@ -24218,13 +24220,13 @@ impl EpRxError {
     /// Set EP10_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_seq(&self) {
-        self.value.set_bits(Self::EP10_SEQ_MASK);
+        self.set_bits(Self::EP10_SEQ_MASK);
     }
 
     /// Clear EP10_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_seq(&self) {
-        self.value.clr_bits(Self::EP10_SEQ_MASK);
+        self.clr_bits(Self::EP10_SEQ_MASK);
     }
 
     /// **EP10_TRANSACTION** `[20]` (RW)
@@ -24236,13 +24238,13 @@ impl EpRxError {
     /// Set EP10_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep10_transaction(&self) {
-        self.value.set_bits(Self::EP10_TRANSACTION_MASK);
+        self.set_bits(Self::EP10_TRANSACTION_MASK);
     }
 
     /// Clear EP10_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep10_transaction(&self) {
-        self.value.clr_bits(Self::EP10_TRANSACTION_MASK);
+        self.clr_bits(Self::EP10_TRANSACTION_MASK);
     }
 
     /// **EP9_SEQ** `[19]` (RW)
@@ -24254,13 +24256,13 @@ impl EpRxError {
     /// Set EP9_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_seq(&self) {
-        self.value.set_bits(Self::EP9_SEQ_MASK);
+        self.set_bits(Self::EP9_SEQ_MASK);
     }
 
     /// Clear EP9_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_seq(&self) {
-        self.value.clr_bits(Self::EP9_SEQ_MASK);
+        self.clr_bits(Self::EP9_SEQ_MASK);
     }
 
     /// **EP9_TRANSACTION** `[18]` (RW)
@@ -24272,13 +24274,13 @@ impl EpRxError {
     /// Set EP9_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep9_transaction(&self) {
-        self.value.set_bits(Self::EP9_TRANSACTION_MASK);
+        self.set_bits(Self::EP9_TRANSACTION_MASK);
     }
 
     /// Clear EP9_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep9_transaction(&self) {
-        self.value.clr_bits(Self::EP9_TRANSACTION_MASK);
+        self.clr_bits(Self::EP9_TRANSACTION_MASK);
     }
 
     /// **EP8_SEQ** `[17]` (RW)
@@ -24290,13 +24292,13 @@ impl EpRxError {
     /// Set EP8_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_seq(&self) {
-        self.value.set_bits(Self::EP8_SEQ_MASK);
+        self.set_bits(Self::EP8_SEQ_MASK);
     }
 
     /// Clear EP8_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_seq(&self) {
-        self.value.clr_bits(Self::EP8_SEQ_MASK);
+        self.clr_bits(Self::EP8_SEQ_MASK);
     }
 
     /// **EP8_TRANSACTION** `[16]` (RW)
@@ -24308,13 +24310,13 @@ impl EpRxError {
     /// Set EP8_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep8_transaction(&self) {
-        self.value.set_bits(Self::EP8_TRANSACTION_MASK);
+        self.set_bits(Self::EP8_TRANSACTION_MASK);
     }
 
     /// Clear EP8_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep8_transaction(&self) {
-        self.value.clr_bits(Self::EP8_TRANSACTION_MASK);
+        self.clr_bits(Self::EP8_TRANSACTION_MASK);
     }
 
     /// **EP7_SEQ** `[15]` (RW)
@@ -24326,13 +24328,13 @@ impl EpRxError {
     /// Set EP7_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_seq(&self) {
-        self.value.set_bits(Self::EP7_SEQ_MASK);
+        self.set_bits(Self::EP7_SEQ_MASK);
     }
 
     /// Clear EP7_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_seq(&self) {
-        self.value.clr_bits(Self::EP7_SEQ_MASK);
+        self.clr_bits(Self::EP7_SEQ_MASK);
     }
 
     /// **EP7_TRANSACTION** `[14]` (RW)
@@ -24344,13 +24346,13 @@ impl EpRxError {
     /// Set EP7_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep7_transaction(&self) {
-        self.value.set_bits(Self::EP7_TRANSACTION_MASK);
+        self.set_bits(Self::EP7_TRANSACTION_MASK);
     }
 
     /// Clear EP7_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep7_transaction(&self) {
-        self.value.clr_bits(Self::EP7_TRANSACTION_MASK);
+        self.clr_bits(Self::EP7_TRANSACTION_MASK);
     }
 
     /// **EP6_SEQ** `[13]` (RW)
@@ -24362,13 +24364,13 @@ impl EpRxError {
     /// Set EP6_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_seq(&self) {
-        self.value.set_bits(Self::EP6_SEQ_MASK);
+        self.set_bits(Self::EP6_SEQ_MASK);
     }
 
     /// Clear EP6_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_seq(&self) {
-        self.value.clr_bits(Self::EP6_SEQ_MASK);
+        self.clr_bits(Self::EP6_SEQ_MASK);
     }
 
     /// **EP6_TRANSACTION** `[12]` (RW)
@@ -24380,13 +24382,13 @@ impl EpRxError {
     /// Set EP6_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep6_transaction(&self) {
-        self.value.set_bits(Self::EP6_TRANSACTION_MASK);
+        self.set_bits(Self::EP6_TRANSACTION_MASK);
     }
 
     /// Clear EP6_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep6_transaction(&self) {
-        self.value.clr_bits(Self::EP6_TRANSACTION_MASK);
+        self.clr_bits(Self::EP6_TRANSACTION_MASK);
     }
 
     /// **EP5_SEQ** `[11]` (RW)
@@ -24398,13 +24400,13 @@ impl EpRxError {
     /// Set EP5_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_seq(&self) {
-        self.value.set_bits(Self::EP5_SEQ_MASK);
+        self.set_bits(Self::EP5_SEQ_MASK);
     }
 
     /// Clear EP5_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_seq(&self) {
-        self.value.clr_bits(Self::EP5_SEQ_MASK);
+        self.clr_bits(Self::EP5_SEQ_MASK);
     }
 
     /// **EP5_TRANSACTION** `[10]` (RW)
@@ -24416,13 +24418,13 @@ impl EpRxError {
     /// Set EP5_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep5_transaction(&self) {
-        self.value.set_bits(Self::EP5_TRANSACTION_MASK);
+        self.set_bits(Self::EP5_TRANSACTION_MASK);
     }
 
     /// Clear EP5_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep5_transaction(&self) {
-        self.value.clr_bits(Self::EP5_TRANSACTION_MASK);
+        self.clr_bits(Self::EP5_TRANSACTION_MASK);
     }
 
     /// **EP4_SEQ** `[9]` (RW)
@@ -24434,13 +24436,13 @@ impl EpRxError {
     /// Set EP4_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_seq(&self) {
-        self.value.set_bits(Self::EP4_SEQ_MASK);
+        self.set_bits(Self::EP4_SEQ_MASK);
     }
 
     /// Clear EP4_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_seq(&self) {
-        self.value.clr_bits(Self::EP4_SEQ_MASK);
+        self.clr_bits(Self::EP4_SEQ_MASK);
     }
 
     /// **EP4_TRANSACTION** `[8]` (RW)
@@ -24452,13 +24454,13 @@ impl EpRxError {
     /// Set EP4_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep4_transaction(&self) {
-        self.value.set_bits(Self::EP4_TRANSACTION_MASK);
+        self.set_bits(Self::EP4_TRANSACTION_MASK);
     }
 
     /// Clear EP4_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep4_transaction(&self) {
-        self.value.clr_bits(Self::EP4_TRANSACTION_MASK);
+        self.clr_bits(Self::EP4_TRANSACTION_MASK);
     }
 
     /// **EP3_SEQ** `[7]` (RW)
@@ -24470,13 +24472,13 @@ impl EpRxError {
     /// Set EP3_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_seq(&self) {
-        self.value.set_bits(Self::EP3_SEQ_MASK);
+        self.set_bits(Self::EP3_SEQ_MASK);
     }
 
     /// Clear EP3_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_seq(&self) {
-        self.value.clr_bits(Self::EP3_SEQ_MASK);
+        self.clr_bits(Self::EP3_SEQ_MASK);
     }
 
     /// **EP3_TRANSACTION** `[6]` (RW)
@@ -24488,13 +24490,13 @@ impl EpRxError {
     /// Set EP3_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep3_transaction(&self) {
-        self.value.set_bits(Self::EP3_TRANSACTION_MASK);
+        self.set_bits(Self::EP3_TRANSACTION_MASK);
     }
 
     /// Clear EP3_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep3_transaction(&self) {
-        self.value.clr_bits(Self::EP3_TRANSACTION_MASK);
+        self.clr_bits(Self::EP3_TRANSACTION_MASK);
     }
 
     /// **EP2_SEQ** `[5]` (RW)
@@ -24506,13 +24508,13 @@ impl EpRxError {
     /// Set EP2_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_seq(&self) {
-        self.value.set_bits(Self::EP2_SEQ_MASK);
+        self.set_bits(Self::EP2_SEQ_MASK);
     }
 
     /// Clear EP2_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_seq(&self) {
-        self.value.clr_bits(Self::EP2_SEQ_MASK);
+        self.clr_bits(Self::EP2_SEQ_MASK);
     }
 
     /// **EP2_TRANSACTION** `[4]` (RW)
@@ -24524,13 +24526,13 @@ impl EpRxError {
     /// Set EP2_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep2_transaction(&self) {
-        self.value.set_bits(Self::EP2_TRANSACTION_MASK);
+        self.set_bits(Self::EP2_TRANSACTION_MASK);
     }
 
     /// Clear EP2_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep2_transaction(&self) {
-        self.value.clr_bits(Self::EP2_TRANSACTION_MASK);
+        self.clr_bits(Self::EP2_TRANSACTION_MASK);
     }
 
     /// **EP1_SEQ** `[3]` (RW)
@@ -24542,13 +24544,13 @@ impl EpRxError {
     /// Set EP1_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_seq(&self) {
-        self.value.set_bits(Self::EP1_SEQ_MASK);
+        self.set_bits(Self::EP1_SEQ_MASK);
     }
 
     /// Clear EP1_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_seq(&self) {
-        self.value.clr_bits(Self::EP1_SEQ_MASK);
+        self.clr_bits(Self::EP1_SEQ_MASK);
     }
 
     /// **EP1_TRANSACTION** `[2]` (RW)
@@ -24560,13 +24562,13 @@ impl EpRxError {
     /// Set EP1_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep1_transaction(&self) {
-        self.value.set_bits(Self::EP1_TRANSACTION_MASK);
+        self.set_bits(Self::EP1_TRANSACTION_MASK);
     }
 
     /// Clear EP1_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep1_transaction(&self) {
-        self.value.clr_bits(Self::EP1_TRANSACTION_MASK);
+        self.clr_bits(Self::EP1_TRANSACTION_MASK);
     }
 
     /// **EP0_SEQ** `[1]` (RW)
@@ -24578,13 +24580,13 @@ impl EpRxError {
     /// Set EP0_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_seq(&self) {
-        self.value.set_bits(Self::EP0_SEQ_MASK);
+        self.set_bits(Self::EP0_SEQ_MASK);
     }
 
     /// Clear EP0_SEQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_seq(&self) {
-        self.value.clr_bits(Self::EP0_SEQ_MASK);
+        self.clr_bits(Self::EP0_SEQ_MASK);
     }
 
     /// **EP0_TRANSACTION** `[0]` (RW)
@@ -24596,13 +24598,13 @@ impl EpRxError {
     /// Set EP0_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn set_ep0_transaction(&self) {
-        self.value.set_bits(Self::EP0_TRANSACTION_MASK);
+        self.set_bits(Self::EP0_TRANSACTION_MASK);
     }
 
     /// Clear EP0_TRANSACTION bit atomically (RW)
     #[inline(always)]
     pub fn clr_ep0_transaction(&self) {
-        self.value.clr_bits(Self::EP0_TRANSACTION_MASK);
+        self.clr_bits(Self::EP0_TRANSACTION_MASK);
     }
 
 }
@@ -25261,11 +25263,11 @@ impl EpRxError {
 /// - **LIMIT** `[17:0]` (RW)
 #[repr(transparent)]
 pub struct DevSmWatchdog {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DevSmWatchdog {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25312,13 +25314,13 @@ impl DevSmWatchdog {
     /// Set FIRED bit atomically (RW)
     #[inline(always)]
     pub fn set_fired(&self) {
-        self.value.set_bits(Self::FIRED_MASK);
+        self.set_bits(Self::FIRED_MASK);
     }
 
     /// Clear FIRED bit atomically (RW)
     #[inline(always)]
     pub fn clr_fired(&self) {
-        self.value.clr_bits(Self::FIRED_MASK);
+        self.clr_bits(Self::FIRED_MASK);
     }
 
     /// **RESET** `[19]` (RW)
@@ -25332,13 +25334,13 @@ impl DevSmWatchdog {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **ENABLE** `[18]` (RW)
@@ -25350,13 +25352,13 @@ impl DevSmWatchdog {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **LIMIT** `[17:0]` (RW)

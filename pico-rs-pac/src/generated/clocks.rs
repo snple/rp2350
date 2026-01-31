@@ -1,4 +1,6 @@
 //! CLOCKS
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -44,11 +46,11 @@ pub const BASE: u32 = 0x40010000;
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout0Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout0Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -173,13 +175,13 @@ impl ClkGpout0Ctrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -211,13 +213,13 @@ impl ClkGpout0Ctrl {
     /// Set DC50 bit atomically (RW)
     #[inline(always)]
     pub fn set_dc50(&self) {
-        self.value.set_bits(Self::DC50_MASK);
+        self.set_bits(Self::DC50_MASK);
     }
 
     /// Clear DC50 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dc50(&self) {
-        self.value.clr_bits(Self::DC50_MASK);
+        self.clr_bits(Self::DC50_MASK);
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -231,13 +233,13 @@ impl ClkGpout0Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -251,13 +253,13 @@ impl ClkGpout0Ctrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[8:5]` (RW)
@@ -487,11 +489,11 @@ impl ClkGpout0Ctrl {
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout0Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout0Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -660,11 +662,11 @@ impl ClkGpout0Div {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout0Selected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout0Selected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -800,11 +802,11 @@ impl ClkGpout0Selected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -929,13 +931,13 @@ impl ClkGpout1Ctrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -967,13 +969,13 @@ impl ClkGpout1Ctrl {
     /// Set DC50 bit atomically (RW)
     #[inline(always)]
     pub fn set_dc50(&self) {
-        self.value.set_bits(Self::DC50_MASK);
+        self.set_bits(Self::DC50_MASK);
     }
 
     /// Clear DC50 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dc50(&self) {
-        self.value.clr_bits(Self::DC50_MASK);
+        self.clr_bits(Self::DC50_MASK);
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -987,13 +989,13 @@ impl ClkGpout1Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -1007,13 +1009,13 @@ impl ClkGpout1Ctrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[8:5]` (RW)
@@ -1243,11 +1245,11 @@ impl ClkGpout1Ctrl {
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout1Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout1Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1416,11 +1418,11 @@ impl ClkGpout1Div {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout1Selected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout1Selected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1556,11 +1558,11 @@ impl ClkGpout1Selected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1685,13 +1687,13 @@ impl ClkGpout2Ctrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -1723,13 +1725,13 @@ impl ClkGpout2Ctrl {
     /// Set DC50 bit atomically (RW)
     #[inline(always)]
     pub fn set_dc50(&self) {
-        self.value.set_bits(Self::DC50_MASK);
+        self.set_bits(Self::DC50_MASK);
     }
 
     /// Clear DC50 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dc50(&self) {
-        self.value.clr_bits(Self::DC50_MASK);
+        self.clr_bits(Self::DC50_MASK);
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -1743,13 +1745,13 @@ impl ClkGpout2Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -1763,13 +1765,13 @@ impl ClkGpout2Ctrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[8:5]` (RW)
@@ -1999,11 +2001,11 @@ impl ClkGpout2Ctrl {
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout2Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout2Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2172,11 +2174,11 @@ impl ClkGpout2Div {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout2Selected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout2Selected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2312,11 +2314,11 @@ impl ClkGpout2Selected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkGpout3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2441,13 +2443,13 @@ impl ClkGpout3Ctrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -2479,13 +2481,13 @@ impl ClkGpout3Ctrl {
     /// Set DC50 bit atomically (RW)
     #[inline(always)]
     pub fn set_dc50(&self) {
-        self.value.set_bits(Self::DC50_MASK);
+        self.set_bits(Self::DC50_MASK);
     }
 
     /// Clear DC50 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dc50(&self) {
-        self.value.clr_bits(Self::DC50_MASK);
+        self.clr_bits(Self::DC50_MASK);
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -2499,13 +2501,13 @@ impl ClkGpout3Ctrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -2519,13 +2521,13 @@ impl ClkGpout3Ctrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[8:5]` (RW)
@@ -2755,11 +2757,11 @@ impl ClkGpout3Ctrl {
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkGpout3Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout3Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2928,11 +2930,11 @@ impl ClkGpout3Div {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkGpout3Selected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkGpout3Selected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3046,11 +3048,11 @@ impl ClkGpout3Selected {
 ///   Selects the clock source glitchlessly, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkRefCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkRefCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3233,11 +3235,11 @@ impl ClkRefCtrl {
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkRefDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkRefDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3364,11 +3366,11 @@ impl ClkRefDiv {
 ///   The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
 #[repr(transparent)]
 pub struct ClkRefSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkRefSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3481,11 +3483,11 @@ impl ClkRefSelected {
 ///   Selects the clock source glitchlessly, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkSysCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkSysCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3557,13 +3559,13 @@ impl ClkSysCtrl {
     /// Set SRC bit atomically (RW)
     #[inline(always)]
     pub fn set_src(&self) {
-        self.value.set_bits(Self::SRC_MASK);
+        self.set_bits(Self::SRC_MASK);
     }
 
     /// Clear SRC bit atomically (RW)
     #[inline(always)]
     pub fn clr_src(&self) {
-        self.value.clr_bits(Self::SRC_MASK);
+        self.clr_bits(Self::SRC_MASK);
     }
 
 }
@@ -3681,11 +3683,11 @@ impl ClkSysCtrl {
 ///   Fractional component of the divisor, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkSysDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkSysDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3854,11 +3856,11 @@ impl ClkSysDiv {
 ///   The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
 #[repr(transparent)]
 pub struct ClkSysSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkSysSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3979,11 +3981,11 @@ impl ClkSysSelected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkPeriCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkPeriCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4063,13 +4065,13 @@ impl ClkPeriCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -4083,13 +4085,13 @@ impl ClkPeriCtrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[7:5]` (RW)
@@ -4249,11 +4251,11 @@ impl ClkPeriCtrl {
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkPeriDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkPeriDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4380,11 +4382,11 @@ impl ClkPeriDiv {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkPeriSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkPeriSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4516,11 +4518,11 @@ impl ClkPeriSelected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkHstxCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkHstxCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4616,13 +4618,13 @@ impl ClkHstxCtrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -4654,13 +4656,13 @@ impl ClkHstxCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -4674,13 +4676,13 @@ impl ClkHstxCtrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[7:5]` (RW)
@@ -4884,11 +4886,11 @@ impl ClkHstxCtrl {
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkHstxDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkHstxDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5015,11 +5017,11 @@ impl ClkHstxDiv {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkHstxSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkHstxSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5151,11 +5153,11 @@ impl ClkHstxSelected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkUsbCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkUsbCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5253,13 +5255,13 @@ impl ClkUsbCtrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -5291,13 +5293,13 @@ impl ClkUsbCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -5311,13 +5313,13 @@ impl ClkUsbCtrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[7:5]` (RW)
@@ -5521,11 +5523,11 @@ impl ClkUsbCtrl {
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkUsbDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkUsbDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5652,11 +5654,11 @@ impl ClkUsbDiv {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkUsbSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkUsbSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5788,11 +5790,11 @@ impl ClkUsbSelected {
 ///   Selects the auxiliary clock source, will glitch when switching
 #[repr(transparent)]
 pub struct ClkAdcCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkAdcCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5890,13 +5892,13 @@ impl ClkAdcCtrl {
     /// Set NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn set_nudge(&self) {
-        self.value.set_bits(Self::NUDGE_MASK);
+        self.set_bits(Self::NUDGE_MASK);
     }
 
     /// Clear NUDGE bit atomically (RW)
     #[inline(always)]
     pub fn clr_nudge(&self) {
-        self.value.clr_bits(Self::NUDGE_MASK);
+        self.clr_bits(Self::NUDGE_MASK);
     }
 
     /// **PHASE** `[17:16]` (RW)
@@ -5928,13 +5930,13 @@ impl ClkAdcCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **KILL** `[10]` (RW)
@@ -5948,13 +5950,13 @@ impl ClkAdcCtrl {
     /// Set KILL bit atomically (RW)
     #[inline(always)]
     pub fn set_kill(&self) {
-        self.value.set_bits(Self::KILL_MASK);
+        self.set_bits(Self::KILL_MASK);
     }
 
     /// Clear KILL bit atomically (RW)
     #[inline(always)]
     pub fn clr_kill(&self) {
-        self.value.clr_bits(Self::KILL_MASK);
+        self.clr_bits(Self::KILL_MASK);
     }
 
     /// **AUXSRC** `[7:5]` (RW)
@@ -6158,11 +6160,11 @@ impl ClkAdcCtrl {
 ///   Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
 #[repr(transparent)]
 pub struct ClkAdcDiv {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkAdcDiv {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6289,11 +6291,11 @@ impl ClkAdcDiv {
 ///   This slice does not have a glitchless mux (only the AUX_SRC field is present, not SRC) so this register is hardwired to 0x1.
 #[repr(transparent)]
 pub struct ClkAdcSelected {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkAdcSelected {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6399,11 +6401,11 @@ impl ClkAdcSelected {
 /// - **SRC** `[1:0]` (RW)
 #[repr(transparent)]
 pub struct DftclkXoscCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DftclkXoscCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6521,11 +6523,11 @@ impl DftclkXoscCtrl {
 /// - **SRC** `[1:0]` (RW)
 #[repr(transparent)]
 pub struct DftclkRoscCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DftclkRoscCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6643,11 +6645,11 @@ impl DftclkRoscCtrl {
 /// - **SRC** `[1:0]` (RW)
 #[repr(transparent)]
 pub struct DftclkLposcCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DftclkLposcCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6780,11 +6782,11 @@ impl DftclkLposcCtrl {
 ///   and must be >= 2x clk_ref_freq/min_clk_tst_freq
 #[repr(transparent)]
 pub struct ClkSysResusCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkSysResusCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6843,13 +6845,13 @@ impl ClkSysResusCtrl {
     /// Set CLEAR bit atomically (RW)
     #[inline(always)]
     pub fn set_clear(&self) {
-        self.value.set_bits(Self::CLEAR_MASK);
+        self.set_bits(Self::CLEAR_MASK);
     }
 
     /// Clear CLEAR bit atomically (RW)
     #[inline(always)]
     pub fn clr_clear(&self) {
-        self.value.clr_bits(Self::CLEAR_MASK);
+        self.clr_bits(Self::CLEAR_MASK);
     }
 
     /// **FRCE** `[12]` (RW)
@@ -6863,13 +6865,13 @@ impl ClkSysResusCtrl {
     /// Set FRCE bit atomically (RW)
     #[inline(always)]
     pub fn set_frce(&self) {
-        self.value.set_bits(Self::FRCE_MASK);
+        self.set_bits(Self::FRCE_MASK);
     }
 
     /// Clear FRCE bit atomically (RW)
     #[inline(always)]
     pub fn clr_frce(&self) {
-        self.value.clr_bits(Self::FRCE_MASK);
+        self.clr_bits(Self::FRCE_MASK);
     }
 
     /// **ENABLE** `[8]` (RW)
@@ -6883,13 +6885,13 @@ impl ClkSysResusCtrl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **TIMEOUT** `[7:0]` (RW)
@@ -7067,11 +7069,11 @@ impl ClkSysResusCtrl {
 ///   Clock has been resuscitated, correct the error then send ctrl_clear=1
 #[repr(transparent)]
 pub struct ClkSysResusStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ClkSysResusStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7179,11 +7181,11 @@ impl ClkSysResusStatus {
 /// - **FC0_REF_KHZ** `[19:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0RefKhz {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0RefKhz {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7297,11 +7299,11 @@ impl Fc0RefKhz {
 /// - **FC0_MIN_KHZ** `[24:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0MinKhz {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0MinKhz {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7415,11 +7417,11 @@ impl Fc0MinKhz {
 /// - **FC0_MAX_KHZ** `[24:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0MaxKhz {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0MaxKhz {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7534,11 +7536,11 @@ impl Fc0MaxKhz {
 /// - **FC0_DELAY** `[2:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0Delay {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0Delay {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7653,11 +7655,11 @@ impl Fc0Delay {
 /// - **FC0_INTERVAL** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0Interval {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0Interval {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7772,11 +7774,11 @@ impl Fc0Interval {
 /// - **FC0_SRC** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct Fc0Src {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0Src {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7954,11 +7956,11 @@ impl Fc0Src {
 ///   Test passed
 #[repr(transparent)]
 pub struct Fc0Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8243,11 +8245,11 @@ impl Fc0Status {
 /// - **FRAC** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Fc0Result {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fc0Result {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8426,11 +8428,11 @@ impl Fc0Result {
 /// - **CLK_SYS_CLOCKS** `[0]` (RW)
 #[repr(transparent)]
 pub struct WakeEn0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WakeEn0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8643,13 +8645,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_SIO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sio(&self) {
-        self.value.set_bits(Self::CLK_SYS_SIO_MASK);
+        self.set_bits(Self::CLK_SYS_SIO_MASK);
     }
 
     /// Clear CLK_SYS_SIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sio(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SIO_MASK);
+        self.clr_bits(Self::CLK_SYS_SIO_MASK);
     }
 
     /// **CLK_SYS_SHA256** `[30]` (RW)
@@ -8661,13 +8663,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sha256(&self) {
-        self.value.set_bits(Self::CLK_SYS_SHA256_MASK);
+        self.set_bits(Self::CLK_SYS_SHA256_MASK);
     }
 
     /// Clear CLK_SYS_SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sha256(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SHA256_MASK);
+        self.clr_bits(Self::CLK_SYS_SHA256_MASK);
     }
 
     /// **CLK_SYS_PSM** `[29]` (RW)
@@ -8679,13 +8681,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PSM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_psm(&self) {
-        self.value.set_bits(Self::CLK_SYS_PSM_MASK);
+        self.set_bits(Self::CLK_SYS_PSM_MASK);
     }
 
     /// Clear CLK_SYS_PSM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_psm(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PSM_MASK);
+        self.clr_bits(Self::CLK_SYS_PSM_MASK);
     }
 
     /// **CLK_SYS_ROSC** `[28]` (RW)
@@ -8697,13 +8699,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_ROSC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_rosc(&self) {
-        self.value.set_bits(Self::CLK_SYS_ROSC_MASK);
+        self.set_bits(Self::CLK_SYS_ROSC_MASK);
     }
 
     /// Clear CLK_SYS_ROSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_rosc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ROSC_MASK);
+        self.clr_bits(Self::CLK_SYS_ROSC_MASK);
     }
 
     /// **CLK_SYS_ROM** `[27]` (RW)
@@ -8715,13 +8717,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_rom(&self) {
-        self.value.set_bits(Self::CLK_SYS_ROM_MASK);
+        self.set_bits(Self::CLK_SYS_ROM_MASK);
     }
 
     /// Clear CLK_SYS_ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_rom(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ROM_MASK);
+        self.clr_bits(Self::CLK_SYS_ROM_MASK);
     }
 
     /// **CLK_SYS_RESETS** `[26]` (RW)
@@ -8733,13 +8735,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_RESETS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_resets(&self) {
-        self.value.set_bits(Self::CLK_SYS_RESETS_MASK);
+        self.set_bits(Self::CLK_SYS_RESETS_MASK);
     }
 
     /// Clear CLK_SYS_RESETS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_resets(&self) {
-        self.value.clr_bits(Self::CLK_SYS_RESETS_MASK);
+        self.clr_bits(Self::CLK_SYS_RESETS_MASK);
     }
 
     /// **CLK_SYS_PWM** `[25]` (RW)
@@ -8751,13 +8753,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PWM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pwm(&self) {
-        self.value.set_bits(Self::CLK_SYS_PWM_MASK);
+        self.set_bits(Self::CLK_SYS_PWM_MASK);
     }
 
     /// Clear CLK_SYS_PWM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pwm(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PWM_MASK);
+        self.clr_bits(Self::CLK_SYS_PWM_MASK);
     }
 
     /// **CLK_SYS_POWMAN** `[24]` (RW)
@@ -8769,13 +8771,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_powman(&self) {
-        self.value.set_bits(Self::CLK_SYS_POWMAN_MASK);
+        self.set_bits(Self::CLK_SYS_POWMAN_MASK);
     }
 
     /// Clear CLK_SYS_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_powman(&self) {
-        self.value.clr_bits(Self::CLK_SYS_POWMAN_MASK);
+        self.clr_bits(Self::CLK_SYS_POWMAN_MASK);
     }
 
     /// **CLK_REF_POWMAN** `[23]` (RW)
@@ -8787,13 +8789,13 @@ impl WakeEn0 {
     /// Set CLK_REF_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_powman(&self) {
-        self.value.set_bits(Self::CLK_REF_POWMAN_MASK);
+        self.set_bits(Self::CLK_REF_POWMAN_MASK);
     }
 
     /// Clear CLK_REF_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_powman(&self) {
-        self.value.clr_bits(Self::CLK_REF_POWMAN_MASK);
+        self.clr_bits(Self::CLK_REF_POWMAN_MASK);
     }
 
     /// **CLK_SYS_PLL_USB** `[22]` (RW)
@@ -8805,13 +8807,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pll_usb(&self) {
-        self.value.set_bits(Self::CLK_SYS_PLL_USB_MASK);
+        self.set_bits(Self::CLK_SYS_PLL_USB_MASK);
     }
 
     /// Clear CLK_SYS_PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pll_usb(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PLL_USB_MASK);
+        self.clr_bits(Self::CLK_SYS_PLL_USB_MASK);
     }
 
     /// **CLK_SYS_PLL_SYS** `[21]` (RW)
@@ -8823,13 +8825,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pll_sys(&self) {
-        self.value.set_bits(Self::CLK_SYS_PLL_SYS_MASK);
+        self.set_bits(Self::CLK_SYS_PLL_SYS_MASK);
     }
 
     /// Clear CLK_SYS_PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pll_sys(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PLL_SYS_MASK);
+        self.clr_bits(Self::CLK_SYS_PLL_SYS_MASK);
     }
 
     /// **CLK_SYS_PIO2** `[20]` (RW)
@@ -8841,13 +8843,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio2(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO2_MASK);
+        self.set_bits(Self::CLK_SYS_PIO2_MASK);
     }
 
     /// Clear CLK_SYS_PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio2(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO2_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO2_MASK);
     }
 
     /// **CLK_SYS_PIO1** `[19]` (RW)
@@ -8859,13 +8861,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio1(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO1_MASK);
+        self.set_bits(Self::CLK_SYS_PIO1_MASK);
     }
 
     /// Clear CLK_SYS_PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO1_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO1_MASK);
     }
 
     /// **CLK_SYS_PIO0** `[18]` (RW)
@@ -8877,13 +8879,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio0(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO0_MASK);
+        self.set_bits(Self::CLK_SYS_PIO0_MASK);
     }
 
     /// Clear CLK_SYS_PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO0_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO0_MASK);
     }
 
     /// **CLK_SYS_PADS** `[17]` (RW)
@@ -8895,13 +8897,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_PADS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pads(&self) {
-        self.value.set_bits(Self::CLK_SYS_PADS_MASK);
+        self.set_bits(Self::CLK_SYS_PADS_MASK);
     }
 
     /// Clear CLK_SYS_PADS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pads(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PADS_MASK);
+        self.clr_bits(Self::CLK_SYS_PADS_MASK);
     }
 
     /// **CLK_SYS_OTP** `[16]` (RW)
@@ -8913,13 +8915,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_otp(&self) {
-        self.value.set_bits(Self::CLK_SYS_OTP_MASK);
+        self.set_bits(Self::CLK_SYS_OTP_MASK);
     }
 
     /// Clear CLK_SYS_OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_otp(&self) {
-        self.value.clr_bits(Self::CLK_SYS_OTP_MASK);
+        self.clr_bits(Self::CLK_SYS_OTP_MASK);
     }
 
     /// **CLK_REF_OTP** `[15]` (RW)
@@ -8931,13 +8933,13 @@ impl WakeEn0 {
     /// Set CLK_REF_OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_otp(&self) {
-        self.value.set_bits(Self::CLK_REF_OTP_MASK);
+        self.set_bits(Self::CLK_REF_OTP_MASK);
     }
 
     /// Clear CLK_REF_OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_otp(&self) {
-        self.value.clr_bits(Self::CLK_REF_OTP_MASK);
+        self.clr_bits(Self::CLK_REF_OTP_MASK);
     }
 
     /// **CLK_SYS_JTAG** `[14]` (RW)
@@ -8949,13 +8951,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_jtag(&self) {
-        self.value.set_bits(Self::CLK_SYS_JTAG_MASK);
+        self.set_bits(Self::CLK_SYS_JTAG_MASK);
     }
 
     /// Clear CLK_SYS_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_jtag(&self) {
-        self.value.clr_bits(Self::CLK_SYS_JTAG_MASK);
+        self.clr_bits(Self::CLK_SYS_JTAG_MASK);
     }
 
     /// **CLK_SYS_IO** `[13]` (RW)
@@ -8967,13 +8969,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_IO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_io(&self) {
-        self.value.set_bits(Self::CLK_SYS_IO_MASK);
+        self.set_bits(Self::CLK_SYS_IO_MASK);
     }
 
     /// Clear CLK_SYS_IO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_io(&self) {
-        self.value.clr_bits(Self::CLK_SYS_IO_MASK);
+        self.clr_bits(Self::CLK_SYS_IO_MASK);
     }
 
     /// **CLK_SYS_I2C1** `[12]` (RW)
@@ -8985,13 +8987,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_i2c1(&self) {
-        self.value.set_bits(Self::CLK_SYS_I2C1_MASK);
+        self.set_bits(Self::CLK_SYS_I2C1_MASK);
     }
 
     /// Clear CLK_SYS_I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_i2c1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_I2C1_MASK);
+        self.clr_bits(Self::CLK_SYS_I2C1_MASK);
     }
 
     /// **CLK_SYS_I2C0** `[11]` (RW)
@@ -9003,13 +9005,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_i2c0(&self) {
-        self.value.set_bits(Self::CLK_SYS_I2C0_MASK);
+        self.set_bits(Self::CLK_SYS_I2C0_MASK);
     }
 
     /// Clear CLK_SYS_I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_i2c0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_I2C0_MASK);
+        self.clr_bits(Self::CLK_SYS_I2C0_MASK);
     }
 
     /// **CLK_SYS_HSTX** `[10]` (RW)
@@ -9021,13 +9023,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_hstx(&self) {
-        self.value.set_bits(Self::CLK_SYS_HSTX_MASK);
+        self.set_bits(Self::CLK_SYS_HSTX_MASK);
     }
 
     /// Clear CLK_SYS_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_hstx(&self) {
-        self.value.clr_bits(Self::CLK_SYS_HSTX_MASK);
+        self.clr_bits(Self::CLK_SYS_HSTX_MASK);
     }
 
     /// **CLK_HSTX** `[9]` (RW)
@@ -9039,13 +9041,13 @@ impl WakeEn0 {
     /// Set CLK_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_hstx(&self) {
-        self.value.set_bits(Self::CLK_HSTX_MASK);
+        self.set_bits(Self::CLK_HSTX_MASK);
     }
 
     /// Clear CLK_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_hstx(&self) {
-        self.value.clr_bits(Self::CLK_HSTX_MASK);
+        self.clr_bits(Self::CLK_HSTX_MASK);
     }
 
     /// **CLK_SYS_GLITCH_DETECTOR** `[8]` (RW)
@@ -9057,13 +9059,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_GLITCH_DETECTOR bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_glitch_detector(&self) {
-        self.value.set_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
+        self.set_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
     }
 
     /// Clear CLK_SYS_GLITCH_DETECTOR bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_glitch_detector(&self) {
-        self.value.clr_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
+        self.clr_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
     }
 
     /// **CLK_SYS_DMA** `[7]` (RW)
@@ -9075,13 +9077,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_dma(&self) {
-        self.value.set_bits(Self::CLK_SYS_DMA_MASK);
+        self.set_bits(Self::CLK_SYS_DMA_MASK);
     }
 
     /// Clear CLK_SYS_DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_dma(&self) {
-        self.value.clr_bits(Self::CLK_SYS_DMA_MASK);
+        self.clr_bits(Self::CLK_SYS_DMA_MASK);
     }
 
     /// **CLK_SYS_BUSFABRIC** `[6]` (RW)
@@ -9093,13 +9095,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_busfabric(&self) {
-        self.value.set_bits(Self::CLK_SYS_BUSFABRIC_MASK);
+        self.set_bits(Self::CLK_SYS_BUSFABRIC_MASK);
     }
 
     /// Clear CLK_SYS_BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_busfabric(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BUSFABRIC_MASK);
+        self.clr_bits(Self::CLK_SYS_BUSFABRIC_MASK);
     }
 
     /// **CLK_SYS_BUSCTRL** `[5]` (RW)
@@ -9111,13 +9113,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_busctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_BUSCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_BUSCTRL_MASK);
     }
 
     /// Clear CLK_SYS_BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_busctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BUSCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_BUSCTRL_MASK);
     }
 
     /// **CLK_SYS_BOOTRAM** `[4]` (RW)
@@ -9129,13 +9131,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_bootram(&self) {
-        self.value.set_bits(Self::CLK_SYS_BOOTRAM_MASK);
+        self.set_bits(Self::CLK_SYS_BOOTRAM_MASK);
     }
 
     /// Clear CLK_SYS_BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_bootram(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BOOTRAM_MASK);
+        self.clr_bits(Self::CLK_SYS_BOOTRAM_MASK);
     }
 
     /// **CLK_SYS_ADC** `[3]` (RW)
@@ -9147,13 +9149,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_adc(&self) {
-        self.value.set_bits(Self::CLK_SYS_ADC_MASK);
+        self.set_bits(Self::CLK_SYS_ADC_MASK);
     }
 
     /// Clear CLK_SYS_ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_adc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ADC_MASK);
+        self.clr_bits(Self::CLK_SYS_ADC_MASK);
     }
 
     /// **CLK_ADC** `[2]` (RW)
@@ -9165,13 +9167,13 @@ impl WakeEn0 {
     /// Set CLK_ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_adc(&self) {
-        self.value.set_bits(Self::CLK_ADC_MASK);
+        self.set_bits(Self::CLK_ADC_MASK);
     }
 
     /// Clear CLK_ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_adc(&self) {
-        self.value.clr_bits(Self::CLK_ADC_MASK);
+        self.clr_bits(Self::CLK_ADC_MASK);
     }
 
     /// **CLK_SYS_ACCESSCTRL** `[1]` (RW)
@@ -9183,13 +9185,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_accessctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
     }
 
     /// Clear CLK_SYS_ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_accessctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
     }
 
     /// **CLK_SYS_CLOCKS** `[0]` (RW)
@@ -9201,13 +9203,13 @@ impl WakeEn0 {
     /// Set CLK_SYS_CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_clocks(&self) {
-        self.value.set_bits(Self::CLK_SYS_CLOCKS_MASK);
+        self.set_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
 
     /// Clear CLK_SYS_CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_clocks(&self) {
-        self.value.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
+        self.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
 
 }
@@ -9917,11 +9919,11 @@ impl WakeEn0 {
 /// - **CLK_PERI_SPI0** `[0]` (RW)
 #[repr(transparent)]
 pub struct WakeEn1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for WakeEn1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10128,13 +10130,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_XOSC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_xosc(&self) {
-        self.value.set_bits(Self::CLK_SYS_XOSC_MASK);
+        self.set_bits(Self::CLK_SYS_XOSC_MASK);
     }
 
     /// Clear CLK_SYS_XOSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_xosc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_XOSC_MASK);
+        self.clr_bits(Self::CLK_SYS_XOSC_MASK);
     }
 
     /// **CLK_SYS_XIP** `[29]` (RW)
@@ -10146,13 +10148,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_XIP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_xip(&self) {
-        self.value.set_bits(Self::CLK_SYS_XIP_MASK);
+        self.set_bits(Self::CLK_SYS_XIP_MASK);
     }
 
     /// Clear CLK_SYS_XIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_xip(&self) {
-        self.value.clr_bits(Self::CLK_SYS_XIP_MASK);
+        self.clr_bits(Self::CLK_SYS_XIP_MASK);
     }
 
     /// **CLK_SYS_WATCHDOG** `[28]` (RW)
@@ -10164,13 +10166,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_WATCHDOG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_watchdog(&self) {
-        self.value.set_bits(Self::CLK_SYS_WATCHDOG_MASK);
+        self.set_bits(Self::CLK_SYS_WATCHDOG_MASK);
     }
 
     /// Clear CLK_SYS_WATCHDOG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_watchdog(&self) {
-        self.value.clr_bits(Self::CLK_SYS_WATCHDOG_MASK);
+        self.clr_bits(Self::CLK_SYS_WATCHDOG_MASK);
     }
 
     /// **CLK_USB** `[27]` (RW)
@@ -10182,13 +10184,13 @@ impl WakeEn1 {
     /// Set CLK_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_usb(&self) {
-        self.value.set_bits(Self::CLK_USB_MASK);
+        self.set_bits(Self::CLK_USB_MASK);
     }
 
     /// Clear CLK_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_usb(&self) {
-        self.value.clr_bits(Self::CLK_USB_MASK);
+        self.clr_bits(Self::CLK_USB_MASK);
     }
 
     /// **CLK_SYS_USBCTRL** `[26]` (RW)
@@ -10200,13 +10202,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_usbctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_USBCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_USBCTRL_MASK);
     }
 
     /// Clear CLK_SYS_USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_usbctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_USBCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_USBCTRL_MASK);
     }
 
     /// **CLK_SYS_UART1** `[25]` (RW)
@@ -10218,13 +10220,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_uart1(&self) {
-        self.value.set_bits(Self::CLK_SYS_UART1_MASK);
+        self.set_bits(Self::CLK_SYS_UART1_MASK);
     }
 
     /// Clear CLK_SYS_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_uart1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_UART1_MASK);
+        self.clr_bits(Self::CLK_SYS_UART1_MASK);
     }
 
     /// **CLK_PERI_UART1** `[24]` (RW)
@@ -10236,13 +10238,13 @@ impl WakeEn1 {
     /// Set CLK_PERI_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_uart1(&self) {
-        self.value.set_bits(Self::CLK_PERI_UART1_MASK);
+        self.set_bits(Self::CLK_PERI_UART1_MASK);
     }
 
     /// Clear CLK_PERI_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_uart1(&self) {
-        self.value.clr_bits(Self::CLK_PERI_UART1_MASK);
+        self.clr_bits(Self::CLK_PERI_UART1_MASK);
     }
 
     /// **CLK_SYS_UART0** `[23]` (RW)
@@ -10254,13 +10256,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_uart0(&self) {
-        self.value.set_bits(Self::CLK_SYS_UART0_MASK);
+        self.set_bits(Self::CLK_SYS_UART0_MASK);
     }
 
     /// Clear CLK_SYS_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_uart0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_UART0_MASK);
+        self.clr_bits(Self::CLK_SYS_UART0_MASK);
     }
 
     /// **CLK_PERI_UART0** `[22]` (RW)
@@ -10272,13 +10274,13 @@ impl WakeEn1 {
     /// Set CLK_PERI_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_uart0(&self) {
-        self.value.set_bits(Self::CLK_PERI_UART0_MASK);
+        self.set_bits(Self::CLK_PERI_UART0_MASK);
     }
 
     /// Clear CLK_PERI_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_uart0(&self) {
-        self.value.clr_bits(Self::CLK_PERI_UART0_MASK);
+        self.clr_bits(Self::CLK_PERI_UART0_MASK);
     }
 
     /// **CLK_SYS_TRNG** `[21]` (RW)
@@ -10290,13 +10292,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_TRNG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_trng(&self) {
-        self.value.set_bits(Self::CLK_SYS_TRNG_MASK);
+        self.set_bits(Self::CLK_SYS_TRNG_MASK);
     }
 
     /// Clear CLK_SYS_TRNG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_trng(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TRNG_MASK);
+        self.clr_bits(Self::CLK_SYS_TRNG_MASK);
     }
 
     /// **CLK_SYS_TIMER1** `[20]` (RW)
@@ -10308,13 +10310,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_timer1(&self) {
-        self.value.set_bits(Self::CLK_SYS_TIMER1_MASK);
+        self.set_bits(Self::CLK_SYS_TIMER1_MASK);
     }
 
     /// Clear CLK_SYS_TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_timer1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TIMER1_MASK);
+        self.clr_bits(Self::CLK_SYS_TIMER1_MASK);
     }
 
     /// **CLK_SYS_TIMER0** `[19]` (RW)
@@ -10326,13 +10328,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_timer0(&self) {
-        self.value.set_bits(Self::CLK_SYS_TIMER0_MASK);
+        self.set_bits(Self::CLK_SYS_TIMER0_MASK);
     }
 
     /// Clear CLK_SYS_TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_timer0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TIMER0_MASK);
+        self.clr_bits(Self::CLK_SYS_TIMER0_MASK);
     }
 
     /// **CLK_SYS_TICKS** `[18]` (RW)
@@ -10344,13 +10346,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_ticks(&self) {
-        self.value.set_bits(Self::CLK_SYS_TICKS_MASK);
+        self.set_bits(Self::CLK_SYS_TICKS_MASK);
     }
 
     /// Clear CLK_SYS_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_ticks(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TICKS_MASK);
+        self.clr_bits(Self::CLK_SYS_TICKS_MASK);
     }
 
     /// **CLK_REF_TICKS** `[17]` (RW)
@@ -10362,13 +10364,13 @@ impl WakeEn1 {
     /// Set CLK_REF_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_ticks(&self) {
-        self.value.set_bits(Self::CLK_REF_TICKS_MASK);
+        self.set_bits(Self::CLK_REF_TICKS_MASK);
     }
 
     /// Clear CLK_REF_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_ticks(&self) {
-        self.value.clr_bits(Self::CLK_REF_TICKS_MASK);
+        self.clr_bits(Self::CLK_REF_TICKS_MASK);
     }
 
     /// **CLK_SYS_TBMAN** `[16]` (RW)
@@ -10380,13 +10382,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_tbman(&self) {
-        self.value.set_bits(Self::CLK_SYS_TBMAN_MASK);
+        self.set_bits(Self::CLK_SYS_TBMAN_MASK);
     }
 
     /// Clear CLK_SYS_TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_tbman(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TBMAN_MASK);
+        self.clr_bits(Self::CLK_SYS_TBMAN_MASK);
     }
 
     /// **CLK_SYS_SYSINFO** `[15]` (RW)
@@ -10398,13 +10400,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sysinfo(&self) {
-        self.value.set_bits(Self::CLK_SYS_SYSINFO_MASK);
+        self.set_bits(Self::CLK_SYS_SYSINFO_MASK);
     }
 
     /// Clear CLK_SYS_SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sysinfo(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SYSINFO_MASK);
+        self.clr_bits(Self::CLK_SYS_SYSINFO_MASK);
     }
 
     /// **CLK_SYS_SYSCFG** `[14]` (RW)
@@ -10416,13 +10418,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_syscfg(&self) {
-        self.value.set_bits(Self::CLK_SYS_SYSCFG_MASK);
+        self.set_bits(Self::CLK_SYS_SYSCFG_MASK);
     }
 
     /// Clear CLK_SYS_SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_syscfg(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SYSCFG_MASK);
+        self.clr_bits(Self::CLK_SYS_SYSCFG_MASK);
     }
 
     /// **CLK_SYS_SRAM9** `[13]` (RW)
@@ -10434,13 +10436,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram9(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM9_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM9_MASK);
     }
 
     /// Clear CLK_SYS_SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram9(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM9_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM9_MASK);
     }
 
     /// **CLK_SYS_SRAM8** `[12]` (RW)
@@ -10452,13 +10454,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram8(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM8_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM8_MASK);
     }
 
     /// Clear CLK_SYS_SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram8(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM8_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM8_MASK);
     }
 
     /// **CLK_SYS_SRAM7** `[11]` (RW)
@@ -10470,13 +10472,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram7(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM7_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM7_MASK);
     }
 
     /// Clear CLK_SYS_SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram7(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM7_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM7_MASK);
     }
 
     /// **CLK_SYS_SRAM6** `[10]` (RW)
@@ -10488,13 +10490,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram6(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM6_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM6_MASK);
     }
 
     /// Clear CLK_SYS_SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram6(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM6_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM6_MASK);
     }
 
     /// **CLK_SYS_SRAM5** `[9]` (RW)
@@ -10506,13 +10508,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram5(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM5_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM5_MASK);
     }
 
     /// Clear CLK_SYS_SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram5(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM5_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM5_MASK);
     }
 
     /// **CLK_SYS_SRAM4** `[8]` (RW)
@@ -10524,13 +10526,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram4(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM4_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM4_MASK);
     }
 
     /// Clear CLK_SYS_SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram4(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM4_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM4_MASK);
     }
 
     /// **CLK_SYS_SRAM3** `[7]` (RW)
@@ -10542,13 +10544,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram3(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM3_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM3_MASK);
     }
 
     /// Clear CLK_SYS_SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram3(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM3_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM3_MASK);
     }
 
     /// **CLK_SYS_SRAM2** `[6]` (RW)
@@ -10560,13 +10562,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram2(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM2_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM2_MASK);
     }
 
     /// Clear CLK_SYS_SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram2(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM2_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM2_MASK);
     }
 
     /// **CLK_SYS_SRAM1** `[5]` (RW)
@@ -10578,13 +10580,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram1(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM1_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM1_MASK);
     }
 
     /// Clear CLK_SYS_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM1_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM1_MASK);
     }
 
     /// **CLK_SYS_SRAM0** `[4]` (RW)
@@ -10596,13 +10598,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram0(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM0_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM0_MASK);
     }
 
     /// Clear CLK_SYS_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM0_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM0_MASK);
     }
 
     /// **CLK_SYS_SPI1** `[3]` (RW)
@@ -10614,13 +10616,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_spi1(&self) {
-        self.value.set_bits(Self::CLK_SYS_SPI1_MASK);
+        self.set_bits(Self::CLK_SYS_SPI1_MASK);
     }
 
     /// Clear CLK_SYS_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_spi1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SPI1_MASK);
+        self.clr_bits(Self::CLK_SYS_SPI1_MASK);
     }
 
     /// **CLK_PERI_SPI1** `[2]` (RW)
@@ -10632,13 +10634,13 @@ impl WakeEn1 {
     /// Set CLK_PERI_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_spi1(&self) {
-        self.value.set_bits(Self::CLK_PERI_SPI1_MASK);
+        self.set_bits(Self::CLK_PERI_SPI1_MASK);
     }
 
     /// Clear CLK_PERI_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_spi1(&self) {
-        self.value.clr_bits(Self::CLK_PERI_SPI1_MASK);
+        self.clr_bits(Self::CLK_PERI_SPI1_MASK);
     }
 
     /// **CLK_SYS_SPI0** `[1]` (RW)
@@ -10650,13 +10652,13 @@ impl WakeEn1 {
     /// Set CLK_SYS_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_spi0(&self) {
-        self.value.set_bits(Self::CLK_SYS_SPI0_MASK);
+        self.set_bits(Self::CLK_SYS_SPI0_MASK);
     }
 
     /// Clear CLK_SYS_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_spi0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SPI0_MASK);
+        self.clr_bits(Self::CLK_SYS_SPI0_MASK);
     }
 
     /// **CLK_PERI_SPI0** `[0]` (RW)
@@ -10668,13 +10670,13 @@ impl WakeEn1 {
     /// Set CLK_PERI_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_spi0(&self) {
-        self.value.set_bits(Self::CLK_PERI_SPI0_MASK);
+        self.set_bits(Self::CLK_PERI_SPI0_MASK);
     }
 
     /// Clear CLK_PERI_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_spi0(&self) {
-        self.value.clr_bits(Self::CLK_PERI_SPI0_MASK);
+        self.clr_bits(Self::CLK_PERI_SPI0_MASK);
     }
 
 }
@@ -11368,11 +11370,11 @@ impl WakeEn1 {
 /// - **CLK_SYS_CLOCKS** `[0]` (RW)
 #[repr(transparent)]
 pub struct SleepEn0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SleepEn0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11585,13 +11587,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_SIO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sio(&self) {
-        self.value.set_bits(Self::CLK_SYS_SIO_MASK);
+        self.set_bits(Self::CLK_SYS_SIO_MASK);
     }
 
     /// Clear CLK_SYS_SIO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sio(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SIO_MASK);
+        self.clr_bits(Self::CLK_SYS_SIO_MASK);
     }
 
     /// **CLK_SYS_SHA256** `[30]` (RW)
@@ -11603,13 +11605,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sha256(&self) {
-        self.value.set_bits(Self::CLK_SYS_SHA256_MASK);
+        self.set_bits(Self::CLK_SYS_SHA256_MASK);
     }
 
     /// Clear CLK_SYS_SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sha256(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SHA256_MASK);
+        self.clr_bits(Self::CLK_SYS_SHA256_MASK);
     }
 
     /// **CLK_SYS_PSM** `[29]` (RW)
@@ -11621,13 +11623,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PSM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_psm(&self) {
-        self.value.set_bits(Self::CLK_SYS_PSM_MASK);
+        self.set_bits(Self::CLK_SYS_PSM_MASK);
     }
 
     /// Clear CLK_SYS_PSM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_psm(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PSM_MASK);
+        self.clr_bits(Self::CLK_SYS_PSM_MASK);
     }
 
     /// **CLK_SYS_ROSC** `[28]` (RW)
@@ -11639,13 +11641,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_ROSC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_rosc(&self) {
-        self.value.set_bits(Self::CLK_SYS_ROSC_MASK);
+        self.set_bits(Self::CLK_SYS_ROSC_MASK);
     }
 
     /// Clear CLK_SYS_ROSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_rosc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ROSC_MASK);
+        self.clr_bits(Self::CLK_SYS_ROSC_MASK);
     }
 
     /// **CLK_SYS_ROM** `[27]` (RW)
@@ -11657,13 +11659,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_rom(&self) {
-        self.value.set_bits(Self::CLK_SYS_ROM_MASK);
+        self.set_bits(Self::CLK_SYS_ROM_MASK);
     }
 
     /// Clear CLK_SYS_ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_rom(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ROM_MASK);
+        self.clr_bits(Self::CLK_SYS_ROM_MASK);
     }
 
     /// **CLK_SYS_RESETS** `[26]` (RW)
@@ -11675,13 +11677,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_RESETS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_resets(&self) {
-        self.value.set_bits(Self::CLK_SYS_RESETS_MASK);
+        self.set_bits(Self::CLK_SYS_RESETS_MASK);
     }
 
     /// Clear CLK_SYS_RESETS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_resets(&self) {
-        self.value.clr_bits(Self::CLK_SYS_RESETS_MASK);
+        self.clr_bits(Self::CLK_SYS_RESETS_MASK);
     }
 
     /// **CLK_SYS_PWM** `[25]` (RW)
@@ -11693,13 +11695,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PWM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pwm(&self) {
-        self.value.set_bits(Self::CLK_SYS_PWM_MASK);
+        self.set_bits(Self::CLK_SYS_PWM_MASK);
     }
 
     /// Clear CLK_SYS_PWM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pwm(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PWM_MASK);
+        self.clr_bits(Self::CLK_SYS_PWM_MASK);
     }
 
     /// **CLK_SYS_POWMAN** `[24]` (RW)
@@ -11711,13 +11713,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_powman(&self) {
-        self.value.set_bits(Self::CLK_SYS_POWMAN_MASK);
+        self.set_bits(Self::CLK_SYS_POWMAN_MASK);
     }
 
     /// Clear CLK_SYS_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_powman(&self) {
-        self.value.clr_bits(Self::CLK_SYS_POWMAN_MASK);
+        self.clr_bits(Self::CLK_SYS_POWMAN_MASK);
     }
 
     /// **CLK_REF_POWMAN** `[23]` (RW)
@@ -11729,13 +11731,13 @@ impl SleepEn0 {
     /// Set CLK_REF_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_powman(&self) {
-        self.value.set_bits(Self::CLK_REF_POWMAN_MASK);
+        self.set_bits(Self::CLK_REF_POWMAN_MASK);
     }
 
     /// Clear CLK_REF_POWMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_powman(&self) {
-        self.value.clr_bits(Self::CLK_REF_POWMAN_MASK);
+        self.clr_bits(Self::CLK_REF_POWMAN_MASK);
     }
 
     /// **CLK_SYS_PLL_USB** `[22]` (RW)
@@ -11747,13 +11749,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pll_usb(&self) {
-        self.value.set_bits(Self::CLK_SYS_PLL_USB_MASK);
+        self.set_bits(Self::CLK_SYS_PLL_USB_MASK);
     }
 
     /// Clear CLK_SYS_PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pll_usb(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PLL_USB_MASK);
+        self.clr_bits(Self::CLK_SYS_PLL_USB_MASK);
     }
 
     /// **CLK_SYS_PLL_SYS** `[21]` (RW)
@@ -11765,13 +11767,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pll_sys(&self) {
-        self.value.set_bits(Self::CLK_SYS_PLL_SYS_MASK);
+        self.set_bits(Self::CLK_SYS_PLL_SYS_MASK);
     }
 
     /// Clear CLK_SYS_PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pll_sys(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PLL_SYS_MASK);
+        self.clr_bits(Self::CLK_SYS_PLL_SYS_MASK);
     }
 
     /// **CLK_SYS_PIO2** `[20]` (RW)
@@ -11783,13 +11785,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio2(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO2_MASK);
+        self.set_bits(Self::CLK_SYS_PIO2_MASK);
     }
 
     /// Clear CLK_SYS_PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio2(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO2_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO2_MASK);
     }
 
     /// **CLK_SYS_PIO1** `[19]` (RW)
@@ -11801,13 +11803,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio1(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO1_MASK);
+        self.set_bits(Self::CLK_SYS_PIO1_MASK);
     }
 
     /// Clear CLK_SYS_PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO1_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO1_MASK);
     }
 
     /// **CLK_SYS_PIO0** `[18]` (RW)
@@ -11819,13 +11821,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pio0(&self) {
-        self.value.set_bits(Self::CLK_SYS_PIO0_MASK);
+        self.set_bits(Self::CLK_SYS_PIO0_MASK);
     }
 
     /// Clear CLK_SYS_PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pio0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PIO0_MASK);
+        self.clr_bits(Self::CLK_SYS_PIO0_MASK);
     }
 
     /// **CLK_SYS_PADS** `[17]` (RW)
@@ -11837,13 +11839,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_PADS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_pads(&self) {
-        self.value.set_bits(Self::CLK_SYS_PADS_MASK);
+        self.set_bits(Self::CLK_SYS_PADS_MASK);
     }
 
     /// Clear CLK_SYS_PADS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_pads(&self) {
-        self.value.clr_bits(Self::CLK_SYS_PADS_MASK);
+        self.clr_bits(Self::CLK_SYS_PADS_MASK);
     }
 
     /// **CLK_SYS_OTP** `[16]` (RW)
@@ -11855,13 +11857,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_otp(&self) {
-        self.value.set_bits(Self::CLK_SYS_OTP_MASK);
+        self.set_bits(Self::CLK_SYS_OTP_MASK);
     }
 
     /// Clear CLK_SYS_OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_otp(&self) {
-        self.value.clr_bits(Self::CLK_SYS_OTP_MASK);
+        self.clr_bits(Self::CLK_SYS_OTP_MASK);
     }
 
     /// **CLK_REF_OTP** `[15]` (RW)
@@ -11873,13 +11875,13 @@ impl SleepEn0 {
     /// Set CLK_REF_OTP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_otp(&self) {
-        self.value.set_bits(Self::CLK_REF_OTP_MASK);
+        self.set_bits(Self::CLK_REF_OTP_MASK);
     }
 
     /// Clear CLK_REF_OTP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_otp(&self) {
-        self.value.clr_bits(Self::CLK_REF_OTP_MASK);
+        self.clr_bits(Self::CLK_REF_OTP_MASK);
     }
 
     /// **CLK_SYS_JTAG** `[14]` (RW)
@@ -11891,13 +11893,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_jtag(&self) {
-        self.value.set_bits(Self::CLK_SYS_JTAG_MASK);
+        self.set_bits(Self::CLK_SYS_JTAG_MASK);
     }
 
     /// Clear CLK_SYS_JTAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_jtag(&self) {
-        self.value.clr_bits(Self::CLK_SYS_JTAG_MASK);
+        self.clr_bits(Self::CLK_SYS_JTAG_MASK);
     }
 
     /// **CLK_SYS_IO** `[13]` (RW)
@@ -11909,13 +11911,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_IO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_io(&self) {
-        self.value.set_bits(Self::CLK_SYS_IO_MASK);
+        self.set_bits(Self::CLK_SYS_IO_MASK);
     }
 
     /// Clear CLK_SYS_IO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_io(&self) {
-        self.value.clr_bits(Self::CLK_SYS_IO_MASK);
+        self.clr_bits(Self::CLK_SYS_IO_MASK);
     }
 
     /// **CLK_SYS_I2C1** `[12]` (RW)
@@ -11927,13 +11929,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_i2c1(&self) {
-        self.value.set_bits(Self::CLK_SYS_I2C1_MASK);
+        self.set_bits(Self::CLK_SYS_I2C1_MASK);
     }
 
     /// Clear CLK_SYS_I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_i2c1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_I2C1_MASK);
+        self.clr_bits(Self::CLK_SYS_I2C1_MASK);
     }
 
     /// **CLK_SYS_I2C0** `[11]` (RW)
@@ -11945,13 +11947,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_i2c0(&self) {
-        self.value.set_bits(Self::CLK_SYS_I2C0_MASK);
+        self.set_bits(Self::CLK_SYS_I2C0_MASK);
     }
 
     /// Clear CLK_SYS_I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_i2c0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_I2C0_MASK);
+        self.clr_bits(Self::CLK_SYS_I2C0_MASK);
     }
 
     /// **CLK_SYS_HSTX** `[10]` (RW)
@@ -11963,13 +11965,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_hstx(&self) {
-        self.value.set_bits(Self::CLK_SYS_HSTX_MASK);
+        self.set_bits(Self::CLK_SYS_HSTX_MASK);
     }
 
     /// Clear CLK_SYS_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_hstx(&self) {
-        self.value.clr_bits(Self::CLK_SYS_HSTX_MASK);
+        self.clr_bits(Self::CLK_SYS_HSTX_MASK);
     }
 
     /// **CLK_HSTX** `[9]` (RW)
@@ -11981,13 +11983,13 @@ impl SleepEn0 {
     /// Set CLK_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_hstx(&self) {
-        self.value.set_bits(Self::CLK_HSTX_MASK);
+        self.set_bits(Self::CLK_HSTX_MASK);
     }
 
     /// Clear CLK_HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_hstx(&self) {
-        self.value.clr_bits(Self::CLK_HSTX_MASK);
+        self.clr_bits(Self::CLK_HSTX_MASK);
     }
 
     /// **CLK_SYS_GLITCH_DETECTOR** `[8]` (RW)
@@ -11999,13 +12001,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_GLITCH_DETECTOR bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_glitch_detector(&self) {
-        self.value.set_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
+        self.set_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
     }
 
     /// Clear CLK_SYS_GLITCH_DETECTOR bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_glitch_detector(&self) {
-        self.value.clr_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
+        self.clr_bits(Self::CLK_SYS_GLITCH_DETECTOR_MASK);
     }
 
     /// **CLK_SYS_DMA** `[7]` (RW)
@@ -12017,13 +12019,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_dma(&self) {
-        self.value.set_bits(Self::CLK_SYS_DMA_MASK);
+        self.set_bits(Self::CLK_SYS_DMA_MASK);
     }
 
     /// Clear CLK_SYS_DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_dma(&self) {
-        self.value.clr_bits(Self::CLK_SYS_DMA_MASK);
+        self.clr_bits(Self::CLK_SYS_DMA_MASK);
     }
 
     /// **CLK_SYS_BUSFABRIC** `[6]` (RW)
@@ -12035,13 +12037,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_busfabric(&self) {
-        self.value.set_bits(Self::CLK_SYS_BUSFABRIC_MASK);
+        self.set_bits(Self::CLK_SYS_BUSFABRIC_MASK);
     }
 
     /// Clear CLK_SYS_BUSFABRIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_busfabric(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BUSFABRIC_MASK);
+        self.clr_bits(Self::CLK_SYS_BUSFABRIC_MASK);
     }
 
     /// **CLK_SYS_BUSCTRL** `[5]` (RW)
@@ -12053,13 +12055,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_busctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_BUSCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_BUSCTRL_MASK);
     }
 
     /// Clear CLK_SYS_BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_busctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BUSCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_BUSCTRL_MASK);
     }
 
     /// **CLK_SYS_BOOTRAM** `[4]` (RW)
@@ -12071,13 +12073,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_bootram(&self) {
-        self.value.set_bits(Self::CLK_SYS_BOOTRAM_MASK);
+        self.set_bits(Self::CLK_SYS_BOOTRAM_MASK);
     }
 
     /// Clear CLK_SYS_BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_bootram(&self) {
-        self.value.clr_bits(Self::CLK_SYS_BOOTRAM_MASK);
+        self.clr_bits(Self::CLK_SYS_BOOTRAM_MASK);
     }
 
     /// **CLK_SYS_ADC** `[3]` (RW)
@@ -12089,13 +12091,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_adc(&self) {
-        self.value.set_bits(Self::CLK_SYS_ADC_MASK);
+        self.set_bits(Self::CLK_SYS_ADC_MASK);
     }
 
     /// Clear CLK_SYS_ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_adc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ADC_MASK);
+        self.clr_bits(Self::CLK_SYS_ADC_MASK);
     }
 
     /// **CLK_ADC** `[2]` (RW)
@@ -12107,13 +12109,13 @@ impl SleepEn0 {
     /// Set CLK_ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_adc(&self) {
-        self.value.set_bits(Self::CLK_ADC_MASK);
+        self.set_bits(Self::CLK_ADC_MASK);
     }
 
     /// Clear CLK_ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_adc(&self) {
-        self.value.clr_bits(Self::CLK_ADC_MASK);
+        self.clr_bits(Self::CLK_ADC_MASK);
     }
 
     /// **CLK_SYS_ACCESSCTRL** `[1]` (RW)
@@ -12125,13 +12127,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_accessctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
     }
 
     /// Clear CLK_SYS_ACCESSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_accessctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_ACCESSCTRL_MASK);
     }
 
     /// **CLK_SYS_CLOCKS** `[0]` (RW)
@@ -12143,13 +12145,13 @@ impl SleepEn0 {
     /// Set CLK_SYS_CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_clocks(&self) {
-        self.value.set_bits(Self::CLK_SYS_CLOCKS_MASK);
+        self.set_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
 
     /// Clear CLK_SYS_CLOCKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_clocks(&self) {
-        self.value.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
+        self.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
 
 }
@@ -12859,11 +12861,11 @@ impl SleepEn0 {
 /// - **CLK_PERI_SPI0** `[0]` (RW)
 #[repr(transparent)]
 pub struct SleepEn1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SleepEn1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13070,13 +13072,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_XOSC bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_xosc(&self) {
-        self.value.set_bits(Self::CLK_SYS_XOSC_MASK);
+        self.set_bits(Self::CLK_SYS_XOSC_MASK);
     }
 
     /// Clear CLK_SYS_XOSC bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_xosc(&self) {
-        self.value.clr_bits(Self::CLK_SYS_XOSC_MASK);
+        self.clr_bits(Self::CLK_SYS_XOSC_MASK);
     }
 
     /// **CLK_SYS_XIP** `[29]` (RW)
@@ -13088,13 +13090,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_XIP bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_xip(&self) {
-        self.value.set_bits(Self::CLK_SYS_XIP_MASK);
+        self.set_bits(Self::CLK_SYS_XIP_MASK);
     }
 
     /// Clear CLK_SYS_XIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_xip(&self) {
-        self.value.clr_bits(Self::CLK_SYS_XIP_MASK);
+        self.clr_bits(Self::CLK_SYS_XIP_MASK);
     }
 
     /// **CLK_SYS_WATCHDOG** `[28]` (RW)
@@ -13106,13 +13108,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_WATCHDOG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_watchdog(&self) {
-        self.value.set_bits(Self::CLK_SYS_WATCHDOG_MASK);
+        self.set_bits(Self::CLK_SYS_WATCHDOG_MASK);
     }
 
     /// Clear CLK_SYS_WATCHDOG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_watchdog(&self) {
-        self.value.clr_bits(Self::CLK_SYS_WATCHDOG_MASK);
+        self.clr_bits(Self::CLK_SYS_WATCHDOG_MASK);
     }
 
     /// **CLK_USB** `[27]` (RW)
@@ -13124,13 +13126,13 @@ impl SleepEn1 {
     /// Set CLK_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_usb(&self) {
-        self.value.set_bits(Self::CLK_USB_MASK);
+        self.set_bits(Self::CLK_USB_MASK);
     }
 
     /// Clear CLK_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_usb(&self) {
-        self.value.clr_bits(Self::CLK_USB_MASK);
+        self.clr_bits(Self::CLK_USB_MASK);
     }
 
     /// **CLK_SYS_USBCTRL** `[26]` (RW)
@@ -13142,13 +13144,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_usbctrl(&self) {
-        self.value.set_bits(Self::CLK_SYS_USBCTRL_MASK);
+        self.set_bits(Self::CLK_SYS_USBCTRL_MASK);
     }
 
     /// Clear CLK_SYS_USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_usbctrl(&self) {
-        self.value.clr_bits(Self::CLK_SYS_USBCTRL_MASK);
+        self.clr_bits(Self::CLK_SYS_USBCTRL_MASK);
     }
 
     /// **CLK_SYS_UART1** `[25]` (RW)
@@ -13160,13 +13162,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_uart1(&self) {
-        self.value.set_bits(Self::CLK_SYS_UART1_MASK);
+        self.set_bits(Self::CLK_SYS_UART1_MASK);
     }
 
     /// Clear CLK_SYS_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_uart1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_UART1_MASK);
+        self.clr_bits(Self::CLK_SYS_UART1_MASK);
     }
 
     /// **CLK_PERI_UART1** `[24]` (RW)
@@ -13178,13 +13180,13 @@ impl SleepEn1 {
     /// Set CLK_PERI_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_uart1(&self) {
-        self.value.set_bits(Self::CLK_PERI_UART1_MASK);
+        self.set_bits(Self::CLK_PERI_UART1_MASK);
     }
 
     /// Clear CLK_PERI_UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_uart1(&self) {
-        self.value.clr_bits(Self::CLK_PERI_UART1_MASK);
+        self.clr_bits(Self::CLK_PERI_UART1_MASK);
     }
 
     /// **CLK_SYS_UART0** `[23]` (RW)
@@ -13196,13 +13198,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_uart0(&self) {
-        self.value.set_bits(Self::CLK_SYS_UART0_MASK);
+        self.set_bits(Self::CLK_SYS_UART0_MASK);
     }
 
     /// Clear CLK_SYS_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_uart0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_UART0_MASK);
+        self.clr_bits(Self::CLK_SYS_UART0_MASK);
     }
 
     /// **CLK_PERI_UART0** `[22]` (RW)
@@ -13214,13 +13216,13 @@ impl SleepEn1 {
     /// Set CLK_PERI_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_uart0(&self) {
-        self.value.set_bits(Self::CLK_PERI_UART0_MASK);
+        self.set_bits(Self::CLK_PERI_UART0_MASK);
     }
 
     /// Clear CLK_PERI_UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_uart0(&self) {
-        self.value.clr_bits(Self::CLK_PERI_UART0_MASK);
+        self.clr_bits(Self::CLK_PERI_UART0_MASK);
     }
 
     /// **CLK_SYS_TRNG** `[21]` (RW)
@@ -13232,13 +13234,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_TRNG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_trng(&self) {
-        self.value.set_bits(Self::CLK_SYS_TRNG_MASK);
+        self.set_bits(Self::CLK_SYS_TRNG_MASK);
     }
 
     /// Clear CLK_SYS_TRNG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_trng(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TRNG_MASK);
+        self.clr_bits(Self::CLK_SYS_TRNG_MASK);
     }
 
     /// **CLK_SYS_TIMER1** `[20]` (RW)
@@ -13250,13 +13252,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_timer1(&self) {
-        self.value.set_bits(Self::CLK_SYS_TIMER1_MASK);
+        self.set_bits(Self::CLK_SYS_TIMER1_MASK);
     }
 
     /// Clear CLK_SYS_TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_timer1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TIMER1_MASK);
+        self.clr_bits(Self::CLK_SYS_TIMER1_MASK);
     }
 
     /// **CLK_SYS_TIMER0** `[19]` (RW)
@@ -13268,13 +13270,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_timer0(&self) {
-        self.value.set_bits(Self::CLK_SYS_TIMER0_MASK);
+        self.set_bits(Self::CLK_SYS_TIMER0_MASK);
     }
 
     /// Clear CLK_SYS_TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_timer0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TIMER0_MASK);
+        self.clr_bits(Self::CLK_SYS_TIMER0_MASK);
     }
 
     /// **CLK_SYS_TICKS** `[18]` (RW)
@@ -13286,13 +13288,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_ticks(&self) {
-        self.value.set_bits(Self::CLK_SYS_TICKS_MASK);
+        self.set_bits(Self::CLK_SYS_TICKS_MASK);
     }
 
     /// Clear CLK_SYS_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_ticks(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TICKS_MASK);
+        self.clr_bits(Self::CLK_SYS_TICKS_MASK);
     }
 
     /// **CLK_REF_TICKS** `[17]` (RW)
@@ -13304,13 +13306,13 @@ impl SleepEn1 {
     /// Set CLK_REF_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_ref_ticks(&self) {
-        self.value.set_bits(Self::CLK_REF_TICKS_MASK);
+        self.set_bits(Self::CLK_REF_TICKS_MASK);
     }
 
     /// Clear CLK_REF_TICKS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_ref_ticks(&self) {
-        self.value.clr_bits(Self::CLK_REF_TICKS_MASK);
+        self.clr_bits(Self::CLK_REF_TICKS_MASK);
     }
 
     /// **CLK_SYS_TBMAN** `[16]` (RW)
@@ -13322,13 +13324,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_tbman(&self) {
-        self.value.set_bits(Self::CLK_SYS_TBMAN_MASK);
+        self.set_bits(Self::CLK_SYS_TBMAN_MASK);
     }
 
     /// Clear CLK_SYS_TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_tbman(&self) {
-        self.value.clr_bits(Self::CLK_SYS_TBMAN_MASK);
+        self.clr_bits(Self::CLK_SYS_TBMAN_MASK);
     }
 
     /// **CLK_SYS_SYSINFO** `[15]` (RW)
@@ -13340,13 +13342,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sysinfo(&self) {
-        self.value.set_bits(Self::CLK_SYS_SYSINFO_MASK);
+        self.set_bits(Self::CLK_SYS_SYSINFO_MASK);
     }
 
     /// Clear CLK_SYS_SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sysinfo(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SYSINFO_MASK);
+        self.clr_bits(Self::CLK_SYS_SYSINFO_MASK);
     }
 
     /// **CLK_SYS_SYSCFG** `[14]` (RW)
@@ -13358,13 +13360,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_syscfg(&self) {
-        self.value.set_bits(Self::CLK_SYS_SYSCFG_MASK);
+        self.set_bits(Self::CLK_SYS_SYSCFG_MASK);
     }
 
     /// Clear CLK_SYS_SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_syscfg(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SYSCFG_MASK);
+        self.clr_bits(Self::CLK_SYS_SYSCFG_MASK);
     }
 
     /// **CLK_SYS_SRAM9** `[13]` (RW)
@@ -13376,13 +13378,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram9(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM9_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM9_MASK);
     }
 
     /// Clear CLK_SYS_SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram9(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM9_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM9_MASK);
     }
 
     /// **CLK_SYS_SRAM8** `[12]` (RW)
@@ -13394,13 +13396,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram8(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM8_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM8_MASK);
     }
 
     /// Clear CLK_SYS_SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram8(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM8_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM8_MASK);
     }
 
     /// **CLK_SYS_SRAM7** `[11]` (RW)
@@ -13412,13 +13414,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram7(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM7_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM7_MASK);
     }
 
     /// Clear CLK_SYS_SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram7(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM7_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM7_MASK);
     }
 
     /// **CLK_SYS_SRAM6** `[10]` (RW)
@@ -13430,13 +13432,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram6(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM6_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM6_MASK);
     }
 
     /// Clear CLK_SYS_SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram6(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM6_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM6_MASK);
     }
 
     /// **CLK_SYS_SRAM5** `[9]` (RW)
@@ -13448,13 +13450,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram5(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM5_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM5_MASK);
     }
 
     /// Clear CLK_SYS_SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram5(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM5_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM5_MASK);
     }
 
     /// **CLK_SYS_SRAM4** `[8]` (RW)
@@ -13466,13 +13468,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram4(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM4_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM4_MASK);
     }
 
     /// Clear CLK_SYS_SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram4(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM4_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM4_MASK);
     }
 
     /// **CLK_SYS_SRAM3** `[7]` (RW)
@@ -13484,13 +13486,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram3(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM3_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM3_MASK);
     }
 
     /// Clear CLK_SYS_SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram3(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM3_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM3_MASK);
     }
 
     /// **CLK_SYS_SRAM2** `[6]` (RW)
@@ -13502,13 +13504,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram2(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM2_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM2_MASK);
     }
 
     /// Clear CLK_SYS_SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram2(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM2_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM2_MASK);
     }
 
     /// **CLK_SYS_SRAM1** `[5]` (RW)
@@ -13520,13 +13522,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram1(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM1_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM1_MASK);
     }
 
     /// Clear CLK_SYS_SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM1_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM1_MASK);
     }
 
     /// **CLK_SYS_SRAM0** `[4]` (RW)
@@ -13538,13 +13540,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_sram0(&self) {
-        self.value.set_bits(Self::CLK_SYS_SRAM0_MASK);
+        self.set_bits(Self::CLK_SYS_SRAM0_MASK);
     }
 
     /// Clear CLK_SYS_SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_sram0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SRAM0_MASK);
+        self.clr_bits(Self::CLK_SYS_SRAM0_MASK);
     }
 
     /// **CLK_SYS_SPI1** `[3]` (RW)
@@ -13556,13 +13558,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_spi1(&self) {
-        self.value.set_bits(Self::CLK_SYS_SPI1_MASK);
+        self.set_bits(Self::CLK_SYS_SPI1_MASK);
     }
 
     /// Clear CLK_SYS_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_spi1(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SPI1_MASK);
+        self.clr_bits(Self::CLK_SYS_SPI1_MASK);
     }
 
     /// **CLK_PERI_SPI1** `[2]` (RW)
@@ -13574,13 +13576,13 @@ impl SleepEn1 {
     /// Set CLK_PERI_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_spi1(&self) {
-        self.value.set_bits(Self::CLK_PERI_SPI1_MASK);
+        self.set_bits(Self::CLK_PERI_SPI1_MASK);
     }
 
     /// Clear CLK_PERI_SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_spi1(&self) {
-        self.value.clr_bits(Self::CLK_PERI_SPI1_MASK);
+        self.clr_bits(Self::CLK_PERI_SPI1_MASK);
     }
 
     /// **CLK_SYS_SPI0** `[1]` (RW)
@@ -13592,13 +13594,13 @@ impl SleepEn1 {
     /// Set CLK_SYS_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_spi0(&self) {
-        self.value.set_bits(Self::CLK_SYS_SPI0_MASK);
+        self.set_bits(Self::CLK_SYS_SPI0_MASK);
     }
 
     /// Clear CLK_SYS_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_spi0(&self) {
-        self.value.clr_bits(Self::CLK_SYS_SPI0_MASK);
+        self.clr_bits(Self::CLK_SYS_SPI0_MASK);
     }
 
     /// **CLK_PERI_SPI0** `[0]` (RW)
@@ -13610,13 +13612,13 @@ impl SleepEn1 {
     /// Set CLK_PERI_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_peri_spi0(&self) {
-        self.value.set_bits(Self::CLK_PERI_SPI0_MASK);
+        self.set_bits(Self::CLK_PERI_SPI0_MASK);
     }
 
     /// Clear CLK_PERI_SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_peri_spi0(&self) {
-        self.value.clr_bits(Self::CLK_PERI_SPI0_MASK);
+        self.clr_bits(Self::CLK_PERI_SPI0_MASK);
     }
 
 }
@@ -14310,11 +14312,11 @@ impl SleepEn1 {
 /// - **CLK_SYS_CLOCKS** `[0]` (RO)
 #[repr(transparent)]
 pub struct Enabled0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Enabled0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15033,11 +15035,11 @@ impl Enabled0 {
 /// - **CLK_PERI_SPI0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Enabled1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Enabled1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15678,11 +15680,11 @@ impl Enabled1 {
 /// - **CLK_SYS_RESUS** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15783,11 +15785,11 @@ impl Intr {
 /// - **CLK_SYS_RESUS** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15814,13 +15816,13 @@ impl Inte {
     /// Set CLK_SYS_RESUS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_resus(&self) {
-        self.value.set_bits(Self::CLK_SYS_RESUS_MASK);
+        self.set_bits(Self::CLK_SYS_RESUS_MASK);
     }
 
     /// Clear CLK_SYS_RESUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_resus(&self) {
-        self.value.clr_bits(Self::CLK_SYS_RESUS_MASK);
+        self.clr_bits(Self::CLK_SYS_RESUS_MASK);
     }
 
 }
@@ -15912,11 +15914,11 @@ impl Inte {
 /// - **CLK_SYS_RESUS** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15943,13 +15945,13 @@ impl Intf {
     /// Set CLK_SYS_RESUS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys_resus(&self) {
-        self.value.set_bits(Self::CLK_SYS_RESUS_MASK);
+        self.set_bits(Self::CLK_SYS_RESUS_MASK);
     }
 
     /// Clear CLK_SYS_RESUS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys_resus(&self) {
-        self.value.clr_bits(Self::CLK_SYS_RESUS_MASK);
+        self.clr_bits(Self::CLK_SYS_RESUS_MASK);
     }
 
 }
@@ -16041,11 +16043,11 @@ impl Intf {
 /// - **CLK_SYS_RESUS** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

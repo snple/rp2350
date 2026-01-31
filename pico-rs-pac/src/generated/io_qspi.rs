@@ -1,4 +1,6 @@
 //! IO_QSPI
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -28,11 +30,11 @@ pub const BASE: u32 = 0x40030000;
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDpStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDpStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -224,11 +226,11 @@ impl UsbphyDpStatus {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct UsbphyDpCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDpCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -566,11 +568,11 @@ impl UsbphyDpCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDmStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDmStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -762,11 +764,11 @@ impl UsbphyDmStatus {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct UsbphyDmCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDmCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1104,11 +1106,11 @@ impl UsbphyDmCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSclkStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSclkStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1300,11 +1302,11 @@ impl GpioQspiSclkStatus {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSclkCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSclkCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1646,11 +1648,11 @@ impl GpioQspiSclkCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSsStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSsStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1842,11 +1844,11 @@ impl GpioQspiSsStatus {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSsCtrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSsCtrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2188,11 +2190,11 @@ impl GpioQspiSsCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd0Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd0Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2384,11 +2386,11 @@ impl GpioQspiSd0Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSd0Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd0Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2728,11 +2730,11 @@ impl GpioQspiSd0Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd1Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd1Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2924,11 +2926,11 @@ impl GpioQspiSd1Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSd1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3268,11 +3270,11 @@ impl GpioQspiSd1Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd2Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd2Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3464,11 +3466,11 @@ impl GpioQspiSd2Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSd2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3810,11 +3812,11 @@ impl GpioQspiSd2Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd3Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd3Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4006,11 +4008,11 @@ impl GpioQspiSd3Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct GpioQspiSd3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4352,11 +4354,11 @@ impl GpioQspiSd3Ctrl {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4595,11 +4597,11 @@ impl IrqsummaryProc0Secure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4838,11 +4840,11 @@ impl IrqsummaryProc0Nonsecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5081,11 +5083,11 @@ impl IrqsummaryProc1Secure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5324,11 +5326,11 @@ impl IrqsummaryProc1Nonsecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5567,11 +5569,11 @@ impl IrqsummaryDormantWakeSecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5860,11 +5862,11 @@ impl IrqsummaryDormantWakeNonsecure {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6077,13 +6079,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -6095,13 +6097,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RO)
@@ -6125,13 +6127,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -6143,13 +6145,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RO)
@@ -6173,13 +6175,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -6191,13 +6193,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RO)
@@ -6221,13 +6223,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -6239,13 +6241,13 @@ impl Intr {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RO)
@@ -6269,13 +6271,13 @@ impl Intr {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -6287,13 +6289,13 @@ impl Intr {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RO)
@@ -6317,13 +6319,13 @@ impl Intr {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -6335,13 +6337,13 @@ impl Intr {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RO)
@@ -6365,13 +6367,13 @@ impl Intr {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -6383,13 +6385,13 @@ impl Intr {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RO)
@@ -6413,13 +6415,13 @@ impl Intr {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -6431,13 +6433,13 @@ impl Intr {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RO)
@@ -6969,11 +6971,11 @@ impl Intr {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7186,13 +7188,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -7204,13 +7206,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -7222,13 +7224,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -7240,13 +7242,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -7258,13 +7260,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -7276,13 +7278,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -7294,13 +7296,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -7312,13 +7314,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -7330,13 +7332,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -7348,13 +7350,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -7366,13 +7368,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -7384,13 +7386,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -7402,13 +7404,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -7420,13 +7422,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -7438,13 +7440,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -7456,13 +7458,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -7474,13 +7476,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -7492,13 +7494,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -7510,13 +7512,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -7528,13 +7530,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -7546,13 +7548,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -7564,13 +7566,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -7582,13 +7584,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -7600,13 +7602,13 @@ impl Proc0Inte {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -7618,13 +7620,13 @@ impl Proc0Inte {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -7636,13 +7638,13 @@ impl Proc0Inte {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -7654,13 +7656,13 @@ impl Proc0Inte {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -7672,13 +7674,13 @@ impl Proc0Inte {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -7690,13 +7692,13 @@ impl Proc0Inte {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -7708,13 +7710,13 @@ impl Proc0Inte {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -7726,13 +7728,13 @@ impl Proc0Inte {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -7744,13 +7746,13 @@ impl Proc0Inte {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -8462,11 +8464,11 @@ impl Proc0Inte {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8679,13 +8681,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -8697,13 +8699,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -8715,13 +8717,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -8733,13 +8735,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -8751,13 +8753,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -8769,13 +8771,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -8787,13 +8789,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -8805,13 +8807,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -8823,13 +8825,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -8841,13 +8843,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -8859,13 +8861,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -8877,13 +8879,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -8895,13 +8897,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -8913,13 +8915,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -8931,13 +8933,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -8949,13 +8951,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -8967,13 +8969,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -8985,13 +8987,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -9003,13 +9005,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -9021,13 +9023,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -9039,13 +9041,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -9057,13 +9059,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -9075,13 +9077,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -9093,13 +9095,13 @@ impl Proc0Intf {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -9111,13 +9113,13 @@ impl Proc0Intf {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -9129,13 +9131,13 @@ impl Proc0Intf {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -9147,13 +9149,13 @@ impl Proc0Intf {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -9165,13 +9167,13 @@ impl Proc0Intf {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -9183,13 +9185,13 @@ impl Proc0Intf {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -9201,13 +9203,13 @@ impl Proc0Intf {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -9219,13 +9221,13 @@ impl Proc0Intf {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -9237,13 +9239,13 @@ impl Proc0Intf {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -9955,11 +9957,11 @@ impl Proc0Intf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10680,11 +10682,11 @@ impl Proc0Ints {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10897,13 +10899,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -10915,13 +10917,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -10933,13 +10935,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -10951,13 +10953,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -10969,13 +10971,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -10987,13 +10989,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -11005,13 +11007,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -11023,13 +11025,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -11041,13 +11043,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -11059,13 +11061,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -11077,13 +11079,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -11095,13 +11097,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -11113,13 +11115,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -11131,13 +11133,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -11149,13 +11151,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -11167,13 +11169,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -11185,13 +11187,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -11203,13 +11205,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -11221,13 +11223,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -11239,13 +11241,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -11257,13 +11259,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -11275,13 +11277,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -11293,13 +11295,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -11311,13 +11313,13 @@ impl Proc1Inte {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -11329,13 +11331,13 @@ impl Proc1Inte {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -11347,13 +11349,13 @@ impl Proc1Inte {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -11365,13 +11367,13 @@ impl Proc1Inte {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -11383,13 +11385,13 @@ impl Proc1Inte {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -11401,13 +11403,13 @@ impl Proc1Inte {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -11419,13 +11421,13 @@ impl Proc1Inte {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -11437,13 +11439,13 @@ impl Proc1Inte {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -11455,13 +11457,13 @@ impl Proc1Inte {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -12173,11 +12175,11 @@ impl Proc1Inte {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12390,13 +12392,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -12408,13 +12410,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -12426,13 +12428,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -12444,13 +12446,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -12462,13 +12464,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -12480,13 +12482,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -12498,13 +12500,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -12516,13 +12518,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -12534,13 +12536,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -12552,13 +12554,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -12570,13 +12572,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -12588,13 +12590,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -12606,13 +12608,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -12624,13 +12626,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -12642,13 +12644,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -12660,13 +12662,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -12678,13 +12680,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -12696,13 +12698,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -12714,13 +12716,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -12732,13 +12734,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -12750,13 +12752,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -12768,13 +12770,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -12786,13 +12788,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -12804,13 +12806,13 @@ impl Proc1Intf {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -12822,13 +12824,13 @@ impl Proc1Intf {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -12840,13 +12842,13 @@ impl Proc1Intf {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -12858,13 +12860,13 @@ impl Proc1Intf {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -12876,13 +12878,13 @@ impl Proc1Intf {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -12894,13 +12896,13 @@ impl Proc1Intf {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -12912,13 +12914,13 @@ impl Proc1Intf {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -12930,13 +12932,13 @@ impl Proc1Intf {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -12948,13 +12950,13 @@ impl Proc1Intf {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -13666,11 +13668,11 @@ impl Proc1Intf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14391,11 +14393,11 @@ impl Proc1Ints {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14608,13 +14610,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -14626,13 +14628,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -14644,13 +14646,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -14662,13 +14664,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -14680,13 +14682,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -14698,13 +14700,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -14716,13 +14718,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -14734,13 +14736,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -14752,13 +14754,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -14770,13 +14772,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -14788,13 +14790,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -14806,13 +14808,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -14824,13 +14826,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -14842,13 +14844,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -14860,13 +14862,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -14878,13 +14880,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -14896,13 +14898,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -14914,13 +14916,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -14932,13 +14934,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -14950,13 +14952,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -14968,13 +14970,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -14986,13 +14988,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -15004,13 +15006,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -15022,13 +15024,13 @@ impl DormantWakeInte {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -15040,13 +15042,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -15058,13 +15060,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -15076,13 +15078,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -15094,13 +15096,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -15112,13 +15114,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -15130,13 +15132,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -15148,13 +15150,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -15166,13 +15168,13 @@ impl DormantWakeInte {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -15884,11 +15886,11 @@ impl DormantWakeInte {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16101,13 +16103,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_EDGE_LOW** `[30]` (RW)
@@ -16119,13 +16121,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_HIGH** `[29]` (RW)
@@ -16137,13 +16139,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD3_LEVEL_LOW** `[28]` (RW)
@@ -16155,13 +16157,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd3_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_HIGH** `[27]` (RW)
@@ -16173,13 +16175,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_EDGE_LOW** `[26]` (RW)
@@ -16191,13 +16193,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_HIGH** `[25]` (RW)
@@ -16209,13 +16211,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD2_LEVEL_LOW** `[24]` (RW)
@@ -16227,13 +16229,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd2_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_HIGH** `[23]` (RW)
@@ -16245,13 +16247,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_EDGE_LOW** `[22]` (RW)
@@ -16263,13 +16265,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_HIGH** `[21]` (RW)
@@ -16281,13 +16283,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD1_LEVEL_LOW** `[20]` (RW)
@@ -16299,13 +16301,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd1_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_HIGH** `[19]` (RW)
@@ -16317,13 +16319,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_EDGE_LOW** `[18]` (RW)
@@ -16335,13 +16337,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_HIGH** `[17]` (RW)
@@ -16353,13 +16355,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SD0_LEVEL_LOW** `[16]` (RW)
@@ -16371,13 +16373,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sd0_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SD0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sd0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SD0_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_HIGH** `[15]` (RW)
@@ -16389,13 +16391,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_EDGE_LOW** `[14]` (RW)
@@ -16407,13 +16409,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_HIGH** `[13]` (RW)
@@ -16425,13 +16427,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SS_LEVEL_LOW** `[12]` (RW)
@@ -16443,13 +16445,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_ss_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SS_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_ss_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SS_LEVEL_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_HIGH** `[11]` (RW)
@@ -16461,13 +16463,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_EDGE_LOW** `[10]` (RW)
@@ -16479,13 +16481,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_edge_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_EDGE_LOW_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_HIGH** `[9]` (RW)
@@ -16497,13 +16499,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_high(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_high(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO_QSPI_SCLK_LEVEL_LOW** `[8]` (RW)
@@ -16515,13 +16517,13 @@ impl DormantWakeIntf {
     /// Set GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio_qspi_sclk_level_low(&self) {
-        self.value.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO_QSPI_SCLK_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio_qspi_sclk_level_low(&self) {
-        self.value.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO_QSPI_SCLK_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DM_EDGE_HIGH** `[7]` (RW)
@@ -16533,13 +16535,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DM_EDGE_LOW** `[6]` (RW)
@@ -16551,13 +16553,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_HIGH** `[5]` (RW)
@@ -16569,13 +16571,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DM_LEVEL_LOW** `[4]` (RW)
@@ -16587,13 +16589,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dm_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DM_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dm_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DM_LEVEL_LOW_MASK);
     }
 
     /// **USBPHY_DP_EDGE_HIGH** `[3]` (RW)
@@ -16605,13 +16607,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_HIGH_MASK);
     }
 
     /// **USBPHY_DP_EDGE_LOW** `[2]` (RW)
@@ -16623,13 +16625,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_edge_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_edge_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_EDGE_LOW_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_HIGH** `[1]` (RW)
@@ -16641,13 +16643,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_high(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_high(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_HIGH_MASK);
     }
 
     /// **USBPHY_DP_LEVEL_LOW** `[0]` (RW)
@@ -16659,13 +16661,13 @@ impl DormantWakeIntf {
     /// Set USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_usbphy_dp_level_low(&self) {
-        self.value.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.set_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
     /// Clear USBPHY_DP_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbphy_dp_level_low(&self) {
-        self.value.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
+        self.clr_bits(Self::USBPHY_DP_LEVEL_LOW_MASK);
     }
 
 }
@@ -17377,11 +17379,11 @@ impl DormantWakeIntf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

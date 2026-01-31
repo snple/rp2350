@@ -1,4 +1,6 @@
 //! IO_BANK0
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -28,11 +30,11 @@ pub const BASE: u32 = 0x40028000;
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio0Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio0Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -224,11 +226,11 @@ impl Gpio0Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio0Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio0Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -582,11 +584,11 @@ impl Gpio0Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio1Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio1Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -778,11 +780,11 @@ impl Gpio1Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio1Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio1Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1136,11 +1138,11 @@ impl Gpio1Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio2Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio2Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1332,11 +1334,11 @@ impl Gpio2Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio2Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio2Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1692,11 +1694,11 @@ impl Gpio2Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio3Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio3Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1888,11 +1890,11 @@ impl Gpio3Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio3Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio3Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2248,11 +2250,11 @@ impl Gpio3Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio4Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio4Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2444,11 +2446,11 @@ impl Gpio4Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio4Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio4Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2800,11 +2802,11 @@ impl Gpio4Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio5Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio5Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2996,11 +2998,11 @@ impl Gpio5Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio5Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio5Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3352,11 +3354,11 @@ impl Gpio5Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio6Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio6Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3548,11 +3550,11 @@ impl Gpio6Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio6Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio6Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3904,11 +3906,11 @@ impl Gpio6Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio7Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio7Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4100,11 +4102,11 @@ impl Gpio7Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio7Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio7Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4456,11 +4458,11 @@ impl Gpio7Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio8Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio8Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4652,11 +4654,11 @@ impl Gpio8Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio8Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio8Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5008,11 +5010,11 @@ impl Gpio8Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio9Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio9Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5204,11 +5206,11 @@ impl Gpio9Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio9Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio9Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5558,11 +5560,11 @@ impl Gpio9Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio10Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio10Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5754,11 +5756,11 @@ impl Gpio10Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio10Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio10Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6110,11 +6112,11 @@ impl Gpio10Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio11Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio11Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6306,11 +6308,11 @@ impl Gpio11Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio11Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio11Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6662,11 +6664,11 @@ impl Gpio11Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio12Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio12Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6858,11 +6860,11 @@ impl Gpio12Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio12Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio12Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7216,11 +7218,11 @@ impl Gpio12Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio13Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio13Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7412,11 +7414,11 @@ impl Gpio13Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio13Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio13Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7770,11 +7772,11 @@ impl Gpio13Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio14Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio14Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7966,11 +7968,11 @@ impl Gpio14Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio14Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio14Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8326,11 +8328,11 @@ impl Gpio14Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio15Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio15Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8522,11 +8524,11 @@ impl Gpio15Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio15Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio15Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8882,11 +8884,11 @@ impl Gpio15Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio16Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio16Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9078,11 +9080,11 @@ impl Gpio16Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio16Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio16Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9434,11 +9436,11 @@ impl Gpio16Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio17Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio17Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9630,11 +9632,11 @@ impl Gpio17Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio17Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio17Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9986,11 +9988,11 @@ impl Gpio17Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio18Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio18Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10182,11 +10184,11 @@ impl Gpio18Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio18Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio18Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10540,11 +10542,11 @@ impl Gpio18Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio19Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio19Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10736,11 +10738,11 @@ impl Gpio19Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio19Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio19Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11096,11 +11098,11 @@ impl Gpio19Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio20Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio20Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11292,11 +11294,11 @@ impl Gpio20Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio20Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio20Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11648,11 +11650,11 @@ impl Gpio20Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio21Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio21Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11844,11 +11846,11 @@ impl Gpio21Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio21Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio21Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12200,11 +12202,11 @@ impl Gpio21Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio22Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio22Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12396,11 +12398,11 @@ impl Gpio22Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio22Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio22Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12754,11 +12756,11 @@ impl Gpio22Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio23Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio23Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12950,11 +12952,11 @@ impl Gpio23Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio23Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio23Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13308,11 +13310,11 @@ impl Gpio23Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio24Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio24Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13504,11 +13506,11 @@ impl Gpio24Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio24Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio24Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13860,11 +13862,11 @@ impl Gpio24Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio25Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio25Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14056,11 +14058,11 @@ impl Gpio25Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio25Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio25Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14412,11 +14414,11 @@ impl Gpio25Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio26Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio26Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14608,11 +14610,11 @@ impl Gpio26Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio26Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio26Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14964,11 +14966,11 @@ impl Gpio26Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio27Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio27Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15160,11 +15162,11 @@ impl Gpio27Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio27Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio27Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15516,11 +15518,11 @@ impl Gpio27Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio28Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio28Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15712,11 +15714,11 @@ impl Gpio28Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio28Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio28Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16066,11 +16068,11 @@ impl Gpio28Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio29Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio29Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16262,11 +16264,11 @@ impl Gpio29Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio29Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio29Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16616,11 +16618,11 @@ impl Gpio29Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio30Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio30Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16812,11 +16814,11 @@ impl Gpio30Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio30Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio30Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17168,11 +17170,11 @@ impl Gpio30Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio31Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio31Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17364,11 +17366,11 @@ impl Gpio31Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio31Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio31Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17720,11 +17722,11 @@ impl Gpio31Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio32Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio32Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17916,11 +17918,11 @@ impl Gpio32Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio32Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio32Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18270,11 +18272,11 @@ impl Gpio32Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio33Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio33Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18466,11 +18468,11 @@ impl Gpio33Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio33Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio33Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18820,11 +18822,11 @@ impl Gpio33Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio34Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio34Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19016,11 +19018,11 @@ impl Gpio34Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio34Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio34Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19372,11 +19374,11 @@ impl Gpio34Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio35Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio35Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19568,11 +19570,11 @@ impl Gpio35Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio35Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio35Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19924,11 +19926,11 @@ impl Gpio35Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio36Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio36Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20120,11 +20122,11 @@ impl Gpio36Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio36Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio36Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20474,11 +20476,11 @@ impl Gpio36Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio37Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio37Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20670,11 +20672,11 @@ impl Gpio37Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio37Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio37Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21024,11 +21026,11 @@ impl Gpio37Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio38Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio38Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21220,11 +21222,11 @@ impl Gpio38Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio38Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio38Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21576,11 +21578,11 @@ impl Gpio38Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio39Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio39Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21772,11 +21774,11 @@ impl Gpio39Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio39Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio39Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22128,11 +22130,11 @@ impl Gpio39Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio40Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio40Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22324,11 +22326,11 @@ impl Gpio40Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio40Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio40Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22678,11 +22680,11 @@ impl Gpio40Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio41Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio41Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22874,11 +22876,11 @@ impl Gpio41Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio41Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio41Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23228,11 +23230,11 @@ impl Gpio41Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio42Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio42Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23424,11 +23426,11 @@ impl Gpio42Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio42Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio42Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23780,11 +23782,11 @@ impl Gpio42Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio43Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio43Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23976,11 +23978,11 @@ impl Gpio43Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio43Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio43Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24332,11 +24334,11 @@ impl Gpio43Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio44Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio44Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24528,11 +24530,11 @@ impl Gpio44Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio44Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio44Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24882,11 +24884,11 @@ impl Gpio44Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio45Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio45Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25078,11 +25080,11 @@ impl Gpio45Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio45Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio45Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25432,11 +25434,11 @@ impl Gpio45Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio46Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio46Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25628,11 +25630,11 @@ impl Gpio46Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio46Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio46Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25984,11 +25986,11 @@ impl Gpio46Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio47Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio47Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26180,11 +26182,11 @@ impl Gpio47Status {
 ///   31 == NULL
 #[repr(transparent)]
 pub struct Gpio47Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Gpio47Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26586,11 +26588,11 @@ impl Gpio47Ctrl {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27277,11 +27279,11 @@ impl IrqsummaryProc0Secure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27712,11 +27714,11 @@ impl IrqsummaryProc0Secure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28403,11 +28405,11 @@ impl IrqsummaryProc0Nonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28838,11 +28840,11 @@ impl IrqsummaryProc0Nonsecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29529,11 +29531,11 @@ impl IrqsummaryProc1Secure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29964,11 +29966,11 @@ impl IrqsummaryProc1Secure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30655,11 +30657,11 @@ impl IrqsummaryProc1Nonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31090,11 +31092,11 @@ impl IrqsummaryProc1Nonsecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31781,11 +31783,11 @@ impl IrqsummaryDormantWakeSecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32216,11 +32218,11 @@ impl IrqsummaryDormantWakeSecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32907,11 +32909,11 @@ impl IrqsummaryDormantWakeNonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33344,11 +33346,11 @@ impl IrqsummaryDormantWakeNonsecure1 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33561,13 +33563,13 @@ impl Intr0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -33579,13 +33581,13 @@ impl Intr0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RO)
@@ -33609,13 +33611,13 @@ impl Intr0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -33627,13 +33629,13 @@ impl Intr0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RO)
@@ -33657,13 +33659,13 @@ impl Intr0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -33675,13 +33677,13 @@ impl Intr0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RO)
@@ -33705,13 +33707,13 @@ impl Intr0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -33723,13 +33725,13 @@ impl Intr0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RO)
@@ -33753,13 +33755,13 @@ impl Intr0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -33771,13 +33773,13 @@ impl Intr0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RO)
@@ -33801,13 +33803,13 @@ impl Intr0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -33819,13 +33821,13 @@ impl Intr0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RO)
@@ -33849,13 +33851,13 @@ impl Intr0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -33867,13 +33869,13 @@ impl Intr0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RO)
@@ -33897,13 +33899,13 @@ impl Intr0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -33915,13 +33917,13 @@ impl Intr0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RO)
@@ -34453,11 +34455,11 @@ impl Intr0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34670,13 +34672,13 @@ impl Intr1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -34688,13 +34690,13 @@ impl Intr1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RO)
@@ -34718,13 +34720,13 @@ impl Intr1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -34736,13 +34738,13 @@ impl Intr1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RO)
@@ -34766,13 +34768,13 @@ impl Intr1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -34784,13 +34786,13 @@ impl Intr1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RO)
@@ -34814,13 +34816,13 @@ impl Intr1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -34832,13 +34834,13 @@ impl Intr1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RO)
@@ -34862,13 +34864,13 @@ impl Intr1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -34880,13 +34882,13 @@ impl Intr1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RO)
@@ -34910,13 +34912,13 @@ impl Intr1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -34928,13 +34930,13 @@ impl Intr1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RO)
@@ -34958,13 +34960,13 @@ impl Intr1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -34976,13 +34978,13 @@ impl Intr1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RO)
@@ -35006,13 +35008,13 @@ impl Intr1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -35024,13 +35026,13 @@ impl Intr1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RO)
@@ -35562,11 +35564,11 @@ impl Intr1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -35779,13 +35781,13 @@ impl Intr2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -35797,13 +35799,13 @@ impl Intr2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RO)
@@ -35827,13 +35829,13 @@ impl Intr2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -35845,13 +35847,13 @@ impl Intr2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RO)
@@ -35875,13 +35877,13 @@ impl Intr2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -35893,13 +35895,13 @@ impl Intr2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RO)
@@ -35923,13 +35925,13 @@ impl Intr2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -35941,13 +35943,13 @@ impl Intr2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RO)
@@ -35971,13 +35973,13 @@ impl Intr2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -35989,13 +35991,13 @@ impl Intr2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RO)
@@ -36019,13 +36021,13 @@ impl Intr2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -36037,13 +36039,13 @@ impl Intr2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RO)
@@ -36067,13 +36069,13 @@ impl Intr2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -36085,13 +36087,13 @@ impl Intr2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RO)
@@ -36115,13 +36117,13 @@ impl Intr2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -36133,13 +36135,13 @@ impl Intr2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RO)
@@ -36671,11 +36673,11 @@ impl Intr2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36888,13 +36890,13 @@ impl Intr3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -36906,13 +36908,13 @@ impl Intr3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RO)
@@ -36936,13 +36938,13 @@ impl Intr3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -36954,13 +36956,13 @@ impl Intr3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RO)
@@ -36984,13 +36986,13 @@ impl Intr3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -37002,13 +37004,13 @@ impl Intr3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RO)
@@ -37032,13 +37034,13 @@ impl Intr3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -37050,13 +37052,13 @@ impl Intr3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RO)
@@ -37080,13 +37082,13 @@ impl Intr3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -37098,13 +37100,13 @@ impl Intr3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RO)
@@ -37128,13 +37130,13 @@ impl Intr3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -37146,13 +37148,13 @@ impl Intr3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RO)
@@ -37176,13 +37178,13 @@ impl Intr3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -37194,13 +37196,13 @@ impl Intr3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RO)
@@ -37224,13 +37226,13 @@ impl Intr3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -37242,13 +37244,13 @@ impl Intr3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RO)
@@ -37780,11 +37782,11 @@ impl Intr3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37997,13 +37999,13 @@ impl Intr4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -38015,13 +38017,13 @@ impl Intr4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RO)
@@ -38045,13 +38047,13 @@ impl Intr4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -38063,13 +38065,13 @@ impl Intr4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RO)
@@ -38093,13 +38095,13 @@ impl Intr4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -38111,13 +38113,13 @@ impl Intr4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RO)
@@ -38141,13 +38143,13 @@ impl Intr4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -38159,13 +38161,13 @@ impl Intr4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RO)
@@ -38189,13 +38191,13 @@ impl Intr4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -38207,13 +38209,13 @@ impl Intr4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RO)
@@ -38237,13 +38239,13 @@ impl Intr4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -38255,13 +38257,13 @@ impl Intr4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RO)
@@ -38285,13 +38287,13 @@ impl Intr4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -38303,13 +38305,13 @@ impl Intr4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RO)
@@ -38333,13 +38335,13 @@ impl Intr4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -38351,13 +38353,13 @@ impl Intr4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RO)
@@ -38889,11 +38891,11 @@ impl Intr4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39106,13 +39108,13 @@ impl Intr5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -39124,13 +39126,13 @@ impl Intr5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RO)
@@ -39154,13 +39156,13 @@ impl Intr5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -39172,13 +39174,13 @@ impl Intr5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RO)
@@ -39202,13 +39204,13 @@ impl Intr5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -39220,13 +39222,13 @@ impl Intr5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RO)
@@ -39250,13 +39252,13 @@ impl Intr5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -39268,13 +39270,13 @@ impl Intr5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RO)
@@ -39298,13 +39300,13 @@ impl Intr5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -39316,13 +39318,13 @@ impl Intr5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RO)
@@ -39346,13 +39348,13 @@ impl Intr5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -39364,13 +39366,13 @@ impl Intr5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RO)
@@ -39394,13 +39396,13 @@ impl Intr5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -39412,13 +39414,13 @@ impl Intr5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RO)
@@ -39442,13 +39444,13 @@ impl Intr5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -39460,13 +39462,13 @@ impl Intr5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RO)
@@ -39998,11 +40000,11 @@ impl Intr5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -40215,13 +40217,13 @@ impl Proc0Inte0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -40233,13 +40235,13 @@ impl Proc0Inte0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -40251,13 +40253,13 @@ impl Proc0Inte0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -40269,13 +40271,13 @@ impl Proc0Inte0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -40287,13 +40289,13 @@ impl Proc0Inte0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -40305,13 +40307,13 @@ impl Proc0Inte0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -40323,13 +40325,13 @@ impl Proc0Inte0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -40341,13 +40343,13 @@ impl Proc0Inte0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -40359,13 +40361,13 @@ impl Proc0Inte0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -40377,13 +40379,13 @@ impl Proc0Inte0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -40395,13 +40397,13 @@ impl Proc0Inte0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -40413,13 +40415,13 @@ impl Proc0Inte0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -40431,13 +40433,13 @@ impl Proc0Inte0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -40449,13 +40451,13 @@ impl Proc0Inte0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -40467,13 +40469,13 @@ impl Proc0Inte0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -40485,13 +40487,13 @@ impl Proc0Inte0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -40503,13 +40505,13 @@ impl Proc0Inte0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -40521,13 +40523,13 @@ impl Proc0Inte0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -40539,13 +40541,13 @@ impl Proc0Inte0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -40557,13 +40559,13 @@ impl Proc0Inte0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -40575,13 +40577,13 @@ impl Proc0Inte0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -40593,13 +40595,13 @@ impl Proc0Inte0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -40611,13 +40613,13 @@ impl Proc0Inte0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -40629,13 +40631,13 @@ impl Proc0Inte0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -40647,13 +40649,13 @@ impl Proc0Inte0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -40665,13 +40667,13 @@ impl Proc0Inte0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -40683,13 +40685,13 @@ impl Proc0Inte0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -40701,13 +40703,13 @@ impl Proc0Inte0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -40719,13 +40721,13 @@ impl Proc0Inte0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -40737,13 +40739,13 @@ impl Proc0Inte0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -40755,13 +40757,13 @@ impl Proc0Inte0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -40773,13 +40775,13 @@ impl Proc0Inte0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -41491,11 +41493,11 @@ impl Proc0Inte0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -41708,13 +41710,13 @@ impl Proc0Inte1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -41726,13 +41728,13 @@ impl Proc0Inte1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -41744,13 +41746,13 @@ impl Proc0Inte1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -41762,13 +41764,13 @@ impl Proc0Inte1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -41780,13 +41782,13 @@ impl Proc0Inte1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -41798,13 +41800,13 @@ impl Proc0Inte1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -41816,13 +41818,13 @@ impl Proc0Inte1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -41834,13 +41836,13 @@ impl Proc0Inte1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -41852,13 +41854,13 @@ impl Proc0Inte1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -41870,13 +41872,13 @@ impl Proc0Inte1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -41888,13 +41890,13 @@ impl Proc0Inte1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -41906,13 +41908,13 @@ impl Proc0Inte1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -41924,13 +41926,13 @@ impl Proc0Inte1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -41942,13 +41944,13 @@ impl Proc0Inte1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -41960,13 +41962,13 @@ impl Proc0Inte1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -41978,13 +41980,13 @@ impl Proc0Inte1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -41996,13 +41998,13 @@ impl Proc0Inte1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -42014,13 +42016,13 @@ impl Proc0Inte1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -42032,13 +42034,13 @@ impl Proc0Inte1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -42050,13 +42052,13 @@ impl Proc0Inte1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -42068,13 +42070,13 @@ impl Proc0Inte1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -42086,13 +42088,13 @@ impl Proc0Inte1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -42104,13 +42106,13 @@ impl Proc0Inte1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -42122,13 +42124,13 @@ impl Proc0Inte1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -42140,13 +42142,13 @@ impl Proc0Inte1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -42158,13 +42160,13 @@ impl Proc0Inte1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -42176,13 +42178,13 @@ impl Proc0Inte1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -42194,13 +42196,13 @@ impl Proc0Inte1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -42212,13 +42214,13 @@ impl Proc0Inte1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -42230,13 +42232,13 @@ impl Proc0Inte1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -42248,13 +42250,13 @@ impl Proc0Inte1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -42266,13 +42268,13 @@ impl Proc0Inte1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -42984,11 +42986,11 @@ impl Proc0Inte1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -43201,13 +43203,13 @@ impl Proc0Inte2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -43219,13 +43221,13 @@ impl Proc0Inte2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -43237,13 +43239,13 @@ impl Proc0Inte2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -43255,13 +43257,13 @@ impl Proc0Inte2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -43273,13 +43275,13 @@ impl Proc0Inte2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -43291,13 +43293,13 @@ impl Proc0Inte2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -43309,13 +43311,13 @@ impl Proc0Inte2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -43327,13 +43329,13 @@ impl Proc0Inte2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -43345,13 +43347,13 @@ impl Proc0Inte2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -43363,13 +43365,13 @@ impl Proc0Inte2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -43381,13 +43383,13 @@ impl Proc0Inte2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -43399,13 +43401,13 @@ impl Proc0Inte2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -43417,13 +43419,13 @@ impl Proc0Inte2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -43435,13 +43437,13 @@ impl Proc0Inte2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -43453,13 +43455,13 @@ impl Proc0Inte2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -43471,13 +43473,13 @@ impl Proc0Inte2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -43489,13 +43491,13 @@ impl Proc0Inte2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -43507,13 +43509,13 @@ impl Proc0Inte2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -43525,13 +43527,13 @@ impl Proc0Inte2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -43543,13 +43545,13 @@ impl Proc0Inte2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -43561,13 +43563,13 @@ impl Proc0Inte2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -43579,13 +43581,13 @@ impl Proc0Inte2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -43597,13 +43599,13 @@ impl Proc0Inte2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -43615,13 +43617,13 @@ impl Proc0Inte2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -43633,13 +43635,13 @@ impl Proc0Inte2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -43651,13 +43653,13 @@ impl Proc0Inte2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -43669,13 +43671,13 @@ impl Proc0Inte2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -43687,13 +43689,13 @@ impl Proc0Inte2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -43705,13 +43707,13 @@ impl Proc0Inte2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -43723,13 +43725,13 @@ impl Proc0Inte2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -43741,13 +43743,13 @@ impl Proc0Inte2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -43759,13 +43761,13 @@ impl Proc0Inte2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -44477,11 +44479,11 @@ impl Proc0Inte2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -44694,13 +44696,13 @@ impl Proc0Inte3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -44712,13 +44714,13 @@ impl Proc0Inte3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -44730,13 +44732,13 @@ impl Proc0Inte3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -44748,13 +44750,13 @@ impl Proc0Inte3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -44766,13 +44768,13 @@ impl Proc0Inte3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -44784,13 +44786,13 @@ impl Proc0Inte3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -44802,13 +44804,13 @@ impl Proc0Inte3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -44820,13 +44822,13 @@ impl Proc0Inte3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -44838,13 +44840,13 @@ impl Proc0Inte3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -44856,13 +44858,13 @@ impl Proc0Inte3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -44874,13 +44876,13 @@ impl Proc0Inte3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -44892,13 +44894,13 @@ impl Proc0Inte3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -44910,13 +44912,13 @@ impl Proc0Inte3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -44928,13 +44930,13 @@ impl Proc0Inte3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -44946,13 +44948,13 @@ impl Proc0Inte3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -44964,13 +44966,13 @@ impl Proc0Inte3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -44982,13 +44984,13 @@ impl Proc0Inte3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -45000,13 +45002,13 @@ impl Proc0Inte3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -45018,13 +45020,13 @@ impl Proc0Inte3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -45036,13 +45038,13 @@ impl Proc0Inte3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -45054,13 +45056,13 @@ impl Proc0Inte3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -45072,13 +45074,13 @@ impl Proc0Inte3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -45090,13 +45092,13 @@ impl Proc0Inte3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -45108,13 +45110,13 @@ impl Proc0Inte3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -45126,13 +45128,13 @@ impl Proc0Inte3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -45144,13 +45146,13 @@ impl Proc0Inte3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -45162,13 +45164,13 @@ impl Proc0Inte3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -45180,13 +45182,13 @@ impl Proc0Inte3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -45198,13 +45200,13 @@ impl Proc0Inte3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -45216,13 +45218,13 @@ impl Proc0Inte3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -45234,13 +45236,13 @@ impl Proc0Inte3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -45252,13 +45254,13 @@ impl Proc0Inte3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -45970,11 +45972,11 @@ impl Proc0Inte3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -46187,13 +46189,13 @@ impl Proc0Inte4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -46205,13 +46207,13 @@ impl Proc0Inte4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -46223,13 +46225,13 @@ impl Proc0Inte4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -46241,13 +46243,13 @@ impl Proc0Inte4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -46259,13 +46261,13 @@ impl Proc0Inte4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -46277,13 +46279,13 @@ impl Proc0Inte4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -46295,13 +46297,13 @@ impl Proc0Inte4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -46313,13 +46315,13 @@ impl Proc0Inte4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -46331,13 +46333,13 @@ impl Proc0Inte4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -46349,13 +46351,13 @@ impl Proc0Inte4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -46367,13 +46369,13 @@ impl Proc0Inte4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -46385,13 +46387,13 @@ impl Proc0Inte4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -46403,13 +46405,13 @@ impl Proc0Inte4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -46421,13 +46423,13 @@ impl Proc0Inte4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -46439,13 +46441,13 @@ impl Proc0Inte4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -46457,13 +46459,13 @@ impl Proc0Inte4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -46475,13 +46477,13 @@ impl Proc0Inte4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -46493,13 +46495,13 @@ impl Proc0Inte4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -46511,13 +46513,13 @@ impl Proc0Inte4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -46529,13 +46531,13 @@ impl Proc0Inte4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -46547,13 +46549,13 @@ impl Proc0Inte4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -46565,13 +46567,13 @@ impl Proc0Inte4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -46583,13 +46585,13 @@ impl Proc0Inte4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -46601,13 +46603,13 @@ impl Proc0Inte4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -46619,13 +46621,13 @@ impl Proc0Inte4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -46637,13 +46639,13 @@ impl Proc0Inte4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -46655,13 +46657,13 @@ impl Proc0Inte4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -46673,13 +46675,13 @@ impl Proc0Inte4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -46691,13 +46693,13 @@ impl Proc0Inte4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -46709,13 +46711,13 @@ impl Proc0Inte4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -46727,13 +46729,13 @@ impl Proc0Inte4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -46745,13 +46747,13 @@ impl Proc0Inte4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -47463,11 +47465,11 @@ impl Proc0Inte4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Inte5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Inte5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -47680,13 +47682,13 @@ impl Proc0Inte5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -47698,13 +47700,13 @@ impl Proc0Inte5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -47716,13 +47718,13 @@ impl Proc0Inte5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -47734,13 +47736,13 @@ impl Proc0Inte5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -47752,13 +47754,13 @@ impl Proc0Inte5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -47770,13 +47772,13 @@ impl Proc0Inte5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -47788,13 +47790,13 @@ impl Proc0Inte5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -47806,13 +47808,13 @@ impl Proc0Inte5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -47824,13 +47826,13 @@ impl Proc0Inte5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -47842,13 +47844,13 @@ impl Proc0Inte5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -47860,13 +47862,13 @@ impl Proc0Inte5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -47878,13 +47880,13 @@ impl Proc0Inte5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -47896,13 +47898,13 @@ impl Proc0Inte5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -47914,13 +47916,13 @@ impl Proc0Inte5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -47932,13 +47934,13 @@ impl Proc0Inte5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -47950,13 +47952,13 @@ impl Proc0Inte5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -47968,13 +47970,13 @@ impl Proc0Inte5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -47986,13 +47988,13 @@ impl Proc0Inte5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -48004,13 +48006,13 @@ impl Proc0Inte5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -48022,13 +48024,13 @@ impl Proc0Inte5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -48040,13 +48042,13 @@ impl Proc0Inte5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -48058,13 +48060,13 @@ impl Proc0Inte5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -48076,13 +48078,13 @@ impl Proc0Inte5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -48094,13 +48096,13 @@ impl Proc0Inte5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -48112,13 +48114,13 @@ impl Proc0Inte5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -48130,13 +48132,13 @@ impl Proc0Inte5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -48148,13 +48150,13 @@ impl Proc0Inte5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -48166,13 +48168,13 @@ impl Proc0Inte5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -48184,13 +48186,13 @@ impl Proc0Inte5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -48202,13 +48204,13 @@ impl Proc0Inte5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -48220,13 +48222,13 @@ impl Proc0Inte5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -48238,13 +48240,13 @@ impl Proc0Inte5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -48956,11 +48958,11 @@ impl Proc0Inte5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -49173,13 +49175,13 @@ impl Proc0Intf0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -49191,13 +49193,13 @@ impl Proc0Intf0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -49209,13 +49211,13 @@ impl Proc0Intf0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -49227,13 +49229,13 @@ impl Proc0Intf0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -49245,13 +49247,13 @@ impl Proc0Intf0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -49263,13 +49265,13 @@ impl Proc0Intf0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -49281,13 +49283,13 @@ impl Proc0Intf0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -49299,13 +49301,13 @@ impl Proc0Intf0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -49317,13 +49319,13 @@ impl Proc0Intf0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -49335,13 +49337,13 @@ impl Proc0Intf0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -49353,13 +49355,13 @@ impl Proc0Intf0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -49371,13 +49373,13 @@ impl Proc0Intf0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -49389,13 +49391,13 @@ impl Proc0Intf0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -49407,13 +49409,13 @@ impl Proc0Intf0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -49425,13 +49427,13 @@ impl Proc0Intf0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -49443,13 +49445,13 @@ impl Proc0Intf0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -49461,13 +49463,13 @@ impl Proc0Intf0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -49479,13 +49481,13 @@ impl Proc0Intf0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -49497,13 +49499,13 @@ impl Proc0Intf0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -49515,13 +49517,13 @@ impl Proc0Intf0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -49533,13 +49535,13 @@ impl Proc0Intf0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -49551,13 +49553,13 @@ impl Proc0Intf0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -49569,13 +49571,13 @@ impl Proc0Intf0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -49587,13 +49589,13 @@ impl Proc0Intf0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -49605,13 +49607,13 @@ impl Proc0Intf0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -49623,13 +49625,13 @@ impl Proc0Intf0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -49641,13 +49643,13 @@ impl Proc0Intf0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -49659,13 +49661,13 @@ impl Proc0Intf0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -49677,13 +49679,13 @@ impl Proc0Intf0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -49695,13 +49697,13 @@ impl Proc0Intf0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -49713,13 +49715,13 @@ impl Proc0Intf0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -49731,13 +49733,13 @@ impl Proc0Intf0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -50449,11 +50451,11 @@ impl Proc0Intf0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -50666,13 +50668,13 @@ impl Proc0Intf1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -50684,13 +50686,13 @@ impl Proc0Intf1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -50702,13 +50704,13 @@ impl Proc0Intf1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -50720,13 +50722,13 @@ impl Proc0Intf1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -50738,13 +50740,13 @@ impl Proc0Intf1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -50756,13 +50758,13 @@ impl Proc0Intf1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -50774,13 +50776,13 @@ impl Proc0Intf1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -50792,13 +50794,13 @@ impl Proc0Intf1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -50810,13 +50812,13 @@ impl Proc0Intf1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -50828,13 +50830,13 @@ impl Proc0Intf1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -50846,13 +50848,13 @@ impl Proc0Intf1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -50864,13 +50866,13 @@ impl Proc0Intf1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -50882,13 +50884,13 @@ impl Proc0Intf1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -50900,13 +50902,13 @@ impl Proc0Intf1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -50918,13 +50920,13 @@ impl Proc0Intf1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -50936,13 +50938,13 @@ impl Proc0Intf1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -50954,13 +50956,13 @@ impl Proc0Intf1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -50972,13 +50974,13 @@ impl Proc0Intf1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -50990,13 +50992,13 @@ impl Proc0Intf1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -51008,13 +51010,13 @@ impl Proc0Intf1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -51026,13 +51028,13 @@ impl Proc0Intf1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -51044,13 +51046,13 @@ impl Proc0Intf1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -51062,13 +51064,13 @@ impl Proc0Intf1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -51080,13 +51082,13 @@ impl Proc0Intf1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -51098,13 +51100,13 @@ impl Proc0Intf1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -51116,13 +51118,13 @@ impl Proc0Intf1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -51134,13 +51136,13 @@ impl Proc0Intf1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -51152,13 +51154,13 @@ impl Proc0Intf1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -51170,13 +51172,13 @@ impl Proc0Intf1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -51188,13 +51190,13 @@ impl Proc0Intf1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -51206,13 +51208,13 @@ impl Proc0Intf1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -51224,13 +51226,13 @@ impl Proc0Intf1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -51942,11 +51944,11 @@ impl Proc0Intf1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -52159,13 +52161,13 @@ impl Proc0Intf2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -52177,13 +52179,13 @@ impl Proc0Intf2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -52195,13 +52197,13 @@ impl Proc0Intf2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -52213,13 +52215,13 @@ impl Proc0Intf2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -52231,13 +52233,13 @@ impl Proc0Intf2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -52249,13 +52251,13 @@ impl Proc0Intf2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -52267,13 +52269,13 @@ impl Proc0Intf2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -52285,13 +52287,13 @@ impl Proc0Intf2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -52303,13 +52305,13 @@ impl Proc0Intf2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -52321,13 +52323,13 @@ impl Proc0Intf2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -52339,13 +52341,13 @@ impl Proc0Intf2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -52357,13 +52359,13 @@ impl Proc0Intf2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -52375,13 +52377,13 @@ impl Proc0Intf2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -52393,13 +52395,13 @@ impl Proc0Intf2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -52411,13 +52413,13 @@ impl Proc0Intf2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -52429,13 +52431,13 @@ impl Proc0Intf2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -52447,13 +52449,13 @@ impl Proc0Intf2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -52465,13 +52467,13 @@ impl Proc0Intf2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -52483,13 +52485,13 @@ impl Proc0Intf2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -52501,13 +52503,13 @@ impl Proc0Intf2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -52519,13 +52521,13 @@ impl Proc0Intf2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -52537,13 +52539,13 @@ impl Proc0Intf2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -52555,13 +52557,13 @@ impl Proc0Intf2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -52573,13 +52575,13 @@ impl Proc0Intf2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -52591,13 +52593,13 @@ impl Proc0Intf2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -52609,13 +52611,13 @@ impl Proc0Intf2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -52627,13 +52629,13 @@ impl Proc0Intf2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -52645,13 +52647,13 @@ impl Proc0Intf2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -52663,13 +52665,13 @@ impl Proc0Intf2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -52681,13 +52683,13 @@ impl Proc0Intf2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -52699,13 +52701,13 @@ impl Proc0Intf2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -52717,13 +52719,13 @@ impl Proc0Intf2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -53435,11 +53437,11 @@ impl Proc0Intf2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -53652,13 +53654,13 @@ impl Proc0Intf3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -53670,13 +53672,13 @@ impl Proc0Intf3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -53688,13 +53690,13 @@ impl Proc0Intf3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -53706,13 +53708,13 @@ impl Proc0Intf3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -53724,13 +53726,13 @@ impl Proc0Intf3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -53742,13 +53744,13 @@ impl Proc0Intf3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -53760,13 +53762,13 @@ impl Proc0Intf3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -53778,13 +53780,13 @@ impl Proc0Intf3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -53796,13 +53798,13 @@ impl Proc0Intf3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -53814,13 +53816,13 @@ impl Proc0Intf3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -53832,13 +53834,13 @@ impl Proc0Intf3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -53850,13 +53852,13 @@ impl Proc0Intf3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -53868,13 +53870,13 @@ impl Proc0Intf3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -53886,13 +53888,13 @@ impl Proc0Intf3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -53904,13 +53906,13 @@ impl Proc0Intf3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -53922,13 +53924,13 @@ impl Proc0Intf3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -53940,13 +53942,13 @@ impl Proc0Intf3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -53958,13 +53960,13 @@ impl Proc0Intf3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -53976,13 +53978,13 @@ impl Proc0Intf3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -53994,13 +53996,13 @@ impl Proc0Intf3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -54012,13 +54014,13 @@ impl Proc0Intf3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -54030,13 +54032,13 @@ impl Proc0Intf3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -54048,13 +54050,13 @@ impl Proc0Intf3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -54066,13 +54068,13 @@ impl Proc0Intf3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -54084,13 +54086,13 @@ impl Proc0Intf3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -54102,13 +54104,13 @@ impl Proc0Intf3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -54120,13 +54122,13 @@ impl Proc0Intf3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -54138,13 +54140,13 @@ impl Proc0Intf3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -54156,13 +54158,13 @@ impl Proc0Intf3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -54174,13 +54176,13 @@ impl Proc0Intf3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -54192,13 +54194,13 @@ impl Proc0Intf3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -54210,13 +54212,13 @@ impl Proc0Intf3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -54928,11 +54930,11 @@ impl Proc0Intf3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55145,13 +55147,13 @@ impl Proc0Intf4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -55163,13 +55165,13 @@ impl Proc0Intf4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -55181,13 +55183,13 @@ impl Proc0Intf4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -55199,13 +55201,13 @@ impl Proc0Intf4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -55217,13 +55219,13 @@ impl Proc0Intf4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -55235,13 +55237,13 @@ impl Proc0Intf4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -55253,13 +55255,13 @@ impl Proc0Intf4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -55271,13 +55273,13 @@ impl Proc0Intf4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -55289,13 +55291,13 @@ impl Proc0Intf4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -55307,13 +55309,13 @@ impl Proc0Intf4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -55325,13 +55327,13 @@ impl Proc0Intf4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -55343,13 +55345,13 @@ impl Proc0Intf4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -55361,13 +55363,13 @@ impl Proc0Intf4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -55379,13 +55381,13 @@ impl Proc0Intf4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -55397,13 +55399,13 @@ impl Proc0Intf4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -55415,13 +55417,13 @@ impl Proc0Intf4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -55433,13 +55435,13 @@ impl Proc0Intf4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -55451,13 +55453,13 @@ impl Proc0Intf4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -55469,13 +55471,13 @@ impl Proc0Intf4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -55487,13 +55489,13 @@ impl Proc0Intf4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -55505,13 +55507,13 @@ impl Proc0Intf4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -55523,13 +55525,13 @@ impl Proc0Intf4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -55541,13 +55543,13 @@ impl Proc0Intf4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -55559,13 +55561,13 @@ impl Proc0Intf4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -55577,13 +55579,13 @@ impl Proc0Intf4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -55595,13 +55597,13 @@ impl Proc0Intf4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -55613,13 +55615,13 @@ impl Proc0Intf4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -55631,13 +55633,13 @@ impl Proc0Intf4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -55649,13 +55651,13 @@ impl Proc0Intf4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -55667,13 +55669,13 @@ impl Proc0Intf4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -55685,13 +55687,13 @@ impl Proc0Intf4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -55703,13 +55705,13 @@ impl Proc0Intf4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -56421,11 +56423,11 @@ impl Proc0Intf4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc0Intf5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Intf5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -56638,13 +56640,13 @@ impl Proc0Intf5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -56656,13 +56658,13 @@ impl Proc0Intf5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -56674,13 +56676,13 @@ impl Proc0Intf5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -56692,13 +56694,13 @@ impl Proc0Intf5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -56710,13 +56712,13 @@ impl Proc0Intf5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -56728,13 +56730,13 @@ impl Proc0Intf5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -56746,13 +56748,13 @@ impl Proc0Intf5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -56764,13 +56766,13 @@ impl Proc0Intf5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -56782,13 +56784,13 @@ impl Proc0Intf5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -56800,13 +56802,13 @@ impl Proc0Intf5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -56818,13 +56820,13 @@ impl Proc0Intf5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -56836,13 +56838,13 @@ impl Proc0Intf5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -56854,13 +56856,13 @@ impl Proc0Intf5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -56872,13 +56874,13 @@ impl Proc0Intf5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -56890,13 +56892,13 @@ impl Proc0Intf5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -56908,13 +56910,13 @@ impl Proc0Intf5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -56926,13 +56928,13 @@ impl Proc0Intf5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -56944,13 +56946,13 @@ impl Proc0Intf5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -56962,13 +56964,13 @@ impl Proc0Intf5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -56980,13 +56982,13 @@ impl Proc0Intf5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -56998,13 +57000,13 @@ impl Proc0Intf5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -57016,13 +57018,13 @@ impl Proc0Intf5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -57034,13 +57036,13 @@ impl Proc0Intf5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -57052,13 +57054,13 @@ impl Proc0Intf5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -57070,13 +57072,13 @@ impl Proc0Intf5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -57088,13 +57090,13 @@ impl Proc0Intf5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -57106,13 +57108,13 @@ impl Proc0Intf5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -57124,13 +57126,13 @@ impl Proc0Intf5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -57142,13 +57144,13 @@ impl Proc0Intf5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -57160,13 +57162,13 @@ impl Proc0Intf5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -57178,13 +57180,13 @@ impl Proc0Intf5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -57196,13 +57198,13 @@ impl Proc0Intf5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -57914,11 +57916,11 @@ impl Proc0Intf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58639,11 +58641,11 @@ impl Proc0Ints0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59364,11 +59366,11 @@ impl Proc0Ints1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60089,11 +60091,11 @@ impl Proc0Ints2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60814,11 +60816,11 @@ impl Proc0Ints3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61539,11 +61541,11 @@ impl Proc0Ints4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62264,11 +62266,11 @@ impl Proc0Ints5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -62481,13 +62483,13 @@ impl Proc1Inte0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -62499,13 +62501,13 @@ impl Proc1Inte0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -62517,13 +62519,13 @@ impl Proc1Inte0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -62535,13 +62537,13 @@ impl Proc1Inte0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -62553,13 +62555,13 @@ impl Proc1Inte0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -62571,13 +62573,13 @@ impl Proc1Inte0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -62589,13 +62591,13 @@ impl Proc1Inte0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -62607,13 +62609,13 @@ impl Proc1Inte0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -62625,13 +62627,13 @@ impl Proc1Inte0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -62643,13 +62645,13 @@ impl Proc1Inte0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -62661,13 +62663,13 @@ impl Proc1Inte0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -62679,13 +62681,13 @@ impl Proc1Inte0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -62697,13 +62699,13 @@ impl Proc1Inte0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -62715,13 +62717,13 @@ impl Proc1Inte0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -62733,13 +62735,13 @@ impl Proc1Inte0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -62751,13 +62753,13 @@ impl Proc1Inte0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -62769,13 +62771,13 @@ impl Proc1Inte0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -62787,13 +62789,13 @@ impl Proc1Inte0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -62805,13 +62807,13 @@ impl Proc1Inte0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -62823,13 +62825,13 @@ impl Proc1Inte0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -62841,13 +62843,13 @@ impl Proc1Inte0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -62859,13 +62861,13 @@ impl Proc1Inte0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -62877,13 +62879,13 @@ impl Proc1Inte0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -62895,13 +62897,13 @@ impl Proc1Inte0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -62913,13 +62915,13 @@ impl Proc1Inte0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -62931,13 +62933,13 @@ impl Proc1Inte0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -62949,13 +62951,13 @@ impl Proc1Inte0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -62967,13 +62969,13 @@ impl Proc1Inte0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -62985,13 +62987,13 @@ impl Proc1Inte0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -63003,13 +63005,13 @@ impl Proc1Inte0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -63021,13 +63023,13 @@ impl Proc1Inte0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -63039,13 +63041,13 @@ impl Proc1Inte0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -63757,11 +63759,11 @@ impl Proc1Inte0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -63974,13 +63976,13 @@ impl Proc1Inte1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -63992,13 +63994,13 @@ impl Proc1Inte1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -64010,13 +64012,13 @@ impl Proc1Inte1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -64028,13 +64030,13 @@ impl Proc1Inte1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -64046,13 +64048,13 @@ impl Proc1Inte1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -64064,13 +64066,13 @@ impl Proc1Inte1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -64082,13 +64084,13 @@ impl Proc1Inte1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -64100,13 +64102,13 @@ impl Proc1Inte1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -64118,13 +64120,13 @@ impl Proc1Inte1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -64136,13 +64138,13 @@ impl Proc1Inte1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -64154,13 +64156,13 @@ impl Proc1Inte1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -64172,13 +64174,13 @@ impl Proc1Inte1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -64190,13 +64192,13 @@ impl Proc1Inte1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -64208,13 +64210,13 @@ impl Proc1Inte1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -64226,13 +64228,13 @@ impl Proc1Inte1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -64244,13 +64246,13 @@ impl Proc1Inte1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -64262,13 +64264,13 @@ impl Proc1Inte1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -64280,13 +64282,13 @@ impl Proc1Inte1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -64298,13 +64300,13 @@ impl Proc1Inte1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -64316,13 +64318,13 @@ impl Proc1Inte1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -64334,13 +64336,13 @@ impl Proc1Inte1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -64352,13 +64354,13 @@ impl Proc1Inte1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -64370,13 +64372,13 @@ impl Proc1Inte1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -64388,13 +64390,13 @@ impl Proc1Inte1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -64406,13 +64408,13 @@ impl Proc1Inte1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -64424,13 +64426,13 @@ impl Proc1Inte1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -64442,13 +64444,13 @@ impl Proc1Inte1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -64460,13 +64462,13 @@ impl Proc1Inte1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -64478,13 +64480,13 @@ impl Proc1Inte1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -64496,13 +64498,13 @@ impl Proc1Inte1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -64514,13 +64516,13 @@ impl Proc1Inte1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -64532,13 +64534,13 @@ impl Proc1Inte1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -65250,11 +65252,11 @@ impl Proc1Inte1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65467,13 +65469,13 @@ impl Proc1Inte2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -65485,13 +65487,13 @@ impl Proc1Inte2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -65503,13 +65505,13 @@ impl Proc1Inte2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -65521,13 +65523,13 @@ impl Proc1Inte2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -65539,13 +65541,13 @@ impl Proc1Inte2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -65557,13 +65559,13 @@ impl Proc1Inte2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -65575,13 +65577,13 @@ impl Proc1Inte2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -65593,13 +65595,13 @@ impl Proc1Inte2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -65611,13 +65613,13 @@ impl Proc1Inte2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -65629,13 +65631,13 @@ impl Proc1Inte2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -65647,13 +65649,13 @@ impl Proc1Inte2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -65665,13 +65667,13 @@ impl Proc1Inte2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -65683,13 +65685,13 @@ impl Proc1Inte2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -65701,13 +65703,13 @@ impl Proc1Inte2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -65719,13 +65721,13 @@ impl Proc1Inte2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -65737,13 +65739,13 @@ impl Proc1Inte2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -65755,13 +65757,13 @@ impl Proc1Inte2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -65773,13 +65775,13 @@ impl Proc1Inte2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -65791,13 +65793,13 @@ impl Proc1Inte2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -65809,13 +65811,13 @@ impl Proc1Inte2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -65827,13 +65829,13 @@ impl Proc1Inte2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -65845,13 +65847,13 @@ impl Proc1Inte2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -65863,13 +65865,13 @@ impl Proc1Inte2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -65881,13 +65883,13 @@ impl Proc1Inte2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -65899,13 +65901,13 @@ impl Proc1Inte2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -65917,13 +65919,13 @@ impl Proc1Inte2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -65935,13 +65937,13 @@ impl Proc1Inte2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -65953,13 +65955,13 @@ impl Proc1Inte2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -65971,13 +65973,13 @@ impl Proc1Inte2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -65989,13 +65991,13 @@ impl Proc1Inte2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -66007,13 +66009,13 @@ impl Proc1Inte2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -66025,13 +66027,13 @@ impl Proc1Inte2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -66743,11 +66745,11 @@ impl Proc1Inte2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66960,13 +66962,13 @@ impl Proc1Inte3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -66978,13 +66980,13 @@ impl Proc1Inte3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -66996,13 +66998,13 @@ impl Proc1Inte3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -67014,13 +67016,13 @@ impl Proc1Inte3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -67032,13 +67034,13 @@ impl Proc1Inte3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -67050,13 +67052,13 @@ impl Proc1Inte3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -67068,13 +67070,13 @@ impl Proc1Inte3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -67086,13 +67088,13 @@ impl Proc1Inte3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -67104,13 +67106,13 @@ impl Proc1Inte3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -67122,13 +67124,13 @@ impl Proc1Inte3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -67140,13 +67142,13 @@ impl Proc1Inte3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -67158,13 +67160,13 @@ impl Proc1Inte3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -67176,13 +67178,13 @@ impl Proc1Inte3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -67194,13 +67196,13 @@ impl Proc1Inte3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -67212,13 +67214,13 @@ impl Proc1Inte3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -67230,13 +67232,13 @@ impl Proc1Inte3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -67248,13 +67250,13 @@ impl Proc1Inte3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -67266,13 +67268,13 @@ impl Proc1Inte3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -67284,13 +67286,13 @@ impl Proc1Inte3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -67302,13 +67304,13 @@ impl Proc1Inte3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -67320,13 +67322,13 @@ impl Proc1Inte3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -67338,13 +67340,13 @@ impl Proc1Inte3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -67356,13 +67358,13 @@ impl Proc1Inte3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -67374,13 +67376,13 @@ impl Proc1Inte3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -67392,13 +67394,13 @@ impl Proc1Inte3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -67410,13 +67412,13 @@ impl Proc1Inte3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -67428,13 +67430,13 @@ impl Proc1Inte3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -67446,13 +67448,13 @@ impl Proc1Inte3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -67464,13 +67466,13 @@ impl Proc1Inte3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -67482,13 +67484,13 @@ impl Proc1Inte3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -67500,13 +67502,13 @@ impl Proc1Inte3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -67518,13 +67520,13 @@ impl Proc1Inte3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -68236,11 +68238,11 @@ impl Proc1Inte3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -68453,13 +68455,13 @@ impl Proc1Inte4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -68471,13 +68473,13 @@ impl Proc1Inte4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -68489,13 +68491,13 @@ impl Proc1Inte4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -68507,13 +68509,13 @@ impl Proc1Inte4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -68525,13 +68527,13 @@ impl Proc1Inte4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -68543,13 +68545,13 @@ impl Proc1Inte4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -68561,13 +68563,13 @@ impl Proc1Inte4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -68579,13 +68581,13 @@ impl Proc1Inte4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -68597,13 +68599,13 @@ impl Proc1Inte4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -68615,13 +68617,13 @@ impl Proc1Inte4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -68633,13 +68635,13 @@ impl Proc1Inte4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -68651,13 +68653,13 @@ impl Proc1Inte4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -68669,13 +68671,13 @@ impl Proc1Inte4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -68687,13 +68689,13 @@ impl Proc1Inte4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -68705,13 +68707,13 @@ impl Proc1Inte4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -68723,13 +68725,13 @@ impl Proc1Inte4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -68741,13 +68743,13 @@ impl Proc1Inte4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -68759,13 +68761,13 @@ impl Proc1Inte4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -68777,13 +68779,13 @@ impl Proc1Inte4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -68795,13 +68797,13 @@ impl Proc1Inte4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -68813,13 +68815,13 @@ impl Proc1Inte4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -68831,13 +68833,13 @@ impl Proc1Inte4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -68849,13 +68851,13 @@ impl Proc1Inte4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -68867,13 +68869,13 @@ impl Proc1Inte4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -68885,13 +68887,13 @@ impl Proc1Inte4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -68903,13 +68905,13 @@ impl Proc1Inte4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -68921,13 +68923,13 @@ impl Proc1Inte4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -68939,13 +68941,13 @@ impl Proc1Inte4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -68957,13 +68959,13 @@ impl Proc1Inte4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -68975,13 +68977,13 @@ impl Proc1Inte4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -68993,13 +68995,13 @@ impl Proc1Inte4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -69011,13 +69013,13 @@ impl Proc1Inte4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -69729,11 +69731,11 @@ impl Proc1Inte4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Inte5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Inte5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -69946,13 +69948,13 @@ impl Proc1Inte5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -69964,13 +69966,13 @@ impl Proc1Inte5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -69982,13 +69984,13 @@ impl Proc1Inte5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -70000,13 +70002,13 @@ impl Proc1Inte5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -70018,13 +70020,13 @@ impl Proc1Inte5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -70036,13 +70038,13 @@ impl Proc1Inte5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -70054,13 +70056,13 @@ impl Proc1Inte5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -70072,13 +70074,13 @@ impl Proc1Inte5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -70090,13 +70092,13 @@ impl Proc1Inte5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -70108,13 +70110,13 @@ impl Proc1Inte5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -70126,13 +70128,13 @@ impl Proc1Inte5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -70144,13 +70146,13 @@ impl Proc1Inte5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -70162,13 +70164,13 @@ impl Proc1Inte5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -70180,13 +70182,13 @@ impl Proc1Inte5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -70198,13 +70200,13 @@ impl Proc1Inte5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -70216,13 +70218,13 @@ impl Proc1Inte5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -70234,13 +70236,13 @@ impl Proc1Inte5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -70252,13 +70254,13 @@ impl Proc1Inte5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -70270,13 +70272,13 @@ impl Proc1Inte5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -70288,13 +70290,13 @@ impl Proc1Inte5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -70306,13 +70308,13 @@ impl Proc1Inte5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -70324,13 +70326,13 @@ impl Proc1Inte5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -70342,13 +70344,13 @@ impl Proc1Inte5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -70360,13 +70362,13 @@ impl Proc1Inte5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -70378,13 +70380,13 @@ impl Proc1Inte5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -70396,13 +70398,13 @@ impl Proc1Inte5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -70414,13 +70416,13 @@ impl Proc1Inte5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -70432,13 +70434,13 @@ impl Proc1Inte5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -70450,13 +70452,13 @@ impl Proc1Inte5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -70468,13 +70470,13 @@ impl Proc1Inte5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -70486,13 +70488,13 @@ impl Proc1Inte5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -70504,13 +70506,13 @@ impl Proc1Inte5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -71222,11 +71224,11 @@ impl Proc1Inte5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -71439,13 +71441,13 @@ impl Proc1Intf0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -71457,13 +71459,13 @@ impl Proc1Intf0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -71475,13 +71477,13 @@ impl Proc1Intf0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -71493,13 +71495,13 @@ impl Proc1Intf0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -71511,13 +71513,13 @@ impl Proc1Intf0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -71529,13 +71531,13 @@ impl Proc1Intf0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -71547,13 +71549,13 @@ impl Proc1Intf0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -71565,13 +71567,13 @@ impl Proc1Intf0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -71583,13 +71585,13 @@ impl Proc1Intf0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -71601,13 +71603,13 @@ impl Proc1Intf0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -71619,13 +71621,13 @@ impl Proc1Intf0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -71637,13 +71639,13 @@ impl Proc1Intf0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -71655,13 +71657,13 @@ impl Proc1Intf0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -71673,13 +71675,13 @@ impl Proc1Intf0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -71691,13 +71693,13 @@ impl Proc1Intf0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -71709,13 +71711,13 @@ impl Proc1Intf0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -71727,13 +71729,13 @@ impl Proc1Intf0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -71745,13 +71747,13 @@ impl Proc1Intf0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -71763,13 +71765,13 @@ impl Proc1Intf0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -71781,13 +71783,13 @@ impl Proc1Intf0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -71799,13 +71801,13 @@ impl Proc1Intf0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -71817,13 +71819,13 @@ impl Proc1Intf0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -71835,13 +71837,13 @@ impl Proc1Intf0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -71853,13 +71855,13 @@ impl Proc1Intf0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -71871,13 +71873,13 @@ impl Proc1Intf0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -71889,13 +71891,13 @@ impl Proc1Intf0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -71907,13 +71909,13 @@ impl Proc1Intf0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -71925,13 +71927,13 @@ impl Proc1Intf0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -71943,13 +71945,13 @@ impl Proc1Intf0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -71961,13 +71963,13 @@ impl Proc1Intf0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -71979,13 +71981,13 @@ impl Proc1Intf0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -71997,13 +71999,13 @@ impl Proc1Intf0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -72715,11 +72717,11 @@ impl Proc1Intf0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -72932,13 +72934,13 @@ impl Proc1Intf1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -72950,13 +72952,13 @@ impl Proc1Intf1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -72968,13 +72970,13 @@ impl Proc1Intf1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -72986,13 +72988,13 @@ impl Proc1Intf1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -73004,13 +73006,13 @@ impl Proc1Intf1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -73022,13 +73024,13 @@ impl Proc1Intf1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -73040,13 +73042,13 @@ impl Proc1Intf1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -73058,13 +73060,13 @@ impl Proc1Intf1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -73076,13 +73078,13 @@ impl Proc1Intf1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -73094,13 +73096,13 @@ impl Proc1Intf1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -73112,13 +73114,13 @@ impl Proc1Intf1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -73130,13 +73132,13 @@ impl Proc1Intf1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -73148,13 +73150,13 @@ impl Proc1Intf1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -73166,13 +73168,13 @@ impl Proc1Intf1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -73184,13 +73186,13 @@ impl Proc1Intf1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -73202,13 +73204,13 @@ impl Proc1Intf1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -73220,13 +73222,13 @@ impl Proc1Intf1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -73238,13 +73240,13 @@ impl Proc1Intf1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -73256,13 +73258,13 @@ impl Proc1Intf1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -73274,13 +73276,13 @@ impl Proc1Intf1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -73292,13 +73294,13 @@ impl Proc1Intf1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -73310,13 +73312,13 @@ impl Proc1Intf1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -73328,13 +73330,13 @@ impl Proc1Intf1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -73346,13 +73348,13 @@ impl Proc1Intf1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -73364,13 +73366,13 @@ impl Proc1Intf1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -73382,13 +73384,13 @@ impl Proc1Intf1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -73400,13 +73402,13 @@ impl Proc1Intf1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -73418,13 +73420,13 @@ impl Proc1Intf1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -73436,13 +73438,13 @@ impl Proc1Intf1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -73454,13 +73456,13 @@ impl Proc1Intf1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -73472,13 +73474,13 @@ impl Proc1Intf1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -73490,13 +73492,13 @@ impl Proc1Intf1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -74208,11 +74210,11 @@ impl Proc1Intf1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -74425,13 +74427,13 @@ impl Proc1Intf2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -74443,13 +74445,13 @@ impl Proc1Intf2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -74461,13 +74463,13 @@ impl Proc1Intf2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -74479,13 +74481,13 @@ impl Proc1Intf2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -74497,13 +74499,13 @@ impl Proc1Intf2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -74515,13 +74517,13 @@ impl Proc1Intf2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -74533,13 +74535,13 @@ impl Proc1Intf2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -74551,13 +74553,13 @@ impl Proc1Intf2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -74569,13 +74571,13 @@ impl Proc1Intf2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -74587,13 +74589,13 @@ impl Proc1Intf2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -74605,13 +74607,13 @@ impl Proc1Intf2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -74623,13 +74625,13 @@ impl Proc1Intf2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -74641,13 +74643,13 @@ impl Proc1Intf2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -74659,13 +74661,13 @@ impl Proc1Intf2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -74677,13 +74679,13 @@ impl Proc1Intf2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -74695,13 +74697,13 @@ impl Proc1Intf2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -74713,13 +74715,13 @@ impl Proc1Intf2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -74731,13 +74733,13 @@ impl Proc1Intf2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -74749,13 +74751,13 @@ impl Proc1Intf2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -74767,13 +74769,13 @@ impl Proc1Intf2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -74785,13 +74787,13 @@ impl Proc1Intf2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -74803,13 +74805,13 @@ impl Proc1Intf2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -74821,13 +74823,13 @@ impl Proc1Intf2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -74839,13 +74841,13 @@ impl Proc1Intf2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -74857,13 +74859,13 @@ impl Proc1Intf2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -74875,13 +74877,13 @@ impl Proc1Intf2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -74893,13 +74895,13 @@ impl Proc1Intf2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -74911,13 +74913,13 @@ impl Proc1Intf2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -74929,13 +74931,13 @@ impl Proc1Intf2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -74947,13 +74949,13 @@ impl Proc1Intf2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -74965,13 +74967,13 @@ impl Proc1Intf2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -74983,13 +74985,13 @@ impl Proc1Intf2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -75701,11 +75703,11 @@ impl Proc1Intf2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -75918,13 +75920,13 @@ impl Proc1Intf3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -75936,13 +75938,13 @@ impl Proc1Intf3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -75954,13 +75956,13 @@ impl Proc1Intf3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -75972,13 +75974,13 @@ impl Proc1Intf3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -75990,13 +75992,13 @@ impl Proc1Intf3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -76008,13 +76010,13 @@ impl Proc1Intf3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -76026,13 +76028,13 @@ impl Proc1Intf3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -76044,13 +76046,13 @@ impl Proc1Intf3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -76062,13 +76064,13 @@ impl Proc1Intf3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -76080,13 +76082,13 @@ impl Proc1Intf3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -76098,13 +76100,13 @@ impl Proc1Intf3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -76116,13 +76118,13 @@ impl Proc1Intf3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -76134,13 +76136,13 @@ impl Proc1Intf3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -76152,13 +76154,13 @@ impl Proc1Intf3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -76170,13 +76172,13 @@ impl Proc1Intf3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -76188,13 +76190,13 @@ impl Proc1Intf3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -76206,13 +76208,13 @@ impl Proc1Intf3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -76224,13 +76226,13 @@ impl Proc1Intf3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -76242,13 +76244,13 @@ impl Proc1Intf3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -76260,13 +76262,13 @@ impl Proc1Intf3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -76278,13 +76280,13 @@ impl Proc1Intf3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -76296,13 +76298,13 @@ impl Proc1Intf3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -76314,13 +76316,13 @@ impl Proc1Intf3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -76332,13 +76334,13 @@ impl Proc1Intf3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -76350,13 +76352,13 @@ impl Proc1Intf3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -76368,13 +76370,13 @@ impl Proc1Intf3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -76386,13 +76388,13 @@ impl Proc1Intf3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -76404,13 +76406,13 @@ impl Proc1Intf3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -76422,13 +76424,13 @@ impl Proc1Intf3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -76440,13 +76442,13 @@ impl Proc1Intf3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -76458,13 +76460,13 @@ impl Proc1Intf3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -76476,13 +76478,13 @@ impl Proc1Intf3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -77194,11 +77196,11 @@ impl Proc1Intf3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -77411,13 +77413,13 @@ impl Proc1Intf4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -77429,13 +77431,13 @@ impl Proc1Intf4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -77447,13 +77449,13 @@ impl Proc1Intf4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -77465,13 +77467,13 @@ impl Proc1Intf4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -77483,13 +77485,13 @@ impl Proc1Intf4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -77501,13 +77503,13 @@ impl Proc1Intf4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -77519,13 +77521,13 @@ impl Proc1Intf4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -77537,13 +77539,13 @@ impl Proc1Intf4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -77555,13 +77557,13 @@ impl Proc1Intf4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -77573,13 +77575,13 @@ impl Proc1Intf4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -77591,13 +77593,13 @@ impl Proc1Intf4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -77609,13 +77611,13 @@ impl Proc1Intf4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -77627,13 +77629,13 @@ impl Proc1Intf4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -77645,13 +77647,13 @@ impl Proc1Intf4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -77663,13 +77665,13 @@ impl Proc1Intf4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -77681,13 +77683,13 @@ impl Proc1Intf4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -77699,13 +77701,13 @@ impl Proc1Intf4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -77717,13 +77719,13 @@ impl Proc1Intf4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -77735,13 +77737,13 @@ impl Proc1Intf4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -77753,13 +77755,13 @@ impl Proc1Intf4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -77771,13 +77773,13 @@ impl Proc1Intf4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -77789,13 +77791,13 @@ impl Proc1Intf4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -77807,13 +77809,13 @@ impl Proc1Intf4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -77825,13 +77827,13 @@ impl Proc1Intf4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -77843,13 +77845,13 @@ impl Proc1Intf4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -77861,13 +77863,13 @@ impl Proc1Intf4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -77879,13 +77881,13 @@ impl Proc1Intf4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -77897,13 +77899,13 @@ impl Proc1Intf4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -77915,13 +77917,13 @@ impl Proc1Intf4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -77933,13 +77935,13 @@ impl Proc1Intf4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -77951,13 +77953,13 @@ impl Proc1Intf4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -77969,13 +77971,13 @@ impl Proc1Intf4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -78687,11 +78689,11 @@ impl Proc1Intf4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct Proc1Intf5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Intf5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -78904,13 +78906,13 @@ impl Proc1Intf5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -78922,13 +78924,13 @@ impl Proc1Intf5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -78940,13 +78942,13 @@ impl Proc1Intf5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -78958,13 +78960,13 @@ impl Proc1Intf5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -78976,13 +78978,13 @@ impl Proc1Intf5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -78994,13 +78996,13 @@ impl Proc1Intf5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -79012,13 +79014,13 @@ impl Proc1Intf5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -79030,13 +79032,13 @@ impl Proc1Intf5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -79048,13 +79050,13 @@ impl Proc1Intf5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -79066,13 +79068,13 @@ impl Proc1Intf5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -79084,13 +79086,13 @@ impl Proc1Intf5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -79102,13 +79104,13 @@ impl Proc1Intf5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -79120,13 +79122,13 @@ impl Proc1Intf5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -79138,13 +79140,13 @@ impl Proc1Intf5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -79156,13 +79158,13 @@ impl Proc1Intf5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -79174,13 +79176,13 @@ impl Proc1Intf5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -79192,13 +79194,13 @@ impl Proc1Intf5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -79210,13 +79212,13 @@ impl Proc1Intf5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -79228,13 +79230,13 @@ impl Proc1Intf5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -79246,13 +79248,13 @@ impl Proc1Intf5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -79264,13 +79266,13 @@ impl Proc1Intf5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -79282,13 +79284,13 @@ impl Proc1Intf5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -79300,13 +79302,13 @@ impl Proc1Intf5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -79318,13 +79320,13 @@ impl Proc1Intf5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -79336,13 +79338,13 @@ impl Proc1Intf5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -79354,13 +79356,13 @@ impl Proc1Intf5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -79372,13 +79374,13 @@ impl Proc1Intf5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -79390,13 +79392,13 @@ impl Proc1Intf5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -79408,13 +79410,13 @@ impl Proc1Intf5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -79426,13 +79428,13 @@ impl Proc1Intf5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -79444,13 +79446,13 @@ impl Proc1Intf5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -79462,13 +79464,13 @@ impl Proc1Intf5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -80180,11 +80182,11 @@ impl Proc1Intf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -80905,11 +80907,11 @@ impl Proc1Ints0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -81630,11 +81632,11 @@ impl Proc1Ints1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -82355,11 +82357,11 @@ impl Proc1Ints2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -83080,11 +83082,11 @@ impl Proc1Ints3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -83805,11 +83807,11 @@ impl Proc1Ints4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -84530,11 +84532,11 @@ impl Proc1Ints5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -84747,13 +84749,13 @@ impl DormantWakeInte0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -84765,13 +84767,13 @@ impl DormantWakeInte0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -84783,13 +84785,13 @@ impl DormantWakeInte0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -84801,13 +84803,13 @@ impl DormantWakeInte0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -84819,13 +84821,13 @@ impl DormantWakeInte0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -84837,13 +84839,13 @@ impl DormantWakeInte0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -84855,13 +84857,13 @@ impl DormantWakeInte0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -84873,13 +84875,13 @@ impl DormantWakeInte0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -84891,13 +84893,13 @@ impl DormantWakeInte0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -84909,13 +84911,13 @@ impl DormantWakeInte0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -84927,13 +84929,13 @@ impl DormantWakeInte0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -84945,13 +84947,13 @@ impl DormantWakeInte0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -84963,13 +84965,13 @@ impl DormantWakeInte0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -84981,13 +84983,13 @@ impl DormantWakeInte0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -84999,13 +85001,13 @@ impl DormantWakeInte0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -85017,13 +85019,13 @@ impl DormantWakeInte0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -85035,13 +85037,13 @@ impl DormantWakeInte0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -85053,13 +85055,13 @@ impl DormantWakeInte0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -85071,13 +85073,13 @@ impl DormantWakeInte0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -85089,13 +85091,13 @@ impl DormantWakeInte0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -85107,13 +85109,13 @@ impl DormantWakeInte0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -85125,13 +85127,13 @@ impl DormantWakeInte0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -85143,13 +85145,13 @@ impl DormantWakeInte0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -85161,13 +85163,13 @@ impl DormantWakeInte0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -85179,13 +85181,13 @@ impl DormantWakeInte0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -85197,13 +85199,13 @@ impl DormantWakeInte0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -85215,13 +85217,13 @@ impl DormantWakeInte0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -85233,13 +85235,13 @@ impl DormantWakeInte0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -85251,13 +85253,13 @@ impl DormantWakeInte0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -85269,13 +85271,13 @@ impl DormantWakeInte0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -85287,13 +85289,13 @@ impl DormantWakeInte0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -85305,13 +85307,13 @@ impl DormantWakeInte0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -86023,11 +86025,11 @@ impl DormantWakeInte0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -86240,13 +86242,13 @@ impl DormantWakeInte1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -86258,13 +86260,13 @@ impl DormantWakeInte1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -86276,13 +86278,13 @@ impl DormantWakeInte1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -86294,13 +86296,13 @@ impl DormantWakeInte1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -86312,13 +86314,13 @@ impl DormantWakeInte1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -86330,13 +86332,13 @@ impl DormantWakeInte1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -86348,13 +86350,13 @@ impl DormantWakeInte1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -86366,13 +86368,13 @@ impl DormantWakeInte1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -86384,13 +86386,13 @@ impl DormantWakeInte1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -86402,13 +86404,13 @@ impl DormantWakeInte1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -86420,13 +86422,13 @@ impl DormantWakeInte1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -86438,13 +86440,13 @@ impl DormantWakeInte1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -86456,13 +86458,13 @@ impl DormantWakeInte1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -86474,13 +86476,13 @@ impl DormantWakeInte1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -86492,13 +86494,13 @@ impl DormantWakeInte1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -86510,13 +86512,13 @@ impl DormantWakeInte1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -86528,13 +86530,13 @@ impl DormantWakeInte1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -86546,13 +86548,13 @@ impl DormantWakeInte1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -86564,13 +86566,13 @@ impl DormantWakeInte1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -86582,13 +86584,13 @@ impl DormantWakeInte1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -86600,13 +86602,13 @@ impl DormantWakeInte1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -86618,13 +86620,13 @@ impl DormantWakeInte1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -86636,13 +86638,13 @@ impl DormantWakeInte1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -86654,13 +86656,13 @@ impl DormantWakeInte1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -86672,13 +86674,13 @@ impl DormantWakeInte1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -86690,13 +86692,13 @@ impl DormantWakeInte1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -86708,13 +86710,13 @@ impl DormantWakeInte1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -86726,13 +86728,13 @@ impl DormantWakeInte1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -86744,13 +86746,13 @@ impl DormantWakeInte1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -86762,13 +86764,13 @@ impl DormantWakeInte1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -86780,13 +86782,13 @@ impl DormantWakeInte1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -86798,13 +86800,13 @@ impl DormantWakeInte1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -87516,11 +87518,11 @@ impl DormantWakeInte1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -87733,13 +87735,13 @@ impl DormantWakeInte2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -87751,13 +87753,13 @@ impl DormantWakeInte2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -87769,13 +87771,13 @@ impl DormantWakeInte2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -87787,13 +87789,13 @@ impl DormantWakeInte2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -87805,13 +87807,13 @@ impl DormantWakeInte2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -87823,13 +87825,13 @@ impl DormantWakeInte2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -87841,13 +87843,13 @@ impl DormantWakeInte2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -87859,13 +87861,13 @@ impl DormantWakeInte2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -87877,13 +87879,13 @@ impl DormantWakeInte2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -87895,13 +87897,13 @@ impl DormantWakeInte2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -87913,13 +87915,13 @@ impl DormantWakeInte2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -87931,13 +87933,13 @@ impl DormantWakeInte2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -87949,13 +87951,13 @@ impl DormantWakeInte2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -87967,13 +87969,13 @@ impl DormantWakeInte2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -87985,13 +87987,13 @@ impl DormantWakeInte2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -88003,13 +88005,13 @@ impl DormantWakeInte2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -88021,13 +88023,13 @@ impl DormantWakeInte2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -88039,13 +88041,13 @@ impl DormantWakeInte2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -88057,13 +88059,13 @@ impl DormantWakeInte2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -88075,13 +88077,13 @@ impl DormantWakeInte2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -88093,13 +88095,13 @@ impl DormantWakeInte2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -88111,13 +88113,13 @@ impl DormantWakeInte2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -88129,13 +88131,13 @@ impl DormantWakeInte2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -88147,13 +88149,13 @@ impl DormantWakeInte2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -88165,13 +88167,13 @@ impl DormantWakeInte2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -88183,13 +88185,13 @@ impl DormantWakeInte2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -88201,13 +88203,13 @@ impl DormantWakeInte2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -88219,13 +88221,13 @@ impl DormantWakeInte2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -88237,13 +88239,13 @@ impl DormantWakeInte2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -88255,13 +88257,13 @@ impl DormantWakeInte2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -88273,13 +88275,13 @@ impl DormantWakeInte2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -88291,13 +88293,13 @@ impl DormantWakeInte2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -89009,11 +89011,11 @@ impl DormantWakeInte2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -89226,13 +89228,13 @@ impl DormantWakeInte3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -89244,13 +89246,13 @@ impl DormantWakeInte3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -89262,13 +89264,13 @@ impl DormantWakeInte3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -89280,13 +89282,13 @@ impl DormantWakeInte3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -89298,13 +89300,13 @@ impl DormantWakeInte3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -89316,13 +89318,13 @@ impl DormantWakeInte3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -89334,13 +89336,13 @@ impl DormantWakeInte3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -89352,13 +89354,13 @@ impl DormantWakeInte3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -89370,13 +89372,13 @@ impl DormantWakeInte3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -89388,13 +89390,13 @@ impl DormantWakeInte3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -89406,13 +89408,13 @@ impl DormantWakeInte3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -89424,13 +89426,13 @@ impl DormantWakeInte3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -89442,13 +89444,13 @@ impl DormantWakeInte3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -89460,13 +89462,13 @@ impl DormantWakeInte3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -89478,13 +89480,13 @@ impl DormantWakeInte3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -89496,13 +89498,13 @@ impl DormantWakeInte3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -89514,13 +89516,13 @@ impl DormantWakeInte3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -89532,13 +89534,13 @@ impl DormantWakeInte3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -89550,13 +89552,13 @@ impl DormantWakeInte3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -89568,13 +89570,13 @@ impl DormantWakeInte3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -89586,13 +89588,13 @@ impl DormantWakeInte3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -89604,13 +89606,13 @@ impl DormantWakeInte3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -89622,13 +89624,13 @@ impl DormantWakeInte3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -89640,13 +89642,13 @@ impl DormantWakeInte3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -89658,13 +89660,13 @@ impl DormantWakeInte3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -89676,13 +89678,13 @@ impl DormantWakeInte3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -89694,13 +89696,13 @@ impl DormantWakeInte3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -89712,13 +89714,13 @@ impl DormantWakeInte3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -89730,13 +89732,13 @@ impl DormantWakeInte3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -89748,13 +89750,13 @@ impl DormantWakeInte3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -89766,13 +89768,13 @@ impl DormantWakeInte3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -89784,13 +89786,13 @@ impl DormantWakeInte3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -90502,11 +90504,11 @@ impl DormantWakeInte3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -90719,13 +90721,13 @@ impl DormantWakeInte4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -90737,13 +90739,13 @@ impl DormantWakeInte4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -90755,13 +90757,13 @@ impl DormantWakeInte4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -90773,13 +90775,13 @@ impl DormantWakeInte4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -90791,13 +90793,13 @@ impl DormantWakeInte4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -90809,13 +90811,13 @@ impl DormantWakeInte4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -90827,13 +90829,13 @@ impl DormantWakeInte4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -90845,13 +90847,13 @@ impl DormantWakeInte4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -90863,13 +90865,13 @@ impl DormantWakeInte4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -90881,13 +90883,13 @@ impl DormantWakeInte4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -90899,13 +90901,13 @@ impl DormantWakeInte4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -90917,13 +90919,13 @@ impl DormantWakeInte4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -90935,13 +90937,13 @@ impl DormantWakeInte4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -90953,13 +90955,13 @@ impl DormantWakeInte4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -90971,13 +90973,13 @@ impl DormantWakeInte4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -90989,13 +90991,13 @@ impl DormantWakeInte4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -91007,13 +91009,13 @@ impl DormantWakeInte4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -91025,13 +91027,13 @@ impl DormantWakeInte4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -91043,13 +91045,13 @@ impl DormantWakeInte4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -91061,13 +91063,13 @@ impl DormantWakeInte4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -91079,13 +91081,13 @@ impl DormantWakeInte4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -91097,13 +91099,13 @@ impl DormantWakeInte4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -91115,13 +91117,13 @@ impl DormantWakeInte4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -91133,13 +91135,13 @@ impl DormantWakeInte4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -91151,13 +91153,13 @@ impl DormantWakeInte4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -91169,13 +91171,13 @@ impl DormantWakeInte4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -91187,13 +91189,13 @@ impl DormantWakeInte4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -91205,13 +91207,13 @@ impl DormantWakeInte4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -91223,13 +91225,13 @@ impl DormantWakeInte4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -91241,13 +91243,13 @@ impl DormantWakeInte4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -91259,13 +91261,13 @@ impl DormantWakeInte4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -91277,13 +91279,13 @@ impl DormantWakeInte4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -91995,11 +91997,11 @@ impl DormantWakeInte4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeInte5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInte5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -92212,13 +92214,13 @@ impl DormantWakeInte5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -92230,13 +92232,13 @@ impl DormantWakeInte5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -92248,13 +92250,13 @@ impl DormantWakeInte5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -92266,13 +92268,13 @@ impl DormantWakeInte5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -92284,13 +92286,13 @@ impl DormantWakeInte5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -92302,13 +92304,13 @@ impl DormantWakeInte5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -92320,13 +92322,13 @@ impl DormantWakeInte5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -92338,13 +92340,13 @@ impl DormantWakeInte5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -92356,13 +92358,13 @@ impl DormantWakeInte5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -92374,13 +92376,13 @@ impl DormantWakeInte5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -92392,13 +92394,13 @@ impl DormantWakeInte5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -92410,13 +92412,13 @@ impl DormantWakeInte5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -92428,13 +92430,13 @@ impl DormantWakeInte5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -92446,13 +92448,13 @@ impl DormantWakeInte5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -92464,13 +92466,13 @@ impl DormantWakeInte5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -92482,13 +92484,13 @@ impl DormantWakeInte5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -92500,13 +92502,13 @@ impl DormantWakeInte5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -92518,13 +92520,13 @@ impl DormantWakeInte5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -92536,13 +92538,13 @@ impl DormantWakeInte5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -92554,13 +92556,13 @@ impl DormantWakeInte5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -92572,13 +92574,13 @@ impl DormantWakeInte5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -92590,13 +92592,13 @@ impl DormantWakeInte5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -92608,13 +92610,13 @@ impl DormantWakeInte5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -92626,13 +92628,13 @@ impl DormantWakeInte5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -92644,13 +92646,13 @@ impl DormantWakeInte5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -92662,13 +92664,13 @@ impl DormantWakeInte5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -92680,13 +92682,13 @@ impl DormantWakeInte5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -92698,13 +92700,13 @@ impl DormantWakeInte5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -92716,13 +92718,13 @@ impl DormantWakeInte5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -92734,13 +92736,13 @@ impl DormantWakeInte5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -92752,13 +92754,13 @@ impl DormantWakeInte5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -92770,13 +92772,13 @@ impl DormantWakeInte5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -93488,11 +93490,11 @@ impl DormantWakeInte5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -93705,13 +93707,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_high(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO7_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_HIGH_MASK);
     }
 
     /// **GPIO7_EDGE_LOW** `[30]` (RW)
@@ -93723,13 +93725,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_edge_low(&self) {
-        self.value.set_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO7_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO7_EDGE_LOW_MASK);
     }
 
     /// **GPIO7_LEVEL_HIGH** `[29]` (RW)
@@ -93741,13 +93743,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_high(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO7_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_high(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO7_LEVEL_LOW** `[28]` (RW)
@@ -93759,13 +93761,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio7_level_low(&self) {
-        self.value.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO7_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio7_level_low(&self) {
-        self.value.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO7_LEVEL_LOW_MASK);
     }
 
     /// **GPIO6_EDGE_HIGH** `[27]` (RW)
@@ -93777,13 +93779,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_high(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO6_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_HIGH_MASK);
     }
 
     /// **GPIO6_EDGE_LOW** `[26]` (RW)
@@ -93795,13 +93797,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_edge_low(&self) {
-        self.value.set_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO6_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO6_EDGE_LOW_MASK);
     }
 
     /// **GPIO6_LEVEL_HIGH** `[25]` (RW)
@@ -93813,13 +93815,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_high(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO6_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_high(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO6_LEVEL_LOW** `[24]` (RW)
@@ -93831,13 +93833,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio6_level_low(&self) {
-        self.value.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO6_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio6_level_low(&self) {
-        self.value.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO6_LEVEL_LOW_MASK);
     }
 
     /// **GPIO5_EDGE_HIGH** `[23]` (RW)
@@ -93849,13 +93851,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_high(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO5_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_HIGH_MASK);
     }
 
     /// **GPIO5_EDGE_LOW** `[22]` (RW)
@@ -93867,13 +93869,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_edge_low(&self) {
-        self.value.set_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO5_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO5_EDGE_LOW_MASK);
     }
 
     /// **GPIO5_LEVEL_HIGH** `[21]` (RW)
@@ -93885,13 +93887,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_high(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO5_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_high(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO5_LEVEL_LOW** `[20]` (RW)
@@ -93903,13 +93905,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio5_level_low(&self) {
-        self.value.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO5_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio5_level_low(&self) {
-        self.value.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO5_LEVEL_LOW_MASK);
     }
 
     /// **GPIO4_EDGE_HIGH** `[19]` (RW)
@@ -93921,13 +93923,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_high(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO4_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_HIGH_MASK);
     }
 
     /// **GPIO4_EDGE_LOW** `[18]` (RW)
@@ -93939,13 +93941,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_edge_low(&self) {
-        self.value.set_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO4_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO4_EDGE_LOW_MASK);
     }
 
     /// **GPIO4_LEVEL_HIGH** `[17]` (RW)
@@ -93957,13 +93959,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_high(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO4_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_high(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO4_LEVEL_LOW** `[16]` (RW)
@@ -93975,13 +93977,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio4_level_low(&self) {
-        self.value.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO4_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio4_level_low(&self) {
-        self.value.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO4_LEVEL_LOW_MASK);
     }
 
     /// **GPIO3_EDGE_HIGH** `[15]` (RW)
@@ -93993,13 +93995,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_high(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO3_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_HIGH_MASK);
     }
 
     /// **GPIO3_EDGE_LOW** `[14]` (RW)
@@ -94011,13 +94013,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_edge_low(&self) {
-        self.value.set_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO3_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO3_EDGE_LOW_MASK);
     }
 
     /// **GPIO3_LEVEL_HIGH** `[13]` (RW)
@@ -94029,13 +94031,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_high(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO3_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_high(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO3_LEVEL_LOW** `[12]` (RW)
@@ -94047,13 +94049,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio3_level_low(&self) {
-        self.value.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO3_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio3_level_low(&self) {
-        self.value.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO3_LEVEL_LOW_MASK);
     }
 
     /// **GPIO2_EDGE_HIGH** `[11]` (RW)
@@ -94065,13 +94067,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_high(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO2_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_HIGH_MASK);
     }
 
     /// **GPIO2_EDGE_LOW** `[10]` (RW)
@@ -94083,13 +94085,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_edge_low(&self) {
-        self.value.set_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO2_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO2_EDGE_LOW_MASK);
     }
 
     /// **GPIO2_LEVEL_HIGH** `[9]` (RW)
@@ -94101,13 +94103,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_high(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO2_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_high(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO2_LEVEL_LOW** `[8]` (RW)
@@ -94119,13 +94121,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio2_level_low(&self) {
-        self.value.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO2_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio2_level_low(&self) {
-        self.value.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO2_LEVEL_LOW_MASK);
     }
 
     /// **GPIO1_EDGE_HIGH** `[7]` (RW)
@@ -94137,13 +94139,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_high(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO1_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_HIGH_MASK);
     }
 
     /// **GPIO1_EDGE_LOW** `[6]` (RW)
@@ -94155,13 +94157,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_edge_low(&self) {
-        self.value.set_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO1_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO1_EDGE_LOW_MASK);
     }
 
     /// **GPIO1_LEVEL_HIGH** `[5]` (RW)
@@ -94173,13 +94175,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_high(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO1_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_high(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO1_LEVEL_LOW** `[4]` (RW)
@@ -94191,13 +94193,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio1_level_low(&self) {
-        self.value.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO1_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio1_level_low(&self) {
-        self.value.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO1_LEVEL_LOW_MASK);
     }
 
     /// **GPIO0_EDGE_HIGH** `[3]` (RW)
@@ -94209,13 +94211,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_high(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO0_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_HIGH_MASK);
     }
 
     /// **GPIO0_EDGE_LOW** `[2]` (RW)
@@ -94227,13 +94229,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_edge_low(&self) {
-        self.value.set_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO0_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO0_EDGE_LOW_MASK);
     }
 
     /// **GPIO0_LEVEL_HIGH** `[1]` (RW)
@@ -94245,13 +94247,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_high(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO0_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_high(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO0_LEVEL_LOW** `[0]` (RW)
@@ -94263,13 +94265,13 @@ impl DormantWakeIntf0 {
     /// Set GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio0_level_low(&self) {
-        self.value.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO0_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio0_level_low(&self) {
-        self.value.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
 
 }
@@ -94981,11 +94983,11 @@ impl DormantWakeIntf0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -95198,13 +95200,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_high(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO15_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_HIGH_MASK);
     }
 
     /// **GPIO15_EDGE_LOW** `[30]` (RW)
@@ -95216,13 +95218,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_edge_low(&self) {
-        self.value.set_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO15_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO15_EDGE_LOW_MASK);
     }
 
     /// **GPIO15_LEVEL_HIGH** `[29]` (RW)
@@ -95234,13 +95236,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_high(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO15_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_high(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO15_LEVEL_LOW** `[28]` (RW)
@@ -95252,13 +95254,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio15_level_low(&self) {
-        self.value.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO15_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio15_level_low(&self) {
-        self.value.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO15_LEVEL_LOW_MASK);
     }
 
     /// **GPIO14_EDGE_HIGH** `[27]` (RW)
@@ -95270,13 +95272,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_high(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO14_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_HIGH_MASK);
     }
 
     /// **GPIO14_EDGE_LOW** `[26]` (RW)
@@ -95288,13 +95290,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_edge_low(&self) {
-        self.value.set_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO14_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO14_EDGE_LOW_MASK);
     }
 
     /// **GPIO14_LEVEL_HIGH** `[25]` (RW)
@@ -95306,13 +95308,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_high(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO14_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_high(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO14_LEVEL_LOW** `[24]` (RW)
@@ -95324,13 +95326,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio14_level_low(&self) {
-        self.value.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO14_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio14_level_low(&self) {
-        self.value.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO14_LEVEL_LOW_MASK);
     }
 
     /// **GPIO13_EDGE_HIGH** `[23]` (RW)
@@ -95342,13 +95344,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_high(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO13_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_HIGH_MASK);
     }
 
     /// **GPIO13_EDGE_LOW** `[22]` (RW)
@@ -95360,13 +95362,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_edge_low(&self) {
-        self.value.set_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO13_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO13_EDGE_LOW_MASK);
     }
 
     /// **GPIO13_LEVEL_HIGH** `[21]` (RW)
@@ -95378,13 +95380,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_high(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO13_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_high(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO13_LEVEL_LOW** `[20]` (RW)
@@ -95396,13 +95398,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio13_level_low(&self) {
-        self.value.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO13_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio13_level_low(&self) {
-        self.value.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO13_LEVEL_LOW_MASK);
     }
 
     /// **GPIO12_EDGE_HIGH** `[19]` (RW)
@@ -95414,13 +95416,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_high(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO12_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_HIGH_MASK);
     }
 
     /// **GPIO12_EDGE_LOW** `[18]` (RW)
@@ -95432,13 +95434,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_edge_low(&self) {
-        self.value.set_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO12_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO12_EDGE_LOW_MASK);
     }
 
     /// **GPIO12_LEVEL_HIGH** `[17]` (RW)
@@ -95450,13 +95452,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_high(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO12_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_high(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO12_LEVEL_LOW** `[16]` (RW)
@@ -95468,13 +95470,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio12_level_low(&self) {
-        self.value.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO12_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio12_level_low(&self) {
-        self.value.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO12_LEVEL_LOW_MASK);
     }
 
     /// **GPIO11_EDGE_HIGH** `[15]` (RW)
@@ -95486,13 +95488,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_high(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO11_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_HIGH_MASK);
     }
 
     /// **GPIO11_EDGE_LOW** `[14]` (RW)
@@ -95504,13 +95506,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_edge_low(&self) {
-        self.value.set_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO11_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO11_EDGE_LOW_MASK);
     }
 
     /// **GPIO11_LEVEL_HIGH** `[13]` (RW)
@@ -95522,13 +95524,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_high(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO11_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_high(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO11_LEVEL_LOW** `[12]` (RW)
@@ -95540,13 +95542,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio11_level_low(&self) {
-        self.value.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO11_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio11_level_low(&self) {
-        self.value.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO11_LEVEL_LOW_MASK);
     }
 
     /// **GPIO10_EDGE_HIGH** `[11]` (RW)
@@ -95558,13 +95560,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_high(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO10_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_HIGH_MASK);
     }
 
     /// **GPIO10_EDGE_LOW** `[10]` (RW)
@@ -95576,13 +95578,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_edge_low(&self) {
-        self.value.set_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO10_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO10_EDGE_LOW_MASK);
     }
 
     /// **GPIO10_LEVEL_HIGH** `[9]` (RW)
@@ -95594,13 +95596,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_high(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO10_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_high(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO10_LEVEL_LOW** `[8]` (RW)
@@ -95612,13 +95614,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio10_level_low(&self) {
-        self.value.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO10_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio10_level_low(&self) {
-        self.value.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO10_LEVEL_LOW_MASK);
     }
 
     /// **GPIO9_EDGE_HIGH** `[7]` (RW)
@@ -95630,13 +95632,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_high(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO9_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_HIGH_MASK);
     }
 
     /// **GPIO9_EDGE_LOW** `[6]` (RW)
@@ -95648,13 +95650,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_edge_low(&self) {
-        self.value.set_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO9_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO9_EDGE_LOW_MASK);
     }
 
     /// **GPIO9_LEVEL_HIGH** `[5]` (RW)
@@ -95666,13 +95668,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_high(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO9_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_high(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO9_LEVEL_LOW** `[4]` (RW)
@@ -95684,13 +95686,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio9_level_low(&self) {
-        self.value.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO9_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio9_level_low(&self) {
-        self.value.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO9_LEVEL_LOW_MASK);
     }
 
     /// **GPIO8_EDGE_HIGH** `[3]` (RW)
@@ -95702,13 +95704,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_high(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO8_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_HIGH_MASK);
     }
 
     /// **GPIO8_EDGE_LOW** `[2]` (RW)
@@ -95720,13 +95722,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_edge_low(&self) {
-        self.value.set_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO8_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO8_EDGE_LOW_MASK);
     }
 
     /// **GPIO8_LEVEL_HIGH** `[1]` (RW)
@@ -95738,13 +95740,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_high(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO8_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_high(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO8_LEVEL_LOW** `[0]` (RW)
@@ -95756,13 +95758,13 @@ impl DormantWakeIntf1 {
     /// Set GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio8_level_low(&self) {
-        self.value.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO8_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio8_level_low(&self) {
-        self.value.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
 
 }
@@ -96474,11 +96476,11 @@ impl DormantWakeIntf1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -96691,13 +96693,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_high(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO23_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_HIGH_MASK);
     }
 
     /// **GPIO23_EDGE_LOW** `[30]` (RW)
@@ -96709,13 +96711,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_edge_low(&self) {
-        self.value.set_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO23_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO23_EDGE_LOW_MASK);
     }
 
     /// **GPIO23_LEVEL_HIGH** `[29]` (RW)
@@ -96727,13 +96729,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_high(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO23_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_high(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO23_LEVEL_LOW** `[28]` (RW)
@@ -96745,13 +96747,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio23_level_low(&self) {
-        self.value.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO23_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio23_level_low(&self) {
-        self.value.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO23_LEVEL_LOW_MASK);
     }
 
     /// **GPIO22_EDGE_HIGH** `[27]` (RW)
@@ -96763,13 +96765,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_high(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO22_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_HIGH_MASK);
     }
 
     /// **GPIO22_EDGE_LOW** `[26]` (RW)
@@ -96781,13 +96783,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_edge_low(&self) {
-        self.value.set_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO22_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO22_EDGE_LOW_MASK);
     }
 
     /// **GPIO22_LEVEL_HIGH** `[25]` (RW)
@@ -96799,13 +96801,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_high(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO22_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_high(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO22_LEVEL_LOW** `[24]` (RW)
@@ -96817,13 +96819,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio22_level_low(&self) {
-        self.value.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO22_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio22_level_low(&self) {
-        self.value.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO22_LEVEL_LOW_MASK);
     }
 
     /// **GPIO21_EDGE_HIGH** `[23]` (RW)
@@ -96835,13 +96837,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_high(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO21_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_HIGH_MASK);
     }
 
     /// **GPIO21_EDGE_LOW** `[22]` (RW)
@@ -96853,13 +96855,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_edge_low(&self) {
-        self.value.set_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO21_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO21_EDGE_LOW_MASK);
     }
 
     /// **GPIO21_LEVEL_HIGH** `[21]` (RW)
@@ -96871,13 +96873,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_high(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO21_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_high(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO21_LEVEL_LOW** `[20]` (RW)
@@ -96889,13 +96891,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio21_level_low(&self) {
-        self.value.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO21_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio21_level_low(&self) {
-        self.value.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO21_LEVEL_LOW_MASK);
     }
 
     /// **GPIO20_EDGE_HIGH** `[19]` (RW)
@@ -96907,13 +96909,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_high(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO20_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_HIGH_MASK);
     }
 
     /// **GPIO20_EDGE_LOW** `[18]` (RW)
@@ -96925,13 +96927,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_edge_low(&self) {
-        self.value.set_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO20_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO20_EDGE_LOW_MASK);
     }
 
     /// **GPIO20_LEVEL_HIGH** `[17]` (RW)
@@ -96943,13 +96945,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_high(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO20_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_high(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO20_LEVEL_LOW** `[16]` (RW)
@@ -96961,13 +96963,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio20_level_low(&self) {
-        self.value.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO20_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio20_level_low(&self) {
-        self.value.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO20_LEVEL_LOW_MASK);
     }
 
     /// **GPIO19_EDGE_HIGH** `[15]` (RW)
@@ -96979,13 +96981,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_high(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO19_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_HIGH_MASK);
     }
 
     /// **GPIO19_EDGE_LOW** `[14]` (RW)
@@ -96997,13 +96999,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_edge_low(&self) {
-        self.value.set_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO19_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO19_EDGE_LOW_MASK);
     }
 
     /// **GPIO19_LEVEL_HIGH** `[13]` (RW)
@@ -97015,13 +97017,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_high(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO19_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_high(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO19_LEVEL_LOW** `[12]` (RW)
@@ -97033,13 +97035,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio19_level_low(&self) {
-        self.value.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO19_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio19_level_low(&self) {
-        self.value.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO19_LEVEL_LOW_MASK);
     }
 
     /// **GPIO18_EDGE_HIGH** `[11]` (RW)
@@ -97051,13 +97053,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_high(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO18_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_HIGH_MASK);
     }
 
     /// **GPIO18_EDGE_LOW** `[10]` (RW)
@@ -97069,13 +97071,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_edge_low(&self) {
-        self.value.set_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO18_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO18_EDGE_LOW_MASK);
     }
 
     /// **GPIO18_LEVEL_HIGH** `[9]` (RW)
@@ -97087,13 +97089,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_high(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO18_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_high(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO18_LEVEL_LOW** `[8]` (RW)
@@ -97105,13 +97107,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio18_level_low(&self) {
-        self.value.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO18_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio18_level_low(&self) {
-        self.value.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO18_LEVEL_LOW_MASK);
     }
 
     /// **GPIO17_EDGE_HIGH** `[7]` (RW)
@@ -97123,13 +97125,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_high(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO17_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_HIGH_MASK);
     }
 
     /// **GPIO17_EDGE_LOW** `[6]` (RW)
@@ -97141,13 +97143,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_edge_low(&self) {
-        self.value.set_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO17_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO17_EDGE_LOW_MASK);
     }
 
     /// **GPIO17_LEVEL_HIGH** `[5]` (RW)
@@ -97159,13 +97161,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_high(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO17_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_high(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO17_LEVEL_LOW** `[4]` (RW)
@@ -97177,13 +97179,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio17_level_low(&self) {
-        self.value.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO17_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio17_level_low(&self) {
-        self.value.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO17_LEVEL_LOW_MASK);
     }
 
     /// **GPIO16_EDGE_HIGH** `[3]` (RW)
@@ -97195,13 +97197,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_high(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO16_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_HIGH_MASK);
     }
 
     /// **GPIO16_EDGE_LOW** `[2]` (RW)
@@ -97213,13 +97215,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_edge_low(&self) {
-        self.value.set_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO16_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO16_EDGE_LOW_MASK);
     }
 
     /// **GPIO16_LEVEL_HIGH** `[1]` (RW)
@@ -97231,13 +97233,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_high(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO16_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_high(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO16_LEVEL_LOW** `[0]` (RW)
@@ -97249,13 +97251,13 @@ impl DormantWakeIntf2 {
     /// Set GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio16_level_low(&self) {
-        self.value.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO16_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio16_level_low(&self) {
-        self.value.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
 
 }
@@ -97967,11 +97969,11 @@ impl DormantWakeIntf2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -98184,13 +98186,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_high(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO31_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_HIGH_MASK);
     }
 
     /// **GPIO31_EDGE_LOW** `[30]` (RW)
@@ -98202,13 +98204,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_edge_low(&self) {
-        self.value.set_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO31_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO31_EDGE_LOW_MASK);
     }
 
     /// **GPIO31_LEVEL_HIGH** `[29]` (RW)
@@ -98220,13 +98222,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_high(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO31_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_high(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO31_LEVEL_LOW** `[28]` (RW)
@@ -98238,13 +98240,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio31_level_low(&self) {
-        self.value.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO31_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio31_level_low(&self) {
-        self.value.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO31_LEVEL_LOW_MASK);
     }
 
     /// **GPIO30_EDGE_HIGH** `[27]` (RW)
@@ -98256,13 +98258,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_high(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO30_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_HIGH_MASK);
     }
 
     /// **GPIO30_EDGE_LOW** `[26]` (RW)
@@ -98274,13 +98276,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_edge_low(&self) {
-        self.value.set_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO30_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO30_EDGE_LOW_MASK);
     }
 
     /// **GPIO30_LEVEL_HIGH** `[25]` (RW)
@@ -98292,13 +98294,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_high(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO30_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_high(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO30_LEVEL_LOW** `[24]` (RW)
@@ -98310,13 +98312,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio30_level_low(&self) {
-        self.value.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO30_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio30_level_low(&self) {
-        self.value.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO30_LEVEL_LOW_MASK);
     }
 
     /// **GPIO29_EDGE_HIGH** `[23]` (RW)
@@ -98328,13 +98330,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_high(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO29_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_HIGH_MASK);
     }
 
     /// **GPIO29_EDGE_LOW** `[22]` (RW)
@@ -98346,13 +98348,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_edge_low(&self) {
-        self.value.set_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO29_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO29_EDGE_LOW_MASK);
     }
 
     /// **GPIO29_LEVEL_HIGH** `[21]` (RW)
@@ -98364,13 +98366,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_high(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO29_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_high(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO29_LEVEL_LOW** `[20]` (RW)
@@ -98382,13 +98384,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio29_level_low(&self) {
-        self.value.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO29_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio29_level_low(&self) {
-        self.value.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO29_LEVEL_LOW_MASK);
     }
 
     /// **GPIO28_EDGE_HIGH** `[19]` (RW)
@@ -98400,13 +98402,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_high(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO28_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_HIGH_MASK);
     }
 
     /// **GPIO28_EDGE_LOW** `[18]` (RW)
@@ -98418,13 +98420,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_edge_low(&self) {
-        self.value.set_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO28_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO28_EDGE_LOW_MASK);
     }
 
     /// **GPIO28_LEVEL_HIGH** `[17]` (RW)
@@ -98436,13 +98438,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_high(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO28_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_high(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO28_LEVEL_LOW** `[16]` (RW)
@@ -98454,13 +98456,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio28_level_low(&self) {
-        self.value.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO28_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio28_level_low(&self) {
-        self.value.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO28_LEVEL_LOW_MASK);
     }
 
     /// **GPIO27_EDGE_HIGH** `[15]` (RW)
@@ -98472,13 +98474,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_high(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO27_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_HIGH_MASK);
     }
 
     /// **GPIO27_EDGE_LOW** `[14]` (RW)
@@ -98490,13 +98492,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_edge_low(&self) {
-        self.value.set_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO27_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO27_EDGE_LOW_MASK);
     }
 
     /// **GPIO27_LEVEL_HIGH** `[13]` (RW)
@@ -98508,13 +98510,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_high(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO27_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_high(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO27_LEVEL_LOW** `[12]` (RW)
@@ -98526,13 +98528,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio27_level_low(&self) {
-        self.value.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO27_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio27_level_low(&self) {
-        self.value.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO27_LEVEL_LOW_MASK);
     }
 
     /// **GPIO26_EDGE_HIGH** `[11]` (RW)
@@ -98544,13 +98546,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_high(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO26_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_HIGH_MASK);
     }
 
     /// **GPIO26_EDGE_LOW** `[10]` (RW)
@@ -98562,13 +98564,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_edge_low(&self) {
-        self.value.set_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO26_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO26_EDGE_LOW_MASK);
     }
 
     /// **GPIO26_LEVEL_HIGH** `[9]` (RW)
@@ -98580,13 +98582,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_high(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO26_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_high(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO26_LEVEL_LOW** `[8]` (RW)
@@ -98598,13 +98600,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio26_level_low(&self) {
-        self.value.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO26_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio26_level_low(&self) {
-        self.value.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO26_LEVEL_LOW_MASK);
     }
 
     /// **GPIO25_EDGE_HIGH** `[7]` (RW)
@@ -98616,13 +98618,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_high(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO25_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_HIGH_MASK);
     }
 
     /// **GPIO25_EDGE_LOW** `[6]` (RW)
@@ -98634,13 +98636,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_edge_low(&self) {
-        self.value.set_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO25_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO25_EDGE_LOW_MASK);
     }
 
     /// **GPIO25_LEVEL_HIGH** `[5]` (RW)
@@ -98652,13 +98654,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_high(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO25_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_high(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO25_LEVEL_LOW** `[4]` (RW)
@@ -98670,13 +98672,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio25_level_low(&self) {
-        self.value.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO25_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio25_level_low(&self) {
-        self.value.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO25_LEVEL_LOW_MASK);
     }
 
     /// **GPIO24_EDGE_HIGH** `[3]` (RW)
@@ -98688,13 +98690,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_high(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO24_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_HIGH_MASK);
     }
 
     /// **GPIO24_EDGE_LOW** `[2]` (RW)
@@ -98706,13 +98708,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_edge_low(&self) {
-        self.value.set_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO24_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO24_EDGE_LOW_MASK);
     }
 
     /// **GPIO24_LEVEL_HIGH** `[1]` (RW)
@@ -98724,13 +98726,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_high(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO24_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_high(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO24_LEVEL_LOW** `[0]` (RW)
@@ -98742,13 +98744,13 @@ impl DormantWakeIntf3 {
     /// Set GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio24_level_low(&self) {
-        self.value.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO24_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio24_level_low(&self) {
-        self.value.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
 
 }
@@ -99460,11 +99462,11 @@ impl DormantWakeIntf3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -99677,13 +99679,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_high(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO39_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_HIGH_MASK);
     }
 
     /// **GPIO39_EDGE_LOW** `[30]` (RW)
@@ -99695,13 +99697,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_edge_low(&self) {
-        self.value.set_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO39_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO39_EDGE_LOW_MASK);
     }
 
     /// **GPIO39_LEVEL_HIGH** `[29]` (RW)
@@ -99713,13 +99715,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_high(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO39_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_high(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO39_LEVEL_LOW** `[28]` (RW)
@@ -99731,13 +99733,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio39_level_low(&self) {
-        self.value.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO39_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio39_level_low(&self) {
-        self.value.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO39_LEVEL_LOW_MASK);
     }
 
     /// **GPIO38_EDGE_HIGH** `[27]` (RW)
@@ -99749,13 +99751,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_high(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO38_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_HIGH_MASK);
     }
 
     /// **GPIO38_EDGE_LOW** `[26]` (RW)
@@ -99767,13 +99769,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_edge_low(&self) {
-        self.value.set_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO38_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO38_EDGE_LOW_MASK);
     }
 
     /// **GPIO38_LEVEL_HIGH** `[25]` (RW)
@@ -99785,13 +99787,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_high(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO38_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_high(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO38_LEVEL_LOW** `[24]` (RW)
@@ -99803,13 +99805,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio38_level_low(&self) {
-        self.value.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO38_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio38_level_low(&self) {
-        self.value.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO38_LEVEL_LOW_MASK);
     }
 
     /// **GPIO37_EDGE_HIGH** `[23]` (RW)
@@ -99821,13 +99823,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_high(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO37_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_HIGH_MASK);
     }
 
     /// **GPIO37_EDGE_LOW** `[22]` (RW)
@@ -99839,13 +99841,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_edge_low(&self) {
-        self.value.set_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO37_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO37_EDGE_LOW_MASK);
     }
 
     /// **GPIO37_LEVEL_HIGH** `[21]` (RW)
@@ -99857,13 +99859,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_high(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO37_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_high(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO37_LEVEL_LOW** `[20]` (RW)
@@ -99875,13 +99877,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio37_level_low(&self) {
-        self.value.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO37_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio37_level_low(&self) {
-        self.value.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO37_LEVEL_LOW_MASK);
     }
 
     /// **GPIO36_EDGE_HIGH** `[19]` (RW)
@@ -99893,13 +99895,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_high(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO36_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_HIGH_MASK);
     }
 
     /// **GPIO36_EDGE_LOW** `[18]` (RW)
@@ -99911,13 +99913,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_edge_low(&self) {
-        self.value.set_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO36_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO36_EDGE_LOW_MASK);
     }
 
     /// **GPIO36_LEVEL_HIGH** `[17]` (RW)
@@ -99929,13 +99931,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_high(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO36_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_high(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO36_LEVEL_LOW** `[16]` (RW)
@@ -99947,13 +99949,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio36_level_low(&self) {
-        self.value.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO36_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio36_level_low(&self) {
-        self.value.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO36_LEVEL_LOW_MASK);
     }
 
     /// **GPIO35_EDGE_HIGH** `[15]` (RW)
@@ -99965,13 +99967,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_high(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO35_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_HIGH_MASK);
     }
 
     /// **GPIO35_EDGE_LOW** `[14]` (RW)
@@ -99983,13 +99985,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_edge_low(&self) {
-        self.value.set_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO35_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO35_EDGE_LOW_MASK);
     }
 
     /// **GPIO35_LEVEL_HIGH** `[13]` (RW)
@@ -100001,13 +100003,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_high(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO35_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_high(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO35_LEVEL_LOW** `[12]` (RW)
@@ -100019,13 +100021,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio35_level_low(&self) {
-        self.value.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO35_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio35_level_low(&self) {
-        self.value.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO35_LEVEL_LOW_MASK);
     }
 
     /// **GPIO34_EDGE_HIGH** `[11]` (RW)
@@ -100037,13 +100039,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_high(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO34_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_HIGH_MASK);
     }
 
     /// **GPIO34_EDGE_LOW** `[10]` (RW)
@@ -100055,13 +100057,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_edge_low(&self) {
-        self.value.set_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO34_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO34_EDGE_LOW_MASK);
     }
 
     /// **GPIO34_LEVEL_HIGH** `[9]` (RW)
@@ -100073,13 +100075,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_high(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO34_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_high(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO34_LEVEL_LOW** `[8]` (RW)
@@ -100091,13 +100093,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio34_level_low(&self) {
-        self.value.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO34_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio34_level_low(&self) {
-        self.value.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO34_LEVEL_LOW_MASK);
     }
 
     /// **GPIO33_EDGE_HIGH** `[7]` (RW)
@@ -100109,13 +100111,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_high(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO33_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_HIGH_MASK);
     }
 
     /// **GPIO33_EDGE_LOW** `[6]` (RW)
@@ -100127,13 +100129,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_edge_low(&self) {
-        self.value.set_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO33_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO33_EDGE_LOW_MASK);
     }
 
     /// **GPIO33_LEVEL_HIGH** `[5]` (RW)
@@ -100145,13 +100147,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_high(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO33_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_high(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO33_LEVEL_LOW** `[4]` (RW)
@@ -100163,13 +100165,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio33_level_low(&self) {
-        self.value.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO33_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio33_level_low(&self) {
-        self.value.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO33_LEVEL_LOW_MASK);
     }
 
     /// **GPIO32_EDGE_HIGH** `[3]` (RW)
@@ -100181,13 +100183,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_high(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO32_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_HIGH_MASK);
     }
 
     /// **GPIO32_EDGE_LOW** `[2]` (RW)
@@ -100199,13 +100201,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_edge_low(&self) {
-        self.value.set_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO32_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO32_EDGE_LOW_MASK);
     }
 
     /// **GPIO32_LEVEL_HIGH** `[1]` (RW)
@@ -100217,13 +100219,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_high(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO32_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_high(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO32_LEVEL_LOW** `[0]` (RW)
@@ -100235,13 +100237,13 @@ impl DormantWakeIntf4 {
     /// Set GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio32_level_low(&self) {
-        self.value.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO32_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio32_level_low(&self) {
-        self.value.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
 
 }
@@ -100953,11 +100955,11 @@ impl DormantWakeIntf4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RW)
 #[repr(transparent)]
 pub struct DormantWakeIntf5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeIntf5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -101170,13 +101172,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_high(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO47_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_HIGH_MASK);
     }
 
     /// **GPIO47_EDGE_LOW** `[30]` (RW)
@@ -101188,13 +101190,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_edge_low(&self) {
-        self.value.set_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO47_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO47_EDGE_LOW_MASK);
     }
 
     /// **GPIO47_LEVEL_HIGH** `[29]` (RW)
@@ -101206,13 +101208,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_high(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO47_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_high(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO47_LEVEL_LOW** `[28]` (RW)
@@ -101224,13 +101226,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio47_level_low(&self) {
-        self.value.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO47_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio47_level_low(&self) {
-        self.value.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO47_LEVEL_LOW_MASK);
     }
 
     /// **GPIO46_EDGE_HIGH** `[27]` (RW)
@@ -101242,13 +101244,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_high(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO46_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_HIGH_MASK);
     }
 
     /// **GPIO46_EDGE_LOW** `[26]` (RW)
@@ -101260,13 +101262,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_edge_low(&self) {
-        self.value.set_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO46_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO46_EDGE_LOW_MASK);
     }
 
     /// **GPIO46_LEVEL_HIGH** `[25]` (RW)
@@ -101278,13 +101280,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_high(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO46_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_high(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO46_LEVEL_LOW** `[24]` (RW)
@@ -101296,13 +101298,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio46_level_low(&self) {
-        self.value.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO46_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio46_level_low(&self) {
-        self.value.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO46_LEVEL_LOW_MASK);
     }
 
     /// **GPIO45_EDGE_HIGH** `[23]` (RW)
@@ -101314,13 +101316,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_high(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO45_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_HIGH_MASK);
     }
 
     /// **GPIO45_EDGE_LOW** `[22]` (RW)
@@ -101332,13 +101334,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_edge_low(&self) {
-        self.value.set_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO45_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO45_EDGE_LOW_MASK);
     }
 
     /// **GPIO45_LEVEL_HIGH** `[21]` (RW)
@@ -101350,13 +101352,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_high(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO45_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_high(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO45_LEVEL_LOW** `[20]` (RW)
@@ -101368,13 +101370,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio45_level_low(&self) {
-        self.value.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO45_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio45_level_low(&self) {
-        self.value.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO45_LEVEL_LOW_MASK);
     }
 
     /// **GPIO44_EDGE_HIGH** `[19]` (RW)
@@ -101386,13 +101388,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_high(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO44_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_HIGH_MASK);
     }
 
     /// **GPIO44_EDGE_LOW** `[18]` (RW)
@@ -101404,13 +101406,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_edge_low(&self) {
-        self.value.set_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO44_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO44_EDGE_LOW_MASK);
     }
 
     /// **GPIO44_LEVEL_HIGH** `[17]` (RW)
@@ -101422,13 +101424,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_high(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO44_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_high(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO44_LEVEL_LOW** `[16]` (RW)
@@ -101440,13 +101442,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio44_level_low(&self) {
-        self.value.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO44_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio44_level_low(&self) {
-        self.value.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO44_LEVEL_LOW_MASK);
     }
 
     /// **GPIO43_EDGE_HIGH** `[15]` (RW)
@@ -101458,13 +101460,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_high(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO43_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_HIGH_MASK);
     }
 
     /// **GPIO43_EDGE_LOW** `[14]` (RW)
@@ -101476,13 +101478,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_edge_low(&self) {
-        self.value.set_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO43_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO43_EDGE_LOW_MASK);
     }
 
     /// **GPIO43_LEVEL_HIGH** `[13]` (RW)
@@ -101494,13 +101496,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_high(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO43_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_high(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO43_LEVEL_LOW** `[12]` (RW)
@@ -101512,13 +101514,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio43_level_low(&self) {
-        self.value.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO43_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio43_level_low(&self) {
-        self.value.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO43_LEVEL_LOW_MASK);
     }
 
     /// **GPIO42_EDGE_HIGH** `[11]` (RW)
@@ -101530,13 +101532,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_high(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO42_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_HIGH_MASK);
     }
 
     /// **GPIO42_EDGE_LOW** `[10]` (RW)
@@ -101548,13 +101550,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_edge_low(&self) {
-        self.value.set_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO42_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO42_EDGE_LOW_MASK);
     }
 
     /// **GPIO42_LEVEL_HIGH** `[9]` (RW)
@@ -101566,13 +101568,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_high(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO42_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_high(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO42_LEVEL_LOW** `[8]` (RW)
@@ -101584,13 +101586,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio42_level_low(&self) {
-        self.value.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO42_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio42_level_low(&self) {
-        self.value.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO42_LEVEL_LOW_MASK);
     }
 
     /// **GPIO41_EDGE_HIGH** `[7]` (RW)
@@ -101602,13 +101604,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_high(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO41_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_HIGH_MASK);
     }
 
     /// **GPIO41_EDGE_LOW** `[6]` (RW)
@@ -101620,13 +101622,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_edge_low(&self) {
-        self.value.set_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO41_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO41_EDGE_LOW_MASK);
     }
 
     /// **GPIO41_LEVEL_HIGH** `[5]` (RW)
@@ -101638,13 +101640,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_high(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO41_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_high(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO41_LEVEL_LOW** `[4]` (RW)
@@ -101656,13 +101658,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio41_level_low(&self) {
-        self.value.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO41_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio41_level_low(&self) {
-        self.value.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO41_LEVEL_LOW_MASK);
     }
 
     /// **GPIO40_EDGE_HIGH** `[3]` (RW)
@@ -101674,13 +101676,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_high(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.set_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// Clear GPIO40_EDGE_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_high(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_HIGH_MASK);
     }
 
     /// **GPIO40_EDGE_LOW** `[2]` (RW)
@@ -101692,13 +101694,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_edge_low(&self) {
-        self.value.set_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.set_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// Clear GPIO40_EDGE_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_edge_low(&self) {
-        self.value.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
+        self.clr_bits(Self::GPIO40_EDGE_LOW_MASK);
     }
 
     /// **GPIO40_LEVEL_HIGH** `[1]` (RW)
@@ -101710,13 +101712,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_high(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// Clear GPIO40_LEVEL_HIGH bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_high(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_HIGH_MASK);
     }
 
     /// **GPIO40_LEVEL_LOW** `[0]` (RW)
@@ -101728,13 +101730,13 @@ impl DormantWakeIntf5 {
     /// Set GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn set_gpio40_level_low(&self) {
-        self.value.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.set_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
     /// Clear GPIO40_LEVEL_LOW bit atomically (RW)
     #[inline(always)]
     pub fn clr_gpio40_level_low(&self) {
-        self.value.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
+        self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
 
 }
@@ -102446,11 +102448,11 @@ impl DormantWakeIntf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -103171,11 +103173,11 @@ impl DormantWakeInts0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -103896,11 +103898,11 @@ impl DormantWakeInts1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -104621,11 +104623,11 @@ impl DormantWakeInts2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -105346,11 +105348,11 @@ impl DormantWakeInts3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -106071,11 +106073,11 @@ impl DormantWakeInts4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

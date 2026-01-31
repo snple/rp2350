@@ -1,5 +1,7 @@
 //! XOSC
 //! Controls the crystal oscillator
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -25,11 +27,11 @@ pub const BASE: u32 = 0x40048000;
 ///   The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
 #[repr(transparent)]
 pub struct Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -232,11 +234,11 @@ impl Ctrl {
 ///   The current frequency range setting
 #[repr(transparent)]
 pub struct Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -310,13 +312,13 @@ impl Status {
     /// Set BADWRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_badwrite(&self) {
-        self.value.set_bits(Self::BADWRITE_MASK);
+        self.set_bits(Self::BADWRITE_MASK);
     }
 
     /// Clear BADWRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_badwrite(&self) {
-        self.value.clr_bits(Self::BADWRITE_MASK);
+        self.clr_bits(Self::BADWRITE_MASK);
     }
 
     /// **ENABLED** `[12]` (RO)
@@ -457,11 +459,11 @@ impl Status {
 ///   Warning: setup the irq before selecting dormant mode
 #[repr(transparent)]
 pub struct Dormant {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dormant {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -610,11 +612,11 @@ impl Dormant {
 ///   in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
 #[repr(transparent)]
 pub struct Startup {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Startup {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -654,13 +656,13 @@ impl Startup {
     /// Set X4 bit atomically (RW)
     #[inline(always)]
     pub fn set_x4(&self) {
-        self.value.set_bits(Self::X4_MASK);
+        self.set_bits(Self::X4_MASK);
     }
 
     /// Clear X4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_x4(&self) {
-        self.value.clr_bits(Self::X4_MASK);
+        self.clr_bits(Self::X4_MASK);
     }
 
     /// **DELAY** `[13:0]` (RW)
@@ -794,11 +796,11 @@ impl Startup {
 /// - **COUNT** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -1,4 +1,6 @@
 //! I2C1
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -67,11 +69,11 @@ pub const BASE: u32 = 0x40098000;
 ///   NOTE: Software should ensure that if this bit is written with '1' then bit 6 should also be written with a '1'.
 #[repr(transparent)]
 pub struct IcCon {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcCon {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -280,13 +282,13 @@ impl IcCon {
     /// Set RX_FIFO_FULL_HLD_CTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_rx_fifo_full_hld_ctrl(&self) {
-        self.value.set_bits(Self::RX_FIFO_FULL_HLD_CTRL_MASK);
+        self.set_bits(Self::RX_FIFO_FULL_HLD_CTRL_MASK);
     }
 
     /// Clear RX_FIFO_FULL_HLD_CTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_rx_fifo_full_hld_ctrl(&self) {
-        self.value.clr_bits(Self::RX_FIFO_FULL_HLD_CTRL_MASK);
+        self.clr_bits(Self::RX_FIFO_FULL_HLD_CTRL_MASK);
     }
 
     /// **TX_EMPTY_CTRL** `[8]` (RW)
@@ -301,13 +303,13 @@ impl IcCon {
     /// Set TX_EMPTY_CTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_empty_ctrl(&self) {
-        self.value.set_bits(Self::TX_EMPTY_CTRL_MASK);
+        self.set_bits(Self::TX_EMPTY_CTRL_MASK);
     }
 
     /// Clear TX_EMPTY_CTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_empty_ctrl(&self) {
-        self.value.clr_bits(Self::TX_EMPTY_CTRL_MASK);
+        self.clr_bits(Self::TX_EMPTY_CTRL_MASK);
     }
 
     /// **STOP_DET_IFADDRESSED** `[7]` (RW)
@@ -322,13 +324,13 @@ impl IcCon {
     /// Set STOP_DET_IFADDRESSED bit atomically (RW)
     #[inline(always)]
     pub fn set_stop_det_ifaddressed(&self) {
-        self.value.set_bits(Self::STOP_DET_IFADDRESSED_MASK);
+        self.set_bits(Self::STOP_DET_IFADDRESSED_MASK);
     }
 
     /// Clear STOP_DET_IFADDRESSED bit atomically (RW)
     #[inline(always)]
     pub fn clr_stop_det_ifaddressed(&self) {
-        self.value.clr_bits(Self::STOP_DET_IFADDRESSED_MASK);
+        self.clr_bits(Self::STOP_DET_IFADDRESSED_MASK);
     }
 
     /// **IC_SLAVE_DISABLE** `[6]` (RW)
@@ -344,13 +346,13 @@ impl IcCon {
     /// Set IC_SLAVE_DISABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_ic_slave_disable(&self) {
-        self.value.set_bits(Self::IC_SLAVE_DISABLE_MASK);
+        self.set_bits(Self::IC_SLAVE_DISABLE_MASK);
     }
 
     /// Clear IC_SLAVE_DISABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ic_slave_disable(&self) {
-        self.value.clr_bits(Self::IC_SLAVE_DISABLE_MASK);
+        self.clr_bits(Self::IC_SLAVE_DISABLE_MASK);
     }
 
     /// **IC_RESTART_EN** `[5]` (RW)
@@ -365,13 +367,13 @@ impl IcCon {
     /// Set IC_RESTART_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_ic_restart_en(&self) {
-        self.value.set_bits(Self::IC_RESTART_EN_MASK);
+        self.set_bits(Self::IC_RESTART_EN_MASK);
     }
 
     /// Clear IC_RESTART_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ic_restart_en(&self) {
-        self.value.clr_bits(Self::IC_RESTART_EN_MASK);
+        self.clr_bits(Self::IC_RESTART_EN_MASK);
     }
 
     /// **IC_10BITADDR_MASTER** `[4]` (RW)
@@ -385,13 +387,13 @@ impl IcCon {
     /// Set IC_10BITADDR_MASTER bit atomically (RW)
     #[inline(always)]
     pub fn set_ic_10bitaddr_master(&self) {
-        self.value.set_bits(Self::IC_10BITADDR_MASTER_MASK);
+        self.set_bits(Self::IC_10BITADDR_MASTER_MASK);
     }
 
     /// Clear IC_10BITADDR_MASTER bit atomically (RW)
     #[inline(always)]
     pub fn clr_ic_10bitaddr_master(&self) {
-        self.value.clr_bits(Self::IC_10BITADDR_MASTER_MASK);
+        self.clr_bits(Self::IC_10BITADDR_MASTER_MASK);
     }
 
     /// **IC_10BITADDR_SLAVE** `[3]` (RW)
@@ -405,13 +407,13 @@ impl IcCon {
     /// Set IC_10BITADDR_SLAVE bit atomically (RW)
     #[inline(always)]
     pub fn set_ic_10bitaddr_slave(&self) {
-        self.value.set_bits(Self::IC_10BITADDR_SLAVE_MASK);
+        self.set_bits(Self::IC_10BITADDR_SLAVE_MASK);
     }
 
     /// Clear IC_10BITADDR_SLAVE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ic_10bitaddr_slave(&self) {
-        self.value.clr_bits(Self::IC_10BITADDR_SLAVE_MASK);
+        self.clr_bits(Self::IC_10BITADDR_SLAVE_MASK);
     }
 
     /// **SPEED** `[2:1]` (RW)
@@ -452,13 +454,13 @@ impl IcCon {
     /// Set MASTER_MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_master_mode(&self) {
-        self.value.set_bits(Self::MASTER_MODE_MASK);
+        self.set_bits(Self::MASTER_MODE_MASK);
     }
 
     /// Clear MASTER_MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_master_mode(&self) {
-        self.value.clr_bits(Self::MASTER_MODE_MASK);
+        self.clr_bits(Self::MASTER_MODE_MASK);
     }
 
 }
@@ -771,11 +773,11 @@ impl IcCon {
 ///   If the IC_TAR and IC_SAR are the same, loopback exists but the FIFOs are shared between master and slave, so full loopback is not feasible. Only one direction loopback mode is supported (simplex), not duplex. A master cannot transmit to itself; it can transmit to only a slave.
 #[repr(transparent)]
 pub struct IcTar {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcTar {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -841,13 +843,13 @@ impl IcTar {
     /// Set SPECIAL bit atomically (RW)
     #[inline(always)]
     pub fn set_special(&self) {
-        self.value.set_bits(Self::SPECIAL_MASK);
+        self.set_bits(Self::SPECIAL_MASK);
     }
 
     /// Clear SPECIAL bit atomically (RW)
     #[inline(always)]
     pub fn clr_special(&self) {
-        self.value.clr_bits(Self::SPECIAL_MASK);
+        self.clr_bits(Self::SPECIAL_MASK);
     }
 
     /// **GC_OR_START** `[10]` (RW)
@@ -861,13 +863,13 @@ impl IcTar {
     /// Set GC_OR_START bit atomically (RW)
     #[inline(always)]
     pub fn set_gc_or_start(&self) {
-        self.value.set_bits(Self::GC_OR_START_MASK);
+        self.set_bits(Self::GC_OR_START_MASK);
     }
 
     /// Clear GC_OR_START bit atomically (RW)
     #[inline(always)]
     pub fn clr_gc_or_start(&self) {
-        self.value.clr_bits(Self::GC_OR_START_MASK);
+        self.clr_bits(Self::GC_OR_START_MASK);
     }
 
     /// **IC_TAR** `[9:0]` (RW)
@@ -1027,11 +1029,11 @@ impl IcTar {
 ///   Note: The default values cannot be any of the reserved address locations: that is, 0x00 to 0x07, or 0x78 to 0x7f. The correct operation of the device is not guaranteed if you program the IC_SAR or IC_TAR to a reserved value. Refer to <<table_I2C_firstbyte_bit_defs>> for a complete list of these reserved values.
 #[repr(transparent)]
 pub struct IcSar {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSar {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1199,11 +1201,11 @@ impl IcSar {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcDataCmd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcDataCmd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1524,11 +1526,11 @@ impl IcDataCmd {
 ///   NOTE: This register must not be programmed to a value higher than 65525, because DW_apb_i2c uses a 16-bit counter to flag an I2C bus idle condition when this counter reaches a value of IC_SS_SCL_HCNT + 10.
 #[repr(transparent)]
 pub struct IcSsSclHcnt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSsSclHcnt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1672,11 +1674,11 @@ impl IcSsSclHcnt {
 ///   The minimum valid value is 8; hardware prevents values less than this being written, and if attempted, results in 8 being set. For designs with APB_DATA_WIDTH = 8, the order of programming is important to ensure the correct operation of DW_apb_i2c. The lower byte must be programmed first, and then the upper byte is programmed.
 #[repr(transparent)]
 pub struct IcSsSclLcnt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSsSclLcnt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1815,11 +1817,11 @@ impl IcSsSclLcnt {
 ///   The minimum valid value is 6; hardware prevents values less than this being written, and if attempted results in 6 being set. For designs with APB_DATA_WIDTH == 8 the order of programming is important to ensure the correct operation of the DW_apb_i2c. The lower byte must be programmed first. Then the upper byte is programmed.
 #[repr(transparent)]
 pub struct IcFsSclHcnt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcFsSclHcnt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1959,11 +1961,11 @@ impl IcFsSclHcnt {
 ///   The minimum valid value is 8; hardware prevents values less than this being written, and if attempted results in 8 being set. For designs with APB_DATA_WIDTH = 8 the order of programming is important to ensure the correct operation of the DW_apb_i2c. The lower byte must be programmed first. Then the upper byte is programmed. If the value is less than 8 then the count value gets changed to 8.
 #[repr(transparent)]
 pub struct IcFsSclLcnt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcFsSclLcnt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2167,11 +2169,11 @@ impl IcFsSclLcnt {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcIntrStat {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcIntrStat {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2786,11 +2788,11 @@ impl IcIntrStat {
 ///   Reset value: 0x1
 #[repr(transparent)]
 pub struct IcIntrMask {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcIntrMask {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3048,13 +3050,13 @@ impl IcIntrMask {
     /// Set M_RESTART_DET bit atomically (RW)
     #[inline(always)]
     pub fn set_m_restart_det(&self) {
-        self.value.set_bits(Self::M_RESTART_DET_MASK);
+        self.set_bits(Self::M_RESTART_DET_MASK);
     }
 
     /// Clear M_RESTART_DET bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_restart_det(&self) {
-        self.value.clr_bits(Self::M_RESTART_DET_MASK);
+        self.clr_bits(Self::M_RESTART_DET_MASK);
     }
 
     /// **M_GEN_CALL** `[11]` (RW)
@@ -3069,13 +3071,13 @@ impl IcIntrMask {
     /// Set M_GEN_CALL bit atomically (RW)
     #[inline(always)]
     pub fn set_m_gen_call(&self) {
-        self.value.set_bits(Self::M_GEN_CALL_MASK);
+        self.set_bits(Self::M_GEN_CALL_MASK);
     }
 
     /// Clear M_GEN_CALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_gen_call(&self) {
-        self.value.clr_bits(Self::M_GEN_CALL_MASK);
+        self.clr_bits(Self::M_GEN_CALL_MASK);
     }
 
     /// **M_START_DET** `[10]` (RW)
@@ -3090,13 +3092,13 @@ impl IcIntrMask {
     /// Set M_START_DET bit atomically (RW)
     #[inline(always)]
     pub fn set_m_start_det(&self) {
-        self.value.set_bits(Self::M_START_DET_MASK);
+        self.set_bits(Self::M_START_DET_MASK);
     }
 
     /// Clear M_START_DET bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_start_det(&self) {
-        self.value.clr_bits(Self::M_START_DET_MASK);
+        self.clr_bits(Self::M_START_DET_MASK);
     }
 
     /// **M_STOP_DET** `[9]` (RW)
@@ -3111,13 +3113,13 @@ impl IcIntrMask {
     /// Set M_STOP_DET bit atomically (RW)
     #[inline(always)]
     pub fn set_m_stop_det(&self) {
-        self.value.set_bits(Self::M_STOP_DET_MASK);
+        self.set_bits(Self::M_STOP_DET_MASK);
     }
 
     /// Clear M_STOP_DET bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_stop_det(&self) {
-        self.value.clr_bits(Self::M_STOP_DET_MASK);
+        self.clr_bits(Self::M_STOP_DET_MASK);
     }
 
     /// **M_ACTIVITY** `[8]` (RW)
@@ -3132,13 +3134,13 @@ impl IcIntrMask {
     /// Set M_ACTIVITY bit atomically (RW)
     #[inline(always)]
     pub fn set_m_activity(&self) {
-        self.value.set_bits(Self::M_ACTIVITY_MASK);
+        self.set_bits(Self::M_ACTIVITY_MASK);
     }
 
     /// Clear M_ACTIVITY bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_activity(&self) {
-        self.value.clr_bits(Self::M_ACTIVITY_MASK);
+        self.clr_bits(Self::M_ACTIVITY_MASK);
     }
 
     /// **M_RX_DONE** `[7]` (RW)
@@ -3153,13 +3155,13 @@ impl IcIntrMask {
     /// Set M_RX_DONE bit atomically (RW)
     #[inline(always)]
     pub fn set_m_rx_done(&self) {
-        self.value.set_bits(Self::M_RX_DONE_MASK);
+        self.set_bits(Self::M_RX_DONE_MASK);
     }
 
     /// Clear M_RX_DONE bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_rx_done(&self) {
-        self.value.clr_bits(Self::M_RX_DONE_MASK);
+        self.clr_bits(Self::M_RX_DONE_MASK);
     }
 
     /// **M_TX_ABRT** `[6]` (RW)
@@ -3174,13 +3176,13 @@ impl IcIntrMask {
     /// Set M_TX_ABRT bit atomically (RW)
     #[inline(always)]
     pub fn set_m_tx_abrt(&self) {
-        self.value.set_bits(Self::M_TX_ABRT_MASK);
+        self.set_bits(Self::M_TX_ABRT_MASK);
     }
 
     /// Clear M_TX_ABRT bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_tx_abrt(&self) {
-        self.value.clr_bits(Self::M_TX_ABRT_MASK);
+        self.clr_bits(Self::M_TX_ABRT_MASK);
     }
 
     /// **M_RD_REQ** `[5]` (RW)
@@ -3195,13 +3197,13 @@ impl IcIntrMask {
     /// Set M_RD_REQ bit atomically (RW)
     #[inline(always)]
     pub fn set_m_rd_req(&self) {
-        self.value.set_bits(Self::M_RD_REQ_MASK);
+        self.set_bits(Self::M_RD_REQ_MASK);
     }
 
     /// Clear M_RD_REQ bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_rd_req(&self) {
-        self.value.clr_bits(Self::M_RD_REQ_MASK);
+        self.clr_bits(Self::M_RD_REQ_MASK);
     }
 
     /// **M_TX_EMPTY** `[4]` (RW)
@@ -3216,13 +3218,13 @@ impl IcIntrMask {
     /// Set M_TX_EMPTY bit atomically (RW)
     #[inline(always)]
     pub fn set_m_tx_empty(&self) {
-        self.value.set_bits(Self::M_TX_EMPTY_MASK);
+        self.set_bits(Self::M_TX_EMPTY_MASK);
     }
 
     /// Clear M_TX_EMPTY bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_tx_empty(&self) {
-        self.value.clr_bits(Self::M_TX_EMPTY_MASK);
+        self.clr_bits(Self::M_TX_EMPTY_MASK);
     }
 
     /// **M_TX_OVER** `[3]` (RW)
@@ -3237,13 +3239,13 @@ impl IcIntrMask {
     /// Set M_TX_OVER bit atomically (RW)
     #[inline(always)]
     pub fn set_m_tx_over(&self) {
-        self.value.set_bits(Self::M_TX_OVER_MASK);
+        self.set_bits(Self::M_TX_OVER_MASK);
     }
 
     /// Clear M_TX_OVER bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_tx_over(&self) {
-        self.value.clr_bits(Self::M_TX_OVER_MASK);
+        self.clr_bits(Self::M_TX_OVER_MASK);
     }
 
     /// **M_RX_FULL** `[2]` (RW)
@@ -3258,13 +3260,13 @@ impl IcIntrMask {
     /// Set M_RX_FULL bit atomically (RW)
     #[inline(always)]
     pub fn set_m_rx_full(&self) {
-        self.value.set_bits(Self::M_RX_FULL_MASK);
+        self.set_bits(Self::M_RX_FULL_MASK);
     }
 
     /// Clear M_RX_FULL bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_rx_full(&self) {
-        self.value.clr_bits(Self::M_RX_FULL_MASK);
+        self.clr_bits(Self::M_RX_FULL_MASK);
     }
 
     /// **M_RX_OVER** `[1]` (RW)
@@ -3279,13 +3281,13 @@ impl IcIntrMask {
     /// Set M_RX_OVER bit atomically (RW)
     #[inline(always)]
     pub fn set_m_rx_over(&self) {
-        self.value.set_bits(Self::M_RX_OVER_MASK);
+        self.set_bits(Self::M_RX_OVER_MASK);
     }
 
     /// Clear M_RX_OVER bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_rx_over(&self) {
-        self.value.clr_bits(Self::M_RX_OVER_MASK);
+        self.clr_bits(Self::M_RX_OVER_MASK);
     }
 
     /// **M_RX_UNDER** `[0]` (RW)
@@ -3300,13 +3302,13 @@ impl IcIntrMask {
     /// Set M_RX_UNDER bit atomically (RW)
     #[inline(always)]
     pub fn set_m_rx_under(&self) {
-        self.value.set_bits(Self::M_RX_UNDER_MASK);
+        self.set_bits(Self::M_RX_UNDER_MASK);
     }
 
     /// Clear M_RX_UNDER bit atomically (RW)
     #[inline(always)]
     pub fn clr_m_rx_under(&self) {
-        self.value.clr_bits(Self::M_RX_UNDER_MASK);
+        self.clr_bits(Self::M_RX_UNDER_MASK);
     }
 
 }
@@ -3759,11 +3761,11 @@ impl IcIntrMask {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcRawIntrStat {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcRawIntrStat {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4326,11 +4328,11 @@ impl IcRawIntrStat {
 ///   Controls the level of entries (or above) that triggers the RX_FULL interrupt (bit 2 in IC_RAW_INTR_STAT register). The valid range is 0-255, with the additional restriction that hardware does not allow this value to be set to a value larger than the depth of the buffer. If an attempt is made to do that, the actual value set will be the maximum depth of the buffer. A value of 0 sets the threshold for 1 entry, and a value of 255 sets the threshold for 256 entries.
 #[repr(transparent)]
 pub struct IcRxTl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcRxTl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4463,11 +4465,11 @@ impl IcRxTl {
 ///   Controls the level of entries (or below) that trigger the TX_EMPTY interrupt (bit 4 in IC_RAW_INTR_STAT register). The valid range is 0-255, with the additional restriction that it may not be set to value larger than the depth of the buffer. If an attempt is made to do that, the actual value set will be the maximum depth of the buffer. A value of 0 sets the threshold for 0 entries, and a value of 255 sets the threshold for 255 entries.
 #[repr(transparent)]
 pub struct IcTxTl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcTxTl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4600,11 +4602,11 @@ impl IcTxTl {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrIntr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrIntr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4718,11 +4720,11 @@ impl IcClrIntr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxUnder {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxUnder {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4836,11 +4838,11 @@ impl IcClrRxUnder {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxOver {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxOver {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4954,11 +4956,11 @@ impl IcClrRxOver {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrTxOver {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrTxOver {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5072,11 +5074,11 @@ impl IcClrTxOver {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRdReq {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRdReq {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5190,11 +5192,11 @@ impl IcClrRdReq {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrTxAbrt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrTxAbrt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5308,11 +5310,11 @@ impl IcClrTxAbrt {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxDone {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxDone {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5426,11 +5428,11 @@ impl IcClrRxDone {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrActivity {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrActivity {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5544,11 +5546,11 @@ impl IcClrActivity {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrStopDet {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrStopDet {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5662,11 +5664,11 @@ impl IcClrStopDet {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrStartDet {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrStartDet {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5780,11 +5782,11 @@ impl IcClrStartDet {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrGenCall {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrGenCall {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5910,11 +5912,11 @@ impl IcClrGenCall {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcEnable {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcEnable {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5993,13 +5995,13 @@ impl IcEnable {
     /// Set TX_CMD_BLOCK bit atomically (RW)
     #[inline(always)]
     pub fn set_tx_cmd_block(&self) {
-        self.value.set_bits(Self::TX_CMD_BLOCK_MASK);
+        self.set_bits(Self::TX_CMD_BLOCK_MASK);
     }
 
     /// Clear TX_CMD_BLOCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_tx_cmd_block(&self) {
-        self.value.clr_bits(Self::TX_CMD_BLOCK_MASK);
+        self.clr_bits(Self::TX_CMD_BLOCK_MASK);
     }
 
     /// **ABORT** `[1]` (RW)
@@ -6015,13 +6017,13 @@ impl IcEnable {
     /// Set ABORT bit atomically (RW)
     #[inline(always)]
     pub fn set_abort(&self) {
-        self.value.set_bits(Self::ABORT_MASK);
+        self.set_bits(Self::ABORT_MASK);
     }
 
     /// Clear ABORT bit atomically (RW)
     #[inline(always)]
     pub fn clr_abort(&self) {
-        self.value.clr_bits(Self::ABORT_MASK);
+        self.clr_bits(Self::ABORT_MASK);
     }
 
     /// **ENABLE** `[0]` (RW)
@@ -6038,13 +6040,13 @@ impl IcEnable {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -6223,11 +6225,11 @@ impl IcEnable {
 ///   I2C Activity Status. Reset value: 0x0
 #[repr(transparent)]
 pub struct IcStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6547,11 +6549,11 @@ impl IcStatus {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcTxflr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcTxflr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6664,11 +6666,11 @@ impl IcTxflr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcRxflr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcRxflr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6791,11 +6793,11 @@ impl IcRxflr {
 ///   Reset value: IC_DEFAULT_SDA_HOLD[15:0].
 #[repr(transparent)]
 pub struct IcSdaHold {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSdaHold {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7080,11 +7082,11 @@ impl IcSdaHold {
 ///   Role of DW_apb_i2c: Master-Transmitter or Master-Receiver
 #[repr(transparent)]
 pub struct IcTxAbrtSource {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcTxAbrtSource {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7865,11 +7867,11 @@ impl IcTxAbrtSource {
 ///   When the register is set to a value of 0, it generates NACK/ACK, depending on normal criteria. - 1: generate NACK after data byte received - 0: generate NACK/ACK normally Reset value: 0x0
 #[repr(transparent)]
 pub struct IcSlvDataNackOnly {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSlvDataNackOnly {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7911,13 +7913,13 @@ impl IcSlvDataNackOnly {
     /// Set NACK bit atomically (RW)
     #[inline(always)]
     pub fn set_nack(&self) {
-        self.value.set_bits(Self::NACK_MASK);
+        self.set_bits(Self::NACK_MASK);
     }
 
     /// Clear NACK bit atomically (RW)
     #[inline(always)]
     pub fn clr_nack(&self) {
-        self.value.clr_bits(Self::NACK_MASK);
+        self.clr_bits(Self::NACK_MASK);
     }
 
 }
@@ -8022,11 +8024,11 @@ impl IcSlvDataNackOnly {
 ///   Receive DMA Enable. This bit enables/disables the receive FIFO DMA channel. Reset value: 0x0
 #[repr(transparent)]
 pub struct IcDmaCr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcDmaCr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8083,13 +8085,13 @@ impl IcDmaCr {
     /// Set TDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_tdmae(&self) {
-        self.value.set_bits(Self::TDMAE_MASK);
+        self.set_bits(Self::TDMAE_MASK);
     }
 
     /// Clear TDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_tdmae(&self) {
-        self.value.clr_bits(Self::TDMAE_MASK);
+        self.clr_bits(Self::TDMAE_MASK);
     }
 
     /// **RDMAE** `[0]` (RW)
@@ -8103,13 +8105,13 @@ impl IcDmaCr {
     /// Set RDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_rdmae(&self) {
-        self.value.set_bits(Self::RDMAE_MASK);
+        self.set_bits(Self::RDMAE_MASK);
     }
 
     /// Clear RDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rdmae(&self) {
-        self.value.clr_bits(Self::RDMAE_MASK);
+        self.clr_bits(Self::RDMAE_MASK);
     }
 
 }
@@ -8230,11 +8232,11 @@ impl IcDmaCr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcDmaTdlr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcDmaTdlr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8367,11 +8369,11 @@ impl IcDmaTdlr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcDmaRdlr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcDmaRdlr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8506,11 +8508,11 @@ impl IcDmaRdlr {
 ///   SDA Setup. It is recommended that if the required delay is 1000ns, then for an ic_clk frequency of 10 MHz, IC_SDA_SETUP should be programmed to a value of 11. IC_SDA_SETUP must be programmed with a minimum value of 2.
 #[repr(transparent)]
 pub struct IcSdaSetup {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcSdaSetup {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8639,11 +8641,11 @@ impl IcSdaSetup {
 ///   ACK General Call. When set to 1, DW_apb_i2c responds with a ACK (by asserting ic_data_oe) when it receives a General Call. Otherwise, DW_apb_i2c responds with a NACK (by negating ic_data_oe).
 #[repr(transparent)]
 pub struct IcAckGeneralCall {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcAckGeneralCall {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8683,13 +8685,13 @@ impl IcAckGeneralCall {
     /// Set ACK_GEN_CALL bit atomically (RW)
     #[inline(always)]
     pub fn set_ack_gen_call(&self) {
-        self.value.set_bits(Self::ACK_GEN_CALL_MASK);
+        self.set_bits(Self::ACK_GEN_CALL_MASK);
     }
 
     /// Clear ACK_GEN_CALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_ack_gen_call(&self) {
-        self.value.clr_bits(Self::ACK_GEN_CALL_MASK);
+        self.clr_bits(Self::ACK_GEN_CALL_MASK);
     }
 
 }
@@ -8812,11 +8814,11 @@ impl IcAckGeneralCall {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcEnableStatus {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcEnableStatus {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9040,11 +9042,11 @@ impl IcEnableStatus {
 ///   This register must be set before any I2C bus transaction can take place to ensure stable operation. This register sets the duration, measured in ic_clk cycles, of the longest spike in the SCL or SDA lines that will be filtered out by the spike suppression logic. This register can be written only when the I2C interface is disabled which corresponds to the IC_ENABLE[0] register being set to 0. Writes at other times have no effect. The minimum valid value is 1; hardware prevents values less than this being written, and if attempted results in 1 being set. or more information, refer to 'Spike Suppression'.
 #[repr(transparent)]
 pub struct IcFsSpklen {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcFsSpklen {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9172,11 +9174,11 @@ impl IcFsSpklen {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRestartDet {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRestartDet {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9318,11 +9320,11 @@ impl IcClrRestartDet {
 ///   APB data bus width is 32 bits
 #[repr(transparent)]
 pub struct IcCompParam1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcCompParam1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9601,11 +9603,11 @@ impl IcCompParam1 {
 /// - **IC_COMP_VERSION** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct IcCompVersion {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcCompVersion {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9707,11 +9709,11 @@ impl IcCompVersion {
 ///   Designware Component Type number = 0x44_57_01_40. This assigned unique hex value is constant and is derived from the two ASCII letters 'DW' followed by a 16-bit unsigned number.
 #[repr(transparent)]
 pub struct IcCompType {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for IcCompType {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

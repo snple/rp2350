@@ -1,4 +1,6 @@
 //! TIMER1
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -16,11 +18,11 @@ pub const BASE: u32 = 0x400b8000;
 /// - **TIMEHW** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct Timehw {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timehw {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -122,11 +124,11 @@ impl Timehw {
 /// - **TIMELW** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct Timelw {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timelw {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -228,11 +230,11 @@ impl Timelw {
 /// - **TIMEHR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timehr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timehr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -332,11 +334,11 @@ impl Timehr {
 /// - **TIMELR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timelr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timelr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -436,11 +438,11 @@ impl Timelr {
 /// - **ALARM0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Alarm0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Alarm0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -554,11 +556,11 @@ impl Alarm0 {
 /// - **ALARM1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Alarm1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Alarm1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -672,11 +674,11 @@ impl Alarm1 {
 /// - **ALARM2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Alarm2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Alarm2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -790,11 +792,11 @@ impl Alarm2 {
 /// - **ALARM3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Alarm3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Alarm3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -908,11 +910,11 @@ impl Alarm3 {
 /// - **ARMED** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Armed {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Armed {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1026,11 +1028,11 @@ impl Armed {
 /// - **TIMERAWH** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timerawh {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timerawh {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1130,11 +1132,11 @@ impl Timerawh {
 /// - **TIMERAWL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timerawl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Timerawl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1240,11 +1242,11 @@ impl Timerawl {
 ///   Pause when processor 0 is in debug mode
 #[repr(transparent)]
 pub struct Dbgpause {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dbgpause {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1285,13 +1287,13 @@ impl Dbgpause {
     /// Set DBG1 bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg1(&self) {
-        self.value.set_bits(Self::DBG1_MASK);
+        self.set_bits(Self::DBG1_MASK);
     }
 
     /// Clear DBG1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg1(&self) {
-        self.value.clr_bits(Self::DBG1_MASK);
+        self.clr_bits(Self::DBG1_MASK);
     }
 
     /// **DBG0** `[1]` (RW)
@@ -1305,13 +1307,13 @@ impl Dbgpause {
     /// Set DBG0 bit atomically (RW)
     #[inline(always)]
     pub fn set_dbg0(&self) {
-        self.value.set_bits(Self::DBG0_MASK);
+        self.set_bits(Self::DBG0_MASK);
     }
 
     /// Clear DBG0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbg0(&self) {
-        self.value.clr_bits(Self::DBG0_MASK);
+        self.clr_bits(Self::DBG0_MASK);
     }
 
 }
@@ -1429,11 +1431,11 @@ impl Dbgpause {
 /// - **PAUSE** `[0]` (RW)
 #[repr(transparent)]
 pub struct Pause {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Pause {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1460,13 +1462,13 @@ impl Pause {
     /// Set PAUSE bit atomically (RW)
     #[inline(always)]
     pub fn set_pause(&self) {
-        self.value.set_bits(Self::PAUSE_MASK);
+        self.set_bits(Self::PAUSE_MASK);
     }
 
     /// Clear PAUSE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pause(&self) {
-        self.value.clr_bits(Self::PAUSE_MASK);
+        self.clr_bits(Self::PAUSE_MASK);
     }
 
 }
@@ -1558,11 +1560,11 @@ impl Pause {
 /// - **LOCKED** `[0]` (RW)
 #[repr(transparent)]
 pub struct Locked {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Locked {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1589,13 +1591,13 @@ impl Locked {
     /// Set LOCKED bit atomically (RW)
     #[inline(always)]
     pub fn set_locked(&self) {
-        self.value.set_bits(Self::LOCKED_MASK);
+        self.set_bits(Self::LOCKED_MASK);
     }
 
     /// Clear LOCKED bit atomically (RW)
     #[inline(always)]
     pub fn clr_locked(&self) {
-        self.value.clr_bits(Self::LOCKED_MASK);
+        self.clr_bits(Self::LOCKED_MASK);
     }
 
 }
@@ -1687,11 +1689,11 @@ impl Locked {
 /// - **CLK_SYS** `[0]` (RW)
 #[repr(transparent)]
 pub struct Source {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Source {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1722,13 +1724,13 @@ impl Source {
     /// Set CLK_SYS bit atomically (RW)
     #[inline(always)]
     pub fn set_clk_sys(&self) {
-        self.value.set_bits(Self::CLK_SYS_MASK);
+        self.set_bits(Self::CLK_SYS_MASK);
     }
 
     /// Clear CLK_SYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk_sys(&self) {
-        self.value.clr_bits(Self::CLK_SYS_MASK);
+        self.clr_bits(Self::CLK_SYS_MASK);
     }
 
 }
@@ -1826,11 +1828,11 @@ impl Source {
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1875,13 +1877,13 @@ impl Intr {
     /// Set ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_3(&self) {
-        self.value.set_bits(Self::ALARM_3_MASK);
+        self.set_bits(Self::ALARM_3_MASK);
     }
 
     /// Clear ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_3(&self) {
-        self.value.clr_bits(Self::ALARM_3_MASK);
+        self.clr_bits(Self::ALARM_3_MASK);
     }
 
     /// **ALARM_2** `[2]` (RW)
@@ -1893,13 +1895,13 @@ impl Intr {
     /// Set ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_2(&self) {
-        self.value.set_bits(Self::ALARM_2_MASK);
+        self.set_bits(Self::ALARM_2_MASK);
     }
 
     /// Clear ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_2(&self) {
-        self.value.clr_bits(Self::ALARM_2_MASK);
+        self.clr_bits(Self::ALARM_2_MASK);
     }
 
     /// **ALARM_1** `[1]` (RW)
@@ -1911,13 +1913,13 @@ impl Intr {
     /// Set ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_1(&self) {
-        self.value.set_bits(Self::ALARM_1_MASK);
+        self.set_bits(Self::ALARM_1_MASK);
     }
 
     /// Clear ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_1(&self) {
-        self.value.clr_bits(Self::ALARM_1_MASK);
+        self.clr_bits(Self::ALARM_1_MASK);
     }
 
     /// **ALARM_0** `[0]` (RW)
@@ -1929,13 +1931,13 @@ impl Intr {
     /// Set ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_0(&self) {
-        self.value.set_bits(Self::ALARM_0_MASK);
+        self.set_bits(Self::ALARM_0_MASK);
     }
 
     /// Clear ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_0(&self) {
-        self.value.clr_bits(Self::ALARM_0_MASK);
+        self.clr_bits(Self::ALARM_0_MASK);
     }
 
 }
@@ -2087,11 +2089,11 @@ impl Intr {
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2136,13 +2138,13 @@ impl Inte {
     /// Set ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_3(&self) {
-        self.value.set_bits(Self::ALARM_3_MASK);
+        self.set_bits(Self::ALARM_3_MASK);
     }
 
     /// Clear ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_3(&self) {
-        self.value.clr_bits(Self::ALARM_3_MASK);
+        self.clr_bits(Self::ALARM_3_MASK);
     }
 
     /// **ALARM_2** `[2]` (RW)
@@ -2154,13 +2156,13 @@ impl Inte {
     /// Set ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_2(&self) {
-        self.value.set_bits(Self::ALARM_2_MASK);
+        self.set_bits(Self::ALARM_2_MASK);
     }
 
     /// Clear ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_2(&self) {
-        self.value.clr_bits(Self::ALARM_2_MASK);
+        self.clr_bits(Self::ALARM_2_MASK);
     }
 
     /// **ALARM_1** `[1]` (RW)
@@ -2172,13 +2174,13 @@ impl Inte {
     /// Set ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_1(&self) {
-        self.value.set_bits(Self::ALARM_1_MASK);
+        self.set_bits(Self::ALARM_1_MASK);
     }
 
     /// Clear ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_1(&self) {
-        self.value.clr_bits(Self::ALARM_1_MASK);
+        self.clr_bits(Self::ALARM_1_MASK);
     }
 
     /// **ALARM_0** `[0]` (RW)
@@ -2190,13 +2192,13 @@ impl Inte {
     /// Set ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_0(&self) {
-        self.value.set_bits(Self::ALARM_0_MASK);
+        self.set_bits(Self::ALARM_0_MASK);
     }
 
     /// Clear ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_0(&self) {
-        self.value.clr_bits(Self::ALARM_0_MASK);
+        self.clr_bits(Self::ALARM_0_MASK);
     }
 
 }
@@ -2348,11 +2350,11 @@ impl Inte {
 /// - **ALARM_0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2397,13 +2399,13 @@ impl Intf {
     /// Set ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_3(&self) {
-        self.value.set_bits(Self::ALARM_3_MASK);
+        self.set_bits(Self::ALARM_3_MASK);
     }
 
     /// Clear ALARM_3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_3(&self) {
-        self.value.clr_bits(Self::ALARM_3_MASK);
+        self.clr_bits(Self::ALARM_3_MASK);
     }
 
     /// **ALARM_2** `[2]` (RW)
@@ -2415,13 +2417,13 @@ impl Intf {
     /// Set ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_2(&self) {
-        self.value.set_bits(Self::ALARM_2_MASK);
+        self.set_bits(Self::ALARM_2_MASK);
     }
 
     /// Clear ALARM_2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_2(&self) {
-        self.value.clr_bits(Self::ALARM_2_MASK);
+        self.clr_bits(Self::ALARM_2_MASK);
     }
 
     /// **ALARM_1** `[1]` (RW)
@@ -2433,13 +2435,13 @@ impl Intf {
     /// Set ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_1(&self) {
-        self.value.set_bits(Self::ALARM_1_MASK);
+        self.set_bits(Self::ALARM_1_MASK);
     }
 
     /// Clear ALARM_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_1(&self) {
-        self.value.clr_bits(Self::ALARM_1_MASK);
+        self.clr_bits(Self::ALARM_1_MASK);
     }
 
     /// **ALARM_0** `[0]` (RW)
@@ -2451,13 +2453,13 @@ impl Intf {
     /// Set ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_alarm_0(&self) {
-        self.value.set_bits(Self::ALARM_0_MASK);
+        self.set_bits(Self::ALARM_0_MASK);
     }
 
     /// Clear ALARM_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_alarm_0(&self) {
-        self.value.clr_bits(Self::ALARM_0_MASK);
+        self.clr_bits(Self::ALARM_0_MASK);
     }
 
 }
@@ -2609,11 +2611,11 @@ impl Intf {
 /// - **ALARM_0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

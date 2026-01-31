@@ -1,5 +1,7 @@
 //! SYSCFG
 //! Register block for various chip control signals
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -23,11 +25,11 @@ pub const BASE: u32 = 0x40008000;
 ///   Indication that proc0 has halted
 #[repr(transparent)]
 pub struct ProcConfig {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ProcConfig {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -164,11 +166,11 @@ impl ProcConfig {
 /// - **GPIO** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct ProcInSyncBypass {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ProcInSyncBypass {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -296,11 +298,11 @@ impl ProcInSyncBypass {
 /// - **GPIO** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct ProcInSyncBypassHi {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ProcInSyncBypassHi {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -367,13 +369,13 @@ impl ProcInSyncBypassHi {
     /// Set QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_csn(&self) {
-        self.value.set_bits(Self::QSPI_CSN_MASK);
+        self.set_bits(Self::QSPI_CSN_MASK);
     }
 
     /// Clear QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_csn(&self) {
-        self.value.clr_bits(Self::QSPI_CSN_MASK);
+        self.clr_bits(Self::QSPI_CSN_MASK);
     }
 
     /// **QSPI_SCK** `[26]` (RW)
@@ -385,13 +387,13 @@ impl ProcInSyncBypassHi {
     /// Set QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_sck(&self) {
-        self.value.set_bits(Self::QSPI_SCK_MASK);
+        self.set_bits(Self::QSPI_SCK_MASK);
     }
 
     /// Clear QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_sck(&self) {
-        self.value.clr_bits(Self::QSPI_SCK_MASK);
+        self.clr_bits(Self::QSPI_SCK_MASK);
     }
 
     /// **USB_DM** `[25]` (RW)
@@ -403,13 +405,13 @@ impl ProcInSyncBypassHi {
     /// Set USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dm(&self) {
-        self.value.set_bits(Self::USB_DM_MASK);
+        self.set_bits(Self::USB_DM_MASK);
     }
 
     /// Clear USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dm(&self) {
-        self.value.clr_bits(Self::USB_DM_MASK);
+        self.clr_bits(Self::USB_DM_MASK);
     }
 
     /// **USB_DP** `[24]` (RW)
@@ -421,13 +423,13 @@ impl ProcInSyncBypassHi {
     /// Set USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dp(&self) {
-        self.value.set_bits(Self::USB_DP_MASK);
+        self.set_bits(Self::USB_DP_MASK);
     }
 
     /// Clear USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dp(&self) {
-        self.value.clr_bits(Self::USB_DP_MASK);
+        self.clr_bits(Self::USB_DP_MASK);
     }
 
     /// **GPIO** `[15:0]` (RW)
@@ -627,11 +629,11 @@ impl ProcInSyncBypassHi {
 ///   Observe the value of SWDIO output.
 #[repr(transparent)]
 pub struct Dbgforce {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dbgforce {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -690,13 +692,13 @@ impl Dbgforce {
     /// Set ATTACH bit atomically (RW)
     #[inline(always)]
     pub fn set_attach(&self) {
-        self.value.set_bits(Self::ATTACH_MASK);
+        self.set_bits(Self::ATTACH_MASK);
     }
 
     /// Clear ATTACH bit atomically (RW)
     #[inline(always)]
     pub fn clr_attach(&self) {
-        self.value.clr_bits(Self::ATTACH_MASK);
+        self.clr_bits(Self::ATTACH_MASK);
     }
 
     /// **SWCLK** `[2]` (RW)
@@ -710,13 +712,13 @@ impl Dbgforce {
     /// Set SWCLK bit atomically (RW)
     #[inline(always)]
     pub fn set_swclk(&self) {
-        self.value.set_bits(Self::SWCLK_MASK);
+        self.set_bits(Self::SWCLK_MASK);
     }
 
     /// Clear SWCLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_swclk(&self) {
-        self.value.clr_bits(Self::SWCLK_MASK);
+        self.clr_bits(Self::SWCLK_MASK);
     }
 
     /// **SWDI** `[1]` (RW)
@@ -730,13 +732,13 @@ impl Dbgforce {
     /// Set SWDI bit atomically (RW)
     #[inline(always)]
     pub fn set_swdi(&self) {
-        self.value.set_bits(Self::SWDI_MASK);
+        self.set_bits(Self::SWDI_MASK);
     }
 
     /// Clear SWDI bit atomically (RW)
     #[inline(always)]
     pub fn clr_swdi(&self) {
-        self.value.clr_bits(Self::SWDI_MASK);
+        self.clr_bits(Self::SWDI_MASK);
     }
 
     /// **SWDO** `[0]` (RO)
@@ -918,11 +920,11 @@ impl Dbgforce {
 /// - **SRAM0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Mempowerdown {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Mempowerdown {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1021,13 +1023,13 @@ impl Mempowerdown {
     /// Set BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn set_bootram(&self) {
-        self.value.set_bits(Self::BOOTRAM_MASK);
+        self.set_bits(Self::BOOTRAM_MASK);
     }
 
     /// Clear BOOTRAM bit atomically (RW)
     #[inline(always)]
     pub fn clr_bootram(&self) {
-        self.value.clr_bits(Self::BOOTRAM_MASK);
+        self.clr_bits(Self::BOOTRAM_MASK);
     }
 
     /// **ROM** `[11]` (RW)
@@ -1039,13 +1041,13 @@ impl Mempowerdown {
     /// Set ROM bit atomically (RW)
     #[inline(always)]
     pub fn set_rom(&self) {
-        self.value.set_bits(Self::ROM_MASK);
+        self.set_bits(Self::ROM_MASK);
     }
 
     /// Clear ROM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rom(&self) {
-        self.value.clr_bits(Self::ROM_MASK);
+        self.clr_bits(Self::ROM_MASK);
     }
 
     /// **USB** `[10]` (RW)
@@ -1057,13 +1059,13 @@ impl Mempowerdown {
     /// Set USB bit atomically (RW)
     #[inline(always)]
     pub fn set_usb(&self) {
-        self.value.set_bits(Self::USB_MASK);
+        self.set_bits(Self::USB_MASK);
     }
 
     /// Clear USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb(&self) {
-        self.value.clr_bits(Self::USB_MASK);
+        self.clr_bits(Self::USB_MASK);
     }
 
     /// **SRAM9** `[9]` (RW)
@@ -1075,13 +1077,13 @@ impl Mempowerdown {
     /// Set SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram9(&self) {
-        self.value.set_bits(Self::SRAM9_MASK);
+        self.set_bits(Self::SRAM9_MASK);
     }
 
     /// Clear SRAM9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram9(&self) {
-        self.value.clr_bits(Self::SRAM9_MASK);
+        self.clr_bits(Self::SRAM9_MASK);
     }
 
     /// **SRAM8** `[8]` (RW)
@@ -1093,13 +1095,13 @@ impl Mempowerdown {
     /// Set SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram8(&self) {
-        self.value.set_bits(Self::SRAM8_MASK);
+        self.set_bits(Self::SRAM8_MASK);
     }
 
     /// Clear SRAM8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram8(&self) {
-        self.value.clr_bits(Self::SRAM8_MASK);
+        self.clr_bits(Self::SRAM8_MASK);
     }
 
     /// **SRAM7** `[7]` (RW)
@@ -1111,13 +1113,13 @@ impl Mempowerdown {
     /// Set SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram7(&self) {
-        self.value.set_bits(Self::SRAM7_MASK);
+        self.set_bits(Self::SRAM7_MASK);
     }
 
     /// Clear SRAM7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram7(&self) {
-        self.value.clr_bits(Self::SRAM7_MASK);
+        self.clr_bits(Self::SRAM7_MASK);
     }
 
     /// **SRAM6** `[6]` (RW)
@@ -1129,13 +1131,13 @@ impl Mempowerdown {
     /// Set SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram6(&self) {
-        self.value.set_bits(Self::SRAM6_MASK);
+        self.set_bits(Self::SRAM6_MASK);
     }
 
     /// Clear SRAM6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram6(&self) {
-        self.value.clr_bits(Self::SRAM6_MASK);
+        self.clr_bits(Self::SRAM6_MASK);
     }
 
     /// **SRAM5** `[5]` (RW)
@@ -1147,13 +1149,13 @@ impl Mempowerdown {
     /// Set SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram5(&self) {
-        self.value.set_bits(Self::SRAM5_MASK);
+        self.set_bits(Self::SRAM5_MASK);
     }
 
     /// Clear SRAM5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram5(&self) {
-        self.value.clr_bits(Self::SRAM5_MASK);
+        self.clr_bits(Self::SRAM5_MASK);
     }
 
     /// **SRAM4** `[4]` (RW)
@@ -1165,13 +1167,13 @@ impl Mempowerdown {
     /// Set SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram4(&self) {
-        self.value.set_bits(Self::SRAM4_MASK);
+        self.set_bits(Self::SRAM4_MASK);
     }
 
     /// Clear SRAM4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram4(&self) {
-        self.value.clr_bits(Self::SRAM4_MASK);
+        self.clr_bits(Self::SRAM4_MASK);
     }
 
     /// **SRAM3** `[3]` (RW)
@@ -1183,13 +1185,13 @@ impl Mempowerdown {
     /// Set SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram3(&self) {
-        self.value.set_bits(Self::SRAM3_MASK);
+        self.set_bits(Self::SRAM3_MASK);
     }
 
     /// Clear SRAM3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram3(&self) {
-        self.value.clr_bits(Self::SRAM3_MASK);
+        self.clr_bits(Self::SRAM3_MASK);
     }
 
     /// **SRAM2** `[2]` (RW)
@@ -1201,13 +1203,13 @@ impl Mempowerdown {
     /// Set SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram2(&self) {
-        self.value.set_bits(Self::SRAM2_MASK);
+        self.set_bits(Self::SRAM2_MASK);
     }
 
     /// Clear SRAM2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram2(&self) {
-        self.value.clr_bits(Self::SRAM2_MASK);
+        self.clr_bits(Self::SRAM2_MASK);
     }
 
     /// **SRAM1** `[1]` (RW)
@@ -1219,13 +1221,13 @@ impl Mempowerdown {
     /// Set SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram1(&self) {
-        self.value.set_bits(Self::SRAM1_MASK);
+        self.set_bits(Self::SRAM1_MASK);
     }
 
     /// Clear SRAM1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram1(&self) {
-        self.value.clr_bits(Self::SRAM1_MASK);
+        self.clr_bits(Self::SRAM1_MASK);
     }
 
     /// **SRAM0** `[0]` (RW)
@@ -1237,13 +1239,13 @@ impl Mempowerdown {
     /// Set SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn set_sram0(&self) {
-        self.value.set_bits(Self::SRAM0_MASK);
+        self.set_bits(Self::SRAM0_MASK);
     }
 
     /// Clear SRAM0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sram0(&self) {
-        self.value.clr_bits(Self::SRAM0_MASK);
+        self.clr_bits(Self::SRAM0_MASK);
     }
 
 }
@@ -1556,11 +1558,11 @@ impl Mempowerdown {
 ///   * Bit 0: Force POWMAN clock to switch to LPOSC, by asserting its WDRESET input. This must be set before initiating a watchdog reset of the RSM from a stage that includes CLOCKS, if POWMAN is running from clk_ref at the point that the watchdog reset takes place. Otherwise, the short pulse generated on clk_ref by the reset of the CLOCKS block may affect POWMAN register state.
 #[repr(transparent)]
 pub struct Auxctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Auxctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -1,5 +1,7 @@
 //! ADC
 //! Control and data interface to SAR ADC
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -57,11 +59,11 @@ pub const BASE: u32 = 0x400a0000;
 ///   1 - enabled. 0 - disabled.
 #[repr(transparent)]
 pub struct Cs {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Cs {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -209,13 +211,13 @@ impl Cs {
     /// Set ERR_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_err_sticky(&self) {
-        self.value.set_bits(Self::ERR_STICKY_MASK);
+        self.set_bits(Self::ERR_STICKY_MASK);
     }
 
     /// Clear ERR_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_err_sticky(&self) {
-        self.value.clr_bits(Self::ERR_STICKY_MASK);
+        self.clr_bits(Self::ERR_STICKY_MASK);
     }
 
     /// **ERR** `[9]` (RO)
@@ -246,13 +248,13 @@ impl Cs {
     /// Set START_MANY bit atomically (RW)
     #[inline(always)]
     pub fn set_start_many(&self) {
-        self.value.set_bits(Self::START_MANY_MASK);
+        self.set_bits(Self::START_MANY_MASK);
     }
 
     /// Clear START_MANY bit atomically (RW)
     #[inline(always)]
     pub fn clr_start_many(&self) {
-        self.value.clr_bits(Self::START_MANY_MASK);
+        self.clr_bits(Self::START_MANY_MASK);
     }
 
     /// Trigger **START_ONCE** (WO)
@@ -274,13 +276,13 @@ impl Cs {
     /// Set TS_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_ts_en(&self) {
-        self.value.set_bits(Self::TS_EN_MASK);
+        self.set_bits(Self::TS_EN_MASK);
     }
 
     /// Clear TS_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_ts_en(&self) {
-        self.value.clr_bits(Self::TS_EN_MASK);
+        self.clr_bits(Self::TS_EN_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -295,13 +297,13 @@ impl Cs {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -540,11 +542,11 @@ impl Cs {
 /// - **RESULT** `[11:0]` (RO)
 #[repr(transparent)]
 pub struct Result {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Result {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -678,11 +680,11 @@ impl Result {
 ///   If 1: write result to the FIFO after each conversion.
 #[repr(transparent)]
 pub struct Fcs {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fcs {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -811,13 +813,13 @@ impl Fcs {
     /// Set OVER bit atomically (RW)
     #[inline(always)]
     pub fn set_over(&self) {
-        self.value.set_bits(Self::OVER_MASK);
+        self.set_bits(Self::OVER_MASK);
     }
 
     /// Clear OVER bit atomically (RW)
     #[inline(always)]
     pub fn clr_over(&self) {
-        self.value.clr_bits(Self::OVER_MASK);
+        self.clr_bits(Self::OVER_MASK);
     }
 
     /// **UNDER** `[10]` (RW)
@@ -831,13 +833,13 @@ impl Fcs {
     /// Set UNDER bit atomically (RW)
     #[inline(always)]
     pub fn set_under(&self) {
-        self.value.set_bits(Self::UNDER_MASK);
+        self.set_bits(Self::UNDER_MASK);
     }
 
     /// Clear UNDER bit atomically (RW)
     #[inline(always)]
     pub fn clr_under(&self) {
-        self.value.clr_bits(Self::UNDER_MASK);
+        self.clr_bits(Self::UNDER_MASK);
     }
 
     /// **FULL** `[9]` (RO)
@@ -863,13 +865,13 @@ impl Fcs {
     /// Set DREQ_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_dreq_en(&self) {
-        self.value.set_bits(Self::DREQ_EN_MASK);
+        self.set_bits(Self::DREQ_EN_MASK);
     }
 
     /// Clear DREQ_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_dreq_en(&self) {
-        self.value.clr_bits(Self::DREQ_EN_MASK);
+        self.clr_bits(Self::DREQ_EN_MASK);
     }
 
     /// **ERR** `[2]` (RW)
@@ -883,13 +885,13 @@ impl Fcs {
     /// Set ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_err(&self) {
-        self.value.set_bits(Self::ERR_MASK);
+        self.set_bits(Self::ERR_MASK);
     }
 
     /// Clear ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_err(&self) {
-        self.value.clr_bits(Self::ERR_MASK);
+        self.clr_bits(Self::ERR_MASK);
     }
 
     /// **SHIFT** `[1]` (RW)
@@ -903,13 +905,13 @@ impl Fcs {
     /// Set SHIFT bit atomically (RW)
     #[inline(always)]
     pub fn set_shift(&self) {
-        self.value.set_bits(Self::SHIFT_MASK);
+        self.set_bits(Self::SHIFT_MASK);
     }
 
     /// Clear SHIFT bit atomically (RW)
     #[inline(always)]
     pub fn clr_shift(&self) {
-        self.value.clr_bits(Self::SHIFT_MASK);
+        self.clr_bits(Self::SHIFT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -923,13 +925,13 @@ impl Fcs {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -1177,11 +1179,11 @@ impl Fcs {
 /// - **VAL** `[11:0]` (RO)
 #[repr(transparent)]
 pub struct Fifo {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fifo {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1315,11 +1317,11 @@ impl Fifo {
 ///   Fractional part of clock divisor. First-order delta-sigma.
 #[repr(transparent)]
 pub struct Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1489,11 +1491,11 @@ impl Div {
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1607,11 +1609,11 @@ impl Intr {
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
 pub struct Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1645,13 +1647,13 @@ impl Inte {
     /// Set FIFO bit atomically (RW)
     #[inline(always)]
     pub fn set_fifo(&self) {
-        self.value.set_bits(Self::FIFO_MASK);
+        self.set_bits(Self::FIFO_MASK);
     }
 
     /// Clear FIFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_fifo(&self) {
-        self.value.clr_bits(Self::FIFO_MASK);
+        self.clr_bits(Self::FIFO_MASK);
     }
 
 }
@@ -1752,11 +1754,11 @@ impl Inte {
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
 pub struct Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1790,13 +1792,13 @@ impl Intf {
     /// Set FIFO bit atomically (RW)
     #[inline(always)]
     pub fn set_fifo(&self) {
-        self.value.set_bits(Self::FIFO_MASK);
+        self.set_bits(Self::FIFO_MASK);
     }
 
     /// Clear FIFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_fifo(&self) {
-        self.value.clr_bits(Self::FIFO_MASK);
+        self.clr_bits(Self::FIFO_MASK);
     }
 
 }
@@ -1897,11 +1899,11 @@ impl Intf {
 ///   This level can be programmed via the FCS_THRESH field.
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

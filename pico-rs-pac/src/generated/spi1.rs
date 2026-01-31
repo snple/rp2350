@@ -1,4 +1,6 @@
 //! SPI1
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -34,11 +36,11 @@ pub const BASE: u32 = 0x40088000;
 ///   Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
 #[repr(transparent)]
 pub struct Sspcr0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspcr0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -119,13 +121,13 @@ impl Sspcr0 {
     /// Set SPH bit atomically (RW)
     #[inline(always)]
     pub fn set_sph(&self) {
-        self.value.set_bits(Self::SPH_MASK);
+        self.set_bits(Self::SPH_MASK);
     }
 
     /// Clear SPH bit atomically (RW)
     #[inline(always)]
     pub fn clr_sph(&self) {
-        self.value.clr_bits(Self::SPH_MASK);
+        self.clr_bits(Self::SPH_MASK);
     }
 
     /// **SPO** `[6]` (RW)
@@ -139,13 +141,13 @@ impl Sspcr0 {
     /// Set SPO bit atomically (RW)
     #[inline(always)]
     pub fn set_spo(&self) {
-        self.value.set_bits(Self::SPO_MASK);
+        self.set_bits(Self::SPO_MASK);
     }
 
     /// Clear SPO bit atomically (RW)
     #[inline(always)]
     pub fn clr_spo(&self) {
-        self.value.clr_bits(Self::SPO_MASK);
+        self.clr_bits(Self::SPO_MASK);
     }
 
     /// **FRF** `[5:4]` (RW)
@@ -363,11 +365,11 @@ impl Sspcr0 {
 ///   Loop back mode: 0 Normal serial port operation enabled. 1 Output of transmit serial shifter is connected to input of receive serial shifter internally.
 #[repr(transparent)]
 pub struct Sspcr1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspcr1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -426,13 +428,13 @@ impl Sspcr1 {
     /// Set SOD bit atomically (RW)
     #[inline(always)]
     pub fn set_sod(&self) {
-        self.value.set_bits(Self::SOD_MASK);
+        self.set_bits(Self::SOD_MASK);
     }
 
     /// Clear SOD bit atomically (RW)
     #[inline(always)]
     pub fn clr_sod(&self) {
-        self.value.clr_bits(Self::SOD_MASK);
+        self.clr_bits(Self::SOD_MASK);
     }
 
     /// **MS** `[2]` (RW)
@@ -446,13 +448,13 @@ impl Sspcr1 {
     /// Set MS bit atomically (RW)
     #[inline(always)]
     pub fn set_ms(&self) {
-        self.value.set_bits(Self::MS_MASK);
+        self.set_bits(Self::MS_MASK);
     }
 
     /// Clear MS bit atomically (RW)
     #[inline(always)]
     pub fn clr_ms(&self) {
-        self.value.clr_bits(Self::MS_MASK);
+        self.clr_bits(Self::MS_MASK);
     }
 
     /// **SSE** `[1]` (RW)
@@ -466,13 +468,13 @@ impl Sspcr1 {
     /// Set SSE bit atomically (RW)
     #[inline(always)]
     pub fn set_sse(&self) {
-        self.value.set_bits(Self::SSE_MASK);
+        self.set_bits(Self::SSE_MASK);
     }
 
     /// Clear SSE bit atomically (RW)
     #[inline(always)]
     pub fn clr_sse(&self) {
-        self.value.clr_bits(Self::SSE_MASK);
+        self.clr_bits(Self::SSE_MASK);
     }
 
     /// **LBM** `[0]` (RW)
@@ -486,13 +488,13 @@ impl Sspcr1 {
     /// Set LBM bit atomically (RW)
     #[inline(always)]
     pub fn set_lbm(&self) {
-        self.value.set_bits(Self::LBM_MASK);
+        self.set_bits(Self::LBM_MASK);
     }
 
     /// Clear LBM bit atomically (RW)
     #[inline(always)]
     pub fn clr_lbm(&self) {
-        self.value.clr_bits(Self::LBM_MASK);
+        self.clr_bits(Self::LBM_MASK);
     }
 
 }
@@ -655,11 +657,11 @@ impl Sspcr1 {
 ///   Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
 #[repr(transparent)]
 pub struct Sspdr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspdr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -796,11 +798,11 @@ impl Sspdr {
 ///   Transmit FIFO empty, RO: 0 Transmit FIFO is not empty. 1 Transmit FIFO is empty.
 #[repr(transparent)]
 pub struct Sspsr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspsr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1010,11 +1012,11 @@ impl Sspsr {
 ///   Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
 #[repr(transparent)]
 pub struct Sspcpsr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspcpsr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1153,11 +1155,11 @@ impl Sspcpsr {
 ///   Receive overrun interrupt mask: 0 Receive FIFO written to while full condition interrupt is masked. 1 Receive FIFO written to while full condition interrupt is not masked.
 #[repr(transparent)]
 pub struct Sspimsc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspimsc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1216,13 +1218,13 @@ impl Sspimsc {
     /// Set TXIM bit atomically (RW)
     #[inline(always)]
     pub fn set_txim(&self) {
-        self.value.set_bits(Self::TXIM_MASK);
+        self.set_bits(Self::TXIM_MASK);
     }
 
     /// Clear TXIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_txim(&self) {
-        self.value.clr_bits(Self::TXIM_MASK);
+        self.clr_bits(Self::TXIM_MASK);
     }
 
     /// **RXIM** `[2]` (RW)
@@ -1236,13 +1238,13 @@ impl Sspimsc {
     /// Set RXIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rxim(&self) {
-        self.value.set_bits(Self::RXIM_MASK);
+        self.set_bits(Self::RXIM_MASK);
     }
 
     /// Clear RXIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxim(&self) {
-        self.value.clr_bits(Self::RXIM_MASK);
+        self.clr_bits(Self::RXIM_MASK);
     }
 
     /// **RTIM** `[1]` (RW)
@@ -1256,13 +1258,13 @@ impl Sspimsc {
     /// Set RTIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rtim(&self) {
-        self.value.set_bits(Self::RTIM_MASK);
+        self.set_bits(Self::RTIM_MASK);
     }
 
     /// Clear RTIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rtim(&self) {
-        self.value.clr_bits(Self::RTIM_MASK);
+        self.clr_bits(Self::RTIM_MASK);
     }
 
     /// **RORIM** `[0]` (RW)
@@ -1276,13 +1278,13 @@ impl Sspimsc {
     /// Set RORIM bit atomically (RW)
     #[inline(always)]
     pub fn set_rorim(&self) {
-        self.value.set_bits(Self::RORIM_MASK);
+        self.set_bits(Self::RORIM_MASK);
     }
 
     /// Clear RORIM bit atomically (RW)
     #[inline(always)]
     pub fn clr_rorim(&self) {
-        self.value.clr_bits(Self::RORIM_MASK);
+        self.clr_bits(Self::RORIM_MASK);
     }
 
 }
@@ -1458,11 +1460,11 @@ impl Sspimsc {
 ///   Gives the raw interrupt state, prior to masking, of the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspris {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspris {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1659,11 +1661,11 @@ impl Sspris {
 ///   Gives the receive over run masked interrupt status, after masking, of the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspmis {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspmis {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1852,11 +1854,11 @@ impl Sspmis {
 ///   Clears the SSPRORINTR interrupt
 #[repr(transparent)]
 pub struct Sspicr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspicr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1897,13 +1899,13 @@ impl Sspicr {
     /// Set RTIC bit atomically (RW)
     #[inline(always)]
     pub fn set_rtic(&self) {
-        self.value.set_bits(Self::RTIC_MASK);
+        self.set_bits(Self::RTIC_MASK);
     }
 
     /// Clear RTIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_rtic(&self) {
-        self.value.clr_bits(Self::RTIC_MASK);
+        self.clr_bits(Self::RTIC_MASK);
     }
 
     /// **RORIC** `[0]` (RW)
@@ -1917,13 +1919,13 @@ impl Sspicr {
     /// Set RORIC bit atomically (RW)
     #[inline(always)]
     pub fn set_roric(&self) {
-        self.value.set_bits(Self::RORIC_MASK);
+        self.set_bits(Self::RORIC_MASK);
     }
 
     /// Clear RORIC bit atomically (RW)
     #[inline(always)]
     pub fn clr_roric(&self) {
-        self.value.clr_bits(Self::RORIC_MASK);
+        self.clr_bits(Self::RORIC_MASK);
     }
 
 }
@@ -2047,11 +2049,11 @@ impl Sspicr {
 ///   Receive DMA Enable. If this bit is set to 1, DMA for the receive FIFO is enabled.
 #[repr(transparent)]
 pub struct Sspdmacr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspdmacr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2092,13 +2094,13 @@ impl Sspdmacr {
     /// Set TXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_txdmae(&self) {
-        self.value.set_bits(Self::TXDMAE_MASK);
+        self.set_bits(Self::TXDMAE_MASK);
     }
 
     /// Clear TXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_txdmae(&self) {
-        self.value.clr_bits(Self::TXDMAE_MASK);
+        self.clr_bits(Self::TXDMAE_MASK);
     }
 
     /// **RXDMAE** `[0]` (RW)
@@ -2112,13 +2114,13 @@ impl Sspdmacr {
     /// Set RXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn set_rxdmae(&self) {
-        self.value.set_bits(Self::RXDMAE_MASK);
+        self.set_bits(Self::RXDMAE_MASK);
     }
 
     /// Clear RXDMAE bit atomically (RW)
     #[inline(always)]
     pub fn clr_rxdmae(&self) {
-        self.value.clr_bits(Self::RXDMAE_MASK);
+        self.clr_bits(Self::RXDMAE_MASK);
     }
 
 }
@@ -2238,11 +2240,11 @@ impl Sspdmacr {
 ///   These bits read back as 0x22
 #[repr(transparent)]
 pub struct Sspperiphid0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspperiphid0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2355,11 +2357,11 @@ impl Sspperiphid0 {
 ///   These bits read back as 0x0
 #[repr(transparent)]
 pub struct Sspperiphid1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspperiphid1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2496,11 +2498,11 @@ impl Sspperiphid1 {
 ///   These bits read back as 0x4
 #[repr(transparent)]
 pub struct Sspperiphid2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspperiphid2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2633,11 +2635,11 @@ impl Sspperiphid2 {
 ///   These bits read back as 0x00
 #[repr(transparent)]
 pub struct Sspperiphid3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Sspperiphid3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2746,11 +2748,11 @@ impl Sspperiphid3 {
 ///   These bits read back as 0x0D
 #[repr(transparent)]
 pub struct Ssppcellid0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ssppcellid0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2859,11 +2861,11 @@ impl Ssppcellid0 {
 ///   These bits read back as 0xF0
 #[repr(transparent)]
 pub struct Ssppcellid1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ssppcellid1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2972,11 +2974,11 @@ impl Ssppcellid1 {
 ///   These bits read back as 0x05
 #[repr(transparent)]
 pub struct Ssppcellid2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ssppcellid2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3085,11 +3087,11 @@ impl Ssppcellid2 {
 ///   These bits read back as 0xB1
 #[repr(transparent)]
 pub struct Ssppcellid3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ssppcellid3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

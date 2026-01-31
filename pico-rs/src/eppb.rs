@@ -75,7 +75,7 @@ impl Eppb {
     #[inline]
     pub fn enable_nmi_irq0_31(&self, irq: u8) {
         if irq < 32 {
-            self.regs.nmi_mask0.set_bits(1 << irq);
+            self.regs.nmi_mask0.modify_bits(|r| r | (1 << irq));
         }
     }
 
@@ -83,7 +83,7 @@ impl Eppb {
     #[inline]
     pub fn disable_nmi_irq0_31(&self, irq: u8) {
         if irq < 32 {
-            self.regs.nmi_mask0.clr_bits(1 << irq);
+            self.regs.nmi_mask0.modify_bits(|r| r & !(1 << irq));
         }
     }
 
@@ -105,7 +105,7 @@ impl Eppb {
     #[inline]
     pub fn enable_nmi_irq32_51(&self, irq: u8) {
         if (32..52).contains(&irq) {
-            self.regs.nmi_mask1.set_bits(1 << (irq - 32));
+            self.regs.nmi_mask1.modify_bits(|r| r | (1 << (irq - 32)));
         }
     }
 
@@ -113,7 +113,7 @@ impl Eppb {
     #[inline]
     pub fn disable_nmi_irq32_51(&self, irq: u8) {
         if (32..52).contains(&irq) {
-            self.regs.nmi_mask1.clr_bits(1 << (irq - 32));
+            self.regs.nmi_mask1.modify_bits(|r| r & !(1 << (irq - 32)));
         }
     }
 

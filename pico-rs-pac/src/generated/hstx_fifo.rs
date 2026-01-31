@@ -1,5 +1,7 @@
 //! HSTX_FIFO
 //! FIFO status and write access for HSTX
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -25,11 +27,11 @@ pub const BASE: u32 = 0x50600000;
 /// - **LEVEL** `[7:0]` (RO)
 #[repr(transparent)]
 pub struct Stat {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Stat {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -78,13 +80,13 @@ impl Stat {
     /// Set WOF bit atomically (RW)
     #[inline(always)]
     pub fn set_wof(&self) {
-        self.value.set_bits(Self::WOF_MASK);
+        self.set_bits(Self::WOF_MASK);
     }
 
     /// Clear WOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_wof(&self) {
-        self.value.clr_bits(Self::WOF_MASK);
+        self.clr_bits(Self::WOF_MASK);
     }
 
     /// **EMPTY** `[9]` (RO)
@@ -216,11 +218,11 @@ impl Stat {
 /// - **FIFO** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct Fifo {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Fifo {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

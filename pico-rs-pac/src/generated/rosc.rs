@@ -1,4 +1,6 @@
 //! ROSC
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -31,11 +33,11 @@ pub const BASE: u32 = 0x400e8000;
 ///   Note: the values here are gray coded which is why HIGH comes before TOOHIGH
 #[repr(transparent)]
 pub struct Ctrl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ctrl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -293,11 +295,11 @@ impl Ctrl {
 ///   Stage 0 drive strength
 #[repr(transparent)]
 pub struct Freqa {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Freqa {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -431,13 +433,13 @@ impl Freqa {
     /// Set DS1_RANDOM bit atomically (RW)
     #[inline(always)]
     pub fn set_ds1_random(&self) {
-        self.value.set_bits(Self::DS1_RANDOM_MASK);
+        self.set_bits(Self::DS1_RANDOM_MASK);
     }
 
     /// Clear DS1_RANDOM bit atomically (RW)
     #[inline(always)]
     pub fn clr_ds1_random(&self) {
-        self.value.clr_bits(Self::DS1_RANDOM_MASK);
+        self.clr_bits(Self::DS1_RANDOM_MASK);
     }
 
     /// **DS1** `[6:4]` (RW)
@@ -467,13 +469,13 @@ impl Freqa {
     /// Set DS0_RANDOM bit atomically (RW)
     #[inline(always)]
     pub fn set_ds0_random(&self) {
-        self.value.set_bits(Self::DS0_RANDOM_MASK);
+        self.set_bits(Self::DS0_RANDOM_MASK);
     }
 
     /// Clear DS0_RANDOM bit atomically (RW)
     #[inline(always)]
     pub fn clr_ds0_random(&self) {
-        self.value.clr_bits(Self::DS0_RANDOM_MASK);
+        self.clr_bits(Self::DS0_RANDOM_MASK);
     }
 
     /// **DS0** `[2:0]` (RW)
@@ -718,11 +720,11 @@ impl Freqa {
 ///   Stage 4 drive strength
 #[repr(transparent)]
 pub struct Freqb {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Freqb {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1022,11 +1024,11 @@ impl Freqb {
 /// - **SEED** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Random {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Random {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1144,11 +1146,11 @@ impl Random {
 ///   Warning: setup the irq before selecting dormant mode
 #[repr(transparent)]
 pub struct Dormant {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Dormant {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1291,11 +1293,11 @@ impl Dormant {
 ///   this register resets to div=32
 #[repr(transparent)]
 pub struct Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1455,11 +1457,11 @@ impl Div {
 ///   must be set to 0 before setting div=1
 #[repr(transparent)]
 pub struct Phase {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Phase {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1540,13 +1542,13 @@ impl Phase {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **FLIP** `[2]` (RW)
@@ -1561,13 +1563,13 @@ impl Phase {
     /// Set FLIP bit atomically (RW)
     #[inline(always)]
     pub fn set_flip(&self) {
-        self.value.set_bits(Self::FLIP_MASK);
+        self.set_bits(Self::FLIP_MASK);
     }
 
     /// Clear FLIP bit atomically (RW)
     #[inline(always)]
     pub fn clr_flip(&self) {
-        self.value.clr_bits(Self::FLIP_MASK);
+        self.clr_bits(Self::FLIP_MASK);
     }
 
     /// **SHIFT** `[1:0]` (RW)
@@ -1767,11 +1769,11 @@ impl Phase {
 ///   this resets to 0 but transitions to 1 during chip startup
 #[repr(transparent)]
 pub struct Status {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Status {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1840,13 +1842,13 @@ impl Status {
     /// Set BADWRITE bit atomically (RW)
     #[inline(always)]
     pub fn set_badwrite(&self) {
-        self.value.set_bits(Self::BADWRITE_MASK);
+        self.set_bits(Self::BADWRITE_MASK);
     }
 
     /// Clear BADWRITE bit atomically (RW)
     #[inline(always)]
     pub fn clr_badwrite(&self) {
-        self.value.clr_bits(Self::BADWRITE_MASK);
+        self.clr_bits(Self::BADWRITE_MASK);
     }
 
     /// **DIV_RUNNING** `[16]` (RO)
@@ -1986,11 +1988,11 @@ impl Status {
 /// - **RANDOMBIT** `[0]` (RO)
 #[repr(transparent)]
 pub struct Randombit {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Randombit {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2093,11 +2095,11 @@ impl Randombit {
 /// - **COUNT** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Count {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Count {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

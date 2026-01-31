@@ -1,5 +1,7 @@
 //! BUSCTRL
 //! Register block for busfabric control signals and performance counters
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -31,11 +33,11 @@ pub const BASE: u32 = 0x40068000;
 ///   0 - low priority, 1 - high priority
 #[repr(transparent)]
 pub struct BusPriority {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BusPriority {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -94,13 +96,13 @@ impl BusPriority {
     /// Set DMA_W bit atomically (RW)
     #[inline(always)]
     pub fn set_dma_w(&self) {
-        self.value.set_bits(Self::DMA_W_MASK);
+        self.set_bits(Self::DMA_W_MASK);
     }
 
     /// Clear DMA_W bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma_w(&self) {
-        self.value.clr_bits(Self::DMA_W_MASK);
+        self.clr_bits(Self::DMA_W_MASK);
     }
 
     /// **DMA_R** `[8]` (RW)
@@ -114,13 +116,13 @@ impl BusPriority {
     /// Set DMA_R bit atomically (RW)
     #[inline(always)]
     pub fn set_dma_r(&self) {
-        self.value.set_bits(Self::DMA_R_MASK);
+        self.set_bits(Self::DMA_R_MASK);
     }
 
     /// Clear DMA_R bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma_r(&self) {
-        self.value.clr_bits(Self::DMA_R_MASK);
+        self.clr_bits(Self::DMA_R_MASK);
     }
 
     /// **PROC1** `[4]` (RW)
@@ -134,13 +136,13 @@ impl BusPriority {
     /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.value.set_bits(Self::PROC1_MASK);
+        self.set_bits(Self::PROC1_MASK);
     }
 
     /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.value.clr_bits(Self::PROC1_MASK);
+        self.clr_bits(Self::PROC1_MASK);
     }
 
     /// **PROC0** `[0]` (RW)
@@ -154,13 +156,13 @@ impl BusPriority {
     /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.value.set_bits(Self::PROC0_MASK);
+        self.set_bits(Self::PROC0_MASK);
     }
 
     /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.value.clr_bits(Self::PROC0_MASK);
+        self.clr_bits(Self::PROC0_MASK);
     }
 
 }
@@ -326,11 +328,11 @@ impl BusPriority {
 ///   In normal circumstances this will happen almost immediately.
 #[repr(transparent)]
 pub struct BusPriorityAck {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for BusPriorityAck {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -445,11 +447,11 @@ impl BusPriorityAck {
 /// - **PERFCTR_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct PerfctrEn {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for PerfctrEn {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -476,13 +478,13 @@ impl PerfctrEn {
     /// Set PERFCTR_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_perfctr_en(&self) {
-        self.value.set_bits(Self::PERFCTR_EN_MASK);
+        self.set_bits(Self::PERFCTR_EN_MASK);
     }
 
     /// Clear PERFCTR_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_perfctr_en(&self) {
-        self.value.clr_bits(Self::PERFCTR_EN_MASK);
+        self.clr_bits(Self::PERFCTR_EN_MASK);
     }
 
 }
@@ -578,11 +580,11 @@ impl PerfctrEn {
 ///   Write any value to clear. Select an event to count using PERFSEL0
 #[repr(transparent)]
 pub struct Perfctr0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfctr0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -719,11 +721,11 @@ impl Perfctr0 {
 ///   Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfsel0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -988,11 +990,11 @@ impl Perfsel0 {
 ///   Write any value to clear. Select an event to count using PERFSEL1
 #[repr(transparent)]
 pub struct Perfctr1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfctr1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1129,11 +1131,11 @@ impl Perfctr1 {
 ///   Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfsel1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1398,11 +1400,11 @@ impl Perfsel1 {
 ///   Write any value to clear. Select an event to count using PERFSEL2
 #[repr(transparent)]
 pub struct Perfctr2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfctr2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1539,11 +1541,11 @@ impl Perfctr2 {
 ///   Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfsel2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1808,11 +1810,11 @@ impl Perfsel2 {
 ///   Write any value to clear. Select an event to count using PERFSEL3
 #[repr(transparent)]
 pub struct Perfctr3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfctr3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1949,11 +1951,11 @@ impl Perfctr3 {
 ///   Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Perfsel3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

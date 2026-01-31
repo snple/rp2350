@@ -1,5 +1,7 @@
 //! XIP_AUX
 //! Auxiliary DMA access to XIP FIFOs, via fast AHB bus access
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -17,11 +19,11 @@ pub const BASE: u32 = 0x50500000;
 /// - **STREAM** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Stream {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Stream {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -142,11 +144,11 @@ impl Stream {
 ///   For 16-bit data, the least-significant byte is transmitted first.
 #[repr(transparent)]
 pub struct QmiDirectTx {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for QmiDirectTx {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -398,11 +400,11 @@ impl QmiDirectTx {
 ///   When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
 #[repr(transparent)]
 pub struct QmiDirectRx {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for QmiDirectRx {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

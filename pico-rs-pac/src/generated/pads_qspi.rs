@@ -1,4 +1,6 @@
 //! PADS_QSPI
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -16,11 +18,11 @@ pub const BASE: u32 = 0x40040000;
 /// - **VOLTAGE_SELECT** `[0]` (RW)
 #[repr(transparent)]
 pub struct VoltageSelect {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for VoltageSelect {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55,13 +57,13 @@ impl VoltageSelect {
     /// Set VOLTAGE_SELECT bit atomically (RW)
     #[inline(always)]
     pub fn set_voltage_select(&self) {
-        self.value.set_bits(Self::VOLTAGE_SELECT_MASK);
+        self.set_bits(Self::VOLTAGE_SELECT_MASK);
     }
 
     /// Clear VOLTAGE_SELECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_voltage_select(&self) {
-        self.value.clr_bits(Self::VOLTAGE_SELECT_MASK);
+        self.clr_bits(Self::VOLTAGE_SELECT_MASK);
     }
 
 }
@@ -181,11 +183,11 @@ impl VoltageSelect {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSclk {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSclk {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -287,13 +289,13 @@ impl GpioQspiSclk {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -307,13 +309,13 @@ impl GpioQspiSclk {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -327,13 +329,13 @@ impl GpioQspiSclk {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -363,13 +365,13 @@ impl GpioQspiSclk {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -383,13 +385,13 @@ impl GpioQspiSclk {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -403,13 +405,13 @@ impl GpioQspiSclk {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -423,13 +425,13 @@ impl GpioQspiSclk {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -703,11 +705,11 @@ impl GpioQspiSclk {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -809,13 +811,13 @@ impl GpioQspiSd0 {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -829,13 +831,13 @@ impl GpioQspiSd0 {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -849,13 +851,13 @@ impl GpioQspiSd0 {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -885,13 +887,13 @@ impl GpioQspiSd0 {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -905,13 +907,13 @@ impl GpioQspiSd0 {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -925,13 +927,13 @@ impl GpioQspiSd0 {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -945,13 +947,13 @@ impl GpioQspiSd0 {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -1225,11 +1227,11 @@ impl GpioQspiSd0 {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1331,13 +1333,13 @@ impl GpioQspiSd1 {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -1351,13 +1353,13 @@ impl GpioQspiSd1 {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -1371,13 +1373,13 @@ impl GpioQspiSd1 {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -1407,13 +1409,13 @@ impl GpioQspiSd1 {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -1427,13 +1429,13 @@ impl GpioQspiSd1 {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -1447,13 +1449,13 @@ impl GpioQspiSd1 {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -1467,13 +1469,13 @@ impl GpioQspiSd1 {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -1747,11 +1749,11 @@ impl GpioQspiSd1 {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1853,13 +1855,13 @@ impl GpioQspiSd2 {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -1873,13 +1875,13 @@ impl GpioQspiSd2 {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -1893,13 +1895,13 @@ impl GpioQspiSd2 {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -1929,13 +1931,13 @@ impl GpioQspiSd2 {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -1949,13 +1951,13 @@ impl GpioQspiSd2 {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -1969,13 +1971,13 @@ impl GpioQspiSd2 {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -1989,13 +1991,13 @@ impl GpioQspiSd2 {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -2269,11 +2271,11 @@ impl GpioQspiSd2 {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSd3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2375,13 +2377,13 @@ impl GpioQspiSd3 {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -2395,13 +2397,13 @@ impl GpioQspiSd3 {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -2415,13 +2417,13 @@ impl GpioQspiSd3 {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -2451,13 +2453,13 @@ impl GpioQspiSd3 {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -2471,13 +2473,13 @@ impl GpioQspiSd3 {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -2491,13 +2493,13 @@ impl GpioQspiSd3 {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -2511,13 +2513,13 @@ impl GpioQspiSd3 {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -2791,11 +2793,11 @@ impl GpioQspiSd3 {
 ///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct GpioQspiSs {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSs {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2897,13 +2899,13 @@ impl GpioQspiSs {
     /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.value.set_bits(Self::ISO_MASK);
+        self.set_bits(Self::ISO_MASK);
     }
 
     /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.value.clr_bits(Self::ISO_MASK);
+        self.clr_bits(Self::ISO_MASK);
     }
 
     /// **OD** `[7]` (RW)
@@ -2917,13 +2919,13 @@ impl GpioQspiSs {
     /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.value.set_bits(Self::OD_MASK);
+        self.set_bits(Self::OD_MASK);
     }
 
     /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.value.clr_bits(Self::OD_MASK);
+        self.clr_bits(Self::OD_MASK);
     }
 
     /// **IE** `[6]` (RW)
@@ -2937,13 +2939,13 @@ impl GpioQspiSs {
     /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.value.set_bits(Self::IE_MASK);
+        self.set_bits(Self::IE_MASK);
     }
 
     /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.value.clr_bits(Self::IE_MASK);
+        self.clr_bits(Self::IE_MASK);
     }
 
     /// **DRIVE** `[5:4]` (RW)
@@ -2973,13 +2975,13 @@ impl GpioQspiSs {
     /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.value.set_bits(Self::PUE_MASK);
+        self.set_bits(Self::PUE_MASK);
     }
 
     /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.value.clr_bits(Self::PUE_MASK);
+        self.clr_bits(Self::PUE_MASK);
     }
 
     /// **PDE** `[2]` (RW)
@@ -2993,13 +2995,13 @@ impl GpioQspiSs {
     /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.value.set_bits(Self::PDE_MASK);
+        self.set_bits(Self::PDE_MASK);
     }
 
     /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.value.clr_bits(Self::PDE_MASK);
+        self.clr_bits(Self::PDE_MASK);
     }
 
     /// **SCHMITT** `[1]` (RW)
@@ -3013,13 +3015,13 @@ impl GpioQspiSs {
     /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.value.set_bits(Self::SCHMITT_MASK);
+        self.set_bits(Self::SCHMITT_MASK);
     }
 
     /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.value.clr_bits(Self::SCHMITT_MASK);
+        self.clr_bits(Self::SCHMITT_MASK);
     }
 
     /// **SLEWFAST** `[0]` (RW)
@@ -3033,13 +3035,13 @@ impl GpioQspiSs {
     /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.value.set_bits(Self::SLEWFAST_MASK);
+        self.set_bits(Self::SLEWFAST_MASK);
     }
 
     /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.value.clr_bits(Self::SLEWFAST_MASK);
+        self.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }

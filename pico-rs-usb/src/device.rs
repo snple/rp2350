@@ -174,7 +174,7 @@ impl<'a> UsbDeviceBuilder<'a> {
             .product(self.product.unwrap_or(""))
             .serial_number(self.serial_number.unwrap_or(""));
 
-        let device_desc = DeviceDescriptor::new(
+        let mut device_desc = DeviceDescriptor::new(
             self.vendor_id,
             self.product_id,
             self.device_release,
@@ -182,6 +182,17 @@ impl<'a> UsbDeviceBuilder<'a> {
             self.device_subclass,
             self.device_protocol,
         );
+
+        // Set string descriptor indices based on whether strings are provided
+        if self.manufacturer.is_some() {
+            device_desc.set_manufacturer_index(1); // Index 1
+        }
+        if self.product.is_some() {
+            device_desc.set_product_index(2); // Index 2
+        }
+        if self.serial_number.is_some() {
+            device_desc.set_serial_number_index(3); // Index 3
+        }
 
         let mut config_desc = ConfigurationDescriptor::new(0, 1, self.max_power_ma);
         if self.self_powered {
@@ -639,7 +650,7 @@ impl<'a> UsbDevice<'a> {
     /// Send control data (IN data stage)
     fn send_control_data(&mut self) {
         #[cfg(feature = "defmt")]
-        defmt::trace!(
+        defmt::debug!(
             "USB: send_control_data ENTRY, pending={}, ctrl_state={:?}",
             self.ep0_in_pending,
             self.control.state()
@@ -648,7 +659,7 @@ impl<'a> UsbDevice<'a> {
         // Don't send if there's already a transfer in progress
         if self.ep0_in_pending {
             #[cfg(feature = "defmt")]
-            defmt::trace!("USB: send_control_data skipped - transfer pending");
+            defmt::debug!("USB: send_control_data skipped - transfer pending");
             return;
         }
 
@@ -662,7 +673,7 @@ impl<'a> UsbDevice<'a> {
             let is_last = len < CONTROL_MAX_PACKET_SIZE as usize;
 
             #[cfg(feature = "defmt")]
-            defmt::trace!("USB: Sending {} bytes on EP0 IN, is_last={}", len, is_last);
+            defmt::debug!("USB: Sending {} bytes on EP0 IN, is_last={}", len, is_last);
 
             // Write data to EP0 buffer and start the IN transfer
             self.bus.ep0_write_and_start(chunk, is_last);
@@ -670,6 +681,8 @@ impl<'a> UsbDevice<'a> {
             // Mark transfer as pending if more data to follow
             if !is_last {
                 self.ep0_in_pending = true;
+                #[cfg(feature = "defmt")]
+                defmt::debug!("USB: ep0_in_pending set to TRUE");
             }
         }
 

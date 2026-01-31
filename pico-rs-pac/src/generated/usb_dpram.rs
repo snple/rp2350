@@ -1,5 +1,7 @@
 //! USB_DPRAM
 //! DPRAM layout for USB device.
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -21,11 +23,11 @@ pub const BASE: u32 = 0x50100000;
 /// - **BMREQUESTTYPE** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct SetupPacketLow {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetupPacketLow {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -203,11 +205,11 @@ impl SetupPacketLow {
 /// - **WINDEX** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct SetupPacketHigh {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for SetupPacketHigh {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -378,11 +380,11 @@ impl SetupPacketHigh {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep1InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep1InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -480,13 +482,13 @@ impl Ep1InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -500,13 +502,13 @@ impl Ep1InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -520,13 +522,13 @@ impl Ep1InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -540,13 +542,13 @@ impl Ep1InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -572,13 +574,13 @@ impl Ep1InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -592,13 +594,13 @@ impl Ep1InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -878,11 +880,11 @@ impl Ep1InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep1OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep1OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -980,13 +982,13 @@ impl Ep1OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -1000,13 +1002,13 @@ impl Ep1OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -1020,13 +1022,13 @@ impl Ep1OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -1040,13 +1042,13 @@ impl Ep1OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -1072,13 +1074,13 @@ impl Ep1OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -1092,13 +1094,13 @@ impl Ep1OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -1378,11 +1380,11 @@ impl Ep1OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep2InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep2InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1480,13 +1482,13 @@ impl Ep2InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -1500,13 +1502,13 @@ impl Ep2InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -1520,13 +1522,13 @@ impl Ep2InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -1540,13 +1542,13 @@ impl Ep2InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -1572,13 +1574,13 @@ impl Ep2InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -1592,13 +1594,13 @@ impl Ep2InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -1878,11 +1880,11 @@ impl Ep2InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep2OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep2OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1980,13 +1982,13 @@ impl Ep2OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -2000,13 +2002,13 @@ impl Ep2OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -2020,13 +2022,13 @@ impl Ep2OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -2040,13 +2042,13 @@ impl Ep2OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -2072,13 +2074,13 @@ impl Ep2OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -2092,13 +2094,13 @@ impl Ep2OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -2378,11 +2380,11 @@ impl Ep2OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep3InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep3InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2480,13 +2482,13 @@ impl Ep3InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -2500,13 +2502,13 @@ impl Ep3InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -2520,13 +2522,13 @@ impl Ep3InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -2540,13 +2542,13 @@ impl Ep3InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -2572,13 +2574,13 @@ impl Ep3InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -2592,13 +2594,13 @@ impl Ep3InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -2878,11 +2880,11 @@ impl Ep3InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep3OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep3OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2980,13 +2982,13 @@ impl Ep3OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -3000,13 +3002,13 @@ impl Ep3OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -3020,13 +3022,13 @@ impl Ep3OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -3040,13 +3042,13 @@ impl Ep3OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -3072,13 +3074,13 @@ impl Ep3OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -3092,13 +3094,13 @@ impl Ep3OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -3378,11 +3380,11 @@ impl Ep3OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep4InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep4InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3480,13 +3482,13 @@ impl Ep4InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -3500,13 +3502,13 @@ impl Ep4InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -3520,13 +3522,13 @@ impl Ep4InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -3540,13 +3542,13 @@ impl Ep4InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -3572,13 +3574,13 @@ impl Ep4InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -3592,13 +3594,13 @@ impl Ep4InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -3878,11 +3880,11 @@ impl Ep4InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep4OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep4OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3980,13 +3982,13 @@ impl Ep4OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -4000,13 +4002,13 @@ impl Ep4OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -4020,13 +4022,13 @@ impl Ep4OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -4040,13 +4042,13 @@ impl Ep4OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -4072,13 +4074,13 @@ impl Ep4OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -4092,13 +4094,13 @@ impl Ep4OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -4378,11 +4380,11 @@ impl Ep4OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep5InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep5InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4480,13 +4482,13 @@ impl Ep5InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -4500,13 +4502,13 @@ impl Ep5InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -4520,13 +4522,13 @@ impl Ep5InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -4540,13 +4542,13 @@ impl Ep5InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -4572,13 +4574,13 @@ impl Ep5InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -4592,13 +4594,13 @@ impl Ep5InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -4878,11 +4880,11 @@ impl Ep5InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep5OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep5OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4980,13 +4982,13 @@ impl Ep5OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -5000,13 +5002,13 @@ impl Ep5OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -5020,13 +5022,13 @@ impl Ep5OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -5040,13 +5042,13 @@ impl Ep5OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -5072,13 +5074,13 @@ impl Ep5OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -5092,13 +5094,13 @@ impl Ep5OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -5378,11 +5380,11 @@ impl Ep5OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep6InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep6InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5480,13 +5482,13 @@ impl Ep6InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -5500,13 +5502,13 @@ impl Ep6InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -5520,13 +5522,13 @@ impl Ep6InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -5540,13 +5542,13 @@ impl Ep6InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -5572,13 +5574,13 @@ impl Ep6InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -5592,13 +5594,13 @@ impl Ep6InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -5878,11 +5880,11 @@ impl Ep6InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep6OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep6OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5980,13 +5982,13 @@ impl Ep6OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -6000,13 +6002,13 @@ impl Ep6OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -6020,13 +6022,13 @@ impl Ep6OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -6040,13 +6042,13 @@ impl Ep6OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -6072,13 +6074,13 @@ impl Ep6OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -6092,13 +6094,13 @@ impl Ep6OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -6378,11 +6380,11 @@ impl Ep6OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep7InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep7InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6480,13 +6482,13 @@ impl Ep7InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -6500,13 +6502,13 @@ impl Ep7InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -6520,13 +6522,13 @@ impl Ep7InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -6540,13 +6542,13 @@ impl Ep7InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -6572,13 +6574,13 @@ impl Ep7InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -6592,13 +6594,13 @@ impl Ep7InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -6878,11 +6880,11 @@ impl Ep7InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep7OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep7OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6980,13 +6982,13 @@ impl Ep7OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -7000,13 +7002,13 @@ impl Ep7OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -7020,13 +7022,13 @@ impl Ep7OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -7040,13 +7042,13 @@ impl Ep7OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -7072,13 +7074,13 @@ impl Ep7OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -7092,13 +7094,13 @@ impl Ep7OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -7378,11 +7380,11 @@ impl Ep7OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep8InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep8InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7480,13 +7482,13 @@ impl Ep8InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -7500,13 +7502,13 @@ impl Ep8InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -7520,13 +7522,13 @@ impl Ep8InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -7540,13 +7542,13 @@ impl Ep8InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -7572,13 +7574,13 @@ impl Ep8InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -7592,13 +7594,13 @@ impl Ep8InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -7878,11 +7880,11 @@ impl Ep8InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep8OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep8OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7980,13 +7982,13 @@ impl Ep8OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -8000,13 +8002,13 @@ impl Ep8OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -8020,13 +8022,13 @@ impl Ep8OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -8040,13 +8042,13 @@ impl Ep8OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -8072,13 +8074,13 @@ impl Ep8OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -8092,13 +8094,13 @@ impl Ep8OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -8378,11 +8380,11 @@ impl Ep8OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep9InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep9InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8480,13 +8482,13 @@ impl Ep9InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -8500,13 +8502,13 @@ impl Ep9InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -8520,13 +8522,13 @@ impl Ep9InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -8540,13 +8542,13 @@ impl Ep9InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -8572,13 +8574,13 @@ impl Ep9InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -8592,13 +8594,13 @@ impl Ep9InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -8878,11 +8880,11 @@ impl Ep9InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep9OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep9OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8980,13 +8982,13 @@ impl Ep9OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -9000,13 +9002,13 @@ impl Ep9OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -9020,13 +9022,13 @@ impl Ep9OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -9040,13 +9042,13 @@ impl Ep9OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -9072,13 +9074,13 @@ impl Ep9OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -9092,13 +9094,13 @@ impl Ep9OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -9378,11 +9380,11 @@ impl Ep9OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep10InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep10InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9480,13 +9482,13 @@ impl Ep10InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -9500,13 +9502,13 @@ impl Ep10InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -9520,13 +9522,13 @@ impl Ep10InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -9540,13 +9542,13 @@ impl Ep10InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -9572,13 +9574,13 @@ impl Ep10InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -9592,13 +9594,13 @@ impl Ep10InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -9878,11 +9880,11 @@ impl Ep10InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep10OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep10OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9980,13 +9982,13 @@ impl Ep10OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -10000,13 +10002,13 @@ impl Ep10OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -10020,13 +10022,13 @@ impl Ep10OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -10040,13 +10042,13 @@ impl Ep10OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -10072,13 +10074,13 @@ impl Ep10OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -10092,13 +10094,13 @@ impl Ep10OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -10378,11 +10380,11 @@ impl Ep10OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep11InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep11InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10480,13 +10482,13 @@ impl Ep11InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -10500,13 +10502,13 @@ impl Ep11InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -10520,13 +10522,13 @@ impl Ep11InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -10540,13 +10542,13 @@ impl Ep11InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -10572,13 +10574,13 @@ impl Ep11InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -10592,13 +10594,13 @@ impl Ep11InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -10878,11 +10880,11 @@ impl Ep11InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep11OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep11OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10980,13 +10982,13 @@ impl Ep11OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -11000,13 +11002,13 @@ impl Ep11OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -11020,13 +11022,13 @@ impl Ep11OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -11040,13 +11042,13 @@ impl Ep11OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -11072,13 +11074,13 @@ impl Ep11OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -11092,13 +11094,13 @@ impl Ep11OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -11378,11 +11380,11 @@ impl Ep11OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep12InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep12InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11480,13 +11482,13 @@ impl Ep12InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -11500,13 +11502,13 @@ impl Ep12InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -11520,13 +11522,13 @@ impl Ep12InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -11540,13 +11542,13 @@ impl Ep12InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -11572,13 +11574,13 @@ impl Ep12InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -11592,13 +11594,13 @@ impl Ep12InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -11878,11 +11880,11 @@ impl Ep12InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep12OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep12OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11980,13 +11982,13 @@ impl Ep12OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -12000,13 +12002,13 @@ impl Ep12OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -12020,13 +12022,13 @@ impl Ep12OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -12040,13 +12042,13 @@ impl Ep12OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -12072,13 +12074,13 @@ impl Ep12OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -12092,13 +12094,13 @@ impl Ep12OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -12378,11 +12380,11 @@ impl Ep12OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep13InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep13InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12480,13 +12482,13 @@ impl Ep13InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -12500,13 +12502,13 @@ impl Ep13InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -12520,13 +12522,13 @@ impl Ep13InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -12540,13 +12542,13 @@ impl Ep13InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -12572,13 +12574,13 @@ impl Ep13InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -12592,13 +12594,13 @@ impl Ep13InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -12878,11 +12880,11 @@ impl Ep13InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep13OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep13OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12980,13 +12982,13 @@ impl Ep13OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -13000,13 +13002,13 @@ impl Ep13OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -13020,13 +13022,13 @@ impl Ep13OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -13040,13 +13042,13 @@ impl Ep13OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -13072,13 +13074,13 @@ impl Ep13OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -13092,13 +13094,13 @@ impl Ep13OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -13378,11 +13380,11 @@ impl Ep13OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep14InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep14InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13480,13 +13482,13 @@ impl Ep14InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -13500,13 +13502,13 @@ impl Ep14InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -13520,13 +13522,13 @@ impl Ep14InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -13540,13 +13542,13 @@ impl Ep14InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -13572,13 +13574,13 @@ impl Ep14InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -13592,13 +13594,13 @@ impl Ep14InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -13878,11 +13880,11 @@ impl Ep14InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep14OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep14OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13980,13 +13982,13 @@ impl Ep14OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -14000,13 +14002,13 @@ impl Ep14OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -14020,13 +14022,13 @@ impl Ep14OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -14040,13 +14042,13 @@ impl Ep14OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -14072,13 +14074,13 @@ impl Ep14OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -14092,13 +14094,13 @@ impl Ep14OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -14378,11 +14380,11 @@ impl Ep14OutControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep15InControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep15InControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14480,13 +14482,13 @@ impl Ep15InControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -14500,13 +14502,13 @@ impl Ep15InControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -14520,13 +14522,13 @@ impl Ep15InControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -14540,13 +14542,13 @@ impl Ep15InControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -14572,13 +14574,13 @@ impl Ep15InControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -14592,13 +14594,13 @@ impl Ep15InControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -14878,11 +14880,11 @@ impl Ep15InControl {
 ///   64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
 #[repr(transparent)]
 pub struct Ep15OutControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep15OutControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14980,13 +14982,13 @@ impl Ep15OutControl {
     /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.value.set_bits(Self::ENABLE_MASK);
+        self.set_bits(Self::ENABLE_MASK);
     }
 
     /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.value.clr_bits(Self::ENABLE_MASK);
+        self.clr_bits(Self::ENABLE_MASK);
     }
 
     /// **DOUBLE_BUFFERED** `[30]` (RW)
@@ -15000,13 +15002,13 @@ impl Ep15OutControl {
     /// Set DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn set_double_buffered(&self) {
-        self.value.set_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.set_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// Clear DOUBLE_BUFFERED bit atomically (RW)
     #[inline(always)]
     pub fn clr_double_buffered(&self) {
-        self.value.clr_bits(Self::DOUBLE_BUFFERED_MASK);
+        self.clr_bits(Self::DOUBLE_BUFFERED_MASK);
     }
 
     /// **INTERRUPT_PER_BUFF** `[29]` (RW)
@@ -15020,13 +15022,13 @@ impl Ep15OutControl {
     /// Set INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_BUFF_MASK);
     }
 
     /// **INTERRUPT_PER_DOUBLE_BUFF** `[28]` (RW)
@@ -15040,13 +15042,13 @@ impl Ep15OutControl {
     /// Set INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_per_double_buff(&self) {
-        self.value.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.set_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// Clear INTERRUPT_PER_DOUBLE_BUFF bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_per_double_buff(&self) {
-        self.value.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
+        self.clr_bits(Self::INTERRUPT_PER_DOUBLE_BUFF_MASK);
     }
 
     /// **ENDPOINT_TYPE** `[27:26]` (RW)
@@ -15072,13 +15074,13 @@ impl Ep15OutControl {
     /// Set INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_stall(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.set_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// Clear INTERRUPT_ON_STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_stall(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_STALL_MASK);
     }
 
     /// **INTERRUPT_ON_NAK** `[16]` (RW)
@@ -15092,13 +15094,13 @@ impl Ep15OutControl {
     /// Set INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn set_interrupt_on_nak(&self) {
-        self.value.set_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.set_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// Clear INTERRUPT_ON_NAK bit atomically (RW)
     #[inline(always)]
     pub fn clr_interrupt_on_nak(&self) {
-        self.value.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
+        self.clr_bits(Self::INTERRUPT_ON_NAK_MASK);
     }
 
     /// **BUFFER_ADDRESS** `[15:0]` (RW)
@@ -15404,11 +15406,11 @@ impl Ep15OutControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep0InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep0InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15554,13 +15556,13 @@ impl Ep0InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -15574,13 +15576,13 @@ impl Ep0InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -15594,13 +15596,13 @@ impl Ep0InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -15632,13 +15634,13 @@ impl Ep0InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -15668,13 +15670,13 @@ impl Ep0InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -15688,13 +15690,13 @@ impl Ep0InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -15708,13 +15710,13 @@ impl Ep0InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -15728,13 +15730,13 @@ impl Ep0InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -15748,13 +15750,13 @@ impl Ep0InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -15768,13 +15770,13 @@ impl Ep0InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -16186,11 +16188,11 @@ impl Ep0InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep0OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep0OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16336,13 +16338,13 @@ impl Ep0OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -16356,13 +16358,13 @@ impl Ep0OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -16376,13 +16378,13 @@ impl Ep0OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -16414,13 +16416,13 @@ impl Ep0OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -16450,13 +16452,13 @@ impl Ep0OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -16470,13 +16472,13 @@ impl Ep0OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -16490,13 +16492,13 @@ impl Ep0OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -16510,13 +16512,13 @@ impl Ep0OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -16530,13 +16532,13 @@ impl Ep0OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -16550,13 +16552,13 @@ impl Ep0OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -16968,11 +16970,11 @@ impl Ep0OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep1InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep1InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17118,13 +17120,13 @@ impl Ep1InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -17138,13 +17140,13 @@ impl Ep1InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -17158,13 +17160,13 @@ impl Ep1InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -17196,13 +17198,13 @@ impl Ep1InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -17232,13 +17234,13 @@ impl Ep1InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -17252,13 +17254,13 @@ impl Ep1InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -17272,13 +17274,13 @@ impl Ep1InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -17292,13 +17294,13 @@ impl Ep1InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -17312,13 +17314,13 @@ impl Ep1InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -17332,13 +17334,13 @@ impl Ep1InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -17750,11 +17752,11 @@ impl Ep1InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep1OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep1OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17900,13 +17902,13 @@ impl Ep1OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -17920,13 +17922,13 @@ impl Ep1OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -17940,13 +17942,13 @@ impl Ep1OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -17978,13 +17980,13 @@ impl Ep1OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -18014,13 +18016,13 @@ impl Ep1OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -18034,13 +18036,13 @@ impl Ep1OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -18054,13 +18056,13 @@ impl Ep1OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -18074,13 +18076,13 @@ impl Ep1OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -18094,13 +18096,13 @@ impl Ep1OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -18114,13 +18116,13 @@ impl Ep1OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -18532,11 +18534,11 @@ impl Ep1OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep2InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep2InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18682,13 +18684,13 @@ impl Ep2InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -18702,13 +18704,13 @@ impl Ep2InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -18722,13 +18724,13 @@ impl Ep2InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -18760,13 +18762,13 @@ impl Ep2InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -18796,13 +18798,13 @@ impl Ep2InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -18816,13 +18818,13 @@ impl Ep2InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -18836,13 +18838,13 @@ impl Ep2InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -18856,13 +18858,13 @@ impl Ep2InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -18876,13 +18878,13 @@ impl Ep2InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -18896,13 +18898,13 @@ impl Ep2InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -19314,11 +19316,11 @@ impl Ep2InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep2OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep2OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19464,13 +19466,13 @@ impl Ep2OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -19484,13 +19486,13 @@ impl Ep2OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -19504,13 +19506,13 @@ impl Ep2OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -19542,13 +19544,13 @@ impl Ep2OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -19578,13 +19580,13 @@ impl Ep2OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -19598,13 +19600,13 @@ impl Ep2OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -19618,13 +19620,13 @@ impl Ep2OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -19638,13 +19640,13 @@ impl Ep2OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -19658,13 +19660,13 @@ impl Ep2OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -19678,13 +19680,13 @@ impl Ep2OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -20096,11 +20098,11 @@ impl Ep2OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep3InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep3InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20246,13 +20248,13 @@ impl Ep3InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -20266,13 +20268,13 @@ impl Ep3InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -20286,13 +20288,13 @@ impl Ep3InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -20324,13 +20326,13 @@ impl Ep3InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -20360,13 +20362,13 @@ impl Ep3InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -20380,13 +20382,13 @@ impl Ep3InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -20400,13 +20402,13 @@ impl Ep3InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -20420,13 +20422,13 @@ impl Ep3InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -20440,13 +20442,13 @@ impl Ep3InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -20460,13 +20462,13 @@ impl Ep3InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -20878,11 +20880,11 @@ impl Ep3InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep3OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep3OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21028,13 +21030,13 @@ impl Ep3OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -21048,13 +21050,13 @@ impl Ep3OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -21068,13 +21070,13 @@ impl Ep3OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -21106,13 +21108,13 @@ impl Ep3OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -21142,13 +21144,13 @@ impl Ep3OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -21162,13 +21164,13 @@ impl Ep3OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -21182,13 +21184,13 @@ impl Ep3OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -21202,13 +21204,13 @@ impl Ep3OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -21222,13 +21224,13 @@ impl Ep3OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -21242,13 +21244,13 @@ impl Ep3OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -21660,11 +21662,11 @@ impl Ep3OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep4InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep4InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21810,13 +21812,13 @@ impl Ep4InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -21830,13 +21832,13 @@ impl Ep4InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -21850,13 +21852,13 @@ impl Ep4InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -21888,13 +21890,13 @@ impl Ep4InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -21924,13 +21926,13 @@ impl Ep4InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -21944,13 +21946,13 @@ impl Ep4InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -21964,13 +21966,13 @@ impl Ep4InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -21984,13 +21986,13 @@ impl Ep4InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -22004,13 +22006,13 @@ impl Ep4InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -22024,13 +22026,13 @@ impl Ep4InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -22442,11 +22444,11 @@ impl Ep4InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep4OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep4OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22592,13 +22594,13 @@ impl Ep4OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -22612,13 +22614,13 @@ impl Ep4OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -22632,13 +22634,13 @@ impl Ep4OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -22670,13 +22672,13 @@ impl Ep4OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -22706,13 +22708,13 @@ impl Ep4OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -22726,13 +22728,13 @@ impl Ep4OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -22746,13 +22748,13 @@ impl Ep4OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -22766,13 +22768,13 @@ impl Ep4OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -22786,13 +22788,13 @@ impl Ep4OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -22806,13 +22808,13 @@ impl Ep4OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -23224,11 +23226,11 @@ impl Ep4OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep5InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep5InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23374,13 +23376,13 @@ impl Ep5InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -23394,13 +23396,13 @@ impl Ep5InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -23414,13 +23416,13 @@ impl Ep5InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -23452,13 +23454,13 @@ impl Ep5InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -23488,13 +23490,13 @@ impl Ep5InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -23508,13 +23510,13 @@ impl Ep5InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -23528,13 +23530,13 @@ impl Ep5InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -23548,13 +23550,13 @@ impl Ep5InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -23568,13 +23570,13 @@ impl Ep5InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -23588,13 +23590,13 @@ impl Ep5InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -24006,11 +24008,11 @@ impl Ep5InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep5OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep5OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24156,13 +24158,13 @@ impl Ep5OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -24176,13 +24178,13 @@ impl Ep5OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -24196,13 +24198,13 @@ impl Ep5OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -24234,13 +24236,13 @@ impl Ep5OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -24270,13 +24272,13 @@ impl Ep5OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -24290,13 +24292,13 @@ impl Ep5OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -24310,13 +24312,13 @@ impl Ep5OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -24330,13 +24332,13 @@ impl Ep5OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -24350,13 +24352,13 @@ impl Ep5OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -24370,13 +24372,13 @@ impl Ep5OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -24788,11 +24790,11 @@ impl Ep5OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep6InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep6InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24938,13 +24940,13 @@ impl Ep6InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -24958,13 +24960,13 @@ impl Ep6InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -24978,13 +24980,13 @@ impl Ep6InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -25016,13 +25018,13 @@ impl Ep6InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -25052,13 +25054,13 @@ impl Ep6InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -25072,13 +25074,13 @@ impl Ep6InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -25092,13 +25094,13 @@ impl Ep6InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -25112,13 +25114,13 @@ impl Ep6InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -25132,13 +25134,13 @@ impl Ep6InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -25152,13 +25154,13 @@ impl Ep6InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -25570,11 +25572,11 @@ impl Ep6InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep6OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep6OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25720,13 +25722,13 @@ impl Ep6OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -25740,13 +25742,13 @@ impl Ep6OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -25760,13 +25762,13 @@ impl Ep6OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -25798,13 +25800,13 @@ impl Ep6OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -25834,13 +25836,13 @@ impl Ep6OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -25854,13 +25856,13 @@ impl Ep6OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -25874,13 +25876,13 @@ impl Ep6OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -25894,13 +25896,13 @@ impl Ep6OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -25914,13 +25916,13 @@ impl Ep6OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -25934,13 +25936,13 @@ impl Ep6OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -26352,11 +26354,11 @@ impl Ep6OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep7InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep7InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26502,13 +26504,13 @@ impl Ep7InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -26522,13 +26524,13 @@ impl Ep7InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -26542,13 +26544,13 @@ impl Ep7InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -26580,13 +26582,13 @@ impl Ep7InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -26616,13 +26618,13 @@ impl Ep7InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -26636,13 +26638,13 @@ impl Ep7InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -26656,13 +26658,13 @@ impl Ep7InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -26676,13 +26678,13 @@ impl Ep7InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -26696,13 +26698,13 @@ impl Ep7InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -26716,13 +26718,13 @@ impl Ep7InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -27134,11 +27136,11 @@ impl Ep7InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep7OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep7OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27284,13 +27286,13 @@ impl Ep7OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -27304,13 +27306,13 @@ impl Ep7OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -27324,13 +27326,13 @@ impl Ep7OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -27362,13 +27364,13 @@ impl Ep7OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -27398,13 +27400,13 @@ impl Ep7OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -27418,13 +27420,13 @@ impl Ep7OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -27438,13 +27440,13 @@ impl Ep7OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -27458,13 +27460,13 @@ impl Ep7OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -27478,13 +27480,13 @@ impl Ep7OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -27498,13 +27500,13 @@ impl Ep7OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -27916,11 +27918,11 @@ impl Ep7OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep8InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep8InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28066,13 +28068,13 @@ impl Ep8InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -28086,13 +28088,13 @@ impl Ep8InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -28106,13 +28108,13 @@ impl Ep8InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -28144,13 +28146,13 @@ impl Ep8InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -28180,13 +28182,13 @@ impl Ep8InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -28200,13 +28202,13 @@ impl Ep8InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -28220,13 +28222,13 @@ impl Ep8InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -28240,13 +28242,13 @@ impl Ep8InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -28260,13 +28262,13 @@ impl Ep8InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -28280,13 +28282,13 @@ impl Ep8InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -28698,11 +28700,11 @@ impl Ep8InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep8OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep8OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28848,13 +28850,13 @@ impl Ep8OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -28868,13 +28870,13 @@ impl Ep8OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -28888,13 +28890,13 @@ impl Ep8OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -28926,13 +28928,13 @@ impl Ep8OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -28962,13 +28964,13 @@ impl Ep8OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -28982,13 +28984,13 @@ impl Ep8OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -29002,13 +29004,13 @@ impl Ep8OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -29022,13 +29024,13 @@ impl Ep8OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -29042,13 +29044,13 @@ impl Ep8OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -29062,13 +29064,13 @@ impl Ep8OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -29480,11 +29482,11 @@ impl Ep8OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep9InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep9InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29630,13 +29632,13 @@ impl Ep9InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -29650,13 +29652,13 @@ impl Ep9InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -29670,13 +29672,13 @@ impl Ep9InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -29708,13 +29710,13 @@ impl Ep9InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -29744,13 +29746,13 @@ impl Ep9InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -29764,13 +29766,13 @@ impl Ep9InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -29784,13 +29786,13 @@ impl Ep9InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -29804,13 +29806,13 @@ impl Ep9InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -29824,13 +29826,13 @@ impl Ep9InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -29844,13 +29846,13 @@ impl Ep9InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -30262,11 +30264,11 @@ impl Ep9InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep9OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep9OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30412,13 +30414,13 @@ impl Ep9OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -30432,13 +30434,13 @@ impl Ep9OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -30452,13 +30454,13 @@ impl Ep9OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -30490,13 +30492,13 @@ impl Ep9OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -30526,13 +30528,13 @@ impl Ep9OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -30546,13 +30548,13 @@ impl Ep9OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -30566,13 +30568,13 @@ impl Ep9OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -30586,13 +30588,13 @@ impl Ep9OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -30606,13 +30608,13 @@ impl Ep9OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -30626,13 +30628,13 @@ impl Ep9OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -31044,11 +31046,11 @@ impl Ep9OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep10InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep10InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31194,13 +31196,13 @@ impl Ep10InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -31214,13 +31216,13 @@ impl Ep10InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -31234,13 +31236,13 @@ impl Ep10InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -31272,13 +31274,13 @@ impl Ep10InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -31308,13 +31310,13 @@ impl Ep10InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -31328,13 +31330,13 @@ impl Ep10InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -31348,13 +31350,13 @@ impl Ep10InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -31368,13 +31370,13 @@ impl Ep10InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -31388,13 +31390,13 @@ impl Ep10InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -31408,13 +31410,13 @@ impl Ep10InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -31826,11 +31828,11 @@ impl Ep10InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep10OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep10OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31976,13 +31978,13 @@ impl Ep10OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -31996,13 +31998,13 @@ impl Ep10OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -32016,13 +32018,13 @@ impl Ep10OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -32054,13 +32056,13 @@ impl Ep10OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -32090,13 +32092,13 @@ impl Ep10OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -32110,13 +32112,13 @@ impl Ep10OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -32130,13 +32132,13 @@ impl Ep10OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -32150,13 +32152,13 @@ impl Ep10OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -32170,13 +32172,13 @@ impl Ep10OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -32190,13 +32192,13 @@ impl Ep10OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -32608,11 +32610,11 @@ impl Ep10OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep11InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep11InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32758,13 +32760,13 @@ impl Ep11InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -32778,13 +32780,13 @@ impl Ep11InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -32798,13 +32800,13 @@ impl Ep11InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -32836,13 +32838,13 @@ impl Ep11InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -32872,13 +32874,13 @@ impl Ep11InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -32892,13 +32894,13 @@ impl Ep11InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -32912,13 +32914,13 @@ impl Ep11InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -32932,13 +32934,13 @@ impl Ep11InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -32952,13 +32954,13 @@ impl Ep11InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -32972,13 +32974,13 @@ impl Ep11InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -33390,11 +33392,11 @@ impl Ep11InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep11OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep11OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -33540,13 +33542,13 @@ impl Ep11OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -33560,13 +33562,13 @@ impl Ep11OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -33580,13 +33582,13 @@ impl Ep11OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -33618,13 +33620,13 @@ impl Ep11OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -33654,13 +33656,13 @@ impl Ep11OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -33674,13 +33676,13 @@ impl Ep11OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -33694,13 +33696,13 @@ impl Ep11OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -33714,13 +33716,13 @@ impl Ep11OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -33734,13 +33736,13 @@ impl Ep11OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -33754,13 +33756,13 @@ impl Ep11OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -34172,11 +34174,11 @@ impl Ep11OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep12InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep12InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -34322,13 +34324,13 @@ impl Ep12InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -34342,13 +34344,13 @@ impl Ep12InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -34362,13 +34364,13 @@ impl Ep12InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -34400,13 +34402,13 @@ impl Ep12InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -34436,13 +34438,13 @@ impl Ep12InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -34456,13 +34458,13 @@ impl Ep12InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -34476,13 +34478,13 @@ impl Ep12InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -34496,13 +34498,13 @@ impl Ep12InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -34516,13 +34518,13 @@ impl Ep12InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -34536,13 +34538,13 @@ impl Ep12InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -34954,11 +34956,11 @@ impl Ep12InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep12OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep12OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -35104,13 +35106,13 @@ impl Ep12OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -35124,13 +35126,13 @@ impl Ep12OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -35144,13 +35146,13 @@ impl Ep12OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -35182,13 +35184,13 @@ impl Ep12OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -35218,13 +35220,13 @@ impl Ep12OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -35238,13 +35240,13 @@ impl Ep12OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -35258,13 +35260,13 @@ impl Ep12OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -35278,13 +35280,13 @@ impl Ep12OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -35298,13 +35300,13 @@ impl Ep12OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -35318,13 +35320,13 @@ impl Ep12OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -35736,11 +35738,11 @@ impl Ep12OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep13InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep13InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -35886,13 +35888,13 @@ impl Ep13InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -35906,13 +35908,13 @@ impl Ep13InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -35926,13 +35928,13 @@ impl Ep13InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -35964,13 +35966,13 @@ impl Ep13InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -36000,13 +36002,13 @@ impl Ep13InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -36020,13 +36022,13 @@ impl Ep13InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -36040,13 +36042,13 @@ impl Ep13InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -36060,13 +36062,13 @@ impl Ep13InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -36080,13 +36082,13 @@ impl Ep13InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -36100,13 +36102,13 @@ impl Ep13InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -36518,11 +36520,11 @@ impl Ep13InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep13OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep13OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -36668,13 +36670,13 @@ impl Ep13OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -36688,13 +36690,13 @@ impl Ep13OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -36708,13 +36710,13 @@ impl Ep13OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -36746,13 +36748,13 @@ impl Ep13OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -36782,13 +36784,13 @@ impl Ep13OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -36802,13 +36804,13 @@ impl Ep13OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -36822,13 +36824,13 @@ impl Ep13OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -36842,13 +36844,13 @@ impl Ep13OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -36862,13 +36864,13 @@ impl Ep13OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -36882,13 +36884,13 @@ impl Ep13OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -37300,11 +37302,11 @@ impl Ep13OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep14InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep14InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -37450,13 +37452,13 @@ impl Ep14InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -37470,13 +37472,13 @@ impl Ep14InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -37490,13 +37492,13 @@ impl Ep14InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -37528,13 +37530,13 @@ impl Ep14InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -37564,13 +37566,13 @@ impl Ep14InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -37584,13 +37586,13 @@ impl Ep14InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -37604,13 +37606,13 @@ impl Ep14InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -37624,13 +37626,13 @@ impl Ep14InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -37644,13 +37646,13 @@ impl Ep14InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -37664,13 +37666,13 @@ impl Ep14InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -38082,11 +38084,11 @@ impl Ep14InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep14OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep14OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -38232,13 +38234,13 @@ impl Ep14OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -38252,13 +38254,13 @@ impl Ep14OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -38272,13 +38274,13 @@ impl Ep14OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -38310,13 +38312,13 @@ impl Ep14OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -38346,13 +38348,13 @@ impl Ep14OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -38366,13 +38368,13 @@ impl Ep14OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -38386,13 +38388,13 @@ impl Ep14OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -38406,13 +38408,13 @@ impl Ep14OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -38426,13 +38428,13 @@ impl Ep14OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -38446,13 +38448,13 @@ impl Ep14OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -38864,11 +38866,11 @@ impl Ep14OutBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep15InBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep15InBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39014,13 +39016,13 @@ impl Ep15InBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -39034,13 +39036,13 @@ impl Ep15InBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -39054,13 +39056,13 @@ impl Ep15InBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -39092,13 +39094,13 @@ impl Ep15InBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -39128,13 +39130,13 @@ impl Ep15InBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -39148,13 +39150,13 @@ impl Ep15InBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -39168,13 +39170,13 @@ impl Ep15InBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -39188,13 +39190,13 @@ impl Ep15InBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -39208,13 +39210,13 @@ impl Ep15InBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -39228,13 +39230,13 @@ impl Ep15InBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)
@@ -39646,11 +39648,11 @@ impl Ep15InBufferControl {
 ///   The length of the data in buffer 1.
 #[repr(transparent)]
 pub struct Ep15OutBufferControl {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ep15OutBufferControl {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -39796,13 +39798,13 @@ impl Ep15OutBufferControl {
     /// Set FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_1(&self) {
-        self.value.set_bits(Self::FULL_1_MASK);
+        self.set_bits(Self::FULL_1_MASK);
     }
 
     /// Clear FULL_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_1(&self) {
-        self.value.clr_bits(Self::FULL_1_MASK);
+        self.clr_bits(Self::FULL_1_MASK);
     }
 
     /// **LAST_1** `[30]` (RW)
@@ -39816,13 +39818,13 @@ impl Ep15OutBufferControl {
     /// Set LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_1(&self) {
-        self.value.set_bits(Self::LAST_1_MASK);
+        self.set_bits(Self::LAST_1_MASK);
     }
 
     /// Clear LAST_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_1(&self) {
-        self.value.clr_bits(Self::LAST_1_MASK);
+        self.clr_bits(Self::LAST_1_MASK);
     }
 
     /// **PID_1** `[29]` (RW)
@@ -39836,13 +39838,13 @@ impl Ep15OutBufferControl {
     /// Set PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_1(&self) {
-        self.value.set_bits(Self::PID_1_MASK);
+        self.set_bits(Self::PID_1_MASK);
     }
 
     /// Clear PID_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_1(&self) {
-        self.value.clr_bits(Self::PID_1_MASK);
+        self.clr_bits(Self::PID_1_MASK);
     }
 
     /// **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -39874,13 +39876,13 @@ impl Ep15OutBufferControl {
     /// Set AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_1(&self) {
-        self.value.set_bits(Self::AVAILABLE_1_MASK);
+        self.set_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// Clear AVAILABLE_1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_1(&self) {
-        self.value.clr_bits(Self::AVAILABLE_1_MASK);
+        self.clr_bits(Self::AVAILABLE_1_MASK);
     }
 
     /// **LENGTH_1** `[25:16]` (RW)
@@ -39910,13 +39912,13 @@ impl Ep15OutBufferControl {
     /// Set FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_full_0(&self) {
-        self.value.set_bits(Self::FULL_0_MASK);
+        self.set_bits(Self::FULL_0_MASK);
     }
 
     /// Clear FULL_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_full_0(&self) {
-        self.value.clr_bits(Self::FULL_0_MASK);
+        self.clr_bits(Self::FULL_0_MASK);
     }
 
     /// **LAST_0** `[14]` (RW)
@@ -39930,13 +39932,13 @@ impl Ep15OutBufferControl {
     /// Set LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_last_0(&self) {
-        self.value.set_bits(Self::LAST_0_MASK);
+        self.set_bits(Self::LAST_0_MASK);
     }
 
     /// Clear LAST_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_last_0(&self) {
-        self.value.clr_bits(Self::LAST_0_MASK);
+        self.clr_bits(Self::LAST_0_MASK);
     }
 
     /// **PID_0** `[13]` (RW)
@@ -39950,13 +39952,13 @@ impl Ep15OutBufferControl {
     /// Set PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pid_0(&self) {
-        self.value.set_bits(Self::PID_0_MASK);
+        self.set_bits(Self::PID_0_MASK);
     }
 
     /// Clear PID_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pid_0(&self) {
-        self.value.clr_bits(Self::PID_0_MASK);
+        self.clr_bits(Self::PID_0_MASK);
     }
 
     /// **RESET** `[12]` (RW)
@@ -39970,13 +39972,13 @@ impl Ep15OutBufferControl {
     /// Set RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_reset(&self) {
-        self.value.set_bits(Self::RESET_MASK);
+        self.set_bits(Self::RESET_MASK);
     }
 
     /// Clear RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_reset(&self) {
-        self.value.clr_bits(Self::RESET_MASK);
+        self.clr_bits(Self::RESET_MASK);
     }
 
     /// **STALL** `[11]` (RW)
@@ -39990,13 +39992,13 @@ impl Ep15OutBufferControl {
     /// Set STALL bit atomically (RW)
     #[inline(always)]
     pub fn set_stall(&self) {
-        self.value.set_bits(Self::STALL_MASK);
+        self.set_bits(Self::STALL_MASK);
     }
 
     /// Clear STALL bit atomically (RW)
     #[inline(always)]
     pub fn clr_stall(&self) {
-        self.value.clr_bits(Self::STALL_MASK);
+        self.clr_bits(Self::STALL_MASK);
     }
 
     /// **AVAILABLE_0** `[10]` (RW)
@@ -40010,13 +40012,13 @@ impl Ep15OutBufferControl {
     /// Set AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn set_available_0(&self) {
-        self.value.set_bits(Self::AVAILABLE_0_MASK);
+        self.set_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// Clear AVAILABLE_0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_available_0(&self) {
-        self.value.clr_bits(Self::AVAILABLE_0_MASK);
+        self.clr_bits(Self::AVAILABLE_0_MASK);
     }
 
     /// **LENGTH_0** `[9:0]` (RW)

@@ -402,6 +402,17 @@ pub mod adc {
     pub const ALL: [Interrupt; 1] = [ADC_IRQ_FIFO];
 }
 
+/// USB interrupt numbers
+pub mod usb {
+    use super::Interrupt;
+
+    /// USB controller interrupt
+    pub const USBCTRL_IRQ: Interrupt = Interrupt::USBCTRL_IRQ;
+
+    /// All USB interrupts
+    pub const ALL: [Interrupt; 1] = [USBCTRL_IRQ];
+}
+
 /// I2C interrupt numbers
 pub mod i2c {
     use super::Interrupt;

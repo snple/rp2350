@@ -1,5 +1,7 @@
 //! PWM
 //! Simple PWM
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -44,11 +46,11 @@ pub const BASE: u32 = 0x400a8000;
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch0Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -180,13 +182,13 @@ impl Ch0Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -200,13 +202,13 @@ impl Ch0Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -220,13 +222,13 @@ impl Ch0Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -240,13 +242,13 @@ impl Ch0Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -457,11 +459,11 @@ impl Ch0Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -606,11 +608,11 @@ impl Ch0Div {
 /// - **CH0_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -726,11 +728,11 @@ impl Ch0Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -875,11 +877,11 @@ impl Ch0Cc {
 /// - **CH0_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch0Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch0Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1020,11 +1022,11 @@ impl Ch0Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch1Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1156,13 +1158,13 @@ impl Ch1Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -1176,13 +1178,13 @@ impl Ch1Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -1196,13 +1198,13 @@ impl Ch1Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -1216,13 +1218,13 @@ impl Ch1Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -1433,11 +1435,11 @@ impl Ch1Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1582,11 +1584,11 @@ impl Ch1Div {
 /// - **CH1_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1702,11 +1704,11 @@ impl Ch1Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1851,11 +1853,11 @@ impl Ch1Cc {
 /// - **CH1_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch1Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch1Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1996,11 +1998,11 @@ impl Ch1Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch2Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2132,13 +2134,13 @@ impl Ch2Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -2152,13 +2154,13 @@ impl Ch2Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -2172,13 +2174,13 @@ impl Ch2Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -2192,13 +2194,13 @@ impl Ch2Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -2409,11 +2411,11 @@ impl Ch2Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2558,11 +2560,11 @@ impl Ch2Div {
 /// - **CH2_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2678,11 +2680,11 @@ impl Ch2Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2827,11 +2829,11 @@ impl Ch2Cc {
 /// - **CH2_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch2Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch2Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2972,11 +2974,11 @@ impl Ch2Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch3Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3108,13 +3110,13 @@ impl Ch3Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -3128,13 +3130,13 @@ impl Ch3Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -3148,13 +3150,13 @@ impl Ch3Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -3168,13 +3170,13 @@ impl Ch3Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -3385,11 +3387,11 @@ impl Ch3Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3534,11 +3536,11 @@ impl Ch3Div {
 /// - **CH3_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3654,11 +3656,11 @@ impl Ch3Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3803,11 +3805,11 @@ impl Ch3Cc {
 /// - **CH3_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch3Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch3Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3948,11 +3950,11 @@ impl Ch3Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch4Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4084,13 +4086,13 @@ impl Ch4Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -4104,13 +4106,13 @@ impl Ch4Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -4124,13 +4126,13 @@ impl Ch4Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -4144,13 +4146,13 @@ impl Ch4Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -4361,11 +4363,11 @@ impl Ch4Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4510,11 +4512,11 @@ impl Ch4Div {
 /// - **CH4_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4630,11 +4632,11 @@ impl Ch4Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4779,11 +4781,11 @@ impl Ch4Cc {
 /// - **CH4_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch4Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch4Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4924,11 +4926,11 @@ impl Ch4Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch5Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5060,13 +5062,13 @@ impl Ch5Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -5080,13 +5082,13 @@ impl Ch5Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -5100,13 +5102,13 @@ impl Ch5Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -5120,13 +5122,13 @@ impl Ch5Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -5337,11 +5339,11 @@ impl Ch5Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5486,11 +5488,11 @@ impl Ch5Div {
 /// - **CH5_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5606,11 +5608,11 @@ impl Ch5Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5755,11 +5757,11 @@ impl Ch5Cc {
 /// - **CH5_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch5Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch5Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5900,11 +5902,11 @@ impl Ch5Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch6Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6036,13 +6038,13 @@ impl Ch6Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -6056,13 +6058,13 @@ impl Ch6Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -6076,13 +6078,13 @@ impl Ch6Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -6096,13 +6098,13 @@ impl Ch6Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -6313,11 +6315,11 @@ impl Ch6Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6462,11 +6464,11 @@ impl Ch6Div {
 /// - **CH6_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6582,11 +6584,11 @@ impl Ch6Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6731,11 +6733,11 @@ impl Ch6Cc {
 /// - **CH6_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch6Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch6Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6876,11 +6878,11 @@ impl Ch6Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch7Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7012,13 +7014,13 @@ impl Ch7Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -7032,13 +7034,13 @@ impl Ch7Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -7052,13 +7054,13 @@ impl Ch7Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -7072,13 +7074,13 @@ impl Ch7Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -7289,11 +7291,11 @@ impl Ch7Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7438,11 +7440,11 @@ impl Ch7Div {
 /// - **CH7_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7558,11 +7560,11 @@ impl Ch7Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7707,11 +7709,11 @@ impl Ch7Cc {
 /// - **CH7_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch7Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch7Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7852,11 +7854,11 @@ impl Ch7Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch8Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7988,13 +7990,13 @@ impl Ch8Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -8008,13 +8010,13 @@ impl Ch8Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -8028,13 +8030,13 @@ impl Ch8Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -8048,13 +8050,13 @@ impl Ch8Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -8265,11 +8267,11 @@ impl Ch8Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8414,11 +8416,11 @@ impl Ch8Div {
 /// - **CH8_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8534,11 +8536,11 @@ impl Ch8Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8683,11 +8685,11 @@ impl Ch8Cc {
 /// - **CH8_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch8Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch8Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8828,11 +8830,11 @@ impl Ch8Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch9Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8964,13 +8966,13 @@ impl Ch9Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -8984,13 +8986,13 @@ impl Ch9Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -9004,13 +9006,13 @@ impl Ch9Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -9024,13 +9026,13 @@ impl Ch9Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -9241,11 +9243,11 @@ impl Ch9Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9390,11 +9392,11 @@ impl Ch9Div {
 /// - **CH9_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9510,11 +9512,11 @@ impl Ch9Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9659,11 +9661,11 @@ impl Ch9Cc {
 /// - **CH9_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch9Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch9Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9804,11 +9806,11 @@ impl Ch9Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch10Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9940,13 +9942,13 @@ impl Ch10Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -9960,13 +9962,13 @@ impl Ch10Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -9980,13 +9982,13 @@ impl Ch10Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -10000,13 +10002,13 @@ impl Ch10Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -10217,11 +10219,11 @@ impl Ch10Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10366,11 +10368,11 @@ impl Ch10Div {
 /// - **CH10_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10486,11 +10488,11 @@ impl Ch10Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10635,11 +10637,11 @@ impl Ch10Cc {
 /// - **CH10_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch10Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch10Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10780,11 +10782,11 @@ impl Ch10Top {
 ///   Enable the PWM channel.
 #[repr(transparent)]
 pub struct Ch11Csr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Csr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10916,13 +10918,13 @@ impl Ch11Csr {
     /// Set B_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_b_inv(&self) {
-        self.value.set_bits(Self::B_INV_MASK);
+        self.set_bits(Self::B_INV_MASK);
     }
 
     /// Clear B_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_b_inv(&self) {
-        self.value.clr_bits(Self::B_INV_MASK);
+        self.clr_bits(Self::B_INV_MASK);
     }
 
     /// **A_INV** `[2]` (RW)
@@ -10936,13 +10938,13 @@ impl Ch11Csr {
     /// Set A_INV bit atomically (RW)
     #[inline(always)]
     pub fn set_a_inv(&self) {
-        self.value.set_bits(Self::A_INV_MASK);
+        self.set_bits(Self::A_INV_MASK);
     }
 
     /// Clear A_INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_a_inv(&self) {
-        self.value.clr_bits(Self::A_INV_MASK);
+        self.clr_bits(Self::A_INV_MASK);
     }
 
     /// **PH_CORRECT** `[1]` (RW)
@@ -10956,13 +10958,13 @@ impl Ch11Csr {
     /// Set PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn set_ph_correct(&self) {
-        self.value.set_bits(Self::PH_CORRECT_MASK);
+        self.set_bits(Self::PH_CORRECT_MASK);
     }
 
     /// Clear PH_CORRECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_ph_correct(&self) {
-        self.value.clr_bits(Self::PH_CORRECT_MASK);
+        self.clr_bits(Self::PH_CORRECT_MASK);
     }
 
     /// **EN** `[0]` (RW)
@@ -10976,13 +10978,13 @@ impl Ch11Csr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -11193,11 +11195,11 @@ impl Ch11Csr {
 /// - **FRAC** `[3:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Div {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Div {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11342,11 +11344,11 @@ impl Ch11Div {
 /// - **CH11_CTR** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Ctr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Ctr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11462,11 +11464,11 @@ impl Ch11Ctr {
 /// - **A** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Cc {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Cc {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11611,11 +11613,11 @@ impl Ch11Cc {
 /// - **CH11_TOP** `[15:0]` (RW)
 #[repr(transparent)]
 pub struct Ch11Top {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Ch11Top {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11755,11 +11757,11 @@ impl Ch11Top {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct En {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for En {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11852,13 +11854,13 @@ impl En {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -11870,13 +11872,13 @@ impl En {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -11888,13 +11890,13 @@ impl En {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -11906,13 +11908,13 @@ impl En {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -11924,13 +11926,13 @@ impl En {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -11942,13 +11944,13 @@ impl En {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -11960,13 +11962,13 @@ impl En {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -11978,13 +11980,13 @@ impl En {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -11996,13 +11998,13 @@ impl En {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -12014,13 +12016,13 @@ impl En {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -12032,13 +12034,13 @@ impl En {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -12050,13 +12052,13 @@ impl En {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -12368,11 +12370,11 @@ impl En {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12465,13 +12467,13 @@ impl Intr {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -12483,13 +12485,13 @@ impl Intr {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -12501,13 +12503,13 @@ impl Intr {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -12519,13 +12521,13 @@ impl Intr {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -12537,13 +12539,13 @@ impl Intr {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -12555,13 +12557,13 @@ impl Intr {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -12573,13 +12575,13 @@ impl Intr {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -12591,13 +12593,13 @@ impl Intr {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -12609,13 +12611,13 @@ impl Intr {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -12627,13 +12629,13 @@ impl Intr {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -12645,13 +12647,13 @@ impl Intr {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -12663,13 +12665,13 @@ impl Intr {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -12981,11 +12983,11 @@ impl Intr {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq0Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13078,13 +13080,13 @@ impl Irq0Inte {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -13096,13 +13098,13 @@ impl Irq0Inte {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -13114,13 +13116,13 @@ impl Irq0Inte {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -13132,13 +13134,13 @@ impl Irq0Inte {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -13150,13 +13152,13 @@ impl Irq0Inte {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -13168,13 +13170,13 @@ impl Irq0Inte {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -13186,13 +13188,13 @@ impl Irq0Inte {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -13204,13 +13206,13 @@ impl Irq0Inte {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -13222,13 +13224,13 @@ impl Irq0Inte {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -13240,13 +13242,13 @@ impl Irq0Inte {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -13258,13 +13260,13 @@ impl Irq0Inte {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -13276,13 +13278,13 @@ impl Irq0Inte {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -13594,11 +13596,11 @@ impl Irq0Inte {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq0Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq0Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13691,13 +13693,13 @@ impl Irq0Intf {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -13709,13 +13711,13 @@ impl Irq0Intf {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -13727,13 +13729,13 @@ impl Irq0Intf {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -13745,13 +13747,13 @@ impl Irq0Intf {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -13763,13 +13765,13 @@ impl Irq0Intf {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -13781,13 +13783,13 @@ impl Irq0Intf {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -13799,13 +13801,13 @@ impl Irq0Intf {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -13817,13 +13819,13 @@ impl Irq0Intf {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -13835,13 +13837,13 @@ impl Irq0Intf {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -13853,13 +13855,13 @@ impl Irq0Intf {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -13871,13 +13873,13 @@ impl Irq0Intf {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -13889,13 +13891,13 @@ impl Irq0Intf {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -14207,11 +14209,11 @@ impl Irq0Intf {
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq0Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq0Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14532,11 +14534,11 @@ impl Irq0Ints {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Inte {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq1Inte {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14629,13 +14631,13 @@ impl Irq1Inte {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -14647,13 +14649,13 @@ impl Irq1Inte {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -14665,13 +14667,13 @@ impl Irq1Inte {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -14683,13 +14685,13 @@ impl Irq1Inte {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -14701,13 +14703,13 @@ impl Irq1Inte {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -14719,13 +14721,13 @@ impl Irq1Inte {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -14737,13 +14739,13 @@ impl Irq1Inte {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -14755,13 +14757,13 @@ impl Irq1Inte {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -14773,13 +14775,13 @@ impl Irq1Inte {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -14791,13 +14793,13 @@ impl Irq1Inte {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -14809,13 +14811,13 @@ impl Irq1Inte {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -14827,13 +14829,13 @@ impl Irq1Inte {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -15145,11 +15147,11 @@ impl Irq1Inte {
 /// - **CH0** `[0]` (RW)
 #[repr(transparent)]
 pub struct Irq1Intf {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq1Intf {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15242,13 +15244,13 @@ impl Irq1Intf {
     /// Set CH11 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch11(&self) {
-        self.value.set_bits(Self::CH11_MASK);
+        self.set_bits(Self::CH11_MASK);
     }
 
     /// Clear CH11 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch11(&self) {
-        self.value.clr_bits(Self::CH11_MASK);
+        self.clr_bits(Self::CH11_MASK);
     }
 
     /// **CH10** `[10]` (RW)
@@ -15260,13 +15262,13 @@ impl Irq1Intf {
     /// Set CH10 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch10(&self) {
-        self.value.set_bits(Self::CH10_MASK);
+        self.set_bits(Self::CH10_MASK);
     }
 
     /// Clear CH10 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch10(&self) {
-        self.value.clr_bits(Self::CH10_MASK);
+        self.clr_bits(Self::CH10_MASK);
     }
 
     /// **CH9** `[9]` (RW)
@@ -15278,13 +15280,13 @@ impl Irq1Intf {
     /// Set CH9 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch9(&self) {
-        self.value.set_bits(Self::CH9_MASK);
+        self.set_bits(Self::CH9_MASK);
     }
 
     /// Clear CH9 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch9(&self) {
-        self.value.clr_bits(Self::CH9_MASK);
+        self.clr_bits(Self::CH9_MASK);
     }
 
     /// **CH8** `[8]` (RW)
@@ -15296,13 +15298,13 @@ impl Irq1Intf {
     /// Set CH8 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch8(&self) {
-        self.value.set_bits(Self::CH8_MASK);
+        self.set_bits(Self::CH8_MASK);
     }
 
     /// Clear CH8 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch8(&self) {
-        self.value.clr_bits(Self::CH8_MASK);
+        self.clr_bits(Self::CH8_MASK);
     }
 
     /// **CH7** `[7]` (RW)
@@ -15314,13 +15316,13 @@ impl Irq1Intf {
     /// Set CH7 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch7(&self) {
-        self.value.set_bits(Self::CH7_MASK);
+        self.set_bits(Self::CH7_MASK);
     }
 
     /// Clear CH7 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch7(&self) {
-        self.value.clr_bits(Self::CH7_MASK);
+        self.clr_bits(Self::CH7_MASK);
     }
 
     /// **CH6** `[6]` (RW)
@@ -15332,13 +15334,13 @@ impl Irq1Intf {
     /// Set CH6 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch6(&self) {
-        self.value.set_bits(Self::CH6_MASK);
+        self.set_bits(Self::CH6_MASK);
     }
 
     /// Clear CH6 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch6(&self) {
-        self.value.clr_bits(Self::CH6_MASK);
+        self.clr_bits(Self::CH6_MASK);
     }
 
     /// **CH5** `[5]` (RW)
@@ -15350,13 +15352,13 @@ impl Irq1Intf {
     /// Set CH5 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch5(&self) {
-        self.value.set_bits(Self::CH5_MASK);
+        self.set_bits(Self::CH5_MASK);
     }
 
     /// Clear CH5 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch5(&self) {
-        self.value.clr_bits(Self::CH5_MASK);
+        self.clr_bits(Self::CH5_MASK);
     }
 
     /// **CH4** `[4]` (RW)
@@ -15368,13 +15370,13 @@ impl Irq1Intf {
     /// Set CH4 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch4(&self) {
-        self.value.set_bits(Self::CH4_MASK);
+        self.set_bits(Self::CH4_MASK);
     }
 
     /// Clear CH4 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch4(&self) {
-        self.value.clr_bits(Self::CH4_MASK);
+        self.clr_bits(Self::CH4_MASK);
     }
 
     /// **CH3** `[3]` (RW)
@@ -15386,13 +15388,13 @@ impl Irq1Intf {
     /// Set CH3 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch3(&self) {
-        self.value.set_bits(Self::CH3_MASK);
+        self.set_bits(Self::CH3_MASK);
     }
 
     /// Clear CH3 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch3(&self) {
-        self.value.clr_bits(Self::CH3_MASK);
+        self.clr_bits(Self::CH3_MASK);
     }
 
     /// **CH2** `[2]` (RW)
@@ -15404,13 +15406,13 @@ impl Irq1Intf {
     /// Set CH2 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch2(&self) {
-        self.value.set_bits(Self::CH2_MASK);
+        self.set_bits(Self::CH2_MASK);
     }
 
     /// Clear CH2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch2(&self) {
-        self.value.clr_bits(Self::CH2_MASK);
+        self.clr_bits(Self::CH2_MASK);
     }
 
     /// **CH1** `[1]` (RW)
@@ -15422,13 +15424,13 @@ impl Irq1Intf {
     /// Set CH1 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch1(&self) {
-        self.value.set_bits(Self::CH1_MASK);
+        self.set_bits(Self::CH1_MASK);
     }
 
     /// Clear CH1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch1(&self) {
-        self.value.clr_bits(Self::CH1_MASK);
+        self.clr_bits(Self::CH1_MASK);
     }
 
     /// **CH0** `[0]` (RW)
@@ -15440,13 +15442,13 @@ impl Irq1Intf {
     /// Set CH0 bit atomically (RW)
     #[inline(always)]
     pub fn set_ch0(&self) {
-        self.value.set_bits(Self::CH0_MASK);
+        self.set_bits(Self::CH0_MASK);
     }
 
     /// Clear CH0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_ch0(&self) {
-        self.value.clr_bits(Self::CH0_MASK);
+        self.clr_bits(Self::CH0_MASK);
     }
 
 }
@@ -15758,11 +15760,11 @@ impl Irq1Intf {
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq1Ints {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Irq1Ints {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

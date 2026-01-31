@@ -51,8 +51,63 @@ impl VolatileCell<u32> {
     pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
         self.write_bits(f(self.read_bits()));
     }
+}
+
+/// A volatile cell with atomic SET/CLR/XOR support.
+///
+/// This wrapper provides atomic bit manipulation via RP2350 hardware aliases.
+/// Use this for registers in APB/AHB peripherals (0x40000000-0x50ffffff).
+///
+/// Atomic operations use hardware address aliases:
+/// - SET: base + 0x2000 - sets bits that are 1
+/// - CLR: base + 0x3000 - clears bits that are 1
+/// - XOR: base + 0x1000 - toggles bits that are 1
+#[repr(transparent)]
+pub struct AtomicCell<T> {
+    value: UnsafeCell<T>,
+}
+
+unsafe impl<T: Send> Send for AtomicCell<T> {}
+unsafe impl<T> Sync for AtomicCell<T> {}
+
+impl<T> AtomicCell<T> {
+    /// Create a new AtomicCell
+    #[inline(always)]
+    pub const fn new(value: T) -> Self {
+        Self {
+            value: UnsafeCell::new(value),
+        }
+    }
+
+    /// Get a raw pointer to the underlying value
+    #[inline(always)]
+    pub const fn as_ptr(&self) -> *mut T {
+        self.value.get()
+    }
+}
+
+impl AtomicCell<u32> {
+    /// Read the value with volatile semantics
+    #[inline(always)]
+    pub fn read_bits(&self) -> u32 {
+        unsafe { read_volatile(self.value.get()) }
+    }
+
+    /// Write the value with volatile semantics
+    #[inline(always)]
+    pub fn write_bits(&self, value: u32) {
+        unsafe { write_volatile(self.value.get(), value) }
+    }
+
+    /// Modify the value using a closure
+    #[inline(always)]
+    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
+        self.write_bits(f(self.read_bits()));
+    }
 
     /// Atomic SET - sets bits that are 1 (RP2350 hardware alias at +0x2000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn set_bits(&self, bits: u32) {
         unsafe {
@@ -62,6 +117,8 @@ impl VolatileCell<u32> {
     }
 
     /// Atomic CLR - clears bits that are 1 (RP2350 hardware alias at +0x3000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn clr_bits(&self, bits: u32) {
         unsafe {
@@ -71,6 +128,8 @@ impl VolatileCell<u32> {
     }
 
     /// Atomic XOR - toggles bits that are 1 (RP2350 hardware alias at +0x1000)
+    ///
+    /// This is a single-cycle atomic operation that only affects bits set to 1.
     #[inline(always)]
     pub fn xor_bits(&self, bits: u32) {
         unsafe {

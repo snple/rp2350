@@ -1,6 +1,8 @@
 //! QMI
 //! QSPI Memory Interface.
 //! Provides a memory-mapped interface to up to two SPI/DSPI/QSPI flash or PSRAM devices. Also provides a serial interface for programming and configuration of the external device.
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -80,11 +82,11 @@ pub const BASE: u32 = 0x400d0000;
 ///   Memory-mapped accesses will generate bus errors when direct serial mode is enabled.
 #[repr(transparent)]
 pub struct DirectCsr {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DirectCsr {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -318,13 +320,13 @@ impl DirectCsr {
     /// Set AUTO_CS1N bit atomically (RW)
     #[inline(always)]
     pub fn set_auto_cs1n(&self) {
-        self.value.set_bits(Self::AUTO_CS1N_MASK);
+        self.set_bits(Self::AUTO_CS1N_MASK);
     }
 
     /// Clear AUTO_CS1N bit atomically (RW)
     #[inline(always)]
     pub fn clr_auto_cs1n(&self) {
-        self.value.clr_bits(Self::AUTO_CS1N_MASK);
+        self.clr_bits(Self::AUTO_CS1N_MASK);
     }
 
     /// **AUTO_CS0N** `[6]` (RW)
@@ -338,13 +340,13 @@ impl DirectCsr {
     /// Set AUTO_CS0N bit atomically (RW)
     #[inline(always)]
     pub fn set_auto_cs0n(&self) {
-        self.value.set_bits(Self::AUTO_CS0N_MASK);
+        self.set_bits(Self::AUTO_CS0N_MASK);
     }
 
     /// Clear AUTO_CS0N bit atomically (RW)
     #[inline(always)]
     pub fn clr_auto_cs0n(&self) {
-        self.value.clr_bits(Self::AUTO_CS0N_MASK);
+        self.clr_bits(Self::AUTO_CS0N_MASK);
     }
 
     /// **ASSERT_CS1N** `[3]` (RW)
@@ -359,13 +361,13 @@ impl DirectCsr {
     /// Set ASSERT_CS1N bit atomically (RW)
     #[inline(always)]
     pub fn set_assert_cs1n(&self) {
-        self.value.set_bits(Self::ASSERT_CS1N_MASK);
+        self.set_bits(Self::ASSERT_CS1N_MASK);
     }
 
     /// Clear ASSERT_CS1N bit atomically (RW)
     #[inline(always)]
     pub fn clr_assert_cs1n(&self) {
-        self.value.clr_bits(Self::ASSERT_CS1N_MASK);
+        self.clr_bits(Self::ASSERT_CS1N_MASK);
     }
 
     /// **ASSERT_CS0N** `[2]` (RW)
@@ -380,13 +382,13 @@ impl DirectCsr {
     /// Set ASSERT_CS0N bit atomically (RW)
     #[inline(always)]
     pub fn set_assert_cs0n(&self) {
-        self.value.set_bits(Self::ASSERT_CS0N_MASK);
+        self.set_bits(Self::ASSERT_CS0N_MASK);
     }
 
     /// Clear ASSERT_CS0N bit atomically (RW)
     #[inline(always)]
     pub fn clr_assert_cs0n(&self) {
-        self.value.clr_bits(Self::ASSERT_CS0N_MASK);
+        self.clr_bits(Self::ASSERT_CS0N_MASK);
     }
 
     /// **BUSY** `[1]` (RO)
@@ -412,13 +414,13 @@ impl DirectCsr {
     /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.value.set_bits(Self::EN_MASK);
+        self.set_bits(Self::EN_MASK);
     }
 
     /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.value.clr_bits(Self::EN_MASK);
+        self.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -727,11 +729,11 @@ impl DirectCsr {
 ///   For 16-bit data, the least-significant byte is transmitted first.
 #[repr(transparent)]
 pub struct DirectTx {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DirectTx {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -983,11 +985,11 @@ impl DirectTx {
 ///   When 16-bit data is pushed into the TX FIFO, the corresponding RX FIFO push will also contain 16 bits of data. The least-significant byte is the first one received.
 #[repr(transparent)]
 pub struct DirectRx {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for DirectRx {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1142,11 +1144,11 @@ impl DirectRx {
 ///   If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
 #[repr(transparent)]
 pub struct M0Timing {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M0Timing {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1308,13 +1310,13 @@ impl M0Timing {
     /// Set SELECT_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn set_select_setup(&self) {
-        self.value.set_bits(Self::SELECT_SETUP_MASK);
+        self.set_bits(Self::SELECT_SETUP_MASK);
     }
 
     /// Clear SELECT_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn clr_select_setup(&self) {
-        self.value.clr_bits(Self::SELECT_SETUP_MASK);
+        self.clr_bits(Self::SELECT_SETUP_MASK);
     }
 
     /// **SELECT_HOLD** `[24:23]` (RW)
@@ -1704,11 +1706,11 @@ impl M0Timing {
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M0Rfmt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M0Rfmt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1919,13 +1921,13 @@ impl M0Rfmt {
     /// Set DTR bit atomically (RW)
     #[inline(always)]
     pub fn set_dtr(&self) {
-        self.value.set_bits(Self::DTR_MASK);
+        self.set_bits(Self::DTR_MASK);
     }
 
     /// Clear DTR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dtr(&self) {
-        self.value.clr_bits(Self::DTR_MASK);
+        self.clr_bits(Self::DTR_MASK);
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
@@ -1973,13 +1975,13 @@ impl M0Rfmt {
     /// Set PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn set_prefix_len(&self) {
-        self.value.set_bits(Self::PREFIX_LEN_MASK);
+        self.set_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// Clear PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_prefix_len(&self) {
-        self.value.clr_bits(Self::PREFIX_LEN_MASK);
+        self.clr_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
@@ -2320,11 +2322,11 @@ impl M0Rfmt {
 ///   The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M0Rcmd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M0Rcmd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2531,11 +2533,11 @@ impl M0Rcmd {
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M0Wfmt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M0Wfmt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2746,13 +2748,13 @@ impl M0Wfmt {
     /// Set DTR bit atomically (RW)
     #[inline(always)]
     pub fn set_dtr(&self) {
-        self.value.set_bits(Self::DTR_MASK);
+        self.set_bits(Self::DTR_MASK);
     }
 
     /// Clear DTR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dtr(&self) {
-        self.value.clr_bits(Self::DTR_MASK);
+        self.clr_bits(Self::DTR_MASK);
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
@@ -2800,13 +2802,13 @@ impl M0Wfmt {
     /// Set PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn set_prefix_len(&self) {
-        self.value.set_bits(Self::PREFIX_LEN_MASK);
+        self.set_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// Clear PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_prefix_len(&self) {
-        self.value.clr_bits(Self::PREFIX_LEN_MASK);
+        self.clr_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
@@ -3147,11 +3149,11 @@ impl M0Wfmt {
 ///   The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M0Wcmd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M0Wcmd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3363,11 +3365,11 @@ impl M0Wcmd {
 ///   If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
 #[repr(transparent)]
 pub struct M1Timing {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M1Timing {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3529,13 +3531,13 @@ impl M1Timing {
     /// Set SELECT_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn set_select_setup(&self) {
-        self.value.set_bits(Self::SELECT_SETUP_MASK);
+        self.set_bits(Self::SELECT_SETUP_MASK);
     }
 
     /// Clear SELECT_SETUP bit atomically (RW)
     #[inline(always)]
     pub fn clr_select_setup(&self) {
-        self.value.clr_bits(Self::SELECT_SETUP_MASK);
+        self.clr_bits(Self::SELECT_SETUP_MASK);
     }
 
     /// **SELECT_HOLD** `[24:23]` (RW)
@@ -3925,11 +3927,11 @@ impl M1Timing {
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M1Rfmt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M1Rfmt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4140,13 +4142,13 @@ impl M1Rfmt {
     /// Set DTR bit atomically (RW)
     #[inline(always)]
     pub fn set_dtr(&self) {
-        self.value.set_bits(Self::DTR_MASK);
+        self.set_bits(Self::DTR_MASK);
     }
 
     /// Clear DTR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dtr(&self) {
-        self.value.clr_bits(Self::DTR_MASK);
+        self.clr_bits(Self::DTR_MASK);
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
@@ -4194,13 +4196,13 @@ impl M1Rfmt {
     /// Set PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn set_prefix_len(&self) {
-        self.value.set_bits(Self::PREFIX_LEN_MASK);
+        self.set_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// Clear PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_prefix_len(&self) {
-        self.value.clr_bits(Self::PREFIX_LEN_MASK);
+        self.clr_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
@@ -4541,11 +4543,11 @@ impl M1Rfmt {
 ///   The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M1Rcmd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M1Rcmd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4752,11 +4754,11 @@ impl M1Rcmd {
 ///   The transfer width used for the command prefix, if any
 #[repr(transparent)]
 pub struct M1Wfmt {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M1Wfmt {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4967,13 +4969,13 @@ impl M1Wfmt {
     /// Set DTR bit atomically (RW)
     #[inline(always)]
     pub fn set_dtr(&self) {
-        self.value.set_bits(Self::DTR_MASK);
+        self.set_bits(Self::DTR_MASK);
     }
 
     /// Clear DTR bit atomically (RW)
     #[inline(always)]
     pub fn clr_dtr(&self) {
-        self.value.clr_bits(Self::DTR_MASK);
+        self.clr_bits(Self::DTR_MASK);
     }
 
     /// **DUMMY_LEN** `[18:16]` (RW)
@@ -5021,13 +5023,13 @@ impl M1Wfmt {
     /// Set PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn set_prefix_len(&self) {
-        self.value.set_bits(Self::PREFIX_LEN_MASK);
+        self.set_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// Clear PREFIX_LEN bit atomically (RW)
     #[inline(always)]
     pub fn clr_prefix_len(&self) {
-        self.value.clr_bits(Self::PREFIX_LEN_MASK);
+        self.clr_bits(Self::PREFIX_LEN_MASK);
     }
 
     /// **DATA_WIDTH** `[9:8]` (RW)
@@ -5368,11 +5370,11 @@ impl M1Wfmt {
 ///   The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
 #[repr(transparent)]
 pub struct M1Wcmd {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for M1Wcmd {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5550,11 +5552,11 @@ impl M1Wcmd {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans0 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans0 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5742,11 +5744,11 @@ impl Atrans0 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans1 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans1 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5934,11 +5936,11 @@ impl Atrans1 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans2 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans2 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6126,11 +6128,11 @@ impl Atrans2 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans3 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans3 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6318,11 +6320,11 @@ impl Atrans3 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans4 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans4 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6510,11 +6512,11 @@ impl Atrans4 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans5 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans5 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6702,11 +6704,11 @@ impl Atrans5 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans6 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans6 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6894,11 +6896,11 @@ impl Atrans6 {
 ///   Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
 #[repr(transparent)]
 pub struct Atrans7 {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Atrans7 {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

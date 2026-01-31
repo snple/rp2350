@@ -1,4 +1,6 @@
 //! RESETS
+//!
+//! This peripheral supports atomic SET/CLR/XOR register aliases.
 
 #![allow(dead_code)]
 
@@ -70,11 +72,11 @@ pub const BASE: u32 = 0x40020000;
 /// - **ADC** `[0]` (RW)
 #[repr(transparent)]
 pub struct Reset {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Reset {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -269,13 +271,13 @@ impl Reset {
     /// Set USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_usbctrl(&self) {
-        self.value.set_bits(Self::USBCTRL_MASK);
+        self.set_bits(Self::USBCTRL_MASK);
     }
 
     /// Clear USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbctrl(&self) {
-        self.value.clr_bits(Self::USBCTRL_MASK);
+        self.clr_bits(Self::USBCTRL_MASK);
     }
 
     /// **UART1** `[27]` (RW)
@@ -287,13 +289,13 @@ impl Reset {
     /// Set UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_uart1(&self) {
-        self.value.set_bits(Self::UART1_MASK);
+        self.set_bits(Self::UART1_MASK);
     }
 
     /// Clear UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_uart1(&self) {
-        self.value.clr_bits(Self::UART1_MASK);
+        self.clr_bits(Self::UART1_MASK);
     }
 
     /// **UART0** `[26]` (RW)
@@ -305,13 +307,13 @@ impl Reset {
     /// Set UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_uart0(&self) {
-        self.value.set_bits(Self::UART0_MASK);
+        self.set_bits(Self::UART0_MASK);
     }
 
     /// Clear UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_uart0(&self) {
-        self.value.clr_bits(Self::UART0_MASK);
+        self.clr_bits(Self::UART0_MASK);
     }
 
     /// **TRNG** `[25]` (RW)
@@ -323,13 +325,13 @@ impl Reset {
     /// Set TRNG bit atomically (RW)
     #[inline(always)]
     pub fn set_trng(&self) {
-        self.value.set_bits(Self::TRNG_MASK);
+        self.set_bits(Self::TRNG_MASK);
     }
 
     /// Clear TRNG bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng(&self) {
-        self.value.clr_bits(Self::TRNG_MASK);
+        self.clr_bits(Self::TRNG_MASK);
     }
 
     /// **TIMER1** `[24]` (RW)
@@ -341,13 +343,13 @@ impl Reset {
     /// Set TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn set_timer1(&self) {
-        self.value.set_bits(Self::TIMER1_MASK);
+        self.set_bits(Self::TIMER1_MASK);
     }
 
     /// Clear TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer1(&self) {
-        self.value.clr_bits(Self::TIMER1_MASK);
+        self.clr_bits(Self::TIMER1_MASK);
     }
 
     /// **TIMER0** `[23]` (RW)
@@ -359,13 +361,13 @@ impl Reset {
     /// Set TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn set_timer0(&self) {
-        self.value.set_bits(Self::TIMER0_MASK);
+        self.set_bits(Self::TIMER0_MASK);
     }
 
     /// Clear TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer0(&self) {
-        self.value.clr_bits(Self::TIMER0_MASK);
+        self.clr_bits(Self::TIMER0_MASK);
     }
 
     /// **TBMAN** `[22]` (RW)
@@ -377,13 +379,13 @@ impl Reset {
     /// Set TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_tbman(&self) {
-        self.value.set_bits(Self::TBMAN_MASK);
+        self.set_bits(Self::TBMAN_MASK);
     }
 
     /// Clear TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tbman(&self) {
-        self.value.clr_bits(Self::TBMAN_MASK);
+        self.clr_bits(Self::TBMAN_MASK);
     }
 
     /// **SYSINFO** `[21]` (RW)
@@ -395,13 +397,13 @@ impl Reset {
     /// Set SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn set_sysinfo(&self) {
-        self.value.set_bits(Self::SYSINFO_MASK);
+        self.set_bits(Self::SYSINFO_MASK);
     }
 
     /// Clear SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_sysinfo(&self) {
-        self.value.clr_bits(Self::SYSINFO_MASK);
+        self.clr_bits(Self::SYSINFO_MASK);
     }
 
     /// **SYSCFG** `[20]` (RW)
@@ -413,13 +415,13 @@ impl Reset {
     /// Set SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn set_syscfg(&self) {
-        self.value.set_bits(Self::SYSCFG_MASK);
+        self.set_bits(Self::SYSCFG_MASK);
     }
 
     /// Clear SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn clr_syscfg(&self) {
-        self.value.clr_bits(Self::SYSCFG_MASK);
+        self.clr_bits(Self::SYSCFG_MASK);
     }
 
     /// **SPI1** `[19]` (RW)
@@ -431,13 +433,13 @@ impl Reset {
     /// Set SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_spi1(&self) {
-        self.value.set_bits(Self::SPI1_MASK);
+        self.set_bits(Self::SPI1_MASK);
     }
 
     /// Clear SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_spi1(&self) {
-        self.value.clr_bits(Self::SPI1_MASK);
+        self.clr_bits(Self::SPI1_MASK);
     }
 
     /// **SPI0** `[18]` (RW)
@@ -449,13 +451,13 @@ impl Reset {
     /// Set SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_spi0(&self) {
-        self.value.set_bits(Self::SPI0_MASK);
+        self.set_bits(Self::SPI0_MASK);
     }
 
     /// Clear SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_spi0(&self) {
-        self.value.clr_bits(Self::SPI0_MASK);
+        self.clr_bits(Self::SPI0_MASK);
     }
 
     /// **SHA256** `[17]` (RW)
@@ -467,13 +469,13 @@ impl Reset {
     /// Set SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn set_sha256(&self) {
-        self.value.set_bits(Self::SHA256_MASK);
+        self.set_bits(Self::SHA256_MASK);
     }
 
     /// Clear SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sha256(&self) {
-        self.value.clr_bits(Self::SHA256_MASK);
+        self.clr_bits(Self::SHA256_MASK);
     }
 
     /// **PWM** `[16]` (RW)
@@ -485,13 +487,13 @@ impl Reset {
     /// Set PWM bit atomically (RW)
     #[inline(always)]
     pub fn set_pwm(&self) {
-        self.value.set_bits(Self::PWM_MASK);
+        self.set_bits(Self::PWM_MASK);
     }
 
     /// Clear PWM bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwm(&self) {
-        self.value.clr_bits(Self::PWM_MASK);
+        self.clr_bits(Self::PWM_MASK);
     }
 
     /// **PLL_USB** `[15]` (RW)
@@ -503,13 +505,13 @@ impl Reset {
     /// Set PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_pll_usb(&self) {
-        self.value.set_bits(Self::PLL_USB_MASK);
+        self.set_bits(Self::PLL_USB_MASK);
     }
 
     /// Clear PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_pll_usb(&self) {
-        self.value.clr_bits(Self::PLL_USB_MASK);
+        self.clr_bits(Self::PLL_USB_MASK);
     }
 
     /// **PLL_SYS** `[14]` (RW)
@@ -521,13 +523,13 @@ impl Reset {
     /// Set PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn set_pll_sys(&self) {
-        self.value.set_bits(Self::PLL_SYS_MASK);
+        self.set_bits(Self::PLL_SYS_MASK);
     }
 
     /// Clear PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_pll_sys(&self) {
-        self.value.clr_bits(Self::PLL_SYS_MASK);
+        self.clr_bits(Self::PLL_SYS_MASK);
     }
 
     /// **PIO2** `[13]` (RW)
@@ -539,13 +541,13 @@ impl Reset {
     /// Set PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio2(&self) {
-        self.value.set_bits(Self::PIO2_MASK);
+        self.set_bits(Self::PIO2_MASK);
     }
 
     /// Clear PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio2(&self) {
-        self.value.clr_bits(Self::PIO2_MASK);
+        self.clr_bits(Self::PIO2_MASK);
     }
 
     /// **PIO1** `[12]` (RW)
@@ -557,13 +559,13 @@ impl Reset {
     /// Set PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio1(&self) {
-        self.value.set_bits(Self::PIO1_MASK);
+        self.set_bits(Self::PIO1_MASK);
     }
 
     /// Clear PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio1(&self) {
-        self.value.clr_bits(Self::PIO1_MASK);
+        self.clr_bits(Self::PIO1_MASK);
     }
 
     /// **PIO0** `[11]` (RW)
@@ -575,13 +577,13 @@ impl Reset {
     /// Set PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio0(&self) {
-        self.value.set_bits(Self::PIO0_MASK);
+        self.set_bits(Self::PIO0_MASK);
     }
 
     /// Clear PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio0(&self) {
-        self.value.clr_bits(Self::PIO0_MASK);
+        self.clr_bits(Self::PIO0_MASK);
     }
 
     /// **PADS_QSPI** `[10]` (RW)
@@ -593,13 +595,13 @@ impl Reset {
     /// Set PADS_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn set_pads_qspi(&self) {
-        self.value.set_bits(Self::PADS_QSPI_MASK);
+        self.set_bits(Self::PADS_QSPI_MASK);
     }
 
     /// Clear PADS_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn clr_pads_qspi(&self) {
-        self.value.clr_bits(Self::PADS_QSPI_MASK);
+        self.clr_bits(Self::PADS_QSPI_MASK);
     }
 
     /// **PADS_BANK0** `[9]` (RW)
@@ -611,13 +613,13 @@ impl Reset {
     /// Set PADS_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pads_bank0(&self) {
-        self.value.set_bits(Self::PADS_BANK0_MASK);
+        self.set_bits(Self::PADS_BANK0_MASK);
     }
 
     /// Clear PADS_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pads_bank0(&self) {
-        self.value.clr_bits(Self::PADS_BANK0_MASK);
+        self.clr_bits(Self::PADS_BANK0_MASK);
     }
 
     /// **JTAG** `[8]` (RW)
@@ -629,13 +631,13 @@ impl Reset {
     /// Set JTAG bit atomically (RW)
     #[inline(always)]
     pub fn set_jtag(&self) {
-        self.value.set_bits(Self::JTAG_MASK);
+        self.set_bits(Self::JTAG_MASK);
     }
 
     /// Clear JTAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_jtag(&self) {
-        self.value.clr_bits(Self::JTAG_MASK);
+        self.clr_bits(Self::JTAG_MASK);
     }
 
     /// **IO_QSPI** `[7]` (RW)
@@ -647,13 +649,13 @@ impl Reset {
     /// Set IO_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn set_io_qspi(&self) {
-        self.value.set_bits(Self::IO_QSPI_MASK);
+        self.set_bits(Self::IO_QSPI_MASK);
     }
 
     /// Clear IO_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn clr_io_qspi(&self) {
-        self.value.clr_bits(Self::IO_QSPI_MASK);
+        self.clr_bits(Self::IO_QSPI_MASK);
     }
 
     /// **IO_BANK0** `[6]` (RW)
@@ -665,13 +667,13 @@ impl Reset {
     /// Set IO_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn set_io_bank0(&self) {
-        self.value.set_bits(Self::IO_BANK0_MASK);
+        self.set_bits(Self::IO_BANK0_MASK);
     }
 
     /// Clear IO_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_io_bank0(&self) {
-        self.value.clr_bits(Self::IO_BANK0_MASK);
+        self.clr_bits(Self::IO_BANK0_MASK);
     }
 
     /// **I2C1** `[5]` (RW)
@@ -683,13 +685,13 @@ impl Reset {
     /// Set I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn set_i2c1(&self) {
-        self.value.set_bits(Self::I2C1_MASK);
+        self.set_bits(Self::I2C1_MASK);
     }
 
     /// Clear I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_i2c1(&self) {
-        self.value.clr_bits(Self::I2C1_MASK);
+        self.clr_bits(Self::I2C1_MASK);
     }
 
     /// **I2C0** `[4]` (RW)
@@ -701,13 +703,13 @@ impl Reset {
     /// Set I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn set_i2c0(&self) {
-        self.value.set_bits(Self::I2C0_MASK);
+        self.set_bits(Self::I2C0_MASK);
     }
 
     /// Clear I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_i2c0(&self) {
-        self.value.clr_bits(Self::I2C0_MASK);
+        self.clr_bits(Self::I2C0_MASK);
     }
 
     /// **HSTX** `[3]` (RW)
@@ -719,13 +721,13 @@ impl Reset {
     /// Set HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_hstx(&self) {
-        self.value.set_bits(Self::HSTX_MASK);
+        self.set_bits(Self::HSTX_MASK);
     }
 
     /// Clear HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_hstx(&self) {
-        self.value.clr_bits(Self::HSTX_MASK);
+        self.clr_bits(Self::HSTX_MASK);
     }
 
     /// **DMA** `[2]` (RW)
@@ -737,13 +739,13 @@ impl Reset {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **BUSCTRL** `[1]` (RW)
@@ -755,13 +757,13 @@ impl Reset {
     /// Set BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_busctrl(&self) {
-        self.value.set_bits(Self::BUSCTRL_MASK);
+        self.set_bits(Self::BUSCTRL_MASK);
     }
 
     /// Clear BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_busctrl(&self) {
-        self.value.clr_bits(Self::BUSCTRL_MASK);
+        self.clr_bits(Self::BUSCTRL_MASK);
     }
 
     /// **ADC** `[0]` (RW)
@@ -773,13 +775,13 @@ impl Reset {
     /// Set ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_adc(&self) {
-        self.value.set_bits(Self::ADC_MASK);
+        self.set_bits(Self::ADC_MASK);
     }
 
     /// Clear ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_adc(&self) {
-        self.value.clr_bits(Self::ADC_MASK);
+        self.clr_bits(Self::ADC_MASK);
     }
 
 }
@@ -1429,11 +1431,11 @@ impl Reset {
 /// - **ADC** `[0]` (RW)
 #[repr(transparent)]
 pub struct Wdsel {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for Wdsel {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1628,13 +1630,13 @@ impl Wdsel {
     /// Set USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_usbctrl(&self) {
-        self.value.set_bits(Self::USBCTRL_MASK);
+        self.set_bits(Self::USBCTRL_MASK);
     }
 
     /// Clear USBCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_usbctrl(&self) {
-        self.value.clr_bits(Self::USBCTRL_MASK);
+        self.clr_bits(Self::USBCTRL_MASK);
     }
 
     /// **UART1** `[27]` (RW)
@@ -1646,13 +1648,13 @@ impl Wdsel {
     /// Set UART1 bit atomically (RW)
     #[inline(always)]
     pub fn set_uart1(&self) {
-        self.value.set_bits(Self::UART1_MASK);
+        self.set_bits(Self::UART1_MASK);
     }
 
     /// Clear UART1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_uart1(&self) {
-        self.value.clr_bits(Self::UART1_MASK);
+        self.clr_bits(Self::UART1_MASK);
     }
 
     /// **UART0** `[26]` (RW)
@@ -1664,13 +1666,13 @@ impl Wdsel {
     /// Set UART0 bit atomically (RW)
     #[inline(always)]
     pub fn set_uart0(&self) {
-        self.value.set_bits(Self::UART0_MASK);
+        self.set_bits(Self::UART0_MASK);
     }
 
     /// Clear UART0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_uart0(&self) {
-        self.value.clr_bits(Self::UART0_MASK);
+        self.clr_bits(Self::UART0_MASK);
     }
 
     /// **TRNG** `[25]` (RW)
@@ -1682,13 +1684,13 @@ impl Wdsel {
     /// Set TRNG bit atomically (RW)
     #[inline(always)]
     pub fn set_trng(&self) {
-        self.value.set_bits(Self::TRNG_MASK);
+        self.set_bits(Self::TRNG_MASK);
     }
 
     /// Clear TRNG bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng(&self) {
-        self.value.clr_bits(Self::TRNG_MASK);
+        self.clr_bits(Self::TRNG_MASK);
     }
 
     /// **TIMER1** `[24]` (RW)
@@ -1700,13 +1702,13 @@ impl Wdsel {
     /// Set TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn set_timer1(&self) {
-        self.value.set_bits(Self::TIMER1_MASK);
+        self.set_bits(Self::TIMER1_MASK);
     }
 
     /// Clear TIMER1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer1(&self) {
-        self.value.clr_bits(Self::TIMER1_MASK);
+        self.clr_bits(Self::TIMER1_MASK);
     }
 
     /// **TIMER0** `[23]` (RW)
@@ -1718,13 +1720,13 @@ impl Wdsel {
     /// Set TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn set_timer0(&self) {
-        self.value.set_bits(Self::TIMER0_MASK);
+        self.set_bits(Self::TIMER0_MASK);
     }
 
     /// Clear TIMER0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_timer0(&self) {
-        self.value.clr_bits(Self::TIMER0_MASK);
+        self.clr_bits(Self::TIMER0_MASK);
     }
 
     /// **TBMAN** `[22]` (RW)
@@ -1736,13 +1738,13 @@ impl Wdsel {
     /// Set TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn set_tbman(&self) {
-        self.value.set_bits(Self::TBMAN_MASK);
+        self.set_bits(Self::TBMAN_MASK);
     }
 
     /// Clear TBMAN bit atomically (RW)
     #[inline(always)]
     pub fn clr_tbman(&self) {
-        self.value.clr_bits(Self::TBMAN_MASK);
+        self.clr_bits(Self::TBMAN_MASK);
     }
 
     /// **SYSINFO** `[21]` (RW)
@@ -1754,13 +1756,13 @@ impl Wdsel {
     /// Set SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn set_sysinfo(&self) {
-        self.value.set_bits(Self::SYSINFO_MASK);
+        self.set_bits(Self::SYSINFO_MASK);
     }
 
     /// Clear SYSINFO bit atomically (RW)
     #[inline(always)]
     pub fn clr_sysinfo(&self) {
-        self.value.clr_bits(Self::SYSINFO_MASK);
+        self.clr_bits(Self::SYSINFO_MASK);
     }
 
     /// **SYSCFG** `[20]` (RW)
@@ -1772,13 +1774,13 @@ impl Wdsel {
     /// Set SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn set_syscfg(&self) {
-        self.value.set_bits(Self::SYSCFG_MASK);
+        self.set_bits(Self::SYSCFG_MASK);
     }
 
     /// Clear SYSCFG bit atomically (RW)
     #[inline(always)]
     pub fn clr_syscfg(&self) {
-        self.value.clr_bits(Self::SYSCFG_MASK);
+        self.clr_bits(Self::SYSCFG_MASK);
     }
 
     /// **SPI1** `[19]` (RW)
@@ -1790,13 +1792,13 @@ impl Wdsel {
     /// Set SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn set_spi1(&self) {
-        self.value.set_bits(Self::SPI1_MASK);
+        self.set_bits(Self::SPI1_MASK);
     }
 
     /// Clear SPI1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_spi1(&self) {
-        self.value.clr_bits(Self::SPI1_MASK);
+        self.clr_bits(Self::SPI1_MASK);
     }
 
     /// **SPI0** `[18]` (RW)
@@ -1808,13 +1810,13 @@ impl Wdsel {
     /// Set SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn set_spi0(&self) {
-        self.value.set_bits(Self::SPI0_MASK);
+        self.set_bits(Self::SPI0_MASK);
     }
 
     /// Clear SPI0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_spi0(&self) {
-        self.value.clr_bits(Self::SPI0_MASK);
+        self.clr_bits(Self::SPI0_MASK);
     }
 
     /// **SHA256** `[17]` (RW)
@@ -1826,13 +1828,13 @@ impl Wdsel {
     /// Set SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn set_sha256(&self) {
-        self.value.set_bits(Self::SHA256_MASK);
+        self.set_bits(Self::SHA256_MASK);
     }
 
     /// Clear SHA256 bit atomically (RW)
     #[inline(always)]
     pub fn clr_sha256(&self) {
-        self.value.clr_bits(Self::SHA256_MASK);
+        self.clr_bits(Self::SHA256_MASK);
     }
 
     /// **PWM** `[16]` (RW)
@@ -1844,13 +1846,13 @@ impl Wdsel {
     /// Set PWM bit atomically (RW)
     #[inline(always)]
     pub fn set_pwm(&self) {
-        self.value.set_bits(Self::PWM_MASK);
+        self.set_bits(Self::PWM_MASK);
     }
 
     /// Clear PWM bit atomically (RW)
     #[inline(always)]
     pub fn clr_pwm(&self) {
-        self.value.clr_bits(Self::PWM_MASK);
+        self.clr_bits(Self::PWM_MASK);
     }
 
     /// **PLL_USB** `[15]` (RW)
@@ -1862,13 +1864,13 @@ impl Wdsel {
     /// Set PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn set_pll_usb(&self) {
-        self.value.set_bits(Self::PLL_USB_MASK);
+        self.set_bits(Self::PLL_USB_MASK);
     }
 
     /// Clear PLL_USB bit atomically (RW)
     #[inline(always)]
     pub fn clr_pll_usb(&self) {
-        self.value.clr_bits(Self::PLL_USB_MASK);
+        self.clr_bits(Self::PLL_USB_MASK);
     }
 
     /// **PLL_SYS** `[14]` (RW)
@@ -1880,13 +1882,13 @@ impl Wdsel {
     /// Set PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn set_pll_sys(&self) {
-        self.value.set_bits(Self::PLL_SYS_MASK);
+        self.set_bits(Self::PLL_SYS_MASK);
     }
 
     /// Clear PLL_SYS bit atomically (RW)
     #[inline(always)]
     pub fn clr_pll_sys(&self) {
-        self.value.clr_bits(Self::PLL_SYS_MASK);
+        self.clr_bits(Self::PLL_SYS_MASK);
     }
 
     /// **PIO2** `[13]` (RW)
@@ -1898,13 +1900,13 @@ impl Wdsel {
     /// Set PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio2(&self) {
-        self.value.set_bits(Self::PIO2_MASK);
+        self.set_bits(Self::PIO2_MASK);
     }
 
     /// Clear PIO2 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio2(&self) {
-        self.value.clr_bits(Self::PIO2_MASK);
+        self.clr_bits(Self::PIO2_MASK);
     }
 
     /// **PIO1** `[12]` (RW)
@@ -1916,13 +1918,13 @@ impl Wdsel {
     /// Set PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio1(&self) {
-        self.value.set_bits(Self::PIO1_MASK);
+        self.set_bits(Self::PIO1_MASK);
     }
 
     /// Clear PIO1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio1(&self) {
-        self.value.clr_bits(Self::PIO1_MASK);
+        self.clr_bits(Self::PIO1_MASK);
     }
 
     /// **PIO0** `[11]` (RW)
@@ -1934,13 +1936,13 @@ impl Wdsel {
     /// Set PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pio0(&self) {
-        self.value.set_bits(Self::PIO0_MASK);
+        self.set_bits(Self::PIO0_MASK);
     }
 
     /// Clear PIO0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pio0(&self) {
-        self.value.clr_bits(Self::PIO0_MASK);
+        self.clr_bits(Self::PIO0_MASK);
     }
 
     /// **PADS_QSPI** `[10]` (RW)
@@ -1952,13 +1954,13 @@ impl Wdsel {
     /// Set PADS_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn set_pads_qspi(&self) {
-        self.value.set_bits(Self::PADS_QSPI_MASK);
+        self.set_bits(Self::PADS_QSPI_MASK);
     }
 
     /// Clear PADS_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn clr_pads_qspi(&self) {
-        self.value.clr_bits(Self::PADS_QSPI_MASK);
+        self.clr_bits(Self::PADS_QSPI_MASK);
     }
 
     /// **PADS_BANK0** `[9]` (RW)
@@ -1970,13 +1972,13 @@ impl Wdsel {
     /// Set PADS_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn set_pads_bank0(&self) {
-        self.value.set_bits(Self::PADS_BANK0_MASK);
+        self.set_bits(Self::PADS_BANK0_MASK);
     }
 
     /// Clear PADS_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_pads_bank0(&self) {
-        self.value.clr_bits(Self::PADS_BANK0_MASK);
+        self.clr_bits(Self::PADS_BANK0_MASK);
     }
 
     /// **JTAG** `[8]` (RW)
@@ -1988,13 +1990,13 @@ impl Wdsel {
     /// Set JTAG bit atomically (RW)
     #[inline(always)]
     pub fn set_jtag(&self) {
-        self.value.set_bits(Self::JTAG_MASK);
+        self.set_bits(Self::JTAG_MASK);
     }
 
     /// Clear JTAG bit atomically (RW)
     #[inline(always)]
     pub fn clr_jtag(&self) {
-        self.value.clr_bits(Self::JTAG_MASK);
+        self.clr_bits(Self::JTAG_MASK);
     }
 
     /// **IO_QSPI** `[7]` (RW)
@@ -2006,13 +2008,13 @@ impl Wdsel {
     /// Set IO_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn set_io_qspi(&self) {
-        self.value.set_bits(Self::IO_QSPI_MASK);
+        self.set_bits(Self::IO_QSPI_MASK);
     }
 
     /// Clear IO_QSPI bit atomically (RW)
     #[inline(always)]
     pub fn clr_io_qspi(&self) {
-        self.value.clr_bits(Self::IO_QSPI_MASK);
+        self.clr_bits(Self::IO_QSPI_MASK);
     }
 
     /// **IO_BANK0** `[6]` (RW)
@@ -2024,13 +2026,13 @@ impl Wdsel {
     /// Set IO_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn set_io_bank0(&self) {
-        self.value.set_bits(Self::IO_BANK0_MASK);
+        self.set_bits(Self::IO_BANK0_MASK);
     }
 
     /// Clear IO_BANK0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_io_bank0(&self) {
-        self.value.clr_bits(Self::IO_BANK0_MASK);
+        self.clr_bits(Self::IO_BANK0_MASK);
     }
 
     /// **I2C1** `[5]` (RW)
@@ -2042,13 +2044,13 @@ impl Wdsel {
     /// Set I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn set_i2c1(&self) {
-        self.value.set_bits(Self::I2C1_MASK);
+        self.set_bits(Self::I2C1_MASK);
     }
 
     /// Clear I2C1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_i2c1(&self) {
-        self.value.clr_bits(Self::I2C1_MASK);
+        self.clr_bits(Self::I2C1_MASK);
     }
 
     /// **I2C0** `[4]` (RW)
@@ -2060,13 +2062,13 @@ impl Wdsel {
     /// Set I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn set_i2c0(&self) {
-        self.value.set_bits(Self::I2C0_MASK);
+        self.set_bits(Self::I2C0_MASK);
     }
 
     /// Clear I2C0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_i2c0(&self) {
-        self.value.clr_bits(Self::I2C0_MASK);
+        self.clr_bits(Self::I2C0_MASK);
     }
 
     /// **HSTX** `[3]` (RW)
@@ -2078,13 +2080,13 @@ impl Wdsel {
     /// Set HSTX bit atomically (RW)
     #[inline(always)]
     pub fn set_hstx(&self) {
-        self.value.set_bits(Self::HSTX_MASK);
+        self.set_bits(Self::HSTX_MASK);
     }
 
     /// Clear HSTX bit atomically (RW)
     #[inline(always)]
     pub fn clr_hstx(&self) {
-        self.value.clr_bits(Self::HSTX_MASK);
+        self.clr_bits(Self::HSTX_MASK);
     }
 
     /// **DMA** `[2]` (RW)
@@ -2096,13 +2098,13 @@ impl Wdsel {
     /// Set DMA bit atomically (RW)
     #[inline(always)]
     pub fn set_dma(&self) {
-        self.value.set_bits(Self::DMA_MASK);
+        self.set_bits(Self::DMA_MASK);
     }
 
     /// Clear DMA bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma(&self) {
-        self.value.clr_bits(Self::DMA_MASK);
+        self.clr_bits(Self::DMA_MASK);
     }
 
     /// **BUSCTRL** `[1]` (RW)
@@ -2114,13 +2116,13 @@ impl Wdsel {
     /// Set BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn set_busctrl(&self) {
-        self.value.set_bits(Self::BUSCTRL_MASK);
+        self.set_bits(Self::BUSCTRL_MASK);
     }
 
     /// Clear BUSCTRL bit atomically (RW)
     #[inline(always)]
     pub fn clr_busctrl(&self) {
-        self.value.clr_bits(Self::BUSCTRL_MASK);
+        self.clr_bits(Self::BUSCTRL_MASK);
     }
 
     /// **ADC** `[0]` (RW)
@@ -2132,13 +2134,13 @@ impl Wdsel {
     /// Set ADC bit atomically (RW)
     #[inline(always)]
     pub fn set_adc(&self) {
-        self.value.set_bits(Self::ADC_MASK);
+        self.set_bits(Self::ADC_MASK);
     }
 
     /// Clear ADC bit atomically (RW)
     #[inline(always)]
     pub fn clr_adc(&self) {
-        self.value.clr_bits(Self::ADC_MASK);
+        self.clr_bits(Self::ADC_MASK);
     }
 
 }
@@ -2788,11 +2790,11 @@ impl Wdsel {
 /// - **ADC** `[0]` (RO)
 #[repr(transparent)]
 pub struct ResetDone {
-    value: crate::common::VolatileCell<u32>,
+    value: crate::common::AtomicCell<u32>,
 }
 
 impl core::ops::Deref for ResetDone {
-    type Target = crate::common::VolatileCell<u32>;
+    type Target = crate::common::AtomicCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
